@@ -1,0 +1,59 @@
+{
+  "name": "moj-express-skeleton",
+  "version": "0.1.0",
+  "private": true,
+  "main": "public/app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node public/app.js",
+    "clean": "rimraf public",
+    "build": "npm run clean && node esbuild.js",
+    "lint": "npx eslint . --ignore-pattern \"node_modules/*\" --ignore-pattern \"public/*\" --fix",
+    "dev": "nodemon --watch . --ext js,json,scss --ignore node_modules --ignore public/ --delay 500ms --exec 'node start-server.js'"
+  },
+  "engines": {
+    "node": "22.13.1"
+  },
+  "dependencies": {
+    "axios": "^1.8.4",
+    "body-parser": "^1.20.3",
+    "chalk": "^5.4.1",
+    "compression": "^1.8.0",
+    "cookie-parser": "~1.4.6",
+    "csrf-sync": "^4.0.3",
+    "debug": "~4.4.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "express-session": "^1.18.0",
+    "express-validator": "^7.2.1",
+    "figlet": "^1.8.0",
+    "fs-extra": "^11.3.0",
+    "govuk-frontend": "^5.8.0",
+    "helmet": "^8.0.0",
+    "http-errors": "~2.0.0",
+    "morgan": "~1.10.0",
+    "nunjucks": "^3.2.4",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.19.0",
+    "chokidar": "3.6.0",
+    "connect-livereload": "^0.6.1",
+    "esbuild": "^0.25.0",
+    "esbuild-plugin-copy": "^2.1.1",
+    "esbuild-sass-plugin": "^3.3.1",
+    "eslint": "^9.19.0",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-jsdoc": "^50.6.9",
+    "eslint-plugin-prettier": "^5.2.6",
+    "globals": "^15.14.0",
+    "livereload": "^0.9.3",
+    "middleware-axios": "^3.0.0",
+    "nodemon": "^3.1.9",
+    "prettier": "^3.4.2",
+    "rimraf": "^6.0.1",
+    "sass": "^1.86.3"
+  }
+}
