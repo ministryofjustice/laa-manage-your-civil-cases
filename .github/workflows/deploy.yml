@@ -1,0 +1,181 @@
+name: Deploy with Helm
+
+on:
+  push:
+    branches:
+      - '**'
+  workflow_dispatch: # Allows manual triggering of the workflow
+
+jobs:
+  deploy-uat:
+    name: Deploy to UAT
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Helm
+        run: |
+            curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+            chmod +x get_helm.sh
+            ./get_helm.sh
+
+      - name: Set up AWS credentials for ECR and Kubernetes
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.ECR_ROLE_TO_ASSUME }}
+          aws-region: ${{ vars.ECR_REGION }}
+
+      - uses: aws-actions/amazon-ecr-login@v2
+        id: login-ecr
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+          IMAGE_TAG: ${{ github.sha }}
+
+      - name: Set up kubeconfig
+        run: |
+          echo "${{ secrets.KUBE_CERT }}" > ca.crt
+          kubectl config set-cluster ${KUBE_CLUSTER} --certificate-authority=./ca.crt --server=https://${KUBE_CLUSTER}
+          kubectl config set-credentials deploy-user --token=${{ secrets.KUBE_TOKEN }}
+          kubectl config set-context ${KUBE_CLUSTER} --cluster=${KUBE_CLUSTER} --user=deploy-user --namespace=${KUBE_NAMESPACE}
+          kubectl config use-context ${KUBE_CLUSTER}
+        env:
+          KUBE_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
+          KUBE_CLUSTER: ${{ secrets.KUBE_CLUSTER }}
+
+      - name: Deploy using Helm to UAT
+        run: ./scripts/deploy.sh uat
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+          IMAGE_TAG: ${{ github.sha }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+          K8S_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
+
+  deploy-staging:
+    name: Deploy to Staging
+    needs: deploy-uat
+    if: github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Helm
+        run: |
+            curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+            chmod +x get_helm.sh
+            ./get_helm.sh
+
+      - name: Set up AWS credentials for ECR and Kubernetes
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.ECR_ROLE_TO_ASSUME }}
+          aws-region: ${{ vars.ECR_REGION }}
+
+      - uses: aws-actions/amazon-ecr-login@v2
+        id: login-ecr
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+          IMAGE_TAG: ${{ github.sha }}
+
+      - name: Set up kubeconfig
+        run: |
+          echo "${{ secrets.KUBE_CERT }}" > ca.crt
+          kubectl config set-cluster ${KUBE_CLUSTER} --certificate-authority=./ca.crt --server=https://${KUBE_CLUSTER}
+          kubectl config set-credentials deploy-user --token=${{ secrets.KUBE_TOKEN }}
+          kubectl config set-context ${KUBE_CLUSTER} --cluster=${KUBE_CLUSTER} --user=deploy-user --namespace=${KUBE_NAMESPACE}
+          kubectl config use-context ${KUBE_CLUSTER}
+        env:
+          KUBE_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
+          KUBE_CLUSTER: ${{ secrets.KUBE_CLUSTER }}
+
+      - name: Deploy using Helm to Staging
+        run: ./scripts/deploy.sh staging
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+          IMAGE_TAG: ${{ github.sha }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+          K8S_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
+
+  deploy-production:
+    name: Deploy to Production
+    needs: deploy-uat
+    if: github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    permissions:
+        id-token: write
+        contents: read
+    steps:
+        - uses: actions/checkout@v4
+
+        - name: Install Helm
+          run: |
+            curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+            chmod +x get_helm.sh
+            ./get_helm.sh           
+        - name: Set up AWS credentials for ECR and Kubernetes
+          uses: aws-actions/configure-aws-credentials@v4
+          with:
+            role-to-assume: ${{ secrets.ECR_ROLE_TO_ASSUME }}
+            aws-region: ${{ vars.ECR_REGION }}
+        - uses: aws-actions/amazon-ecr-login@v2
+          id: login-ecr
+        - name: Build and push Docker image
+          run: |
+            docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+            docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          env:
+            REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+            REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+            IMAGE_TAG: ${{ github.sha }}
+        - name: Set up kubeconfig
+          run: |
+            echo "${{ secrets.KUBE_CERT }}" > ca.crt
+            kubectl config set-cluster ${KUBE_CLUSTER} --certificate-authority=./ca.crt --server=https://${KUBE_CLUSTER}
+            kubectl config set-credentials deploy-user --token=${{ secrets.KUBE_TOKEN }}
+            kubectl config set-context ${KUBE_CLUSTER} --cluster=${KUBE_CLUSTER} --user=deploy-user --namespace=${KUBE_NAMESPACE}
+            kubectl config use-context ${KUBE_CLUSTER}
+          env:
+            KUBE_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
+            KUBE_CLUSTER: ${{ secrets.KUBE_CLUSTER }}
+        - name: Deploy using Helm to Production
+          run: ./scripts/deploy.sh production
+          env:
+            REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+            REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+            IMAGE_TAG: ${{ github.sha }}
+            GITHUB_SHA: ${{ github.sha }}
+            GITHUB_REF_NAME: ${{ github.ref_name }}
+            K8S_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
+        - name: Notify deployment failure
+          if: failure()
+          run: |
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"Deployment to Production failed!"}' ${{ secrets.SLACK_WEBHOOK_URL }}
+          env:
+            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        - name: Notify deployment success   
+          if: success()
+          run: |
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"Deployment to Production was successful!"}' ${{ secrets.SLACK_WEBHOOK_URL }}
+          env:
+            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

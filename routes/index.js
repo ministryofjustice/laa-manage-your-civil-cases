@@ -18,4 +18,8 @@ router.get('/users', async (req, res, next) => {
   }
 });
 
+// liveness and readiness probes for Kubernetes and Helm deployments
+router.get('/status', (req, res) => res.status(200).send('OK'));
+router.get('/health', (req, res) => res.status(200).send('Healthy'));
+
 export default router;
