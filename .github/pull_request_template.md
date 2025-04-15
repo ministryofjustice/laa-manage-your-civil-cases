@@ -1,6 +1,4 @@
-[Jira ticket (if applicable)](https://www.atlassian.com/software/jira)
-
-[Trello link (if applicable)](https://trello.com)
+[Jira ticket (if applicable)](https://dsdmoj.atlassian.net/browse/EL-XXXX)
 
 ## What changed and Why?
 
@@ -8,14 +6,6 @@
 
 I have added/removed/altered:
 
-- [ ] Added foo in bar
-- [ ] Removed baz
-
-I am doing this because:
-
--
--
-- 
 
 -->
 
