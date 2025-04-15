@@ -1,15 +1,10 @@
-# GOVUK Frontend Express
+# Legal Aid Agency - Manage Your Civil Cases (MCC)
+## This repository is built on the MoJ Express Frontend Skeleton
 [![Standards Icon]][Standards Link]
 
 ![govuk-frontend 5.8.0](https://img.shields.io/badge/govuk--frontend%20version-5.8.0-005EA5?logo=gov.uk&style=flat)
 
 Express.js is a fast, unopinionated, minimalist web framework for Node.js.
-
-**GOVUK Frontend Express is a community tool using the GOV.UK Design System. The Design System team is not responsible for it and cannot support you with using it. Contact the maintainers directly if you need help or you want to request a feature.**
-
-This is a template app using the GOV.UK Frontend and GOV.UK Design System which is designed to get a new project started quicker.
-
-The app is provided intentionally bare, with just the essential parts that all services need, such as error pages, accessibility statement and privacy notice. It uses a number of other packages to provide the [features](#features) described below with sensible and best-practice defaults. Please read the next steps section for guidance on how to start building out your app on top of this template.
 
 ## Contents
 - [Prerequisites](#prerequisites)
@@ -76,7 +71,7 @@ nvm install node
 ## Routing
 This template uses the built-in Express JS routing. 
 
-A route is a section of Express code that associates an HTTP verb (`GET`, `POST`, `PUT`, `DELETE`, etc.), a URL path/pattern, and a function that is called to handle that pattern.
+A route is a section of Express code that associates an HTTP verb (`GET`, `POST`, `PUT`, `DELETE`, etc.), with a URL path/pattern, and a function that is called to handle that pattern.
 
 [You can find further documentation here](https://expressjs.com/en/guide/routing.html).
 
@@ -115,7 +110,7 @@ There are many frameworks to test your Express.js application (a few of these fr
   - [Further reading](#further-reading)
 
 ### Asset management
-This is node.js scripts at them moment, but [ESBuild](https://esbuild.github.io/) coming soon.
+This is done with node.js scripts at the moment, but [ESBuild](https://esbuild.github.io/) coming soon.
 
 ### Cache busting
 Caching allows Express.js applications to store and serve frequently requested data efficiently, reducing the strain on servers and minimizing latency. This template improves caching through:
@@ -140,17 +135,6 @@ The app uses a Node.js compression middleware called [compression](https://www.n
 This template uses a basic rate-limiting middleware for Express.js, called `express-rate-limit`. It is used to limit repeated requests to public APIs and/or endpoints such as password reset. 
 
 For further information please [visit the documentation here](https://www.npmjs.com/package/express-rate-limit?activeTab=readme).
-
-
-### Nunjucks support
-A rich, high-performance JavaScript templating language, supported by all modern browsers. Nunjucks is customisable with extensions and filters; it offers inheritance, asynchronous control, auto escaping and other features. 
-
-[Nunjucks documentation](https://mozilla.github.io/nunjucks/).
-
-### ES6 JS Documentation
-ES6 refers to version 6 of the ECMA Script programming language. ECMA Script is the standardized name for JavaScript, and version 6 is the next version after version 5, released in 2011. It is a significant enhancement to the JavaScript language and adds many more features to simplify large-scale software development.
-
-Find out more [here](https://www.makeuseof.com/tag/es6-javascript-programmers-need-know/).
 
 ### Linter
 ESLint is a static code analysis tool for identifying and fixing problems in JavaScript code. It helps maintain code 
@@ -221,35 +205,6 @@ router.get('/users', async (req, res, next) => {
   }
 });
 ```
-
-### Further reading 
-Please refer to the specific packages documentation for more details.
-
-
-## Contributors
-- [Patrick Sweeting](https://github.com/psweeting1) (Primary maintainer)
-- [Imtiaz Ahmed](https://github.com/imtiazAhmd) (Primary maintainer)
-- [Masum Khan](https://github.com/MazOneTwoOne) (Maintainer)
-
-## Support
-This software is provided *"as-is"* without warranty. Support is provided on a *"best endeavours"* basis by the maintainers and open source community.
-
-If you are a civil servant you can sign up to the [UK Government Digital Slack](https://ukgovernmentdigital.slack.com/signup) workspace to contact the maintainers listed [above](#contributors) and the community of people using this project in the [#govuk-design-system](https://ukgovernmentdigital.slack.com/archives/C6DMEH5R6) channel.
-
-### Manage Outside Collaborators
-
-To add an Outside Collaborator to the repository, follow the guidelines detailed [here](https://github.com/ministryofjustice/github-collaborators).
-
-## Acknowledgment and Attribution
-If you find this project helpful and decide to use it in your own work, we kindly ask that you give proper credit to this repository. A simple acknowledgment in your project's documentation, website, or application would be greatly appreciated. Here are a few ways you can do this:
-- **Link back to this repository**: Include a link to this GitHub repository in your project's documentation or README file.
-- **Mention our contribution**: When discussing your project or presenting it to others, please mention that part of your project is based on our work.
-- **Cite our work**: If your project includes a list of contributors or a "Credits" section, consider adding our repository as one of the sources.
-
-```
-This project uses code from [Your Repository Name](https://github.com/yourusername/your-repository), originally developed by [Your Name or Organization].
-```
-Thank you for your support and for helping to spread the word about our work!
 
 ## Licence
 
