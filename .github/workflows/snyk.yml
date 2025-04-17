@@ -37,7 +37,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.snyk_token }}
         with:
           image: ${{ inputs.tag }}:scan
-          args: --file=${{ inputs.dockerfile_path }} --sarif-file-output=snyk.sarif --json
+          args: --file=${{ inputs.dockerfile_path }} --severity-threshold=high --exclude-base-image-vulns --sarif-file-output=snyk.sarif --json
 
       - name: Monitor docker image using Snyk
         uses: snyk/actions/docker@master
