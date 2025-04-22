@@ -16,12 +16,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Helm
-        run: |
-            curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-            chmod +x get_helm.sh
-            ./get_helm.sh
-
       - name: Set up AWS credentials for ECR and Kubernetes
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -81,12 +75,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Helm
-        run: |
-            curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-            chmod +x get_helm.sh
-            ./get_helm.sh
-
       - name: Set up AWS credentials for ECR and Kubernetes
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -136,12 +124,6 @@ jobs:
         contents: read
     steps:
         - uses: actions/checkout@v4
-
-        - name: Install Helm
-          run: |
-            curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-            chmod +x get_helm.sh
-            ./get_helm.sh
 
         - name: Set up AWS credentials for ECR and Kubernetes
           uses: aws-actions/configure-aws-credentials@v4
