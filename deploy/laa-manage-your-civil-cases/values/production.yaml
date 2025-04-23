@@ -38,11 +38,10 @@ securityContext: {}
 env:
   SERVICE_NAME: "Manage your civil cases"
   
-  ingress:
+ingress:
   enabled: true
   hosts:
     - host: manage-your-civil-cases.cloud-platform.service.justice.gov.uk
-      secret: false
       paths:
         - path: /
           pathType: Prefix

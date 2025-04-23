@@ -116,7 +116,7 @@ jobs:
 
   deploy-production:
     name: Deploy to Production
-    needs: deploy-uat
+    needs: deploy-staging
     if: github.ref_name == 'main'
     runs-on: ubuntu-latest
     permissions:

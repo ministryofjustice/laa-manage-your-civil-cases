@@ -42,7 +42,6 @@ ingress:
   enabled: true
   hosts:
     - host: manage-your-civil-cases-staging.cloud-platform.service.justice.gov.uk
-      secret: false
       paths:
         - path: /
           pathType: Prefix
