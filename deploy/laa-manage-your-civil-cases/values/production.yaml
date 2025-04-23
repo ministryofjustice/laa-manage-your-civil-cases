@@ -35,6 +35,9 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+env:
+  SERVICE_NAME: "Manage your civil cases"
+  
   ingress:
   enabled: true
   hosts:
