@@ -42,7 +42,7 @@ service:
 ingress:
   enabled: true
   hosts:
-    - host: main-mcc-uat.cloud-platform.service.justice.gov.uk
+    - host: main-manage-your-civil-cases-uat.cloud-platform.service.justice.gov.uk
       paths:
         - path: /
           pathType: Prefix
