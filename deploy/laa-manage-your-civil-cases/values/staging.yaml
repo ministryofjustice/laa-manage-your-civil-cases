@@ -62,6 +62,9 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
+env:
+  SERVICE_NAME: "Manage your civil cases"
+  
 livenessProbe:
   httpGet:
     path: /status
