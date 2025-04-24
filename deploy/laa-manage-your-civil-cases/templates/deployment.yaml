@@ -53,6 +53,10 @@ spec:
           env:
             - name: SERVICE_NAME
               value: "{{ .Values.env.SERVICE_NAME }}"
+            - name: SERVICE_PHASE
+              value: "{{ .Values.env.SERVICE_PHASE }}"
+            - name: DEPARTMENT_NAME
+              value: "{{ .Values.env.DEPARTMENT_NAME }}"
       {{- with .Values.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
