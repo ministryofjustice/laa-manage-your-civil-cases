@@ -50,6 +50,7 @@
     "eslint-plugin-jsdoc": "^50.6.9",
     "eslint-plugin-prettier": "^5.2.6",
     "globals": "^15.14.0",
+    "husky": "^9.1.7",
     "livereload": "^0.9.3",
     "middleware-axios": "^3.0.0",
     "nodemon": "^3.1.9",
