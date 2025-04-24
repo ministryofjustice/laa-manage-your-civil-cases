@@ -38,7 +38,6 @@ cp .env.example .env
 ```
 
 
-
 ### Align to the Node Version specified for this project
 
 If using Node Version Manager (nvm), use the following command to switch to the correct version:
