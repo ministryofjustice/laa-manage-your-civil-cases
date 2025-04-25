@@ -10,7 +10,8 @@
     "build": "npm run clean && node esbuild.js",
     "lint": "npx eslint . --ignore-pattern \"node_modules/*\" --ignore-pattern \"public/*\" --fix",
     "dev": "nodemon --watch . --ext js,json,scss --ignore node_modules --ignore public/ --delay 500ms --exec 'node start-server.js'",
-    "deploy": "./scripts/deploy.sh"
+    "deploy": "./scripts/deploy.sh",
+    "prepare": "husky"
   },
   "engines": {
     "node": "22.13.1"
@@ -50,11 +51,16 @@
     "eslint-plugin-jsdoc": "^50.6.9",
     "eslint-plugin-prettier": "^5.2.6",
     "globals": "^15.14.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.1",
     "livereload": "^0.9.3",
     "middleware-axios": "^3.0.0",
     "nodemon": "^3.1.9",
     "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
     "sass": "^1.86.3"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": ["eslint --fix"]
   }
 }
