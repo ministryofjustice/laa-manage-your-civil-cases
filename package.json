@@ -61,6 +61,6 @@
     "sass": "^1.86.3"
   },
   "lint-staged": {
-    "**/*.{js,jsx,ts,tsx}": ["eslint --fix"]
+    "**/*.{js,jsx,ts,tsx.mjs,cjs}": ["eslint --fix"]
   }
 }
