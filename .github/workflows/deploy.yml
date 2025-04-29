@@ -54,8 +54,6 @@ jobs:
   build-image:
     name: Build Docker Image
     runs-on: ubuntu-latest
-    outputs:
-      image_tag: ${{ github.sha }}
     permissions:
       id-token: write
       contents: read
@@ -121,7 +119,7 @@ jobs:
         env:
           REGISTRY: ${{  secrets.ECR_REGISTRY_URL }} 
           REPOSITORY: ${{ vars.ECR_REPOSITORY }}
-          IMAGE_TAG: ${{ needs.build-image.outputs.image_tag }}
+          IMAGE_TAG: ${{ github.sha }}
           GITHUB_SHA: ${{ github.sha }}
           GITHUB_REF_NAME: ${{ github.ref_name }}
           K8S_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
@@ -151,7 +149,7 @@ jobs:
         env:
           REGISTRY: ${{  secrets.ECR_REGISTRY_URL }} 
           REPOSITORY: ${{ vars.ECR_REPOSITORY }}
-          IMAGE_TAG: ${{ needs.build-image.outputs.image_tag }}
+          IMAGE_TAG: ${{ github.sha }}
           GITHUB_SHA: ${{ github.sha }}
           GITHUB_REF_NAME: ${{ github.ref_name }}
           K8S_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
@@ -181,7 +179,7 @@ jobs:
         env:
           REGISTRY: ${{  secrets.ECR_REGISTRY_URL }} 
           REPOSITORY: ${{ vars.ECR_REPOSITORY }}
-          IMAGE_TAG: ${{ needs.build-image.outputs.image_tag }}
+          IMAGE_TAG: ${{ github.sha }}
           GITHUB_SHA: ${{ github.sha }}
           GITHUB_REF_NAME: ${{ github.ref_name }}
           K8S_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
