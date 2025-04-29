@@ -18,3 +18,7 @@ make preview
 ## How is the documentation published
 The `.github/workflows/publish-documenation.yml` workflow is used to publish the documentation using the
 [MOJ Tech Docs GitHub Pages Publisher](https://github.com/ministryofjustice/tech-docs-github-pages-publisher) action.
+
+## How to configure your GitHub settings
+- [Enable GitHub pages](https://docs.github.com/en/pages/quickstart) for the repo
+- Under `Build and deployment`, select the `Source` to be `GitHub Actions`. This will use the `.github/workflows/publish-documenation.yml` workflow 
