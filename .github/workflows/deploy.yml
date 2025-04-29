@@ -56,7 +56,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       image_tag: ${{ github.sha }}
-      registry: ${{ steps.login-ecr.outputs.registry }} 
     permissions:
       id-token: write
       contents: read
@@ -120,7 +119,7 @@ jobs:
       - name: Deploy using Helm to UAT
         run: ./scripts/deploy.sh uat
         env:
-          REGISTRY: ${{ needs.build-image.outputs.registry }} 
+          REGISTRY: ${{  secrets.ECR_REGISTRY_URL }} 
           REPOSITORY: ${{ vars.ECR_REPOSITORY }}
           IMAGE_TAG: ${{ needs.build-image.outputs.image_tag }}
           GITHUB_SHA: ${{ github.sha }}
@@ -150,7 +149,7 @@ jobs:
       - name: Deploy using Helm to Staging
         run: ./scripts/deploy.sh staging
         env:
-          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REGISTRY: ${{  secrets.ECR_REGISTRY_URL }} 
           REPOSITORY: ${{ vars.ECR_REPOSITORY }}
           IMAGE_TAG: ${{ needs.build-image.outputs.image_tag }}
           GITHUB_SHA: ${{ github.sha }}
@@ -180,7 +179,7 @@ jobs:
       - name: Deploy using Helm to Production
         run: ./scripts/deploy.sh production
         env:
-          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REGISTRY: ${{  secrets.ECR_REGISTRY_URL }} 
           REPOSITORY: ${{ vars.ECR_REPOSITORY }}
           IMAGE_TAG: ${{ needs.build-image.outputs.image_tag }}
           GITHUB_SHA: ${{ github.sha }}
