@@ -39,6 +39,8 @@ securityContext: {}
 
 env:
   SERVICE_NAME: "Manage your civil cases"
+  SERVICE_PHASE: "Alpha"
+  DEPARTMENT_NAME: "LAA Digital"
   
 ingress:
   enabled: true

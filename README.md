@@ -105,6 +105,7 @@ There are many frameworks to test your Express.js application (a few of these fr
   - [Nunjucks support](#nunjucks-support)
   - [ES6 JS Documentation](#es6-js-documentation)
   - [Linter](#linter)
+  - [Linter for staged commits](#linter-for-staged-commits)
   - [Axios](#axios)
   - [SQLite database](#sqlite-database)
   - [Further reading](#further-reading)
@@ -146,6 +147,30 @@ To run ESlint:
 ```shell
 npm run lint
 ```
+
+### Linter for staged commits
+We use [husky](https://github.com/typicode/husky) & [lint-staged](https://github.com/lint-staged/lint-staged), to run eslint on all our staged git commits. 
+
+- `husky` - helps us with our Git hooks
+- `lint-staged` - helps us run a linter on our staged commits
+
+
+**To set-up locally**
+- Install all the dependencies:
+```shell
+npm install
+```
+
+- Initialise `husky`:
+```shell
+npx husky install
+```
+
+- To help debug, run the command when you have a staged commit:
+```shell
+npx lint-staged --debug
+```
+
 
 ### Axios
 Within this template [axios](https://github.com/axios/axios) with [middleware-axios](https://github.com/krutoo/middleware-axios) (used as a utility `../utils/axiosSetup.mjs`, and can be extended with further middleware) is set up and ready to use out of the box.

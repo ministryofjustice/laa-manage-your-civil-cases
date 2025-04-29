@@ -77,6 +77,8 @@ readinessProbe:
 
 env:
   SERVICE_NAME: "Manage your civil cases"
+  SERVICE_PHASE: "Alpha"
+  DEPARTMENT_NAME: "LAA Digital"
 
 autoscaling:
   enabled: false
