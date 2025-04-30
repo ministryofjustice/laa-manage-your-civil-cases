@@ -4,7 +4,7 @@
 
 ![govuk-frontend 5.8.0](https://img.shields.io/badge/govuk--frontend%20version-5.8.0-005EA5?logo=gov.uk&style=flat)
 
-Express.js is a fast, unopinionated, minimalist web framework for Node.js.
+Express.js is a fast, unopinionated, minimalist web framework for Node.js..
 
 ## Contents
 - [Prerequisites](#prerequisites)
