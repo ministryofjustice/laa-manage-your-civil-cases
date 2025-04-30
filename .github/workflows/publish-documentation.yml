@@ -39,7 +39,7 @@ jobs:
           mv docs/* .
           rm -rf docs
       - name: Compile Markdown to HTML and create artifact
-        # This is not in th repo, but in the image
+        # Script to deploy is not in the repo, but in this image: `ministryofjustice/tech-docs-github-pages-publisher:v3`
         run: |
           /scripts/deploy.sh 
       - name: Upload artifact to be published
