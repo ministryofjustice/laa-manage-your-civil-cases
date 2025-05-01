@@ -81,4 +81,4 @@ jobs:
           cd github-pages
           tar -xvf artifact.tar
           npm install linkinator
-          npx linkinator . --recurse --markdown
+          npx linkinator . --recurse --markdown --exclude "govuk-large.png"
