@@ -21,11 +21,7 @@ deploy_branch() {
                 --set ingress.hosts[0].host="$RELEASE_HOST"
 }
 
-deploy_main() {
-  echo "Environment: $ENVIRONMENT"
-  echo "Namespace: $K8S_NAMESPACE"
-  echo "Image: $REGISTRY/$REPOSITORY:$IMAGE_TAG"
-  
+deploy_main() {  
   helm upgrade manage-civil-cases ./deploy/laa-manage-your-civil-cases/. \
                           --install --wait \
                           --namespace="${K8S_NAMESPACE}" \
