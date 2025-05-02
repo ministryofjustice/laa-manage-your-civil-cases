@@ -21,5 +21,9 @@ router.get('/users', async (req, res, next) => {
 // liveness and readiness probes for Helm deployments
 router.get('/status', (req, res) => res.status(200).send('OK'));
 router.get('/health', (req, res) => res.status(200).send('Healthy'));
+router.get('/error', (req, res) => {
+  // Simulate an error
+  res.set('X-Error-Tag', 'TEST_500_ALERT').status(500).send('Internal Server Error');
+});
 
 export default router;
