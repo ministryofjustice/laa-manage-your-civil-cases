@@ -114,6 +114,8 @@ jobs:
           kube-cluster: ${{ secrets.KUBE_CLUSTER }}
           kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
 
+      - name: Deploy infrastructure to UAT
+        run: kubectl apply --record=false -f ./infrastructure/laa-manage-your-civil-cases-uat/
       - name: Deploy using Helm to UAT
         run: ./scripts/deploy.sh uat
         env:
