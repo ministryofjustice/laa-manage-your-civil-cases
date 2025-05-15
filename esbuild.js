@@ -4,7 +4,7 @@ import { builtinModules } from 'module';
 import dotenv from 'dotenv';
 import fs from 'fs-extra';
 import path from 'path';
-import { getBuildNumber } from './utils/index.js';
+import { getBuildNumber } from '#utils/buildHelper.js';
 
 // Load environment variables
 dotenv.config();
@@ -130,7 +130,7 @@ const buildAppJs = async () => {
  */
 const buildCustomJs = async () => {
   await esbuild.build({
-    entryPoints: ['src/js/custom.js'],
+    entryPoints: ['src/scripts/custom.ts'],
     bundle: true,
     platform: 'browser',
     target: 'es2020',
