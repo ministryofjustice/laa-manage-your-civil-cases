@@ -4,14 +4,19 @@
   "private": true,
   "main": "public/app.js",
   "type": "module",
+  "imports": {
+    "#*": "./*"
+  },
   "scripts": {
     "start": "node public/app.js",
     "clean": "rimraf public",
     "build": "npm run clean && node esbuild.js",
     "lint": "npx eslint . --ignore-pattern \"node_modules/*\" --ignore-pattern \"public/*\" --fix",
-    "dev": "nodemon --watch . --ext js,json,scss --ignore node_modules --ignore public/ --delay 500ms --exec 'node start-server.js'",
+    "dev": "nodemon --watch . --ext js,ts,json,scss --ignore node_modules --ignore public/ --delay 500ms --exec 'node start-server.js'",
     "deploy": "./scripts/deploy.sh",
-    "prepare": "husky"
+    "prepare": "husky",
+    "tsc": "tsc --noEmit",
+    "build:ts": "tsc"
   },
   "engines": {
     "node": "22.13.1"
@@ -41,12 +46,22 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
+    "@types/compression": "^1.7.5",
+    "@types/connect-livereload": "^0.6.3",
+    "@types/cookie-parser": "^1.4.8",
+    "@types/express": "^5.0.1",
+    "@types/express-session": "^1.18.1",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^22.15.18",
+    "@types/nunjucks": "^3.2.6",
+    "@typescript-eslint/eslint-plugin": "^8.32.1",
+    "@typescript-eslint/parser": "^8.32.1",
     "chokidar": "3.6.0",
     "connect-livereload": "^0.6.1",
     "esbuild": "^0.25.2",
     "esbuild-plugin-copy": "^2.1.1",
     "esbuild-sass-plugin": "^3.3.1",
-    "eslint": "^9.25.0",
+    "eslint": "^9.26.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-jsdoc": "^50.6.9",
     "eslint-plugin-prettier": "^5.2.6",
@@ -58,7 +73,8 @@
     "nodemon": "^3.1.9",
     "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
-    "sass": "^1.86.3"
+    "sass": "^1.86.3",
+    "typescript": "^5.8.3"
   },
   "husky": {
     "hooks": {
@@ -66,6 +82,6 @@
     }
   },
   "lint-staged": {
-    "*.js": "eslint --fix"
+    "*.{js,ts}": "eslint --fix"
   }
 }

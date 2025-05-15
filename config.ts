@@ -1,8 +1,9 @@
 import dotenv from 'dotenv';
+import { Config } from '#types/config-types.js';
 dotenv.config();
 
 // Get environment variables
-const config = {
+const config: Config = {
   CONTACT_EMAIL: process.env.CONTACT_EMAIL,
   CONTACT_PHONE: process.env.CONTACT_PHONE,
   DEPARTMENT_NAME: process.env.DEPARTMENT_NAME,
