@@ -103,13 +103,18 @@ const buildScss = async () => {
  */
 const buildAppJs = async () => {
   await esbuild.build({
-    entryPoints: ['src/app.js'],
+    entryPoints: ['src/app.ts'],
     bundle: true,
     platform: 'node',
     target: 'es2020',
     format: 'esm',
-    sourcemap: true,
-    minify: true,
+    sourcemap:  process.env.NODE_ENV !== 'production',
+    minify: process.env.NODE_ENV === 'production',
+    loader: {
+      '.js': 'jsx',
+      '.ts': 'tsx',
+      '.json': 'json',
+    },
     external: externalModules,
     outfile: 'public/app.js'
   }).catch((error) => {
