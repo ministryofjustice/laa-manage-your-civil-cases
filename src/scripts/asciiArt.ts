@@ -1,16 +1,17 @@
 // Optional for your frontend
 /**
- * @file Custom JavaScript for GOV.UK Frontend Express.
- * Displays an ASCII art displayAsciiBanner.js and job availability information in the console.
+ * @file Custom TypeScript for GOV.UK Frontend Express.
+ * Displays an ASCII art banner and job availability information in the console.
  *
  * ASCII Art created by: https://patorjk.com/software/taag/#p=display&f=Graffiti&t=Type%20Something%20
  */
 
+import { DisplayConsoleBannerFunction } from '#types/ascii-art-types.js';
+
 /**
  * Messages to display in the console.
- * @type {string[]}
  */
-const messages = [
+const messages: string[] = [
     "Welcome to GOVUK Frontend Express.",
     "Like what you see? Want to work with us?",
     "View our job availabilities or sign up for alerts:",
@@ -19,14 +20,14 @@ const messages = [
 
 /**
  * Joins messages into a single formatted string with line breaks.
- * @returns {string} Formatted message string
+ * @returns Formatted message string
  */
-const getFormattedMessage = () => messages.join("\n");
+const getFormattedMessage = (): string => messages.join("\n");
 
 /**
- * Displays an ASCII Art displayAsciiBanner.js with department name in the console.
+ * Displays an ASCII Art banner with department name in the console.
  */
-const displayConsoleBanner = () => {
+const displayConsoleBanner: DisplayConsoleBannerFunction = (): void => {
     console.log(`
   __  __  ____       _ 
  |  \\/  |/ __ \\     | |
@@ -39,7 +40,7 @@ ${getFormattedMessage()}
 `);
 };
 
-// Run displayAsciiBanner.js display when the script loads
+// Run banner display when the script loads
 displayConsoleBanner();
 
 export { displayConsoleBanner };

@@ -5,16 +5,15 @@
 
 import figlet from 'figlet';
 import chalk from 'chalk';
+import { Config } from '#types/config-types.js';
 
 /**
  * Displays an ASCII Art banner with the provided service name and port.
  *
- * @param {object} config - Configuration object containing service details.
- * @param {string} config.SERVICE_NAME - The name of the service to display in ASCII Art.
- * @param {number} config.app.port - The port number where the service is running.
+ * @param config - Configuration object containing service details.
  */
-const displayAsciiBanner = (config) => {
-    figlet(config.SERVICE_NAME, (err, data) => {
+const displayAsciiBanner = (config: Config): void => {
+    figlet(config.SERVICE_NAME || 'Service', (err: Error | null, data: string) => {
         if (err) {
             console.error('❌ Error generating ASCII art:', err);
             return;
