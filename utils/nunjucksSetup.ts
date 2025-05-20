@@ -1,19 +1,29 @@
 import nunjucks from 'nunjucks';
 import path from 'path';
-import { getLatestBuildFile } from '../utils/buildHelper.js';
+import { Application } from 'express';
+import { getLatestBuildFile } from './buildHelper.js';
 
 /**
  * Sets up Nunjucks as the template engine for the given Express application.
  * This function configures the view engine, sets the asset path, and specifies
  * the directories where Nunjucks should look for template files.
  *
- * @param {import('express').Application} app - The Express application instance.
+ * @param {Application} app - The Express application instance.
  * @returns {void} This function does not return a value; it configures Nunjucks for the provided app.
  */
-export const nunjucksSetup = (app) => {
+export const nunjucksSetup = (app: Application): void => {
   const appInstance = app;
   appInstance.set('view engine', 'njk');
-  appInstance.locals.asset_path = '/assets/';
+  
+  // Define a locals property that includes asset_path and getAsset
+  interface AppLocals {
+    asset_path: string;
+    getAsset: (prefix: string, ext: string) => string;
+  }
+  
+  // Set asset path in locals
+  (appInstance.locals as AppLocals).asset_path = '/assets/';
+  
   /**
    * Retrieves the latest build file for the given prefix and extension.
    *
@@ -21,7 +31,7 @@ export const nunjucksSetup = (app) => {
    * @param {string} ext - The extension of the asset file (e.g., 'js' or 'css').
    * @returns {string} The path to the latest build file.
    */
-  appInstance.locals.getAsset = (prefix, ext) => {
+  (appInstance.locals as AppLocals).getAsset = (prefix: string, ext: string): string => {
     const directory = ext === 'js' || ext === 'min.js' ? 'public/js' : 'public/css';
     return getLatestBuildFile(directory, prefix, ext);
   };
