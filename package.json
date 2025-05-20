@@ -10,9 +10,9 @@
   "scripts": {
     "start": "node public/app.js",
     "clean": "rimraf public",
-    "build": "npm run clean && node esbuild.js",
+    "build": "npm run clean && npm run build:ts && node public/esbuild.js",
     "lint": "npx eslint . --ignore-pattern \"node_modules/*\" --ignore-pattern \"public/*\" --fix",
-    "dev": "nodemon --watch . --ext js,ts,json,scss --ignore node_modules --ignore public/ --delay 500ms --exec 'node start-server.js'",
+    "dev": "nodemon --watch . --ext js,ts,json,scss --ignore node_modules --ignore public/ --delay 500ms --exec 'npm run build:ts && node public/start-server.js'",
     "deploy": "./scripts/deploy.sh",
     "prepare": "husky",
     "tsc": "tsc --noEmit",

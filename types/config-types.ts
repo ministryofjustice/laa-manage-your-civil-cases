@@ -1,6 +1,11 @@
+// Configuration type definitions
+
 export interface AppConfig {
-	port: number | string;
+	port: number;
 	environment: string;
+	appName: string;
+	useHttps: boolean;
+	// Add any other app configuration properties
 }
 
 export interface CsrfConfig {
