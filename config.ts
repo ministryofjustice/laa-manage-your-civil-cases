@@ -17,8 +17,10 @@ const config: Config = {
   SERVICE_PHASE: process.env.SERVICE_PHASE,
   SERVICE_URL: process.env.SERVICE_URL,
   app: {
-    port: process.env.PORT || 3000,
-    environment: process.env.NODE_ENV || 'development'
+    port: parseInt(process.env.PORT || '3000', 10), // Convert to number
+    environment: process.env.NODE_ENV || 'development',
+    appName: process.env.SERVICE_NAME || 'LAA Manage Your Civil Cases',
+    useHttps: process.env.NODE_ENV === 'production' // Use HTTPS in production
   },
   csrf: {
     cookieName: '_csrf',

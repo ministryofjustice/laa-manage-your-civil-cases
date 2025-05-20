@@ -6,7 +6,7 @@
 		"esModuleInterop": true,
 		"allowJs": true, // Allow JavaScript files
 		"checkJs": false, // Don't type-check JS initially
-		"outDir": "public",
+		"outDir": "public", // Preserve folder structure in the output directory
 		"rootDir": ".", // Changed from "src" to "." to include all source files
 		"sourceMap": true,
 		"skipLibCheck": true, // Skip type checking of declaration files
@@ -23,12 +23,17 @@
 	"include": [
 		"src/**/*",
 		"middleware/**/*",
-		"utils/**/*",
+		"utils/**/*.ts",
 		"routes/**/*",
-		"config.js"
+		"index.ts",
+		"esbuild.ts",
+		"start-server.ts",
+		"config.ts",
+		"types/**/*.ts"
 	],
 	"exclude": [
 		"node_modules",
-		"public"
+		"public",
+		"**/*.js"
 	]
 }
