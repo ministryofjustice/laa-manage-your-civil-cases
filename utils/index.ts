@@ -6,7 +6,7 @@ import { axiosMiddleware } from './axiosSetup.js';
 import { initializeDB } from './sqliteSetup.js';
 import { displayAsciiBanner } from './displayAsciiBanner.js';
 
-export { 
+export {
     getBuildNumber,
     getLatestBuildFile,
     helmetSetup,

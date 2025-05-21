@@ -13,8 +13,8 @@ import { Config } from '#types/config-types.js';
  * @param config - Configuration object containing service details.
  */
 const displayAsciiBanner = (config: Config): void => {
-    figlet(config.SERVICE_NAME || 'Service', (err: Error | null, data: string) => {
-        if (err) {
+    figlet(config.SERVICE_NAME || 'Service', (err: Error | null, data?: string | undefined) => {
+        if (err || !data) {
             console.error('❌ Error generating ASCII art:', err);
             return;
         }
