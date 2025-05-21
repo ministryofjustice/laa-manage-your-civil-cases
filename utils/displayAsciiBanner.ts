@@ -5,12 +5,12 @@
 
 import figlet from 'figlet';
 import chalk from 'chalk';
-import { Config } from '#types/config-types.js';
+import type { Config } from '#types/config-types.js';
 
 /**
- * Displays an ASCII Art banner with the provided service name and port.
- *
- * @param config - Configuration object containing service details.
+ * Displays an ASCII Art banner with department name in the console.
+ * @param {import('#types/config-types.js').Config} config - The application config object
+ * @returns {void}
  */
 const displayAsciiBanner = (config: Config): void => {
     figlet(config.SERVICE_NAME || 'Service', (err: Error | null, data?: string | undefined) => {

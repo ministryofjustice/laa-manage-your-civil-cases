@@ -6,7 +6,7 @@
  * ASCII Art created by: https://patorjk.com/software/taag/#p=display&f=Graffiti&t=Type%20Something%20
  */
 
-import { DisplayConsoleBannerFunction } from '#types/ascii-art-types.js';
+import type { DisplayConsoleBannerFunction } from '#types/ascii-art-types.js';
 
 /**
  * Messages to display in the console.
@@ -20,12 +20,13 @@ const messages: string[] = [
 
 /**
  * Joins messages into a single formatted string with line breaks.
- * @returns Formatted message string
+ * @returns {string} Formatted message string
  */
 const getFormattedMessage = (): string => messages.join("\n");
 
 /**
  * Displays an ASCII Art banner with department name in the console.
+ * @returns {void}
  */
 const displayConsoleBanner: DisplayConsoleBannerFunction = (): void => {
     console.log(`

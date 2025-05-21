@@ -2,7 +2,8 @@ import chokidar from 'chokidar'; // Import chokidar for file watching
 import livereload from 'livereload'; // Import livereload for live reloading
 import path from 'path'; // Import path module for handling file paths
 import { fileURLToPath } from 'url'; // Import fileURLToPath to convert file URLs to paths
-import { spawn, ChildProcess } from 'child_process'; // Import spawn from child_process to spawn new processes
+import type { ChildProcess } from 'child_process';
+import { spawn } from 'child_process'; // Import spawn from child_process to spawn new processes
 import config from '#config.js'; // Import the config
 import { build } from '#esbuild.js'; // Import the build function with correct extension
 
@@ -51,7 +52,7 @@ const startServer = (port: number): void => {
 				// If the port is in use, try to restart the server on the next port
 				setTimeout(() => startServer(port + 1), 1000);
 			} else {
-				console.error('Server process error:', sanitizeError(error));
+				console.error('Server process error:', sanitizeError(error as Error & { [key: string]: unknown }));
 			}
 		});
 	}, 1000); // 1-second delay to ensure the port is released
@@ -106,7 +107,7 @@ const start = async (): Promise<void> => {
 
 		// Handle watcher error event
 		watcher.on('error', (error: Error) => {
-			console.error('Watcher error:', sanitizeError(error));
+			console.error('Watcher error:', sanitizeError(error as Error & { [key: string]: unknown }));
 		});
 	}
 };
@@ -118,7 +119,7 @@ const start = async (): Promise<void> => {
  * @param {Error} error - The error object to sanitize.
  * @returns {object} A sanitized version of the error object.
  */
-const sanitizeError = (error: Error & { [key: string]: any }): object => {
+const sanitizeError = (error: Error & { [key: string]: unknown }): object => {
 	// Example: Remove stack traces or any sensitive data from the error object
 	const sanitizedError = { ...error };
 	delete sanitizedError.stack; // Remove stack trace
@@ -132,6 +133,6 @@ const sanitizeError = (error: Error & { [key: string]: any }): object => {
 // Start the build and server process
 start().catch((error: Error) => {
 	// Log sanitized error
-	console.error('Start script failed:', sanitizeError(error));
+	console.error('Start script failed:', sanitizeError(error as Error & { [key: string]: unknown }));
 	process.exit(1);
 });

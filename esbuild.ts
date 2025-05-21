@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import fs from 'fs-extra';
 import path from 'path';
 import { getBuildNumber } from './utils/buildHelper.js';
-import { SassPluginOptions } from './types/sass-plugin-types.js';
+import type { SassPluginOptions } from './types/sass-plugin-types.js';
 
 // Load environment variables
 dotenv.config();

@@ -1,11 +1,11 @@
 /**
  * Sets up Helmet middleware for the Express application to configure Content Security Policy (CSP).
  *
- * @param {Express} app - The Express application instance.
+ * @param {import('express').Application} app - The Express application instance.
  */
 import helmet from 'helmet';
 import crypto from 'crypto';
-import { Request, Response, NextFunction, Application } from 'express';
+import type { Request, Response, NextFunction, Application } from 'express';
 
 /**
  * Middleware to generate a unique CSP nonce for each request.

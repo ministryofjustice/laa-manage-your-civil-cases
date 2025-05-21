@@ -1,22 +1,6 @@
-import axios from 'axios';
-// Import directly from the package
 import { create } from 'middleware-axios';
 import type { Request, Response, NextFunction } from 'express';
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-
-// Define the types we need based on the middleware-axios package
-interface AxiosInstanceWrapper {
-  request: (config: AxiosRequestConfig) => Promise<AxiosResponse>;
-  get: AxiosInstance['get'];
-  delete: AxiosInstance['delete'];
-  head: AxiosInstance['head'];
-  options: AxiosInstance['options'];
-  post: AxiosInstance['post'];
-  put: AxiosInstance['put'];
-  patch: AxiosInstance['patch'];
-  axiosInstance: AxiosInstance;
-  use: <R = any>(middleware: any) => AxiosInstanceWrapper;
-}
+import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
 
 // Extend Express Request to include our axiosMiddleware
 declare global {
@@ -35,6 +19,7 @@ declare global {
  * @param {Request} req - The Express request object.
  * @param {Response} res - The Express response object.
  * @param {NextFunction} next - The next middleware function in the stack.
+ * @returns {void}
  */
 export const axiosMiddleware = (req: Request, res: Response, next: NextFunction): void => {
   const protocol = req.protocol;

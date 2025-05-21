@@ -1,5 +1,6 @@
 import sqlite3 from "sqlite3";
-import { open, Database } from "sqlite";
+import type { Database } from "sqlite";
+import { open } from "sqlite";
 
 // Define the database type we'll use throughout the application
 export type SQLiteDatabase = Database<sqlite3.Database, sqlite3.Statement>;
