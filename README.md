@@ -7,25 +7,43 @@
 Express.js is a fast, unopinionated, minimalist web framework for Node.js.
 
 ## Contents
-- [Prerequisites](#prerequisites)
-- [Getting started](#getting-started)
-  - [Set local environment variables](#set-local-environment-variables)
-  - [Install and run application for development](#install-and-run-application-for-development)
-  - [Install and run application for production](#install-and-run-application-for-production)
-    - [Node Version Manager](#node-version-manager)
-- [Routing](#routing)
-- [Testing](#testing)
-  - [Unit/Integration Testing example frameworks](#unitintegration-testing-example-frameworks)
-  - [E2E Testing example frameworks](#e2e-testing-example-frameworks)
-- [Features](#features)
-- [Contributors](#contributors)
-- [Support](#support)
-  - [Manage Outside Collaborators](#manage-outside-collaborators)
-- [Acknowledgment and Attribution](#acknowledgment-and-attribution)
-- [Licence](#licence)
+- [Legal Aid Agency - Manage Your Civil Cases (MCC)](#legal-aid-agency---manage-your-civil-cases-mcc)
+  - [This repository is built on the MoJ Express Frontend Skeleton](#this-repository-is-built-on-the-moj-express-frontend-skeleton)
+  - [Contents](#contents)
+  - [Prerequisites](#prerequisites)
+  - [Getting started](#getting-started)
+    - [Set local environment variables](#set-local-environment-variables)
+    - [Align to the Node Version specified for this project](#align-to-the-node-version-specified-for-this-project)
+    - [Install dependencies and run application for development](#install-dependencies-and-run-application-for-development)
+    - [Install dependencies and run application for production](#install-dependencies-and-run-application-for-production)
+      - [Node Version Manager](#node-version-manager)
+  - [Routing](#routing)
+  - [Testing](#testing)
+    - [Unit/Integration Testing example frameworks](#unitintegration-testing-example-frameworks)
+    - [E2E Testing example frameworks](#e2e-testing-example-frameworks)
+  - [Features](#features)
+    - [Asset management](#asset-management)
+    - [Cache busting](#cache-busting)
+    - [Form validation](#form-validation)
+    - [CSRF protection](#csrf-protection)
+    - [Content Security Policy (CSP)](#content-security-policy-csp)
+    - [Response compression](#response-compression)
+    - [Rate limiting](#rate-limiting)
+    - [Linter](#linter)
+    - [Linter for staged commits](#linter-for-staged-commits)
+    - [TypeScript](#typescript)
+    - [Axios](#axios)
+    - [SQLite database](#sqlite-database)
+    - [Nunjucks templating](#nunjucks-templating)
+    - [Project structure and source directory](#project-structure-and-source-directory)
+    - [Import paths and path aliases](#import-paths-and-path-aliases)
+    - [Running and debugging](#running-and-debugging)
+    - [Type definitions](#type-definitions)
+  - [Licence](#licence)
 
 ## Prerequisites
 - node stable version [22.13.1]
+- TypeScript 5.8.3
 
 ## Getting started
 
@@ -102,16 +120,15 @@ There are many frameworks to test your Express.js application (a few of these fr
   - [Content Security Policy (CSP)](#content-security-policy-csp)
   - [Response compression](#response-compression)
   - [Rate limiting](#rate-limiting)
-  - [Nunjucks support](#nunjucks-support)
-  - [ES6 JS Documentation](#es6-js-documentation)
+  - [TypeScript](#typescript)
   - [Linter](#linter)
   - [Linter for staged commits](#linter-for-staged-commits)
   - [Axios](#axios)
   - [SQLite database](#sqlite-database)
-  - [Further reading](#further-reading)
+  - [Nunjucks templating](#nunjucks-templating)
 
 ### Asset management
-This is done with node.js scripts at the moment, but [ESBuild](https://esbuild.github.io/) coming soon.
+This project uses [ESBuild](https://esbuild.github.io/) for asset bundling and management, providing fast builds and efficient handling of JavaScript, TypeScript, and SCSS files.
 
 ### Cache busting
 Caching allows Express.js applications to store and serve frequently requested data efficiently, reducing the strain on servers and minimizing latency. This template improves caching through:
@@ -138,21 +155,23 @@ This template uses a basic rate-limiting middleware for Express.js, called `expr
 For further information please [visit the documentation here](https://www.npmjs.com/package/express-rate-limit?activeTab=readme).
 
 ### Linter
-ESLint is a static code analysis tool for identifying and fixing problems in JavaScript code. It helps maintain code 
-quality and consistency across a project by enforcing a set of coding standards and best practices. ESLint can catch 
-syntax errors, stylistic issues, and potential bugs before they become actual problems.
+ESLint is a static code analysis tool for identifying and fixing problems in JavaScript and TypeScript code. It helps maintain code quality and consistency across a project by enforcing a set of coding standards and best practices. ESLint can catch syntax errors, stylistic issues, and potential bugs before they become actual problems.
 
-To run ESlint:
+The project has TypeScript support through the `@typescript-eslint/eslint-plugin` and `@typescript-eslint/parser` packages installed as dev dependencies.
+
+To run ESLint:
 
 ```shell
 npm run lint
 ```
 
+This will run ESLint on all TypeScript files in your project, ignoring the node_modules and public directories.
+
 ### Linter for staged commits
-We use [husky](https://github.com/typicode/husky) & [lint-staged](https://github.com/lint-staged/lint-staged), to run eslint on all our staged git commits. 
+We use [husky](https://github.com/typicode/husky) & [lint-staged](https://github.com/lint-staged/lint-staged) to run ESLint on all our staged git commits. This ensures that TypeScript files are linted before they're committed to the repository.
 
 - `husky` - helps us with our Git hooks
-- `lint-staged` - helps us run a linter on our staged commits
+- `lint-staged` - helps us run a linter on our staged commits (configured in package.json to target both .js and .ts files)
 
 
 **To set-up locally**
@@ -171,57 +190,80 @@ npx husky install
 npx lint-staged --debug
 ```
 
+### TypeScript
+This project uses TypeScript to provide static type checking, improving code quality and developer experience. TypeScript helps catch errors during development rather than at runtime and provides better IDE support through enhanced autocompletion and navigation.
+
+The TypeScript configuration is defined in `tsconfig.json` with the following key settings:
+- Target: ES2022
+- Module System: NodeNext
+- Strict Type Checking: Enabled
+- Source Maps: Generated for debugging
+
+To compile TypeScript files:
+```shell
+npm run build:ts
+```
+
+To run type checking without emitting files:
+```shell
+npm run tsc
+```
 
 ### Axios
-Within this template [axios](https://github.com/axios/axios) with [middleware-axios](https://github.com/krutoo/middleware-axios) (used as a utility `../utils/axiosSetup.mjs`, and can be extended with further middleware) is set up and ready to use out of the box.
+Within this template [axios](https://github.com/axios/axios) with [middleware-axios](https://github.com/krutoo/middleware-axios) (used as a utility `../utils/axiosSetup.ts`, and can be extended with further middleware) is set up and ready to use out of the box.
 
-Below is an example of implementation of how to use the `axios_api` function, in other modules to make server/api calls:
+Below is an example of implementation of how to use the Axios middleware in your TypeScript routes to make server/API calls:
 
-```mjs
-// routes/index.mjs
-import express from 'express';
+```typescript
+// routes/index.ts
+import express, { Request, Response, NextFunction } from 'express';
 const router = express.Router();
+
 /* GET home page. */
-router.get('/', (req, res, next) => {
+router.get('/', (req: Request, res: Response, next: NextFunction) => {
   res.render('main/index', { title: 'Express' });
 });
+
 // Make an API call with `Axios` and `middleware-axios`
 // GET users from external API
-router.get('/users', async (req, res, next) => {
+router.get('/users', async (req: Request, res: Response, next: NextFunction) => {
   try {
-      // Use the wrapped Axios instance attached to the request object (via middleware-axios)
-      const response = await req.axiosMiddleware.get('https://jsonplaceholder.typicode.com/users');
-      res.json(response.data);
+    // Use the wrapped Axios instance attached to the request object (via middleware-axios)
+    const response = await req.axiosMiddleware.get('https://jsonplaceholder.typicode.com/users');
+    res.json(response.data);
   } catch (error) {
-      next(error);
+    next(error);
   }
 });
+
 export default router;
 ```
 
 
 ### SQLite database
-In this template, [SQLite3](https://docs.python.org/3/library/sqlite3.html) is set up and ready to use out of the box. However, if you wish to use something
-else as your database, please see [Database integration Options](https://expressjs.com/en/guide/database-integration.html).
+In this template, [SQLite3](https://docs.python.org/3/library/sqlite3.html) is set up and ready to use out of the box. However, if you wish to use something else as your database, please see [Database integration Options](https://expressjs.com/en/guide/database-integration.html).
 
-You'll find 2 main js files: `utils/sqliteSetup.js` & `middleware/setupDB.js`.
+You'll find 2 main TypeScript files: `utils/sqliteSetup.ts` & `middleware/setupDB.ts`.
 
-- `utils/sqliteSetup.js`, is where you can make your database connection and initialise your database schema. In this template we create a dummy users table with `id`, `name`, and `email fields`.
+- `utils/sqliteSetup.ts` is where you can make your database connection and initialize your database schema. In this template we create a dummy users table with `id`, `name`, and `email` fields.
 
-```mjs
-  // Initialize your database schema here.
-  await db.exec(`
-    CREATE TABLE IF NOT EXISTS users (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL,
-      email TEXT NOT NULL UNIQUE
-    )
-  `);
+```typescript
+// Initialize your database schema here.
+await db.exec(`
+  CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE
+  )
+`);
 ```
 
-- `middleware/setupDB.js`, is set up to allow database queries to be run against your SQLite3. It sets up your database to access any of your routes, such as this example below.
-```mjs
-router.get('/users', async (req, res, next) => {
+- `middleware/setupDB.ts` is set up to allow database queries to be run against your SQLite3. It sets up your database to access any of your routes, such as this example below.
+
+```typescript
+import { Request, Response, NextFunction } from 'express';
+
+router.get('/users', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const rows = await req.db.all("SELECT * FROM users");
     res.json({ users: rows });
@@ -230,6 +272,27 @@ router.get('/users', async (req, res, next) => {
   }
 });
 ```
+
+### Nunjucks templating
+This project uses [Nunjucks](https://mozilla.github.io/nunjucks/) for server-side HTML templating. You can render Nunjucks templates from your TypeScript route handlers just as you would from JavaScript. Templates are located in the `views/` directory and are compatible with both JS and TS backends.
+
+### Project structure and source directory
+- Project-specific TypeScript code should go in `src/scripts/`.
+- Other source TypeScript files are located in `src/`, `middleware/`, `routes/`, and `utils/`.
+- Compiled JavaScript output is placed in the `public/` directory.
+- Do not edit files in `public/` directly; always edit the `.ts` source files.
+
+### Import paths and path aliases
+- The project uses path aliases (see `tsconfig.json`), such as `import foo from '#utils/foo'`.
+- Ensure your editor/IDE is configured to recognize these aliases for best developer experience.
+
+### Running and debugging
+- The app is started using the compiled JS in `public/` (see `npm run dev` and `npm run start`).
+- If you want to run TypeScript directly (e.g., for debugging), consider using `ts-node` or a similar tool, but this is not the default workflow.
+
+### Type definitions
+- Type definitions for Node, Express, and other dependencies are included as dev dependencies (see `@types/*` packages in `package.json`).
+- These are required for type safety and improved autocompletion in TypeScript.
 
 ## Licence
 
