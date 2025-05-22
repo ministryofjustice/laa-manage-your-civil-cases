@@ -1,6 +1,6 @@
 import nunjucks from 'nunjucks';
 import path from 'path';
-import { Application } from 'express';
+import type { Application } from 'express';
 import { getLatestBuildFile } from './buildHelper.js';
 
 /**

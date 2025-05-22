@@ -1,4 +1,5 @@
-import express, { Request, Response } from 'express';
+import type { Request, Response } from 'express';
+import express from 'express';
 import chalk from 'chalk';
 import morgan from 'morgan';
 import compression from 'compression';
@@ -13,7 +14,7 @@ import livereload from 'connect-livereload';
  * Creates and configures an Express application.
  * Then starts the server listening on the configured port.
  *
- * @returns The configured Express application
+ * @returns {import('express').Application} The configured Express application
  */
 const createApp = (): express.Application => {
 	const app = express();
@@ -31,9 +32,9 @@ const createApp = (): express.Application => {
 			 * Custom filter for compression.
 			 * Prevents compression if the 'x-no-compression' header is set in the request.
 			 *
-			 * @param req - The Express request object
-			 * @param res - The Express response object
-			 * @returns True if compression should be applied, false otherwise
+			 * @param {import('express').Request} req - The Express request object
+			 * @param {import('express').Response} res - The Express response object
+			 * @returns {boolean} True if compression should be applied, false otherwise
 			 */
 			filter: (req: Request, res: Response): boolean => {
 				if (req.headers['x-no-compression']) {

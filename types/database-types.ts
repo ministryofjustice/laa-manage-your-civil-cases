@@ -1,4 +1,4 @@
-import { SQLiteDatabase } from '../utils/sqliteSetup.js';
+import type { SQLiteDatabase } from '#utils/sqliteSetup.js';
 
 // Using module augmentation to extend Express Request
 declare module 'express-serve-static-core' {

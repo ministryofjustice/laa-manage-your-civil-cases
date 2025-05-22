@@ -1,8 +1,8 @@
-import { Application, Request, Response, NextFunction } from 'express';
-import { initializeDB } from '../utils/sqliteSetup.js';
+import type { Application, Request, Response, NextFunction } from 'express';
+import { initializeDB } from '#utils/sqliteSetup.js';
 
 // Import the types for Express request augmentation
-import '../types/database-types.js';
+import '#types/database-types.js';
 
 /**
  * Sets up the database and attaches it to the request object.

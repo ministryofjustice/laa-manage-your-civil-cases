@@ -1,9 +1,11 @@
 import globals from 'globals';
-import pluginJs from '@eslint/js';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
+import tseslint from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
 
 // Alter this config file to meet your project's needs and standards.
 export default [
+  // JS/Default config (no parser override)
   {
     languageOptions: {
       globals: {
@@ -14,11 +16,25 @@ export default [
       sourceType: 'module',
     },
   },
-  pluginJs.configs.recommended,
+  // TypeScript config (only for TS files)
   {
+    files: ['**/*.ts', '**/*.tsx'],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        project: './tsconfig.json',
+      },
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
+    },
     plugins: {
       jsdoc: jsdocPlugin,
       prettier: ['@eslint/plugin-prettier'],
+      '@typescript-eslint': tseslint,
     },
     rules: {
       'indent': 'off', // Prettier is handling this
@@ -53,6 +69,26 @@ export default [
       'jsdoc/require-returns-check': 'error',
       'jsdoc/require-returns-description': 'error',
       'jsdoc/require-returns-type': 'error',
+      // TypeScript declaration file best practices
+      '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
+      '@typescript-eslint/consistent-type-imports': 'error',
+      '@typescript-eslint/no-extraneous-class': ['error', { allowStaticOnly: true }],
+      '@typescript-eslint/no-namespace': 'off', // Allow namespaces for declaration files
+      '@typescript-eslint/triple-slash-reference': [
+        'error',
+        { path: 'never', types: 'prefer-import', lib: 'never' }
+      ],
+      '@typescript-eslint/no-var-requires': 'error',
+      '@typescript-eslint/no-explicit-any': 'warn',
+    },
+  },
+  // Add a separate config for declaration files
+  {
+    files: ['**/*.d.ts'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off', // Sometimes needed in d.ts
+      '@typescript-eslint/no-empty-interface': 'off', // Sometimes needed in d.ts
+      '@typescript-eslint/no-namespace': 'off', // Namespaces are allowed in d.ts
     },
   },
 ];

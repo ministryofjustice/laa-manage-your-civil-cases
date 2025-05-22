@@ -1,7 +1,7 @@
 import { csrfSync } from "csrf-sync";
-import { Application, Request, Response, NextFunction } from 'express';
+import type { Application, Request, Response, NextFunction } from 'express';
 // Import CSRF token type definitions
-import '../types/csrf-types.js';
+import '#types/csrf-types.js';
 
 /**
  * Sets up CSRF protection for an Express application.
