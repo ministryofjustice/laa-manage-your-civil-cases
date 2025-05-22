@@ -57,6 +57,28 @@ spec:
               value: "{{ .Values.env.SERVICE_PHASE }}"
             - name: DEPARTMENT_NAME
               value: "{{ .Values.env.DEPARTMENT_NAME }}"
+            - name: DEPARTMENT_URL
+              value: "{{ .Values.env.DEPARTMENT_URL }}"
+            - name: CONTACT_EMAIL
+              value: "{{ .Values.env.CONTACT_EMAIL }}"
+            - name: CONTACT_PHONE
+              value: "{{ .Values.env.CONTACT_PHONE }}"
+            - name: SERVICE_URL
+              value: "{{ .Values.env.SERVICE_URL }}"
+            - name: SESSION_SECRET
+              value: "{{ .Values.env.SESSION_SECRET }}"
+            - name: SESSION_NAME
+              value: "{{ .Values.env.SESSION_NAME }}"
+            - name: RATELIMIT_HEADERS_ENABLED
+              value: "{{ .Values.env.RATELIMIT_HEADERS_ENABLED }}"
+            - name: RATELIMIT_STORAGE_URI
+              value: "{{ .Values.env.RATELIMIT_STORAGE_URI }}"
+            - name: RATE_LIMIT_MAX
+              value: "{{ .Values.env.RATE_LIMIT_MAX }}"
+            - name: RATE_WINDOW_MS
+              value: "{{ .Values.env.RATE_WINDOW_MS }}"
+            - name: NODE_ENV
+              value: "{{ .Values.env.NODE_ENV }}"
       {{- with .Values.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}

@@ -37,8 +37,16 @@ export const helmetSetup = (app: Application): void => {
             // Use type casting to make TypeScript happy with the function in the array
             ((req: Request, res: Response) => `'nonce-${res.locals.cspNonce}'`) as unknown as string
           ],
-          imgSrc: ["'self'"],
-          connectSrc: ["'self'"]
+          styleSrc: ["'self'", "'unsafe-inline'"], // Allow inline styles if needed
+          fontSrc: ["'self'", "data:"], // Allow data: URIs for fonts
+          imgSrc: ["'self'", "data:"], // Allow data: URIs for images
+          connectSrc: ["'self'"],
+          objectSrc: ["'none'"], // Restrict <object>, <embed>, and <applet> elements
+          mediaSrc: ["'self'"], // Restrict media
+          frameSrc: ["'none'"], // Restrict frames
+          formAction: ["'self'"], // Restrict form submissions
+          baseUri: ["'self'"], // Restrict base URI
+          upgradeInsecureRequests: [], // Upgrade HTTP to HTTPS
         }
       }
     })

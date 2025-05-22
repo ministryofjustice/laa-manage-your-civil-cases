@@ -14,6 +14,13 @@ export interface CsrfConfig {
 	httpOnly: boolean;
 }
 
+export interface SessionConfig {
+	secret: string;
+	name: string;
+	resave: boolean;
+	saveUninitialized: boolean;
+}
+
 export interface PathsConfig {
 	static: string;
 	views: string;
@@ -28,11 +35,11 @@ export interface Config {
 	RATELIMIT_STORAGE_URI: string | undefined;
 	RATE_LIMIT_MAX: number | string;
 	RATE_WINDOW_MS: number;
-	SECRET_KEY: string | undefined;
 	SERVICE_NAME: string | undefined;
 	SERVICE_PHASE: string | undefined;
 	SERVICE_URL: string | undefined;
 	app: AppConfig;
 	csrf: CsrfConfig;
+	session: SessionConfig;
 	paths: PathsConfig;
 }

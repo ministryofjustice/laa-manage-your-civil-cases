@@ -78,9 +78,21 @@ readinessProbe:
   periodSeconds: 60
 
 env:
-  SERVICE_NAME: "Manage your civil cases"
-  SERVICE_PHASE: "Alpha"
-  DEPARTMENT_NAME: "LAA Digital"
+  # These will be overridden by deploy.sh with values from GitHub vars/secrets
+  SERVICE_NAME: ""
+  SERVICE_PHASE: ""
+  DEPARTMENT_NAME: ""
+  DEPARTMENT_URL: ""
+  CONTACT_EMAIL: ""
+  CONTACT_PHONE: ""
+  SERVICE_URL: ""
+  SESSION_SECRET: ""
+  SESSION_NAME: ""
+  RATELIMIT_HEADERS_ENABLED: ""
+  RATELIMIT_STORAGE_URI: ""
+  RATE_LIMIT_MAX: ""
+  RATE_WINDOW_MS: ""
+  NODE_ENV: ""
 
 autoscaling:
   enabled: false
