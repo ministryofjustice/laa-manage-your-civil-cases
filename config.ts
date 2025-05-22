@@ -13,10 +13,15 @@ const config: Config = {
   RATE_LIMIT_MAX: process.env.RATE_LIMIT_MAX || 100,
   // Default rate window: 15 minutes in milliseconds
   RATE_WINDOW_MS: parseInt(process.env.RATE_WINDOW_MS || String(15 * 60 * 1000), 10),
-  SECRET_KEY: process.env.SECRET_KEY,
   SERVICE_NAME: process.env.SERVICE_NAME,
   SERVICE_PHASE: process.env.SERVICE_PHASE,
   SERVICE_URL: process.env.SERVICE_URL,
+  session: {
+    secret: process.env.SESSION_SECRET as string,
+    name: process.env.SESSION_NAME as string,
+    resave: false,
+    saveUninitialized: false
+  },
   app: {
     port: parseInt(process.env.PORT || '3000', 10), // Convert to number
     environment: process.env.NODE_ENV || 'development',
