@@ -18,7 +18,21 @@ deploy_branch() {
                 --set image.repository="$REGISTRY/$REPOSITORY" \
                 --set image.tag="$IMAGE_TAG" \
                 --set ingress.annotations."external-dns\.alpha\.kubernetes\.io/set-identifier"="$IDENTIFIER" \
-                --set ingress.hosts[0].host="$RELEASE_HOST"
+                --set ingress.hosts[0].host="$RELEASE_HOST" \
+                --set env.SERVICE_NAME="$SERVICE_NAME" \
+                --set env.SERVICE_PHASE="$SERVICE_PHASE" \
+                --set env.DEPARTMENT_NAME="$DEPARTMENT_NAME" \
+                --set env.DEPARTMENT_URL="$DEPARTMENT_URL" \
+                --set env.CONTACT_EMAIL="$CONTACT_EMAIL" \
+                --set env.CONTACT_PHONE="$CONTACT_PHONE" \
+                --set env.SERVICE_URL="$SERVICE_URL" \
+                --set env.SESSION_SECRET="$SESSION_SECRET" \
+                --set env.SESSION_NAME="$SESSION_NAME" \
+                --set env.RATELIMIT_HEADERS_ENABLED="$RATELIMIT_HEADERS_ENABLED" \
+                --set env.RATELIMIT_STORAGE_URI="$RATELIMIT_STORAGE_URI" \
+                --set env.RATE_LIMIT_MAX="$RATE_LIMIT_MAX" \
+                --set env.RATE_WINDOW_MS="$RATE_WINDOW_MS" \
+                --set env.NODE_ENV="$NODE_ENV"
 }
 
 deploy_main() {  
@@ -27,7 +41,21 @@ deploy_main() {
                           --namespace="${K8S_NAMESPACE}" \
                           --values ./deploy/laa-manage-your-civil-cases/values/"$ENVIRONMENT".yaml \
                           --set image.repository="$REGISTRY/$REPOSITORY" \
-                          --set image.tag="$IMAGE_TAG"
+                          --set image.tag="$IMAGE_TAG" \
+                          --set env.SERVICE_NAME="$SERVICE_NAME" \
+                          --set env.SERVICE_PHASE="$SERVICE_PHASE" \
+                          --set env.DEPARTMENT_NAME="$DEPARTMENT_NAME" \
+                          --set env.DEPARTMENT_URL="$DEPARTMENT_URL" \
+                          --set env.CONTACT_EMAIL="$CONTACT_EMAIL" \
+                          --set env.CONTACT_PHONE="$CONTACT_PHONE" \
+                          --set env.SERVICE_URL="$SERVICE_URL" \
+                          --set env.SESSION_SECRET="$SESSION_SECRET" \
+                          --set env.SESSION_NAME="$SESSION_NAME" \
+                          --set env.RATELIMIT_HEADERS_ENABLED="$RATELIMIT_HEADERS_ENABLED" \
+                          --set env.RATELIMIT_STORAGE_URI="$RATELIMIT_STORAGE_URI" \
+                          --set env.RATE_LIMIT_MAX="$RATE_LIMIT_MAX" \
+                          --set env.RATE_WINDOW_MS="$RATE_WINDOW_MS" \
+                          --set env.NODE_ENV="$NODE_ENV"
 }
 
 if [[ "$GITHUB_REF_NAME" == "main" ]]; then

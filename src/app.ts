@@ -52,14 +52,9 @@ const createApp = (): express.Application => {
 
 		// Set up cookie security for sessions
 		app.set('trust proxy', 1);
-		app.use(session({
-			secret: 's3Cur3',
-			name: 'sessionId',
-			resave: false,
-			saveUninitialized: false
-		}));
+		app.use(session(config.session));
 
-		// Set up CSRF protection
+		// Set up Cross-Site Request Forgery (CSRF) protection
 		setupCsrf(app);
 
 		// Set up Nunjucks as the template engine
