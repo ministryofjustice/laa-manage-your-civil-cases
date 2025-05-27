@@ -19,7 +19,7 @@ Express.js is a fast, unopinionated, minimalist web framework for Node.js.
       - [Node Version Manager](#node-version-manager)
   - [Routing](#routing)
   - [Testing](#testing)
-    - [Unit/Integration Testing example frameworks](#unitintegration-testing-example-frameworks)
+    - [Unit/Integration Testing frameworks](#unitintegration-testing-frameworks)
     - [E2E Testing example frameworks](#e2e-testing-example-frameworks)
   - [Features](#features)
     - [Asset management](#asset-management)
@@ -100,11 +100,21 @@ There are many frameworks to test your Express.js application (a few of these fr
 - Integration Tests - assess the coherence of the entire application, ensuring smooth interactions between various parts.
 - End-to-end (E2E) Tests - assess the entire software system, from the user interface to the database.
 
-### Unit/Integration Testing example frameworks
-- Choose a testing framework (e.g., [Mocha](https://mochajs.org/), [Jest](https://jestjs.io/)).
-- Write test cases for individual functions and combined modules.
-- Mock dependencies (e.g., databases, external services).
-- Run tests and check outputs against expected results.
+### Unit/Integration Testing frameworks
+- We use [Mocha](https://mochajs.org/) as our unit testing framework. It is a widely-used JavaScript testing framework that works well with TypeScript projects and integrates with CI pipelines.
+- We also use [chai](https://www.chaijs.com/) to help with our test assertions, in mocha.
+- Tests run from the `test/` directory
+
+**To set-up locally**
+- Install all the dependencies:
+```shell
+npm install
+```
+
+- run unit test's:
+```shell
+npm test
+```
 
 ### E2E Testing example frameworks
 - Choose an E2E testing tool (e.g., [Cypress](https://www.cypress.io/), [Selenium](https://medium.com/@mpgelber7495/a-step-by-step-guide-to-setting-up-selenium-webdriver-with-node-js-1167bca35c38)).
