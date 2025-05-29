@@ -21,6 +21,10 @@ Express.js is a fast, unopinionated, minimalist web framework for Node.js.
   - [Testing](#testing)
     - [Unit/Integration Testing example frameworks](#unitintegration-testing-example-frameworks)
     - [E2E Testing with Playwright](#e2e-testing-with-playwright)
+      - [Running Tests Locally](#running-tests-locally)
+      - [Configuration](#configuration)
+      - [CI/CD Integration](#cicd-integration)
+      - [Debugging Failed Tests](#debugging-failed-tests)
   - [Features](#features)
     - [Asset management](#asset-management)
     - [Cache busting](#cache-busting)
@@ -109,14 +113,57 @@ There are many frameworks to test your Express.js application (a few of these fr
 ### E2E Testing with Playwright
 This project uses [Playwright](https://playwright.dev/) for end-to-end testing. Playwright provides reliable end-to-end testing for modern web apps.
 
+#### Running Tests Locally
+
 To run the E2E tests locally:
+
 ```shell
+# Run all tests
 npm run e2e
+
+# Run specific test file
+npx playwright test tests/e2e/specific-test.spec.ts
+
+# Run in UI mode with Playwright Test Explorer
+npx playwright test --ui
 ```
 
-The tests are automatically run in the CI/CD pipeline during UAT deployment. This ensures that all features are tested before they reach the UAT environment.
+#### Configuration
 
-Test reports are automatically generated and available in the GitHub Actions artifacts after each test run.
+The project uses Chromium for testing to ensure consistency with our production environment. The configuration can be found in `playwright.config.ts`.
+
+Key configuration points:
+- Tests are located in `tests/e2e/` directory
+- Only Chromium browser is used for testing
+- Test retries are enabled in CI environments (2 retries)
+- Traces are automatically captured on test failures for debugging
+
+#### CI/CD Integration
+
+The tests are automatically run in our GitHub Actions workflow (`.github/workflows/playwright.yml`) during pull requests and deployments to UAT.
+
+- The workflow installs only the Chromium browser to optimize CI runtime
+- Traces are captured for all test runs in CI for easier debugging
+- Test artifacts (traces, videos) are preserved for 14 days in GitHub Actions
+
+#### Debugging Failed Tests
+
+When tests fail in CI:
+1. Check the error message in the GitHub Actions log
+2. Download the trace artifacts (named `playwright-traces.zip`) from GitHub Actions
+3. Extract the downloaded ZIP file - inside you'll find folders organized by test name
+4. Locate the `trace.zip` file within the specific test folder you want to debug
+5. Open traces using one of the following methods:
+
+   **With local Trace Viewer:**
+   ```shell
+   npx playwright show-trace path/to/extracted/test-folder/trace.zip
+   ```
+
+   **With online Trace Viewer:**
+   Upload the trace.zip file to https://trace.playwright.dev/ - this allows sharing traces with team members without requiring local Playwright installation
+
+This provides a timeline view of the test execution with screenshots, DOM snapshots, and network requests to help diagnose issues.
 
 ## Features
   - [Asset management](#asset-management)
