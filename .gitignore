@@ -11,3 +11,9 @@ node_modules/
 # MOJ Express Skeleton
 public/
 .env
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

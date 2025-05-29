@@ -16,7 +16,8 @@
     "deploy": "./scripts/deploy.sh",
     "prepare": "husky",
     "tsc": "tsc --noEmit",
-    "build:ts": "tsc"
+    "build:ts": "tsc",
+    "e2e": "npx playwright test --config=playwright.config.ts"
   },
   "engines": {
     "node": "22.13.1"
@@ -46,6 +47,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
+    "@playwright/test": "^1.52.0",
     "@types/compression": "^1.7.5",
     "@types/connect-livereload": "^0.6.3",
     "@types/cookie-parser": "^1.4.8",

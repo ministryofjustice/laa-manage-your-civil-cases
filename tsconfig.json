@@ -29,7 +29,9 @@
 		"esbuild.ts",
 		"start-server.ts",
 		"config.ts",
-		"types/**/*.ts"
+		"types/**/*.ts",
+		"playwright.config.ts",
+		"tests/**/*.ts"
 	],
 	"exclude": [
 		"node_modules",

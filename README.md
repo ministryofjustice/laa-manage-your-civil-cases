@@ -20,7 +20,7 @@ Express.js is a fast, unopinionated, minimalist web framework for Node.js.
   - [Routing](#routing)
   - [Testing](#testing)
     - [Unit/Integration Testing example frameworks](#unitintegration-testing-example-frameworks)
-    - [E2E Testing example frameworks](#e2e-testing-example-frameworks)
+    - [E2E Testing with Playwright](#e2e-testing-with-playwright)
   - [Features](#features)
     - [Asset management](#asset-management)
     - [Cache busting](#cache-busting)
@@ -106,11 +106,17 @@ There are many frameworks to test your Express.js application (a few of these fr
 - Mock dependencies (e.g., databases, external services).
 - Run tests and check outputs against expected results.
 
-### E2E Testing example frameworks
-- Choose an E2E testing tool (e.g., [Cypress](https://www.cypress.io/), [Selenium](https://medium.com/@mpgelber7495/a-step-by-step-guide-to-setting-up-selenium-webdriver-with-node-js-1167bca35c38)).
-- Write test scripts simulating user interactions.
-- Set up a test environment mirroring production.
-- Run tests and verify overall application behaviour.
+### E2E Testing with Playwright
+This project uses [Playwright](https://playwright.dev/) for end-to-end testing. Playwright provides reliable end-to-end testing for modern web apps.
+
+To run the E2E tests locally:
+```shell
+npm run e2e
+```
+
+The tests are automatically run in the CI/CD pipeline during UAT deployment. This ensures that all features are tested before they reach the UAT environment.
+
+Test reports are automatically generated and available in the GitHub Actions artifacts after each test run.
 
 ## Features
   - [Asset management](#asset-management)
