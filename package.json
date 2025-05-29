@@ -11,13 +11,13 @@
     "start": "node public/app.js",
     "clean": "rimraf public",
     "build": "npm run clean && npm run build:ts && node public/esbuild.js",
-    "lint": "npx eslint . --ignore-pattern \"node_modules/*\" --ignore-pattern \"public/*\" --fix",
-    "dev": "nodemon --watch . --ext js,ts,json,scss --ignore node_modules --ignore public/ --delay 500ms --exec 'npm run build:ts && node public/start-server.js'",
+    "lint": "npx eslint . --ignore-pattern \"{node_modules/*,public/*}\" --fix",
+    "dev": "npm run build && concurrently \"tsc --watch\" \"nodemon --watch public --ext js,json --ignore public/assets/ --delay 500ms public/app.js\"",
     "deploy": "./scripts/deploy.sh",
     "prepare": "husky",
     "tsc": "tsc --noEmit",
     "build:ts": "tsc",
-    "e2e": "npx playwright test --config=playwright.config.ts"
+    "test:e2e": "npx playwright test --config=playwright.config.ts"
   },
   "engines": {
     "node": "22.13.1"
@@ -62,6 +62,7 @@
     "@typescript-eslint/eslint-plugin": "^8.32.1",
     "@typescript-eslint/parser": "^8.32.1",
     "chokidar": "3.6.0",
+    "concurrently": "^9.1.2",
     "connect-livereload": "^0.6.1",
     "esbuild": "^0.25.2",
     "esbuild-plugin-copy": "^2.1.1",
