@@ -116,6 +116,24 @@ jobs:
 
       - name: Deploy infrastructure to UAT
         run: kubectl apply --record=false -f ./infrastructure/laa-manage-your-civil-cases-uat/
+      
+      - name: Set environment variables
+        run: |
+          echo "SERVICE_NAME=${{ vars.SERVICE_NAME || 'Manage your civil cases' }}" >> $GITHUB_ENV
+          echo "SERVICE_PHASE=${{ vars.SERVICE_PHASE || 'Alpha' }}" >> $GITHUB_ENV
+          echo "DEPARTMENT_NAME=${{ vars.DEPARTMENT_NAME || 'LAA Digital' }}" >> $GITHUB_ENV
+          echo "DEPARTMENT_URL=${{ vars.DEPARTMENT_URL || 'https://www.gov.uk/government/organisations/legal-aid-agency' }}" >> $GITHUB_ENV
+          echo "CONTACT_EMAIL=${{ vars.CONTACT_EMAIL || 'your-team@digital.justice.gov.uk' }}" >> $GITHUB_ENV
+          echo "CONTACT_PHONE=${{ vars.CONTACT_PHONE || '' }}" >> $GITHUB_ENV
+          echo "SERVICE_URL=${{ vars.SERVICE_URL || 'https://www.gov.uk/legal-aid' }}" >> $GITHUB_ENV
+          echo "SESSION_SECRET=${{ secrets.SESSION_SECRET || 'default-session-secret' }}" >> $GITHUB_ENV
+          echo "SESSION_NAME=${{ vars.SESSION_NAME || 'sessionId' }}" >> $GITHUB_ENV
+          echo "RATELIMIT_HEADERS_ENABLED=${{ vars.RATELIMIT_HEADERS_ENABLED || 'true' }}" >> $GITHUB_ENV
+          echo "RATELIMIT_STORAGE_URI=${{ vars.RATELIMIT_STORAGE_URI || '' }}" >> $GITHUB_ENV
+          echo "RATE_LIMIT_MAX=${{ vars.RATE_LIMIT_MAX || '100' }}" >> $GITHUB_ENV
+          echo "RATE_WINDOW_MS=${{ vars.RATE_WINDOW_MS || '900000' }}" >> $GITHUB_ENV
+          echo "NODE_ENV=production" >> $GITHUB_ENV
+      
       - name: Deploy using Helm to UAT
         run: ./scripts/deploy.sh uat
         env:
@@ -145,6 +163,23 @@ jobs:
           kube-token: ${{ secrets.KUBE_TOKEN }}
           kube-cluster: ${{ secrets.KUBE_CLUSTER }}
           kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
+
+      - name: Set environment variables
+        run: |
+          echo "SERVICE_NAME=${{ vars.SERVICE_NAME || 'Manage your civil cases' }}" >> $GITHUB_ENV
+          echo "SERVICE_PHASE=${{ vars.SERVICE_PHASE || 'Alpha' }}" >> $GITHUB_ENV
+          echo "DEPARTMENT_NAME=${{ vars.DEPARTMENT_NAME || 'LAA Digital' }}" >> $GITHUB_ENV
+          echo "DEPARTMENT_URL=${{ vars.DEPARTMENT_URL || 'https://www.gov.uk/government/organisations/legal-aid-agency' }}" >> $GITHUB_ENV
+          echo "CONTACT_EMAIL=${{ vars.CONTACT_EMAIL || 'your-team@digital.justice.gov.uk' }}" >> $GITHUB_ENV
+          echo "CONTACT_PHONE=${{ vars.CONTACT_PHONE || '' }}" >> $GITHUB_ENV
+          echo "SERVICE_URL=${{ vars.SERVICE_URL || 'https://www.gov.uk/legal-aid' }}" >> $GITHUB_ENV
+          echo "SESSION_SECRET=${{ secrets.SESSION_SECRET || 'default-session-secret' }}" >> $GITHUB_ENV
+          echo "SESSION_NAME=${{ vars.SESSION_NAME || 'sessionId' }}" >> $GITHUB_ENV
+          echo "RATELIMIT_HEADERS_ENABLED=${{ vars.RATELIMIT_HEADERS_ENABLED || 'true' }}" >> $GITHUB_ENV
+          echo "RATELIMIT_STORAGE_URI=${{ vars.RATELIMIT_STORAGE_URI || '' }}" >> $GITHUB_ENV
+          echo "RATE_LIMIT_MAX=${{ vars.RATE_LIMIT_MAX || '100' }}" >> $GITHUB_ENV
+          echo "RATE_WINDOW_MS=${{ vars.RATE_WINDOW_MS || '900000' }}" >> $GITHUB_ENV
+          echo "NODE_ENV=production" >> $GITHUB_ENV
 
       - name: Deploy using Helm to Staging
         run: ./scripts/deploy.sh staging
@@ -182,6 +217,23 @@ jobs:
           kube-token: ${{ secrets.KUBE_TOKEN }}
           kube-cluster: ${{ secrets.KUBE_CLUSTER }}
           kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
+
+      - name: Set environment variables
+        run: |
+          echo "SERVICE_NAME=${{ vars.SERVICE_NAME || 'Manage your civil cases' }}" >> $GITHUB_ENV
+          echo "SERVICE_PHASE=${{ vars.SERVICE_PHASE || 'Alpha' }}" >> $GITHUB_ENV
+          echo "DEPARTMENT_NAME=${{ vars.DEPARTMENT_NAME || 'LAA Digital' }}" >> $GITHUB_ENV
+          echo "DEPARTMENT_URL=${{ vars.DEPARTMENT_URL || 'https://www.gov.uk/government/organisations/legal-aid-agency' }}" >> $GITHUB_ENV
+          echo "CONTACT_EMAIL=${{ vars.CONTACT_EMAIL || 'your-team@digital.justice.gov.uk' }}" >> $GITHUB_ENV
+          echo "CONTACT_PHONE=${{ vars.CONTACT_PHONE || '' }}" >> $GITHUB_ENV
+          echo "SERVICE_URL=${{ vars.SERVICE_URL || 'https://www.gov.uk/legal-aid' }}" >> $GITHUB_ENV
+          echo "SESSION_SECRET=${{ secrets.SESSION_SECRET || 'default-session-secret' }}" >> $GITHUB_ENV
+          echo "SESSION_NAME=${{ vars.SESSION_NAME || 'sessionId' }}" >> $GITHUB_ENV
+          echo "RATELIMIT_HEADERS_ENABLED=${{ vars.RATELIMIT_HEADERS_ENABLED || 'true' }}" >> $GITHUB_ENV
+          echo "RATELIMIT_STORAGE_URI=${{ vars.RATELIMIT_STORAGE_URI || '' }}" >> $GITHUB_ENV
+          echo "RATE_LIMIT_MAX=${{ vars.RATE_LIMIT_MAX || '100' }}" >> $GITHUB_ENV
+          echo "RATE_WINDOW_MS=${{ vars.RATE_WINDOW_MS || '900000' }}" >> $GITHUB_ENV
+          echo "NODE_ENV=production" >> $GITHUB_ENV
 
       - name: Deploy using Helm to Production
         run: ./scripts/deploy.sh production
