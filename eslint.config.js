@@ -96,7 +96,7 @@ export default [
     ignores: [
       'node_modules/*',
       'public/*',
-      'test/unit/**/*.spec.ts'
+      'tests/unit/**/*.spec.ts'
     ],
   },
 ];
