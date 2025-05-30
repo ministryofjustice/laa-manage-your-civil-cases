@@ -1,0 +1,23 @@
+name: Delete UAT release
+
+on:
+  pull_request_target:
+    types:
+      - closed
+
+jobs:
+  delete_uat_job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Delete from UAT namespace
+        id: delete_uat
+        uses: ./.github/actions/delete-uat-release
+        with:
+          k8s_cluster: ${{ secrets.KUBE_CLUSTER }}
+          k8s_cluster_cert: ${{ secrets.KUBE_CERT }}
+          k8s_namespace: ${{ secrets.KUBE_NAMESPACE }}
+          k8s_token: ${{ secrets.KUBE_TOKEN }}
+      - name: Result
+        shell: bash
+        run: echo ${{ steps.delete_uat.outputs.delete-message }}\
