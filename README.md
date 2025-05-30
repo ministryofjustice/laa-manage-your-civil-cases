@@ -103,7 +103,7 @@ There are many frameworks to test your Express.js application (a few of these fr
 ### Unit/Integration Testing frameworks
 - We use [Mocha](https://mochajs.org/) as our unit testing framework. It is a widely-used JavaScript testing framework that works well with TypeScript projects and integrates with CI pipelines.
 - We also use [chai](https://www.chaijs.com/) to help with our test assertions, in mocha.
-- Tests run from the `test/` directory
+- Tests run from the `tests/` directory
 
 **To set-up locally**
 - Install all the dependencies:

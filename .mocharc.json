@@ -8,7 +8,7 @@
 		"ts",
 		"tsx"
 	],
-	"spec": "test/unit/**/*.spec.ts",
+	"spec": "tests/unit/**/*.spec.ts",
 	"reporter": "list",
 	"node-env": {
 		"TS_NODE_PROJECT": "./tsconfig.test.json",
