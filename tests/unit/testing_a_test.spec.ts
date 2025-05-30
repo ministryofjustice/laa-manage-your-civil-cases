@@ -1,3 +1,5 @@
+// This should be removed in the future, once we have proper unit test.
+
 import { equal } from "assert";
 import testing_a_test from "#routes/testing_a_test.js";
 
