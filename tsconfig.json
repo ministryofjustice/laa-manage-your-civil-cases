@@ -30,7 +30,8 @@
 		"start-server.ts",
 		"config.ts",
 		"types/**/*.ts",
-		"tests/unit/**/*.spec.ts"
+		"playwright.config.ts",
+		"tests/**/*.spec.ts",
 	],
 	"exclude": [
 		"node_modules",

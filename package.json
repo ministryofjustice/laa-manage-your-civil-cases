@@ -12,12 +12,13 @@
     "clean": "rimraf public",
     "build": "npm run clean && npm run build:ts && node public/esbuild.js",
     "lint": "npx eslint . --fix",
-    "dev": "nodemon --watch . --ext js,ts,json,scss --ignore node_modules --ignore public/ --delay 500ms --exec 'npm run build:ts && node public/start-server.js'",
+    "dev": "npm run build && concurrently \"tsc --watch\" \"nodemon --watch public --ext js,json --ignore public/assets/ --delay 500ms public/app.js\"",
     "deploy": "./scripts/deploy.sh",
     "prepare": "husky",
     "tsc": "tsc --noEmit",
     "build:ts": "tsc",
-    "test:unit": "mocha" 
+    "test:unit": "mocha" ,
+    "test:e2e": "npx playwright test --config=playwright.config.ts"
   },
   "engines": {
     "node": "22.13.1"
@@ -48,6 +49,7 @@
   "devDependencies": {
     "@eslint/js": "^9.19.0",
     "@types/chai": "^5.2.2",
+    "@playwright/test": "^1.52.0",
     "@types/compression": "^1.7.5",
     "@types/connect-livereload": "^0.6.3",
     "@types/cookie-parser": "^1.4.8",
@@ -64,6 +66,7 @@
     "@typescript-eslint/parser": "^8.32.1",
     "chai": "^5.2.0",
     "chokidar": "3.6.0",
+    "concurrently": "^9.1.2",
     "connect-livereload": "^0.6.1",
     "cross-env": "^7.0.3",
     "esbuild": "^0.25.2",
