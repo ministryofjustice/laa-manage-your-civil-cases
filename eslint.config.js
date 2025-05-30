@@ -91,4 +91,12 @@ export default [
       '@typescript-eslint/no-namespace': 'off', // Namespaces are allowed in d.ts
     },
   },
+  // Ignore list
+  {
+    ignores: [
+      'node_modules/*',
+      'public/*',
+      'test/unit/**/*.spec.ts'
+    ],
+  },
 ];
