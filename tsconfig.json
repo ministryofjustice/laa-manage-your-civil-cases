@@ -31,7 +31,7 @@
 		"config.ts",
 		"types/**/*.ts",
 		"playwright.config.ts",
-		"tests/unit/**/*.spec.ts"
+		"tests/**/*.spec.ts",
 	],
 	"exclude": [
 		"node_modules",
