@@ -91,6 +91,14 @@ jobs:
           dockerfile_path: Dockerfile
           image_tag: ${{ github.sha }}
 
+  mocha-unit-tests:
+    name: Mocha Unit Tests
+    uses: ./.github/workflows/mocha.yml
+    needs:
+      - build-image
+    # Only run tests when deploying to UAT
+    if: success() && github.event_name != 'workflow_dispatch' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'uat' || github.event.inputs.environment == null)
+
   playwright:
     name: Playwright Tests
     uses: ./.github/workflows/playwright.yml
@@ -108,6 +116,7 @@ jobs:
       - code-security-audit
       - snyk
       - build-image
+      - mocha-unit-tests
       - playwright
     permissions:
       id-token: write

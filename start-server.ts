@@ -4,8 +4,8 @@ import path from 'path'; // Import path module for handling file paths
 import { fileURLToPath } from 'url'; // Import fileURLToPath to convert file URLs to paths
 import type { ChildProcess } from 'child_process';
 import { spawn } from 'child_process'; // Import spawn from child_process to spawn new processes
-import config from '#config.js'; // Import the config
-import { build } from '#esbuild.js'; // Import the build function with correct extension
+import config from './config.js'; // Import the config
+import { build } from './esbuild.js'; // Import the build function with correct extension
 
 
 // Get the directory name

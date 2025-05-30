@@ -19,7 +19,7 @@ Express.js is a fast, unopinionated, minimalist web framework for Node.js.
       - [Node Version Manager](#node-version-manager)
   - [Routing](#routing)
   - [Testing](#testing)
-    - [Unit/Integration Testing example frameworks](#unitintegration-testing-example-frameworks)
+    - [Unit/Integration Testing frameworks](#unitintegration-testing-frameworks)
     - [E2E Testing with Playwright](#e2e-testing-with-playwright)
       - [Running Tests Locally](#running-tests-locally)
       - [Configuration](#configuration)
@@ -104,11 +104,21 @@ There are many frameworks to test your Express.js application (a few of these fr
 - Integration Tests - assess the coherence of the entire application, ensuring smooth interactions between various parts.
 - End-to-end (E2E) Tests - assess the entire software system, from the user interface to the database.
 
-### Unit/Integration Testing example frameworks
-- Choose a testing framework (e.g., [Mocha](https://mochajs.org/), [Jest](https://jestjs.io/)).
-- Write test cases for individual functions and combined modules.
-- Mock dependencies (e.g., databases, external services).
-- Run tests and check outputs against expected results.
+### Unit/Integration Testing frameworks
+- We use [Mocha](https://mochajs.org/) as our unit testing framework. It is a widely-used JavaScript testing framework that works well with TypeScript projects and integrates with CI pipelines.
+- We also use [chai](https://www.chaijs.com/) to help with our test assertions, in mocha.
+- Tests run from the `tests/` directory
+
+**To set-up locally**
+- Install all the dependencies:
+```shell
+npm install
+```
+
+- run unit test's:
+```shell
+npm run test:unit
+```
 
 ### E2E Testing with Playwright
 This project uses [Playwright](https://playwright.dev/) for end-to-end testing. Playwright provides reliable end-to-end testing for modern web apps.
