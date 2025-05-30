@@ -2,7 +2,9 @@
 	"extends" : "./tsconfig.json",
 	"compilerOptions": {
 		"allowImportingTsExtensions": true, // Allows TypeScript files to import each other with a TypeScript-specific extension like .ts, .mts, or .tsx. 
-		"noEmit": true // Enabled, so that `allowImportingTsExtensions` can work.
+		"noEmit": true ,// Enabled, so that `allowImportingTsExtensions` can work.
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
 		},
-	"include": ["test/unit/**/*.spec.ts"]
+	"include": ["test/unit/**/*.spec.ts", "routes/**/*.ts"]
 }

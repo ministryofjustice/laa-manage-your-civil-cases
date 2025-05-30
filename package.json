@@ -17,7 +17,7 @@
     "prepare": "husky",
     "tsc": "tsc --noEmit",
     "build:ts": "tsc",
-    "test:unit": "cross-env TS_NODE_PROJECT=tsconfig.test.json NODE_OPTIONS='--loader ts-node/esm' mocha 'test/unit/**/*.spec.ts' --reporter list"
+    "test:unit": "mocha" 
   },
   "engines": {
     "node": "22.13.1"

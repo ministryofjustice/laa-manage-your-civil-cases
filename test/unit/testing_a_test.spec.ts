@@ -1,5 +1,5 @@
 import { equal } from "assert";
-import testing_a_test from "../../routes/testing_a_test.ts";
+import testing_a_test from "#routes/testing_a_test.js";
 
 describe("Typescript usage suite", () => {
   it("should be able to execute a test", () => {

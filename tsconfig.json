@@ -29,7 +29,8 @@
 		"esbuild.ts",
 		"start-server.ts",
 		"config.ts",
-		"types/**/*.ts"
+		"types/**/*.ts",
+		"test/unit/**/*.spec.ts"
 	],
 	"exclude": [
 		"node_modules",
