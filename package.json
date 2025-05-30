@@ -11,7 +11,7 @@
     "start": "node public/app.js",
     "clean": "rimraf public",
     "build": "npm run clean && npm run build:ts && node public/esbuild.js",
-    "lint": "npx eslint . --ignore-pattern \"{node_modules/*, public/*, test/**/*.spec.ts}\" --fix",
+    "lint": "npx eslint . --fix",
     "dev": "nodemon --watch . --ext js,ts,json,scss --ignore node_modules --ignore public/ --delay 500ms --exec 'npm run build:ts && node public/start-server.js'",
     "deploy": "./scripts/deploy.sh",
     "prepare": "husky",
