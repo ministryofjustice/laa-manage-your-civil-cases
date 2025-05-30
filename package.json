@@ -11,12 +11,13 @@
     "start": "node public/app.js",
     "clean": "rimraf public",
     "build": "npm run clean && npm run build:ts && node public/esbuild.js",
-    "lint": "npx eslint . --ignore-pattern \"node_modules/*\" --ignore-pattern \"public/*\" --fix",
+    "lint": "npx eslint . --fix",
     "dev": "nodemon --watch . --ext js,ts,json,scss --ignore node_modules --ignore public/ --delay 500ms --exec 'npm run build:ts && node public/start-server.js'",
     "deploy": "./scripts/deploy.sh",
     "prepare": "husky",
     "tsc": "tsc --noEmit",
-    "build:ts": "tsc"
+    "build:ts": "tsc",
+    "test:unit": "mocha" 
   },
   "engines": {
     "node": "22.13.1"
@@ -46,6 +47,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
+    "@types/chai": "^5.2.2",
     "@types/compression": "^1.7.5",
     "@types/connect-livereload": "^0.6.3",
     "@types/cookie-parser": "^1.4.8",
@@ -54,13 +56,16 @@
     "@types/figlet": "^1.7.0",
     "@types/fs-extra": "^11.0.4",
     "@types/livereload": "^0.9.5",
+    "@types/mocha": "^10.0.10",
     "@types/morgan": "^1.9.9",
-    "@types/node": "^22.15.18",
+    "@types/node": "^22.15.21",
     "@types/nunjucks": "^3.2.6",
     "@typescript-eslint/eslint-plugin": "^8.32.1",
     "@typescript-eslint/parser": "^8.32.1",
+    "chai": "^5.2.0",
     "chokidar": "3.6.0",
     "connect-livereload": "^0.6.1",
+    "cross-env": "^7.0.3",
     "esbuild": "^0.25.2",
     "esbuild-plugin-copy": "^2.1.1",
     "esbuild-sass-plugin": "^3.3.1",
@@ -73,10 +78,12 @@
     "lint-staged": "^15.5.1",
     "livereload": "^0.9.3",
     "middleware-axios": "^3.0.0",
+    "mocha": "^11.5.0",
     "nodemon": "^3.1.9",
     "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
     "sass": "^1.86.3",
+    "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
   "husky": {

@@ -24,7 +24,7 @@ export default [
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
-        project: './tsconfig.json',
+        project: ['./tsconfig.json', './tsconfig.test.json']
       },
       globals: {
         ...globals.browser,
@@ -90,5 +90,13 @@ export default [
       '@typescript-eslint/no-empty-interface': 'off', // Sometimes needed in d.ts
       '@typescript-eslint/no-namespace': 'off', // Namespaces are allowed in d.ts
     },
+  },
+  // Ignore list
+  {
+    ignores: [
+      'node_modules/*',
+      'public/*',
+      'tests/unit/**/*.spec.ts'
+    ],
   },
 ];

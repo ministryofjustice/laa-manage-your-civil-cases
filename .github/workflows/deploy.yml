@@ -91,6 +91,14 @@ jobs:
           dockerfile_path: Dockerfile
           image_tag: ${{ github.sha }}
 
+  mocha-unit-tests:
+    name: Mocha Unit Tests
+    uses: ./.github/workflows/mocha.yml
+    needs:
+      - build-image
+    # Only run tests when deploying to UAT
+    if: success() && github.event_name != 'workflow_dispatch' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'uat' || github.event.inputs.environment == null)
+
   deploy-uat:
     name: Deploy feature branch to UAT
     runs-on: ubuntu-latest
@@ -100,6 +108,7 @@ jobs:
       - code-security-audit
       - snyk
       - build-image
+      - mocha-unit-tests
     permissions:
       id-token: write
       contents: read
