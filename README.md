@@ -113,7 +113,7 @@ npm install
 
 - run unit test's:
 ```shell
-npm test
+npm run test:unit
 ```
 
 ### E2E Testing example frameworks

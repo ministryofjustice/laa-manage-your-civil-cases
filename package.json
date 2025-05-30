@@ -11,13 +11,13 @@
     "start": "node public/app.js",
     "clean": "rimraf public",
     "build": "npm run clean && npm run build:ts && node public/esbuild.js",
-    "lint": "npx eslint . --ignore-pattern \"node_modules/*\" --ignore-pattern \"public/*\" --ignore-pattern \"test/**/*.spec.ts\" --fix",
+    "lint": "npx eslint . --ignore-pattern \"{node_modules/*, public/*, test/unit/**/*.spec.ts}\" --fix",
     "dev": "nodemon --watch . --ext js,ts,json,scss --ignore node_modules --ignore public/ --delay 500ms --exec 'npm run build:ts && node public/start-server.js'",
     "deploy": "./scripts/deploy.sh",
     "prepare": "husky",
     "tsc": "tsc --noEmit",
     "build:ts": "tsc",
-    "test": "cross-env TS_NODE_PROJECT=tsconfig.test.json NODE_OPTIONS='--loader ts-node/esm' mocha 'test/**/*.spec.ts' --reporter list"
+    "test:unit": "cross-env TS_NODE_PROJECT=tsconfig.test.json NODE_OPTIONS='--loader ts-node/esm' mocha 'test/unit/**/*.spec.ts' --reporter list"
   },
   "engines": {
     "node": "22.13.1"

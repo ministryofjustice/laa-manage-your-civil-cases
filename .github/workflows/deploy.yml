@@ -25,24 +25,6 @@ jobs:
       - name: Run ESLint
         run: npm run lint
 
-  mocha-unit-tests:
-    name: Mocha Unit Tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '22.13.1'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run Mocha unit tests
-        run: npm run test
-
   code-security-audit:
     name: Code Security Audit
     runs-on: ubuntu-latest
@@ -109,16 +91,24 @@ jobs:
           dockerfile_path: Dockerfile
           image_tag: ${{ github.sha }}
 
+  mocha-unit-tests:
+    name: Mocha Unit Tests
+    uses: ./.github/workflows/mocha.yml
+    needs:
+      - build-image
+    # Only run tests when deploying to UAT
+    if: success() && github.event_name != 'workflow_dispatch' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'uat' || github.event.inputs.environment == null)
+
   deploy-uat:
     name: Deploy feature branch to UAT
     runs-on: ubuntu-latest
     environment: uat
     needs:
       - code-linting
-      - mocha-unit-tests
       - code-security-audit
       - snyk
       - build-image
+      - mocha-unit-tests
     permissions:
       id-token: write
       contents: read
