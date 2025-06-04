@@ -2,7 +2,7 @@
 ## This repository is built on the MoJ Express Frontend Skeleton
 [![Standards Icon]][Standards Link]
 
-![govuk-frontend 5.8.0](https://img.shields.io/badge/govuk--frontend%20version-5.8.0-005EA5?logo=gov.uk&style=flat)
+![govuk-frontend 5.10.2](https://img.shields.io/badge/govuk--frontend%20version-5.10.2-005EA5?logo=gov.uk&style=flat)
 
 Express.js is a fast, unopinionated, minimalist web framework for Node.js.
 
@@ -46,7 +46,8 @@ Express.js is a fast, unopinionated, minimalist web framework for Node.js.
   - [Licence](#licence)
 
 ## Prerequisites
-- node stable version [22.13.1]
+
+- node stable version [24.1.0](https://nodejs.org/en/blog/release/v24.1.0/)
 - TypeScript 5.8.3
 
 ## Getting started

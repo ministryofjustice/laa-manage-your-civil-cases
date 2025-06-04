@@ -1,6 +1,8 @@
 {% extends "govuk/template.njk" %}
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 
+{% set govukRebrand = false %}
+
 {% block pageTitle %}{{config.SERVICE_NAME}} – GOV.UK{% endblock %}
 
 {% block head %}
@@ -19,7 +21,8 @@
   {{ govukHeader({
     homepageUrl: "#",
     serviceName: config.SERVICE_NAME,
-    serviceUrl: "#"
+    serviceUrl: "#",
+    rebrand: govukRebrand
   }) }}
 {% endblock %}
 
@@ -38,6 +41,7 @@
 
 {% block footer %}
   {{ govukFooter({
+    rebrand: govukRebrand,
     meta: {
       items: [
         {

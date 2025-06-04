@@ -23,7 +23,12 @@ const copyGovukAssets = async (): Promise<void> => {
 			path.resolve('./node_modules/govuk-frontend/dist/govuk/assets'),
 			path.resolve('./public/assets')
 		);
-		console.log('✅ GOV.UK assets copied successfully.');
+		// Copy rebrand assets for brand refresh
+		await fs.copy(
+			path.resolve('./node_modules/govuk-frontend/dist/govuk/assets/rebrand'),
+			path.resolve('./public/assets/rebrand')
+		);
+		console.log('✅ GOV.UK assets (including rebrand) copied successfully.');
 	} catch (error) {
 		console.error('❌ Failed to copy assets:', error);
 		process.exit(1);
