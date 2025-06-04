@@ -46,7 +46,8 @@ Express.js is a fast, unopinionated, minimalist web framework for Node.js.
   - [Licence](#licence)
 
 ## Prerequisites
-- node stable version [22.13.1]
+
+- node stable version [24.1.0](https://nodejs.org/en/blog/release/v24.1.0/)
 - TypeScript 5.8.3
 
 ## Getting started

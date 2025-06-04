@@ -20,7 +20,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "22.13.1" # Match your project's Node version
+          node-version: "24.1.0" # Match project's Node version
           cache: "npm"
 
       - name: Install dependencies
