@@ -37,7 +37,6 @@ Express.js is a fast, unopinionated, minimalist web framework for Node.js.
     - [Linter for staged commits](#linter-for-staged-commits)
     - [TypeScript](#typescript)
     - [Axios](#axios)
-    - [SQLite database](#sqlite-database)
     - [Nunjucks templating](#nunjucks-templating)
     - [Project structure and source directory](#project-structure-and-source-directory)
     - [Import paths and path aliases](#import-paths-and-path-aliases)
@@ -188,7 +187,6 @@ This provides a timeline view of the test execution with screenshots, DOM snapsh
   - [Linter](#linter)
   - [Linter for staged commits](#linter-for-staged-commits)
   - [Axios](#axios)
-  - [SQLite database](#sqlite-database)
   - [Nunjucks templating](#nunjucks-templating)
 
 ### Asset management
@@ -301,40 +299,6 @@ router.get('/users', async (req: Request, res: Response, next: NextFunction) => 
 });
 
 export default router;
-```
-
-
-### SQLite database
-In this template, [SQLite3](https://docs.python.org/3/library/sqlite3.html) is set up and ready to use out of the box. However, if you wish to use something else as your database, please see [Database integration Options](https://expressjs.com/en/guide/database-integration.html).
-
-You'll find 2 main TypeScript files: `utils/sqliteSetup.ts` & `middleware/setupDB.ts`.
-
-- `utils/sqliteSetup.ts` is where you can make your database connection and initialize your database schema. In this template we create a dummy users table with `id`, `name`, and `email` fields.
-
-```typescript
-// Initialize your database schema here.
-await db.exec(`
-  CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    email TEXT NOT NULL UNIQUE
-  )
-`);
-```
-
-- `middleware/setupDB.ts` is set up to allow database queries to be run against your SQLite3. It sets up your database to access any of your routes, such as this example below.
-
-```typescript
-import { Request, Response, NextFunction } from 'express';
-
-router.get('/users', async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const rows = await req.db.all("SELECT * FROM users");
-    res.json({ users: rows });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
 ```
 
 ### Nunjucks templating
