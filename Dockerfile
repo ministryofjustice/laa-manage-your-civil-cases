@@ -5,10 +5,13 @@ FROM node:24.1.0-slim
 WORKDIR /app
 
 # Copy package.json and yarn.lock to the working directory
-COPY package*.json yarn.lock ./
+COPY package*.json yarn.lock .yarnrc.yml ./
+
+# Enable Corepack to use the correct Yarn version
+RUN corepack enable
 
 # Install dependencies
-RUN yarn install --frozen-lockfile
+RUN yarn install --immutable
 
 # Create a non-root user
 RUN addgroup --system --gid 1001 appuser && \

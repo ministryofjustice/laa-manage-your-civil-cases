@@ -18,10 +18,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '24.1.0'
-          cache: "yarn"
+
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Run ESLint
         run: yarn lint
@@ -37,13 +39,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '24.1.0'
-          cache: "yarn"
+
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Run security audit
-        run: yarn audit
+        run: yarn npm audit
 
   snyk:
     name: Snyk Security Scan
