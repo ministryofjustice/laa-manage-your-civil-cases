@@ -17,7 +17,7 @@
     "prepare": "husky",
     "tsc": "tsc --noEmit",
     "build:ts": "tsc",
-    "test:unit": "mocha" ,
+    "test:unit": "mocha",
     "test:e2e": "npx playwright test --config=playwright.config.ts"
   },
   "engines": {
@@ -42,14 +42,12 @@
     "helmet": "^8.1.0",
     "http-errors": "~2.0.0",
     "morgan": "~1.10.0",
-    "nunjucks": "^3.2.4",
-    "sqlite": "^5.1.1",
-    "sqlite3": "^5.1.7"
+    "nunjucks": "^3.2.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
-    "@types/chai": "^5.2.2",
     "@playwright/test": "^1.52.0",
+    "@types/chai": "^5.2.2",
     "@types/compression": "^1.7.5",
     "@types/connect-livereload": "^0.6.3",
     "@types/cookie-parser": "^1.4.8",

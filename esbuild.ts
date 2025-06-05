@@ -50,8 +50,6 @@ const externalModules: string[] = [
 	'express-session',
 	'morgan',
 	'compression',
-	'sqlite3',
-	'sqlite',
 	'axios',
 	'middleware-axios',
 	'util',
