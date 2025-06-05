@@ -8,7 +8,7 @@ jobs:
   gajira:
     name: Raise Jira Issue
     runs-on: ubuntu-latest
-    if: ${{ contains(github.event.pull_request.labels.*.name, 'dependencies') }}
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'dependencies') || startsWith(github.event.pull_request.title, '[Snyk]') }}
 
     steps:
     - name: Login
@@ -25,7 +25,7 @@ jobs:
           project: EL
           issuetype: Task
           summary: |
-            MCC Dependabot: ${{ github.event.pull_request.title }}, GitHub PR#${{github.event.number}}  
+            MCC Dependabot/Snyk: ${{ github.event.pull_request.title }}, GitHub PR#${{github.event.number}}  
           description: |
             Please view the PR for further information.
             PR link: https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}
