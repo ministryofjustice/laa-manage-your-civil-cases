@@ -4,11 +4,11 @@ FROM node:24.1.0-slim
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+# Copy package.json and yarn.lock to the working directory
+COPY package*.json yarn.lock ./
 
 # Install dependencies
-RUN npm install --legacy-peer-deps
+RUN yarn install --frozen-lockfile
 
 # Create a non-root user
 RUN addgroup --system --gid 1001 appuser && \
@@ -19,7 +19,7 @@ RUN addgroup --system --gid 1001 appuser && \
 COPY --chown=1001:1001 . .
 
 # Build the application
-RUN npm run build
+RUN yarn build
 
 # Set ownership of all generated files to the non-root user
 RUN chown -R 1001:1001 /app
@@ -31,4 +31,4 @@ USER 1001
 EXPOSE 3000
 
 # Define the command to run the application
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
