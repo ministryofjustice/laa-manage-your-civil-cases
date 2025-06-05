@@ -21,25 +21,25 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "24.1.0" # Match project's Node version
-          cache: "npm"
+          cache: "yarn"
 
       - name: Install dependencies
-        run: npm ci
+        run: yarn install --frozen-lockfile
 
       - name: Build application
-        run: npm run build
+        run: yarn build
 
       - name: Install Playwright Chromium
-        run: npx playwright install chromium --with-deps
+        run: yarn playwright install chromium --with-deps
 
       - name: Cache Playwright browsers
         uses: actions/cache@v3
         with:
           path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-chromium-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-playwright-chromium-${{ hashFiles('**/yarn.lock') }}
 
       - name: Run Playwright tests
-        run: npx playwright test
+        run: yarn playwright test
         env:
           CI: true
           PLAYWRIGHT_TRACING: "on" # Enable tracing for all tests

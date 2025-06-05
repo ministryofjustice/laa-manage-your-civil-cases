@@ -20,9 +20,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '24.1.0'
+          cache: "yarn"
 
       - name: Install dependencies
-        run: npm install
+        run: yarn install --frozen-lockfile
 
       - name: Run Mocha unit tests
-        run: npm run test:unit
+        run: yarn test:unit
