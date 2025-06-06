@@ -1,4 +1,4 @@
-# Legal Aid Agency - Manage Your Civil Cases (MCC)
+# Legal Aid Agency - Manage Your Civil Cases - MCC
 ## This repository is built on the MoJ Express Frontend Skeleton
 [![Standards Icon]][Standards Link]
 
