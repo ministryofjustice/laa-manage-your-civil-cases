@@ -13,7 +13,7 @@ RUN corepack enable
 # Install dependencies
 RUN yarn install --immutable
 
-# Create a non-root user
+# Create a non-root user  
 RUN addgroup --system --gid 1001 appuser && \
     adduser --system --uid 1001 --gid 1001 appuser
 
@@ -30,8 +30,11 @@ RUN chown -R 1001:1001 /app
 # Switch to the non-root user by ID (not name)
 USER 1001
 
+# Set HOME environment variable to fix corepack cache issues
+ENV HOME=/app
+
 # Expose the port the app runs on
 EXPOSE 3000
 
 # Define the command to run the application
-CMD ["yarn", "start"]
+CMD ["node", "public/app.js"]
