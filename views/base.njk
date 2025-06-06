@@ -14,6 +14,7 @@
 {% endblock %}
 
 {% block bodyStart %}
+  <script>document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');</script>
   {# cookie policy #}
 {% endblock %}
 
@@ -64,9 +65,10 @@
 
 {% block bodyEnd %}
   {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
-  <script type="module" nonce="{{ cspNonce }}" src="/js/{{getAsset('govuk-frontend','min.js')}}"></script>
+  <script type="module" nonce="{{ cspNonce }}" src="/js/{{getAsset('frontend-packages','min.js')}}"></script>
   <script type="module" nonce="{{ cspNonce }}">
-    import { initAll } from "/js/{{getAsset('govuk-frontend','min.js')}}"
-    initAll()
+    import * as FrontendPackages from "/js/{{getAsset('frontend-packages','min.js')}}"
+
+    FrontendPackages.initAll()
   </script>
 {% endblock %}

@@ -42,6 +42,7 @@ export const nunjucksSetup = (app: Application): void => {
       path.join(path.resolve(), 'views'), // Main views directory
       'node_modules/govuk-frontend/dist', // GOV.UK Frontend templates
       'node_modules/govuk-frontend/dist/components/', // GOV.UK components
+      'node_modules/@ministryofjustice/frontend', // MoJ Design System components
     ],
     {
       autoescape: true, // Enable auto escaping to prevent XSS attacks
