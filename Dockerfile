@@ -4,13 +4,16 @@ FROM node:24.1.0-slim
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+# Copy package.json and yarn.lock to the working directory
+COPY package*.json yarn.lock .yarnrc.yml ./
+
+# Enable Corepack to use the correct Yarn version
+RUN corepack enable
 
 # Install dependencies
-RUN npm install --legacy-peer-deps
+RUN yarn install --immutable
 
-# Create a non-root user
+# Create a non-root user  
 RUN addgroup --system --gid 1001 appuser && \
     adduser --system --uid 1001 --gid 1001 appuser
 
@@ -19,7 +22,7 @@ RUN addgroup --system --gid 1001 appuser && \
 COPY --chown=1001:1001 . .
 
 # Build the application
-RUN npm run build
+RUN yarn build
 
 # Set ownership of all generated files to the non-root user
 RUN chown -R 1001:1001 /app
@@ -27,8 +30,11 @@ RUN chown -R 1001:1001 /app
 # Switch to the non-root user by ID (not name)
 USER 1001
 
+# Set HOME environment variable to fix corepack cache issues
+ENV HOME=/app
+
 # Expose the port the app runs on
 EXPOSE 3000
 
 # Define the command to run the application
-CMD ["npm", "start"]
+CMD ["node", "public/app.js"]

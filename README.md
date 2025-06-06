@@ -47,7 +47,33 @@ Express.js is a fast, unopinionated, minimalist web framework for Node.js.
 ## Prerequisites
 
 - node stable version [24.1.0](https://nodejs.org/en/blog/release/v24.1.0/)
+- [Yarn 4.9.2](https://yarnpkg.com/) package manager (see installation instructions below)
 - TypeScript 5.8.3
+
+### Installing Yarn 4.9.2
+
+This project uses Yarn 4.9.2 managed by corepack (built into Node.js 16.10+). To ensure all team members use the same version, follow these installation steps:
+
+1. **Enable corepack (if not already enabled):**
+
+   ```shell
+   corepack enable
+   ```
+
+2. **Install dependencies:**
+
+   ```shell
+   yarn install
+   ```
+
+3. **Verify the installation:**
+
+   ```shell
+   yarn --version
+   # Should output: 4.9.2
+   ```
+
+**Note:** Corepack automatically uses the Yarn version specified in the `packageManager` field of `package.json`. No additional setup is required once corepack is enabled.
 
 ## Getting started
 
@@ -62,24 +88,27 @@ cp .env.example .env
 ### Align to the Node Version specified for this project
 
 If using Node Version Manager (nvm), use the following command to switch to the correct version:
+
 ```shell
 nvm use
 nvm install
 ```
 
 ### Install dependencies and run application for development
+
 ```shell
-npm install
-npm run build
-npm run dev
+yarn install
+yarn build
+yarn dev
 ```
+
 Then, load http://localhost:3000/ in your browser to access the app.
 
 ### Install dependencies and run application for production
 ```shell
-npm install
-npm run build
-npm run start
+yarn install
+yarn build
+yarn start
 ```
 
 #### Node Version Manager
@@ -112,12 +141,12 @@ There are many frameworks to test your Express.js application (a few of these fr
 **To set-up locally**
 - Install all the dependencies:
 ```shell
-npm install
+yarn install
 ```
 
 - run unit test's:
 ```shell
-npm run test:unit
+yarn test:unit
 ```
 
 ### E2E Testing with Playwright
@@ -129,13 +158,13 @@ To run the E2E tests locally:
 
 ```shell
 # Run all tests
-npm run e2e
+yarn test:e2e
 
 # Run specific test file
-npx playwright test tests/e2e/specific-test.spec.ts
+yarn playwright test tests/e2e/specific-test.spec.ts
 
 # Run in UI mode with Playwright Test Explorer
-npx playwright test --ui
+yarn playwright test --ui
 ```
 
 #### Configuration
@@ -167,7 +196,7 @@ When tests fail in CI:
 
    **With local Trace Viewer:**
    ```shell
-   npx playwright show-trace path/to/extracted/test-folder/trace.zip
+   yarn playwright show-trace path/to/extracted/test-folder/trace.zip
    ```
 
    **With online Trace Viewer:**
@@ -224,7 +253,7 @@ The project has TypeScript support through the `@typescript-eslint/eslint-plugin
 To run ESLint:
 
 ```shell
-npm run lint
+yarn lint
 ```
 
 This will run ESLint on all TypeScript files in your project, ignoring the node_modules and public directories.
@@ -239,17 +268,17 @@ We use [husky](https://github.com/typicode/husky) & [lint-staged](https://github
 **To set-up locally**
 - Install all the dependencies:
 ```shell
-npm install
+yarn install
 ```
 
 - Initialise `husky`:
 ```shell
-npx husky install
+yarn husky install
 ```
 
 - To help debug, run the command when you have a staged commit:
 ```shell
-npx lint-staged --debug
+yarn lint-staged --debug
 ```
 
 ### TypeScript
@@ -263,12 +292,12 @@ The TypeScript configuration is defined in `tsconfig.json` with the following ke
 
 To compile TypeScript files:
 ```shell
-npm run build:ts
+yarn build:ts
 ```
 
 To run type checking without emitting files:
 ```shell
-npm run tsc
+yarn tsc
 ```
 
 ### Axios
@@ -315,7 +344,7 @@ This project uses [Nunjucks](https://mozilla.github.io/nunjucks/) for server-sid
 - Ensure your editor/IDE is configured to recognize these aliases for best developer experience.
 
 ### Running and debugging
-- The app is started using the compiled JS in `public/` (see `npm run dev` and `npm run start`).
+- The app is started using the compiled JS in `public/` (see `yarn dev` and `yarn start`).
 - If you want to run TypeScript directly (e.g., for debugging), consider using `ts-node` or a similar tool, but this is not the default workflow.
 
 ### Type definitions
