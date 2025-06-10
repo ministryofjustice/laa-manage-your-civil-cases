@@ -12,23 +12,29 @@ dotenv.config();
 const buildNumber = getBuildNumber();
 
 /**
- * Copies GOV.UK assets such as fonts and images from `govuk-frontend`
+ * Copies GOV.UK (fonts and images from `govuk-frontend`), MOJ Frontend (images from `@ministryofjustice/frontend`) and other assets
  * to the `public/assets` directory.
  * @async
  * @returns {Promise<void>} Resolves when the assets are copied successfully.
  */
-const copyGovukAssets = async (): Promise<void> => {
+const copyAssets = async (): Promise<void> => {
 	try {
+		// GOV.UK assets
 		await fs.copy(
 			path.resolve('./node_modules/govuk-frontend/dist/govuk/assets'),
 			path.resolve('./public/assets')
 		);
-		// Copy rebrand assets for brand refresh
+		// Copy GOVUK rebrand assets for brand refresh
 		await fs.copy(
 			path.resolve('./node_modules/govuk-frontend/dist/govuk/assets/rebrand'),
 			path.resolve('./public/assets/rebrand')
 		);
-		console.log('✅ GOV.UK assets (including rebrand) copied successfully.');
+		// Copy MOJ Frontend assets
+		await fs.copy(
+			path.resolve('./node_modules/@ministryofjustice/frontend/moj/assets/images'),
+			path.resolve('./public/assets/images')
+		);
+		console.log('✅ GOV.UK assets (including rebrand) & MOJ Frontend assets copied successfully.');
 	} catch (error) {
 		console.error('❌ Failed to copy assets:', error);
 		process.exit(1);
@@ -70,9 +76,13 @@ const buildScss = async (): Promise<void> => {
 		entryPoints: ['src/scss/main.scss'],
 		bundle: true,
 		outfile: `public/css/main.${buildNumber}.css`,
+		external: ['*.woff', '*.woff2', '*.svg', '*.png', '*.jpg', '*.jpeg', '*.gif'],
 		plugins: [
 			sassPlugin({
-				resolveDir: path.resolve('src/scss'),
+				loadPaths: [
+					path.resolve('.'), // Current directory
+					path.resolve('node_modules') // Node modules directory
+				],
 				/**
 				 * Transforms SCSS content to update asset paths.
 				 * @param {string} source - Original SCSS source content.
@@ -80,17 +90,13 @@ const buildScss = async (): Promise<void> => {
 				 */
 				transform: (source: string): string =>
 					source
-						.replace(/url\(["']?\/assets\/fonts\/([^"')]+)["']?\)/g, 'url("../../node_modules/govuk-frontend/dist/govuk/assets/fonts/$1")')
-						.replace(/url\(["']?\/assets\/images\/([^"')]+)["']?\)/g, 'url("../../node_modules/govuk-frontend/dist/govuk/assets/images/$1")')
+						.replace(/url\(["']?\/assets\/fonts\/([^"')]+)["']?\)/g, 'url("/assets/fonts/$1")')
+						.replace(/url\(["']?\/assets\/images\/([^"')]+)["']?\)/g, 'url("/assets/images/$1")')
 			} as SassPluginOptions)
 		],
 		loader: {
 			'.scss': 'css',
-			'.woff': 'file',
-			'.woff2': 'file',
-			'.png': 'file',
-			'.jpg': 'file',
-			'.svg': 'file'
+			'.css': 'css'
 		},
 		minify: true,
 		sourcemap: true
@@ -149,23 +155,26 @@ const buildCustomJs = async (): Promise<void> => {
 };
 
 /**
- * Builds GOV.UK frontend files separately.
+ * Build GOV.UK frontend & MOJ frontend files separately.
  * @async
- * @returns {Promise<void>} Resolves when `govuk-frontend.js` is copied successfully.
+ * @returns {Promise<void>} Resolves when `govuk-frontend.js` & `moj-frontend.js` are copied successfully.
  */
-const buildGovukFrontend = async (): Promise<void> => {
+const buildFrontendPackages = async (): Promise<void> => {
 	await esbuild.build({
-		entryPoints: ['./node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.js'],
+		entryPoints: [
+			'./node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.js',
+			'./node_modules/@ministryofjustice/frontend/moj/moj-frontend.min.js'
+		],
 		bundle: false, // No need to bundle, just copy
-		outfile: `public/js/govuk-frontend.${buildNumber}.min.js`
+		outdir: `public/js/frontend-packages.${buildNumber}.min.js`
 	}).catch((error) => {
-		console.error('❌ GOV.UK frontend JS copy failed:', error);
+		console.error('❌ GOV.UK frontend and/or MOJ frontend JS copy failed:', error);
 		process.exit(1);
 	});
 };
 
 /**
- * Main build process that compiles SCSS, JavaScript, and copies assets.
+ * Main build process that compiles SCSS, JavaScript and copies assets.
  * @async
  * @returns {Promise<void>} Resolves when the entire build process is completed successfully.
  */
@@ -174,7 +183,7 @@ const build = async (): Promise<void> => {
 		console.log('🚀 Starting build process...');
 
 		// Copy assets
-		await copyGovukAssets();
+		await copyAssets();
 
 		// Build SCSS
 		await buildScss();
@@ -183,7 +192,7 @@ const build = async (): Promise<void> => {
 		await Promise.all([
 			buildAppJs(),
 			buildCustomJs(),
-			buildGovukFrontend()
+			buildFrontendPackages()
 		]);
 
 		console.log('✅ Build completed successfully.');
