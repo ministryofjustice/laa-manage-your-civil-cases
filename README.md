@@ -17,6 +17,7 @@ Express.js is a fast, unopinionated, minimalist web framework for Node.js.
     - [Install dependencies and run application for development](#install-dependencies-and-run-application-for-development)
     - [Install dependencies and run application for production](#install-dependencies-and-run-application-for-production)
       - [Node Version Manager](#node-version-manager)
+    - [Running locally with docker](#running-locally-with-docker)
   - [Routing](#routing)
   - [Testing](#testing)
     - [Unit/Integration Testing frameworks](#unitintegration-testing-frameworks)
@@ -118,6 +119,34 @@ You may have to tell your local machine to use the latest version of node alread
 ```shell
 nvm install node
 ```
+
+#### Running locally with docker
+
+Prerequisites, Docker Desktop
+
+- To build the docker image
+
+  ```shell
+  docker build -t mcc:latest .
+  ```
+
+- To run the docker image
+
+  ```shell
+  docker run -d -p 8888:3000 mcc:latest
+  ```
+  (The application should be running at http://localhost:8888)
+
+- To stop the container
+
+  obtain the container id
+  ```shell
+  docker ps
+  ```
+  stop the container
+  ```shell
+  docker stop {container_id}
+  ```
 
 ## Routing
 This template uses the built-in Express JS routing. 
