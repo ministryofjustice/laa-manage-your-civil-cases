@@ -23,38 +23,38 @@ let livereloadServer: ReturnType<typeof livereload.createServer> | null = null; 
  * @returns {void}
  */
 const startServer = (port: number): void => {
-	// If there's an existing server process, kill it
-	if (serverProcess) {
-		serverProcess.kill();
-		serverProcess = null;
-	}
+  // If there's an existing server process, kill it
+  if (serverProcess) {
+    serverProcess.kill();
+    serverProcess = null;
+  }
 
-	// Add a delay to ensure the port is released before starting a new server process
-	setTimeout(() => {
-		// Spawn a new server process
-		serverProcess = spawn('node', ['public/app.js'], {
-			stdio: 'inherit', // Inherit stdio to display server logs in the console
-			env: { ...process.env, PORT: port.toString() } // Pass the environment variables, including the port
-		});
+  // Add a delay to ensure the port is released before starting a new server process
+  setTimeout(() => {
+    // Spawn a new server process
+    serverProcess = spawn('node', ['public/app.js'], {
+      stdio: 'inherit', // Inherit stdio to display server logs in the console
+      env: { ...process.env, PORT: port.toString() } // Pass the environment variables, including the port
+    });
 
-		// Handle server process close event
-		serverProcess.on('close', (code: number | null) => {
-			if (code !== 0) {
-				console.error(`Server process exited with code ${code}`);
-			}
-		});
+    // Handle server process close event
+    serverProcess.on('close', (code: number | null) => {
+      if (code !== 0) {
+        console.error(`Server process exited with code ${code}`);
+      }
+    });
 
-		// Handle server process error event
-		serverProcess.on('error', (error: Error & { code?: string }) => {
-			if (error.code === 'EADDRINUSE') {
-				console.error(`Port ${port} is already in use. Trying to restart the server on a different port...`);
-				// If the port is in use, try to restart the server on the next port
-				setTimeout(() => startServer(port + 1), 1000);
-			} else {
-				console.error('Server process error:', sanitizeError(error as Error & { [key: string]: unknown }));
-			}
-		});
-	}, 1000); // 1-second delay to ensure the port is released
+    // Handle server process error event
+    serverProcess.on('error', (error: Error & { code?: string }) => {
+      if (error.code === 'EADDRINUSE') {
+        console.error(`Port ${port} is already in use. Trying to restart the server on a different port...`);
+        // If the port is in use, try to restart the server on the next port
+        setTimeout(() => startServer(port + 1), 1000);
+      } else {
+        console.error('Server process error:', sanitizeError(error as Error & { [key: string]: unknown }));
+      }
+    });
+  }, 1000); // 1-second delay to ensure the port is released
 };
 
 /**
@@ -65,50 +65,50 @@ const startServer = (port: number): void => {
  * @returns {Promise<void>} A promise that resolves when the server and file watching setup are complete.
  */
 const start = async (): Promise<void> => {
-	// Log the current NODE_ENV and port
-	console.log(`Current NODE_ENV: ${config.app.environment}`);
-	console.log(`Server running on port: ${config.app.port}`);
+  // Log the current NODE_ENV and port
+  console.log(`Current NODE_ENV: ${config.app.environment}`);
+  console.log(`Server running on port: ${config.app.port}`);
 
-	// Build the project
-	await build();
-	// Start the server on the configured port
-	startServer(Number(config.app.port));
+  // Build the project
+  await build();
+  // Start the server on the configured port
+  startServer(Number(config.app.port));
 
-	// If in development mode, set up livereload and file watching
-	if (process.env.NODE_ENV === 'development') {
-		// Start livereload server
-		livereloadServer = livereload.createServer();
-		livereloadServer.watch(path.join(__dirname, 'public'));
+  // If in development mode, set up livereload and file watching
+  if (process.env.NODE_ENV === 'development') {
+    // Start livereload server
+    livereloadServer = livereload.createServer();
+    livereloadServer.watch(path.join(__dirname, 'public'));
 
-		// Watch for changes in JS and SCSS files
-		const watcher = chokidar.watch('src/**/*.{js,ts,scss}', {
-			ignored: /node_modules/, // Ignore node_modules directory
-			persistent: true // Keep watching for changes
-		});
+    // Watch for changes in JS and SCSS files
+    const watcher = chokidar.watch('src/**/*.{js,ts,scss}', {
+      ignored: /node_modules/, // Ignore node_modules directory
+      persistent: true // Keep watching for changes
+    });
 
-		// Handle file change event
-		watcher.on('change', async (filePath: string) => {
-			console.log(`File ${filePath} has been changed. Rebuilding...`);
-			// Rebuild the project
-			await build();
-			// Refresh livereload server
-			if (livereloadServer) {
-				livereloadServer.refresh('/');
-			}
-			// Restart the server
-			startServer(Number(config.app.port));
-		});
+    // Handle file change event
+    watcher.on('change', async (filePath: string) => {
+      console.log(`File ${filePath} has been changed. Rebuilding...`);
+      // Rebuild the project
+      await build();
+      // Refresh livereload server
+      if (livereloadServer) {
+        livereloadServer.refresh('/');
+      }
+      // Restart the server
+      startServer(Number(config.app.port));
+    });
 
-		// Handle watcher ready event
-		watcher.on('ready', () => {
-			console.log('Watching for file changes...');
-		});
+    // Handle watcher ready event
+    watcher.on('ready', () => {
+      console.log('Watching for file changes...');
+    });
 
-		// Handle watcher error event
-		watcher.on('error', (error: Error) => {
-			console.error('Watcher error:', sanitizeError(error as Error & { [key: string]: unknown }));
-		});
-	}
+    // Handle watcher error event
+    watcher.on('error', (error: Error) => {
+      console.error('Watcher error:', sanitizeError(error as Error & { [key: string]: unknown }));
+    });
+  }
 };
 
 /**
@@ -119,19 +119,19 @@ const start = async (): Promise<void> => {
  * @returns {object} A sanitized version of the error object.
  */
 const sanitizeError = (error: Error & { [key: string]: unknown }): object => {
-	// Example: Remove stack traces or any sensitive data from the error object
-	const sanitizedError = { ...error };
-	delete sanitizedError.stack; // Remove stack trace
-	// Remove any other sensitive information if necessary
-	if (sanitizedError.message) {
-		sanitizedError.message = sanitizedError.message.replace(/sensitive information/g, '[REDACTED]');
-	}
-	return sanitizedError;
+  // Example: Remove stack traces or any sensitive data from the error object
+  const sanitizedError = { ...error };
+  delete sanitizedError.stack; // Remove stack trace
+  // Remove any other sensitive information if necessary
+  if (sanitizedError.message) {
+    sanitizedError.message = sanitizedError.message.replace(/sensitive information/g, '[REDACTED]');
+  }
+  return sanitizedError;
 };
 
 // Start the build and server process
 start().catch((error: Error) => {
-	// Log sanitized error
-	console.error('Start script failed:', sanitizeError(error as Error & { [key: string]: unknown }));
-	process.exit(1);
+  // Log sanitized error
+  console.error('Start script failed:', sanitizeError(error as Error & { [key: string]: unknown }));
+  process.exit(1);
 });

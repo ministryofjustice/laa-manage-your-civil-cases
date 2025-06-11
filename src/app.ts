@@ -17,73 +17,73 @@ import livereload from 'connect-livereload';
  * @returns {import('express').Application} The configured Express application
  */
 const createApp = (): express.Application => {
-	const app = express();
+  const app = express();
 
-	// Set up common middleware for handling cookies, body parsing, etc.
-	setupMiddlewares(app);
+  // Set up common middleware for handling cookies, body parsing, etc.
+  setupMiddlewares(app);
 
-	app.use(axiosMiddleware);
+  app.use(axiosMiddleware);
 
-	// Response compression setup
-	app.use(compression({
-		/**
-		 * Custom filter for compression.
-		 * Prevents compression if the 'x-no-compression' header is set in the request.
-		 *
-		 * @param {import('express').Request} req - The Express request object
-		 * @param {import('express').Response} res - The Express response object
-		 * @returns {boolean} True if compression should be applied, false otherwise
-		 */
-		filter: (req: Request, res: Response): boolean => {
-			if (req.headers['x-no-compression']) {
-				return false;
-			}
-			return compression.filter(req, res);
-		}
-	}));
+  // Response compression setup
+  app.use(compression({
+    /**
+     * Custom filter for compression.
+     * Prevents compression if the 'x-no-compression' header is set in the request.
+     *
+     * @param {import('express').Request} req - The Express request object
+     * @param {import('express').Response} res - The Express response object
+     * @returns {boolean} True if compression should be applied, false otherwise
+     */
+    filter: (req: Request, res: Response): boolean => {
+      if (req.headers['x-no-compression']) {
+        return false;
+      }
+      return compression.filter(req, res);
+    }
+  }));
 
-	// Set up security headers
-	helmetSetup(app);
+  // Set up security headers
+  helmetSetup(app);
 
-	// Reducing fingerprinting by removing the 'x-powered-by' header
-	app.disable('x-powered-by');
+  // Reducing fingerprinting by removing the 'x-powered-by' header
+  app.disable('x-powered-by');
 
-	// Set up cookie security for sessions
-	app.set('trust proxy', 1);
-	app.use(session(config.session));
+  // Set up cookie security for sessions
+  app.set('trust proxy', 1);
+  app.use(session(config.session));
 
-	// Set up Cross-Site Request Forgery (CSRF) protection
-	setupCsrf(app);
+  // Set up Cross-Site Request Forgery (CSRF) protection
+  setupCsrf(app);
 
-	// Set up Nunjucks as the template engine
-	nunjucksSetup(app);
+  // Set up Nunjucks as the template engine
+  nunjucksSetup(app);
 
-	// Set up rate limiting
-	rateLimitSetUp(app, config);
+  // Set up rate limiting
+  rateLimitSetUp(app, config);
 
-	// Set up application-specific configurations
-	setupConfig(app);
+  // Set up application-specific configurations
+  setupConfig(app);
 
-	// Set up request logging
-	app.use(morgan('dev'));
+  // Set up request logging
+  app.use(morgan('dev'));
 
-	// Register the main router
-	app.use('/', indexRouter);
+  // Register the main router
+  app.use('/', indexRouter);
 
-	// Enable live-reload middleware in development mode
-	if (process.env.NODE_ENV === 'development') {
-		app.use(livereload());
-	}
+  // Enable live-reload middleware in development mode
+  if (process.env.NODE_ENV === 'development') {
+    app.use(livereload());
+  }
 
-	// Display ASCII Art banner
-	displayAsciiBanner(config);
+  // Display ASCII Art banner
+  displayAsciiBanner(config);
 
-	// Starts the Express server on the specified port
-	app.listen(config.app.port, () => {
-		console.log(chalk.yellow(`Listening on port ${config.app.port}...`));
-	});
+  // Starts the Express server on the specified port
+  app.listen(config.app.port, () => {
+    console.log(chalk.yellow(`Listening on port ${config.app.port}...`));
+  });
 
-	return app;
+  return app;
 };
 
 // Self-execute the app directly to allow app.js to be executed directly
