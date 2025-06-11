@@ -128,7 +128,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Deploy UAT branch
+      - name: Deploy to UAT
         uses: ./.github/actions/deploy
         with:
           ecr-repository: ${{ vars.ECR_REPOSITORY }}
@@ -195,7 +195,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Deploy to staging
+      - name: Deploy to production
         uses: ./.github/actions/deploy
         with:
           ecr-repository: ${{ vars.ECR_REPOSITORY }}
