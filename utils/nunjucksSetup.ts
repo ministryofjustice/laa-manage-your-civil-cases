@@ -14,16 +14,16 @@ import { getLatestBuildFile } from './buildHelper.js';
 export const nunjucksSetup = (app: Application): void => {
   const appInstance = app;
   appInstance.set('view engine', 'njk');
-  
+
   // Define a locals property that includes asset_path and getAsset
   interface AppLocals {
     asset_path: string;
     getAsset: (prefix: string, ext: string) => string;
   }
-  
+
   // Set asset path in locals
   (appInstance.locals as AppLocals).asset_path = '/assets/';
-  
+
   /**
    * Retrieves the latest build file for the given prefix and extension.
    *
@@ -42,12 +42,12 @@ export const nunjucksSetup = (app: Application): void => {
       path.join(path.resolve(), 'views'), // Main views directory
       'node_modules/govuk-frontend/dist', // GOV.UK Frontend templates
       'node_modules/govuk-frontend/dist/components/', // GOV.UK components
-      'node_modules/@ministryofjustice/frontend', // MoJ Design System components
+      'node_modules/@ministryofjustice/frontend' // MoJ Design System components
     ],
     {
       autoescape: true, // Enable auto escaping to prevent XSS attacks
       express: appInstance, // Bind Nunjucks to the Express app instance
-      watch: true, // Watch for changes in template files during development
+      watch: true // Watch for changes in template files during development
     }
   );
 };

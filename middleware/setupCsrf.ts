@@ -19,8 +19,8 @@ export const setupCsrf = (app: Application): void => {
          * @param {Request} req - The incoming request object.
          * @returns {string|undefined} The CSRF token if present, otherwise undefined.
          */
-        getTokenFromRequest: (req: Request): string | undefined => 
-            req.body && req.body._csrf ? req.body._csrf : undefined,
+        getTokenFromRequest: (req: Request): string | undefined =>
+            req.body && req.body._csrf ? req.body._csrf : undefined
     });
 
     /**

@@ -30,12 +30,12 @@ const config: Config = {
   },
   csrf: {
     cookieName: '_csrf',
-    secure: process.env.NODE_ENV === 'production',  // Only secure in production
-    httpOnly: true,  // Restrict client-side access
+    secure: process.env.NODE_ENV === 'production', // Only secure in production
+    httpOnly: true // Restrict client-side access
   },
   paths: {
-    static: 'public',  // Path for serving static files
-    views: 'src/views',  // Path for Nunjucks views
+    static: 'public', // Path for serving static files
+    views: 'src/views' // Path for Nunjucks views
   }
 };
 

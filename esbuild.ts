@@ -123,7 +123,7 @@ const buildAppJs = async (): Promise<void> => {
 		loader: {
 			'.js': 'jsx',
 			'.ts': 'tsx',
-			'.json': 'json',
+			'.json': 'json'
 		},
 		external: externalModules,
 		outfile: 'public/app.js'

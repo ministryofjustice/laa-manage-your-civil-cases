@@ -35,7 +35,6 @@ Express.js is a fast, unopinionated, minimalist web framework for Node.js.
     - [Rate limiting](#rate-limiting)
     - [Linter](#linter)
     - [Linter for staged commits](#linter-for-staged-commits)
-    - [Linter CLI, using StandardJS conventions](#linter-cli-using-standardjs-conventions)
     - [TypeScript](#typescript)
     - [Axios](#axios)
     - [Nunjucks templating](#nunjucks-templating)
@@ -247,9 +246,11 @@ This template uses a basic rate-limiting middleware for Express.js, called `expr
 For further information please [visit the documentation here](https://www.npmjs.com/package/express-rate-limit?activeTab=readme).
 
 ### Linter
-ESLint is a static code analysis tool for identifying and fixing problems in JavaScript and TypeScript code. It helps maintain code quality and consistency across a project by enforcing a set of coding standards and best practices. ESLint can catch syntax errors, stylistic issues, and potential bugs before they become actual problems.
+ESLint is a static code analysis tool for identifying and fixing problems in JavaScript and TypeScript code. It helps maintain code quality and consistency across a project by enforcing a set of coding standards and best practices (which can be customisable). ESLint can catch syntax errors, stylistic issues, and potential bugs before they become actual problems.
 
-The project has TypeScript support through the `@typescript-eslint/eslint-plugin` and `@typescript-eslint/parser` packages installed as dev dependencies.
+This project;
+- follows conventions established by the [StandardJS](https://standardjs.com/) project
+- has TypeScript support through the `@typescript-eslint/eslint-plugin` and `@typescript-eslint/parser` packages installed as dev dependencies
 
 To run ESLint:
 
@@ -264,21 +265,6 @@ We use [husky](https://github.com/typicode/husky) & [lint-staged](https://github
 
 - `husky` - helps us with our Git hooks
 - `lint-staged` - helps us run a linter on our staged commits (configured in package.json to target both .js and .ts files)
-
-
-### Linter CLI, using StandardJS conventions
-This projects follow conventions established by the [StandardJS](https://standardjs.com/) project. To run this command line tool, using your command line interface run this command;
-
-```shell
-yarn standard
-```
-This will show a list of files need to be amended, as per [StandardJS](https://standardjs.com/) conventions.
-
-To automatically fix these files run;
-
-```shell
-yarn standard --fix
-```
 
 **To set-up locally**
 - Install all the dependencies:

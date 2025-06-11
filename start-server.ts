@@ -7,7 +7,6 @@ import { spawn } from 'child_process'; // Import spawn from child_process to spa
 import config from './config.js'; // Import the config
 import { build } from './esbuild.js'; // Import the build function with correct extension
 
-
 // Get the directory name
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -84,7 +83,7 @@ const start = async (): Promise<void> => {
 		// Watch for changes in JS and SCSS files
 		const watcher = chokidar.watch('src/**/*.{js,ts,scss}', {
 			ignored: /node_modules/, // Ignore node_modules directory
-			persistent: true, // Keep watching for changes
+			persistent: true // Keep watching for changes
 		});
 
 		// Handle file change event

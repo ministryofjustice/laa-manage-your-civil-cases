@@ -1,20 +1,26 @@
-import globals from 'globals';
-import jsdocPlugin from 'eslint-plugin-jsdoc';
-import tseslint from '@typescript-eslint/eslint-plugin';
-import tsParser from '@typescript-eslint/parser';
+import globals from 'globals'
+import jsdocPlugin from 'eslint-plugin-jsdoc'
+import tseslint from '@typescript-eslint/eslint-plugin'
+import tsParser from '@typescript-eslint/parser'
+import { FlatCompat } from '@eslint/eslintrc'
+
+const compat = new FlatCompat()
 
 // Alter this config file to meet your project's needs and standards.
 export default [
+  //  This uses the `@eslint/eslintrc` utility, to translate the eslintrc format that `eslint-config-standard` comes in, so we can use it in this Flat Config format
+  ...compat.extends('eslint-config-standard'),
+
   // JS/Default config (no parser override)
   {
     languageOptions: {
       globals: {
         ...globals.browser,
-        ...globals.node,
+        ...globals.node
       },
       ecmaVersion: 'latest',
-      sourceType: 'module',
-    },
+      sourceType: 'module'
+    }
   },
   // TypeScript config (only for TS files)
   {
@@ -28,19 +34,19 @@ export default [
       },
       globals: {
         ...globals.browser,
-        ...globals.node,
-      },
+        ...globals.node
+      }
     },
     plugins: {
       jsdoc: jsdocPlugin,
       prettier: ['@eslint/plugin-prettier'],
-      '@typescript-eslint': tseslint,
+      '@typescript-eslint': tseslint
     },
     rules: {
-      'indent': 'off', // Prettier is handling this
+      indent: 'off', // Prettier is handling this
       'linebreak-style': 'off', // Prettier is handling this
-      'quotes': 'off', // Prettier is handling this
-      'semi': 'off', // Prettier is handling this
+      quotes: 'off', // Prettier is handling this
+      semi: 'off', // Prettier is handling this
       'jsdoc/check-alignment': 'error',
       'jsdoc/check-param-names': 'error',
       'jsdoc/check-tag-names': 'error',
@@ -57,9 +63,9 @@ export default [
             MethodDefinition: true,
             ClassDeclaration: true,
             ArrowFunctionExpression: true,
-            FunctionExpression: true,
-          },
-        },
+            FunctionExpression: true
+          }
+        }
       ],
       'jsdoc/require-param': 'error',
       'jsdoc/require-param-description': 'error',
@@ -79,8 +85,8 @@ export default [
         { path: 'never', types: 'prefer-import', lib: 'never' }
       ],
       '@typescript-eslint/no-var-requires': 'error',
-      '@typescript-eslint/no-explicit-any': 'warn',
-    },
+      '@typescript-eslint/no-explicit-any': 'warn'
+    }
   },
   // Add a separate config for declaration files
   {
@@ -88,8 +94,8 @@ export default [
     rules: {
       '@typescript-eslint/no-explicit-any': 'off', // Sometimes needed in d.ts
       '@typescript-eslint/no-empty-interface': 'off', // Sometimes needed in d.ts
-      '@typescript-eslint/no-namespace': 'off', // Namespaces are allowed in d.ts
-    },
+      '@typescript-eslint/no-namespace': 'off' // Namespaces are allowed in d.ts
+    }
   },
   // Ignore list
   {
@@ -97,6 +103,6 @@ export default [
       'node_modules/*',
       'public/*',
       'tests/unit/**/*.spec.ts'
-    ],
-  },
-];
+    ]
+  }
+]
