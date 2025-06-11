@@ -112,11 +112,10 @@ jobs:
       - build-image
     # Only run tests when deploying to UAT
     if: success() && github.event_name != 'workflow_dispatch' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'uat' || github.event.inputs.environment == null)
-
+  
   deploy-uat:
-    name: Deploy feature branch to UAT
-    runs-on: ubuntu-latest
     environment: uat
+    runs-on: ubuntu-latest
     needs:
       - code-linting
       - code-security-audit
@@ -124,154 +123,98 @@ jobs:
       - build-image
       - mocha-unit-tests
       - playwright
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-      - uses: actions/checkout@v4
 
-      - name: Authenticate to cluster
-        uses: ministryofjustice/laa-reusable-github-actions/.github/actions/authenticate_to_cluster@d61e0cf24795b75f719a8981a4dc21e1334a1455
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy UAT branch
+        uses: ./.github/actions/deploy
         with:
+          ecr-repository: ${{ vars.ECR_REPOSITORY }}
+          ecr-registry_url: ${{ secrets.ECR_REGISTRY_URL }}
           kube-cert: ${{ secrets.KUBE_CERT }}
           kube-token: ${{ secrets.KUBE_TOKEN }}
           kube-cluster: ${{ secrets.KUBE_CLUSTER }}
           kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
-
-      - name: Deploy infrastructure to UAT
-        run: kubectl apply --record=false -f ./infrastructure/laa-manage-your-civil-cases-uat/
-      
-      - name: Set environment variables
-        run: |
-          echo "SERVICE_NAME=${{ vars.SERVICE_NAME || 'Manage your civil cases' }}" >> $GITHUB_ENV
-          echo "SERVICE_PHASE=${{ vars.SERVICE_PHASE || 'Alpha' }}" >> $GITHUB_ENV
-          echo "DEPARTMENT_NAME=${{ vars.DEPARTMENT_NAME || 'LAA Digital' }}" >> $GITHUB_ENV
-          echo "DEPARTMENT_URL=${{ vars.DEPARTMENT_URL || 'https://www.gov.uk/government/organisations/legal-aid-agency' }}" >> $GITHUB_ENV
-          echo "CONTACT_EMAIL=${{ vars.CONTACT_EMAIL || 'your-team@digital.justice.gov.uk' }}" >> $GITHUB_ENV
-          echo "CONTACT_PHONE=${{ vars.CONTACT_PHONE || '' }}" >> $GITHUB_ENV
-          echo "SERVICE_URL=${{ vars.SERVICE_URL || 'https://www.gov.uk/legal-aid' }}" >> $GITHUB_ENV
-          echo "SESSION_SECRET=${{ secrets.SESSION_SECRET || 'default-session-secret' }}" >> $GITHUB_ENV
-          echo "SESSION_NAME=${{ vars.SESSION_NAME || 'sessionId' }}" >> $GITHUB_ENV
-          echo "RATELIMIT_HEADERS_ENABLED=${{ vars.RATELIMIT_HEADERS_ENABLED || 'true' }}" >> $GITHUB_ENV
-          echo "RATELIMIT_STORAGE_URI=${{ vars.RATELIMIT_STORAGE_URI || '' }}" >> $GITHUB_ENV
-          echo "RATE_LIMIT_MAX=${{ vars.RATE_LIMIT_MAX || '100' }}" >> $GITHUB_ENV
-          echo "RATE_WINDOW_MS=${{ vars.RATE_WINDOW_MS || '900000' }}" >> $GITHUB_ENV
-          echo "NODE_ENV=production" >> $GITHUB_ENV
-      
-      - name: Deploy using Helm to UAT
-        run: ./scripts/deploy.sh uat
-        env:
-          REGISTRY: ${{  secrets.ECR_REGISTRY_URL }} 
-          REPOSITORY: ${{ vars.ECR_REPOSITORY }}
-          IMAGE_TAG: ${{ github.sha }}
-          GITHUB_SHA: ${{ github.sha }}
-          GITHUB_REF_NAME: ${{ github.ref_name }}
-          K8S_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
-
+          app-environment: uat
+          session_secret: ${{ secrets.SESSION_SECRET }}
+          service_name: ${{ vars.SERVICE_NAME }}
+          service_phase: ${{ vars.SERVICE_PHASE }}
+          department_name: ${{ vars.DEPARTMENT_NAME }}
+          department_url: ${{ vars.DEPARTMENT_URL }}
+          contact_email: ${{ vars.CONTACT_EMAIL }}
+          service_url: ${{ vars.SERVICE_URL }}
+          session_name: ${{ vars.SESSION_NAME}}
+          ratelimit_headers_enabled: ${{ vars.RATELIMIT_HEADERS_ENABLED }}
+          ratelimit_storage_uri: ${{ vars.RATELIMIT_STORAGE_URI }}
+          ratelimit_max: ${{ vars.RATE_LIMIT_MAX }}
+          ratewindow_ms: ${{ vars.RATE_WINDOW_MS }}
+  
   deploy-staging:
-    name: Deploy to Staging
-    needs: deploy-uat
-    if: github.ref_name == 'main'
     environment: staging
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-      - uses: actions/checkout@v4
+    needs: deploy-uat
+    if: github.ref_name == 'main'
 
-      - name: Authenticate to cluster
-        uses: ministryofjustice/laa-reusable-github-actions/.github/actions/authenticate_to_cluster@d61e0cf24795b75f719a8981a4dc21e1334a1455
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to staging
+        uses: ./.github/actions/deploy
         with:
+          ecr-repository: ${{ vars.ECR_REPOSITORY }}
+          ecr-registry_url: ${{ secrets.ECR_REGISTRY_URL }}
           kube-cert: ${{ secrets.KUBE_CERT }}
           kube-token: ${{ secrets.KUBE_TOKEN }}
           kube-cluster: ${{ secrets.KUBE_CLUSTER }}
           kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
-
-      - name: Set environment variables
-        run: |
-          echo "SERVICE_NAME=${{ vars.SERVICE_NAME || 'Manage your civil cases' }}" >> $GITHUB_ENV
-          echo "SERVICE_PHASE=${{ vars.SERVICE_PHASE || 'Alpha' }}" >> $GITHUB_ENV
-          echo "DEPARTMENT_NAME=${{ vars.DEPARTMENT_NAME || 'LAA Digital' }}" >> $GITHUB_ENV
-          echo "DEPARTMENT_URL=${{ vars.DEPARTMENT_URL || 'https://www.gov.uk/government/organisations/legal-aid-agency' }}" >> $GITHUB_ENV
-          echo "CONTACT_EMAIL=${{ vars.CONTACT_EMAIL || 'your-team@digital.justice.gov.uk' }}" >> $GITHUB_ENV
-          echo "CONTACT_PHONE=${{ vars.CONTACT_PHONE || '' }}" >> $GITHUB_ENV
-          echo "SERVICE_URL=${{ vars.SERVICE_URL || 'https://www.gov.uk/legal-aid' }}" >> $GITHUB_ENV
-          echo "SESSION_SECRET=${{ secrets.SESSION_SECRET || 'default-session-secret' }}" >> $GITHUB_ENV
-          echo "SESSION_NAME=${{ vars.SESSION_NAME || 'sessionId' }}" >> $GITHUB_ENV
-          echo "RATELIMIT_HEADERS_ENABLED=${{ vars.RATELIMIT_HEADERS_ENABLED || 'true' }}" >> $GITHUB_ENV
-          echo "RATELIMIT_STORAGE_URI=${{ vars.RATELIMIT_STORAGE_URI || '' }}" >> $GITHUB_ENV
-          echo "RATE_LIMIT_MAX=${{ vars.RATE_LIMIT_MAX || '100' }}" >> $GITHUB_ENV
-          echo "RATE_WINDOW_MS=${{ vars.RATE_WINDOW_MS || '900000' }}" >> $GITHUB_ENV
-          echo "NODE_ENV=production" >> $GITHUB_ENV
-
-      - name: Deploy using Helm to Staging
-        run: ./scripts/deploy.sh staging
-        env:
-          REGISTRY: ${{  secrets.ECR_REGISTRY_URL }} 
-          REPOSITORY: ${{ vars.ECR_REPOSITORY }}
-          IMAGE_TAG: ${{ github.sha }}
-          GITHUB_SHA: ${{ github.sha }}
-          GITHUB_REF_NAME: ${{ github.ref_name }}
-          K8S_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
-
-      - name: Notify deployment failure
-        if: failure()
-        run: |
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"Manage Civil Cases deployment to Staging failed!"}' ${{ secrets.SLACK_WEBHOOK_URL }}
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          app-environment: staging
+          session_secret: ${{ secrets.SESSION_SECRET }}
+          service_name: ${{ vars.SERVICE_NAME }}
+          service_phase: ${{ vars.SERVICE_PHASE }}
+          department_name: ${{ vars.DEPARTMENT_NAME }}
+          department_url: ${{ vars.DEPARTMENT_URL }}
+          contact_email: ${{ vars.CONTACT_EMAIL }}
+          service_url: ${{ vars.SERVICE_URL }}
+          session_name: ${{ vars.SESSION_NAME}}
+          ratelimit_headers_enabled: ${{ vars.RATELIMIT_HEADERS_ENABLED }}
+          ratelimit_storage_uri: ${{ vars.RATELIMIT_STORAGE_URI }}
+          ratelimit_max: ${{ vars.RATE_LIMIT_MAX }}
+          ratewindow_ms: ${{ vars.RATE_WINDOW_MS }}
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   deploy-production:
-    name: Deploy to Production
-    needs: deploy-staging
     environment: production
-    if: github.ref_name == 'main'
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-      - uses: actions/checkout@v4
+    needs: deploy-staging
+    if: github.ref_name == 'main'
 
-      - name: Authenticate to cluster
-        uses: ministryofjustice/laa-reusable-github-actions/.github/actions/authenticate_to_cluster@d61e0cf24795b75f719a8981a4dc21e1334a1455
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to staging
+        uses: ./.github/actions/deploy
         with:
+          ecr-repository: ${{ vars.ECR_REPOSITORY }}
+          ecr-registry_url: ${{ secrets.ECR_REGISTRY_URL }}
           kube-cert: ${{ secrets.KUBE_CERT }}
           kube-token: ${{ secrets.KUBE_TOKEN }}
           kube-cluster: ${{ secrets.KUBE_CLUSTER }}
           kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
-
-      - name: Set environment variables
-        run: |
-          echo "SERVICE_NAME=${{ vars.SERVICE_NAME || 'Manage your civil cases' }}" >> $GITHUB_ENV
-          echo "SERVICE_PHASE=${{ vars.SERVICE_PHASE || 'Alpha' }}" >> $GITHUB_ENV
-          echo "DEPARTMENT_NAME=${{ vars.DEPARTMENT_NAME || 'LAA Digital' }}" >> $GITHUB_ENV
-          echo "DEPARTMENT_URL=${{ vars.DEPARTMENT_URL || 'https://www.gov.uk/government/organisations/legal-aid-agency' }}" >> $GITHUB_ENV
-          echo "CONTACT_EMAIL=${{ vars.CONTACT_EMAIL || 'your-team@digital.justice.gov.uk' }}" >> $GITHUB_ENV
-          echo "CONTACT_PHONE=${{ vars.CONTACT_PHONE || '' }}" >> $GITHUB_ENV
-          echo "SERVICE_URL=${{ vars.SERVICE_URL || 'https://www.gov.uk/legal-aid' }}" >> $GITHUB_ENV
-          echo "SESSION_SECRET=${{ secrets.SESSION_SECRET || 'default-session-secret' }}" >> $GITHUB_ENV
-          echo "SESSION_NAME=${{ vars.SESSION_NAME || 'sessionId' }}" >> $GITHUB_ENV
-          echo "RATELIMIT_HEADERS_ENABLED=${{ vars.RATELIMIT_HEADERS_ENABLED || 'true' }}" >> $GITHUB_ENV
-          echo "RATELIMIT_STORAGE_URI=${{ vars.RATELIMIT_STORAGE_URI || '' }}" >> $GITHUB_ENV
-          echo "RATE_LIMIT_MAX=${{ vars.RATE_LIMIT_MAX || '100' }}" >> $GITHUB_ENV
-          echo "RATE_WINDOW_MS=${{ vars.RATE_WINDOW_MS || '900000' }}" >> $GITHUB_ENV
-          echo "NODE_ENV=production" >> $GITHUB_ENV
-
-      - name: Deploy using Helm to Production
-        run: ./scripts/deploy.sh production
-        env:
-          REGISTRY: ${{  secrets.ECR_REGISTRY_URL }} 
-          REPOSITORY: ${{ vars.ECR_REPOSITORY }}
-          IMAGE_TAG: ${{ github.sha }}
-          GITHUB_SHA: ${{ github.sha }}
-          GITHUB_REF_NAME: ${{ github.ref_name }}
-          K8S_NAMESPACE: ${{ secrets.KUBE_NAMESPACE }}
-
-      - name: Notify deployment failure
-        if: failure()
-        run: |
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"Manage Civil Cases deployment to Production failed!"}' ${{ secrets.SLACK_WEBHOOK_URL }}
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          app-environment: production
+          session_secret: ${{ secrets.SESSION_SECRET }}
+          service_name: ${{ vars.SERVICE_NAME }}
+          service_phase: ${{ vars.SERVICE_PHASE }}
+          department_name: ${{ vars.DEPARTMENT_NAME }}
+          department_url: ${{ vars.DEPARTMENT_URL }}
+          contact_email: ${{ vars.CONTACT_EMAIL }}
+          service_url: ${{ vars.SERVICE_URL }}
+          session_name: ${{ vars.SESSION_NAME}}
+          ratelimit_headers_enabled: ${{ vars.RATELIMIT_HEADERS_ENABLED }}
+          ratelimit_storage_uri: ${{ vars.RATELIMIT_STORAGE_URI }}
+          ratelimit_max: ${{ vars.RATE_LIMIT_MAX }}
+          ratewindow_ms: ${{ vars.RATE_WINDOW_MS }}
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
