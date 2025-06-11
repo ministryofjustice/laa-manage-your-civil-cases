@@ -87,7 +87,7 @@ const createApp = (): express.Application => {
 };
 
 // Self-execute the app directly to allow app.js to be executed directly
-const app = createApp();
+createApp();
 
 // Export the createApp function for testing/import purposes
 export default createApp;
