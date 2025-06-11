@@ -1,0 +1,6 @@
+{
+  "watch": ["public"],
+  "ext": "js,json",
+  "ignore": ["public/assets/"],
+  "delay": "500ms"
+}

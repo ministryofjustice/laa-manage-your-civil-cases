@@ -4,6 +4,7 @@ import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 
 // Alter this config file to meet your project's needs and standards.
+
 export default [
   // JS/Default config (no parser override)
   {
@@ -91,12 +92,12 @@ export default [
       '@typescript-eslint/no-namespace': 'off', // Namespaces are allowed in d.ts
     },
   },
-  // Ignore list
+  // Ignore patterns
   {
     ignores: [
       'node_modules/*',
       'public/*',
-      'tests/unit/**/*.spec.ts'
+      'tests/**/*.spec.ts'
     ],
   },
 ];
