@@ -102,7 +102,9 @@ export default [
     ignores: [
       'node_modules/*',
       'public/*',
-      'tests/unit/**/*.spec.ts'
+      'tests/unit/**/*.spec.ts',
+      'types/csrf-types.ts', // Suppress error about 'Locals' being defined but never used: TypeScript declaration merging is valid
+      'utils/axiosSetup.ts' // Suppress error about 'Express' & 'Request' being defined but never used: TypeScript declaration merging is valid
     ]
   }
 ]
