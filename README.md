@@ -11,7 +11,7 @@ Express.js is a fast, unopinionated, minimalist web framework for Node.js.
   - [This repository is built on the MoJ Express Frontend Skeleton](#this-repository-is-built-on-the-moj-express-frontend-skeleton)
   - [Contents](#contents)
   - [Prerequisites](#prerequisites)
-    - [Installing Yarn](#installing-yarn)
+    - [Installing Yarn 4.9.2](#installing-yarn-492)
   - [Getting started](#getting-started)
     - [Set local environment variables](#set-local-environment-variables)
     - [Align to the Node Version specified for this project](#align-to-the-node-version-specified-for-this-project)
@@ -20,6 +20,7 @@ Express.js is a fast, unopinionated, minimalist web framework for Node.js.
       - [Node Version Manager](#node-version-manager)
   - [Routing](#routing)
   - [Testing](#testing)
+    - [Running All Tests](#running-all-tests)
     - [Unit/Integration Testing frameworks](#unitintegration-testing-frameworks)
     - [E2E Testing with Playwright](#e2e-testing-with-playwright)
       - [Running Tests Locally](#running-tests-locally)
@@ -35,13 +36,17 @@ Express.js is a fast, unopinionated, minimalist web framework for Node.js.
     - [Response compression](#response-compression)
     - [Rate limiting](#rate-limiting)
     - [Linter](#linter)
+      - [Ignore Configuration](#ignore-configuration)
     - [Linter for staged commits](#linter-for-staged-commits)
     - [TypeScript](#typescript)
+      - [Main TypeScript Configuration](#main-typescript-configuration)
+      - [Test TypeScript Configuration](#test-typescript-configuration)
     - [Axios](#axios)
     - [Nunjucks templating](#nunjucks-templating)
     - [Project structure and source directory](#project-structure-and-source-directory)
     - [Import paths and path aliases](#import-paths-and-path-aliases)
     - [Running and debugging](#running-and-debugging)
+    - [Development workflow](#development-workflow)
     - [Type definitions](#type-definitions)
   - [Licence](#licence)
 
@@ -137,10 +142,21 @@ There are many frameworks to test your Express.js application (a few of these fr
 - Integration Tests - assess the coherence of the entire application, ensuring smooth interactions between various parts.
 - End-to-end (E2E) Tests - assess the entire software system, from the user interface to the database.
 
+### Running All Tests
+
+To run both unit and end-to-end tests with a single command:
+
+```shell
+yarn test
+```
+
+This command will first run the unit tests with Mocha and then run the end-to-end tests with Playwright.
+
 ### Unit/Integration Testing frameworks
 - We use [Mocha](https://mochajs.org/) as our unit testing framework. It is a widely-used JavaScript testing framework that works well with TypeScript projects and integrates with CI pipelines.
 - We also use [chai](https://www.chaijs.com/) to help with our test assertions, in mocha.
-- Tests run from the `tests/` directory
+- Unit tests run from the `tests/unit/` directory
+- Run unit tests with `yarn test:unit`
 
 **To set-up locally**
 - Install all the dependencies:
@@ -155,6 +171,9 @@ yarn test:unit
 
 ### E2E Testing with Playwright
 This project uses [Playwright](https://playwright.dev/) for end-to-end testing. Playwright provides reliable end-to-end testing for modern web apps.
+
+- E2E tests run from the `tests/e2e/` directory
+- Run E2E tests with `yarn test:e2e`
 
 #### Running Tests Locally
 
@@ -260,7 +279,26 @@ To run ESLint:
 yarn lint
 ```
 
-This will run ESLint on all TypeScript files in your project, ignoring the node_modules and public directories.
+This will run ESLint on all TypeScript files in your project, ignoring specific files and directories.
+
+#### Ignore Configuration
+
+The project configures ESLint to ignore certain files directly in the `eslint.config.js` file:
+
+```javascript
+{
+  ignores: [
+    'node_modules/*',
+    'public/*',
+    'tests/**/*.spec.ts'
+  ],
+}
+```
+
+This configuration:
+- Ignores the `node_modules` directory
+- Ignores the `public` directory (generated output)
+- Ignores all test specification files (`*.spec.ts`) in any subdirectory of the `tests` folder
 
 ### Linter for staged commits
 We use [husky](https://github.com/typicode/husky) & [lint-staged](https://github.com/lint-staged/lint-staged) to run ESLint on all our staged git commits. This ensures that TypeScript files are linted before they're committed to the repository.
@@ -288,11 +326,35 @@ yarn lint-staged --debug
 ### TypeScript
 This project uses TypeScript to provide static type checking, improving code quality and developer experience. TypeScript helps catch errors during development rather than at runtime and provides better IDE support through enhanced autocompletion and navigation.
 
+#### Main TypeScript Configuration
 The TypeScript configuration is defined in `tsconfig.json` with the following key settings:
 - Target: ES2022
 - Module System: NodeNext
 - Strict Type Checking: Enabled
 - Source Maps: Generated for debugging
+
+#### Test TypeScript Configuration
+The project uses a separate TypeScript configuration for tests in `tsconfig.test.json`, which extends the main configuration:
+
+```json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext"
+  },
+  "include": ["tests/**/*.spec.ts", "routes/**/*.ts", "src/**/*.ts", "middleware/**/*.ts", "utils/**/*.ts"]
+}
+```
+
+This configuration:
+- Extends the main `tsconfig.json`
+- Allows importing TypeScript files with extensions (`.ts`)
+- Doesn't emit compiled output files when running tests
+- Includes all test files (`*.spec.ts`) in all test subdirectories
+- Includes source files from routes, src, middleware, and utils directories that tests may need to reference
 
 To compile TypeScript files:
 ```shell
@@ -350,6 +412,26 @@ This project uses [Nunjucks](https://mozilla.github.io/nunjucks/) for server-sid
 ### Running and debugging
 - The app is started using the compiled JS in `public/` (see `yarn dev` and `yarn start`).
 - If you want to run TypeScript directly (e.g., for debugging), consider using `ts-node` or a similar tool, but this is not the default workflow.
+
+### Development workflow
+The project uses `nodemon` to automatically restart the application during development when file changes are detected. This configuration is managed through a `nodemon.json` file with the following settings:
+
+```json
+{
+  "watch": ["public"],
+  "ext": "js,json",
+  "ignore": ["public/assets/"],
+  "delay": "500ms"
+}
+```
+
+This configuration:
+- Watches the `public` directory for changes
+- Only monitors changes in `.js` and `.json` files
+- Ignores the `public/assets/` directory
+- Adds a 500ms delay before restarting to avoid excessive restarts during rapid file changes
+
+The development workflow is started with the `yarn dev` script, which builds the project and then concurrently runs TypeScript in watch mode and nodemon for server restarts.
 
 ### Type definitions
 - Type definitions for Node, Express, and other dependencies are included as dev dependencies (see `@types/*` packages in `package.json`).
