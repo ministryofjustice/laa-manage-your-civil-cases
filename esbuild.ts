@@ -98,8 +98,8 @@ const buildScss = async (): Promise<void> => {
 			'.scss': 'css',
 			'.css': 'css'
 		},
-		minify: true,
-		sourcemap: true
+		minify: process.env.NODE_ENV === 'production',
+		sourcemap: process.env.NODE_ENV !== 'production'
 	}).catch((error) => {
 		console.error('❌ SCSS build failed:', error);
 		process.exit(1);
@@ -145,8 +145,8 @@ const buildCustomJs = async (): Promise<void> => {
 		platform: 'browser',
 		target: 'es2020',
 		format: 'esm',
-		sourcemap: true,
-		minify: true,
+		sourcemap: process.env.NODE_ENV !== 'production',
+		minify: process.env.NODE_ENV == 'production',
 		outfile: `public/js/custom.${buildNumber}.min.js`
 	}).catch((error) => {
 		console.error('❌ custom.js build failed:', error);
@@ -162,13 +162,18 @@ const buildCustomJs = async (): Promise<void> => {
 const buildFrontendPackages = async (): Promise<void> => {
 	await esbuild.build({
 		entryPoints: [
-			'./node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.js',
-			'./node_modules/@ministryofjustice/frontend/moj/moj-frontend.min.js'
+			'src/scripts/frontend-packages-entry.ts'
 		],
-		bundle: false, // No need to bundle, just copy
-		outdir: `public/js/frontend-packages.${buildNumber}.min.js`
+		bundle: true,
+		platform: 'browser',
+		target: 'es2020',
+		format: 'esm',
+		sourcemap: process.env.NODE_ENV !== 'production',
+		minify: process.env.NODE_ENV === 'production',
+		treeShaking: false, // Disable tree shaking to preserve side-effect imports
+		outfile: `public/js/frontend-packages.${buildNumber}.min.js`
 	}).catch((error) => {
-		console.error('❌ GOV.UK frontend and/or MOJ frontend JS copy failed:', error);
+		console.error('❌ GOV.UK frontend and/or MOJ frontend JS build failed:', error);
 		process.exit(1);
 	});
 };
