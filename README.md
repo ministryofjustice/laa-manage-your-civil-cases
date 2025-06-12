@@ -56,7 +56,7 @@ Express.js is a fast, unopinionated, minimalist web framework for Node.js.
 - [Yarn 4.9.2](https://yarnpkg.com/) package manager (see installation instructions below)
 - TypeScript 5.8.3
 
-### Installing Yarn 4.9.2
+### Installing Yarn
 
 This project uses Yarn 4.9.2 managed by corepack (built into Node.js 16.10+). To ensure all team members use the same version, follow these installation steps:
 
@@ -79,7 +79,10 @@ This project uses Yarn 4.9.2 managed by corepack (built into Node.js 16.10+). To
    # Should output: 4.9.2
    ```
 
-**Note:** Corepack automatically uses the Yarn version specified in the `packageManager` field of `package.json`. No additional setup is required once corepack is enabled.
+**To Note:** 
+- Corepack automatically uses the Yarn version specified in the `packageManager` field of `package.json`. No additional setup is required once corepack is enabled
+- Corepack is the preferred `yarn` way, to install the package manager, instead of `npm install -g yarn` in your ci/cd pipeline
+- `yarn install --immutable` ensures that the lockfile (`yarn.lock`) is not modified during the installation process
 
 ## Getting started
 
