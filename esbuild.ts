@@ -162,7 +162,7 @@ const buildCustomJs = async (): Promise<void> => {
 const buildFrontendPackages = async (): Promise<void> => {
 	await esbuild.build({
 		entryPoints: [
-			'src/scripts/frontend-packages-entry.js'
+			'src/scripts/frontend-packages-entry.ts'
 		],
 		bundle: true,
 		platform: 'browser',

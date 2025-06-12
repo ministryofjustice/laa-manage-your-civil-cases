@@ -64,8 +64,14 @@ const createApp = (): express.Application => {
 	// Set up application-specific configurations
 	setupConfig(app);
 
-	// Set up request logging
-	app.use(morgan('dev'));
+	// Set up request logging based on environment
+	if (process.env.NODE_ENV === 'production') {
+		// Use combined format for production (more structured, less verbose)
+		app.use(morgan('combined'));
+	} else {
+		// Use dev format for development (colored, more readable)
+		app.use(morgan('dev'));
+	}
 
 	// Register the main router
 	app.use('/', indexRouter);
