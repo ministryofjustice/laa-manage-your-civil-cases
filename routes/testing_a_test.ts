@@ -4,6 +4,6 @@
  * @param {string} incomingText - Placeholder parameter for testing purposes.
  * @returns {string} The transformed string with "-static" appended.
  */
-export default function(incomingText: string) {
+export default function (incomingText: string) {
   return `${incomingText}-static`;
 }

@@ -28,12 +28,12 @@ export const axiosMiddleware = (req: Request, res: Response, next: NextFunction)
 
   // Create wrapped instance of axios to use normal axios instance
   req.axiosMiddleware = create({
-    baseURL: baseURL,
+    baseURL,
     timeout: 5000, // Set a timeout value if needed
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
       // You can add other default headers here if needed
-    },
+    }
   });
   next();
 };

@@ -1,6 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
 
-
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -22,21 +21,21 @@ export default defineConfig({
     baseURL: 'http://localhost:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: process.env.CI ? 'on' : 'on-first-retry',
+    trace: process.env.CI ? 'on' : 'on-first-retry'
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
+      use: { ...devices['Desktop Chrome'] }
+    }
   ],
 
   /* Run your local dev server before starting the tests */
   webServer: {
     command: 'yarn start',
     url: 'http://127.0.0.1:3000',
-    reuseExistingServer: !process.env.CI,
-  },
+    reuseExistingServer: !process.env.CI
+  }
 });

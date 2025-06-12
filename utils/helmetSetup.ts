@@ -46,7 +46,7 @@ export const helmetSetup = (app: Application): void => {
           frameSrc: ["'none'"], // Restrict frames
           formAction: ["'self'"], // Restrict form submissions
           baseUri: ["'self'"], // Restrict base URI
-          upgradeInsecureRequests: [], // Upgrade HTTP to HTTPS
+          upgradeInsecureRequests: [] // Upgrade HTTP to HTTPS
         }
       }
     })
