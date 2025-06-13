@@ -11,7 +11,7 @@ Express.js is a fast, unopinionated, minimalist web framework for Node.js.
   - [This repository is built on the MoJ Express Frontend Skeleton](#this-repository-is-built-on-the-moj-express-frontend-skeleton)
   - [Contents](#contents)
   - [Prerequisites](#prerequisites)
-    - [Installing Yarn 4.9.2](#installing-yarn-492)
+    - [Installing Yarn](#installing-yarn)
   - [Getting started](#getting-started)
     - [Set local environment variables](#set-local-environment-variables)
     - [Align to the Node Version specified for this project](#align-to-the-node-version-specified-for-this-project)
@@ -414,8 +414,19 @@ This project uses [Nunjucks](https://mozilla.github.io/nunjucks/) for server-sid
 - If you want to run TypeScript directly (e.g., for debugging), consider using `ts-node` or a similar tool, but this is not the default workflow.
 
 ### Development workflow
-The project uses `nodemon` to automatically restart the application during development when file changes are detected. This configuration is managed through a `nodemon.json` file with the following settings:
+The project uses ESBuild for fast compilation and bundling with watch mode for automatic rebuilds during development. The development workflow is managed through the `yarn dev` script which concurrently runs:
 
+1. **TypeScript compilation in watch mode** - Monitors TypeScript source files for changes
+2. **ESBuild bundling in watch mode** - Handles SCSS, JavaScript bundling, and asset copying
+3. **Nodemon for server restarts** - Automatically restarts the Express server when compiled files change
+
+The watch system monitors:
+- TypeScript source files (`src/**/*.ts`) for compilation
+- SCSS files (`src/scss/**/*.scss`) for CSS bundling
+- Asset files from GOV.UK Frontend and MOJ Frontend packages
+- The compiled output in the `public/` directory for server restarts
+
+Nodemon configuration (`nodemon.json`):
 ```json
 {
   "watch": ["public"],
@@ -426,12 +437,17 @@ The project uses `nodemon` to automatically restart the application during devel
 ```
 
 This configuration:
-- Watches the `public` directory for changes
+- Watches the `public` directory for changes in compiled output
 - Only monitors changes in `.js` and `.json` files
-- Ignores the `public/assets/` directory
+- Ignores the `public/assets/` directory (managed by ESBuild)
 - Adds a 500ms delay before restarting to avoid excessive restarts during rapid file changes
 
-The development workflow is started with the `yarn dev` script, which builds the project and then concurrently runs TypeScript in watch mode and nodemon for server restarts.
+The development workflow is started with:
+```shell
+yarn dev
+```
+
+This command builds the project initially and then sets up all watch processes for continuous development.
 
 ### Type definitions
 - Type definitions for Node, Express, and other dependencies are included as dev dependencies (see `@types/*` packages in `package.json`).
