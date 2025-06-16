@@ -29,7 +29,7 @@ let livereloadServer: ReturnType<typeof livereload.createServer> | null = null; 
  */
 const startServer = (port: number): void => {
 	// If there's an existing server process, kill it
-	if (serverProcess) {
+	if ((serverProcess != null)) {
 		serverProcess.kill();
 		serverProcess = null;
 	}
@@ -77,7 +77,7 @@ const start = async (): Promise<void> => {
 	// Build the project
 	await build();
 	// Start the server on the configured port
-	startServer(Number(config.app.port));
+	startServer(config.app.port);
 
 	// If in development mode, set up livereload and file watching
 	if (process.env.NODE_ENV === 'development') {
@@ -97,11 +97,11 @@ const start = async (): Promise<void> => {
 			// Rebuild the project
 			await build();
 			// Refresh livereload server
-			if (livereloadServer) {
+			if (livereloadServer != null) {
 				livereloadServer.refresh('/');
 			}
 			// Restart the server
-			startServer(Number(config.app.port));
+			startServer(config.app.port);
 		});
 
 		// Handle watcher ready event
