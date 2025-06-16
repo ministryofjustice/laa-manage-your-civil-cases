@@ -7,6 +7,10 @@ import { spawn } from 'child_process'; // Import spawn from child_process to spa
 import config from './config.js'; // Import the config
 import { build } from './esbuild.js'; // Import the build function with correct extension
 
+const NO_MORE_ASYNC_OPERATIONS = 0;
+const UNCAUGHT_FATAL_EXCEPTION = 1;
+const ADDING_TO_PORT_NUMBER = 1;
+const ONE_SECOND_DELAY = 1000;
 
 // Get the directory name
 const __filename = fileURLToPath(import.meta.url);
@@ -40,7 +44,7 @@ const startServer = (port: number): void => {
 
 		// Handle server process close event
 		serverProcess.on('close', (code: number | null) => {
-			if (code !== 0) {
+			if (code !== NO_MORE_ASYNC_OPERATIONS) {
 				console.error(`Server process exited with code ${code}`);
 			}
 		});
@@ -50,12 +54,12 @@ const startServer = (port: number): void => {
 			if (error.code === 'EADDRINUSE') {
 				console.error(`Port ${port} is already in use. Trying to restart the server on a different port...`);
 				// If the port is in use, try to restart the server on the next port
-				setTimeout(() => { startServer(port + 1); }, 1000);
+				setTimeout(() => { startServer(port + ADDING_TO_PORT_NUMBER); }, ONE_SECOND_DELAY);
 			} else {
 				console.error('Server process error:', sanitizeError(error as Error & Record<string, unknown>));
 			}
 		});
-	}, 1000); // 1-second delay to ensure the port is released
+	}, ONE_SECOND_DELAY); // 1-second delay to ensure the port is released
 };
 
 /**
@@ -132,5 +136,5 @@ const sanitizeError = (error: Error & Record<string, unknown>): object => {
 start().catch((error: Error) => {
 	// Log sanitized error
 	console.error('Start script failed:', sanitizeError(error as Error & Record<string, unknown>));
-	process.exit(1);
+	process.exit(UNCAUGHT_FATAL_EXCEPTION);
 });

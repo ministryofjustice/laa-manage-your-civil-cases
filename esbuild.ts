@@ -13,6 +13,7 @@ dotenv.config();
 const buildNumber = getBuildNumber();
 const NO_MORE_ASYNC_OPERATIONS = 0;
 const UNCAUGHT_FATAL_EXCEPTION = 1;
+const SECOND_IN_ARRAY = 1;
 
 /**
  * Copies GOV.UK (fonts and images from `govuk-frontend`), MOJ Frontend (images from `@ministryofjustice/frontend`) and other assets
@@ -293,7 +294,7 @@ const build = async (): Promise<void> => {
 export { build, watchBuild };
 
 // Run based on command line arguments
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (import.meta.url === `file://${process.argv[SECOND_IN_ARRAY]}`) {
 	const isWatch = process.argv.includes('--watch');
 
 	if (isWatch) {
