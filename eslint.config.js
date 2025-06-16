@@ -2,10 +2,15 @@ import globals from 'globals';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
+import love from 'eslint-config-love';
 
 // Alter this config file to meet your project's needs and standards.
 
 export default [
+  {
+    ...love,
+    files: ['**/*.js', '**/*.ts'],
+  },
   // JS/Default config (no parser override)
   {
     languageOptions: {
@@ -34,7 +39,6 @@ export default [
     },
     plugins: {
       jsdoc: jsdocPlugin,
-      prettier: ['@eslint/plugin-prettier'],
       '@typescript-eslint': tseslint,
     },
     rules: {

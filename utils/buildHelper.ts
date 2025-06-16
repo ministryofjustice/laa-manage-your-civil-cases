@@ -4,9 +4,7 @@ import fs from 'fs';
  * Generate a random build number as a string.
  * @returns {string} - A random build number.
  */
-export const getBuildNumber = (): string => {
-  return Math.floor(Math.random() * 10000).toString();
-};
+export const getBuildNumber = (): string => Math.floor(Math.random() * 10000).toString();
 
 /**
  * Get the latest build file from the specified directory.

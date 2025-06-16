@@ -50,9 +50,9 @@ const startServer = (port: number): void => {
 			if (error.code === 'EADDRINUSE') {
 				console.error(`Port ${port} is already in use. Trying to restart the server on a different port...`);
 				// If the port is in use, try to restart the server on the next port
-				setTimeout(() => startServer(port + 1), 1000);
+				setTimeout(() => { startServer(port + 1); }, 1000);
 			} else {
-				console.error('Server process error:', sanitizeError(error as Error & { [key: string]: unknown }));
+				console.error('Server process error:', sanitizeError(error as Error & Record<string, unknown>));
 			}
 		});
 	}, 1000); // 1-second delay to ensure the port is released
@@ -107,7 +107,7 @@ const start = async (): Promise<void> => {
 
 		// Handle watcher error event
 		watcher.on('error', (error: Error) => {
-			console.error('Watcher error:', sanitizeError(error as Error & { [key: string]: unknown }));
+			console.error('Watcher error:', sanitizeError(error as Error & Record<string, unknown>));
 		});
 	}
 };
@@ -119,20 +119,18 @@ const start = async (): Promise<void> => {
  * @param {Error} error - The error object to sanitize.
  * @returns {object} A sanitized version of the error object.
  */
-const sanitizeError = (error: Error & { [key: string]: unknown }): object => {
+const sanitizeError = (error: Error & Record<string, unknown>): object => {
 	// Example: Remove stack traces or any sensitive data from the error object
 	const sanitizedError = { ...error };
 	delete sanitizedError.stack; // Remove stack trace
 	// Remove any other sensitive information if necessary
-	if (sanitizedError.message) {
-		sanitizedError.message = sanitizedError.message.replace(/sensitive information/g, '[REDACTED]');
-	}
+	sanitizedError.message &&= sanitizedError.message.replace(/sensitive information/g, '[REDACTED]');
 	return sanitizedError;
 };
 
 // Start the build and server process
 start().catch((error: Error) => {
 	// Log sanitized error
-	console.error('Start script failed:', sanitizeError(error as Error & { [key: string]: unknown }));
+	console.error('Start script failed:', sanitizeError(error as Error & Record<string, unknown>));
 	process.exit(1);
 });

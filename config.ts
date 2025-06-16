@@ -17,8 +17,8 @@ const config: Config = {
   SERVICE_PHASE: process.env.SERVICE_PHASE,
   SERVICE_URL: process.env.SERVICE_URL,
   session: {
-    secret: process.env.SESSION_SECRET as string,
-    name: process.env.SESSION_NAME as string,
+    secret: process.env.SESSION_SECRET!,
+    name: process.env.SESSION_NAME!,
     resave: false,
     saveUninitialized: false
   },

@@ -22,13 +22,13 @@ declare global {
  * @returns {void}
  */
 export const axiosMiddleware = (req: Request, res: Response, next: NextFunction): void => {
-  const protocol = req.protocol;
+  const {protocol} = req;
   const host = req.get('host');
   const baseURL = `${protocol}://${host}`;
 
   // Create wrapped instance of axios to use normal axios instance
   req.axiosMiddleware = create({
-    baseURL: baseURL,
+    baseURL,
     timeout: 5000, // Set a timeout value if needed
     headers: {
       'Content-Type': 'application/json',

@@ -10,7 +10,7 @@ import type { SassPluginOptions } from './types/sass-plugin-types.js';
 
 // Load environment variables
 dotenv.config();
-let buildNumber = getBuildNumber();
+const buildNumber = getBuildNumber();
 
 /**
  * Copies GOV.UK (fonts and images from `govuk-frontend`), MOJ Frontend (images from `@ministryofjustice/frontend`) and other assets
@@ -74,7 +74,7 @@ const externalModules: string[] = [
  * @param {boolean} watch - Whether to enable watch mode
  * @returns {Promise<esbuild.BuildContext | void>} Build context if watching, void otherwise
  */
-const buildScss = async (watch: boolean = false): Promise<esbuild.BuildContext | void> => {
+const buildScss = async (watch = false): Promise<esbuild.BuildContext | void> => {
 	const options: esbuild.BuildOptions = {
 		entryPoints: ['src/scss/main.scss'],
 		bundle: true,
@@ -123,7 +123,7 @@ const buildScss = async (watch: boolean = false): Promise<esbuild.BuildContext |
  * @param {boolean} watch - Whether to enable watch mode
  * @returns {Promise<esbuild.BuildContext | void>} Build context if watching, void otherwise
  */
-const buildAppJs = async (watch: boolean = false): Promise<esbuild.BuildContext | void> => {
+const buildAppJs = async (watch = false): Promise<esbuild.BuildContext | void> => {
 	const options: esbuild.BuildOptions = {
 		entryPoints: ['src/app.ts'],
 		bundle: true,
@@ -159,7 +159,7 @@ const buildAppJs = async (watch: boolean = false): Promise<esbuild.BuildContext 
  * @param {boolean} watch - Whether to enable watch mode
  * @returns {Promise<esbuild.BuildContext | void>} Build context if watching, void otherwise
  */
-const buildCustomJs = async (watch: boolean = false): Promise<esbuild.BuildContext | void> => {
+const buildCustomJs = async (watch = false): Promise<esbuild.BuildContext | void> => {
 	const options: esbuild.BuildOptions = {
 		entryPoints: ['src/scripts/custom.ts'],
 		bundle: true,
@@ -189,7 +189,7 @@ const buildCustomJs = async (watch: boolean = false): Promise<esbuild.BuildConte
  * @param {boolean} watch - Whether to enable watch mode
  * @returns {Promise<esbuild.BuildContext | void>} Build context if watching, void otherwise
  */
-const buildFrontendPackages = async (watch: boolean = false): Promise<esbuild.BuildContext | void> => {
+const buildFrontendPackages = async (watch = false): Promise<esbuild.BuildContext | void> => {
 	const options: esbuild.BuildOptions = {
 		entryPoints: [
 			'src/scripts/frontend-packages-entry.ts'
@@ -249,7 +249,7 @@ const watchBuild = async (): Promise<void> => {
 		// Keep the process alive
 		process.on('SIGINT', async () => {
 			console.log('\n🛑 Stopping watch mode...');
-			await Promise.all(contexts.filter(Boolean).map(context => (context as esbuild.BuildContext).dispose()));
+			await Promise.all(contexts.filter(Boolean).map(async context => { await (context as esbuild.BuildContext).dispose(); }));
 			assetWatcher.close();
 			process.exit(0);
 		});
