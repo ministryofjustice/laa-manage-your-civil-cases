@@ -46,6 +46,7 @@ export default [
       'linebreak-style': 'off', // Prettier is handling this
       'quotes': 'off', // Prettier is handling this
       'semi': 'off', // Prettier is handling this
+      'no-console': 'off', // Stops complaining about putting messages in the console 
       'jsdoc/check-alignment': 'error',
       'jsdoc/check-param-names': 'error',
       'jsdoc/check-tag-names': 'error',
@@ -101,7 +102,8 @@ export default [
     ignores: [
       'node_modules/*',
       'public/*',
-      'tests/**/*.spec.ts'
+      'tests/**/*.spec.ts',
+      'docs/source/javascripts/application.js' // Parsing error this file was not found by the project service. Consider either including it in the `tsconfig.json` or including it in `allowDefaultProject`
     ],
   },
 ];

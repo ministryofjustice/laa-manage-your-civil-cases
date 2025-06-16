@@ -11,6 +11,8 @@ import type { SassPluginOptions } from './types/sass-plugin-types.js';
 // Load environment variables
 dotenv.config();
 const buildNumber = getBuildNumber();
+const NO_MORE_ASYNC_OPERATIONS = 0;
+const UNCAUGHT_FATAL_EXCEPTION = 1;
 
 /**
  * Copies GOV.UK (fonts and images from `govuk-frontend`), MOJ Frontend (images from `@ministryofjustice/frontend`) and other assets
@@ -38,7 +40,7 @@ const copyAssets = async (): Promise<void> => {
 		console.log('✅ GOV.UK assets (including rebrand) & MOJ Frontend assets copied successfully.');
 	} catch (error) {
 		console.error('❌ Failed to copy assets:', error);
-		process.exit(1);
+		process.exit(UNCAUGHT_FATAL_EXCEPTION);
 	}
 };
 
@@ -112,7 +114,7 @@ const buildScss = async (watch = false): Promise<esbuild.BuildContext | void> =>
 	} else {
 		await esbuild.build(options).catch((error) => {
 			console.error('❌ SCSS build failed:', error);
-			process.exit(1);
+			process.exit(UNCAUGHT_FATAL_EXCEPTION);
 		});
 	}
 };
@@ -148,7 +150,7 @@ const buildAppJs = async (watch = false): Promise<esbuild.BuildContext | void> =
 	} else {
 		await esbuild.build(options).catch((error) => {
 			console.error('❌ app.js build failed:', error);
-			process.exit(1);
+			process.exit(UNCAUGHT_FATAL_EXCEPTION);
 		});
 	}
 };
@@ -178,7 +180,7 @@ const buildCustomJs = async (watch = false): Promise<esbuild.BuildContext | void
 	} else {
 		await esbuild.build(options).catch((error) => {
 			console.error('❌ custom.js build failed:', error);
-			process.exit(1);
+			process.exit(UNCAUGHT_FATAL_EXCEPTION);
 		});
 	}
 };
@@ -211,7 +213,7 @@ const buildFrontendPackages = async (watch = false): Promise<esbuild.BuildContex
 	} else {
 		await esbuild.build(options).catch((error) => {
 			console.error('❌ GOV.UK frontend and/or MOJ frontend JS build failed:', error);
-			process.exit(1);
+			process.exit(UNCAUGHT_FATAL_EXCEPTION);
 		});
 	}
 };
@@ -251,12 +253,12 @@ const watchBuild = async (): Promise<void> => {
 			console.log('\n🛑 Stopping watch mode...');
 			await Promise.all(contexts.filter(Boolean).map(async context => { await (context as esbuild.BuildContext).dispose(); }));
 			assetWatcher.close();
-			process.exit(0);
+			process.exit(NO_MORE_ASYNC_OPERATIONS);
 		});
 
 	} catch (error) {
 		console.error('❌ Watch mode setup failed:', error);
-		process.exit(1);
+		process.exit(UNCAUGHT_FATAL_EXCEPTION);
 	}
 };
 
@@ -283,7 +285,7 @@ const build = async (): Promise<void> => {
 		console.log('✅ Build completed successfully.');
 	} catch (error) {
 		console.error('❌ Build process failed:', error);
-		process.exit(1);
+		process.exit(UNCAUGHT_FATAL_EXCEPTION);
 	}
 };
 
@@ -297,12 +299,12 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 	if (isWatch) {
 		watchBuild().catch((error) => {
 			console.error('❌ Watch mode failed:', error);
-			process.exit(1);
+			process.exit(UNCAUGHT_FATAL_EXCEPTION);
 		});
 	} else {
 		build().catch((error) => {
 			console.error('❌ Build script failed:', error);
-			process.exit(1);
+			process.exit(UNCAUGHT_FATAL_EXCEPTION);
 		});
 	}
 }

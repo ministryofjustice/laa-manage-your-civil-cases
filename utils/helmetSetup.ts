@@ -7,6 +7,8 @@ import helmet from 'helmet';
 import crypto from 'crypto';
 import type { Request, Response, NextFunction, Application } from 'express';
 
+const RANDOMBYTES = 16;
+
 /**
  * Middleware to generate a unique CSP nonce for each request.
  *
@@ -15,7 +17,7 @@ import type { Request, Response, NextFunction, Application } from 'express';
  * @param {NextFunction} next - Express next function.
  */
 export const nonceMiddleware = (req: Request, res: Response, next: NextFunction): void => {
-  res.locals.cspNonce = crypto.randomBytes(16).toString('base64'); // Generate a secure random nonce
+  res.locals.cspNonce = crypto.randomBytes(RANDOMBYTES).toString('base64'); // Generate a secure random nonce
   next();
 };
 
