@@ -113,7 +113,7 @@ const buildScss = async (watch = false): Promise<esbuild.BuildContext | void> =>
 		await context.watch();
 		return context;
 	} else {
-		await esbuild.build(options).catch((error) => {
+		await esbuild.build(options).catch((error: unknown) => {
 			console.error('❌ SCSS build failed:', error);
 			process.exit(UNCAUGHT_FATAL_EXCEPTION);
 		});
@@ -149,7 +149,7 @@ const buildAppJs = async (watch = false): Promise<esbuild.BuildContext | void> =
 		await context.watch();
 		return context;
 	} else {
-		await esbuild.build(options).catch((error) => {
+		await esbuild.build(options).catch((error: unknown) => {
 			console.error('❌ app.js build failed:', error);
 			process.exit(UNCAUGHT_FATAL_EXCEPTION);
 		});
@@ -179,7 +179,7 @@ const buildCustomJs = async (watch = false): Promise<esbuild.BuildContext | void
 		await context.watch();
 		return context;
 	} else {
-		await esbuild.build(options).catch((error) => {
+		await esbuild.build(options).catch((error: unknown) => {
 			console.error('❌ custom.js build failed:', error);
 			process.exit(UNCAUGHT_FATAL_EXCEPTION);
 		});
@@ -212,7 +212,7 @@ const buildFrontendPackages = async (watch = false): Promise<esbuild.BuildContex
 		await context.watch();
 		return context;
 	} else {
-		await esbuild.build(options).catch((error) => {
+		await esbuild.build(options).catch((error: unknown) => {
 			console.error('❌ GOV.UK frontend and/or MOJ frontend JS build failed:', error);
 			process.exit(UNCAUGHT_FATAL_EXCEPTION);
 		});
@@ -298,12 +298,12 @@ if (import.meta.url === `file://${process.argv[SECOND_IN_ARRAY]}`) {
 	const isWatch = process.argv.includes('--watch');
 
 	if (isWatch) {
-		watchBuild().catch((error) => {
+		watchBuild().catch((error: unknown) => {
 			console.error('❌ Watch mode failed:', error);
 			process.exit(UNCAUGHT_FATAL_EXCEPTION);
 		});
 	} else {
-		build().catch((error) => {
+		build().catch((error: unknown) => {
 			console.error('❌ Build script failed:', error);
 			process.exit(UNCAUGHT_FATAL_EXCEPTION);
 		});

@@ -13,8 +13,8 @@ const ADDING_TO_PORT_NUMBER = 1;
 const ONE_SECOND_DELAY = 1000;
 
 // Get the directory name
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const fileName = fileURLToPath(import.meta.url);
+const dirName = path.dirname(fileName);
 
 let serverProcess: ChildProcess | null = null; // Variable to hold the server process
 let livereloadServer: ReturnType<typeof livereload.createServer> | null = null; // Variable to hold the livereload server
@@ -83,7 +83,7 @@ const start = async (): Promise<void> => {
 	if (process.env.NODE_ENV === 'development') {
 		// Start livereload server
 		livereloadServer = livereload.createServer();
-		livereloadServer.watch(path.join(__dirname, 'public'));
+		livereloadServer.watch(path.join(dirName, 'public'));
 
 		// Watch for changes in JS and SCSS files
 		const watcher = chokidar.watch('src/**/*.{js,ts,scss}', {
@@ -133,7 +133,7 @@ const sanitizeError = (error: Error & Record<string, unknown>): object => {
 };
 
 // Start the build and server process
-start().catch((error: Error) => {
+start().catch((error: unknown) => {
 	// Log sanitized error
 	console.error('Start script failed:', sanitizeError(error as Error & Record<string, unknown>));
 	process.exit(UNCAUGHT_FATAL_EXCEPTION);
