@@ -106,7 +106,7 @@ const start = async (): Promise<void> => {
 		});
 
 		// Handle watcher error event
-		watcher.on('error', (error: Error) => {
+		watcher.on('error', (error: unknown) => {
 			console.error('Watcher error:', sanitizeError(error as Error & { [key: string]: unknown }));
 		});
 	}
