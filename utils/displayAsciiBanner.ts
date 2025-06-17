@@ -14,7 +14,7 @@ import type { Config } from '#types/config-types.js';
  */
 const displayAsciiBanner = (config: Config): void => {
     figlet(config.SERVICE_NAME ?? 'Service', (err: Error | null, data?: string  ) => {
-        if (err ?? !data) {
+        if (err !== null || data === undefined ) {
             console.error('❌ Error generating ASCII art:', err);
             return;
         }
