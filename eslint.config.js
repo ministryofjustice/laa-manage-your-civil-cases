@@ -109,7 +109,8 @@ export default [
       'middleware/setupCsrf.ts', // Linting issues fail on: `@typescript-eslint/no-unsafe-return`, `@typescript-eslint/no-unsafe-member-access`
       'start-server.ts', // Linting issues fail on: `@typescript-eslint/no-unsafe-type-assertion`, `@typescript-eslint/no-misused-promises`, `@typescript-eslint/no-misused-spread`
       'utils/helmetSetup.ts', // Linting issues fail on: `@typescript-eslint/no-unsafe-type-assertion`
-      'utils/nunjucksSetup.ts' // Linting issues fail on: `@typescript-eslint/no-unsafe-type-assertion`
+      'utils/nunjucksSetup.ts', // Linting issues fail on: `@typescript-eslint/no-unsafe-type-assertion`
+      'utils/displayAsciiBanner.ts' // Linting issues fail on: `@typescript-eslint/strict-boolean-expressions`, `@typescript-eslint/prefer-nullish-coalescing`
     ]
   },
 ];
