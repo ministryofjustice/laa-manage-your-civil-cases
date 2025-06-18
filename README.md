@@ -53,7 +53,7 @@ Express.js is a fast, unopinionated, minimalist web framework for Node.js.
 
 ## Prerequisites
 
-- node stable version [24.1.0](https://nodejs.org/en/blog/release/v24.1.0/)
+- node stable version [24.2.0](https://nodejs.org/en/blog/release/v24.2.0/)
 - [Yarn 4.9.2](https://yarnpkg.com/) package manager (see installation instructions below)
 - TypeScript 5.8.3
 
