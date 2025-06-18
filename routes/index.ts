@@ -1,5 +1,6 @@
 import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
+import config from '#config.js';
 
 // Create a new router
 const router = express.Router();
@@ -9,6 +10,11 @@ const UNSUCCESSFUL_REQUEST = 500;
 /* GET home page. */
 router.get('/', function (req: Request, res: Response): void {
 	res.render('main/index');
+});
+
+/* GET all your new cases. */
+router.get('/cases-new', function (req: Request, res: Response): void {
+	res.render('cases/new/new');
 });
 
 // Make an API call with `Axios` and `middleware-axios`
