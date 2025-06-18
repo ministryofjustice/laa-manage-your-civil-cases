@@ -10,6 +10,8 @@ import config from '#config.js';
 import indexRouter from '#routes/index.js';
 import livereload from 'connect-livereload';
 
+const TRUST_FIRST_PROXY = 1;
+
 /**
  * Creates and configures an Express application.
  * Then starts the server listening on the configured port.
@@ -35,7 +37,7 @@ const createApp = (): express.Application => {
 		 * @returns {boolean} True if compression should be applied, false otherwise
 		 */
 		filter: (req: Request, res: Response): boolean => {
-			if (req.headers['x-no-compression']) {
+			if ('x-no-compression' in req.headers) {
 				return false;
 			}
 			return compression.filter(req, res);
@@ -49,7 +51,7 @@ const createApp = (): express.Application => {
 	app.disable('x-powered-by');
 
 	// Set up cookie security for sessions
-	app.set('trust proxy', 1);
+	app.set('trust proxy', TRUST_FIRST_PROXY);
 	app.use(session(config.session));
 
 	// Set up Cross-Site Request Forgery (CSRF) protection
@@ -93,7 +95,7 @@ const createApp = (): express.Application => {
 };
 
 // Self-execute the app directly to allow app.js to be executed directly
-const app = createApp();
+createApp();
 
 // Export the createApp function for testing/import purposes
 export default createApp;

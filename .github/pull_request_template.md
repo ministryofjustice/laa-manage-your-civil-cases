@@ -1,12 +1,9 @@
-[Jira ticket (if applicable)](https://dsdmoj.atlassian.net/browse/EL-XXXX)
+[Jira ticket (if applicable)](https://dsdmoj.atlassian.net/browse/EL-XXX)
 
 ## What changed and Why?
 
 <!-- EXAMPLE, fill this in
-
 I have added/removed/altered:
-
-
 -->
 
 ## Guidance to review (optional)
