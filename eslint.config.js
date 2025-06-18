@@ -2,10 +2,15 @@ import globals from 'globals';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
+import love from 'eslint-config-love';
 
 // Alter this config file to meet your project's needs and standards.
 
 export default [
+  {
+    ...love,
+    files: ['**/*.js', '**/*.ts'],
+  },
   // JS/Default config (no parser override)
   {
     languageOptions: {
@@ -34,7 +39,6 @@ export default [
     },
     plugins: {
       jsdoc: jsdocPlugin,
-      prettier: ['@eslint/plugin-prettier'],
       '@typescript-eslint': tseslint,
     },
     rules: {
@@ -42,6 +46,7 @@ export default [
       'linebreak-style': 'off', // Prettier is handling this
       'quotes': 'off', // Prettier is handling this
       'semi': 'off', // Prettier is handling this
+      'no-console': 'off', // Stops complaining about putting messages in the console
       'jsdoc/check-alignment': 'error',
       'jsdoc/check-param-names': 'error',
       'jsdoc/check-tag-names': 'error',
@@ -97,7 +102,15 @@ export default [
     ignores: [
       'node_modules/*',
       'public/*',
-      'tests/**/*.spec.ts'
-    ],
+      'tests/**/*.spec.ts',
+      'docs/source/javascripts/application.js', // Parsing error this file was not found by the project service. Consider either including it in the `tsconfig.json` or including it in `allowDefaultProject`
+      'eslint.config.js', // Parsing error this file was not found by the project service. Consider either including it in the `tsconfig.json` or including it in `allowDefaultProject`
+      'esbuild.ts',// Linting issues fail on: `@typescript-eslint/no-invalid-void-type`, `@typescript-eslint/consistent-type-assertions`, `@typescript-eslint/no-misused-promises`
+      'middleware/setupCsrf.ts', // Linting issues fail on: `@typescript-eslint/no-unsafe-return`, `@typescript-eslint/no-unsafe-member-access`
+      'start-server.ts', // Linting issues fail on: `@typescript-eslint/no-unsafe-type-assertion`, `@typescript-eslint/no-misused-promises`, `@typescript-eslint/no-misused-spread`
+      'utils/helmetSetup.ts', // Linting issues fail on: `@typescript-eslint/no-unsafe-type-assertion`
+      'utils/nunjucksSetup.ts', // Linting issues fail on: `@typescript-eslint/no-unsafe-type-assertion`
+      'utils/displayAsciiBanner.ts' // Linting issues fail on: `@typescript-eslint/strict-boolean-expressions`, `@typescript-eslint/prefer-nullish-coalescing`
+    ]
   },
 ];

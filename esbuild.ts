@@ -10,7 +10,10 @@ import type { SassPluginOptions } from './types/sass-plugin-types.js';
 
 // Load environment variables
 dotenv.config();
-let buildNumber = getBuildNumber();
+const buildNumber = getBuildNumber();
+const NO_MORE_ASYNC_OPERATIONS = 0;
+const UNCAUGHT_FATAL_EXCEPTION = 1;
+const SECOND_IN_ARRAY = 1;
 
 /**
  * Copies GOV.UK (fonts and images from `govuk-frontend`), MOJ Frontend (images from `@ministryofjustice/frontend`) and other assets
@@ -38,7 +41,7 @@ const copyAssets = async (): Promise<void> => {
 		console.log('✅ GOV.UK assets (including rebrand) & MOJ Frontend assets copied successfully.');
 	} catch (error) {
 		console.error('❌ Failed to copy assets:', error);
-		process.exit(1);
+		process.exit(UNCAUGHT_FATAL_EXCEPTION);
 	}
 };
 
@@ -74,7 +77,7 @@ const externalModules: string[] = [
  * @param {boolean} watch - Whether to enable watch mode
  * @returns {Promise<esbuild.BuildContext | void>} Build context if watching, void otherwise
  */
-const buildScss = async (watch: boolean = false): Promise<esbuild.BuildContext | void> => {
+const buildScss = async (watch = false): Promise<esbuild.BuildContext | void> => {
 	const options: esbuild.BuildOptions = {
 		entryPoints: ['src/scss/main.scss'],
 		bundle: true,
@@ -110,9 +113,9 @@ const buildScss = async (watch: boolean = false): Promise<esbuild.BuildContext |
 		await context.watch();
 		return context;
 	} else {
-		await esbuild.build(options).catch((error) => {
+		await esbuild.build(options).catch((error: unknown) => {
 			console.error('❌ SCSS build failed:', error);
-			process.exit(1);
+			process.exit(UNCAUGHT_FATAL_EXCEPTION);
 		});
 	}
 };
@@ -123,7 +126,7 @@ const buildScss = async (watch: boolean = false): Promise<esbuild.BuildContext |
  * @param {boolean} watch - Whether to enable watch mode
  * @returns {Promise<esbuild.BuildContext | void>} Build context if watching, void otherwise
  */
-const buildAppJs = async (watch: boolean = false): Promise<esbuild.BuildContext | void> => {
+const buildAppJs = async (watch = false): Promise<esbuild.BuildContext | void> => {
 	const options: esbuild.BuildOptions = {
 		entryPoints: ['src/app.ts'],
 		bundle: true,
@@ -146,9 +149,9 @@ const buildAppJs = async (watch: boolean = false): Promise<esbuild.BuildContext 
 		await context.watch();
 		return context;
 	} else {
-		await esbuild.build(options).catch((error) => {
+		await esbuild.build(options).catch((error: unknown) => {
 			console.error('❌ app.js build failed:', error);
-			process.exit(1);
+			process.exit(UNCAUGHT_FATAL_EXCEPTION);
 		});
 	}
 };
@@ -159,7 +162,7 @@ const buildAppJs = async (watch: boolean = false): Promise<esbuild.BuildContext 
  * @param {boolean} watch - Whether to enable watch mode
  * @returns {Promise<esbuild.BuildContext | void>} Build context if watching, void otherwise
  */
-const buildCustomJs = async (watch: boolean = false): Promise<esbuild.BuildContext | void> => {
+const buildCustomJs = async (watch = false): Promise<esbuild.BuildContext | void> => {
 	const options: esbuild.BuildOptions = {
 		entryPoints: ['src/scripts/custom.ts'],
 		bundle: true,
@@ -176,9 +179,9 @@ const buildCustomJs = async (watch: boolean = false): Promise<esbuild.BuildConte
 		await context.watch();
 		return context;
 	} else {
-		await esbuild.build(options).catch((error) => {
+		await esbuild.build(options).catch((error: unknown) => {
 			console.error('❌ custom.js build failed:', error);
-			process.exit(1);
+			process.exit(UNCAUGHT_FATAL_EXCEPTION);
 		});
 	}
 };
@@ -189,7 +192,7 @@ const buildCustomJs = async (watch: boolean = false): Promise<esbuild.BuildConte
  * @param {boolean} watch - Whether to enable watch mode
  * @returns {Promise<esbuild.BuildContext | void>} Build context if watching, void otherwise
  */
-const buildFrontendPackages = async (watch: boolean = false): Promise<esbuild.BuildContext | void> => {
+const buildFrontendPackages = async (watch = false): Promise<esbuild.BuildContext | void> => {
 	const options: esbuild.BuildOptions = {
 		entryPoints: [
 			'src/scripts/frontend-packages-entry.ts'
@@ -209,9 +212,9 @@ const buildFrontendPackages = async (watch: boolean = false): Promise<esbuild.Bu
 		await context.watch();
 		return context;
 	} else {
-		await esbuild.build(options).catch((error) => {
+		await esbuild.build(options).catch((error: unknown) => {
 			console.error('❌ GOV.UK frontend and/or MOJ frontend JS build failed:', error);
-			process.exit(1);
+			process.exit(UNCAUGHT_FATAL_EXCEPTION);
 		});
 	}
 };
@@ -249,14 +252,14 @@ const watchBuild = async (): Promise<void> => {
 		// Keep the process alive
 		process.on('SIGINT', async () => {
 			console.log('\n🛑 Stopping watch mode...');
-			await Promise.all(contexts.filter(Boolean).map(context => (context as esbuild.BuildContext).dispose()));
+			await Promise.all(contexts.filter(Boolean).map(async context => { await (context as esbuild.BuildContext).dispose(); }));
 			assetWatcher.close();
-			process.exit(0);
+			process.exit(NO_MORE_ASYNC_OPERATIONS);
 		});
 
 	} catch (error) {
 		console.error('❌ Watch mode setup failed:', error);
-		process.exit(1);
+		process.exit(UNCAUGHT_FATAL_EXCEPTION);
 	}
 };
 
@@ -283,7 +286,7 @@ const build = async (): Promise<void> => {
 		console.log('✅ Build completed successfully.');
 	} catch (error) {
 		console.error('❌ Build process failed:', error);
-		process.exit(1);
+		process.exit(UNCAUGHT_FATAL_EXCEPTION);
 	}
 };
 
@@ -291,18 +294,18 @@ const build = async (): Promise<void> => {
 export { build, watchBuild };
 
 // Run based on command line arguments
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (import.meta.url === `file://${process.argv[SECOND_IN_ARRAY]}`) {
 	const isWatch = process.argv.includes('--watch');
 
 	if (isWatch) {
-		watchBuild().catch((error) => {
+		watchBuild().catch((error: unknown) => {
 			console.error('❌ Watch mode failed:', error);
-			process.exit(1);
+			process.exit(UNCAUGHT_FATAL_EXCEPTION);
 		});
 	} else {
-		build().catch((error) => {
+		build().catch((error: unknown) => {
 			console.error('❌ Build script failed:', error);
-			process.exit(1);
+			process.exit(UNCAUGHT_FATAL_EXCEPTION);
 		});
 	}
 }

@@ -2,6 +2,8 @@ import { create } from 'middleware-axios';
 import type { Request, Response, NextFunction } from 'express';
 import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
 
+const DEFAULT_TIMEOUT = 5000;
+
 // Extend Express Request to include our axiosMiddleware
 declare global {
   namespace Express {
@@ -22,14 +24,14 @@ declare global {
  * @returns {void}
  */
 export const axiosMiddleware = (req: Request, res: Response, next: NextFunction): void => {
-  const protocol = req.protocol;
+  const {protocol} = req;
   const host = req.get('host');
   const baseURL = `${protocol}://${host}`;
 
   // Create wrapped instance of axios to use normal axios instance
   req.axiosMiddleware = create({
-    baseURL: baseURL,
-    timeout: 5000, // Set a timeout value if needed
+    baseURL,
+    timeout: DEFAULT_TIMEOUT, // Set a timeout value if needed
     headers: {
       'Content-Type': 'application/json',
       // You can add other default headers here if needed
