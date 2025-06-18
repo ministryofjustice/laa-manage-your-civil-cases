@@ -75,9 +75,9 @@ const externalModules: string[] = [
  * Builds SCSS files with optional watch capability.
  * @async
  * @param {boolean} watch - Whether to enable watch mode
- * @returns {Promise<esbuild.BuildContext | void>} Build context if watching, void otherwise
+ * @returns {Promise<esbuild.BuildContext | undefined>} Build context if watching, undefined otherwise
  */
-const buildScss = async (watch = false): Promise<esbuild.BuildContext | void> => {
+const buildScss = async (watch = false): Promise<esbuild.BuildContext | undefined> => {
 	const options: esbuild.BuildOptions = {
 		entryPoints: ['src/scss/main.scss'],
 		bundle: true,
@@ -98,7 +98,7 @@ const buildScss = async (watch = false): Promise<esbuild.BuildContext | void> =>
 					source
 						.replace(/url\(["']?\/assets\/fonts\/([^"')]+)["']?\)/g, 'url("/assets/fonts/$1")')
 						.replace(/url\(["']?\/assets\/images\/([^"')]+)["']?\)/g, 'url("/assets/images/$1")')
-			} as SassPluginOptions)
+			} satisfies SassPluginOptions)
 		],
 		loader: {
 			'.scss': 'css',
@@ -117,6 +117,7 @@ const buildScss = async (watch = false): Promise<esbuild.BuildContext | void> =>
 			console.error('❌ SCSS build failed:', error);
 			process.exit(UNCAUGHT_FATAL_EXCEPTION);
 		});
+		return undefined;
 	}
 };
 
@@ -124,9 +125,9 @@ const buildScss = async (watch = false): Promise<esbuild.BuildContext | void> =>
  * Builds `app.js` with optional watch capability.
  * @async
  * @param {boolean} watch - Whether to enable watch mode
- * @returns {Promise<esbuild.BuildContext | void>} Build context if watching, void otherwise
+ * @returns {Promise<esbuild.BuildContext | undefined>} Build context if watching, undefined otherwise
  */
-const buildAppJs = async (watch = false): Promise<esbuild.BuildContext | void> => {
+const buildAppJs = async (watch = false): Promise<esbuild.BuildContext | undefined> => {
 	const options: esbuild.BuildOptions = {
 		entryPoints: ['src/app.ts'],
 		bundle: true,
@@ -153,6 +154,7 @@ const buildAppJs = async (watch = false): Promise<esbuild.BuildContext | void> =
 			console.error('❌ app.js build failed:', error);
 			process.exit(UNCAUGHT_FATAL_EXCEPTION);
 		});
+		return undefined;
 	}
 };
 
@@ -160,9 +162,9 @@ const buildAppJs = async (watch = false): Promise<esbuild.BuildContext | void> =
  * Builds `custom.js` with optional watch capability.
  * @async
  * @param {boolean} watch - Whether to enable watch mode
- * @returns {Promise<esbuild.BuildContext | void>} Build context if watching, void otherwise
+ * @returns {Promise<esbuild.BuildContext | undefined>} Build context if watching, undefined otherwise
  */
-const buildCustomJs = async (watch = false): Promise<esbuild.BuildContext | void> => {
+const buildCustomJs = async (watch = false): Promise<esbuild.BuildContext | undefined> => {
 	const options: esbuild.BuildOptions = {
 		entryPoints: ['src/scripts/custom.ts'],
 		bundle: true,
@@ -183,6 +185,7 @@ const buildCustomJs = async (watch = false): Promise<esbuild.BuildContext | void
 			console.error('❌ custom.js build failed:', error);
 			process.exit(UNCAUGHT_FATAL_EXCEPTION);
 		});
+		return undefined;
 	}
 };
 
@@ -190,9 +193,9 @@ const buildCustomJs = async (watch = false): Promise<esbuild.BuildContext | void
  * Build GOV.UK frontend & MOJ frontend files separately with optional watch capability.
  * @async
  * @param {boolean} watch - Whether to enable watch mode
- * @returns {Promise<esbuild.BuildContext | void>} Build context if watching, void otherwise
+ * @returns {Promise<esbuild.BuildContext | undefined>} Build context if watching, undefined otherwise
  */
-const buildFrontendPackages = async (watch = false): Promise<esbuild.BuildContext | void> => {
+const buildFrontendPackages = async (watch = false): Promise<esbuild.BuildContext | undefined> => {
 	const options: esbuild.BuildOptions = {
 		entryPoints: [
 			'src/scripts/frontend-packages-entry.ts'
@@ -216,6 +219,7 @@ const buildFrontendPackages = async (watch = false): Promise<esbuild.BuildContex
 			console.error('❌ GOV.UK frontend and/or MOJ frontend JS build failed:', error);
 			process.exit(UNCAUGHT_FATAL_EXCEPTION);
 		});
+		return undefined;
 	}
 };
 
@@ -243,21 +247,43 @@ const watchBuild = async (): Promise<void> => {
 			persistent: true
 		});
 
-		assetWatcher.on('change', async () => {
-			await copyAssets();
-		});
+		/**
+		 * Handles asset file changes by copying assets.
+		 * @returns {void}
+		 */
+		const handleAssetChange = (): void => {
+			copyAssets().catch((error: unknown) => {
+				console.error('❌ Failed to copy assets on change:', error);
+			});
+		};
+
+		assetWatcher.on('change', handleAssetChange);
 
 		console.log('✅ Watch mode started successfully. Watching for file changes...');
 
 		// Keep the process alive
-		process.on('SIGINT', async () => {
+		/**
+		 * Handles SIGINT signal for graceful shutdown.
+		 * @returns {void}
+		 */
+		const handleSigint = (): void => {
 			console.log('\n🛑 Stopping watch mode...');
-			await Promise.all(contexts.filter(Boolean).map(async context => { await (context as esbuild.BuildContext).dispose(); }));
-			assetWatcher.close();
-			process.exit(NO_MORE_ASYNC_OPERATIONS);
-		});
+			void Promise.all(
+				contexts
+					.filter((context): context is esbuild.BuildContext => context !== undefined)
+					.map(async (context) => { await context.dispose(); })
+			).then(() => {
+				void assetWatcher.close();
+				process.exit(NO_MORE_ASYNC_OPERATIONS);
+			}).catch((error: unknown) => {
+				console.error('❌ Error during cleanup:', error);
+				process.exit(UNCAUGHT_FATAL_EXCEPTION);
+			});
+		};
 
-	} catch (error) {
+		process.on('SIGINT', handleSigint);
+
+	} catch (error: unknown) {
 		console.error('❌ Watch mode setup failed:', error);
 		process.exit(UNCAUGHT_FATAL_EXCEPTION);
 	}
@@ -284,7 +310,7 @@ const build = async (): Promise<void> => {
 		]);
 
 		console.log('✅ Build completed successfully.');
-	} catch (error) {
+	} catch (error: unknown) {
 		console.error('❌ Build process failed:', error);
 		process.exit(UNCAUGHT_FATAL_EXCEPTION);
 	}
