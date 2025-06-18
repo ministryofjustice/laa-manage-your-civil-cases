@@ -1,6 +1,5 @@
 import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
-import config from '#config.js';
 
 // Create a new router
 const router = express.Router();
