@@ -14,16 +14,11 @@ import { getLatestBuildFile } from './buildHelper.js';
 export const nunjucksSetup = (app: Application): void => {
   const appInstance = app;
   appInstance.set('view engine', 'njk');
-  
-  // Define a locals property that includes asset_path and getAsset
-  interface AppLocals {
-    asset_path: string;
-    getAsset: (prefix: string, ext: string) => string;
-  }
-  
+
   // Set asset path in locals
-  (appInstance.locals as AppLocals).asset_path = '/assets/';
-  
+  const locals = appInstance.locals as Record<string, unknown>;
+  locals.asset_path = '/assets/';
+
   /**
    * Retrieves the latest build file for the given prefix and extension.
    *
@@ -31,7 +26,7 @@ export const nunjucksSetup = (app: Application): void => {
    * @param {string} ext - The extension of the asset file (e.g., 'js' or 'css').
    * @returns {string} The path to the latest build file.
    */
-  (appInstance.locals as AppLocals).getAsset = (prefix: string, ext: string): string => {
+  locals.getAsset = (prefix: string, ext: string): string => {
     const directory = ext === 'js' || ext === 'min.js' ? 'public/js' : 'public/css';
     return getLatestBuildFile(directory, prefix, ext);
   };
