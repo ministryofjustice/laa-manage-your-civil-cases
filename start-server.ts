@@ -56,7 +56,7 @@ const startServer = (port: number): void => {
 				// If the port is in use, try to restart the server on the next port
 				setTimeout(() => { startServer(port + ADDING_TO_PORT_NUMBER); }, ONE_SECOND_DELAY);
 			} else {
-				console.error('Server process error:', sanitizeError(error as Error & Record<string, unknown>));
+				console.error('Server process error:', sanitizeError(error));
 			}
 		});
 	}, ONE_SECOND_DELAY); // 1-second delay to ensure the port is released
@@ -92,16 +92,22 @@ const start = async (): Promise<void> => {
 		});
 
 		// Handle file change event
-		watcher.on('change', async (filePath: string) => {
+		watcher.on('change', (filePath: string) => {
 			console.log(`File ${filePath} has been changed. Rebuilding...`);
-			// Rebuild the project
-			await build();
-			// Refresh livereload server
-			if (livereloadServer != null) {
-				livereloadServer.refresh('/');
-			}
-			// Restart the server
-			startServer(config.app.port);
+			// Rebuild the project and handle errors
+			void (async () => {
+				try {
+					await build();
+					// Refresh livereload server
+					if (livereloadServer != null) {
+						livereloadServer.refresh('/');
+					}
+					// Restart the server
+					startServer(config.app.port);
+				} catch (error) {
+					console.error('Error during rebuild:', sanitizeError(error));
+				}
+			})();
 		});
 
 		// Handle watcher ready event
@@ -111,7 +117,7 @@ const start = async (): Promise<void> => {
 
 		// Handle watcher error event
 		watcher.on('error', (error: unknown) => {
-			console.error('Watcher error:', sanitizeError(error as Error & Record<string, unknown>));
+			console.error('Watcher error:', sanitizeError(error));
 		});
 	}
 };
@@ -120,21 +126,32 @@ const start = async (): Promise<void> => {
  * Sanitizes error messages to remove sensitive information before logging.
  * This function can be customized to remove or mask specific details.
  *
- * @param {Error} error - The error object to sanitize.
+ * @param {unknown} error - The error object to sanitize.
  * @returns {object} A sanitized version of the error object.
  */
-const sanitizeError = (error: Error & Record<string, unknown>): object => {
-	// Example: Remove stack traces or any sensitive data from the error object
-	const sanitizedError = { ...error };
-	delete sanitizedError.stack; // Remove stack trace
-	// Remove any other sensitive information if necessary
-	sanitizedError.message &&= sanitizedError.message.replace(/sensitive information/g, '[REDACTED]');
-	return sanitizedError;
+const sanitizeError = (error: unknown): object => {
+	// Type guard to check if error is an Error object
+	if (error instanceof Error) {
+		const sanitizedError: Record<string, unknown> = {
+			name: error.name,
+			message: error.message
+		};
+
+		// Remove any other sensitive information if necessary
+		if (typeof sanitizedError.message === 'string') {
+			sanitizedError.message = sanitizedError.message.replace(/sensitive information/g, '[REDACTED]');
+		}
+
+		return sanitizedError;
+	}
+
+	// If it's not an Error instance, return a generic error object
+	return { message: 'An unknown error occurred' };
 };
 
 // Start the build and server process
 start().catch((error: unknown) => {
 	// Log sanitized error
-	console.error('Start script failed:', sanitizeError(error as Error & Record<string, unknown>));
+	console.error('Start script failed:', sanitizeError(error));
 	process.exit(UNCAUGHT_FATAL_EXCEPTION);
 });
