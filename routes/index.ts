@@ -12,8 +12,8 @@ router.get('/', function (req: Request, res: Response): void {
 });
 
 /* GET all your new cases. */
-router.get('/cases-new', function (req: Request, res: Response): void {
-	res.render('cases/new/new');
+router.get('/cases/new', function (req: Request, res: Response): void {
+	res.render('cases/new');
 });
 
 // Make an API call with `Axios` and `middleware-axios`
