@@ -105,12 +105,6 @@ export default [
       'tests/**/*.spec.ts',
       'docs/source/javascripts/application.js', // Parsing error this file was not found by the project service. Consider either including it in the `tsconfig.json` or including it in `allowDefaultProject`
       'eslint.config.js', // Parsing error this file was not found by the project service. Consider either including it in the `tsconfig.json` or including it in `allowDefaultProject`
-      'esbuild.ts',// Linting issues fail on: `@typescript-eslint/no-invalid-void-type`, `@typescript-eslint/consistent-type-assertions`, `@typescript-eslint/no-misused-promises`
-      'middleware/setupCsrf.ts', // Linting issues fail on: `@typescript-eslint/no-unsafe-return`, `@typescript-eslint/no-unsafe-member-access`
-      'start-server.ts', // Linting issues fail on: `@typescript-eslint/no-unsafe-type-assertion`, `@typescript-eslint/no-misused-promises`, `@typescript-eslint/no-misused-spread`
-      'utils/helmetSetup.ts', // Linting issues fail on: `@typescript-eslint/no-unsafe-type-assertion`
-      'utils/nunjucksSetup.ts', // Linting issues fail on: `@typescript-eslint/no-unsafe-type-assertion`
-      'utils/displayAsciiBanner.ts' // Linting issues fail on: `@typescript-eslint/strict-boolean-expressions`, `@typescript-eslint/prefer-nullish-coalescing`
     ]
   },
 ];

@@ -4,6 +4,17 @@ import type { Application, Request, Response, NextFunction } from 'express';
 import '#types/csrf-types.js';
 
 /**
+ * Type guard to check if an object has a _csrf property
+ * @param {unknown} body - The request body to check
+ * @returns {boolean} True if body has _csrf property
+ */
+const hasCSRFToken = (body: unknown): body is { _csrf: unknown } =>
+    body !== null &&
+    body !== undefined &&
+    typeof body === 'object' &&
+    '_csrf' in body;
+
+/**
  * Sets up CSRF protection for an Express application.
  *
  * - Protects against CSRF attacks using `csrfSync`.
@@ -19,8 +30,13 @@ export const setupCsrf = (app: Application): void => {
          * @param {Request} req - The incoming request object.
          * @returns {string|undefined} The CSRF token if present, otherwise undefined.
          */
-        getTokenFromRequest: (req: Request): string | undefined => 
-            req.body?._csrf ?? undefined,
+        getTokenFromRequest: (req: Request): string | undefined => {
+            // Type guard to ensure req.body exists and has _csrf property
+            if (hasCSRFToken(req.body)) {
+                return typeof req.body._csrf === 'string' ? req.body._csrf : undefined;
+            }
+            return undefined;
+        },
     });
 
     /**
