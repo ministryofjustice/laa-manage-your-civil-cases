@@ -6,6 +6,7 @@
 import helmet from 'helmet';
 import crypto from 'crypto';
 import type { Request, Response, NextFunction, Application } from 'express';
+import type { IncomingMessage, ServerResponse } from 'http';
 
 const RANDOMBYTES = 16;
 
@@ -36,8 +37,15 @@ export const helmetSetup = (app: Application): void => {
           defaultSrc: ["'self'"],
           scriptSrc: [
             "'self'",
-            // Use type casting to make TypeScript happy with the function in the array
-            ((req: Request, res: Response) => `'nonce-${res.locals.cspNonce}'`) as unknown as string
+            // Dynamic nonce function for CSP - using the correct helmet function signature
+            (req: IncomingMessage, res: ServerResponse) => {
+              // Type guard to check if res has locals property (Express response)
+              if ('locals' in res && typeof res.locals === 'object' && res.locals !== null) {
+                const cspNonce = 'cspNonce' in res.locals ? res.locals.cspNonce : undefined;
+                return typeof cspNonce === 'string' ? `'nonce-${cspNonce}'` : "'unsafe-inline'";
+              }
+              return "'unsafe-inline'";
+            }
           ],
           styleSrc: ["'self'", "'unsafe-inline'"], // Allow inline styles if needed
           fontSrc: ["'self'", "data:"], // Allow data: URIs for fonts
