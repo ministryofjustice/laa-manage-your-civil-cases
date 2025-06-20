@@ -1,0 +1,23 @@
+/**
+ * Server-side Tab Navigation Component
+ *
+ * Completely generic solution that works with any tab names.
+ * No need to add CSS for new tabs - it works automatically!
+ *
+ * Usage:
+ * <div data-active-tab="tabname">
+ *   <div class="tab-content" data-tab-id="tabname">
+ *     Content
+ *   </div>
+ * </div>
+ */
+
+/* Generic tab content styling - works with any container */
+.tab-content {
+	display: none;
+
+	/* Show content when it has the 'show' class */
+	&.show {
+		display: block;
+	}
+}

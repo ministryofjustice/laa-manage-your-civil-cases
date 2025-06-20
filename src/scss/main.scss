@@ -1,2 +1,5 @@
-@import "govuk-frontend/dist/govuk/index";
-@import "@ministryofjustice/frontend/moj/all";
+@use "govuk-frontend/dist/govuk/index";
+@use "@ministryofjustice/frontend/moj/all";
+
+// Custom components
+@use "components/tab-navigation";

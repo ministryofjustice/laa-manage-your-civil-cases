@@ -1,20 +1,20 @@
 import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
+import yourCasesRouter from './yourCases.js';
 
 // Create a new router
 const router = express.Router();
 const SUCCESSFUL_REQUEST = 200;
 const UNSUCCESSFUL_REQUEST = 500;
 
-/* GET home page. */
+/* GET home page - redirect to cases. */
 router.get('/', function (req: Request, res: Response): void {
-	res.render('main/index');
+	res.redirect('/cases/new');
 });
 
-/* GET all your new cases. */
-router.get('/cases/new', function (req: Request, res: Response): void {
-	res.render('cases/new');
-});
+// Mount the cases routes
+router.use('/cases', yourCasesRouter);
+
 
 // Make an API call with `Axios` and `middleware-axios`
 // GET users from external API
