@@ -1,0 +1,56 @@
+{% extends "base.njk" %}
+
+{% block content %}
+  {#
+    Cases page with server-side tab navigation
+    Using the reusable tabComponent macro for clean, maintainable tab implementation
+  #}
+
+  {# Import the tabComponent macro #}
+  {%- from "components/tabComponent.njk" import tabComponent -%}
+
+  {# Main page heading - changes based on active tab #}
+  <h1 class="govuk-heading-xl" id="page-heading">
+    {%- if activeTab == 'opened' -%}
+        Opened cases
+      {%- elif activeTab == 'accepted' -%}
+        Accepted cases
+      {%- elif activeTab == 'closed' -%}
+        Closed cases
+      {%- else -%}
+        New cases
+      {%- endif -%}
+  </h1>
+
+  {# Render the complete tab system using the reusable component #}
+  {{ tabComponent({
+    activeTab: activeTab,
+    containerId: "your-cases-tab-container",
+    tabs: [
+      {
+        id: "new",
+        text: "New",
+        href: "/cases/new",
+        partial: "cases/_new-partial.njk"
+      },
+      {
+        id: "opened",
+        text: "Opened",
+        href: "/cases/opened",
+        partial: "cases/_opened-partial.njk"
+      },
+      {
+        id: "accepted",
+        text: "Accepted",
+        href: "/cases/accepted",
+        partial: "cases/_accepted-partial.njk"
+      },
+      {
+        id: "closed",
+        text: "Closed",
+        href: "/cases/closed",
+        partial: "cases/_closed-partial.njk"
+      }
+    ]
+  }) }}
+{% endblock %}
