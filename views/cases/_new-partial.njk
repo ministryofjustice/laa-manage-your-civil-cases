@@ -1,3 +1,29 @@
-<h2 class="govuk-heading-l">New cases content</h2>
-<!-- Add your new cases content here -->
-<p class="govuk-body">This is the new cases section.</p>
+{#
+  New Cases Content Partial
+  Displays sortable table of new cases
+#}
+
+{# Import the sortable table component #}
+{%- from "components/sortableTable.njk" import sortableTable -%}
+
+{% if casesData and casesData.length > 0 %}
+  {# Render the sortable table #}
+  {{ sortableTable({
+      id: "new-cases-table",
+      data: casesData,
+      columns: [
+        { key: "fullName", text: "Name", link: "#" },
+        { key: "caseReference", text: "Case ID" },
+				{ key: "dateOfBirth", text: "Date of Birth" },
+        { key: "refCode", text: "Details" },
+        { key: "dateReceived", text: "Date Received", sortable: true, classes: "govuk-table__header--numeric" , cellClasses: "govuk-table__cell--numeric" }
+      ],
+      sortBy: "dateReceived",
+      sortOrder: sortOrder or "asc",
+      basePath: "/cases/new"
+    }) }}
+{% else %}
+  <div class="govuk-inset-text">
+    <p>No new cases found.</p>
+  </div>
+{% endif %}

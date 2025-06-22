@@ -1,3 +1,29 @@
-<h2 class="govuk-heading-l">Closed cases content</h2>
-<!-- Add your closed cases content here -->
-<p class="govuk-body">This is the closed cases section.</p>
+{#
+  Closed Cases Content Partial
+  Displays sortable table of closed cases
+#}
+
+{# Import the sortable table component #}
+{%- from "components/sortableTable.njk" import sortableTable -%}
+
+{% if casesData and casesData.length > 0 %}
+  {# Render the sortable table #}
+  {{ sortableTable({
+      id: "closed-cases-table",
+      data: casesData,
+      columns: [
+        { key: "fullName", text: "Name", link: "#" },
+        { key: "caseReference", text: "Case ID" },
+				{ key: "dateOfBirth", text: "Date of birth" },
+        { key: "refCode", text: "Details" },
+        { key: "dateClosed", text: "Date closed", sortable: true, classes: "govuk-table__header--numeric" , cellClasses: "govuk-table__cell--numeric" }
+      ],
+      sortBy: "dateClosed",
+      sortOrder: sortOrder or "asc",
+      basePath: "/cases/closed"
+    }) }}
+{% else %}
+  <div class="govuk-inset-text">
+    <p>No closed cases found.</p>
+  </div>
+{% endif %}
