@@ -6,7 +6,11 @@
         "dateReceived": "2025-07-06T19:00:00-05:00",
         "dateClosed": "2025-07-10T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1996-10-27"
+        "dateOfBirth": {
+            "month": "Oct",
+            "day": "27",
+            "year": "1996"
+        }
     },
     {
         "fullName": "John Smith",
@@ -15,7 +19,11 @@
         "dateReceived": "2025-07-05T19:00:00-05:00",
         "dateClosed": "2025-07-09T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1982-03-06"
+        "dateOfBirth": {
+            "month": "Mar",
+            "day": "6",
+            "year": "1982"
+        }
     },
     {
         "fullName": "Freddie Evans",
@@ -24,7 +32,11 @@
         "dateReceived": "2025-06-25T19:00:00-05:00",
         "dateClosed": "2025-06-26T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1987-09-09"
+        "dateOfBirth": {
+            "month": "Sep",
+            "day": "9",
+            "year": "1987"
+        }
     },
     {
         "fullName": "Emily Watson",
@@ -33,7 +45,11 @@
         "dateReceived": "2025-06-21T19:00:00-05:00",
         "dateClosed": "2025-06-25T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1977-12-17"
+        "dateOfBirth": {
+            "month": "Dec",
+            "day": "17",
+            "year": "1977"
+        }
     },
     {
         "fullName": "Beau Rivera",
@@ -42,7 +58,11 @@
         "dateReceived": "2025-06-09T19:00:00-05:00",
         "dateClosed": "2025-06-14T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1985-09-23"
+        "dateOfBirth": {
+            "month": "Sep",
+            "day": "23",
+            "year": "1985"
+        }
     },
     {
         "fullName": "Axel Brooks",
@@ -51,7 +71,11 @@
         "dateReceived": "2025-06-02T19:00:00-05:00",
         "dateClosed": "2025-06-07T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1989-02-13"
+        "dateOfBirth": {
+            "month": "Feb",
+            "day": "13",
+            "year": "1989"
+        }
     },
     {
         "fullName": "Braxton Sanders",
@@ -60,7 +84,11 @@
         "dateReceived": "2025-05-20T19:00:00-05:00",
         "dateClosed": "2025-05-25T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1991-01-05"
+        "dateOfBirth": {
+            "month": "Jan",
+            "day": "5",
+            "year": "1991"
+        }
     },
     {
         "fullName": "Kameron Peterson",
@@ -69,7 +97,11 @@
         "dateReceived": "2025-05-15T19:00:00-05:00",
         "dateClosed": "2025-05-20T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1983-04-08"
+        "dateOfBirth": {
+            "month": "Apr",
+            "day": "8",
+            "year": "1983"
+        }
     },
     {
         "fullName": "William Garcia",
@@ -78,7 +110,11 @@
         "dateReceived": "2025-05-10T19:00:00-05:00",
         "dateClosed": "2025-05-15T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1986-12-05"
+        "dateOfBirth": {
+            "month": "Dec",
+            "day": "5",
+            "year": "1986"
+        }
     },
     {
         "fullName": "Jaxon Fisher",
@@ -87,7 +123,11 @@
         "dateReceived": "2025-05-07T19:00:00-05:00",
         "dateClosed": "2025-05-12T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1985-12-08"
+        "dateOfBirth": {
+            "month": "Dec",
+            "day": "8",
+            "year": "1985"
+        }
     },
     {
         "fullName": "Karter Richardson",
@@ -96,7 +136,11 @@
         "dateReceived": "2025-05-01T19:00:00-05:00",
         "dateClosed": "2025-05-06T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1987-06-29"
+        "dateOfBirth": {
+            "month": "Jun",
+            "day": "29",
+            "year": "1987"
+        }
     },
     {
         "fullName": "Cash Ward",
@@ -105,7 +149,11 @@
         "dateReceived": "2025-04-23T19:00:00-05:00",
         "dateClosed": "2025-04-28T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1986-01-17"
+        "dateOfBirth": {
+            "month": "Jan",
+            "day": "17",
+            "year": "1986"
+        }
     },
     {
         "fullName": "Kaiden Cook",
@@ -114,7 +162,11 @@
         "dateReceived": "2025-04-16T19:00:00-05:00",
         "dateClosed": "2025-04-21T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1988-10-12"
+        "dateOfBirth": {
+            "month": "Oct",
+            "day": "12",
+            "year": "1988"
+        }
     },
     {
         "fullName": "Easton Bennett",
@@ -123,7 +175,11 @@
         "dateReceived": "2025-04-09T19:00:00-05:00",
         "dateClosed": "2025-04-14T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1992-07-30"
+        "dateOfBirth": {
+            "month": "Jul",
+            "day": "30",
+            "year": "1992"
+        }
     },
     {
         "fullName": "Isabella Rodriguez",
@@ -132,7 +188,11 @@
         "dateReceived": "2025-04-03T19:00:00-05:00",
         "dateClosed": "2025-04-08T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1993-06-21"
+        "dateOfBirth": {
+            "month": "Jun",
+            "day": "21",
+            "year": "1993"
+        }
     },
     {
         "fullName": "Victoria Thompson",
@@ -141,7 +201,11 @@
         "dateReceived": "2025-03-28T19:00:00-05:00",
         "dateClosed": "2025-04-02T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1991-10-18"
+        "dateOfBirth": {
+            "month": "Oct",
+            "day": "18",
+            "year": "1991"
+        }
     },
     {
         "fullName": "Genesis Kelly",
@@ -150,7 +214,11 @@
         "dateReceived": "2025-03-28T19:00:00-05:00",
         "dateClosed": "2025-04-02T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1986-08-19"
+        "dateOfBirth": {
+            "month": "Aug",
+            "day": "19",
+            "year": "1986"
+        }
     },
     {
         "fullName": "Magnolia Gray",
@@ -159,7 +227,11 @@
         "dateReceived": "2025-03-19T19:00:00-05:00",
         "dateClosed": "2025-03-24T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1991-08-14"
+        "dateOfBirth": {
+            "month": "Aug",
+            "day": "14",
+            "year": "1991"
+        }
     },
     {
         "fullName": "Sienna Woods",
@@ -168,7 +240,11 @@
         "dateReceived": "2025-03-12T19:00:00-05:00",
         "dateClosed": "2025-03-17T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1990-09-22"
+        "dateOfBirth": {
+            "month": "Sep",
+            "day": "22",
+            "year": "1990"
+        }
     },
     {
         "fullName": "Adalynn Cooper",
@@ -177,7 +253,11 @@
         "dateReceived": "2025-03-04T19:00:00-05:00",
         "dateClosed": "2025-03-09T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1990-12-18"
+        "dateOfBirth": {
+            "month": "Dec",
+            "day": "18",
+            "year": "1990"
+        }
     },
     {
         "fullName": "Serenity Price",
@@ -186,7 +266,11 @@
         "dateReceived": "2025-02-24T19:00:00-05:00",
         "dateClosed": "2025-03-01T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1988-04-15"
+        "dateOfBirth": {
+            "month": "Apr",
+            "day": "15",
+            "year": "1988"
+        }
     },
     {
         "fullName": "Journee Cox",
@@ -195,7 +279,11 @@
         "dateReceived": "2025-02-18T19:00:00-05:00",
         "dateClosed": "2025-02-23T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1989-11-04"
+        "dateOfBirth": {
+            "month": "Nov",
+            "day": "4",
+            "year": "1989"
+        }
     },
     {
         "fullName": "Alexander White",
@@ -204,7 +292,11 @@
         "dateReceived": "2025-02-15T19:00:00-05:00",
         "dateClosed": "2025-02-20T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1979-07-03"
+        "dateOfBirth": {
+            "month": "Jul",
+            "day": "3",
+            "year": "1979"
+        }
     },
     {
         "fullName": "Melody Reed",
@@ -213,7 +305,11 @@
         "dateReceived": "2025-02-05T19:00:00-05:00",
         "dateClosed": "2025-02-10T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1984-05-31"
+        "dateOfBirth": {
+            "month": "May",
+            "day": "31",
+            "year": "1984"
+        }
     },
     {
         "fullName": "Raelynn Bailey",
@@ -222,7 +318,11 @@
         "dateReceived": "2025-01-31T19:00:00-05:00",
         "dateClosed": "2025-02-05T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1993-03-07"
+        "dateOfBirth": {
+            "month": "Mar",
+            "day": "7",
+            "year": "1993"
+        }
     },
     {
         "fullName": "Henry Lee",
@@ -231,7 +331,11 @@
         "dateReceived": "2025-01-20T19:00:00-05:00",
         "dateClosed": "2025-01-25T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1978-04-16"
+        "dateOfBirth": {
+            "month": "Apr",
+            "day": "16",
+            "year": "1978"
+        }
     },
     {
         "fullName": "Skylar Watson",
@@ -240,7 +344,11 @@
         "dateReceived": "2025-01-15T19:00:00-05:00",
         "dateClosed": "2025-01-20T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1987-11-26"
+        "dateOfBirth": {
+            "month": "Nov",
+            "day": "26",
+            "year": "1987"
+        }
     },
     {
         "fullName": "Harley Torres",
@@ -249,7 +357,11 @@
         "dateReceived": "2025-01-06T19:00:00-05:00",
         "dateClosed": "2025-01-11T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1994-07-21"
+        "dateOfBirth": {
+            "month": "Jul",
+            "day": "21",
+            "year": "1994"
+        }
     },
     {
         "fullName": "Noah Brown",
@@ -258,6 +370,10 @@
         "dateReceived": "2025-01-05T19:00:00-05:00",
         "dateClosed": "2025-01-09T19:00:00-05:00",
         "caseStatus": "Closed",
-        "dateOfBirth": "1982-09-06"
+        "dateOfBirth": {
+            "month": "Sep",
+            "day": "6",
+            "year": "1982"
+        }
     }
 ]

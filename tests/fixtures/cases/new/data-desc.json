@@ -5,7 +5,11 @@
         "refCode": "",
         "dateReceived": "2025-07-06T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1981-08-18"
+        "dateOfBirth": {
+            "month": "Aug",
+            "day": "18",
+            "year": "1981"
+        }
     },
     {
         "fullName": "Ryan Garcia",
@@ -13,7 +17,11 @@
         "refCode": "Operator unsure of scope",
         "dateReceived": "2025-06-15T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1995-04-28"
+        "dateOfBirth": {
+            "month": "Apr",
+            "day": "28",
+            "year": "1995"
+        }
     },
     {
         "fullName": "Aria Smith",
@@ -21,7 +29,11 @@
         "refCode": "",
         "dateReceived": "2025-06-11T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1994-02-17"
+        "dateOfBirth": {
+            "month": "Feb",
+            "day": "17",
+            "year": "1994"
+        }
     },
     {
         "fullName": "Jacob King",
@@ -29,7 +41,11 @@
         "refCode": "Out of scope",
         "dateReceived": "2025-06-07T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1994-04-08"
+        "dateOfBirth": {
+            "month": "Apr",
+            "day": "08",
+            "year": "1994"
+        }
     },
     {
         "fullName": "Lucas Martinez",
@@ -37,7 +53,11 @@
         "refCode": "Operator unsure of scope",
         "dateReceived": "2025-06-03T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1988-03-19"
+        "dateOfBirth": {
+            "month": "Mar",
+            "day": "19",
+            "year": "1988"
+        }
     },
     {
         "fullName": "Ethan Davis",
@@ -45,7 +65,11 @@
         "refCode": "",
         "dateReceived": "2025-05-25T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1991-11-16"
+        "dateOfBirth": {
+            "month": "Nov",
+            "day": "16",
+            "year": "1991"
+        }
     },
     {
         "fullName": "Hazel Walker",
@@ -53,7 +77,11 @@
         "refCode": "Out of scope",
         "dateReceived": "2025-05-19T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1986-01-08"
+        "dateOfBirth": {
+            "month": "Jan",
+            "day": "08",
+            "year": "1986"
+        }
     },
     {
         "fullName": "David Thompson",
@@ -61,7 +89,11 @@
         "refCode": "Out of scope",
         "dateReceived": "2025-05-12T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1983-09-07"
+        "dateOfBirth": {
+            "month": "Sep",
+            "day": "07",
+            "year": "1983"
+        }
     },
     {
         "fullName": "Lily Johnson",
@@ -69,7 +101,11 @@
         "refCode": "Out of scope",
         "dateReceived": "2025-05-08T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1990-05-13"
+        "dateOfBirth": {
+            "month": "May",
+            "day": "13",
+            "year": "1990"
+        }
     },
     {
         "fullName": "Tom Andrews",
@@ -77,7 +113,11 @@
         "refCode": "Out of scope",
         "dateReceived": "2025-05-05T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1970-04-04"
+        "dateOfBirth": {
+            "month": "Apr",
+            "day": "04",
+            "year": "1970"
+        }
     },
     {
         "fullName": "Connor White",
@@ -85,7 +125,11 @@
         "refCode": "",
         "dateReceived": "2025-04-30T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1992-01-25"
+        "dateOfBirth": {
+            "month": "Jan",
+            "day": "25",
+            "year": "1992"
+        }
     },
     {
         "fullName": "Ruby Clark",
@@ -93,7 +137,11 @@
         "refCode": "",
         "dateReceived": "2025-04-25T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1989-11-20"
+        "dateOfBirth": {
+            "month": "Nov",
+            "day": "20",
+            "year": "1989"
+        }
     },
     {
         "fullName": "Nathan Brown",
@@ -101,7 +149,11 @@
         "refCode": "",
         "dateReceived": "2025-04-17T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1985-12-31"
+        "dateOfBirth": {
+            "month": "Dec",
+            "day": "31",
+            "year": "1985"
+        }
     },
     {
         "fullName": "Sophie Williams",
@@ -109,7 +161,11 @@
         "refCode": "",
         "dateReceived": "2025-04-15T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1985-09-22"
+        "dateOfBirth": {
+            "month": "Sep",
+            "day": "22",
+            "year": "1985"
+        }
     },
     {
         "fullName": "Anna Rodriguez",
@@ -117,7 +173,11 @@
         "refCode": "",
         "dateReceived": "2025-04-08T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1990-02-14"
+        "dateOfBirth": {
+            "month": "Feb",
+            "day": "14",
+            "year": "1990"
+        }
     },
     {
         "fullName": "Tyler Wilson",
@@ -125,7 +185,11 @@
         "refCode": "",
         "dateReceived": "2025-03-26T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1987-09-28"
+        "dateOfBirth": {
+            "month": "Sep",
+            "day": "28",
+            "year": "1987"
+        }
     },
     {
         "fullName": "Grace Miller",
@@ -133,7 +197,11 @@
         "refCode": "",
         "dateReceived": "2025-03-22T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1987-12-03"
+        "dateOfBirth": {
+            "month": "Dec",
+            "day": "03",
+            "year": "1987"
+        }
     },
     {
         "fullName": "Michael Brown",
@@ -141,7 +209,11 @@
         "refCode": "Operator unsure of scope",
         "dateReceived": "2025-03-20T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1992-12-08"
+        "dateOfBirth": {
+            "month": "Dec",
+            "day": "08",
+            "year": "1992"
+        }
     },
     {
         "fullName": "Maya Patel",
@@ -149,7 +221,11 @@
         "refCode": "Out of scope",
         "dateReceived": "2025-03-14T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1986-06-09"
+        "dateOfBirth": {
+            "month": "Jun",
+            "day": "09",
+            "year": "1986"
+        }
     },
     {
         "fullName": "Mary Flynn",
@@ -157,7 +233,11 @@
         "refCode": "",
         "dateReceived": "2025-03-06T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1971-10-01"
+        "dateOfBirth": {
+            "month": "Oct",
+            "day": "01",
+            "year": "1971"
+        }
     },
     {
         "fullName": "Chloe Taylor",
@@ -165,7 +245,11 @@
         "refCode": "",
         "dateReceived": "2025-02-28T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1993-10-05"
+        "dateOfBirth": {
+            "month": "Oct",
+            "day": "05",
+            "year": "1993"
+        }
     },
     {
         "fullName": "Sophia Lee",
@@ -173,7 +257,11 @@
         "refCode": "",
         "dateReceived": "2025-02-18T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1989-07-11"
+        "dateOfBirth": {
+            "month": "Jul",
+            "day": "11",
+            "year": "1989"
+        }
     },
     {
         "fullName": "Emma Johnson",
@@ -181,7 +269,11 @@
         "refCode": "",
         "dateReceived": "2025-02-10T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1988-05-14"
+        "dateOfBirth": {
+            "month": "May",
+            "day": "14",
+            "year": "1988"
+        }
     },
     {
         "fullName": "Austin Lewis",
@@ -189,7 +281,11 @@
         "refCode": "",
         "dateReceived": "2025-02-07T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1991-04-15"
+        "dateOfBirth": {
+            "month": "Apr",
+            "day": "15",
+            "year": "1991"
+        }
     },
     {
         "fullName": "Daniel Moore",
@@ -197,7 +293,11 @@
         "refCode": "",
         "dateReceived": "2025-01-27T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1994-08-03"
+        "dateOfBirth": {
+            "month": "Aug",
+            "day": "03",
+            "year": "1994"
+        }
     },
     {
         "fullName": "James Wilson",
@@ -205,7 +305,11 @@
         "refCode": "",
         "dateReceived": "2025-01-25T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1975-11-30"
+        "dateOfBirth": {
+            "month": "Nov",
+            "day": "30",
+            "year": "1975"
+        }
     },
     {
         "fullName": "Jason Moore",
@@ -213,7 +317,11 @@
         "refCode": "Operator unsure of scope",
         "dateReceived": "2025-01-19T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1982-07-04"
+        "dateOfBirth": {
+            "month": "Jul",
+            "day": "04",
+            "year": "1982"
+        }
     },
     {
         "fullName": "Zoe Anderson",
@@ -221,7 +329,11 @@
         "refCode": "",
         "dateReceived": "2025-01-12T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1984-08-22"
+        "dateOfBirth": {
+            "month": "Aug",
+            "day": "22",
+            "year": "1984"
+        }
     },
     {
         "fullName": "George Allen",
@@ -229,6 +341,10 @@
         "refCode": "",
         "dateReceived": "2025-01-08T19:00:00-05:00",
         "caseStatus": "New",
-        "dateOfBirth": "1977-06-10"
+        "dateOfBirth": {
+            "month": "Jun",
+            "day": "10",
+            "year": "1977"
+        }
     }
 ]
