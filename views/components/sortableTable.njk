@@ -101,7 +101,11 @@
                 {% elif column.key == "dateClosed" %}
                   {{ row[column.key] | formatDate }}
                 {% else %}
-                  {{ row[column.key] or "" }}
+                  {% if row[column.key] %}
+                    {{ row[column.key] }}
+                  {% else %}
+                    <span class="govuk-visually-hidden">No data</span>
+                  {% endif %}
                 {% endif %}
                 {% endset %}
                 {% set linkUrl = column
@@ -118,7 +122,11 @@
                 {% elif column.key == "dateClosed" %}
                   {{ row[column.key] | formatDate }}
                 {% else %}
-                  {{ row[column.key] or "" }}
+                  {% if row[column.key] %}
+                    {{ row[column.key] }}
+                  {% else %}
+                    <span class="govuk-visually-hidden">No data</span>
+                  {% endif %}
                 {% endif %}
               {% endif %}
             </td>
