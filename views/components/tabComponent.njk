@@ -2,12 +2,16 @@
   Tab Component Macro
 
   A reusable component for creating server-side tab navigation with content rendering.
+  Supports passing data to partials for dynamic content display.
+
   Usage:
   {% from "components/tabComponent.njk" import tabComponent %}
 
   {{ tabComponent({
     activeTab: activeTab,
     containerId: "cases-tab-container",
+    casesData: casesData,
+    sortOrder: sortOrder,
     tabs: [
       {
         id: "new",
@@ -23,42 +27,64 @@
       }
     ]
   }) }}
+
+  Options:
+  - activeTab: Current active tab ID
+  - containerId: HTML ID for the tab container
+  - casesData: Data array to pass to partials (optional)
+  - sortOrder: Sort order to pass to partials (optional)
+  - tabs: Array of tab configuration objects:
+    * id: Unique tab identifier
+    * text: Display text for navigation
+    * href: URL for tab navigation
+    * partial: Path to Nunjucks partial template (optional)
+    * content: Direct HTML content (optional, alternative to partial)
+
+  Features:
+  - Server-side tab navigation using MOJ Design System
+  - Data passing to included partials for dynamic content
+  - JavaScript-ready with data attributes
+  - Fallback content for tabs without partials
 #}
 
 {%- from "moj/components/sub-navigation/macro.njk" import mojSubNavigation -%}
 
 {% macro tabComponent(options) %}
-	{# Build navigation items from tabs configuration #}
-	{% set navItems = [] %}
-	{% for tab in options.tabs %}
-		{% set navItem = {
-			text: tab.text,
-			href: tab.href,
-			active: (options.activeTab == tab.id)
-		} %}
-		{% set navItems = (navItems.push(navItem), navItems) %}
-	{% endfor %}
+  {# Build navigation items from tabs configuration #}
+  {% set navItems = [] %}
+  {% for tab in options.tabs %}
+    {% set navItem = {
+      text: tab.text,
+      href: tab.href,
+      active: (options.activeTab == tab.id)
+    } %}
+    {% set navItems = (navItems.push(navItem), navItems) %}
+  {% endfor %}
 
-	{# Render the MOJ sub-navigation #}
-	{{ mojSubNavigation({
+  {# Render the MOJ sub-navigation #}
+  {{ mojSubNavigation({
     label: "Sub navigation",
     items: navItems
   }) }}
 
-	{# Render the tab content container with data attributes for JavaScript #}
-	<div id="{{ options.containerId }}" class="tab-navigation-container" data-active-tab="{{ options.activeTab }}">
-		{% for tab in options.tabs %}
-			<div class="tab-content {% if options.activeTab == tab.id %}show{% endif %}" data-tab-id="{{ tab.id }}">
-				{% if tab.partial %}
-					{% include tab.partial %}
-				{% elif tab.content %}
-					{{ tab.content | safe }}
-				{% else %}
-					<div class="govuk-body">
-						<p>Content for {{ tab.text }} tab</p>
-					</div>
-				{% endif %}
-			</div>
-		{% endfor %}
-	</div>
+  {# Render the tab content container with data attributes for JavaScript #}
+  <div id="{{ options.containerId }}" class="tab-content-container" data-active-tab="{{ options.activeTab }}">
+    {% for tab in options.tabs %}
+      <div class="tab-content {% if options.activeTab == tab.id %}show{% endif %}" data-tab-id="{{ tab.id }}">
+        {% if tab.partial %}
+          {# Set context variables for the partial #}
+          {% set casesData = options.casesData %}
+          {% set sortOrder = options.sortOrder %}
+          {# Include partial with explicit context variables #}
+          {% include tab.partial %}
+        {% elif tab.content %}
+          {{ tab.content | safe }}
+        {% else %}
+          <div class="govuk-body">
+            <p>Content for {{ tab.text }} tab</p>
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
 {% endmacro %}

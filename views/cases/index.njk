@@ -1,6 +1,6 @@
 {% extends "base.njk" %}
 
-{% block content %}
+{% block pageContent %}
   {#
     Cases page with server-side tab navigation
     Using the reusable tabComponent macro for clean, maintainable tab implementation
@@ -22,28 +22,37 @@
       {%- endif -%}
   </h1>
 
-  {# Tab navigation using MOJ Design System #}
-  {%- from "moj/components/sub-navigation/macro.njk" import mojSubNavigation -%}
-  {{ mojSubNavigation({
-    label: "Sub navigation",
-    items: [
-      { text: "New", href: "/cases/new", active: (activeTab == "new") },
-      { text: "Opened", href: "/cases/opened", active: (activeTab == "opened") },
-      { text: "Accepted", href: "/cases/accepted", active: (activeTab == "accepted") },
-      { text: "Closed", href: "/cases/closed", active: (activeTab == "closed") }
+  {# Use the reusable tabComponent for navigation and content #}
+  {{ tabComponent({
+    activeTab: activeTab,
+    containerId: "cases-tab-container",
+    casesData: casesData,
+    sortOrder: sortOrder,
+    tabs: [
+      {
+        id: "new",
+        text: "New",
+        href: "/cases/new",
+        partial: "cases/_new-partial.njk"
+      },
+      {
+        id: "opened",
+        text: "Opened",
+        href: "/cases/opened",
+        partial: "cases/_opened-partial.njk"
+      },
+      {
+        id: "accepted",
+        text: "Accepted",
+        href: "/cases/accepted",
+        partial: "cases/_accepted-partial.njk"
+      },
+      {
+        id: "closed",
+        text: "Closed",
+        href: "/cases/closed",
+        partial: "cases/_closed-partial.njk"
+      }
     ]
   }) }}
-
-  {# Tab content rendering #}
-  <div class="tab-content-container">
-    {% if activeTab == "new" %}
-      {% include "cases/_new-partial.njk" %}
-    {% elif activeTab == "opened" %}
-      {% include "cases/_opened-partial.njk" %}
-    {% elif activeTab == "accepted" %}
-      {% include "cases/_accepted-partial.njk" %}
-    {% elif activeTab == "closed" %}
-      {% include "cases/_closed-partial.njk" %}
-    {% endif %}
-  </div>
 {% endblock %}

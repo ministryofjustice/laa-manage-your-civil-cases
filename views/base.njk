@@ -68,7 +68,13 @@
   }) }}
 {% endblock %}
 
-{% block content %}{% endblock %}
+{% block content %}
+  <div class="govuk-width-container">
+    <div class="govuk-body">
+      {% block pageContent %}{% endblock %}
+    </div>
+  </div>
+{% endblock %}
 
 {% block footer %}
   {{ govukFooter({

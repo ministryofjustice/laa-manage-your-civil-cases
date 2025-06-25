@@ -6,8 +6,8 @@
 {# Import the sortable table component #}
 {%- from "components/sortableTable.njk" import sortableTable -%}
 
-{% if casesData and casesData.length > 0 %}
-  {# Render the sortable table #}
+{% if casesData and casesData.length < 0 %}
+  {# Not Rendering the sortable table to show the no new case scenario#}
   {{ sortableTable({
       id: "accepted-cases-table",
       data: casesData,
