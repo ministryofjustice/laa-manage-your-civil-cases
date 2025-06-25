@@ -13,6 +13,7 @@ node_modules/
 # Visual Studios
 .trunk/
 .DS_Store
+.vscode/
 
 # MOJ Express Skeleton
 public/
