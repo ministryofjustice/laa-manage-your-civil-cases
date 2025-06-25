@@ -24,6 +24,7 @@ import {
   safeOptionalString,
   isRecord
 } from '#src/scripts/helpers/dataTransformers.js';
+import { devLog, devError } from '#src/scripts/helpers/devLogger.js';
 
 // Constants
 const DEFAULT_PAGE = 1;
@@ -112,13 +113,13 @@ class MockApiService {
       const data: unknown = JSON.parse(fileContent);
 
       if (!Array.isArray(data)) {
-        console.error('Invalid mock data format: expected array');
+        devError('Invalid mock data format: expected array');
         return [];
       }
 
       return data;
     } catch (error) {
-      console.error('Error loading mock data:', error);
+      devError('Error loading mock data:' + String(error));
       return [];
     }
   }
@@ -194,17 +195,17 @@ class MockApiService {
       const page = params.page ?? DEFAULT_PAGE;
       const limit = params.limit ?? DEFAULT_LIMIT;
 
-      console.log(`Mock API: GET /cases/${caseType}?sortBy=${sortBy}&sortOrder=${sortOrder}&page=${page}&limit=${limit}`);
+      devLog(`Mock API: GET /cases/${caseType}?sortBy=${sortBy}&sortOrder=${sortOrder}&page=${page}&limit=${limit}`);
 
       const rawData = MockApiService.loadMockData(caseType, sortOrder);
       const transformedData = rawData.map(transformCaseItem);
 
-      console.log(`Mock API: Returning ${transformedData.length} ${caseType} cases`);
+      devLog(`Mock API: Returning ${transformedData.length} ${caseType} cases`);
 
       return MockApiService.createSuccessResponse(transformedData, params);
 
     } catch (error) {
-      console.error('Mock API error:', error);
+      devError('Mock API error:' + String(error));
       const message = error instanceof Error ? error.message : 'Unknown error';
       return MockApiService.createErrorResponse(params, message);
     }
@@ -233,7 +234,7 @@ export async function getCases(caseType: string, sortOrder: 'asc' | 'desc' = 'as
     (validCaseTypes as readonly string[]).includes(type);
 
   if (!isValidCaseType(caseType)) {
-    console.error(`Invalid case type: ${caseType}`);
+    devError(`Invalid case type: ${caseType}`);
     return [];
   }
 
@@ -244,7 +245,7 @@ export async function getCases(caseType: string, sortOrder: 'asc' | 'desc' = 'as
   });
 
   if (response.status === 'error') {
-    console.error(`Error loading ${caseType} cases:`, response.message);
+    devError(`Error loading ${caseType} cases: ${response.message ?? 'Unknown error'}`);
     return [];
   }
 
@@ -256,7 +257,7 @@ export async function getCases(caseType: string, sortOrder: 'asc' | 'desc' = 'as
  */
 export const PaginationConfig = {
   DEFAULT_PAGE_SIZE: DEFAULT_LIMIT,
-  
+
   /**
    * Create pagination parameters
    * @param {number} page - Page number (1-based)

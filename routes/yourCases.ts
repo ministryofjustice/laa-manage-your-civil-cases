@@ -2,6 +2,7 @@ import express from 'express';
 import type { Request, Response } from 'express';
 import { apiService } from '#src/services/apiService.js';
 import type { CaseData } from '#types/case-types.js';
+import { devLog, devError } from '#src/scripts/helpers/devLogger.js';
 
 // Create a new router for your-cases routes
 const router = express.Router();
@@ -28,7 +29,7 @@ async function loadCasesData(caseType: string, sortOrder = 'asc'): Promise<CaseD
       (validCaseTypes as readonly string[]).includes(type);
 
     if (!isValidCaseType(caseType)) {
-      console.error(`Invalid case type: ${caseType}`);
+      devError(`Invalid case type: ${caseType}`);
       return [];
     }
 
@@ -43,14 +44,14 @@ async function loadCasesData(caseType: string, sortOrder = 'asc'): Promise<CaseD
     });
 
     if (response.status === 'error') {
-      console.error(`API error loading ${caseType} cases:`, response.message);
+      devError(`API error loading ${caseType} cases: ${response.message ?? 'Unknown error'}`);
       return [];
     }
 
-    console.log(`Successfully loaded ${response.data.length} ${caseType} cases via API service`);
+    devLog(`Successfully loaded ${response.data.length} ${caseType} cases via API service`);
     return response.data;
   } catch (error) {
-    console.error(`Error loading ${caseType} cases:`, error);
+    devError(`Error loading ${caseType} cases: ${String(error)}`);
     return [];
   }
 }
