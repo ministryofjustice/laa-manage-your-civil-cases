@@ -22,9 +22,10 @@ import {
   isValidDateOfBirth,
   safeString,
   safeOptionalString,
-  isRecord
-} from '#src/scripts/helpers/dataTransformers.js';
-import { devLog, devError } from '#src/scripts/helpers/devLogger.js';
+  isRecord,
+  devLog,
+  devError
+} from '#src/scripts/helpers/index.js';
 
 // Constants
 const DEFAULT_PAGE = 1;

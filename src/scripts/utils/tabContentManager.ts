@@ -9,7 +9,7 @@
  */
 
 import type { TabContentManagerOptions } from '#types/tab-content-manager-types.js';
-import { devLog, devWarn } from '#src/scripts/helpers/devLogger.js';
+import { devLog, devWarn } from '#src/scripts/helpers/index.js';
 
 const EMPTY_LENGTH = 0;
 

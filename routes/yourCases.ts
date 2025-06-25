@@ -2,7 +2,7 @@ import express from 'express';
 import type { Request, Response } from 'express';
 import { apiService } from '#src/services/apiService.js';
 import type { CaseData } from '#types/case-types.js';
-import { devLog, devError } from '#src/scripts/helpers/devLogger.js';
+import { devLog, devError } from '#src/scripts/helpers/index.js';
 
 // Create a new router for your-cases routes
 const router = express.Router();

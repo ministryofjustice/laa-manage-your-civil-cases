@@ -2,7 +2,7 @@ import nunjucks from 'nunjucks';
 import path from 'path';
 import type { Application } from 'express';
 import { getLatestBuildFile } from './buildHelper.js';
-import { formatDate } from '../src/scripts/helpers/dateFormatter.js';
+import { formatDate } from '#src/scripts/helpers/index.js';
 
 /**
  * Sets up Nunjucks as the template engine for the given Express application.
