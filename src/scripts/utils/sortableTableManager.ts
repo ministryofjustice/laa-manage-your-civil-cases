@@ -5,21 +5,18 @@
  * Uses URL-based sorting with fixture data but designed to easily switch to API endpoints.
  */
 
-import type { CaseData } from '#types/case-types.js';
+import { devLog, devWarn } from '#src/scripts/helpers/index.js';
 
 interface SortableTableOptions {
   tableId: string;
   apiEndpoint?: string;
   sortColumn: string;
-  onDataUpdate?: (data: CaseData[]) => void;
 }
 
 const DEFAULT_OPTIONS: Required<SortableTableOptions> = {
   tableId: 'cases-table',
   apiEndpoint: '',
   sortColumn: 'dateReceived',
-  /** Default no-op callback for data updates */
-  onDataUpdate: () => { /* default no-op */ }
 };
 
 /**
@@ -31,13 +28,13 @@ export function initializeSortableTable(options: Partial<SortableTableOptions> =
   const table = document.getElementById(config.tableId);
 
   if (table === null) {
-    console.warn(`Sortable Table: Table with ID '${config.tableId}' not found`);
+    devWarn(`Sortable Table: Table with ID '${config.tableId}' not found`);
     return;
   }
 
   // For server-side sorting, we mainly need to track table interactions
   // and potentially add loading states or analytics
-  console.log(`Sortable Table: Initialized table '${config.tableId}' with server-side sorting`);
+  devLog(`Sortable Table: Initialized table '${config.tableId}' with server-side sorting`);
 
   // Find all sortable column headers
   const sortableHeaders = table.querySelectorAll('[data-sort]');
@@ -54,7 +51,7 @@ export function initializeSortableTable(options: Partial<SortableTableOptions> =
           // Log analytics or perform other actions before navigation
           const sortColumn = header.getAttribute('data-sort');
           if (sortColumn !== null && sortColumn !== '') {
-            console.log(`Sortable Table: Sorting by ${sortColumn}`);
+            devLog(`Sortable Table: Sorting by ${sortColumn}`);
           }
           // The actual navigation happens via the href, no need to prevent default
         });
