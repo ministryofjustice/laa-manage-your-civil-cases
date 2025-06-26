@@ -4,6 +4,12 @@
   A reusable component for creating server-side tab navigation with content rendering.
   Supports passing data to partials for dynamic content display.
 
+  Features:
+  - Server-side tab navigation using MOJ Design System
+  - Data passing to included partials for dynamic content
+  - JavaScript-ready with data attributes
+  - Fallback content for tabs without partials
+
   Usage:
   {% from "components/tabComponent.njk" import tabComponent %}
 
@@ -40,11 +46,6 @@
     * partial: Path to Nunjucks partial template (optional)
     * content: Direct HTML content (optional, alternative to partial)
 
-  Features:
-  - Server-side tab navigation using MOJ Design System
-  - Data passing to included partials for dynamic content
-  - JavaScript-ready with data attributes
-  - Fallback content for tabs without partials
 #}
 
 {%- from "moj/components/sub-navigation/macro.njk" import mojSubNavigation -%}
