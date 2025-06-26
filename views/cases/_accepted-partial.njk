@@ -1,14 +1,15 @@
 {#
   Accepted Cases Content Partial
-  Displays sortable table of accepted cases
+  Displays sortable table of accepted cases with pagination
 #}
 
-{# Import the sortable table component #}
-{%- from "components/sortableTable.njk" import sortableTable -%}
+{# Import the sortable table and pagination components #}
+{%- from "components/sortableTableComponent.njk" import sortableTableComponent -%}
+{%- from "components/paginationComponent.njk" import paginationComponent -%}
 
-{% if casesData and casesData.length < 0 %}
-  {# Not Rendering the sortable table to show the no new case scenario#}
-  {{ sortableTable({
+{% if casesData and casesData.length > 0 %}
+  {# Render the sortable table #}
+  {{ sortableTableComponent({
       id: "accepted-cases-table",
       data: casesData,
       columns: [
@@ -22,6 +23,14 @@
       sortOrder: sortOrder or "asc",
       basePath: "/cases/accepted"
     }) }}
+
+  {# Render pagination if pagination data is available #}
+  {% if pagination %}
+    {{ paginationComponent({
+      pagination: pagination,
+      basePath: "/cases/accepted"
+    }) }}
+  {% endif %}
 {% else %}
-  <p>There are no new cases.</p>
+  <p>There are no accepted cases.</p>
 {% endif %}

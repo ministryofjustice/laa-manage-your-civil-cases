@@ -1,14 +1,15 @@
 {#
   New Cases Content Partial
-  Displays sortable table of new cases
+  Displays sortable table of new cases with pagination
 #}
 
-{# Import the sortable table component #}
-{%- from "components/sortableTable.njk" import sortableTable -%}
+{# Import the sortable table and pagination components #}
+{%- from "components/sortableTableComponent.njk" import sortableTableComponent -%}
+{%- from "components/paginationComponent.njk" import paginationComponent -%}
 
 {% if casesData and casesData.length > 0 %}
   {# Render the sortable table #}
-  {{ sortableTable({
+  {{ sortableTableComponent({
       id: "new-cases-table",
       data: casesData,
       columns: [
@@ -22,6 +23,14 @@
       sortOrder: sortOrder or "asc",
       basePath: "/cases/new"
     }) }}
+
+  {# Render pagination if pagination data is available #}
+  {% if pagination %}
+    {{ paginationComponent({
+      pagination: pagination,
+      basePath: "/cases/new"
+    }) }}
+  {% endif %}
 {% else %}
   <p>There are no new cases.</p>
 {% endif %}

@@ -18,6 +18,7 @@
     containerId: "cases-tab-container",
     casesData: casesData,
     sortOrder: sortOrder,
+    pagination: pagination,
     tabs: [
       {
         id: "new",
@@ -39,6 +40,7 @@
   - containerId: HTML ID for the tab container
   - casesData: Data array to pass to partials (optional)
   - sortOrder: Sort order to pass to partials (optional)
+  - pagination: Pagination metadata to pass to partials (optional)
   - tabs: Array of tab configuration objects:
     * id: Unique tab identifier
     * text: Display text for navigation
@@ -76,7 +78,7 @@
           {# Set context variables for the partial #}
           {% set casesData = options.casesData %}
           {% set sortOrder = options.sortOrder %}
-          {# Include partial with explicit context variables #}
+          {% set pagination = options.pagination %}
           {% include tab.partial %}
         {% elif tab.content %}
           {{ tab.content | safe }}
