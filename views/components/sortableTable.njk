@@ -4,10 +4,11 @@
   A reusable component for creating sortable tables based on MOJ Design System.
 
   Features:
+  - Built on govukTable for consistency and accessibility
   - Server-side sorting with URL-based navigation
   - Custom CSS classes for table, headers, cells, and links
   - Clickable links in table cells with dynamic placeholders
-  - Accessibility compliance with aria-sort attributes
+  - Full accessibility compliance with aria-sort attributes
 
   Usage:
   {% from "components/sortableTable.njk" import sortableTable %}
@@ -63,76 +64,108 @@
   - basePath: Base URL for sort links
 #}
 
+{%- from "govuk/components/table/macro.njk" import govukTable -%}
+
 {% macro sortableTable(options) %}
-  <table class="govuk-table{% if options.classes %} {{ options.classes }}{% endif %}" id="{{ options.id }}" data-module="moj-sortable-table">
-    {% if options.caption %}
-      <caption class="govuk-table__caption govuk-table__caption--m">{{ options.caption }}</caption>
+  {# Build the head array for govukTable #}
+  {% set tableHead = [] %}
+  {% for column in options.columns %}
+    {% if column.sortable %}
+      {# Calculate next sort order for sortable columns #}
+      {% set nextSortOrder = 'desc' if (options.sortBy == column.key and options.sortOrder == 'asc') 
+        else 
+          'asc' %}
+      {% set sortUrl = options.basePath + '?sort=' + nextSortOrder %}
+
+      {# Create sortable header with link #}
+      {% set headerHtml %}
+      <a href="{{ sortUrl }}" class="govuk-link govuk-link--no-visited-state{% if column.linkClasses %} {{ column.linkClasses }}{% endif %}">{{ column.text }}</a>
+      {% endset %}
+
+      {# Calculate aria-sort value #}
+      {% if options.sortBy == column.key and options.sortOrder == 'asc' %}
+        {% set ariaSortValue = "ascending" %}
+      {% elif options.sortBy == column.key and options.sortOrder == 'desc' %}
+        {% set ariaSortValue = "descending" %}
+      {% else %}
+        {% set ariaSortValue = "none" %}
+      {% endif %}
+
+      {% set headerItem = {
+        html: headerHtml,
+        classes: column.classes,
+        attributes: {
+          "data-sort": column.key,
+          "aria-sort": ariaSortValue
+        }
+      } %}
+    {% else %}
+      {# Non-sortable header #}
+      {% set headerItem = {
+        text: column.text,
+        classes: column.classes
+      } %}
     {% endif %}
+    {% set tableHead = (tableHead.push(headerItem), tableHead) %}
+  {% endfor %}
 
-    <thead class="govuk-table__head">
-      <tr class="govuk-table__row">
-        {% for column in options.columns %}
-          {% if column.sortable %}
-            {% set nextSortOrder = 'desc' if (options.sortBy == column.key and options.sortOrder == 'asc')
-              else
-                'asc' %}
-            {% set sortUrl = options.basePath + '?sort=' + nextSortOrder %}
-            <th scope="col" class="govuk-table__header{% if column.classes %} {{ column.classes }}{% endif %}" data-sort="{{ column.key }}" aria-sort="{% if options.sortBy == column.key %}{{ 'ascending' if options.sortOrder == 'asc' else 'descending' }}{% else %}none{% endif %}">
-              <a href="{{ sortUrl }}" class="govuk-link govuk-link--no-visited-state{% if column.linkClasses %} {{ column.linkClasses }}{% endif %}">{{ column.text }}</a>
-            </th>
-          {% else %}
-            <th scope="col" class="govuk-table__header{% if column.classes %} {{ column.classes }}{% endif %}">{{ column.text }}</th>
-          {% endif %}
-        {% endfor %}
-      </tr>
-    </thead>
+  {# Build the rows array for govukTable #}
+  {% set tableRows = [] %}
+  {% for row in options.data %}
+    {% set tableRow = [] %}
+    {% for column in options.columns %}
+      {# Format cell content based on column type #}
+      {% set cellContent %}
+      {% if column.key == "dateReceived" %}
+        {{ row[column.key] | formatDate }}
+      {% elif column.key == "lastModified" %}
+        {{ row[column.key] | formatDate }}
+      {% elif column.key == "dateClosed" %}
+        {{ row[column.key] | formatDate }}
+      {% else %}
+        {% if row[column.key] %}
+          {{ row[column.key] }}
+        {% else %}
+          <span class="govuk-visually-hidden">No data</span>
+        {% endif %}
+      {% endif %}
+      {% endset %}
 
-    <tbody class="govuk-table__body">
-      {% for row in options.data %}
-        <tr class="govuk-table__row">
-          {% for column in options.columns %}
-            <td class="govuk-table__cell{% if column.cellClasses %} {{ column.cellClasses }}{% endif %}">
-              {% if column.link %}
-                {% set cellContent %}
-                {% if column.key == "dateReceived" %}
-                  {{ row[column.key] | formatDate }}
-                {% elif column.key == "lastModified" %}
-                  {{ row[column.key] | formatDate }}
-                {% elif column.key == "dateClosed" %}
-                  {{ row[column.key] | formatDate }}
-                {% else %}
-                  {% if row[column.key] %}
-                    {{ row[column.key] }}
-                  {% else %}
-                    <span class="govuk-visually-hidden">No data</span>
-                  {% endif %}
-                {% endif %}
-                {% endset %}
-                {% set linkUrl = column
-                  .link
-                  .replace('{{id}}', row[column.linkKey or 'id'])
-                  .replace('{{caseReference}}', row.caseReference)
-                  .replace('{{fullName}}', row.fullName) %}
-                <a href="{{ linkUrl }}" class="govuk-link{% if column.linkClasses %} {{ column.linkClasses }}{% endif %}">{{ cellContent | trim }}</a>
-              {% else %}
-                {% if column.key == "dateReceived" %}
-                  {{ row[column.key] | formatDate }}
-                {% elif column.key == "lastModified" %}
-                  {{ row[column.key] | formatDate }}
-                {% elif column.key == "dateClosed" %}
-                  {{ row[column.key] | formatDate }}
-                {% else %}
-                  {% if row[column.key] %}
-                    {{ row[column.key] }}
-                  {% else %}
-                    <span class="govuk-visually-hidden">No data</span>
-                  {% endif %}
-                {% endif %}
-              {% endif %}
-            </td>
-          {% endfor %}
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      {# Create cell with or without link #}
+      {% if column.link %}
+        {% set linkUrl = column
+          .link
+          .replace('{{id}}', row[column.linkKey or 'id'])
+          .replace('{{caseReference}}', row.caseReference)
+          .replace('{{fullName}}', row.fullName) %}
+        {% set cellHtml %}
+        <a href="{{ linkUrl }}" class="govuk-link{% if column.linkClasses %} {{ column.linkClasses }}{% endif %}">{{ cellContent | trim }}</a>
+        {% endset %}
+        {% set cellItem = {
+          html: cellHtml,
+          classes: column.cellClasses
+        } %}
+      {% else %}
+        {% set cellItem = {
+          html: cellContent | trim,
+          classes: column.cellClasses
+        } %}
+      {% endif %}
+
+      {% set tableRow = (tableRow.push(cellItem), tableRow) %}
+    {% endfor %}
+    {% set tableRows = (tableRows.push(tableRow), tableRows) %}
+  {% endfor %}
+
+  {# Render the GOV.UK table with our data #}
+  {{ govukTable({
+    caption: options.caption,
+    classes: options.classes,
+    attributes: {
+      id: options.id,
+      "data-module": "moj-sortable-table"
+    },
+    head: tableHead,
+    rows: tableRows
+  }) }}
 {% endmacro %}
