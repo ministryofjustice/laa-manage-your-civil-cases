@@ -1,17 +1,14 @@
 /**
  * Your Cases Page Configuration
  *
- * Handles client-side functionality for the cases page using reusable utilities
+ * Handles client-side functionality for the cases page
  */
 
-import { initialiseTabContent } from '../utils/tabContentManager.js';
+import { devLog } from '../helpers/index.js';
 
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('Your Cases: Page loaded');
+  devLog('Your Cases: Page loaded');
 
-    // Initialise tab content visibility using the generic utility
-    initialiseTabContent({
-        containerSelector: '#your-cases-tab-container',
-        logPrefix: 'Your Cases'
-    });
+  // No tab management needed - server-side rendering handles tab visibility
+  // Add any other client-side functionality here as needed
 });

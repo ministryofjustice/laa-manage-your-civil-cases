@@ -1,3 +1,27 @@
-<h2 class="govuk-heading-l">Opened cases content</h2>
-<!-- Add your opened cases content here -->
-<p class="govuk-body">This is the opened cases section.</p>
+{#
+  New Cases Content Partial
+  Displays sortable table of new cases
+#}
+
+{# Import the sortable table component #}
+{%- from "components/sortableTable.njk" import sortableTable -%}
+
+{% if casesData and casesData.length > 0 %}
+  {# Render the sortable table #}
+  {{ sortableTable({
+      id: "opened-cases-table",
+      data: casesData,
+      columns: [
+        { key: "fullName", text: "Name", link: "#" },
+        { key: "caseReference", text: "Case ID" },
+				{ key: "dateOfBirth", text: "Date of Birth" },
+        { key: "refCode", text: "Details" },
+        { key: "lastModified", text: "Date Modified", sortable: true, classes: "govuk-table__header--numeric" , cellClasses: "govuk-table__cell--numeric" }
+      ],
+      sortBy: "lastModified",
+      sortOrder: sortOrder or "asc",
+      basePath: "/cases/opened"
+    }) }}
+{% else %}
+  <p>There are no new cases.</p>
+{% endif %}

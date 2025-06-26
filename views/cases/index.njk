@@ -1,6 +1,6 @@
 {% extends "base.njk" %}
 
-{% block content %}
+{% block pageContent %}
   {#
     Cases page with server-side tab navigation
     Using the reusable tabComponent macro for clean, maintainable tab implementation
@@ -22,10 +22,12 @@
       {%- endif -%}
   </h1>
 
-  {# Render the complete tab system using the reusable component #}
+  {# Use the reusable tabComponent for navigation and content #}
   {{ tabComponent({
     activeTab: activeTab,
-    containerId: "your-cases-tab-container",
+    containerId: "cases-tab-container",
+    casesData: casesData,
+    sortOrder: sortOrder,
     tabs: [
       {
         id: "new",

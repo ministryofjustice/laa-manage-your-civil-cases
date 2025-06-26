@@ -1,3 +1,27 @@
-<h2 class="govuk-heading-l">Accepted cases content</h2>
-<!-- Add your accepted cases content here -->
-<p class="govuk-body">This is the accepted cases section.</p>
+{#
+  Accepted Cases Content Partial
+  Displays sortable table of accepted cases
+#}
+
+{# Import the sortable table component #}
+{%- from "components/sortableTable.njk" import sortableTable -%}
+
+{% if casesData and casesData.length < 0 %}
+  {# Not Rendering the sortable table to show the no new case scenario#}
+  {{ sortableTable({
+      id: "accepted-cases-table",
+      data: casesData,
+      columns: [
+        { key: "fullName", text: "Name", link: "#" },
+        { key: "caseReference", text: "Case ID" },
+				{ key: "dateOfBirth", text: "Date of birth" },
+        { key: "refCode", text: "Details" },
+        { key: "lastModified", text: "Date modified", sortable: true, classes: "govuk-table__header--numeric" , cellClasses: "govuk-table__cell--numeric" }
+      ],
+      sortBy: "lastModified",
+      sortOrder: sortOrder or "asc",
+      basePath: "/cases/accepted"
+    }) }}
+{% else %}
+  <p>There are no new cases.</p>
+{% endif %}

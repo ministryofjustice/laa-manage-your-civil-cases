@@ -6,7 +6,11 @@
         "dateReceived": "2025-01-08T19:00:00-05:00",
         "lastModified": "2025-01-09T14:30:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1987-02-19"
+        "dateOfBirth": {
+            "month": "Feb",
+            "day": "19",
+            "year": "1987"
+        }
     },
     {
         "fullName": "Lisa Chen",
@@ -15,7 +19,11 @@
         "dateReceived": "2025-01-14T19:00:00-05:00",
         "lastModified": "2025-01-15T10:45:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1993-11-15"
+        "dateOfBirth": {
+            "month": "Nov",
+            "day": "15",
+            "year": "1993"
+        }
     },
     {
         "fullName": "Leo Robinson",
@@ -24,7 +32,11 @@
         "dateReceived": "2025-01-14T19:00:00-05:00",
         "lastModified": "2025-01-16T09:20:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1972-06-17"
+        "dateOfBirth": {
+            "month": "Jun",
+            "day": "17",
+            "year": "1972"
+        }
     },
     {
         "fullName": "Brooklyn Russell",
@@ -33,7 +45,11 @@
         "dateReceived": "2025-01-16T19:00:00-05:00",
         "lastModified": "2025-01-17T13:15:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1992-09-21"
+        "dateOfBirth": {
+            "month": "Sep",
+            "day": "21",
+            "year": "1992"
+        }
     },
     {
         "fullName": "Kinsley Butler",
@@ -42,7 +58,11 @@
         "dateReceived": "2025-01-22T19:00:00-05:00",
         "lastModified": "2025-01-23T11:30:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1988-06-02"
+        "dateOfBirth": {
+            "month": "Jun",
+            "day": "2",
+            "year": "1988"
+        }
     },
     {
         "fullName": "Knox Hayes",
@@ -51,7 +71,11 @@
         "dateReceived": "2025-02-03T19:00:00-05:00",
         "lastModified": "2025-02-04T15:45:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1988-03-25"
+        "dateOfBirth": {
+            "month": "Mar",
+            "day": "25",
+            "year": "1988"
+        }
     },
     {
         "fullName": "Ryder Wallace",
@@ -60,7 +84,11 @@
         "dateReceived": "2025-02-11T19:00:00-05:00",
         "lastModified": "2025-02-12T08:20:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1993-04-06"
+        "dateOfBirth": {
+            "month": "Apr",
+            "day": "6",
+            "year": "1993"
+        }
     },
     {
         "fullName": "Paisley Flores",
@@ -69,7 +97,11 @@
         "dateReceived": "2025-02-14T19:00:00-05:00",
         "lastModified": "2025-02-15T12:40:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1986-08-16"
+        "dateOfBirth": {
+            "month": "Aug",
+            "day": "16",
+            "year": "1986"
+        }
     },
     {
         "fullName": "Priya Patel",
@@ -78,7 +110,11 @@
         "dateReceived": "2025-02-22T19:00:00-05:00",
         "lastModified": "2025-02-23T16:25:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1988-07-02"
+        "dateOfBirth": {
+            "month": "Jul",
+            "day": "2",
+            "year": "1988"
+        }
     },
     {
         "fullName": "Kayden Gonzales",
@@ -87,7 +123,11 @@
         "dateReceived": "2025-02-26T19:00:00-05:00",
         "lastModified": "2025-02-27T14:10:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1987-10-05"
+        "dateOfBirth": {
+            "month": "Oct",
+            "day": "5",
+            "year": "1987"
+        }
     },
     {
         "fullName": "Charlotte Anderson",
@@ -96,7 +136,11 @@
         "dateReceived": "2025-03-08T19:00:00-05:00",
         "lastModified": "2025-03-09T10:55:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1984-01-12"
+        "dateOfBirth": {
+            "month": "Jan",
+            "day": "12",
+            "year": "1984"
+        }
     },
     {
         "fullName": "Grayson Simmons",
@@ -105,7 +149,11 @@
         "dateReceived": "2025-03-16T19:00:00-05:00",
         "lastModified": "2025-03-17T13:35:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1985-12-09"
+        "dateOfBirth": {
+            "month": "Dec",
+            "day": "9",
+            "year": "1985"
+        }
     },
     {
         "fullName": "Phoenix Graham",
@@ -114,7 +162,11 @@
         "dateReceived": "2025-03-21T19:00:00-05:00",
         "lastModified": "2025-03-22T09:15:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1989-06-14"
+        "dateOfBirth": {
+            "month": "Jun",
+            "day": "14",
+            "year": "1989"
+        }
     },
     {
         "fullName": "Declan Griffin",
@@ -123,7 +175,11 @@
         "dateReceived": "2025-03-30T19:00:00-05:00",
         "lastModified": "2025-03-31T15:50:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1986-05-18"
+        "dateOfBirth": {
+            "month": "May",
+            "day": "18",
+            "year": "1986"
+        }
     },
     {
         "fullName": "Oliver Martinez",
@@ -132,7 +188,11 @@
         "dateReceived": "2025-04-12T19:00:00-05:00",
         "lastModified": "2025-04-13T12:20:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1987-08-25"
+        "dateOfBirth": {
+            "month": "Aug",
+            "day": "25",
+            "year": "1987"
+        }
     },
     {
         "fullName": "Sebastian Torres",
@@ -141,7 +201,11 @@
         "dateReceived": "2025-04-19T19:00:00-05:00",
         "lastModified": "2025-04-20T11:05:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1990-03-28"
+        "dateOfBirth": {
+            "month": "Mar",
+            "day": "28",
+            "year": "1990"
+        }
     },
     {
         "fullName": "Willow Bryant",
@@ -150,7 +214,11 @@
         "dateReceived": "2025-04-22T19:00:00-05:00",
         "lastModified": "2025-04-23T14:40:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1989-01-14"
+        "dateOfBirth": {
+            "month": "Jan",
+            "day": "14",
+            "year": "1989"
+        }
     },
     {
         "fullName": "Sage Myers",
@@ -159,7 +227,11 @@
         "dateReceived": "2025-04-28T19:00:00-05:00",
         "lastModified": "2025-04-29T16:25:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1985-08-11"
+        "dateOfBirth": {
+            "month": "Aug",
+            "day": "11",
+            "year": "1985"
+        }
     },
     {
         "fullName": "Rowan Alexander",
@@ -168,7 +240,11 @@
         "dateReceived": "2025-05-09T19:00:00-05:00",
         "lastModified": "2025-05-10T08:30:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1984-07-30"
+        "dateOfBirth": {
+            "month": "Jul",
+            "day": "30",
+            "year": "1984"
+        }
     },
     {
         "fullName": "Colton Ford",
@@ -177,7 +253,11 @@
         "dateReceived": "2025-05-14T19:00:00-05:00",
         "lastModified": "2025-05-15T13:45:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1991-11-03"
+        "dateOfBirth": {
+            "month": "Nov",
+            "day": "3",
+            "year": "1991"
+        }
     },
     {
         "fullName": "Ivy Sullivan",
@@ -186,7 +266,11 @@
         "dateReceived": "2025-05-26T19:00:00-05:00",
         "lastModified": "2025-05-27T10:20:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1984-10-28"
+        "dateOfBirth": {
+            "month": "Oct",
+            "day": "28",
+            "year": "1984"
+        }
     },
     {
         "fullName": "Maverick Washington",
@@ -195,7 +279,11 @@
         "dateReceived": "2025-05-31T19:00:00-05:00",
         "lastModified": "2025-06-01T15:10:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1993-11-24"
+        "dateOfBirth": {
+            "month": "Nov",
+            "day": "24",
+            "year": "1993"
+        }
     },
     {
         "fullName": "Delilah Foster",
@@ -204,7 +292,11 @@
         "dateReceived": "2025-06-04T19:00:00-05:00",
         "lastModified": "2025-06-05T12:35:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1991-04-17"
+        "dateOfBirth": {
+            "month": "Apr",
+            "day": "17",
+            "year": "1991"
+        }
     },
     {
         "fullName": "Autumn Diaz",
@@ -213,7 +305,11 @@
         "dateReceived": "2025-06-16T19:00:00-05:00",
         "lastModified": "2025-06-17T09:50:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1990-12-07"
+        "dateOfBirth": {
+            "month": "Dec",
+            "day": "7",
+            "year": "1990"
+        }
     },
     {
         "fullName": "Aisha Yusuf",
@@ -222,7 +318,11 @@
         "dateReceived": "2025-07-09T19:00:00-05:00",
         "lastModified": "2025-07-10T14:15:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1982-03-13"
+        "dateOfBirth": {
+            "month": "Mar",
+            "day": "13",
+            "year": "1982"
+        }
     },
     {
         "fullName": "Harry Walker",
@@ -231,7 +331,11 @@
         "dateReceived": "2025-07-10T19:00:00-05:00",
         "lastModified": "2025-07-11T11:40:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1976-05-01"
+        "dateOfBirth": {
+            "month": "May",
+            "day": "1",
+            "year": "1976"
+        }
     },
     {
         "fullName": "Charlie Harris",
@@ -240,7 +344,11 @@
         "dateReceived": "2025-07-22T19:00:00-05:00",
         "lastModified": "2025-07-23T16:55:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1989-12-22"
+        "dateOfBirth": {
+            "month": "Dec",
+            "day": "22",
+            "year": "1989"
+        }
     },
     {
         "fullName": "Mia Thompson",
@@ -249,7 +357,11 @@
         "dateReceived": "2025-08-01T19:00:00-05:00",
         "lastModified": "2025-08-02T13:25:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1980-02-02"
+        "dateOfBirth": {
+            "month": "Feb",
+            "day": "2",
+            "year": "1980"
+        }
     },
     {
         "fullName": "Sarah Khan",
@@ -258,6 +370,10 @@
         "dateReceived": "2025-08-19T19:00:00-05:00",
         "lastModified": "2025-08-20T10:30:00-05:00",
         "caseStatus": "Accepted",
-        "dateOfBirth": "1989-02-11"
+        "dateOfBirth": {
+            "month": "Feb",
+            "day": "11",
+            "year": "1989"
+        }
     }
 ]
