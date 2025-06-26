@@ -1,0 +1,9 @@
+// Pagination component styles
+// Provides layout for pagination controls and results summary
+
+.govuk-pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+}
