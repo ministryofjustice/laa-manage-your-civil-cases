@@ -1,5 +1,17 @@
 {% extends "base.njk" %}
 
+{% block pageTitle %}
+  {%- if activeTab == 'opened' -%}
+    Your Cases - Opened Cases – {{config.SERVICE_NAME}} – GOV.UK
+  {%- elif activeTab == 'accepted' -%}
+    Your Cases - Accepted Cases – {{config.SERVICE_NAME}} – GOV.UK
+  {%- elif activeTab == 'closed' -%}
+    Your Cases - Closed Cases – {{config.SERVICE_NAME}} – GOV.UK
+  {%- else -%}
+    Your Cases - New Cases – {{config.SERVICE_NAME}} – GOV.UK
+  {%- endif -%}
+{% endblock %}
+
 {% block pageContent %}
   {#
     Cases page with server-side tab navigation
