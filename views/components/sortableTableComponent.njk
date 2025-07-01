@@ -79,7 +79,7 @@
 
       {# Create sortable header with link #}
       {% set headerHtml %}
-      <a href="{{ sortUrl }}" class="govuk-link govuk-link--no-visited-state{% if column.linkClasses %} {{ column.linkClasses }}{% endif %}">{{ column.text }}</a>
+      <a href="{{ sortUrl }}" class="govuk-link govuk-link--no-underline govuk-link--no-visited-state{% if column.linkClasses %} {{ column.linkClasses }}{% endif %}">{{ column.text }}</a>
       {% endset %}
 
       {# Calculate aria-sort value #}
