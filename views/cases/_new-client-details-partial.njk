@@ -1,0 +1,28 @@
+{{ govukTag({
+  text: "New",
+  classes: "govuk-tag--yellow govuk-!-margin-bottom-2"
+}) }}
+
+<h2 class="govuk-heading-m govuk-!-margin-bottom-1">Date received: <span class="govuk-body-l">{{ client.dateReceived or "14 January 2025" }}</span></h2>
+<h2 class="govuk-heading-m govuk-!-margin-bottom-7">LAA Reference: <span class="govuk-body-l">{{ client.laaReference or "3000742" }}</span></h2>
+
+<div class="govuk-button-group">
+  {{ govukButton({
+    text: "Accept case"
+  }) }}
+
+  {{ govukButton({
+    text: "Reject case",
+    classes: "govuk-button--secondary"
+  }) }}
+
+  {{ govukButton({
+    text: "Split case",
+    classes: "govuk-button--secondary"
+  }) }}
+
+  {{ govukButton({
+    text: "Leave feedback",
+    classes: "govuk-button--secondary"
+  }) }}
+</div>

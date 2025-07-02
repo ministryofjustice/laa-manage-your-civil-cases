@@ -93,6 +93,17 @@ router.get('/new', async function (req: Request, res: Response): Promise<void> {
   });
 });
 
+/* GET client details for a specific case from the new tab. */
+router.get('/new/:caseReference/client-details', async function (req: Request, res: Response): Promise<void> {
+  // Ideally would use loadCasesData to get caseReference, to pass onto template and to use in url
+  // const result = await loadCasesData('new', caseReference);
+
+  res.render('cases/client-details.njk', {
+    activeTab: 'new'
+    // client: result.data
+  });
+});
+
 /* GET your cases - opened tab. */
 router.get('/opened', async function (req: Request, res: Response): Promise<void> {
   const sortOrder = req.query.sort === 'desc' ? 'desc' : 'asc';
@@ -104,6 +115,13 @@ router.get('/opened', async function (req: Request, res: Response): Promise<void
     casesData: result.data,
     sortOrder,
     pagination: result.meta
+  });
+});
+
+/* GET client details for a specific case from the opened tab. */
+router.get('/opened/:caseReference/client-details', async function (req: Request, res: Response): Promise<void> {
+  res.render('cases/client-details.njk', {
+    activeTab: 'opened'
   });
 });
 
@@ -121,6 +139,13 @@ router.get('/accepted', async function (req: Request, res: Response): Promise<vo
   });
 });
 
+/* GET client details for a specific case from the accepted tab. */
+router.get('/accepted/:caseReference/client-details', async function (req: Request, res: Response): Promise<void> {
+  res.render('cases/client-details.njk', {
+    activeTab: 'accepted'
+  });
+});
+
 /* GET your cases - closed tab. */
 router.get('/closed', async function (req: Request, res: Response): Promise<void> {
   const sortOrder = req.query.sort === 'desc' ? 'desc' : 'asc';
@@ -132,6 +157,13 @@ router.get('/closed', async function (req: Request, res: Response): Promise<void
     casesData: result.data,
     sortOrder,
     pagination: result.meta
+  });
+});
+
+/* GET client details for a specific case from the closed tab. */
+router.get('/closed/:caseReference/client-details', async function (req: Request, res: Response): Promise<void> {
+  res.render('cases/client-details.njk', {
+    activeTab: 'closed'
   });
 });
 

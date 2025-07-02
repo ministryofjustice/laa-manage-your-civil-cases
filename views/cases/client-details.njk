@@ -1,0 +1,26 @@
+{% extends "base.njk" %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/tag/macro.njk" import govukTag %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block backLink %}
+  {{ govukBackLink({
+    text: "Back to all cases",
+    href: "/cases/" + activeTab,
+    classes: "govuk-!-margin-bottom-0"
+  }) }}
+{% endblock %}
+
+{% block pageContent %}
+  <h1 class="govuk-caption-xl">{{ client.caseReference or "PC-4950-9422" }}</h1>
+  <h1 class="govuk-heading-xl govuk-!-margin-bottom-6" id="page-heading">{{ client.fullName or "Mary Flynn" }}</h1>
+  {% if activeTab == 'new' %}
+    {% include "cases/_new-client-details-partial.njk" %}
+  {% elif activeTab == 'accepted' -%}
+    {% include "cases/_accepted-client-details-partial.njk" %}
+  {% elif activeTab == 'closed' -%}
+    {% include "cases/_closed-client-details-partial.njk" %}
+  {% else %}
+    {% include "cases/_opened-client-details-partial.njk" %}
+  {% endif %}
+{% endblock %}
