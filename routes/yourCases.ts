@@ -94,7 +94,7 @@ router.get('/new', async function (req: Request, res: Response): Promise<void> {
 });
 
 /* GET client details for a specific case from the new tab. */
-router.get('/new/:caseReference/client-details', async function (req: Request, res: Response): Promise<void> {
+router.get('/new/:caseReference/client-details', function (req: Request, res: Response): void {
   // Ideally would use loadCasesData to get caseReference, to pass onto template and to use in url
   // const result = await loadCasesData('new', caseReference);
 
@@ -119,7 +119,7 @@ router.get('/opened', async function (req: Request, res: Response): Promise<void
 });
 
 /* GET client details for a specific case from the opened tab. */
-router.get('/opened/:caseReference/client-details', async function (req: Request, res: Response): Promise<void> {
+router.get('/opened/:caseReference/client-details', function (req: Request, res: Response): void {
   res.render('cases/client-details.njk', {
     activeTab: 'opened'
   });
@@ -140,7 +140,7 @@ router.get('/accepted', async function (req: Request, res: Response): Promise<vo
 });
 
 /* GET client details for a specific case from the accepted tab. */
-router.get('/accepted/:caseReference/client-details', async function (req: Request, res: Response): Promise<void> {
+router.get('/accepted/:caseReference/client-details', function (req: Request, res: Response): void {
   res.render('cases/client-details.njk', {
     activeTab: 'accepted'
   });
@@ -161,7 +161,7 @@ router.get('/closed', async function (req: Request, res: Response): Promise<void
 });
 
 /* GET client details for a specific case from the closed tab. */
-router.get('/closed/:caseReference/client-details', async function (req: Request, res: Response): Promise<void> {
+router.get('/closed/:caseReference/client-details', function (req: Request, res: Response): void {
   res.render('cases/client-details.njk', {
     activeTab: 'closed'
   });
