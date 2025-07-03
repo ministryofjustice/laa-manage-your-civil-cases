@@ -2,6 +2,7 @@
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/tag/macro.njk" import govukTag %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "components/tabComponent.njk" import tabComponent %}
 
 {% block backLink %}
   {{ govukBackLink({
@@ -23,4 +24,38 @@
   {% else %}
     {% include "cases/_opened-client-details-partial.njk" %}
   {% endif %}
+
+  {{ tabComponent({
+    activeTab: 'client_details',
+    containerId: "cases-tab-container",
+    casesData: casesData,
+    sortOrder: sortOrder,
+    pagination: pagination,
+    tabs: [
+      {
+        id: "client_details",
+        text: "Client details",
+        href: "/cases/new/{{caseReference}}/client-details",
+        partial: "cases/_new-partial.njk"
+      },
+      {
+        id: "scope",
+        text: "Scope",
+        href: "/cases/new/{{caseReference}}/scope",
+        partial: "cases/_opened-partial.njk"
+      },
+      {
+        id: "financial_eligibility",
+        text: "Financial eligibility",
+        href: "/cases/new/{{caseReference}}/financial-eligibility",
+        partial: "cases/_accepted-partial.njk"
+      },
+      {
+        id: "notes_and_history",
+        text: "Notes and history",
+        href: "/cases/new/{{caseReference}}/notes-and-history",
+        partial: "cases/_closed-partial.njk"
+      }
+    ]
+  }) }}
 {% endblock %}
