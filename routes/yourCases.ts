@@ -94,14 +94,25 @@ router.get('/new', async function (req: Request, res: Response): Promise<void> {
 });
 
 /* GET client details for a specific case from the new tab. */
-router.get('/new/:caseReference/client-details', function (req: Request, res: Response): void {
-  // Ideally would use loadCasesData to get caseReference, to pass onto template and to use in url
-  // const result = await loadCasesData('new', caseReference);
+router.get('/new/:caseReference/client-details', async function (req: Request, res: Response): Promise<void> {
+  const result = await loadCasesData('new', 'asc', DEFAULT_PAGE);
 
-  res.render('cases/client-details.njk', {
-    activeTab: 'new'
-    // client: result.data
-  });
+  // Find the case that matches the caseReference from the URL
+  const caseMatch = result.data.find(
+    (item) => item.caseReference === req.params.caseReference
+  );
+
+  if ((caseMatch ?? '')) {
+    res.render('cases/client-details.njk', {
+      activeTab: 'new',
+      client: caseMatch
+    });
+  } else {
+    res.render('main/error.njk', {
+      status: '404',
+      error: 'Case not found'
+    });
+  }
 });
 
 /* GET your cases - opened tab. */
