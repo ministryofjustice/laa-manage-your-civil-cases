@@ -12,8 +12,8 @@
 {% endblock %}
 
 {% block pageContent %}
-  <h1 class="govuk-caption-xl">{{ client.caseReference or "PC-4950-9422" }}</h1>
-  <h1 class="govuk-heading-xl govuk-!-margin-bottom-6" id="page-heading">{{ client.fullName or "Mary Flynn" }}</h1>
+  <h1 class="govuk-caption-xl">{{ client.caseReference }}</h1>
+  <h1 class="govuk-heading-xl govuk-!-margin-bottom-6" id="page-heading">{{ client.fullName }}</h1>
   {% if activeTab == 'new' %}
     {% include "cases/_new-client-details-partial.njk" %}
   {% elif activeTab == 'accepted' -%}
