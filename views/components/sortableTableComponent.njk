@@ -75,11 +75,17 @@
       {% set nextSortOrder = 'desc' if (options.sortBy == column.key and options.sortOrder == 'asc') 
         else 
           'asc' %}
-      {% set sortUrl = options.basePath + '?sort=' + nextSortOrder %}
+      
+      {# Build sort URL with preserved page parameter #}
+      {% if options.currentPage and options.currentPage > 1 %}
+        {% set sortUrl = options.basePath + '?page=' + options.currentPage + '&sort=' + nextSortOrder %}
+      {% else %}
+        {% set sortUrl = options.basePath + '?sort=' + nextSortOrder %}
+      {% endif %}
 
       {# Create sortable header with link #}
       {% set headerHtml %}
-      <a href="{{ sortUrl }}" class="govuk-link govuk-link--no-visited-state{% if column.linkClasses %} {{ column.linkClasses }}{% endif %}">{{ column.text }}</a>
+      <a href="{{ sortUrl }}" class="govuk-link govuk-link--no-underline govuk-link--no-visited-state{% if column.linkClasses %} {{ column.linkClasses }}{% endif %}">{{ column.text }}</a>
       {% endset %}
 
       {# Calculate aria-sort value #}
@@ -162,8 +168,7 @@
     caption: options.caption,
     classes: options.classes,
     attributes: {
-      id: options.id,
-      "data-module": "moj-sortable-table"
+      id: options.id
     },
     head: tableHead,
     rows: tableRows
