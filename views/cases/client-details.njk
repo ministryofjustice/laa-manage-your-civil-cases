@@ -27,7 +27,7 @@
   {% endif %}
 
   {{ tabComponent({
-    activeTab: 'client_details',
+    activeTab: activeSubNavigationTab,
     containerId: "cases-tab-container",
     casesData: casesData,
     sortOrder: sortOrder,
@@ -36,26 +36,22 @@
       {
         id: "client_details",
         text: "Client details",
-        href: "/cases/new/{{caseReference}}/client-details",
-        partial: "cases/_new-partial.njk"
+        href: "/cases/" + activeTab + "/" + caseReference + "/client-details"
       },
       {
         id: "scope",
         text: "Scope",
-        href: "/cases/new/{{caseReference}}/scope",
-        partial: "cases/_opened-partial.njk"
+        href: "/cases/" + activeTab + "/" + caseReference + "/scope"
       },
       {
         id: "financial_eligibility",
         text: "Financial eligibility",
-        href: "/cases/new/{{caseReference}}/financial-eligibility",
-        partial: "cases/_accepted-partial.njk"
+        href: "/cases/" + activeTab + "/" + caseReference + "/financial-eligibility"
       },
       {
         id: "notes_and_history",
         text: "Notes and history",
-        href: "/cases/new/{{caseReference}}/notes-and-history",
-        partial: "cases/_closed-partial.njk"
+        href:"/cases/" + activeTab + "/" + caseReference + "/notes-and-history"
       }
     ]
   }) }}
