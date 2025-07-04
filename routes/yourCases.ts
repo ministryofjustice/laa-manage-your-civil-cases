@@ -3,6 +3,7 @@ import type { Request, Response } from 'express';
 import { apiService, type ApiResponse } from '#src/services/apiService.js';
 import type { CaseData } from '#types/case-types.js';
 import { devLog, devError } from '#src/scripts/helpers/index.js';
+import client_details from 'tests/fixtures/cases/all-client-details.json' with { type: "json" };
 
 // Create a new router for your-cases routes
 const router = express.Router();
@@ -93,6 +94,28 @@ router.get('/new', async function (req: Request, res: Response): Promise<void> {
   });
 });
 
+/* GET client details for a specific case from the new tab. */
+router.get('/new/:caseReference/client-details', function (req: Request, res: Response): void {
+  const result = client_details;
+
+  // Find the case that matches the caseReference from the URL
+  const caseMatch = result.find(
+    (item) => item.caseReference === req.params.caseReference
+  );
+
+  if (caseMatch != null) {
+    res.render('cases/client-details.njk', {
+      activeTab: 'new',
+      client: caseMatch
+    });
+  } else {
+    res.render('main/error.njk', {
+      status: '404',
+      error: 'Case not found'
+    });
+  }
+});
+
 /* GET your cases - opened tab. */
 router.get('/opened', async function (req: Request, res: Response): Promise<void> {
   const sortOrder = req.query.sort === 'desc' ? 'desc' : 'asc';
@@ -105,6 +128,28 @@ router.get('/opened', async function (req: Request, res: Response): Promise<void
     sortOrder,
     pagination: result.meta
   });
+});
+
+/* GET client details for a specific case from the opened tab. */
+router.get('/opened/:caseReference/client-details', function (req: Request, res: Response): void {
+  const result = client_details;
+
+  // Find the case that matches the caseReference from the URL
+  const caseMatch = result.find(
+    (item) => item.caseReference === req.params.caseReference
+  );
+
+  if (caseMatch != null) {
+    res.render('cases/client-details.njk', {
+      activeTab: 'opened',
+      client: caseMatch
+    });
+  } else {
+    res.render('main/error.njk', {
+      status: '404',
+      error: 'Case not found'
+    });
+  }
 });
 
 /* GET your cases - accepted tab. */
@@ -121,6 +166,28 @@ router.get('/accepted', async function (req: Request, res: Response): Promise<vo
   });
 });
 
+/* GET client details for a specific case from the accepted tab. */
+router.get('/accepted/:caseReference/client-details', function (req: Request, res: Response): void {
+  const result = client_details;
+
+  // Find the case that matches the caseReference from the URL
+  const caseMatch = result.find(
+    (item) => item.caseReference === req.params.caseReference
+  );
+
+  if (caseMatch != null) {
+    res.render('cases/client-details.njk', {
+      activeTab: 'accepted',
+      client: caseMatch
+    });
+  } else {
+    res.render('main/error.njk', {
+      status: '404',
+      error: 'Case not found'
+    });
+  }
+});
+
 /* GET your cases - closed tab. */
 router.get('/closed', async function (req: Request, res: Response): Promise<void> {
   const sortOrder = req.query.sort === 'desc' ? 'desc' : 'asc';
@@ -133,6 +200,28 @@ router.get('/closed', async function (req: Request, res: Response): Promise<void
     sortOrder,
     pagination: result.meta
   });
+});
+
+/* GET client details for a specific case from the closed tab. */
+router.get('/closed/:caseReference/client-details', function (req: Request, res: Response): void {
+  const result = client_details;
+
+  // Find the case that matches the caseReference from the URL
+  const caseMatch = result.find(
+    (item) => item.caseReference === req.params.caseReference
+  );
+
+  if (caseMatch != null) {
+    res.render('cases/client-details.njk', {
+      activeTab: 'closed',
+      client: caseMatch
+    });
+  } else {
+    res.render('main/error.njk', {
+      status: '404',
+      error: 'Case not found'
+    });
+  }
 });
 
 export default router;
