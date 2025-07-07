@@ -30,7 +30,7 @@
     {
         "fullName": "Leo Robinson",
         "caseReference": "PC-1298-8020",
-        "refCode": "Manually allocated",
+        "refCode": "",
         "laaReference": "4000742",
         "dateReceived": "2025-01-14T19:00:00-05:00",
         "lastModified": "2025-01-16T09:20:00-05:00",
@@ -100,7 +100,7 @@
     {
         "fullName": "Paisley Flores",
         "caseReference": "PC-9485-6271",
-        "refCode": "Operator unsure of scope",
+        "refCode": "",
         "laaReference": "3024554",
         "dateReceived": "2025-02-14T19:00:00-05:00",
         "lastModified": "2025-02-15T12:40:00-05:00",
@@ -142,7 +142,7 @@
     {
         "fullName": "Charlotte Anderson",
         "caseReference": "PC-8765-4321",
-        "refCode": "Manually allocated",
+        "refCode": "",
         "laaReference": "3009034",
         "dateReceived": "2025-03-08T19:00:00-05:00",
         "lastModified": "2025-03-09T10:55:00-05:00",
@@ -156,7 +156,7 @@
     {
         "fullName": "Grayson Simmons",
         "caseReference": "PC-8394-5217",
-        "refCode": "Manually allocated",
+        "refCode": "",
         "laaReference": "3001245",
         "dateReceived": "2025-03-16T19:00:00-05:00",
         "lastModified": "2025-03-17T13:35:00-05:00",
@@ -170,7 +170,7 @@
     {
         "fullName": "Phoenix Graham",
         "caseReference": "PC-7428-9051",
-        "refCode": "Manually allocated",
+        "refCode": "",
         "laaReference": "3003421",
         "dateReceived": "2025-03-21T19:00:00-05:00",
         "lastModified": "2025-03-22T09:15:00-05:00",
@@ -184,7 +184,7 @@
     {
         "fullName": "Declan Griffin",
         "caseReference": "PC-2604-7139",
-        "refCode": "Manually allocated",
+        "refCode": "",
         "laaReference": "3003422",
         "dateReceived": "2025-03-30T19:00:00-05:00",
         "lastModified": "2025-03-31T15:50:00-05:00",
@@ -226,7 +226,7 @@
     {
         "fullName": "Willow Bryant",
         "caseReference": "PC-3281-7650",
-        "refCode": "Operator unsure of scope",
+        "refCode": "",
         "laaReference": "3003431",
         "dateReceived": "2025-04-22T19:00:00-05:00",
         "lastModified": "2025-04-23T14:40:00-05:00",
@@ -240,7 +240,7 @@
     {
         "fullName": "Sage Myers",
         "caseReference": "PC-1523-8407",
-        "refCode": "Operator unsure of scope",
+        "refCode": "",
         "laaReference": "3003435",
         "dateReceived": "2025-04-28T19:00:00-05:00",
         "lastModified": "2025-04-29T16:25:00-05:00",
@@ -338,7 +338,7 @@
     {
         "fullName": "Aisha Yusuf",
         "caseReference": "PC-1393-7199",
-        "refCode": "Operator unsure of scope",
+        "refCode": "Operator recommends second opinion",
         "laaReference": "3103448",
         "dateReceived": "2025-07-09T19:00:00-05:00",
         "lastModified": "2025-07-10T14:15:00-05:00",
@@ -394,7 +394,7 @@
     {
         "fullName": "Sarah Khan",
         "caseReference": "PC-7735-3284",
-        "refCode": "Operator unsure of scope",
+        "refCode": "Operator recommends second opinion",
         "laaReference": "3103560",
         "dateReceived": "2025-08-19T19:00:00-05:00",
         "lastModified": "2025-08-20T10:30:00-05:00",
@@ -422,7 +422,7 @@
     {
         "fullName": "Harley Torres",
         "caseReference": "PC-6395-8017",
-        "refCode": "Out of scope",
+        "refCode": "Out of scope for CLA",
         "laaReference": "3103562",
         "dateReceived": "2025-01-06T19:00:00-05:00",
         "dateClosed": "2025-01-11T19:00:00-05:00",
@@ -478,7 +478,7 @@
     {
         "fullName": "Melody Reed",
         "caseReference": "PC-8139-2467",
-        "refCode": "Manually allocated",
+        "refCode": "Duplicate of existing case",
         "laaReference": "3103769",
         "dateReceived": "2025-02-05T19:00:00-05:00",
         "dateClosed": "2025-02-10T19:00:00-05:00",
@@ -562,7 +562,7 @@
     {
         "fullName": "Magnolia Gray",
         "caseReference": "PC-2946-5173",
-        "refCode": "Manually allocated",
+        "refCode": "Not financially eligible for CLA",
         "laaReference": "3103781",
         "dateReceived": "2025-03-19T19:00:00-05:00",
         "dateClosed": "2025-03-24T19:00:00-05:00",
@@ -576,7 +576,7 @@
     {
         "fullName": "Victoria Thompson",
         "caseReference": "PC-5566-7788",
-        "refCode": "Out of scope",
+        "refCode": "Out of scope for CLA",
         "laaReference": "3103782",
         "dateReceived": "2025-03-28T19:00:00-05:00",
         "dateClosed": "2025-04-02T19:00:00-05:00",
@@ -590,7 +590,7 @@
     {
         "fullName": "Genesis Kelly",
         "caseReference": "PC-9582-4760",
-        "refCode": "Out of scope",
+        "refCode": "Out of scope for CLA",
         "laaReference": "3103875",
         "dateReceived": "2025-03-28T19:00:00-05:00",
         "dateClosed": "2025-04-02T19:00:00-05:00",
@@ -604,7 +604,7 @@
     {
         "fullName": "Isabella Rodriguez",
         "caseReference": "PC-3366-5577",
-        "refCode": "Manually allocated",
+        "refCode": "Not financially eligible for CLA",
         "laaReference": "3103876",
         "dateReceived": "2025-04-03T19:00:00-05:00",
         "dateClosed": "2025-04-08T19:00:00-05:00",
@@ -618,7 +618,7 @@
     {
         "fullName": "Easton Bennett",
         "caseReference": "PC-3519-7204",
-        "refCode": "Manually allocated",
+        "refCode": "Not financially eligible for CLA",
         "laaReference": "3103879",
         "dateReceived": "2025-04-09T19:00:00-05:00",
         "dateClosed": "2025-04-14T19:00:00-05:00",
@@ -660,7 +660,7 @@
     {
         "fullName": "Karter Richardson",
         "caseReference": "PC-7194-3826",
-        "refCode": "Manually allocated",
+        "refCode": "Not financially eligible for CLA",
         "laaReference": "3203885",
         "dateReceived": "2025-05-01T19:00:00-05:00",
         "dateClosed": "2025-05-06T19:00:00-05:00",
@@ -674,7 +674,7 @@
     {
         "fullName": "Jaxon Fisher",
         "caseReference": "PC-8926-4157",
-        "refCode": "Out of scope",
+        "refCode": "Out of scope for CLA",
         "laaReference": "3203889",
         "dateReceived": "2025-05-07T19:00:00-05:00",
         "dateClosed": "2025-05-12T19:00:00-05:00",
@@ -744,7 +744,7 @@
     {
         "fullName": "Beau Rivera",
         "caseReference": "PC-9061-5734",
-        "refCode": "Out of scope",
+        "refCode": "Out of scope for CLA",
         "laaReference": "3203899",
         "dateReceived": "2025-06-09T19:00:00-05:00",
         "dateClosed": "2025-06-14T19:00:00-05:00",
@@ -758,7 +758,7 @@
     {
         "fullName": "Emily Watson",
         "caseReference": "PC-1039-3711",
-        "refCode": "Manually allocated",
+        "refCode": "Not financially eligible for CLA",
         "laaReference": "3303810",
         "dateReceived": "2025-06-21T19:00:00-05:00",
         "dateClosed": "2025-06-25T19:00:00-05:00",
@@ -840,7 +840,7 @@
     {
         "fullName": "Jason Moore",
         "caseReference": "PC-3571-9284",
-        "refCode": "Operator unsure of scope",
+        "refCode": "Operator recommends second opinion",
         "laaReference": "3403820",
         "dateReceived": "2025-01-19T19:00:00-05:00",
         "caseStatus": "New",
@@ -931,7 +931,7 @@
     {
         "fullName": "Mary Flynn",
         "caseReference": "PC-3630-9387",
-        "refCode": "",
+        "refCode": "Split from another case",
         "laaReference": "3403831",
         "dateReceived": "2025-03-06T19:00:00-05:00",
         "caseStatus": "New",
@@ -944,7 +944,7 @@
     {
         "fullName": "Maya Patel",
         "caseReference": "PC-8765-4321",
-        "refCode": "Out of scope",
+        "refCode": "Out of scope for CLA",
         "laaReference": "3403834",
         "dateReceived": "2025-03-14T19:00:00-05:00",
         "caseStatus": "New",
@@ -957,7 +957,7 @@
     {
         "fullName": "Michael Brown",
         "caseReference": "PC-5432-1098",
-        "refCode": "Operator unsure of scope",
+        "refCode": "Operator recommends second opinion",
         "laaReference": "3403835",
         "dateReceived": "2025-03-20T19:00:00-05:00",
         "caseStatus": "New",
@@ -1061,7 +1061,7 @@
     {
         "fullName": "Tom Andrews",
         "caseReference": "PC-3027-4448",
-        "refCode": "Out of scope",
+        "refCode": "Out of scope for CLA",
         "laaReference": "3503850",
         "dateReceived": "2025-05-05T19:00:00-05:00",
         "caseStatus": "New",
@@ -1074,7 +1074,7 @@
     {
         "fullName": "Lily Johnson",
         "caseReference": "PC-9642-7531",
-        "refCode": "Out of scope",
+        "refCode": "Out of scope for CLA",
         "laaReference": "3503851",
         "dateReceived": "2025-05-08T19:00:00-05:00",
         "caseStatus": "New",
@@ -1087,7 +1087,7 @@
     {
         "fullName": "David Thompson",
         "caseReference": "PC-3333-4444",
-        "refCode": "Out of scope",
+        "refCode": "Out of scope for CLA",
         "laaReference": "3503855",
         "dateReceived": "2025-05-12T19:00:00-05:00",
         "caseStatus": "New",
@@ -1100,7 +1100,7 @@
     {
         "fullName": "Hazel Walker",
         "caseReference": "PC-8372-6419",
-        "refCode": "Out of scope",
+        "refCode": "Out of scope for CLA",
         "laaReference": "3503859",
         "dateReceived": "2025-05-19T19:00:00-05:00",
         "caseStatus": "New",
@@ -1126,7 +1126,7 @@
     {
         "fullName": "Lucas Martinez",
         "caseReference": "PC-9753-8642",
-        "refCode": "Operator unsure of scope",
+        "refCode": "Operator recommends second opinion",
         "laaReference": "3653862",
         "dateReceived": "2025-06-03T19:00:00-05:00",
         "caseStatus": "New",
@@ -1139,7 +1139,7 @@
     {
         "fullName": "Jacob King",
         "caseReference": "PC-8891-1836",
-        "refCode": "Out of scope",
+        "refCode": "Out of scope for CLA",
         "laaReference": "3653866",
         "dateReceived": "2025-06-07T19:00:00-05:00",
         "caseStatus": "New",
@@ -1165,7 +1165,7 @@
     {
         "fullName": "Ryan Garcia",
         "caseReference": "PC-7777-8888",
-        "refCode": "Operator unsure of scope",
+        "refCode": "Operator recommends second opinion",
         "laaReference": "3753870",
         "dateReceived": "2025-06-15T19:00:00-05:00",
         "caseStatus": "New",
@@ -1191,7 +1191,7 @@
     {
         "fullName": "Ian Phillips",
         "caseReference": "PC-9173-4826",
-        "refCode": "Operator unsure of scope",
+        "refCode": "Operator recommends second opinion",
         "laaReference": "3753875",
         "dateReceived": "2025-01-14T19:00:00-05:00",
         "lastModified": "2025-01-15T10:30:00-05:00",
@@ -1219,7 +1219,7 @@
     {
         "fullName": "Aurora Evans",
         "caseReference": "PC-5184-7392",
-        "refCode": "Manually allocated",
+        "refCode": "Manually allocated by operator",
         "laaReference": "3753879",
         "dateReceived": "2025-02-09T19:00:00-05:00",
         "lastModified": "2025-02-10T09:45:00-05:00",
@@ -1261,7 +1261,7 @@
     {
         "fullName": "Evelyn Green",
         "caseReference": "PC-1472-5836",
-        "refCode": "Manually allocated",
+        "refCode": "Manually allocated by operator",
         "laaReference": "3853882",
         "dateReceived": "2025-03-07T19:00:00-05:00",
         "lastModified": "2025-03-08T13:45:00-05:00",
@@ -1345,7 +1345,7 @@
     {
         "fullName": "Hunter Baker",
         "caseReference": "PC-7412-9630",
-        "refCode": "Operator unsure of scope",
+        "refCode": "Operator recommends second opinion",
         "laaReference": "3953895",
         "dateReceived": "2025-04-14T19:00:00-05:00",
         "lastModified": "2025-04-15T09:15:00-05:00",
@@ -1359,7 +1359,7 @@
     {
         "fullName": "Gabriel Young",
         "caseReference": "PC-4691-2580",
-        "refCode": "Operator unsure of scope",
+        "refCode": "Operator recommends second opinion",
         "laaReference": "3953896",
         "dateReceived": "2025-04-29T19:00:00-05:00",
         "lastModified": "2025-04-30T11:40:00-05:00",
@@ -1387,7 +1387,7 @@
     {
         "fullName": "Benjamin Taylor",
         "caseReference": "PC-4567-8901",
-        "refCode": "Manually allocated",
+        "refCode": "Manually allocated by operator",
         "laaReference": "3063810",
         "dateReceived": "2025-05-18T19:00:00-05:00",
         "lastModified": "2025-05-19T08:45:00-05:00",
@@ -1443,7 +1443,7 @@
     {
         "fullName": "Stella Perez",
         "caseReference": "PC-7539-1648",
-        "refCode": "Manually allocated",
+        "refCode": "Manually allocated by operator",
         "laaReference": "3063825",
         "dateReceived": "2025-06-12T19:00:00-05:00",
         "lastModified": "2025-06-13T15:25:00-05:00",
@@ -1527,7 +1527,7 @@
     {
         "fullName": "Rachel Green",
         "caseReference": "PC-6960-2586",
-        "refCode": "Operator unsure of scope",
+        "refCode": "Operator recommends second opinion",
         "laaReference": "3063856",
         "dateReceived": "2025-07-14T19:00:00-05:00",
         "lastModified": "2025-07-15T12:30:00-05:00",

@@ -15,7 +15,7 @@
     {
         "fullName": "Harley Torres",
         "caseReference": "PC-6395-8017",
-        "refCode": "Out of scope",
+        "refCode": "Out of scope for CLA",
         "dateReceived": "2025-01-06T19:00:00-05:00",
         "dateClosed": "2025-01-11T19:00:00-05:00",
         "caseStatus": "Closed",
@@ -67,7 +67,7 @@
     {
         "fullName": "Melody Reed",
         "caseReference": "PC-8139-2467",
-        "refCode": "Manually allocated",
+        "refCode": "Duplicate of existing case",
         "dateReceived": "2025-02-05T19:00:00-05:00",
         "dateClosed": "2025-02-10T19:00:00-05:00",
         "caseStatus": "Closed",
@@ -145,7 +145,7 @@
     {
         "fullName": "Magnolia Gray",
         "caseReference": "PC-2946-5173",
-        "refCode": "Manually allocated",
+        "refCode": "Not financially eligible for CLA",
         "dateReceived": "2025-03-19T19:00:00-05:00",
         "dateClosed": "2025-03-24T19:00:00-05:00",
         "caseStatus": "Closed",
@@ -158,7 +158,7 @@
     {
         "fullName": "Victoria Thompson",
         "caseReference": "PC-5566-7788",
-        "refCode": "Out of scope",
+        "refCode": "Out of scope for CLA",
         "dateReceived": "2025-03-28T19:00:00-05:00",
         "dateClosed": "2025-04-02T19:00:00-05:00",
         "caseStatus": "Closed",
@@ -171,7 +171,7 @@
     {
         "fullName": "Genesis Kelly",
         "caseReference": "PC-9582-4760",
-        "refCode": "Out of scope",
+        "refCode": "Out of scope for CLA",
         "dateReceived": "2025-03-28T19:00:00-05:00",
         "dateClosed": "2025-04-02T19:00:00-05:00",
         "caseStatus": "Closed",
@@ -184,7 +184,7 @@
     {
         "fullName": "Isabella Rodriguez",
         "caseReference": "PC-3366-5577",
-        "refCode": "Manually allocated",
+        "refCode": "Not financially eligible for CLA",
         "dateReceived": "2025-04-03T19:00:00-05:00",
         "dateClosed": "2025-04-08T19:00:00-05:00",
         "caseStatus": "Closed",
@@ -197,7 +197,7 @@
     {
         "fullName": "Easton Bennett",
         "caseReference": "PC-3519-7204",
-        "refCode": "Manually allocated",
+        "refCode": "Not financially eligible for CLA",
         "dateReceived": "2025-04-09T19:00:00-05:00",
         "dateClosed": "2025-04-14T19:00:00-05:00",
         "caseStatus": "Closed",
@@ -236,7 +236,7 @@
     {
         "fullName": "Karter Richardson",
         "caseReference": "PC-7194-3826",
-        "refCode": "Manually allocated",
+        "refCode": "Not financially eligible for CLA",
         "dateReceived": "2025-05-01T19:00:00-05:00",
         "dateClosed": "2025-05-06T19:00:00-05:00",
         "caseStatus": "Closed",
@@ -249,7 +249,7 @@
     {
         "fullName": "Jaxon Fisher",
         "caseReference": "PC-8926-4157",
-        "refCode": "Out of scope",
+        "refCode": "Out of scope for CLA",
         "dateReceived": "2025-05-07T19:00:00-05:00",
         "dateClosed": "2025-05-12T19:00:00-05:00",
         "caseStatus": "Closed",
@@ -314,7 +314,7 @@
     {
         "fullName": "Beau Rivera",
         "caseReference": "PC-9061-5734",
-        "refCode": "Out of scope",
+        "refCode": "Out of scope for CLA",
         "dateReceived": "2025-06-09T19:00:00-05:00",
         "dateClosed": "2025-06-14T19:00:00-05:00",
         "caseStatus": "Closed",
@@ -327,7 +327,7 @@
     {
         "fullName": "Emily Watson",
         "caseReference": "PC-1039-3711",
-        "refCode": "Manually allocated",
+        "refCode": "Not financially eligible for CLA",
         "dateReceived": "2025-06-21T19:00:00-05:00",
         "dateClosed": "2025-06-25T19:00:00-05:00",
         "caseStatus": "Closed",

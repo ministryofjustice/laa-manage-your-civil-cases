@@ -57,4 +57,4 @@ export type CaseStatus = 'New' | 'Accepted' | 'Opened' | 'Closed';
 /**
  * Case reference code types
  */
-export type CaseRefCode = '' | 'Manually allocated' | 'Operator unsure of scope' | 'Out of scope';
+export type CaseRefCode = '' | 'Manually allocated by operator' | 'Operator recommends second opinion' | 'Out of scope for CLA' | 'Duplicate of existing case' | 'Not financially eligible for CLA' | 'Split from another case';
