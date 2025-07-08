@@ -14,7 +14,7 @@
     {
         "fullName": "Ryan Garcia",
         "caseReference": "PC-7777-8888",
-        "refCode": "Operator unsure of scope",
+        "refCode": "Operator recommends second opinion",
         "dateReceived": "2025-06-15T19:00:00-05:00",
         "caseStatus": "New",
         "dateOfBirth": {
@@ -38,7 +38,7 @@
     {
         "fullName": "Jacob King",
         "caseReference": "PC-8891-1836",
-        "refCode": "Out of scope",
+        "refCode": "Out of scope for CLA",
         "dateReceived": "2025-06-07T19:00:00-05:00",
         "caseStatus": "New",
         "dateOfBirth": {
@@ -50,7 +50,7 @@
     {
         "fullName": "Lucas Martinez",
         "caseReference": "PC-9753-8642",
-        "refCode": "Operator unsure of scope",
+        "refCode": "Operator recommends second opinion",
         "dateReceived": "2025-06-03T19:00:00-05:00",
         "caseStatus": "New",
         "dateOfBirth": {
@@ -74,7 +74,7 @@
     {
         "fullName": "Hazel Walker",
         "caseReference": "PC-8372-6419",
-        "refCode": "Out of scope",
+        "refCode": "Out of scope for CLA",
         "dateReceived": "2025-05-19T19:00:00-05:00",
         "caseStatus": "New",
         "dateOfBirth": {
@@ -86,7 +86,7 @@
     {
         "fullName": "David Thompson",
         "caseReference": "PC-3333-4444",
-        "refCode": "Out of scope",
+        "refCode": "Out of scope for CLA",
         "dateReceived": "2025-05-12T19:00:00-05:00",
         "caseStatus": "New",
         "dateOfBirth": {
@@ -98,7 +98,7 @@
     {
         "fullName": "Lily Johnson",
         "caseReference": "PC-9642-7531",
-        "refCode": "Out of scope",
+        "refCode": "Out of scope for CLA",
         "dateReceived": "2025-05-08T19:00:00-05:00",
         "caseStatus": "New",
         "dateOfBirth": {
@@ -110,7 +110,7 @@
     {
         "fullName": "Tom Andrews",
         "caseReference": "PC-3027-4448",
-        "refCode": "Out of scope",
+        "refCode": "Out of scope for CLA",
         "dateReceived": "2025-05-05T19:00:00-05:00",
         "caseStatus": "New",
         "dateOfBirth": {
@@ -206,7 +206,7 @@
     {
         "fullName": "Michael Brown",
         "caseReference": "PC-5432-1098",
-        "refCode": "Operator unsure of scope",
+        "refCode": "Operator recommends second opinion",
         "dateReceived": "2025-03-20T19:00:00-05:00",
         "caseStatus": "New",
         "dateOfBirth": {
@@ -218,7 +218,7 @@
     {
         "fullName": "Maya Patel",
         "caseReference": "PC-8765-4321",
-        "refCode": "Out of scope",
+        "refCode": "Out of scope for CLA",
         "dateReceived": "2025-03-14T19:00:00-05:00",
         "caseStatus": "New",
         "dateOfBirth": {
@@ -230,7 +230,7 @@
     {
         "fullName": "Mary Flynn",
         "caseReference": "PC-3630-9387",
-        "refCode": "",
+        "refCode": "Split from another case",
         "dateReceived": "2025-03-06T19:00:00-05:00",
         "caseStatus": "New",
         "dateOfBirth": {
@@ -314,7 +314,7 @@
     {
         "fullName": "Jason Moore",
         "caseReference": "PC-3571-9284",
-        "refCode": "Operator unsure of scope",
+        "refCode": "Operator recommends second opinion",
         "dateReceived": "2025-01-19T19:00:00-05:00",
         "caseStatus": "New",
         "dateOfBirth": {
