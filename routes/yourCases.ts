@@ -35,7 +35,7 @@ function parsePageNumber(pageParam: unknown): number {
  * @param {number} page Page number for pagination
  * @returns {Promise<{data: CaseData[], meta: ApiResponse<CaseData>['meta']}>} Case data with pagination metadata
  */
-async function loadCasesData(caseType: string, sortOrder = 'asc', page = DEFAULT_PAGE): Promise<{ data: CaseData[], meta: ApiResponse<CaseData>['meta'] }> {
+async function loadCasesData(caseType: string, sortOrder = 'desc', page = DEFAULT_PAGE): Promise<{ data: CaseData[], meta: ApiResponse<CaseData>['meta'] }> {
   try {
     // Validate case type
     const validCaseTypes = ['new', 'accepted', 'opened', 'closed'] as const;
@@ -51,11 +51,11 @@ async function loadCasesData(caseType: string, sortOrder = 'asc', page = DEFAULT
 
     if (!isValidCaseType(caseType)) {
       devError(`Invalid case type: ${caseType}`);
-      return { data: [], meta: { total: EMPTY_TOTAL, page: DEFAULT_PAGE, limit: DEFAULT_LIMIT, sortBy: 'dateReceived', sortOrder: 'asc' } };
+      return { data: [], meta: { total: EMPTY_TOTAL, page: DEFAULT_PAGE, limit: DEFAULT_LIMIT, sortBy: 'dateReceived', sortOrder: 'desc' } };
     }
 
     // Validate sort order
-    const validSortOrder: 'asc' | 'desc' = sortOrder === 'desc' ? 'desc' : 'asc';
+    const validSortOrder: 'asc' | 'desc' = sortOrder === 'asc' ? 'asc' : 'desc';
     const validPage = Math.max(DEFAULT_PAGE, page);
 
     // Use API service (currently mock, will be real API in future)
@@ -75,14 +75,14 @@ async function loadCasesData(caseType: string, sortOrder = 'asc', page = DEFAULT
     return { data: response.data, meta: response.meta };
   } catch (error) {
     devError(`Error loading ${caseType} cases: ${String(error)}`);
-    return { data: [], meta: { total: EMPTY_TOTAL, page: DEFAULT_PAGE, limit: DEFAULT_LIMIT, sortBy: 'dateReceived', sortOrder: 'asc' } };
+    return { data: [], meta: { total: EMPTY_TOTAL, page: DEFAULT_PAGE, limit: DEFAULT_LIMIT, sortBy: 'dateReceived', sortOrder: 'desc' } };
   }
 }
 
 
 /* GET your cases - new tab. */
 router.get('/new', async function (req: Request, res: Response): Promise<void> {
-  const sortOrder = req.query.sort === 'desc' ? 'desc' : 'asc';
+  const sortOrder = req.query.sort === 'asc' ? 'asc' : 'desc';
   const page = parsePageNumber(req.query.page);
   const result = await loadCasesData('new', sortOrder, page);
 
@@ -118,7 +118,7 @@ router.get('/new/:caseReference/client-details', function (req: Request, res: Re
 
 /* GET your cases - opened tab. */
 router.get('/opened', async function (req: Request, res: Response): Promise<void> {
-  const sortOrder = req.query.sort === 'desc' ? 'desc' : 'asc';
+  const sortOrder = req.query.sort === 'asc' ? 'asc' : 'desc';
   const page = parsePageNumber(req.query.page);
   const result = await loadCasesData('opened', sortOrder, page);
 
@@ -154,7 +154,7 @@ router.get('/opened/:caseReference/client-details', function (req: Request, res:
 
 /* GET your cases - accepted tab. */
 router.get('/accepted', async function (req: Request, res: Response): Promise<void> {
-  const sortOrder = req.query.sort === 'desc' ? 'desc' : 'asc';
+  const sortOrder = req.query.sort === 'asc' ? 'asc' : 'desc';
   const page = parsePageNumber(req.query.page);
   const result = await loadCasesData('accepted', sortOrder, page);
 
@@ -190,7 +190,7 @@ router.get('/accepted/:caseReference/client-details', function (req: Request, re
 
 /* GET your cases - closed tab. */
 router.get('/closed', async function (req: Request, res: Response): Promise<void> {
-  const sortOrder = req.query.sort === 'desc' ? 'desc' : 'asc';
+  const sortOrder = req.query.sort === 'asc' ? 'asc' : 'desc';
   const page = parsePageNumber(req.query.page);
   const result = await loadCasesData('closed', sortOrder, page);
 

@@ -20,7 +20,7 @@
         { key: "dateClosed", text: "Date closed", sortable: true, classes: "govuk-table__header--numeric" , cellClasses: "govuk-table__cell--numeric" }
       ],
       sortBy: "dateClosed",
-      sortOrder: sortOrder or "asc",
+      sortOrder: sortOrder or "desc",
       basePath: "/cases/closed"
     }) }}
 
@@ -28,7 +28,7 @@
   {% if pagination %}
     {{ paginationComponent({
       pagination: pagination,
-      sortOrder: sortOrder or "asc",
+      sortOrder: sortOrder or "desc",
       basePath: "/cases/closed"
     }) }}
   {% endif %}
