@@ -75,7 +75,13 @@
       {% set nextSortOrder = 'desc' if (options.sortBy == column.key and options.sortOrder == 'asc') 
         else 
           'asc' %}
-      {% set sortUrl = options.basePath + '?sort=' + nextSortOrder %}
+      
+      {# Build sort URL with preserved page parameter #}
+      {% if options.currentPage and options.currentPage > 1 %}
+        {% set sortUrl = options.basePath + '?page=' + options.currentPage + '&sort=' + nextSortOrder %}
+      {% else %}
+        {% set sortUrl = options.basePath + '?sort=' + nextSortOrder %}
+      {% endif %}
 
       {# Create sortable header with link #}
       {% set headerHtml %}
