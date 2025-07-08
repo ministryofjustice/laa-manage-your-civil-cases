@@ -56,8 +56,12 @@
       {% set queryParams = [] %}
       {% set queryParams = (queryParams.push("page=" + pageNumber | string), queryParams) %}
 
+      {% if options.pagination.sortBy %}
+        {% set queryParams = (queryParams.push("sortBy=" + options.pagination.sortBy), queryParams) %}
+      {% endif %}
+
       {% if options.pagination.sortOrder and options.pagination.sortOrder != 'asc' %}
-        {% set queryParams = (queryParams.push("sort=" + options.pagination.sortOrder), queryParams) %}
+        {% set queryParams = (queryParams.push("sortOrder=" + options.pagination.sortOrder), queryParams) %}
       {% endif %}
 
       {{ options.basePath }}?{{ queryParams | join("&") }}
