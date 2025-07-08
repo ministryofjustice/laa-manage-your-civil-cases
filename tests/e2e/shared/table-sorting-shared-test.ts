@@ -11,6 +11,7 @@ import type { PageConfig } from './global-shared-test.js';
 const ZERO_LENGTH = 0;
 /**
  * Shared test function to verify basic sorting functionality
+ * Tests that data is sorted in descending order by default (newest first)
  * @param {Page} page - Playwright page object
  * @param {PageConfig} [config] - Page configuration (optional for backward compatibility)
  */
@@ -25,8 +26,8 @@ export async function testDefaultSorting(page: Page, config?: PageConfig): Promi
     return;
   }
 
-  // Verify dates are sorted in ascending order by default
-  expect(isAscendingSorted(dates)).toBe(true);
+  // Verify dates are sorted in descending order by default
+  expect(isDescendingSorted(dates)).toBe(true);
 }
 
 /**
@@ -53,21 +54,21 @@ export async function testDateSorting(page: Page, config: PageConfig): Promise<v
     return;
   }
 
-  // Verify default ascending sort
-  expect(isAscendingSorted(initialDates)).toBe(true);
+  // Verify default descending sort
+  expect(isDescendingSorted(initialDates)).toBe(true);
 
   // Find the sortable date column
   const tableLocator = page.locator(`table#${config.tableId}.govuk-table`);
   const dateColumnHeader = tableLocator.locator('thead th a');
   const sortLink = dateColumnHeader.first();
 
-  // Descending sort
-  await sortLink.click();
-  await page.waitForURL(`**${config.path}?sort=desc`);
-  await assertSorted(isDescendingSorted);
-
-  // Ascending sort again
+  // Click to ascending sort
   await sortLink.click();
   await page.waitForURL(`**${config.path}?sort=asc`);
   await assertSorted(isAscendingSorted);
+
+  // Click to descending sort again
+  await sortLink.click();
+  await page.waitForURL(`**${config.path}?sort=desc`);
+  await assertSorted(isDescendingSorted);
 }
