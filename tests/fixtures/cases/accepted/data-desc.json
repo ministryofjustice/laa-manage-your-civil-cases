@@ -2,7 +2,7 @@
     {
         "fullName": "Sarah Khan",
         "caseReference": "PC-7735-3284",
-        "refCode": "Operator unsure of scope",
+        "refCode": "Operator recommends second opinion",
         "dateReceived": "2025-08-19T19:00:00-05:00",
         "lastModified": "2025-08-20T10:30:00-05:00",
         "caseStatus": "Accepted",
@@ -54,7 +54,7 @@
     {
         "fullName": "Aisha Yusuf",
         "caseReference": "PC-1393-7199",
-        "refCode": "Operator unsure of scope",
+        "refCode": "Operator recommends second opinion",
         "dateReceived": "2025-07-09T19:00:00-05:00",
         "lastModified": "2025-07-10T14:15:00-05:00",
         "caseStatus": "Accepted",
@@ -145,7 +145,7 @@
     {
         "fullName": "Sage Myers",
         "caseReference": "PC-1523-8407",
-        "refCode": "Operator unsure of scope",
+        "refCode": "",
         "dateReceived": "2025-04-28T19:00:00-05:00",
         "lastModified": "2025-04-29T16:25:00-05:00",
         "caseStatus": "Accepted",
@@ -158,7 +158,7 @@
     {
         "fullName": "Willow Bryant",
         "caseReference": "PC-3281-7650",
-        "refCode": "Operator unsure of scope",
+        "refCode": "",
         "dateReceived": "2025-04-22T19:00:00-05:00",
         "lastModified": "2025-04-23T14:40:00-05:00",
         "caseStatus": "Accepted",
@@ -197,7 +197,7 @@
     {
         "fullName": "Declan Griffin",
         "caseReference": "PC-2604-7139",
-        "refCode": "Manually allocated",
+        "refCode": "",
         "dateReceived": "2025-03-30T19:00:00-05:00",
         "lastModified": "2025-03-31T15:50:00-05:00",
         "caseStatus": "Accepted",
@@ -210,7 +210,7 @@
     {
         "fullName": "Phoenix Graham",
         "caseReference": "PC-7428-9051",
-        "refCode": "Manually allocated",
+        "refCode": "",
         "dateReceived": "2025-03-21T19:00:00-05:00",
         "lastModified": "2025-03-22T09:15:00-05:00",
         "caseStatus": "Accepted",
@@ -223,7 +223,7 @@
     {
         "fullName": "Grayson Simmons",
         "caseReference": "PC-8394-5217",
-        "refCode": "Manually allocated",
+        "refCode": "",
         "dateReceived": "2025-03-16T19:00:00-05:00",
         "lastModified": "2025-03-17T13:35:00-05:00",
         "caseStatus": "Accepted",
@@ -236,7 +236,7 @@
     {
         "fullName": "Charlotte Anderson",
         "caseReference": "PC-8765-4321",
-        "refCode": "Manually allocated",
+        "refCode": "",
         "dateReceived": "2025-03-08T19:00:00-05:00",
         "lastModified": "2025-03-09T10:55:00-05:00",
         "caseStatus": "Accepted",
@@ -275,7 +275,7 @@
     {
         "fullName": "Paisley Flores",
         "caseReference": "PC-9485-6271",
-        "refCode": "Operator unsure of scope",
+        "refCode": "",
         "dateReceived": "2025-02-14T19:00:00-05:00",
         "lastModified": "2025-02-15T12:40:00-05:00",
         "caseStatus": "Accepted",
@@ -340,7 +340,7 @@
     {
         "fullName": "Leo Robinson",
         "caseReference": "PC-1298-8020",
-        "refCode": "Manually allocated",
+        "refCode": "",
         "dateReceived": "2025-01-14T19:00:00-05:00",
         "lastModified": "2025-01-16T09:20:00-05:00",
         "caseStatus": "Accepted",
