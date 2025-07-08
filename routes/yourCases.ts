@@ -79,6 +79,36 @@ async function loadCasesData(caseType: string, sortOrder = 'asc', page = DEFAULT
   }
 }
 
+/**
+ * Return a case details page if it exists
+ * @param {Request} req Request object
+ * @param {Response} res Response object
+ * @param {string} activeTab The active tab of the primary navigation 
+ * @param {string} activeSubNavigationTab The active tab of the sub navigation 
+ * @returns {void} Page to be returned
+ */
+function handleClientDetails(req: Request, res: Response, activeTab: string, activeSubNavigationTab: string): void {
+  const result = client_details;
+
+  // Find the case that matches the caseReference from the URL
+  const caseMatch = result.find(
+    (item) => item.caseReference === req.params.caseReference
+  );
+
+  if (caseMatch != null) {
+    res.render('cases/client-details.njk', {
+      activeTab,
+      activeSubNavigationTab,
+      client: caseMatch,
+      caseReference: caseMatch.caseReference
+    });
+  } else {
+    res.render('main/error.njk', {
+      status: '404',
+      error: 'Case not found'
+    });
+  }
+}
 
 /* GET your cases - new tab. */
 router.get('/new', async function (req: Request, res: Response): Promise<void> {
@@ -96,98 +126,22 @@ router.get('/new', async function (req: Request, res: Response): Promise<void> {
 
 /* GET client details for a specific case from the new tab. */
 router.get('/new/:caseReference/client-details', function (req: Request, res: Response): void {
-  const result = client_details;
-
-  // Find the case that matches the caseReference from the URL
-  const caseMatch = result.find(
-    (item) => item.caseReference === req.params.caseReference
-  );
-
-  if (caseMatch != null) {
-    res.render('cases/client-details.njk', {
-      activeTab: 'new',
-      activeSubNavigationTab: 'client_details',
-      client: caseMatch,
-      caseReference: caseMatch.caseReference
-    });
-  } else {
-    res.render('main/error.njk', {
-      status: '404',
-      error: 'Case not found'
-    });
-  }
+  handleClientDetails(req, res, 'new', 'client_details');
 });
 
 /* GET client details for a specific case from the new tab & scope tab. */
 router.get('/new/:caseReference/scope', function (req: Request, res: Response): void {
-  const result = client_details;
-
-  // Find the case that matches the caseReference from the URL
-  const caseMatch = result.find(
-    (item) => item.caseReference === req.params.caseReference
-  );
-
-  if (caseMatch != null) {
-    res.render('cases/client-details.njk', {
-      activeTab: 'new',
-      activeSubNavigationTab: 'scope',
-      client: caseMatch,
-      caseReference: caseMatch.caseReference
-    });
-  } else {
-    res.render('main/error.njk', {
-      status: '404',
-      error: 'Case not found'
-    });
-  }
+  handleClientDetails(req, res, 'new', 'scope');
 });
 
 /* GET client details for a specific case from the new tab & financial_eligibility tab. */
 router.get('/new/:caseReference/financial-eligibility', function (req: Request, res: Response): void {
-  const result = client_details;
-
-  // Find the case that matches the caseReference from the URL
-  const caseMatch = result.find(
-    (item) => item.caseReference === req.params.caseReference
-  );
-
-  if (caseMatch != null) {
-    res.render('cases/client-details.njk', {
-      activeTab: 'new',
-      activeSubNavigationTab: 'financial_eligibility',
-      client: caseMatch,
-      caseReference: caseMatch.caseReference
-    });
-  } else {
-    res.render('main/error.njk', {
-      status: '404',
-      error: 'Case not found'
-    });
-  }
+  handleClientDetails(req, res, 'new', 'financial_eligibility');
 });
 
 /* GET client details for a specific case from the new tab & notes_and_history tab. */
 router.get('/new/:caseReference/notes-and-history', function (req: Request, res: Response): void {
-  const result = client_details;
-
-  // Find the case that matches the caseReference from the URL
-  const caseMatch = result.find(
-    (item) => item.caseReference === req.params.caseReference
-  );
-
-  if (caseMatch != null) {
-    res.render('cases/client-details.njk', {
-      activeTab: 'new',
-      activeSubNavigationTab: 'notes_and_history',
-      client: caseMatch,
-      caseReference: caseMatch.caseReference
-    });
-  } else {
-    res.render('main/error.njk', {
-      status: '404',
-      error: 'Case not found'
-    });
-  }
+  handleClientDetails(req, res, 'new', 'notes_and_history');
 });
 
 /* GET your cases - opened tab. */
@@ -206,98 +160,22 @@ router.get('/opened', async function (req: Request, res: Response): Promise<void
 
 /* GET client details for a specific case from the opened tab. */
 router.get('/opened/:caseReference/client-details', function (req: Request, res: Response): void {
-  const result = client_details;
-
-  // Find the case that matches the caseReference from the URL
-  const caseMatch = result.find(
-    (item) => item.caseReference === req.params.caseReference
-  );
-
-  if (caseMatch != null) {
-    res.render('cases/client-details.njk', {
-      activeTab: 'opened',
-      client: caseMatch,
-      activeSubNavigationTab: 'client_details',
-      caseReference: caseMatch.caseReference
-    });
-  } else {
-    res.render('main/error.njk', {
-      status: '404',
-      error: 'Case not found'
-    });
-  }
+  handleClientDetails(req, res, 'opened', 'client_details');
 });
 
 /* GET client details for a specific case from the opened tab & scope tab. */
 router.get('/opened/:caseReference/scope', function (req: Request, res: Response): void {
-  const result = client_details;
-
-  // Find the case that matches the caseReference from the URL
-  const caseMatch = result.find(
-    (item) => item.caseReference === req.params.caseReference
-  );
-
-  if (caseMatch != null) {
-    res.render('cases/client-details.njk', {
-      activeTab: 'opened',
-      client: caseMatch,
-      activeSubNavigationTab: 'scope',
-      caseReference: caseMatch.caseReference
-    });
-  } else {
-    res.render('main/error.njk', {
-      status: '404',
-      error: 'Case not found'
-    });
-  }
+  handleClientDetails(req, res, 'opened', 'scope');
 });
 
 /* GET client details for a specific case from the opened tab & scope tab & financial_eligibility tab. */
 router.get('/opened/:caseReference/financial-eligibility', function (req: Request, res: Response): void {
-  const result = client_details;
-
-  // Find the case that matches the caseReference from the URL
-  const caseMatch = result.find(
-    (item) => item.caseReference === req.params.caseReference
-  );
-
-  if (caseMatch != null) {
-    res.render('cases/client-details.njk', {
-      activeTab: 'opened',
-      client: caseMatch,
-      activeSubNavigationTab: 'financial_eligibility',
-      caseReference: caseMatch.caseReference
-    });
-  } else {
-    res.render('main/error.njk', {
-      status: '404',
-      error: 'Case not found'
-    });
-  }
+  handleClientDetails(req, res, 'opened', 'financial_eligibility');
 });
 
 /* GET client details for a specific case from the opened tab & scope tab & notes_and_history tab. */
 router.get('/opened/:caseReference/notes-and-history', function (req: Request, res: Response): void {
-  const result = client_details;
-
-  // Find the case that matches the caseReference from the URL
-  const caseMatch = result.find(
-    (item) => item.caseReference === req.params.caseReference
-  );
-
-  if (caseMatch != null) {
-    res.render('cases/client-details.njk', {
-      activeTab: 'opened',
-      client: caseMatch,
-      activeSubNavigationTab: 'notes_and_history',
-      caseReference: caseMatch.caseReference
-    });
-  } else {
-    res.render('main/error.njk', {
-      status: '404',
-      error: 'Case not found'
-    });
-  }
+  handleClientDetails(req, res, 'opened', 'notes_and_history');
 });
 
 /* GET your cases - accepted tab. */
@@ -316,98 +194,22 @@ router.get('/accepted', async function (req: Request, res: Response): Promise<vo
 
 /* GET client details for a specific case from the accepted tab. */
 router.get('/accepted/:caseReference/client-details', function (req: Request, res: Response): void {
-  const result = client_details;
-
-  // Find the case that matches the caseReference from the URL
-  const caseMatch = result.find(
-    (item) => item.caseReference === req.params.caseReference
-  );
-
-  if (caseMatch != null) {
-    res.render('cases/client-details.njk', {
-      activeTab: 'accepted',
-      activeSubNavigationTab: 'client_details',
-      client: caseMatch,
-      caseReference: caseMatch.caseReference
-    });
-  } else {
-    res.render('main/error.njk', {
-      status: '404',
-      error: 'Case not found'
-    });
-  }
+  handleClientDetails(req, res, 'accepted', 'client_details');
 });
 
 /* GET client details for a specific case from the accepted tab & scope tab. */
 router.get('/accepted/:caseReference/scope', function (req: Request, res: Response): void {
-  const result = client_details;
-
-  // Find the case that matches the caseReference from the URL
-  const caseMatch = result.find(
-    (item) => item.caseReference === req.params.caseReference
-  );
-
-  if (caseMatch != null) {
-    res.render('cases/client-details.njk', {
-      activeTab: 'accepted',
-      activeSubNavigationTab: 'scope',
-      client: caseMatch,
-      caseReference: caseMatch.caseReference
-    });
-  } else {
-    res.render('main/error.njk', {
-      status: '404',
-      error: 'Case not found'
-    });
-  }
+  handleClientDetails(req, res, 'accepted', 'scope');
 });
 
 /* GET client details for a specific case from the accepted tab & financial_eligibility tab. */
 router.get('/accepted/:caseReference/financial-eligibility', function (req: Request, res: Response): void {
-  const result = client_details;
-
-  // Find the case that matches the caseReference from the URL
-  const caseMatch = result.find(
-    (item) => item.caseReference === req.params.caseReference
-  );
-
-  if (caseMatch != null) {
-    res.render('cases/client-details.njk', {
-      activeTab: 'accepted',
-      activeSubNavigationTab: 'financial_eligibility',
-      client: caseMatch,
-      caseReference: caseMatch.caseReference
-    });
-  } else {
-    res.render('main/error.njk', {
-      status: '404',
-      error: 'Case not found'
-    });
-  }
+  handleClientDetails(req, res, 'accepted', 'financial_eligibility');
 });
 
 /* GET client details for a specific case from the accepted tab & notes_and_history tab. */
 router.get('/accepted/:caseReference/notes-and-history', function (req: Request, res: Response): void {
-  const result = client_details;
-
-  // Find the case that matches the caseReference from the URL
-  const caseMatch = result.find(
-    (item) => item.caseReference === req.params.caseReference
-  );
-
-  if (caseMatch != null) {
-    res.render('cases/client-details.njk', {
-      activeTab: 'accepted',
-      activeSubNavigationTab: 'notes_and_history',
-      client: caseMatch,
-      caseReference: caseMatch.caseReference
-    });
-  } else {
-    res.render('main/error.njk', {
-      status: '404',
-      error: 'Case not found'
-    });
-  }
+  handleClientDetails(req, res, 'accepted', 'notes_and_history');
 });
 
 /* GET your cases - closed tab. */
@@ -426,98 +228,22 @@ router.get('/closed', async function (req: Request, res: Response): Promise<void
 
 /* GET client details for a specific case from the closed tab. */
 router.get('/closed/:caseReference/client-details', function (req: Request, res: Response): void {
-  const result = client_details;
-
-  // Find the case that matches the caseReference from the URL
-  const caseMatch = result.find(
-    (item) => item.caseReference === req.params.caseReference
-  );
-
-  if (caseMatch != null) {
-    res.render('cases/client-details.njk', {
-      activeTab: 'closed',
-      activeSubNavigationTab: 'client_details',
-      client: caseMatch,
-      caseReference: caseMatch.caseReference
-    });
-  } else {
-    res.render('main/error.njk', {
-      status: '404',
-      error: 'Case not found'
-    });
-  }
+  handleClientDetails(req, res, 'closed', 'client_details');
 });
 
 /* GET client details for a specific case from the closed tab & scope tabs. */
 router.get('/closed/:caseReference/scope', function (req: Request, res: Response): void {
-  const result = client_details;
-
-  // Find the case that matches the caseReference from the URL
-  const caseMatch = result.find(
-    (item) => item.caseReference === req.params.caseReference
-  );
-
-  if (caseMatch != null) {
-    res.render('cases/client-details.njk', {
-      activeTab: 'closed',
-      activeSubNavigationTab: 'scope',
-      client: caseMatch,
-      caseReference: caseMatch.caseReference
-    });
-  } else {
-    res.render('main/error.njk', {
-      status: '404',
-      error: 'Case not found'
-    });
-  }
+  handleClientDetails(req, res, 'closed', 'scope');
 });
 
 /* GET client details for a specific case from the closed tab & financial_eligibility tabs. */
 router.get('/closed/:caseReference/financial-eligibility', function (req: Request, res: Response): void {
-  const result = client_details;
-
-  // Find the case that matches the caseReference from the URL
-  const caseMatch = result.find(
-    (item) => item.caseReference === req.params.caseReference
-  );
-
-  if (caseMatch != null) {
-    res.render('cases/client-details.njk', {
-      activeTab: 'closed',
-      activeSubNavigationTab: 'financial_eligibility',
-      client: caseMatch,
-      caseReference: caseMatch.caseReference
-    });
-  } else {
-    res.render('main/error.njk', {
-      status: '404',
-      error: 'Case not found'
-    });
-  }
+  handleClientDetails(req, res, 'closed', 'financial_eligibility');
 });
 
 /* GET client details for a specific case from the closed tab & notes_and_history tabs. */
 router.get('/closed/:caseReference/notes-and-history', function (req: Request, res: Response): void {
-  const result = client_details;
-
-  // Find the case that matches the caseReference from the URL
-  const caseMatch = result.find(
-    (item) => item.caseReference === req.params.caseReference
-  );
-
-  if (caseMatch != null) {
-    res.render('cases/client-details.njk', {
-      activeTab: 'closed',
-      activeSubNavigationTab: 'notes_and_history',
-      client: caseMatch,
-      caseReference: caseMatch.caseReference
-    });
-  } else {
-    res.render('main/error.njk', {
-      status: '404',
-      error: 'Case not found'
-    });
-  }
+  handleClientDetails(req, res, 'closed', 'notes_and_history');
 });
 
 export default router;
