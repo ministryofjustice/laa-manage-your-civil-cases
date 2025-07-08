@@ -79,7 +79,6 @@
           {% set casesData = options.casesData %}
           {% set sortOrder = options.sortOrder %}
           {% set pagination = options.pagination %}
-          {% set currentPage = options.currentPage %}
           {% include tab.partial %}
         {% elif tab.content %}
           {{ tab.content | safe }}

@@ -89,8 +89,7 @@ router.get('/new', async function (req: Request, res: Response): Promise<void> {
     activeTab: 'new',
     casesData: result.data,
     sortOrder,
-    pagination: result.meta,
-    currentPage: page
+    pagination: result.meta
   });
 });
 
@@ -104,8 +103,7 @@ router.get('/opened', async function (req: Request, res: Response): Promise<void
     activeTab: 'opened',
     casesData: result.data,
     sortOrder,
-    pagination: result.meta,
-    currentPage: page
+    pagination: result.meta
   });
 });
 
@@ -119,8 +117,7 @@ router.get('/accepted', async function (req: Request, res: Response): Promise<vo
     activeTab: 'accepted',
     casesData: result.data,
     sortOrder,
-    pagination: result.meta,
-    currentPage: page
+    pagination: result.meta
   });
 });
 
@@ -134,8 +131,7 @@ router.get('/closed', async function (req: Request, res: Response): Promise<void
     activeTab: 'closed',
     casesData: result.data,
     sortOrder,
-    pagination: result.meta,
-    currentPage: page
+    pagination: result.meta
   });
 });
 
