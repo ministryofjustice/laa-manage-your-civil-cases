@@ -9,13 +9,12 @@
   - Accessible pagination with proper ARIA labels
   - Shows/hides based on whether pagination is needed
   - Smart page range calculation with ellipses for large page counts
-  - Flexbox layout with pagination controls on left and summary on right
-  - Responsive design: stacks vertically on mobile with right-aligned summary
+
 
   Usage:
-  {% from "components/pagination.njk" import pagination %}
+  {% from "components/paginationComponent.njk" import paginationComponent %}
 
-  {{ pagination({
+  {{ paginationComponent({
     pagination: {
       total: 100,
       page: 2,
@@ -23,6 +22,7 @@
       sortBy: "dateReceived",
       sortOrder: "asc"
     },
+    sortOrder: sortOrder or "asc",
     basePath: "/cases/new"
   }) }}
 
@@ -31,11 +31,16 @@
     - total: Total number of items
     - page: Current page number (1-based)
     - limit: Items per page
-    - sortBy: Current sort field
-    - sortOrder: Current sort order (asc/desc)
-  - basePath: Base URL path for pagination links
+    - sortBy: Current sort field (for reference)
+    - sortOrder: Sort order from API response (for reference)
+  - sortOrder: REQUIRED - Current sort order from the page context (e.g., sortOrder or "asc")
+    This ensures pagination links preserve the current sort state when navigating between pages
+  - basePath: REQUIRED - Base URL path for pagination links (e.g., "/cases/new")
   - classes: Additional CSS classes for the pagination container (optional)
   - maxVisiblePages: Maximum number of page links to show (default: 5)
+
+  Note: The sortOrder parameter must be passed from the page context to ensure pagination
+  links maintain the current sort order when users navigate between pages.
 #}
 
 {%- from "govuk/components/pagination/macro.njk" import govukPagination -%}
@@ -52,19 +57,12 @@
     {% set maxVisiblePages = options.maxVisiblePages or 5 %}
 
     {# Helper function to build URL with page parameter and current sort order #}
-    {% macro buildPageUrl(pageNumber) %}
-      {% set queryParams = [] %}
-      {% set queryParams = (queryParams.push("page=" + pageNumber | string), queryParams) %}
-
-      {% if options.pagination.sortBy %}
-        {% set queryParams = (queryParams.push("sortBy=" + options.pagination.sortBy), queryParams) %}
+    {% macro buildPageUrl(pageNumber, basePath, sortOrder) %}
+      {% set url = basePath + "?page=" + (pageNumber | string) %}
+      {% if sortOrder %}
+        {% set url = url + "&sort=" + sortOrder %}
       {% endif %}
-
-      {% if options.pagination.sortOrder and options.pagination.sortOrder != 'asc' %}
-        {% set queryParams = (queryParams.push("sortOrder=" + options.pagination.sortOrder), queryParams) %}
-      {% endif %}
-
-      {{ options.basePath }}?{{ queryParams | join("&") }}
+      {{- url -}}
     {% endmacro %}
 
     {# Calculate visible page range #}
@@ -88,7 +86,7 @@
 
     {# Add first page and ellipsis if needed #}
     {% if startPage > 1 %}
-      {% set paginationItems = (paginationItems.push({number: 1, href: buildPageUrl(1)}), paginationItems) %}
+      {% set paginationItems = (paginationItems.push({number: 1, href: buildPageUrl(1, options.basePath, options.sortOrder)}), paginationItems) %}
 
       {% if startPage > 2 %}
         {% set paginationItems = (paginationItems.push({ellipsis: true}), paginationItems) %}
@@ -98,9 +96,9 @@
     {# Add visible page range #}
     {% for pageNum in range(startPage, endPage + 1) %}
       {% if pageNum == currentPage %}
-        {% set paginationItems = (paginationItems.push({number: pageNum, current: true, href: buildPageUrl(pageNum)}), paginationItems) %}
+        {% set paginationItems = (paginationItems.push({number: pageNum, current: true, href: buildPageUrl(pageNum, options.basePath, options.sortOrder)}), paginationItems) %}
       {% else %}
-        {% set paginationItems = (paginationItems.push({number: pageNum, href: buildPageUrl(pageNum)}), paginationItems) %}
+        {% set paginationItems = (paginationItems.push({number: pageNum, href: buildPageUrl(pageNum, options.basePath, options.sortOrder)}), paginationItems) %}
       {% endif %}
     {% endfor %}
 
@@ -110,7 +108,7 @@
         {% set paginationItems = (paginationItems.push({ellipsis: true}), paginationItems) %}
       {% endif %}
 
-      {% set paginationItems = (paginationItems.push({number: totalPages, href: buildPageUrl(totalPages)}), paginationItems) %}
+      {% set paginationItems = (paginationItems.push({number: totalPages, href: buildPageUrl(totalPages, options.basePath, options.sortOrder)}), paginationItems) %}
     {% endif %}
 
     {# Build previous/next links #}
@@ -119,13 +117,13 @@
 
     {% if currentPage > 1 %}
       {% set previousLink = {
-        href: buildPageUrl(currentPage - 1)
+        href: buildPageUrl(currentPage - 1, options.basePath, options.sortOrder)
       } %}
     {% endif %}
 
     {% if currentPage < totalPages %}
       {% set nextLink = {
-        href: buildPageUrl(currentPage + 1)
+        href: buildPageUrl(currentPage + 1, options.basePath, options.sortOrder)
       } %}
     {% endif %}
 
