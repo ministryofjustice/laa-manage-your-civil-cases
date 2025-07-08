@@ -28,6 +28,7 @@
   {% if pagination %}
     {{ paginationComponent({
       pagination: pagination,
+      sortOrder: sortOrder or "asc",
       basePath: "/cases/new"
     }) }}
   {% endif %}

@@ -79,7 +79,7 @@
 
       {# Create sortable header with link #}
       {% set headerHtml %}
-      <a href="{{ sortUrl }}" class="govuk-link govuk-link--no-visited-state{% if column.linkClasses %} {{ column.linkClasses }}{% endif %}">{{ column.text }}</a>
+      <a href="{{ sortUrl }}" class="govuk-link govuk-link--no-underline govuk-link--no-visited-state{% if column.linkClasses %} {{ column.linkClasses }}{% endif %}">{{ column.text }}</a>
       {% endset %}
 
       {# Calculate aria-sort value #}
@@ -162,8 +162,7 @@
     caption: options.caption,
     classes: options.classes,
     attributes: {
-      id: options.id,
-      "data-module": "moj-sortable-table"
+      id: options.id
     },
     head: tableHead,
     rows: tableRows

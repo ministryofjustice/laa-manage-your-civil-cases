@@ -1,0 +1,20 @@
+[aria-sort="ascending"] a,
+[aria-sort="descending"] a {
+  position: relative;
+  margin-right: 15px;
+}
+
+[aria-sort="descending"] a:after {
+  content: " ▼";
+  font-size: 0.8em;
+  position: absolute;
+  right: -15px;
+  top: 2px;
+}
+[aria-sort="ascending"] a:after {
+  content: " ▲";
+  font-size: 0.8em;
+  position: absolute;
+  right: -15px;
+  top: 2px;
+}
