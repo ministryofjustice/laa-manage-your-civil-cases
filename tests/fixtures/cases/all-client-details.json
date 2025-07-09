@@ -403,7 +403,16 @@
       "month": "Feb",
       "day": "11",
       "year": "1989"
-    }
+    },
+    "clientIsVulnerable": "False",
+    "reasonableAdjustments": "Callback preference",
+    "language": "English",
+    "phoneNumber ": "0776744581",
+    "safeToCall": "Yes",
+    "announceCall ": "True",
+    "emailAddress ": "sarah@khan.com",
+    "address": "80 Pythagoras Place, Birmingham",
+    "postcode": "B1 1DW"
   },
   {
     "fullName": "Noah Brown",
@@ -809,7 +818,16 @@
       "month": "Oct",
       "day": "27",
       "year": "1996"
-    }
+    },
+    "clientIsVulnerable": "False",
+    "reasonableAdjustments": "BSL - Webcam",
+    "language": "English",
+    "phoneNumber ": "0745671234",
+    "safeToCall": "Yes",
+    "announceCall ": "True",
+    "emailAddress ": "nina@taylor.com",
+    "address": "1 Hadamard Gate, Oxford",
+    "postcode": "OX1 1AW"
   },
   {
     "fullName": "George Allen",
@@ -1186,7 +1204,16 @@
       "month": "Aug",
       "day": "18",
       "year": "1981"
-    }
+    },
+    "clientIsVulnerable": "False",
+    "reasonableAdjustments": "Text relay",
+    "language": "English",
+    "phoneNumber ": "0712345678",
+    "safeToCall": "No",
+    "announceCall ": "True",
+    "emailAddress ": "jack@young.com",
+    "address": "Flat 4, 1 Smith Street, London",
+    "postcode": "SE5 THE"
   },
   {
     "fullName": "Ian Phillips",
@@ -1592,6 +1619,15 @@
       "month": "Nov",
       "day": "12",
       "year": "1979"
-    }
+    },
+    "clientIsVulnerable": "False",
+    "reasonableAdjustments": "Minicom",
+    "language": "English",
+    "phoneNumber ": "0772345481",
+    "safeToCall": "Yes",
+    "announceCall ": "True",
+    "emailAddress ": "grace@baker.com",
+    "address": "Flat 20, Einstein Road, Manchester",
+    "postcode": "M1 1AD"
   }
 ]
