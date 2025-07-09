@@ -20,7 +20,7 @@
         { key: "dateReceived", text: "Date received", sortable: true, classes: "govuk-table__header--numeric" , cellClasses: "govuk-table__cell--numeric" }
       ],
       sortBy: "dateReceived",
-      sortOrder: sortOrder or "asc",
+      sortOrder: sortOrder or "desc",
       basePath: "/cases/new"
     }) }}
 
@@ -28,7 +28,7 @@
   {% if pagination %}
     {{ paginationComponent({
       pagination: pagination,
-      sortOrder: sortOrder or "asc",
+      sortOrder: sortOrder or "desc",
       basePath: "/cases/new"
     }) }}
   {% endif %}

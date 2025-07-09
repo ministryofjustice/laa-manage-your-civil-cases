@@ -20,7 +20,7 @@
         { key: "lastModified", text: "Date modified", sortable: true, classes: "govuk-table__header--numeric" , cellClasses: "govuk-table__cell--numeric" }
       ],
       sortBy: "lastModified",
-      sortOrder: sortOrder or "asc",
+      sortOrder: sortOrder or "desc",
       basePath: "/cases/accepted"
     }) }}
 
@@ -28,7 +28,7 @@
   {% if pagination %}
     {{ paginationComponent({
       pagination: pagination,
-      sortOrder: sortOrder or "asc",
+      sortOrder: sortOrder or "desc",
       basePath: "/cases/accepted"
     }) }}
   {% endif %}

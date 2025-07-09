@@ -1,1597 +1,1597 @@
 [
-    {
-        "fullName": "Ember Hamilton",
-        "caseReference": "PC-3184-5962",
-        "refCode": "",
-        "laaReference": "3000742",
-        "dateReceived": "2025-01-08T19:00:00-05:00",
-        "lastModified": "2025-01-09T14:30:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Feb",
-            "day": "19",
-            "year": "1987"
-        }
-    },
-    {
-        "fullName": "Lisa Chen",
-        "caseReference": "PC-1924-9560",
-        "refCode": "",
-        "laaReference": "3000743",
-        "dateReceived": "2025-01-14T19:00:00-05:00",
-        "lastModified": "2025-01-15T10:45:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Nov",
-            "day": "15",
-            "year": "1993"
-        }
-    },
-    {
-        "fullName": "Leo Robinson",
-        "caseReference": "PC-1298-8020",
-        "refCode": "",
-        "laaReference": "4000742",
-        "dateReceived": "2025-01-14T19:00:00-05:00",
-        "lastModified": "2025-01-16T09:20:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Jun",
-            "day": "17",
-            "year": "1972"
-        }
-    },
-    {
-        "fullName": "Brooklyn Russell",
-        "caseReference": "PC-4873-9516",
-        "refCode": "",
-        "laaReference": "34530742",
-        "dateReceived": "2025-01-16T19:00:00-05:00",
-        "lastModified": "2025-01-17T13:15:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Sep",
-            "day": "21",
-            "year": "1992"
-        }
-    },
-    {
-        "fullName": "Kinsley Butler",
-        "caseReference": "PC-4062-1738",
-        "refCode": "",
-        "laaReference": "3560742",
-        "dateReceived": "2025-01-22T19:00:00-05:00",
-        "lastModified": "2025-01-23T11:30:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Jun",
-            "day": "2",
-            "year": "1988"
-        }
-    },
-    {
-        "fullName": "Knox Hayes",
-        "caseReference": "PC-8407-1523",
-        "refCode": "",
-        "laaReference": "3001234",
-        "dateReceived": "2025-02-03T19:00:00-05:00",
-        "lastModified": "2025-02-04T15:45:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Mar",
-            "day": "25",
-            "year": "1988"
-        }
-    },
-    {
-        "fullName": "Ryder Wallace",
-        "caseReference": "PC-6315-2748",
-        "refCode": "",
-        "laaReference": "3561234",
-        "dateReceived": "2025-02-11T19:00:00-05:00",
-        "lastModified": "2025-02-12T08:20:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Apr",
-            "day": "6",
-            "year": "1993"
-        }
-    },
-    {
-        "fullName": "Paisley Flores",
-        "caseReference": "PC-9485-6271",
-        "refCode": "",
-        "laaReference": "3024554",
-        "dateReceived": "2025-02-14T19:00:00-05:00",
-        "lastModified": "2025-02-15T12:40:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Aug",
-            "day": "16",
-            "year": "1986"
-        }
-    },
-    {
-        "fullName": "Priya Patel",
-        "caseReference": "PC-1930-9763",
-        "refCode": "",
-        "laaReference": "6089234",
-        "dateReceived": "2025-02-22T19:00:00-05:00",
-        "lastModified": "2025-02-23T16:25:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Jul",
-            "day": "2",
-            "year": "1988"
-        }
-    },
-    {
-        "fullName": "Kayden Gonzales",
-        "caseReference": "PC-7650-3281",
-        "refCode": "",
-        "laaReference": "3023834",
-        "dateReceived": "2025-02-26T19:00:00-05:00",
-        "lastModified": "2025-02-27T14:10:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Oct",
-            "day": "5",
-            "year": "1987"
-        }
-    },
-    {
-        "fullName": "Charlotte Anderson",
-        "caseReference": "PC-8765-4321",
-        "refCode": "",
-        "laaReference": "3009034",
-        "dateReceived": "2025-03-08T19:00:00-05:00",
-        "lastModified": "2025-03-09T10:55:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Jan",
-            "day": "12",
-            "year": "1984"
-        }
-    },
-    {
-        "fullName": "Grayson Simmons",
-        "caseReference": "PC-8394-5217",
-        "refCode": "",
-        "laaReference": "3001245",
-        "dateReceived": "2025-03-16T19:00:00-05:00",
-        "lastModified": "2025-03-17T13:35:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Dec",
-            "day": "9",
-            "year": "1985"
-        }
-    },
-    {
-        "fullName": "Phoenix Graham",
-        "caseReference": "PC-7428-9051",
-        "refCode": "",
-        "laaReference": "3003421",
-        "dateReceived": "2025-03-21T19:00:00-05:00",
-        "lastModified": "2025-03-22T09:15:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Jun",
-            "day": "14",
-            "year": "1989"
-        }
-    },
-    {
-        "fullName": "Declan Griffin",
-        "caseReference": "PC-2604-7139",
-        "refCode": "",
-        "laaReference": "3003422",
-        "dateReceived": "2025-03-30T19:00:00-05:00",
-        "lastModified": "2025-03-31T15:50:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "May",
-            "day": "18",
-            "year": "1986"
-        }
-    },
-    {
-        "fullName": "Oliver Martinez",
-        "caseReference": "PC-3210-6547",
-        "refCode": "",
-        "laaReference": "3003425",
-        "dateReceived": "2025-04-12T19:00:00-05:00",
-        "lastModified": "2025-04-13T12:20:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Aug",
-            "day": "25",
-            "year": "1987"
-        }
-    },
-    {
-        "fullName": "Sebastian Torres",
-        "caseReference": "PC-6271-9485",
-        "refCode": "",
-        "laaReference": "3003430",
-        "dateReceived": "2025-04-19T19:00:00-05:00",
-        "lastModified": "2025-04-20T11:05:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Mar",
-            "day": "28",
-            "year": "1990"
-        }
-    },
-    {
-        "fullName": "Willow Bryant",
-        "caseReference": "PC-3281-7650",
-        "refCode": "",
-        "laaReference": "3003431",
-        "dateReceived": "2025-04-22T19:00:00-05:00",
-        "lastModified": "2025-04-23T14:40:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Jan",
-            "day": "14",
-            "year": "1989"
-        }
-    },
-    {
-        "fullName": "Sage Myers",
-        "caseReference": "PC-1523-8407",
-        "refCode": "",
-        "laaReference": "3003435",
-        "dateReceived": "2025-04-28T19:00:00-05:00",
-        "lastModified": "2025-04-29T16:25:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Aug",
-            "day": "11",
-            "year": "1985"
-        }
-    },
-    {
-        "fullName": "Rowan Alexander",
-        "caseReference": "PC-9516-4873",
-        "refCode": "",
-        "laaReference": "3003440",
-        "dateReceived": "2025-05-09T19:00:00-05:00",
-        "lastModified": "2025-05-10T08:30:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Jul",
-            "day": "30",
-            "year": "1984"
-        }
-    },
-    {
-        "fullName": "Colton Ford",
-        "caseReference": "PC-5962-3184",
-        "refCode": "",
-        "laaReference": "3003442",
-        "dateReceived": "2025-05-14T19:00:00-05:00",
-        "lastModified": "2025-05-15T13:45:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Nov",
-            "day": "3",
-            "year": "1991"
-        }
-    },
-    {
-        "fullName": "Ivy Sullivan",
-        "caseReference": "PC-9051-7428",
-        "refCode": "",
-        "laaReference": "3003443",
-        "dateReceived": "2025-05-26T19:00:00-05:00",
-        "lastModified": "2025-05-27T10:20:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Oct",
-            "day": "28",
-            "year": "1984"
-        }
-    },
-    {
-        "fullName": "Maverick Washington",
-        "caseReference": "PC-1738-4062",
-        "refCode": "",
-        "laaReference": "3003445",
-        "dateReceived": "2025-05-31T19:00:00-05:00",
-        "lastModified": "2025-06-01T15:10:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Nov",
-            "day": "24",
-            "year": "1993"
-        }
-    },
-    {
-        "fullName": "Delilah Foster",
-        "caseReference": "PC-5217-8394",
-        "refCode": "",
-        "laaReference": "3103446",
-        "dateReceived": "2025-06-04T19:00:00-05:00",
-        "lastModified": "2025-06-05T12:35:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Apr",
-            "day": "17",
-            "year": "1991"
-        }
-    },
-    {
-        "fullName": "Autumn Diaz",
-        "caseReference": "PC-7139-2604",
-        "refCode": "",
-        "laaReference": "3103447",
-        "dateReceived": "2025-06-16T19:00:00-05:00",
-        "lastModified": "2025-06-17T09:50:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Dec",
-            "day": "7",
-            "year": "1990"
-        }
-    },
-    {
-        "fullName": "Aisha Yusuf",
-        "caseReference": "PC-1393-7199",
-        "refCode": "Operator recommends second opinion",
-        "laaReference": "3103448",
-        "dateReceived": "2025-07-09T19:00:00-05:00",
-        "lastModified": "2025-07-10T14:15:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Mar",
-            "day": "13",
-            "year": "1982"
-        }
-    },
-    {
-        "fullName": "Harry Walker",
-        "caseReference": "PC-4350-9987",
-        "refCode": "",
-        "laaReference": "3103449",
-        "dateReceived": "2025-07-10T19:00:00-05:00",
-        "lastModified": "2025-07-11T11:40:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "May",
-            "day": "1",
-            "year": "1976"
-        }
-    },
-    {
-        "fullName": "Charlie Harris",
-        "caseReference": "PC-1235-7091",
-        "refCode": "",
-        "laaReference": "3103558",
-        "dateReceived": "2025-07-22T19:00:00-05:00",
-        "lastModified": "2025-07-23T16:55:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Dec",
-            "day": "22",
-            "year": "1989"
-        }
-    },
-    {
-        "fullName": "Mia Thompson",
-        "caseReference": "PC-2812-1933",
-        "refCode": "",
-        "laaReference": "3103559",
-        "dateReceived": "2025-08-01T19:00:00-05:00",
-        "lastModified": "2025-08-02T13:25:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Feb",
-            "day": "2",
-            "year": "1980"
-        }
-    },
-    {
-        "fullName": "Sarah Khan",
-        "caseReference": "PC-7735-3284",
-        "refCode": "Operator recommends second opinion",
-        "laaReference": "3103560",
-        "dateReceived": "2025-08-19T19:00:00-05:00",
-        "lastModified": "2025-08-20T10:30:00-05:00",
-        "caseStatus": "Accepted",
-        "dateOfBirth": {
-            "month": "Feb",
-            "day": "11",
-            "year": "1989"
-        }
-    },
-    {
-        "fullName": "Noah Brown",
-        "caseReference": "PC-4575-7150",
-        "refCode": "",
-        "laaReference": "3103561",
-        "dateReceived": "2025-01-05T19:00:00-05:00",
-        "dateClosed": "2025-01-09T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Sep",
-            "day": "6",
-            "year": "1982"
-        }
-    },
-    {
-        "fullName": "Harley Torres",
-        "caseReference": "PC-6395-8017",
-        "refCode": "Out of scope for CLA",
-        "laaReference": "3103562",
-        "dateReceived": "2025-01-06T19:00:00-05:00",
-        "dateClosed": "2025-01-11T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Jul",
-            "day": "21",
-            "year": "1994"
-        }
-    },
-    {
-        "fullName": "Skylar Watson",
-        "caseReference": "PC-6048-1375",
-        "refCode": "",
-        "laaReference": "3103565",
-        "dateReceived": "2025-01-15T19:00:00-05:00",
-        "dateClosed": "2025-01-20T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Nov",
-            "day": "26",
-            "year": "1987"
-        }
-    },
-    {
-        "fullName": "Henry Lee",
-        "caseReference": "PC-7799-8800",
-        "refCode": "",
-        "laaReference": "3103566",
-        "dateReceived": "2025-01-20T19:00:00-05:00",
-        "dateClosed": "2025-01-25T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Apr",
-            "day": "16",
-            "year": "1978"
-        }
-    },
-    {
-        "fullName": "Raelynn Bailey",
-        "caseReference": "PC-5734-9061",
-        "refCode": "",
-        "laaReference": "3103569",
-        "dateReceived": "2025-01-31T19:00:00-05:00",
-        "dateClosed": "2025-02-05T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Mar",
-            "day": "7",
-            "year": "1993"
-        }
-    },
-    {
-        "fullName": "Melody Reed",
-        "caseReference": "PC-8139-2467",
-        "refCode": "Duplicate of existing case",
-        "laaReference": "3103769",
-        "dateReceived": "2025-02-05T19:00:00-05:00",
-        "dateClosed": "2025-02-10T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "May",
-            "day": "31",
-            "year": "1984"
-        }
-    },
-    {
-        "fullName": "Alexander White",
-        "caseReference": "PC-1122-3344",
-        "refCode": "",
-        "laaReference": "3103770",
-        "dateReceived": "2025-02-15T19:00:00-05:00",
-        "dateClosed": "2025-02-20T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Jul",
-            "day": "3",
-            "year": "1979"
-        }
-    },
-    {
-        "fullName": "Journee Cox",
-        "caseReference": "PC-4582-1739",
-        "refCode": "",
-        "laaReference": "3103771",
-        "dateReceived": "2025-02-18T19:00:00-05:00",
-        "dateClosed": "2025-02-23T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Nov",
-            "day": "4",
-            "year": "1989"
-        }
-    },
-    {
-        "fullName": "Serenity Price",
-        "caseReference": "PC-7204-3519",
-        "refCode": "",
-        "laaReference": "3103775",
-        "dateReceived": "2025-02-24T19:00:00-05:00",
-        "dateClosed": "2025-03-01T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Apr",
-            "day": "15",
-            "year": "1988"
-        }
-    },
-    {
-        "fullName": "Adalynn Cooper",
-        "caseReference": "PC-3826-7194",
-        "refCode": "",
-        "laaReference": "3103779",
-        "dateReceived": "2025-03-04T19:00:00-05:00",
-        "dateClosed": "2025-03-09T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Dec",
-            "day": "18",
-            "year": "1990"
-        }
-    },
-    {
-        "fullName": "Sienna Woods",
-        "caseReference": "PC-4157-8926",
-        "refCode": "",
-        "laaReference": "3103780",
-        "dateReceived": "2025-03-12T19:00:00-05:00",
-        "dateClosed": "2025-03-17T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Sep",
-            "day": "22",
-            "year": "1990"
-        }
-    },
-    {
-        "fullName": "Magnolia Gray",
-        "caseReference": "PC-2946-5173",
-        "refCode": "Not financially eligible for CLA",
-        "laaReference": "3103781",
-        "dateReceived": "2025-03-19T19:00:00-05:00",
-        "dateClosed": "2025-03-24T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Aug",
-            "day": "14",
-            "year": "1991"
-        }
-    },
-    {
-        "fullName": "Victoria Thompson",
-        "caseReference": "PC-5566-7788",
-        "refCode": "Out of scope for CLA",
-        "laaReference": "3103782",
-        "dateReceived": "2025-03-28T19:00:00-05:00",
-        "dateClosed": "2025-04-02T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Oct",
-            "day": "18",
-            "year": "1991"
-        }
-    },
-    {
-        "fullName": "Genesis Kelly",
-        "caseReference": "PC-9582-4760",
-        "refCode": "Out of scope for CLA",
-        "laaReference": "3103875",
-        "dateReceived": "2025-03-28T19:00:00-05:00",
-        "dateClosed": "2025-04-02T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Aug",
-            "day": "19",
-            "year": "1986"
-        }
-    },
-    {
-        "fullName": "Isabella Rodriguez",
-        "caseReference": "PC-3366-5577",
-        "refCode": "Not financially eligible for CLA",
-        "laaReference": "3103876",
-        "dateReceived": "2025-04-03T19:00:00-05:00",
-        "dateClosed": "2025-04-08T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Jun",
-            "day": "21",
-            "year": "1993"
-        }
-    },
-    {
-        "fullName": "Easton Bennett",
-        "caseReference": "PC-3519-7204",
-        "refCode": "Not financially eligible for CLA",
-        "laaReference": "3103879",
-        "dateReceived": "2025-04-09T19:00:00-05:00",
-        "dateClosed": "2025-04-14T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Jul",
-            "day": "30",
-            "year": "1992"
-        }
-    },
-    {
-        "fullName": "Kaiden Cook",
-        "caseReference": "PC-2467-8139",
-        "refCode": "",
-        "laaReference": "3203880",
-        "dateReceived": "2025-04-16T19:00:00-05:00",
-        "dateClosed": "2025-04-21T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Oct",
-            "day": "12",
-            "year": "1988"
-        }
-    },
-    {
-        "fullName": "Cash Ward",
-        "caseReference": "PC-1739-4582",
-        "refCode": "",
-        "laaReference": "3203881",
-        "dateReceived": "2025-04-23T19:00:00-05:00",
-        "dateClosed": "2025-04-28T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Jan",
-            "day": "17",
-            "year": "1986"
-        }
-    },
-    {
-        "fullName": "Karter Richardson",
-        "caseReference": "PC-7194-3826",
-        "refCode": "Not financially eligible for CLA",
-        "laaReference": "3203885",
-        "dateReceived": "2025-05-01T19:00:00-05:00",
-        "dateClosed": "2025-05-06T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Jun",
-            "day": "29",
-            "year": "1987"
-        }
-    },
-    {
-        "fullName": "Jaxon Fisher",
-        "caseReference": "PC-8926-4157",
-        "refCode": "Out of scope for CLA",
-        "laaReference": "3203889",
-        "dateReceived": "2025-05-07T19:00:00-05:00",
-        "dateClosed": "2025-05-12T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Dec",
-            "day": "8",
-            "year": "1985"
-        }
-    },
-    {
-        "fullName": "William Garcia",
-        "caseReference": "PC-9900-1122",
-        "refCode": "",
-        "laaReference": "3203890",
-        "dateReceived": "2025-05-10T19:00:00-05:00",
-        "dateClosed": "2025-05-15T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Dec",
-            "day": "5",
-            "year": "1986"
-        }
-    },
-    {
-        "fullName": "Kameron Peterson",
-        "caseReference": "PC-8017-6395",
-        "refCode": "",
-        "laaReference": "3203891",
-        "dateReceived": "2025-05-15T19:00:00-05:00",
-        "dateClosed": "2025-05-20T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Apr",
-            "day": "8",
-            "year": "1983"
-        }
-    },
-    {
-        "fullName": "Braxton Sanders",
-        "caseReference": "PC-4760-9582",
-        "refCode": "",
-        "laaReference": "3203894",
-        "dateReceived": "2025-05-20T19:00:00-05:00",
-        "dateClosed": "2025-05-25T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Jan",
-            "day": "5",
-            "year": "1991"
-        }
-    },
-    {
-        "fullName": "Axel Brooks",
-        "caseReference": "PC-1375-6048",
-        "refCode": "",
-        "laaReference": "3203895",
-        "dateReceived": "2025-06-02T19:00:00-05:00",
-        "dateClosed": "2025-06-07T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Feb",
-            "day": "13",
-            "year": "1989"
-        }
-    },
-    {
-        "fullName": "Beau Rivera",
-        "caseReference": "PC-9061-5734",
-        "refCode": "Out of scope for CLA",
-        "laaReference": "3203899",
-        "dateReceived": "2025-06-09T19:00:00-05:00",
-        "dateClosed": "2025-06-14T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Sep",
-            "day": "23",
-            "year": "1985"
-        }
-    },
-    {
-        "fullName": "Emily Watson",
-        "caseReference": "PC-1039-3711",
-        "refCode": "Not financially eligible for CLA",
-        "laaReference": "3303810",
-        "dateReceived": "2025-06-21T19:00:00-05:00",
-        "dateClosed": "2025-06-25T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Dec",
-            "day": "17",
-            "year": "1977"
-        }
-    },
-    {
-        "fullName": "Freddie Evans",
-        "caseReference": "PC-4831-8090",
-        "refCode": "",
-        "laaReference": "3303811",
-        "dateReceived": "2025-06-25T19:00:00-05:00",
-        "dateClosed": "2025-06-26T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Sep",
-            "day": "9",
-            "year": "1987"
-        }
-    },
-    {
-        "fullName": "John Smith",
-        "caseReference": "PC-7880-7835",
-        "refCode": "",
-        "laaReference": "3303812",
-        "dateReceived": "2025-07-05T19:00:00-05:00",
-        "dateClosed": "2025-07-09T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Mar",
-            "day": "6",
-            "year": "1982"
-        }
-    },
-    {
-        "fullName": "Nina Taylor",
-        "caseReference": "PC-4344-8239",
-        "refCode": "",
-        "laaReference": "3303814",
-        "dateReceived": "2025-07-06T19:00:00-05:00",
-        "dateClosed": "2025-07-10T19:00:00-05:00",
-        "caseStatus": "Closed",
-        "dateOfBirth": {
-            "month": "Oct",
-            "day": "27",
-            "year": "1996"
-        }
-    },
-    {
-        "fullName": "George Allen",
-        "caseReference": "PC-9159-2337",
-        "refCode": "",
-        "laaReference": "3303816",
-        "dateReceived": "2025-01-08T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Jun",
-            "day": "10",
-            "year": "1977"
-        }
-    },
-    {
-        "fullName": "Zoe Anderson",
-        "caseReference": "PC-1357-2468",
-        "refCode": "",
-        "laaReference": "3303819",
-        "dateReceived": "2025-01-12T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Aug",
-            "day": "22",
-            "year": "1984"
-        }
-    },
-    {
-        "fullName": "Jason Moore",
-        "caseReference": "PC-3571-9284",
-        "refCode": "Operator recommends second opinion",
-        "laaReference": "3403820",
-        "dateReceived": "2025-01-19T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Jul",
-            "day": "04",
-            "year": "1982"
-        }
-    },
-    {
-        "fullName": "James Wilson",
-        "caseReference": "PC-9876-5432",
-        "refCode": "",
-        "laaReference": "3403821",
-        "dateReceived": "2025-01-25T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Nov",
-            "day": "30",
-            "year": "1975"
-        }
-    },
-    {
-        "fullName": "Daniel Moore",
-        "caseReference": "PC-3360-2295",
-        "refCode": "",
-        "laaReference": "3403823",
-        "dateReceived": "2025-01-27T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Aug",
-            "day": "03",
-            "year": "1994"
-        }
-    },
-    {
-        "fullName": "Austin Lewis",
-        "caseReference": "PC-6419-8372",
-        "refCode": "",
-        "laaReference": "3403824",
-        "dateReceived": "2025-02-07T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Apr",
-            "day": "15",
-            "year": "1991"
-        }
-    },
-    {
-        "fullName": "Emma Johnson",
-        "caseReference": "PC-7890-3456",
-        "refCode": "",
-        "laaReference": "3403825",
-        "dateReceived": "2025-02-10T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "May",
-            "day": "14",
-            "year": "1988"
-        }
-    },
-    {
-        "fullName": "Sophia Lee",
-        "caseReference": "PC-9999-0000",
-        "refCode": "",
-        "laaReference": "3403829",
-        "dateReceived": "2025-02-18T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Jul",
-            "day": "11",
-            "year": "1989"
-        }
-    },
-    {
-        "fullName": "Chloe Taylor",
-        "caseReference": "PC-8642-9753",
-        "refCode": "",
-        "laaReference": "3403830",
-        "dateReceived": "2025-02-28T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Oct",
-            "day": "05",
-            "year": "1993"
-        }
-    },
-    {
-        "fullName": "Mary Flynn",
-        "caseReference": "PC-3630-9387",
-        "refCode": "Split from another case",
-        "laaReference": "3403831",
-        "dateReceived": "2025-03-06T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Oct",
-            "day": "01",
-            "year": "1971"
-        }
-    },
-    {
-        "fullName": "Maya Patel",
-        "caseReference": "PC-8765-4321",
-        "refCode": "Out of scope for CLA",
-        "laaReference": "3403834",
-        "dateReceived": "2025-03-14T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Jun",
-            "day": "09",
-            "year": "1986"
-        }
-    },
-    {
-        "fullName": "Michael Brown",
-        "caseReference": "PC-5432-1098",
-        "refCode": "Operator recommends second opinion",
-        "laaReference": "3403835",
-        "dateReceived": "2025-03-20T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Dec",
-            "day": "08",
-            "year": "1992"
-        }
-    },
-    {
-        "fullName": "Grace Miller",
-        "caseReference": "PC-5555-6666",
-        "refCode": "",
-        "laaReference": "3403836",
-        "dateReceived": "2025-03-22T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Dec",
-            "day": "03",
-            "year": "1987"
-        }
-    },
-    {
-        "fullName": "Tyler Wilson",
-        "caseReference": "PC-1593-7428",
-        "refCode": "",
-        "laaReference": "3403839",
-        "dateReceived": "2025-03-26T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Sep",
-            "day": "28",
-            "year": "1987"
-        }
-    },
-    {
-        "fullName": "Anna Rodriguez",
-        "caseReference": "PC-1111-2222",
-        "refCode": "",
-        "laaReference": "3503840",
-        "dateReceived": "2025-04-08T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Feb",
-            "day": "14",
-            "year": "1990"
-        }
-    },
-    {
-        "fullName": "Sophie Williams",
-        "caseReference": "PC-2341-8765",
-        "refCode": "",
-        "laaReference": "3503841",
-        "dateReceived": "2025-04-15T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Sep",
-            "day": "22",
-            "year": "1985"
-        }
-    },
-    {
-        "fullName": "Nathan Brown",
-        "caseReference": "PC-7531-9642",
-        "refCode": "",
-        "laaReference": "3503843",
-        "dateReceived": "2025-04-17T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Dec",
-            "day": "31",
-            "year": "1985"
-        }
-    },
-    {
-        "fullName": "Ruby Clark",
-        "caseReference": "PC-9284-3571",
-        "refCode": "",
-        "laaReference": "3503845",
-        "dateReceived": "2025-04-25T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Nov",
-            "day": "20",
-            "year": "1989"
-        }
-    },
-    {
-        "fullName": "Connor White",
-        "caseReference": "PC-1234-5678",
-        "refCode": "",
-        "laaReference": "3503848",
-        "dateReceived": "2025-04-30T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Jan",
-            "day": "25",
-            "year": "1992"
-        }
-    },
-    {
-        "fullName": "Tom Andrews",
-        "caseReference": "PC-3027-4448",
-        "refCode": "Out of scope for CLA",
-        "laaReference": "3503850",
-        "dateReceived": "2025-05-05T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Apr",
-            "day": "04",
-            "year": "1970"
-        }
-    },
-    {
-        "fullName": "Lily Johnson",
-        "caseReference": "PC-9642-7531",
-        "refCode": "Out of scope for CLA",
-        "laaReference": "3503851",
-        "dateReceived": "2025-05-08T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "May",
-            "day": "13",
-            "year": "1990"
-        }
-    },
-    {
-        "fullName": "David Thompson",
-        "caseReference": "PC-3333-4444",
-        "refCode": "Out of scope for CLA",
-        "laaReference": "3503855",
-        "dateReceived": "2025-05-12T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Sep",
-            "day": "07",
-            "year": "1983"
-        }
-    },
-    {
-        "fullName": "Hazel Walker",
-        "caseReference": "PC-8372-6419",
-        "refCode": "Out of scope for CLA",
-        "laaReference": "3503859",
-        "dateReceived": "2025-05-19T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Jan",
-            "day": "08",
-            "year": "1986"
-        }
-    },
-    {
-        "fullName": "Ethan Davis",
-        "caseReference": "PC-2468-1357",
-        "refCode": "",
-        "laaReference": "3653860",
-        "dateReceived": "2025-05-25T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Nov",
-            "day": "16",
-            "year": "1991"
-        }
-    },
-    {
-        "fullName": "Lucas Martinez",
-        "caseReference": "PC-9753-8642",
-        "refCode": "Operator recommends second opinion",
-        "laaReference": "3653862",
-        "dateReceived": "2025-06-03T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Mar",
-            "day": "19",
-            "year": "1988"
-        }
-    },
-    {
-        "fullName": "Jacob King",
-        "caseReference": "PC-8891-1836",
-        "refCode": "Out of scope for CLA",
-        "laaReference": "3653866",
-        "dateReceived": "2025-06-07T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Apr",
-            "day": "08",
-            "year": "1994"
-        }
-    },
-    {
-        "fullName": "Aria Smith",
-        "caseReference": "PC-7428-1593",
-        "refCode": "",
-        "laaReference": "3653869",
-        "dateReceived": "2025-06-11T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Feb",
-            "day": "17",
-            "year": "1994"
-        }
-    },
-    {
-        "fullName": "Ryan Garcia",
-        "caseReference": "PC-7777-8888",
-        "refCode": "Operator recommends second opinion",
-        "laaReference": "3753870",
-        "dateReceived": "2025-06-15T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Apr",
-            "day": "28",
-            "year": "1995"
-        }
-    },
-    {
-        "fullName": "Jack Young",
-        "caseReference": "PC-1922-1879",
-        "refCode": "",
-        "laaReference": "3753872",
-        "dateReceived": "2025-07-06T19:00:00-05:00",
-        "caseStatus": "New",
-        "dateOfBirth": {
-            "month": "Aug",
-            "day": "18",
-            "year": "1981"
-        }
-    },
-    {
-        "fullName": "Ian Phillips",
-        "caseReference": "PC-9173-4826",
-        "refCode": "Operator recommends second opinion",
-        "laaReference": "3753875",
-        "dateReceived": "2025-01-14T19:00:00-05:00",
-        "lastModified": "2025-01-15T10:30:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Dec",
-            "day": "19",
-            "year": "1991"
-        }
-    },
-    {
-        "fullName": "Luna Nelson",
-        "caseReference": "PC-9630-7412",
-        "refCode": "",
-        "laaReference": "3753878",
-        "dateReceived": "2025-01-30T19:00:00-05:00",
-        "lastModified": "2025-01-31T14:20:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Dec",
-            "day": "4",
-            "year": "1993"
-        }
-    },
-    {
-        "fullName": "Aurora Evans",
-        "caseReference": "PC-5184-7392",
-        "refCode": "Manually allocated by operator",
-        "laaReference": "3753879",
-        "dateReceived": "2025-02-09T19:00:00-05:00",
-        "lastModified": "2025-02-10T09:45:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Nov",
-            "day": "13",
-            "year": "1994"
-        }
-    },
-    {
-        "fullName": "Scarlett King",
-        "caseReference": "PC-3702-8519",
-        "refCode": "",
-        "laaReference": "3853880",
-        "dateReceived": "2025-02-16T19:00:00-05:00",
-        "lastModified": "2025-02-17T11:15:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Nov",
-            "day": "7",
-            "year": "1985"
-        }
-    },
-    {
-        "fullName": "Blake Mitchell",
-        "caseReference": "PC-3694-8521",
-        "refCode": "",
-        "laaReference": "3853881",
-        "dateReceived": "2025-02-21T19:00:00-05:00",
-        "lastModified": "2025-02-22T16:30:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Oct",
-            "day": "15",
-            "year": "1986"
-        }
-    },
-    {
-        "fullName": "Evelyn Green",
-        "caseReference": "PC-1472-5836",
-        "refCode": "Manually allocated by operator",
-        "laaReference": "3853882",
-        "dateReceived": "2025-03-07T19:00:00-05:00",
-        "lastModified": "2025-03-08T13:45:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Apr",
-            "day": "12",
-            "year": "1987"
-        }
-    },
-    {
-        "fullName": "Madison Hall",
-        "caseReference": "PC-2580-4691",
-        "refCode": "",
-        "laaReference": "3853885",
-        "dateReceived": "2025-03-11T19:00:00-05:00",
-        "lastModified": "2025-03-12T08:20:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Jun",
-            "day": "23",
-            "year": "1988"
-        }
-    },
-    {
-        "fullName": "Ali Mahmood",
-        "caseReference": "PC-7611-8652",
-        "refCode": "",
-        "laaReference": "3853888",
-        "dateReceived": "2025-03-13T19:00:00-05:00",
-        "lastModified": "2025-03-14T15:10:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Nov",
-            "day": "15",
-            "year": "1996"
-        }
-    },
-    {
-        "fullName": "Caleb Roberts",
-        "caseReference": "PC-1648-7539",
-        "refCode": "",
-        "laaReference": "3853889",
-        "dateReceived": "2025-03-18T19:00:00-05:00",
-        "lastModified": "2025-03-19T12:35:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "May",
-            "day": "22",
-            "year": "1992"
-        }
-    },
-    {
-        "fullName": "Wyatt Parker",
-        "caseReference": "PC-6410-2975",
-        "refCode": "",
-        "laaReference": "3953890",
-        "dateReceived": "2025-03-23T19:00:00-05:00",
-        "lastModified": "2025-03-24T10:50:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Jun",
-            "day": "27",
-            "year": "1989"
-        }
-    },
-    {
-        "fullName": "Violet Turner",
-        "caseReference": "PC-4826-9173",
-        "refCode": "",
-        "laaReference": "3953891",
-        "dateReceived": "2025-04-05T19:00:00-05:00",
-        "lastModified": "2025-04-06T14:25:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Sep",
-            "day": "8",
-            "year": "1985"
-        }
-    },
-    {
-        "fullName": "Hunter Baker",
-        "caseReference": "PC-7412-9630",
-        "refCode": "Operator recommends second opinion",
-        "laaReference": "3953895",
-        "dateReceived": "2025-04-14T19:00:00-05:00",
-        "lastModified": "2025-04-15T09:15:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Mar",
-            "day": "26",
-            "year": "1984"
-        }
-    },
-    {
-        "fullName": "Gabriel Young",
-        "caseReference": "PC-4691-2580",
-        "refCode": "Operator recommends second opinion",
-        "laaReference": "3953896",
-        "dateReceived": "2025-04-29T19:00:00-05:00",
-        "lastModified": "2025-04-30T11:40:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Sep",
-            "day": "14",
-            "year": "1992"
-        }
-    },
-    {
-        "fullName": "Nova Carter",
-        "caseReference": "PC-8521-3694",
-        "refCode": "",
-        "laaReference": "3953897",
-        "dateReceived": "2025-05-03T19:00:00-05:00",
-        "lastModified": "2025-05-04T16:20:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Jul",
-            "day": "9",
-            "year": "1990"
-        }
-    },
-    {
-        "fullName": "Benjamin Taylor",
-        "caseReference": "PC-4567-8901",
-        "refCode": "Manually allocated by operator",
-        "laaReference": "3063810",
-        "dateReceived": "2025-05-18T19:00:00-05:00",
-        "lastModified": "2025-05-19T08:45:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Mar",
-            "day": "17",
-            "year": "1990"
-        }
-    },
-    {
-        "fullName": "Logan Wright",
-        "caseReference": "PC-8519-3702",
-        "refCode": "",
-        "laaReference": "3063811",
-        "dateReceived": "2025-05-23T19:00:00-05:00",
-        "lastModified": "2025-05-24T13:30:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Jan",
-            "day": "29",
-            "year": "1991"
-        }
-    },
-    {
-        "fullName": "Penelope Campbell",
-        "caseReference": "PC-2975-6410",
-        "refCode": "",
-        "laaReference": "3063815",
-        "dateReceived": "2025-05-27T19:00:00-05:00",
-        "lastModified": "2025-05-28T10:15:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Feb",
-            "day": "3",
-            "year": "1987"
-        }
-    },
-    {
-        "fullName": "Carson Adams",
-        "caseReference": "PC-5836-1472",
-        "refCode": "",
-        "laaReference": "3063820",
-        "dateReceived": "2025-06-08T19:00:00-05:00",
-        "lastModified": "2025-06-09T12:50:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Aug",
-            "day": "18",
-            "year": "1989"
-        }
-    },
-    {
-        "fullName": "Stella Perez",
-        "caseReference": "PC-7539-1648",
-        "refCode": "Manually allocated by operator",
-        "laaReference": "3063825",
-        "dateReceived": "2025-06-12T19:00:00-05:00",
-        "lastModified": "2025-06-13T15:25:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Jan",
-            "day": "31",
-            "year": "1988"
-        }
-    },
-    {
-        "fullName": "Amelia Hall",
-        "caseReference": "PC-7598-3195",
-        "refCode": "",
-        "laaReference": "3063828",
-        "dateReceived": "2025-06-15T19:00:00-05:00",
-        "lastModified": "2025-06-16T09:40:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Nov",
-            "day": "10",
-            "year": "1983"
-        }
-    },
-    {
-        "fullName": "Olivia Clarke",
-        "caseReference": "PC-7016-1852",
-        "refCode": "",
-        "laaReference": "3063830",
-        "dateReceived": "2025-06-22T19:00:00-05:00",
-        "lastModified": "2025-06-23T11:20:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Jan",
-            "day": "15",
-            "year": "1972"
-        }
-    },
-    {
-        "fullName": "Emma Wilson",
-        "caseReference": "PC-1872-4899",
-        "refCode": "",
-        "laaReference": "3063831",
-        "dateReceived": "2025-06-23T19:00:00-05:00",
-        "lastModified": "2025-06-24T14:35:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Jun",
-            "day": "11",
-            "year": "1997"
-        }
-    },
-    {
-        "fullName": "Sophie Cooper",
-        "caseReference": "PC-6204-3242",
-        "refCode": "",
-        "laaReference": "3063832",
-        "dateReceived": "2025-07-07T19:00:00-05:00",
-        "lastModified": "2025-07-08T16:10:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "May",
-            "day": "22",
-            "year": "1981"
-        }
-    },
-    {
-        "fullName": "Mark Jones",
-        "caseReference": "PC-3936-2651",
-        "refCode": "",
-        "laaReference": "3063855",
-        "dateReceived": "2025-07-09T19:00:00-05:00",
-        "lastModified": "2025-07-10T08:55:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Jun",
-            "day": "12",
-            "year": "1971"
-        }
-    },
-    {
-        "fullName": "Rachel Green",
-        "caseReference": "PC-6960-2586",
-        "refCode": "Operator recommends second opinion",
-        "laaReference": "3063856",
-        "dateReceived": "2025-07-14T19:00:00-05:00",
-        "lastModified": "2025-07-15T12:30:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Apr",
-            "day": "26",
-            "year": "1997"
-        }
-    },
-    {
-        "fullName": "Liam Davis",
-        "caseReference": "PC-3606-4275",
-        "refCode": "",
-        "laaReference": "3063858",
-        "dateReceived": "2025-08-04T19:00:00-05:00",
-        "lastModified": "2025-08-05T10:20:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Oct",
-            "day": "13",
-            "year": "1986"
-        }
-    },
-    {
-        "fullName": "Isla Scott",
-        "caseReference": "PC-9440-3645",
-        "refCode": "",
-        "laaReference": "3066860",
-        "dateReceived": "2025-08-06T19:00:00-05:00",
-        "lastModified": "2025-08-07T13:45:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Mar",
-            "day": "8",
-            "year": "1983"
-        }
-    },
-    {
-        "fullName": "Ella Lewis",
-        "caseReference": "PC-9812-5580",
-        "refCode": "",
-        "laaReference": "3066862",
-        "dateReceived": "2025-08-07T19:00:00-05:00",
-        "lastModified": "2025-08-08T15:15:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Jun",
-            "day": "28",
-            "year": "1991"
-        }
-    },
-    {
-        "fullName": "Grace Baker",
-        "caseReference": "PC-1869-9154",
-        "refCode": "",
-        "laaReference": "3066869",
-        "dateReceived": "2025-08-07T19:00:00-05:00",
-        "lastModified": "2025-08-08T17:30:00-05:00",
-        "caseStatus": "Opened",
-        "dateOfBirth": {
-            "month": "Nov",
-            "day": "12",
-            "year": "1979"
-        }
+  {
+    "fullName": "Ember Hamilton",
+    "caseReference": "PC-3184-5962",
+    "refCode": "",
+    "laaReference": "3000742",
+    "dateReceived": "2025-01-08T19:00:00-05:00",
+    "lastModified": "2025-01-09T14:30:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Feb",
+      "day": "19",
+      "year": "1987"
     }
+  },
+  {
+    "fullName": "Lisa Chen",
+    "caseReference": "PC-1924-9560",
+    "refCode": "",
+    "laaReference": "3000743",
+    "dateReceived": "2025-01-14T19:00:00-05:00",
+    "lastModified": "2025-01-15T10:45:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Nov",
+      "day": "15",
+      "year": "1993"
+    }
+  },
+  {
+    "fullName": "Leo Robinson",
+    "caseReference": "PC-1298-8020",
+    "refCode": "",
+    "laaReference": "4000742",
+    "dateReceived": "2025-01-14T19:00:00-05:00",
+    "lastModified": "2025-01-16T09:20:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Jun",
+      "day": "17",
+      "year": "1972"
+    }
+  },
+  {
+    "fullName": "Brooklyn Russell",
+    "caseReference": "PC-4873-9516",
+    "refCode": "",
+    "laaReference": "34530742",
+    "dateReceived": "2025-01-16T19:00:00-05:00",
+    "lastModified": "2025-01-17T13:15:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Sep",
+      "day": "21",
+      "year": "1992"
+    }
+  },
+  {
+    "fullName": "Kinsley Butler",
+    "caseReference": "PC-4062-1738",
+    "refCode": "",
+    "laaReference": "3560742",
+    "dateReceived": "2025-01-22T19:00:00-05:00",
+    "lastModified": "2025-01-23T11:30:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Jun",
+      "day": "2",
+      "year": "1988"
+    }
+  },
+  {
+    "fullName": "Knox Hayes",
+    "caseReference": "PC-8407-1523",
+    "refCode": "",
+    "laaReference": "3001234",
+    "dateReceived": "2025-02-03T19:00:00-05:00",
+    "lastModified": "2025-02-04T15:45:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Mar",
+      "day": "25",
+      "year": "1988"
+    }
+  },
+  {
+    "fullName": "Ryder Wallace",
+    "caseReference": "PC-6315-2748",
+    "refCode": "",
+    "laaReference": "3561234",
+    "dateReceived": "2025-02-11T19:00:00-05:00",
+    "lastModified": "2025-02-12T08:20:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Apr",
+      "day": "6",
+      "year": "1993"
+    }
+  },
+  {
+    "fullName": "Paisley Flores",
+    "caseReference": "PC-9485-6271",
+    "refCode": "",
+    "laaReference": "3024554",
+    "dateReceived": "2025-02-14T19:00:00-05:00",
+    "lastModified": "2025-02-15T12:40:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Aug",
+      "day": "16",
+      "year": "1986"
+    }
+  },
+  {
+    "fullName": "Priya Patel",
+    "caseReference": "PC-1930-9763",
+    "refCode": "",
+    "laaReference": "6089234",
+    "dateReceived": "2025-02-22T19:00:00-05:00",
+    "lastModified": "2025-02-23T16:25:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Jul",
+      "day": "2",
+      "year": "1988"
+    }
+  },
+  {
+    "fullName": "Kayden Gonzales",
+    "caseReference": "PC-7650-3281",
+    "refCode": "",
+    "laaReference": "3023834",
+    "dateReceived": "2025-02-26T19:00:00-05:00",
+    "lastModified": "2025-02-27T14:10:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Oct",
+      "day": "5",
+      "year": "1987"
+    }
+  },
+  {
+    "fullName": "Charlotte Anderson",
+    "caseReference": "PC-8765-4322",
+    "refCode": "",
+    "laaReference": "3009034",
+    "dateReceived": "2025-03-08T19:00:00-05:00",
+    "lastModified": "2025-03-09T10:55:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Jan",
+      "day": "12",
+      "year": "1984"
+    }
+  },
+  {
+    "fullName": "Grayson Simmons",
+    "caseReference": "PC-8394-5217",
+    "refCode": "",
+    "laaReference": "3001245",
+    "dateReceived": "2025-03-16T19:00:00-05:00",
+    "lastModified": "2025-03-17T13:35:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Dec",
+      "day": "9",
+      "year": "1985"
+    }
+  },
+  {
+    "fullName": "Phoenix Graham",
+    "caseReference": "PC-7428-9051",
+    "refCode": "",
+    "laaReference": "3003421",
+    "dateReceived": "2025-03-21T19:00:00-05:00",
+    "lastModified": "2025-03-22T09:15:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Jun",
+      "day": "14",
+      "year": "1989"
+    }
+  },
+  {
+    "fullName": "Declan Griffin",
+    "caseReference": "PC-2604-7139",
+    "refCode": "",
+    "laaReference": "3003422",
+    "dateReceived": "2025-03-30T19:00:00-05:00",
+    "lastModified": "2025-03-31T15:50:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "May",
+      "day": "18",
+      "year": "1986"
+    }
+  },
+  {
+    "fullName": "Oliver Martinez",
+    "caseReference": "PC-3210-6547",
+    "refCode": "",
+    "laaReference": "3003425",
+    "dateReceived": "2025-04-12T19:00:00-05:00",
+    "lastModified": "2025-04-13T12:20:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Aug",
+      "day": "25",
+      "year": "1987"
+    }
+  },
+  {
+    "fullName": "Sebastian Torres",
+    "caseReference": "PC-6271-9485",
+    "refCode": "",
+    "laaReference": "3003430",
+    "dateReceived": "2025-04-19T19:00:00-05:00",
+    "lastModified": "2025-04-20T11:05:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Mar",
+      "day": "28",
+      "year": "1990"
+    }
+  },
+  {
+    "fullName": "Willow Bryant",
+    "caseReference": "PC-3281-7650",
+    "refCode": "",
+    "laaReference": "3003431",
+    "dateReceived": "2025-04-22T19:00:00-05:00",
+    "lastModified": "2025-04-23T14:40:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Jan",
+      "day": "14",
+      "year": "1989"
+    }
+  },
+  {
+    "fullName": "Sage Myers",
+    "caseReference": "PC-1523-8407",
+    "refCode": "",
+    "laaReference": "3003435",
+    "dateReceived": "2025-04-28T19:00:00-05:00",
+    "lastModified": "2025-04-29T16:25:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Aug",
+      "day": "11",
+      "year": "1985"
+    }
+  },
+  {
+    "fullName": "Rowan Alexander",
+    "caseReference": "PC-9516-4873",
+    "refCode": "",
+    "laaReference": "3003440",
+    "dateReceived": "2025-05-09T19:00:00-05:00",
+    "lastModified": "2025-05-10T08:30:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Jul",
+      "day": "30",
+      "year": "1984"
+    }
+  },
+  {
+    "fullName": "Colton Ford",
+    "caseReference": "PC-5962-3184",
+    "refCode": "",
+    "laaReference": "3003442",
+    "dateReceived": "2025-05-14T19:00:00-05:00",
+    "lastModified": "2025-05-15T13:45:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Nov",
+      "day": "3",
+      "year": "1991"
+    }
+  },
+  {
+    "fullName": "Ivy Sullivan",
+    "caseReference": "PC-9051-7428",
+    "refCode": "",
+    "laaReference": "3003443",
+    "dateReceived": "2025-05-26T19:00:00-05:00",
+    "lastModified": "2025-05-27T10:20:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Oct",
+      "day": "28",
+      "year": "1984"
+    }
+  },
+  {
+    "fullName": "Maverick Washington",
+    "caseReference": "PC-1738-4062",
+    "refCode": "",
+    "laaReference": "3003445",
+    "dateReceived": "2025-05-31T19:00:00-05:00",
+    "lastModified": "2025-06-01T15:10:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Nov",
+      "day": "24",
+      "year": "1993"
+    }
+  },
+  {
+    "fullName": "Delilah Foster",
+    "caseReference": "PC-5217-8394",
+    "refCode": "",
+    "laaReference": "3103446",
+    "dateReceived": "2025-06-04T19:00:00-05:00",
+    "lastModified": "2025-06-05T12:35:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Apr",
+      "day": "17",
+      "year": "1991"
+    }
+  },
+  {
+    "fullName": "Autumn Diaz",
+    "caseReference": "PC-7139-2604",
+    "refCode": "",
+    "laaReference": "3103447",
+    "dateReceived": "2025-06-16T19:00:00-05:00",
+    "lastModified": "2025-06-17T09:50:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Dec",
+      "day": "7",
+      "year": "1990"
+    }
+  },
+  {
+    "fullName": "Aisha Yusuf",
+    "caseReference": "PC-1393-7199",
+    "refCode": "Operator recommends second opinion",
+    "laaReference": "3103448",
+    "dateReceived": "2025-07-09T19:00:00-05:00",
+    "lastModified": "2025-07-10T14:15:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Mar",
+      "day": "13",
+      "year": "1982"
+    }
+  },
+  {
+    "fullName": "Harry Walker",
+    "caseReference": "PC-4350-9987",
+    "refCode": "",
+    "laaReference": "3103449",
+    "dateReceived": "2025-07-10T19:00:00-05:00",
+    "lastModified": "2025-07-11T11:40:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "May",
+      "day": "1",
+      "year": "1976"
+    }
+  },
+  {
+    "fullName": "Charlie Harris",
+    "caseReference": "PC-1235-7091",
+    "refCode": "",
+    "laaReference": "3103558",
+    "dateReceived": "2025-07-22T19:00:00-05:00",
+    "lastModified": "2025-07-23T16:55:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Dec",
+      "day": "22",
+      "year": "1989"
+    }
+  },
+  {
+    "fullName": "Mia Thompson",
+    "caseReference": "PC-2812-1933",
+    "refCode": "",
+    "laaReference": "3103559",
+    "dateReceived": "2025-08-01T19:00:00-05:00",
+    "lastModified": "2025-08-02T13:25:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Feb",
+      "day": "2",
+      "year": "1980"
+    }
+  },
+  {
+    "fullName": "Sarah Khan",
+    "caseReference": "PC-7735-3284",
+    "refCode": "Operator recommends second opinion",
+    "laaReference": "3103560",
+    "dateReceived": "2025-08-19T19:00:00-05:00",
+    "lastModified": "2025-08-20T10:30:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": {
+      "month": "Feb",
+      "day": "11",
+      "year": "1989"
+    }
+  },
+  {
+    "fullName": "Noah Brown",
+    "caseReference": "PC-4575-7150",
+    "refCode": "",
+    "laaReference": "3103561",
+    "dateReceived": "2025-01-05T19:00:00-05:00",
+    "dateClosed": "2025-01-09T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Sep",
+      "day": "6",
+      "year": "1982"
+    }
+  },
+  {
+    "fullName": "Harley Torres",
+    "caseReference": "PC-6395-8017",
+    "refCode": "Out of scope for CLA",
+    "laaReference": "3103562",
+    "dateReceived": "2025-01-06T19:00:00-05:00",
+    "dateClosed": "2025-01-11T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Jul",
+      "day": "21",
+      "year": "1994"
+    }
+  },
+  {
+    "fullName": "Skylar Watson",
+    "caseReference": "PC-6048-1375",
+    "refCode": "",
+    "laaReference": "3103565",
+    "dateReceived": "2025-01-15T19:00:00-05:00",
+    "dateClosed": "2025-01-20T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Nov",
+      "day": "26",
+      "year": "1987"
+    }
+  },
+  {
+    "fullName": "Henry Lee",
+    "caseReference": "PC-7799-8800",
+    "refCode": "",
+    "laaReference": "3103566",
+    "dateReceived": "2025-01-20T19:00:00-05:00",
+    "dateClosed": "2025-01-25T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Apr",
+      "day": "16",
+      "year": "1978"
+    }
+  },
+  {
+    "fullName": "Raelynn Bailey",
+    "caseReference": "PC-5734-9061",
+    "refCode": "",
+    "laaReference": "3103569",
+    "dateReceived": "2025-01-31T19:00:00-05:00",
+    "dateClosed": "2025-02-05T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Mar",
+      "day": "7",
+      "year": "1993"
+    }
+  },
+  {
+    "fullName": "Melody Reed",
+    "caseReference": "PC-8139-2467",
+    "refCode": "Duplicate of existing case",
+    "laaReference": "3103769",
+    "dateReceived": "2025-02-05T19:00:00-05:00",
+    "dateClosed": "2025-02-10T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "May",
+      "day": "31",
+      "year": "1984"
+    }
+  },
+  {
+    "fullName": "Alexander White",
+    "caseReference": "PC-1122-3344",
+    "refCode": "",
+    "laaReference": "3103770",
+    "dateReceived": "2025-02-15T19:00:00-05:00",
+    "dateClosed": "2025-02-20T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Jul",
+      "day": "3",
+      "year": "1979"
+    }
+  },
+  {
+    "fullName": "Journee Cox",
+    "caseReference": "PC-4582-1739",
+    "refCode": "",
+    "laaReference": "3103771",
+    "dateReceived": "2025-02-18T19:00:00-05:00",
+    "dateClosed": "2025-02-23T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Nov",
+      "day": "4",
+      "year": "1989"
+    }
+  },
+  {
+    "fullName": "Serenity Price",
+    "caseReference": "PC-7204-3519",
+    "refCode": "",
+    "laaReference": "3103775",
+    "dateReceived": "2025-02-24T19:00:00-05:00",
+    "dateClosed": "2025-03-01T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Apr",
+      "day": "15",
+      "year": "1988"
+    }
+  },
+  {
+    "fullName": "Adalynn Cooper",
+    "caseReference": "PC-3826-7194",
+    "refCode": "",
+    "laaReference": "3103779",
+    "dateReceived": "2025-03-04T19:00:00-05:00",
+    "dateClosed": "2025-03-09T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Dec",
+      "day": "18",
+      "year": "1990"
+    }
+  },
+  {
+    "fullName": "Sienna Woods",
+    "caseReference": "PC-4157-8926",
+    "refCode": "",
+    "laaReference": "3103780",
+    "dateReceived": "2025-03-12T19:00:00-05:00",
+    "dateClosed": "2025-03-17T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Sep",
+      "day": "22",
+      "year": "1990"
+    }
+  },
+  {
+    "fullName": "Magnolia Gray",
+    "caseReference": "PC-2946-5173",
+    "refCode": "Not financially eligible for CLA",
+    "laaReference": "3103781",
+    "dateReceived": "2025-03-19T19:00:00-05:00",
+    "dateClosed": "2025-03-24T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Aug",
+      "day": "14",
+      "year": "1991"
+    }
+  },
+  {
+    "fullName": "Victoria Thompson",
+    "caseReference": "PC-5566-7788",
+    "refCode": "Out of scope for CLA",
+    "laaReference": "3103782",
+    "dateReceived": "2025-03-28T19:00:00-05:00",
+    "dateClosed": "2025-04-02T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Oct",
+      "day": "18",
+      "year": "1991"
+    }
+  },
+  {
+    "fullName": "Genesis Kelly",
+    "caseReference": "PC-9582-4760",
+    "refCode": "Out of scope for CLA",
+    "laaReference": "3103875",
+    "dateReceived": "2025-03-28T19:00:00-05:00",
+    "dateClosed": "2025-04-02T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Aug",
+      "day": "19",
+      "year": "1986"
+    }
+  },
+  {
+    "fullName": "Isabella Rodriguez",
+    "caseReference": "PC-3366-5577",
+    "refCode": "Not financially eligible for CLA",
+    "laaReference": "3103876",
+    "dateReceived": "2025-04-03T19:00:00-05:00",
+    "dateClosed": "2025-04-08T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Jun",
+      "day": "21",
+      "year": "1993"
+    }
+  },
+  {
+    "fullName": "Easton Bennett",
+    "caseReference": "PC-3519-7204",
+    "refCode": "Not financially eligible for CLA",
+    "laaReference": "3103879",
+    "dateReceived": "2025-04-09T19:00:00-05:00",
+    "dateClosed": "2025-04-14T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Jul",
+      "day": "30",
+      "year": "1992"
+    }
+  },
+  {
+    "fullName": "Kaiden Cook",
+    "caseReference": "PC-2467-8139",
+    "refCode": "",
+    "laaReference": "3203880",
+    "dateReceived": "2025-04-16T19:00:00-05:00",
+    "dateClosed": "2025-04-21T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Oct",
+      "day": "12",
+      "year": "1988"
+    }
+  },
+  {
+    "fullName": "Cash Ward",
+    "caseReference": "PC-1739-4582",
+    "refCode": "",
+    "laaReference": "3203881",
+    "dateReceived": "2025-04-23T19:00:00-05:00",
+    "dateClosed": "2025-04-28T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Jan",
+      "day": "17",
+      "year": "1986"
+    }
+  },
+  {
+    "fullName": "Karter Richardson",
+    "caseReference": "PC-7194-3826",
+    "refCode": "Not financially eligible for CLA",
+    "laaReference": "3203885",
+    "dateReceived": "2025-05-01T19:00:00-05:00",
+    "dateClosed": "2025-05-06T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Jun",
+      "day": "29",
+      "year": "1987"
+    }
+  },
+  {
+    "fullName": "Jaxon Fisher",
+    "caseReference": "PC-8926-4157",
+    "refCode": "Out of scope for CLA",
+    "laaReference": "3203889",
+    "dateReceived": "2025-05-07T19:00:00-05:00",
+    "dateClosed": "2025-05-12T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Dec",
+      "day": "8",
+      "year": "1985"
+    }
+  },
+  {
+    "fullName": "William Garcia",
+    "caseReference": "PC-9900-1122",
+    "refCode": "",
+    "laaReference": "3203890",
+    "dateReceived": "2025-05-10T19:00:00-05:00",
+    "dateClosed": "2025-05-15T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Dec",
+      "day": "5",
+      "year": "1986"
+    }
+  },
+  {
+    "fullName": "Kameron Peterson",
+    "caseReference": "PC-8017-6395",
+    "refCode": "",
+    "laaReference": "3203891",
+    "dateReceived": "2025-05-15T19:00:00-05:00",
+    "dateClosed": "2025-05-20T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Apr",
+      "day": "8",
+      "year": "1983"
+    }
+  },
+  {
+    "fullName": "Braxton Sanders",
+    "caseReference": "PC-4760-9582",
+    "refCode": "",
+    "laaReference": "3203894",
+    "dateReceived": "2025-05-20T19:00:00-05:00",
+    "dateClosed": "2025-05-25T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Jan",
+      "day": "5",
+      "year": "1991"
+    }
+  },
+  {
+    "fullName": "Axel Brooks",
+    "caseReference": "PC-1375-6048",
+    "refCode": "",
+    "laaReference": "3203895",
+    "dateReceived": "2025-06-02T19:00:00-05:00",
+    "dateClosed": "2025-06-07T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Feb",
+      "day": "13",
+      "year": "1989"
+    }
+  },
+  {
+    "fullName": "Beau Rivera",
+    "caseReference": "PC-9061-5734",
+    "refCode": "Out of scope for CLA",
+    "laaReference": "3203899",
+    "dateReceived": "2025-06-09T19:00:00-05:00",
+    "dateClosed": "2025-06-14T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Sep",
+      "day": "23",
+      "year": "1985"
+    }
+  },
+  {
+    "fullName": "Emily Watson",
+    "caseReference": "PC-1039-3711",
+    "refCode": "Not financially eligible for CLA",
+    "laaReference": "3303810",
+    "dateReceived": "2025-06-21T19:00:00-05:00",
+    "dateClosed": "2025-06-25T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Dec",
+      "day": "17",
+      "year": "1977"
+    }
+  },
+  {
+    "fullName": "Freddie Evans",
+    "caseReference": "PC-4831-8090",
+    "refCode": "",
+    "laaReference": "3303811",
+    "dateReceived": "2025-06-25T19:00:00-05:00",
+    "dateClosed": "2025-06-26T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Sep",
+      "day": "9",
+      "year": "1987"
+    }
+  },
+  {
+    "fullName": "John Smith",
+    "caseReference": "PC-7880-7835",
+    "refCode": "",
+    "laaReference": "3303812",
+    "dateReceived": "2025-07-05T19:00:00-05:00",
+    "dateClosed": "2025-07-09T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Mar",
+      "day": "6",
+      "year": "1982"
+    }
+  },
+  {
+    "fullName": "Nina Taylor",
+    "caseReference": "PC-4344-8239",
+    "refCode": "",
+    "laaReference": "3303814",
+    "dateReceived": "2025-07-06T19:00:00-05:00",
+    "dateClosed": "2025-07-10T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": {
+      "month": "Oct",
+      "day": "27",
+      "year": "1996"
+    }
+  },
+  {
+    "fullName": "George Allen",
+    "caseReference": "PC-9159-2337",
+    "refCode": "",
+    "laaReference": "3303816",
+    "dateReceived": "2025-01-08T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Jun",
+      "day": "10",
+      "year": "1977"
+    }
+  },
+  {
+    "fullName": "Zoe Anderson",
+    "caseReference": "PC-1357-2468",
+    "refCode": "",
+    "laaReference": "3303819",
+    "dateReceived": "2025-01-12T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Aug",
+      "day": "22",
+      "year": "1984"
+    }
+  },
+  {
+    "fullName": "Jason Moore",
+    "caseReference": "PC-3571-9284",
+    "refCode": "Operator recommends second opinion",
+    "laaReference": "3403820",
+    "dateReceived": "2025-01-19T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Jul",
+      "day": "04",
+      "year": "1982"
+    }
+  },
+  {
+    "fullName": "James Wilson",
+    "caseReference": "PC-9876-5432",
+    "refCode": "",
+    "laaReference": "3403821",
+    "dateReceived": "2025-01-25T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Nov",
+      "day": "30",
+      "year": "1975"
+    }
+  },
+  {
+    "fullName": "Daniel Moore",
+    "caseReference": "PC-3360-2295",
+    "refCode": "",
+    "laaReference": "3403823",
+    "dateReceived": "2025-01-27T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Aug",
+      "day": "03",
+      "year": "1994"
+    }
+  },
+  {
+    "fullName": "Austin Lewis",
+    "caseReference": "PC-6419-8372",
+    "refCode": "",
+    "laaReference": "3403824",
+    "dateReceived": "2025-02-07T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Apr",
+      "day": "15",
+      "year": "1991"
+    }
+  },
+  {
+    "fullName": "Emma Johnson",
+    "caseReference": "PC-7890-3456",
+    "refCode": "",
+    "laaReference": "3403825",
+    "dateReceived": "2025-02-10T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "May",
+      "day": "14",
+      "year": "1988"
+    }
+  },
+  {
+    "fullName": "Sophia Lee",
+    "caseReference": "PC-9999-0000",
+    "refCode": "",
+    "laaReference": "3403829",
+    "dateReceived": "2025-02-18T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Jul",
+      "day": "11",
+      "year": "1989"
+    }
+  },
+  {
+    "fullName": "Chloe Taylor",
+    "caseReference": "PC-8642-9753",
+    "refCode": "",
+    "laaReference": "3403830",
+    "dateReceived": "2025-02-28T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Oct",
+      "day": "05",
+      "year": "1993"
+    }
+  },
+  {
+    "fullName": "Mary Flynn",
+    "caseReference": "PC-3630-9387",
+    "refCode": "Split from another case",
+    "laaReference": "3403831",
+    "dateReceived": "2025-03-06T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Oct",
+      "day": "01",
+      "year": "1971"
+    }
+  },
+  {
+    "fullName": "Maya Patel",
+    "caseReference": "PC-8765-4321",
+    "refCode": "",
+    "laaReference": "3403834",
+    "dateReceived": "2025-03-14T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Jun",
+      "day": "09",
+      "year": "1986"
+    }
+  },
+  {
+    "fullName": "Michael Brown",
+    "caseReference": "PC-5432-1098",
+    "refCode": "Operator recommends second opinion",
+    "laaReference": "3403835",
+    "dateReceived": "2025-03-20T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Dec",
+      "day": "08",
+      "year": "1992"
+    }
+  },
+  {
+    "fullName": "Grace Miller",
+    "caseReference": "PC-5555-6666",
+    "refCode": "",
+    "laaReference": "3403836",
+    "dateReceived": "2025-03-22T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Dec",
+      "day": "03",
+      "year": "1987"
+    }
+  },
+  {
+    "fullName": "Tyler Wilson",
+    "caseReference": "PC-1593-7428",
+    "refCode": "",
+    "laaReference": "3403839",
+    "dateReceived": "2025-03-26T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Sep",
+      "day": "28",
+      "year": "1987"
+    }
+  },
+  {
+    "fullName": "Anna Rodriguez",
+    "caseReference": "PC-1111-2222",
+    "refCode": "",
+    "laaReference": "3503840",
+    "dateReceived": "2025-04-08T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Feb",
+      "day": "14",
+      "year": "1990"
+    }
+  },
+  {
+    "fullName": "Sophie Williams",
+    "caseReference": "PC-2341-8765",
+    "refCode": "",
+    "laaReference": "3503841",
+    "dateReceived": "2025-04-15T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Sep",
+      "day": "22",
+      "year": "1985"
+    }
+  },
+  {
+    "fullName": "Nathan Brown",
+    "caseReference": "PC-7531-9642",
+    "refCode": "",
+    "laaReference": "3503843",
+    "dateReceived": "2025-04-17T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Dec",
+      "day": "31",
+      "year": "1985"
+    }
+  },
+  {
+    "fullName": "Ruby Clark",
+    "caseReference": "PC-9284-3571",
+    "refCode": "",
+    "laaReference": "3503845",
+    "dateReceived": "2025-04-25T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Nov",
+      "day": "20",
+      "year": "1989"
+    }
+  },
+  {
+    "fullName": "Connor White",
+    "caseReference": "PC-1234-5678",
+    "refCode": "",
+    "laaReference": "3503848",
+    "dateReceived": "2025-04-30T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Jan",
+      "day": "25",
+      "year": "1992"
+    }
+  },
+  {
+    "fullName": "Tom Andrews",
+    "caseReference": "PC-3027-4448",
+    "refCode": "",
+    "laaReference": "3503850",
+    "dateReceived": "2025-05-05T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Apr",
+      "day": "04",
+      "year": "1970"
+    }
+  },
+  {
+    "fullName": "Lily Johnson",
+    "caseReference": "PC-9642-7531",
+    "refCode": "",
+    "laaReference": "3503851",
+    "dateReceived": "2025-05-08T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "May",
+      "day": "13",
+      "year": "1990"
+    }
+  },
+  {
+    "fullName": "David Thompson",
+    "caseReference": "PC-3333-4444",
+    "refCode": "",
+    "laaReference": "3503855",
+    "dateReceived": "2025-05-12T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Sep",
+      "day": "07",
+      "year": "1983"
+    }
+  },
+  {
+    "fullName": "Hazel Walker",
+    "caseReference": "PC-8372-6419",
+    "refCode": "",
+    "laaReference": "3503859",
+    "dateReceived": "2025-05-19T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Jan",
+      "day": "08",
+      "year": "1986"
+    }
+  },
+  {
+    "fullName": "Ethan Davis",
+    "caseReference": "PC-2468-1357",
+    "refCode": "",
+    "laaReference": "3653860",
+    "dateReceived": "2025-05-25T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Nov",
+      "day": "16",
+      "year": "1991"
+    }
+  },
+  {
+    "fullName": "Lucas Martinez",
+    "caseReference": "PC-9753-8642",
+    "refCode": "Operator recommends second opinion",
+    "laaReference": "3653862",
+    "dateReceived": "2025-06-03T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Mar",
+      "day": "19",
+      "year": "1988"
+    }
+  },
+  {
+    "fullName": "Jacob King",
+    "caseReference": "PC-8891-1836",
+    "refCode": "",
+    "laaReference": "3653866",
+    "dateReceived": "2025-06-07T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Apr",
+      "day": "08",
+      "year": "1994"
+    }
+  },
+  {
+    "fullName": "Aria Smith",
+    "caseReference": "PC-7428-1593",
+    "refCode": "",
+    "laaReference": "3653869",
+    "dateReceived": "2025-06-11T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Feb",
+      "day": "17",
+      "year": "1994"
+    }
+  },
+  {
+    "fullName": "Ryan Garcia",
+    "caseReference": "PC-7777-8888",
+    "refCode": "Operator recommends second opinion",
+    "laaReference": "3753870",
+    "dateReceived": "2025-06-15T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Apr",
+      "day": "28",
+      "year": "1995"
+    }
+  },
+  {
+    "fullName": "Jack Young",
+    "caseReference": "PC-1922-1879",
+    "refCode": "",
+    "laaReference": "3753872",
+    "dateReceived": "2025-07-06T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": {
+      "month": "Aug",
+      "day": "18",
+      "year": "1981"
+    }
+  },
+  {
+    "fullName": "Ian Phillips",
+    "caseReference": "PC-9173-4826",
+    "refCode": "Operator recommends second opinion",
+    "laaReference": "3753875",
+    "dateReceived": "2025-01-14T19:00:00-05:00",
+    "lastModified": "2025-01-15T10:30:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Dec",
+      "day": "19",
+      "year": "1991"
+    }
+  },
+  {
+    "fullName": "Luna Nelson",
+    "caseReference": "PC-9630-7412",
+    "refCode": "",
+    "laaReference": "3753878",
+    "dateReceived": "2025-01-30T19:00:00-05:00",
+    "lastModified": "2025-01-31T14:20:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Dec",
+      "day": "4",
+      "year": "1993"
+    }
+  },
+  {
+    "fullName": "Aurora Evans",
+    "caseReference": "PC-5184-7392",
+    "refCode": "Manually allocated by operator",
+    "laaReference": "3753879",
+    "dateReceived": "2025-02-09T19:00:00-05:00",
+    "lastModified": "2025-02-10T09:45:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Nov",
+      "day": "13",
+      "year": "1994"
+    }
+  },
+  {
+    "fullName": "Scarlett King",
+    "caseReference": "PC-3702-8519",
+    "refCode": "",
+    "laaReference": "3853880",
+    "dateReceived": "2025-02-16T19:00:00-05:00",
+    "lastModified": "2025-02-17T11:15:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Nov",
+      "day": "7",
+      "year": "1985"
+    }
+  },
+  {
+    "fullName": "Blake Mitchell",
+    "caseReference": "PC-3694-8521",
+    "refCode": "",
+    "laaReference": "3853881",
+    "dateReceived": "2025-02-21T19:00:00-05:00",
+    "lastModified": "2025-02-22T16:30:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Oct",
+      "day": "15",
+      "year": "1986"
+    }
+  },
+  {
+    "fullName": "Evelyn Green",
+    "caseReference": "PC-1472-5836",
+    "refCode": "Manually allocated by operator",
+    "laaReference": "3853882",
+    "dateReceived": "2025-03-07T19:00:00-05:00",
+    "lastModified": "2025-03-08T13:45:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Apr",
+      "day": "12",
+      "year": "1987"
+    }
+  },
+  {
+    "fullName": "Madison Hall",
+    "caseReference": "PC-2580-4691",
+    "refCode": "",
+    "laaReference": "3853885",
+    "dateReceived": "2025-03-11T19:00:00-05:00",
+    "lastModified": "2025-03-12T08:20:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Jun",
+      "day": "23",
+      "year": "1988"
+    }
+  },
+  {
+    "fullName": "Ali Mahmood",
+    "caseReference": "PC-7611-8652",
+    "refCode": "",
+    "laaReference": "3853888",
+    "dateReceived": "2025-03-13T19:00:00-05:00",
+    "lastModified": "2025-03-14T15:10:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Nov",
+      "day": "15",
+      "year": "1996"
+    }
+  },
+  {
+    "fullName": "Caleb Roberts",
+    "caseReference": "PC-1648-7539",
+    "refCode": "",
+    "laaReference": "3853889",
+    "dateReceived": "2025-03-18T19:00:00-05:00",
+    "lastModified": "2025-03-19T12:35:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "May",
+      "day": "22",
+      "year": "1992"
+    }
+  },
+  {
+    "fullName": "Wyatt Parker",
+    "caseReference": "PC-6410-2975",
+    "refCode": "",
+    "laaReference": "3953890",
+    "dateReceived": "2025-03-23T19:00:00-05:00",
+    "lastModified": "2025-03-24T10:50:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Jun",
+      "day": "27",
+      "year": "1989"
+    }
+  },
+  {
+    "fullName": "Violet Turner",
+    "caseReference": "PC-4826-9173",
+    "refCode": "",
+    "laaReference": "3953891",
+    "dateReceived": "2025-04-05T19:00:00-05:00",
+    "lastModified": "2025-04-06T14:25:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Sep",
+      "day": "8",
+      "year": "1985"
+    }
+  },
+  {
+    "fullName": "Hunter Baker",
+    "caseReference": "PC-7412-9630",
+    "refCode": "Operator recommends second opinion",
+    "laaReference": "3953895",
+    "dateReceived": "2025-04-14T19:00:00-05:00",
+    "lastModified": "2025-04-15T09:15:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Mar",
+      "day": "26",
+      "year": "1984"
+    }
+  },
+  {
+    "fullName": "Gabriel Young",
+    "caseReference": "PC-4691-2580",
+    "refCode": "Operator recommends second opinion",
+    "laaReference": "3953896",
+    "dateReceived": "2025-04-29T19:00:00-05:00",
+    "lastModified": "2025-04-30T11:40:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Sep",
+      "day": "14",
+      "year": "1992"
+    }
+  },
+  {
+    "fullName": "Nova Carter",
+    "caseReference": "PC-8521-3694",
+    "refCode": "",
+    "laaReference": "3953897",
+    "dateReceived": "2025-05-03T19:00:00-05:00",
+    "lastModified": "2025-05-04T16:20:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Jul",
+      "day": "9",
+      "year": "1990"
+    }
+  },
+  {
+    "fullName": "Benjamin Taylor",
+    "caseReference": "PC-4567-8901",
+    "refCode": "Manually allocated by operator",
+    "laaReference": "3063810",
+    "dateReceived": "2025-05-18T19:00:00-05:00",
+    "lastModified": "2025-05-19T08:45:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Mar",
+      "day": "17",
+      "year": "1990"
+    }
+  },
+  {
+    "fullName": "Logan Wright",
+    "caseReference": "PC-8519-3702",
+    "refCode": "",
+    "laaReference": "3063811",
+    "dateReceived": "2025-05-23T19:00:00-05:00",
+    "lastModified": "2025-05-24T13:30:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Jan",
+      "day": "29",
+      "year": "1991"
+    }
+  },
+  {
+    "fullName": "Penelope Campbell",
+    "caseReference": "PC-2975-6410",
+    "refCode": "",
+    "laaReference": "3063815",
+    "dateReceived": "2025-05-27T19:00:00-05:00",
+    "lastModified": "2025-05-28T10:15:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Feb",
+      "day": "3",
+      "year": "1987"
+    }
+  },
+  {
+    "fullName": "Carson Adams",
+    "caseReference": "PC-5836-1472",
+    "refCode": "",
+    "laaReference": "3063820",
+    "dateReceived": "2025-06-08T19:00:00-05:00",
+    "lastModified": "2025-06-09T12:50:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Aug",
+      "day": "18",
+      "year": "1989"
+    }
+  },
+  {
+    "fullName": "Stella Perez",
+    "caseReference": "PC-7539-1648",
+    "refCode": "Manually allocated by operator",
+    "laaReference": "3063825",
+    "dateReceived": "2025-06-12T19:00:00-05:00",
+    "lastModified": "2025-06-13T15:25:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Jan",
+      "day": "31",
+      "year": "1988"
+    }
+  },
+  {
+    "fullName": "Amelia Hall",
+    "caseReference": "PC-7598-3195",
+    "refCode": "",
+    "laaReference": "3063828",
+    "dateReceived": "2025-06-15T19:00:00-05:00",
+    "lastModified": "2025-06-16T09:40:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Nov",
+      "day": "10",
+      "year": "1983"
+    }
+  },
+  {
+    "fullName": "Olivia Clarke",
+    "caseReference": "PC-7016-1852",
+    "refCode": "",
+    "laaReference": "3063830",
+    "dateReceived": "2025-06-22T19:00:00-05:00",
+    "lastModified": "2025-06-23T11:20:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Jan",
+      "day": "15",
+      "year": "1972"
+    }
+  },
+  {
+    "fullName": "Emma Wilson",
+    "caseReference": "PC-1872-4899",
+    "refCode": "",
+    "laaReference": "3063831",
+    "dateReceived": "2025-06-23T19:00:00-05:00",
+    "lastModified": "2025-06-24T14:35:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Jun",
+      "day": "11",
+      "year": "1997"
+    }
+  },
+  {
+    "fullName": "Sophie Cooper",
+    "caseReference": "PC-6204-3242",
+    "refCode": "",
+    "laaReference": "3063832",
+    "dateReceived": "2025-07-07T19:00:00-05:00",
+    "lastModified": "2025-07-08T16:10:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "May",
+      "day": "22",
+      "year": "1981"
+    }
+  },
+  {
+    "fullName": "Mark Jones",
+    "caseReference": "PC-3936-2651",
+    "refCode": "",
+    "laaReference": "3063855",
+    "dateReceived": "2025-07-09T19:00:00-05:00",
+    "lastModified": "2025-07-10T08:55:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Jun",
+      "day": "12",
+      "year": "1971"
+    }
+  },
+  {
+    "fullName": "Rachel Green",
+    "caseReference": "PC-6960-2586",
+    "refCode": "Operator recommends second opinion",
+    "laaReference": "3063856",
+    "dateReceived": "2025-07-14T19:00:00-05:00",
+    "lastModified": "2025-07-15T12:30:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Apr",
+      "day": "26",
+      "year": "1997"
+    }
+  },
+  {
+    "fullName": "Liam Davis",
+    "caseReference": "PC-3606-4275",
+    "refCode": "",
+    "laaReference": "3063858",
+    "dateReceived": "2025-08-04T19:00:00-05:00",
+    "lastModified": "2025-08-05T10:20:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Oct",
+      "day": "13",
+      "year": "1986"
+    }
+  },
+  {
+    "fullName": "Isla Scott",
+    "caseReference": "PC-9440-3645",
+    "refCode": "",
+    "laaReference": "3066860",
+    "dateReceived": "2025-08-06T19:00:00-05:00",
+    "lastModified": "2025-08-07T13:45:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Mar",
+      "day": "8",
+      "year": "1983"
+    }
+  },
+  {
+    "fullName": "Ella Lewis",
+    "caseReference": "PC-9812-5580",
+    "refCode": "",
+    "laaReference": "3066862",
+    "dateReceived": "2025-08-07T19:00:00-05:00",
+    "lastModified": "2025-08-08T15:15:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Jun",
+      "day": "28",
+      "year": "1991"
+    }
+  },
+  {
+    "fullName": "Grace Baker",
+    "caseReference": "PC-1869-9154",
+    "refCode": "",
+    "laaReference": "3066869",
+    "dateReceived": "2025-08-07T19:00:00-05:00",
+    "lastModified": "2025-08-08T17:30:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": {
+      "month": "Nov",
+      "day": "12",
+      "year": "1979"
+    }
+  }
 ]

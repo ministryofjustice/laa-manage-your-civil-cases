@@ -45,7 +45,7 @@ test.describe('Your cases Page', () => {
       });
 
       test.describe('sorting functionality', () => {
-        test('should display dates in ascending order by default', async ({ page }) => {
+        test('should display dates in descending order by default', async ({ page }) => {
           await testDefaultSorting(page, config);
         });
 
