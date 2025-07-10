@@ -28,6 +28,7 @@ Express.js is a fast, unopinionated, minimalist web framework for Node.js.
       - [Configuration](#configuration)
       - [CI/CD Integration](#cicd-integration)
       - [Debugging Failed Tests](#debugging-failed-tests)
+    - [Code coverage - unit tests](#code-coverage---unit-tests)
   - [Features](#features)
     - [Asset management](#asset-management)
     - [Cache busting](#cache-busting)
@@ -255,6 +256,19 @@ When tests fail in CI:
    Upload the trace.zip file to https://trace.playwright.dev/ - this allows sharing traces with team members without requiring local Playwright installation
 
 This provides a timeline view of the test execution with screenshots, DOM snapshots, and network requests to help diagnose issues.
+
+### Code coverage - unit tests
+We use the library [c8](https://github.com/bcoe/c8) which output unit test coverage reports using Node.js' built in coverage.
+
+- Devs can run this locally:
+```bash
+yarn coverage
+```
+
+- To open report
+```bash
+open coverage/index.html
+```
 
 ## Features
   - [Asset management](#asset-management)

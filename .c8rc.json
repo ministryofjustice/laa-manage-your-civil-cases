@@ -1,0 +1,27 @@
+{
+  "reporter": [
+    "text",
+    "lcov",
+    "html"
+  ],
+  "include": [
+    "src/**/*.ts",
+    "routes/**/*.ts",
+    "middleware/**/*.ts",
+    "utils/**/*.ts"
+  ],
+  "exclude": [
+    "playwright.config.ts",
+    "test",
+    "tests",
+    "**/*.d.ts",
+    "**/*.test.ts"
+  ],
+  "all": true,
+  "sourceMap": true,
+  "check-coverage": true,
+  "branches": 100,
+  "functions": 100,
+  "lines": 100,
+  "statements": 100
+}
