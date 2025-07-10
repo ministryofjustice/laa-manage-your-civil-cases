@@ -77,6 +77,11 @@ function transformDateOfBirth(dateOfBirth: DateOfBirth): string {
  * @param {unknown} item Raw case item
  * @returns {CaseData} Transformed case item
  */
+/**
+ * Transform case item from raw fixture data to typed CaseData
+ * @param {unknown} item Raw case item from fixture
+ * @returns {CaseData} Transformed case data
+ */
 function transformCaseItem(item: unknown): CaseData {
   if (!isRecord(item)) {
     throw new Error('Invalid case item: expected object');
@@ -92,7 +97,18 @@ function transformCaseItem(item: unknown): CaseData {
     caseStatus: safeString(item.caseStatus),
     dateOfBirth: isValidDateOfBirth(dateOfBirthValue) ? transformDateOfBirth(dateOfBirthValue) : '',
     lastModified: safeOptionalString(item.lastModified),
-    dateClosed: safeOptionalString(item.dateClosed)
+    dateClosed: safeOptionalString(item.dateClosed),
+    // Additional client details fields
+    phoneNumber: safeOptionalString(item.phoneNumber),
+    safeToCall: Boolean(item.safeToCall),
+    announceCall: Boolean(item.announceCall),
+    emailAddress: safeOptionalString(item.emailAddress),
+    clientIsVulnerable: Boolean(item.clientIsVulnerable),
+    reasonableAdjustments: isRecord(item.reasonableAdjustments) ? item.reasonableAdjustments : undefined,
+    language: safeOptionalString(item.language),
+    address: safeOptionalString(item.address),
+    postcode: safeOptionalString(item.postcode),
+    specialNotes: safeOptionalString(item.specialNotes)
   };
 }
 
