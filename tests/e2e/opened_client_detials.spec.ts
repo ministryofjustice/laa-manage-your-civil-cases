@@ -2,13 +2,13 @@ import { test, expect } from '@playwright/test';
 
 test('client details selected from opened cases tab has correct page elements', async ({ page }) => {
   // Navigate to the client details
-  await page.goto('/cases/opened/:caseReference/client-details');
+  await page.goto('/case/PC-1922-1879/client-details');
 
   const new_tag = page.locator('.govuk-tag--orange');
-  const accept_case_button = page.getByRole('button', {name: 'Accept case'})
-  const reject_case_button = page.getByRole('button', {name: 'Reject case'})
-  const split_case_button = page.getByRole('button', {name: 'Split case'})
-  const leave_feedback_button = page.getByRole('button', {name: 'Leave feedback'})
+  const accept_case_button = page.getByRole('button', { name: 'Accept case' })
+  const reject_case_button = page.getByRole('button', { name: 'Reject case' })
+  const split_case_button = page.getByRole('button', { name: 'Split case' })
+  const leave_feedback_button = page.getByRole('button', { name: 'Leave feedback' })
 
   // expect to see the following elements
   expect(new_tag).toBeVisible;

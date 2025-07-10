@@ -1,0 +1,172 @@
+{% from "components/summaryCardComponent.njk" import summaryCardComponent %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+
+{% set phoneNumberContent %}
+{% if data.safeToCall and data.announceCall %}
+  {{ data.phoneNumber }}
+{% elif data.safeToCall and not data.announceCall %}
+  {{ data.phoneNumber }}
+  {{ govukWarningText({
+        text: "Do not say the call is from Civil Legal Advice",
+        iconFallbackText: "Warning"
+      }) }}
+{% elif not data.safeToCall %}
+    The client is not safe to call
+{% else %}
+    No phone number conditions met
+  {% endif %}
+{% endset %}
+
+{% set reasonableAdjustmentsContent %}
+{% if data.reasonableAdjustments and data.reasonableAdjustments.selected and data.reasonableAdjustments.selected.length > 0 %}
+  {{ data.reasonableAdjustments.selected | join('<br>') | safe }}
+  {% if data.reasonableAdjustments.additionalInfo %}
+    <br><br>{{ data.reasonableAdjustments.additionalInfo }}
+  {% endif %}
+{% else %}
+  None
+{% endif %}
+{% endset %}
+
+{% set addressWithPostcode %}
+{% if data.address %}
+  {{ data.address }}
+  {% if data.postcode %}<br>{{ data.postcode }}
+  {% endif %}
+{% endif %}
+{% endset %}
+
+{# Create enhanced data object with computed phone content #}
+{% set constructedData = {
+  fullName: data.fullName,
+  dateOfBirth: data.dateOfBirth,
+  email: data.emailAddress,
+  phoneNumber: data.phoneNumber,
+  specialNotes: data.specialNotes,
+  reasonableAdjustments: data.reasonableAdjustments,
+  computedReasonableAdjustments: reasonableAdjustmentsContent,
+  language: data.language,
+  address: data.address,
+  postcode: data.postcode,
+  computedPhoneNumber: phoneNumberContent,
+  computedAddress: addressWithPostcode
+} %}
+
+<h2 class="govuk-heading-l">Client details</h2>
+{# Client info summary card #}
+{{ summaryCardComponent({
+  data: constructedData,
+  card: {
+    title: {
+      text: "About the client"
+    }
+  },
+  rows: [
+    {
+      label: "Name",
+      key: "fullName",
+      actions: {
+        items: [
+          {
+            href: "/",
+            text: "Change",
+            visuallyHiddenText: "Change Name"
+          }
+        ]
+      }
+    },
+    {
+      label: "Date of birth",
+      key: "dateOfBirth",
+      filter: "formatDate",
+      actions: {
+        items: [
+          {
+            href: "/",
+            text: "Change",
+            visuallyHiddenText: "Change Date of birth"
+          }
+        ]
+      }
+    }
+  ]
+}) }}
+{# Contact Details summary card #}
+{{ summaryCardComponent({
+  data: constructedData,
+  card: {
+    title: {
+      text: "Contact details"
+    }
+  },
+  rows: [
+    {
+      label: "Reasonable adjustments",
+      key: "computedReasonableAdjustments",
+      html: true,
+      actions: {
+        items: [
+          {
+            href: "/",
+            text: "Change",
+            visuallyHiddenText: "Change Reasonable adjustments"
+          }
+        ]
+      }
+    },
+    {
+      label: "Language",
+      key: "language",
+      actions: {
+        items: [
+          {
+            href: "/",
+            text: "Change",
+            visuallyHiddenText: "Change Language"
+          }
+        ]
+      }
+    },
+    {
+      label: "Phone number",
+      key: "computedPhoneNumber",
+      html: true,
+      actions: {
+        items: [
+          {
+            href: "/",
+            text: "Change",
+            visuallyHiddenText: "Change Phone number"
+          }
+        ]
+      }
+    },
+    {
+      label: "Email",
+      key: "email",
+      actions: {
+        items: [
+          {
+            href: "/",
+            text: "Change",
+            visuallyHiddenText: "Change Email"
+          }
+        ]
+      }
+    },
+    {
+      label: "Address",
+      key: "computedAddress",
+      html: true,
+      actions: {
+        items: [
+          {
+            href: "/",
+            text: "Change",
+            visuallyHiddenText: "Change Address"
+          }
+        ]
+      }
+    }
+  ]
+}) }}

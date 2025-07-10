@@ -7,13 +7,13 @@
 {%- from "components/sortableTableComponent.njk" import sortableTableComponent -%}
 {%- from "components/paginationComponent.njk" import paginationComponent -%}
 
-{% if casesData and casesData.length > 0 %}
+{% if data and data.length > 0 %}
   {# Render the sortable table #}
   {{ sortableTableComponent({
       id: "new-cases-table",
-      data: casesData,
+      data: data,
       columns: [
-        { key: "fullName", text: "Name", link: "new/{{caseReference}}/client-details" },
+        { key: "fullName", text: "Name", link: "/case/{{caseReference}}/client-details" },
         { key: "caseReference", text: "Case ID" },
 				{ key: "dateOfBirth", text: "Date of birth" },
         { key: "refCode", text: "Details" },

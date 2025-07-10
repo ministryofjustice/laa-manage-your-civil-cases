@@ -14,6 +14,15 @@ export interface DateOfBirth {
 }
 
 /**
+ * Reasonable adjustments structure
+ */
+export interface ReasonableAdjustments {
+  selected: string[];
+  available: string[];
+  additionalInfo?: string;
+}
+
+/**
  * Case data structure for display and client-side operations
  */
 export interface CaseData {
@@ -25,6 +34,18 @@ export interface CaseData {
   dateOfBirth: string;
   lastModified?: string;
   dateClosed?: string;
+  // Client contact details
+  phoneNumber?: string;
+  safeToCall?: boolean;
+  announceCall?: boolean;
+  emailAddress?: string;
+  // Client information
+  clientIsVulnerable?: boolean;
+  reasonableAdjustments?: object;
+  language?: string;
+  address?: string;
+  postcode?: string;
+  specialNotes?: string;
 }
 
 /**

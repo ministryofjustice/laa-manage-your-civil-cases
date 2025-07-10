@@ -1,0 +1,76 @@
+{% set statusConfig = {
+  "new": {
+    text: "New",
+    classes: "govuk-tag--yellow govuk-!-margin-bottom-2"
+  },
+  "opened": {
+    text: "Opened",
+    classes: "govuk-tag--orange govuk-!-margin-bottom-2"
+  },
+  "accepted": {
+    text: "Accepted",
+    classes: "govuk-!-margin-bottom-2"
+  },
+  "closed": {
+    text: "Closed",
+    classes: "govuk-tag--grey govuk-!-margin-bottom-2"
+  }
+} %}
+
+{% set currentStatus = client.caseStatus | lower %}
+
+{{ govukTag({
+  text: statusConfig[currentStatus].text,
+  classes: statusConfig[currentStatus].classes
+}) }}
+
+<h2 class="govuk-heading-m govuk-!-margin-bottom-1">Date received: <span class="govuk-body-l">{{ client.dateReceived | formatDate }}</span></h2>
+<h2 class="govuk-heading-m govuk-!-margin-bottom-7">LAA reference: <span class="govuk-body-l">{{ client.laaReference or "Not provided" }}</span></h2>
+
+<div class="govuk-button-group">
+  {% if currentStatus == "new" or currentStatus == "opened" %}
+    {{ govukButton({
+      text: "Accept case"
+    }) }}
+    {{ govukButton({
+      text: "Reject case",
+      classes: "govuk-button--secondary"
+    }) }}
+    {{ govukButton({
+      text: "Split case",
+      classes: "govuk-button--secondary"
+    }) }}
+    {{ govukButton({
+      text: "Leave feedback",
+      classes: "govuk-button--secondary"
+    }) }}
+  {% elif currentStatus == "accepted" %}
+    {{ govukButton({
+      text: "Generate legal help form"
+    }) }}
+    {{ govukButton({
+      text: "Reject case",
+      classes: "govuk-button--secondary"
+    }) }}
+    {{ govukButton({
+      text: "Split case",
+      classes: "govuk-button--secondary"
+    }) }}
+    {{ govukButton({
+      text: "Close case",
+      classes: "govuk-button--secondary"
+    }) }}
+    {{ govukButton({
+      text: "Leave feedback",
+      classes: "govuk-button--secondary"
+    }) }}
+  {% elif currentStatus == "closed" %}
+    {{ govukButton({
+      text: "Reopen case"
+    }) }}
+    {{ govukButton({
+      text: "Generate legal help form",
+      classes: "govuk-button--secondary"
+    }) }}
+  {% endif %}
+</div>
