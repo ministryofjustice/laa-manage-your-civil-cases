@@ -8,7 +8,6 @@
   - Card-based layout with optional title and actions
   - Row-level actions support
   - Data array processing with flexible key mapping
-  - Fallback values for missing data
   - Optional formatting filters
 
   Usage:
@@ -34,18 +33,15 @@
       {
         key: "fullName",
         label: "Name",
-        fallback: "Not provided"
       },
       {
         key: "dateOfBirth",
         label: "Date of birth",
-        filter: "formatDate",
-        fallback: "Not provided"
+        filter: "formatDate"
       },
       {
         key: "email",
-        label: "Email",
-        fallback: "Not provided",
+        label: "Email"
         actions: {
           items: [
             {
@@ -68,7 +64,6 @@
     * key: Property key in data object
     * label: Display label for the row
     * filter: Optional Nunjucks filter to apply to the value
-    * fallback: Fallback text when value is empty/undefined
     * actions: Optional array of row-level actions
     * html: Boolean - set to true to force HTML rendering (optional, auto-detects HTML tags)
 
@@ -100,17 +95,15 @@
       {% endif %}
     {% endif %}
 
-    {# Check if this row has actual data (not just fallback) #}
+    {# Check if this row has actual data #}
     {% if processedValue %}
       {% set hasAnyData = true %}
     {% endif %}
 
-    {# Use processed value or fallback #}
-    {% set finalValue = processedValue if processedValue else 
-      (row.fallback if row.fallback else 
-        '<span class="govuk-visually-hidden">No data</span>'
-      ) %}
-    
+    {# Use processed value or fallback to "No data" #}
+    {% set finalValue = processedValue if processedValue else
+        '<span class="govuk-visually-hidden">No data</span>' %}
+
     {# Check if finalValue contains HTML or if html flag is set #}
     {% set isHtml = row.html === true or (finalValue and ('<' in finalValue)) %}
 

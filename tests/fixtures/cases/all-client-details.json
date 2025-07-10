@@ -407,7 +407,8 @@
     "clientIsVulnerable": false,
     "reasonableAdjustments": {
       "selected": [
-        "BSL - Webcam"
+        "BSL - Webcam",
+        "Skype"
       ],
       "available": [
         "BSL - Webcam",
@@ -417,7 +418,7 @@
         "Text relay",
         "No accommodations required"
       ],
-      "additionalInfo": "Additional information about client communication"
+      "additionalInfo": ""
     },
     "language": "English",
     "phoneNumber": "0776744581",
