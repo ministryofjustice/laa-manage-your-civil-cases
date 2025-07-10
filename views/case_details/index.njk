@@ -7,7 +7,7 @@
 {% block backLink %}
   {{ govukBackLink({
     text: "Back to all cases",
-    href: "/cases/" + activeTab,
+    href: "/cases/" + (client.caseStatus | lower),
     classes: "govuk-!-margin-bottom-0"
   }) }}
 {% endblock %}
