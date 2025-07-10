@@ -1,23 +1,23 @@
 /**
  * API Service
  *
- * This service provides a mock API interface for development using fixture data.
- * Designed to be easily replaceable with real API endpoints when backend is ready.
+ * This service provides an interface for interacting with API servers using
+ * the project's axios middleware for consistency.
  *
  * Usage examples:
  * ```typescript
- * // Get cases with sorting
- * const cases = await getCases('new', 'desc');
- * 
- * // Direct API service usage
- * const response = await apiService.getCases({ caseType: 'new', sortOrder: 'desc' });
+ * // Get cases with sorting and pagination
+ * const { data, pagination } = await ApiService.getCases(req.axiosMiddleware, {
+ *   caseType: 'new',
+ *   sortOrder: 'desc',
+ *   page: 1,
+ *   limit: 20
+ * });
  * ```
  */
 
-import { readFileSync } from 'fs';
-import { join } from 'path';
-import { setTimeout as delay } from 'timers/promises';
 import type { CaseData, DateOfBirth } from '#types/case-types.js';
+import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
 import {
   isValidDateOfBirth,
   safeString,
@@ -26,26 +26,25 @@ import {
   devLog,
   devError
 } from '#src/scripts/helpers/index.js';
-
-// Constants
-const DEFAULT_PAGE = 1;
-const DEFAULT_LIMIT = parseInt(process.env.PAGINATION_LIMIT ?? '20', 10); // Configurable via env
-const MOCK_DELAY = 50;
-const ZERO_TOTAL = 0;
-const MIN_PAGE_VALUE = 1;
+import { formatDate } from '#src/scripts/helpers/dateFormatter.js';
+import config from '../../config.js';
 
 /**
- * API response structure that matches expected backend format
+ * Pagination metadata interface
+ */
+interface PaginationMeta {
+  total: number | null;
+  page: number;
+  limit: number;
+  totalPages?: number;
+}
+
+/**
+ * API response interface with pagination
  */
 export interface ApiResponse<T> {
   data: T[];
-  meta: {
-    total: number;
-    page: number;
-    limit: number;
-    sortBy: string;
-    sortOrder: 'asc' | 'desc';
-  };
+  pagination: PaginationMeta;
   status: 'success' | 'error';
   message?: string;
 }
@@ -60,6 +59,57 @@ export interface CaseApiParams {
   page?: number;
   limit?: number;
   filters?: Record<string, unknown>;
+}
+
+/**
+ * API request parameters for client details
+ */
+export interface ClientDetailsApiParams {
+  caseReference: string;
+}
+
+/**
+ * Client details API response interface
+ */
+export interface ClientDetailsResponse {
+  caseReference: string;
+  fullName: string;
+  dateOfBirth: string;
+  [key: string]: unknown; // Allow for additional fields
+}
+
+/**
+ * API response interface for single client details
+ */
+export interface ClientDetailsApiResponse {
+  data: ClientDetailsResponse | null;
+  status: 'success' | 'error';
+  message?: string;
+}
+
+// Constants
+const DEFAULT_PAGE = 1;
+const DEFAULT_LIMIT = parseInt(process.env.PAGINATION_LIMIT ?? '20', 10); // Configurable via env
+const JSON_INDENT = 2;
+const EMPTY_TOTAL = 0;
+
+/**
+ * Transform raw client details item to display format
+ * @param {unknown} item Raw client details item
+ * @returns {ClientDetailsResponse} Transformed client details item
+ */
+function transformClientDetailsItem(item: unknown): ClientDetailsResponse {
+  if (!isRecord(item)) {
+    throw new Error('Invalid client details item: expected object');
+  }
+
+  return {
+    caseReference: safeString(item.caseReference),
+    fullName: safeString(item.fullName),
+    dateOfBirth: safeString(item.dateOfBirth),
+    // Allow for additional fields from the API
+    ...item
+  };
 }
 
 /**
@@ -84,6 +134,10 @@ function transformCaseItem(item: unknown): CaseData {
 
   const { dateOfBirth: dateOfBirthValue } = item;
 
+  // Handle optional date fields
+  const lastModifiedStr = safeOptionalString(item.lastModified);
+  const dateClosedStr = safeOptionalString(item.dateClosed);
+
   return {
     fullName: safeString(item.fullName),
     caseReference: safeString(item.caseReference),
@@ -91,205 +145,220 @@ function transformCaseItem(item: unknown): CaseData {
     dateReceived: safeString(item.dateReceived),
     caseStatus: safeString(item.caseStatus),
     dateOfBirth: isValidDateOfBirth(dateOfBirthValue) ? transformDateOfBirth(dateOfBirthValue) : '',
-    lastModified: safeOptionalString(item.lastModified),
-    dateClosed: safeOptionalString(item.dateClosed)
+    lastModified: lastModifiedStr != null && lastModifiedStr.trim() !== '' ? formatDate(lastModifiedStr) : undefined,
+    dateClosed: dateClosedStr != null && dateClosedStr.trim() !== '' ? formatDate(dateClosedStr) : undefined
   };
 }
 
 /**
- * Mock API Service that loads data from fixtures
- * TODO: Replace with real API service when backend is ready
+ * API Service
+ * Uses axios middleware from Express request for API calls
  */
-class MockApiService {
+class ApiService {
   /**
-   * Load mock data from JSON fixtures
-   * @param {string} caseType Type of case
-   * @param {'asc' | 'desc'} sortOrder Sort order
-   * @returns {unknown[]} Raw fixture data
+   * Create configured axios instance with API credentials
+   * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+   * @returns {AxiosInstanceWrapper} Configured axios instance
    */
-  private static loadMockData(caseType: string, sortOrder: 'asc' | 'desc'): unknown[] {
-    try {
-      const filePath = join(process.cwd(), `tests/fixtures/cases/${caseType}`, `data-${sortOrder}.json`);
-      const fileContent = readFileSync(filePath, 'utf-8');
-      const data: unknown = JSON.parse(fileContent);
+  private static configureAxiosInstance(axiosMiddleware: AxiosInstanceWrapper): AxiosInstanceWrapper {
+    // Override base URL and add API-specific headers
+    const { axiosInstance } = axiosMiddleware;
+    const { defaults } = axiosInstance;
+    const { api: { baseUrl, timeout, apiKey } } = config;
 
-      if (!Array.isArray(data)) {
-        devError('Invalid mock data format: expected array');
-        return [];
-      }
-
-      return data;
-    } catch (error) {
-      devError('Error loading mock data:' + String(error));
-      return [];
+    // Safely configure axios defaults
+    if (typeof baseUrl === 'string') {
+      defaults.baseURL = baseUrl;
     }
+
+    if (typeof timeout === 'number') {
+      defaults.timeout = timeout;
+    }
+
+    if (typeof apiKey === 'string') {
+      defaults.headers.common['X-API-Key'] = apiKey;
+    }
+
+    defaults.headers.common['Content-Type'] = 'application/json';
+    defaults.headers.common.Accept = 'application/json';
+
+    return axiosMiddleware;
   }
 
   /**
-   * Simulate network delay using setTimeout
-   * @param {number} ms - Delay in milliseconds (defaults to MOCK_DELAY)
-   * @returns {Promise<void>} Promise that resolves after delay
+   * Get cases from API server using axios middleware
+   * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+   * @param {CaseApiParams} params API parameters
+   * @returns {Promise<ApiResponse<CaseData>>} API response with case data and pagination
    */
-  private static async mockDelay(ms = MOCK_DELAY): Promise<void> {
-    await delay(ms);
-  }
-
-  /**
-   * Create success response
-   * @param {CaseData[]} data - Case data
-   * @param {CaseApiParams} params - API parameters
-   * @returns {ApiResponse<CaseData>} Success response
-   */
-  private static createSuccessResponse(data: CaseData[], params: CaseApiParams): ApiResponse<CaseData> {
-    const { sortBy = 'dateReceived', sortOrder = 'asc' } = params;
+  static async getCases(axiosMiddleware: AxiosInstanceWrapper, params: CaseApiParams): Promise<ApiResponse<CaseData>> {
+    const { caseType, sortBy = 'dateReceived', sortOrder = 'asc' } = params;
     const page = params.page ?? DEFAULT_PAGE;
     const limit = params.limit ?? DEFAULT_LIMIT;
 
-    const startIndex = (page - DEFAULT_PAGE) * limit;
-    const endIndex = startIndex + limit;
-    const paginatedData = data.slice(startIndex, endIndex);
-
-    return {
-      data: paginatedData,
-      meta: {
-        total: data.length,
-        page,
-        limit,
-        sortBy,
-        sortOrder
-      },
-      status: 'success'
-    };
-  }
-
-  /**
-   * Create error response
-   * @param {CaseApiParams} params - API parameters
-   * @param {string} message - Error message
-   * @returns {ApiResponse<CaseData>} Error response
-   */
-  private static createErrorResponse(params: CaseApiParams, message: string): ApiResponse<CaseData> {
-    return {
-      data: [],
-      meta: {
-        total: ZERO_TOTAL,
-        page: params.page ?? DEFAULT_PAGE,
-        limit: params.limit ?? DEFAULT_LIMIT,
-        sortBy: params.sortBy ?? 'dateReceived',
-        sortOrder: params.sortOrder ?? 'asc'
-      },
-      status: 'error',
-      message
-    };
-  }
-
-  /**
-   * Get cases data with API-like interface
-   * @param {CaseApiParams} params API parameters
-   * @returns {Promise<ApiResponse<CaseData>>} API response
-   */
-  static async getCases(params: CaseApiParams): Promise<ApiResponse<CaseData>> {
     try {
-      await MockApiService.mockDelay();
+      devLog(`API: GET /cases/${caseType}?sortBy=${sortBy}&sortOrder=${sortOrder}&page=${page}&limit=${limit}`);
 
-      const { caseType, sortBy = 'dateReceived', sortOrder = 'asc' } = params;
-      const page = params.page ?? DEFAULT_PAGE;
-      const limit = params.limit ?? DEFAULT_LIMIT;
+      const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
 
-      devLog(`Mock API: GET /cases/${caseType}?sortBy=${sortBy}&sortOrder=${sortOrder}&page=${page}&limit=${limit}`);
+      // Call API endpoint
+      const response = await configuredAxios.get(`/cases/${caseType}`, {
+        params: { sortBy, sortOrder, page, limit }
+      });
 
-      const rawData = MockApiService.loadMockData(caseType, sortOrder);
-      const transformedData = rawData.map(transformCaseItem);
+      // Transform the response data if needed
+      const transformedData = Array.isArray(response.data)
+        ? response.data.map(transformCaseItem)
+        : [];
 
-      devLog(`Mock API: Returning ${transformedData.length} ${caseType} cases`);
+      // Debug: Log response headers to help troubleshoot pagination issues
+      devLog(`API: Response headers: ${JSON.stringify(response.headers, null, JSON_INDENT)}`);
 
-      return MockApiService.createSuccessResponse(transformedData, params);
+      // Extract pagination metadata from response headers
+      const paginationMeta = ApiService.extractPaginationMeta(response.headers, params);
+
+      devLog(`API: Returning ${transformedData.length} ${caseType} cases (total: ${paginationMeta.total})`);
+
+      return {
+        data: transformedData,
+        pagination: paginationMeta,
+        status: 'success'
+      };
 
     } catch (error) {
-      devError('Mock API error:' + String(error));
-      const message = error instanceof Error ? error.message : 'Unknown error';
-      return MockApiService.createErrorResponse(params, message);
+      const errorMessage = ApiService.extractErrorMessage(error);
+      devError(`API error: ${errorMessage}`);
+
+      return {
+        data: [],
+        pagination: { total: EMPTY_TOTAL, page, limit },
+        status: 'error',
+        message: errorMessage
+      };
     }
   }
-}
-
-// Export the mock API service
-export const apiService = MockApiService;
-
-/**
- * Convenience function to get cases with proper typing
- * @param {string} caseType Type of case (new, accepted, opened, closed)
- * @param {'asc' | 'desc'} sortOrder Sort order
- * @returns {Promise<CaseData[]>} Promise resolving to case data
- */
-export async function getCases(caseType: string, sortOrder: 'asc' | 'desc' = 'asc'): Promise<CaseData[]> {
-  const validCaseTypes = ['new', 'accepted', 'opened', 'closed'] as const;
-  type ValidCaseType = typeof validCaseTypes[number];
 
   /**
-   * Type guard to check if case type is valid
-   * @param {string} type Case type to validate
-   * @returns {boolean} True if valid case type
+   * Get client details by case reference
+   * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+   * @param {ClientDetailsApiParams} params API parameters
+   * @returns {Promise<ClientDetailsApiResponse>} API response with client details
    */
-  const isValidCaseType = (type: string): type is ValidCaseType =>
-    (validCaseTypes as readonly string[]).includes(type);
+  static async getClientDetails(axiosMiddleware: AxiosInstanceWrapper, params: ClientDetailsApiParams): Promise<ClientDetailsApiResponse> {
+    const { caseReference } = params;
 
-  if (!isValidCaseType(caseType)) {
-    devError(`Invalid case type: ${caseType}`);
-    return [];
+    try {
+      devLog(`API: GET /cases/client-details?caseReference=${caseReference}`);
+
+      const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
+
+      // Call API endpoint
+      const response = await configuredAxios.get('/cases/client-details', {
+        params: { caseReference }
+      });
+
+      devLog(`API: Client details response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+
+      return {
+        data: transformClientDetailsItem(response.data),
+        status: 'success'
+      };
+
+    } catch (error) {
+      const errorMessage = ApiService.extractErrorMessage(error);
+      devError(`API error: ${errorMessage}`);
+
+      return {
+        data: null,
+        status: 'error',
+        message: errorMessage
+      };
+    }
   }
 
-  const response = await apiService.getCases({
-    caseType,
-    sortOrder,
-    sortBy: 'dateReceived'
-  });
-
-  if (response.status === 'error') {
-    devError(`Error loading ${caseType} cases: ${response.message ?? 'Unknown error'}`);
-    return [];
+  /**
+   * Extract error message from various error types
+   * @param {unknown} error - Error object
+   * @returns {string} Error message
+   */
+  private static extractErrorMessage(error: unknown): string {
+    if (error instanceof Error) {
+      return error.message;
+    }
+    if (typeof error === 'string') {
+      return error;
+    }
+    return 'Unknown error';
   }
 
-  return response.data;
-}
-
-/**
- * Pagination utility functions
- */
-export const PaginationConfig = {
-  DEFAULT_PAGE_SIZE: DEFAULT_LIMIT,
+  /**
+   * Type guard to check if object has string property
+   * @param {unknown} obj - Object to check
+   * @param {string} key - Key to check for
+   * @returns {boolean} True if object has string property at key
+   */
+  private static hasStringProperty(obj: unknown, key: string): obj is Record<string, unknown> {
+    return (
+      obj !== null &&
+      obj !== undefined &&
+      typeof obj === 'object' &&
+      key in obj
+    );
+  }
 
   /**
-   * Create pagination parameters
-   * @param {number} page - Page number (1-based)
-   * @param {number} pageSize - Items per page
-   * @returns {Pick<CaseApiParams, 'page' | 'limit'>} Pagination params
+   * Safely extract a string value from headers object
+   * @param {unknown} headers - Headers object
+   * @param {string} key - Header key to look for
+   * @returns {string | null} String value or null
    */
-  createParams(page = DEFAULT_PAGE, pageSize = DEFAULT_LIMIT): Pick<CaseApiParams, 'page' | 'limit'> {
-    return {
-      page: Math.max(MIN_PAGE_VALUE, page),
-      limit: Math.max(MIN_PAGE_VALUE, pageSize)
-    };
-  },
+  private static getHeaderString(headers: unknown, key: string): string | null {
+    if (ApiService.hasStringProperty(headers, key)) {
+      const { [key]: headerValue } = headers;
+      return typeof headerValue === 'string' && headerValue.trim() !== '' ? headerValue : null;
+    }
+    return null;
+  }
 
   /**
-   * Calculate pagination metadata
-   * @param {number} total - Total items
-   * @param {number} page - Current page
-   * @param {number} limit - Items per page
-   * @returns {object} Pagination metadata
+   * Extract pagination metadata from response headers
+   * @param {unknown} headers - Response headers from axios
+   * @param {CaseApiParams} params - API parameters for fallback values
+   * @returns {PaginationMeta} Pagination metadata
    */
-  calculateMeta(total: number, page: number, limit: number) {
-    const totalPages = Math.ceil(total / limit);
+  private static extractPaginationMeta(headers: unknown, params: CaseApiParams): PaginationMeta {
+    const page = params.page ?? DEFAULT_PAGE;
+    const limit = params.limit ?? DEFAULT_LIMIT;
+
+    // Extract total count from header
+    const totalFromHeader = ApiService.getHeaderString(headers, 'x-total-count');
+
+    // Extract page from header
+    const pageFromHeader = ApiService.getHeaderString(headers, 'x-page');
+
+    // Extract limit from header
+    const limitFromHeader = ApiService.getHeaderString(headers, 'x-per-page');
+
+    // Extract total pages from header
+    const totalPagesFromHeader = ApiService.getHeaderString(headers, 'x-total-pages');
+
+    let total = totalFromHeader !== null ? parseInt(totalFromHeader, 10) : null;
+
+    // If we have totalPages but no total, calculate it
+    if (total === null && totalPagesFromHeader !== null) {
+      const totalPages = parseInt(totalPagesFromHeader, 10);
+      total = totalPages * limit;
+      devLog(`API: Calculated total from X-Total-Pages: ${totalPages} pages × ${limit} = ${total} items`);
+    }
+
     return {
       total,
-      page,
-      limit,
-      totalPages,
-      hasNext: page < totalPages,
-      hasPrev: page > MIN_PAGE_VALUE,
-      startItem: (page - MIN_PAGE_VALUE) * limit + MIN_PAGE_VALUE,
-      endItem: Math.min(page * limit, total)
+      page: pageFromHeader !== null ? parseInt(pageFromHeader, 10) : page,
+      limit: limitFromHeader !== null ? parseInt(limitFromHeader, 10) : limit,
+      totalPages: totalPagesFromHeader !== null ? parseInt(totalPagesFromHeader, 10) : undefined
     };
   }
-};
+}
+
+// Export the API service
+export const apiService = ApiService;
