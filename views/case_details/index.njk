@@ -4,7 +4,6 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/tabComponent.njk" import tabComponent %}
 
-
 {% block backLink %}
   {{ govukBackLink({
     text: "Back to all cases",
@@ -16,42 +15,34 @@
 {% block pageContent %}
   <h1 class="govuk-caption-xl">{{ client.caseReference }}</h1>
   <h1 class="govuk-heading-xl govuk-!-margin-bottom-6" id="page-heading">{{ client.fullName }}</h1>
-  {% if activeTab == 'new' %}
-    {% include "cases/_new-client-details-partial.njk" %}
-  {% elif activeTab == 'accepted' -%}
-    {% include "cases/_accepted-client-details-partial.njk" %}
-  {% elif activeTab == 'closed' -%}
-    {% include "cases/_closed-client-details-partial.njk" %}
-  {% else %}
-    {% include "cases/_opened-client-details-partial.njk" %}
-  {% endif %}
+
+  {% include "case_details/_case-info-partial.njk" %}
 
   {{ tabComponent({
-    activeTab: activeSubNavigationTab,
+    activeTab: activeTab,
     containerId: "cases-tab-container",
-    casesData: casesData,
-    sortOrder: sortOrder,
-    pagination: pagination,
+    data: client,
     tabs: [
       {
         id: "client_details",
         text: "Client details",
-        href: "/cases/" + activeTab + "/" + caseReference + "/client-details"
+        href: "/case/" + caseReference + "/client-details",
+        partial: "case_details/_client-details-partial.njk"
       },
       {
         id: "scope",
         text: "Scope",
-        href: "/cases/" + activeTab + "/" + caseReference + "/scope"
+        href: "/case/" + caseReference + "/scope"
       },
       {
         id: "financial_eligibility",
         text: "Financial eligibility",
-        href: "/cases/" + activeTab + "/" + caseReference + "/financial-eligibility"
+        href: "/case/" + caseReference + "/financial-eligibility"
       },
       {
         id: "notes_and_history",
         text: "Notes and history",
-        href:"/cases/" + activeTab + "/" + caseReference + "/notes-and-history"
+        href:"/case/" + caseReference + "/notes-and-history"
       }
     ]
   }) }}

@@ -211,6 +211,51 @@ class MockApiService {
       return MockApiService.createErrorResponse(params, message);
     }
   }
+
+  /**
+   * Get client details for a specific case
+   * @param {string} caseReference Case reference to look up
+   * @returns {Promise<{status: 'success' | 'error', data: CaseData | null, message?: string}>} Client details response
+   */
+  static async getClientDetails(caseReference: string): Promise<{ status: 'success' | 'error', data: CaseData | null, message?: string }> {
+    try {
+      await MockApiService.mockDelay();
+
+      devLog(`Mock API: GET /client-details?caseReference=${caseReference}`);
+
+      // Load client details from fixture
+      const filePath = join(process.cwd(), 'tests/fixtures/cases/all-client-details.json');
+      const fileContent = readFileSync(filePath, 'utf-8');
+      const clientsData: unknown = JSON.parse(fileContent);
+
+      if (!Array.isArray(clientsData)) {
+        devError('Invalid client details data format: expected array');
+        return { status: 'error', data: null, message: 'Invalid data format' };
+      }
+
+      // Find the matching client
+      const clientMatch = clientsData.find((item: unknown) => {
+        if (!isRecord(item)) return false;
+        return item.caseReference === caseReference;
+      }) as unknown;
+
+      if (clientMatch == null) {
+        devLog(`Mock API: Client not found for case reference: ${caseReference}`);
+        return { status: 'error', data: null, message: 'Client not found' };
+      }
+
+      // Transform the client data
+      const transformedClient = transformCaseItem(clientMatch);
+
+      devLog(`Mock API: Returning client details for case: ${caseReference}`);
+      return { status: 'success', data: transformedClient };
+
+    } catch (error) {
+      devError('Mock API error in getClientDetails: ' + String(error));
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      return { status: 'error', data: null, message };
+    }
+  }
 }
 
 // Export the mock API service

@@ -16,7 +16,7 @@
   {{ tabComponent({
     activeTab: activeTab,
     containerId: "cases-tab-container",
-    casesData: casesData,
+    data: data,
     sortOrder: sortOrder,
     pagination: pagination,
     tabs: [
@@ -38,7 +38,7 @@
   Options:
   - activeTab: Current active tab ID
   - containerId: HTML ID for the tab container
-  - casesData: Data array to pass to partials (optional)
+  - data: Data array to pass to partials (optional)
   - sortOrder: Sort order to pass to partials (optional)
   - pagination: Pagination metadata to pass to partials (optional)
   - tabs: Array of tab configuration objects:
@@ -76,7 +76,7 @@
       <div class="tab-content {% if options.activeTab == tab.id %}show{% endif %}" data-tab-id="{{ tab.id }}">
         {% if tab.partial %}
           {# Set context variables for the partial #}
-          {% set casesData = options.casesData %}
+          {% set data = options.data %}
           {% set sortOrder = options.sortOrder %}
           {% set pagination = options.pagination %}
           {% include tab.partial %}
