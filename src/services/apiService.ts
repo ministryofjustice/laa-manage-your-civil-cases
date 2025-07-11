@@ -26,7 +26,6 @@ import {
   devLog,
   devError
 } from '#src/scripts/helpers/index.js';
-import { formatDate } from '#src/scripts/helpers/dateFormatter.js';
 import config from '../../config.js';
 
 /**
@@ -143,9 +142,6 @@ function transformCaseItem(item: unknown): CaseData {
 
   const { dateOfBirth: dateOfBirthValue } = item;
 
-  // Handle optional date fields
-  const lastModifiedStr = safeOptionalString(item.lastModified);
-  const dateClosedStr = safeOptionalString(item.dateClosed);
 
   return {
     fullName: safeString(item.fullName),
