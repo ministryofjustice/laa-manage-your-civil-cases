@@ -40,15 +40,4 @@ router.get('/health', function (req: Request, res: Response): void {
   res.status(SUCCESSFUL_REQUEST).send('Healthy');
 });
 
-// Add this to your routes for debugging (remove after testing)
-router.get('/debug/env', (req, res) => {
-  res.json({
-    API_URL: (process.env.API_URL != null && process.env.API_URL !== '') ? 'SET:' + process.env.API_URL : 'NOT SET',
-    API_KEY: (process.env.API_KEY != null && process.env.API_KEY !== '') ? 'SET:' + process.env.API_KEY : 'NOT SET',
-    API_TIMEOUT: (process.env.API_TIMEOUT != null && process.env.API_TIMEOUT !== '') ? 'SET:' + process.env.API_TIMEOUT : 'DEFAULT',
-    API_RETRIES: (process.env.API_RETRIES != null && process.env.API_RETRIES !== '') ? 'SET:' + process.env.API_RETRIES : 'DEFAULT',
-    NODE_ENV: process.env.NODE_ENV
-  });
-});
-
 export default router;

@@ -128,12 +128,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Debug deployed application environment
-        run: |
-          echo "🔍 Checking what environment variables the deployed app receives..."
-          echo "From deployment perspective:"
-          echo "UAT Environment API_URL: ${{ vars.API_URL }}"
-          echo "UAT Environment API_KEY: ${{ vars.POSTMAN_API_KEY && 'PRESENT' || 'MISSING' }}"
       - name: Deploy to UAT
         uses: ./.github/actions/deploy
         with:
@@ -157,8 +151,8 @@ jobs:
           ratelimit_max: ${{ vars.RATE_LIMIT_MAX }}
           ratewindow_ms: ${{ vars.RATE_WINDOW_MS }}
           api_url: ${{ vars.API_URL }}
-          # Use repository variable for UAT so feature branches can access it
-          api_key: ${{ vars.POSTMAN_API_KEY }}
+          # Use repository secret
+          api_key: ${{ secrets.POSTMAN_API_KEY }}
           api_timeout: ${{ vars.API_TIMEOUT }}
           api_retries: ${{ vars.API_RETRIES }}
 
