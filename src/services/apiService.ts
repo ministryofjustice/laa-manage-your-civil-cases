@@ -103,12 +103,16 @@ function transformClientDetailsItem(item: unknown): ClientDetailsResponse {
     throw new Error('Invalid client details item: expected object');
   }
 
+  const { dateOfBirth: dateOfBirthValue } = item;
+  const transformedDateOfBirth = isValidDateOfBirth(dateOfBirthValue) ? transformDateOfBirth(dateOfBirthValue) : '';
+
   return {
+    // Allow for additional fields from the API first
+    ...item,
+    // Then override specific fields
     caseReference: safeString(item.caseReference),
     fullName: safeString(item.fullName),
-    dateOfBirth: safeString(item.dateOfBirth),
-    // Allow for additional fields from the API
-    ...item
+    dateOfBirth: transformedDateOfBirth
   };
 }
 
