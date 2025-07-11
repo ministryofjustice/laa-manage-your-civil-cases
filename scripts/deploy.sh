@@ -32,6 +32,10 @@ deploy_branch() {
                 --set env.RATELIMIT_STORAGE_URI="$RATELIMIT_STORAGE_URI" \
                 --set env.RATE_LIMIT_MAX="$RATE_LIMIT_MAX" \
                 --set env.RATE_WINDOW_MS="$RATE_WINDOW_MS" \
+                --set env.API_URL="$API_URL" \
+                --set env.API_KEY="$API_KEY" \
+                --set env.API_TIMEOUT="$API_TIMEOUT" \
+                --set env.API_RETRIES="$API_RETRIES" \
                 --set env.NODE_ENV="$NODE_ENV"
 }
 
@@ -55,6 +59,10 @@ deploy_main() {
                           --set env.RATELIMIT_STORAGE_URI="$RATELIMIT_STORAGE_URI" \
                           --set env.RATE_LIMIT_MAX="$RATE_LIMIT_MAX" \
                           --set env.RATE_WINDOW_MS="$RATE_WINDOW_MS" \
+                          --set env.API_URL="$API_URL" \
+                          --set env.API_KEY="$API_KEY" \
+                          --set env.API_TIMEOUT="$API_TIMEOUT" \
+                          --set env.API_RETRIES="$API_RETRIES" \
                           --set env.NODE_ENV="$NODE_ENV"
 }
 

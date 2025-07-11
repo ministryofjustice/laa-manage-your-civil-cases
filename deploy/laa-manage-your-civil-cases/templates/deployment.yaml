@@ -77,6 +77,14 @@ spec:
               value: "{{ .Values.env.RATE_LIMIT_MAX }}"
             - name: RATE_WINDOW_MS
               value: "{{ .Values.env.RATE_WINDOW_MS }}"
+            - name: API_URL
+              value: "{{ .Values.env.API_URL }}"
+            - name: API_KEY
+              value: "{{ .Values.env.API_KEY }}"
+            - name: API_TIMEOUT
+              value: "{{ .Values.env.API_TIMEOUT }}"
+            - name: API_RETRIES
+              value: "{{ .Values.env.API_RETRIES }}"
             - name: NODE_ENV
               value: "{{ .Values.env.NODE_ENV }}"
       {{- with .Values.volumes }}

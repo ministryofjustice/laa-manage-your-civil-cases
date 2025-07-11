@@ -93,6 +93,10 @@ env:
   RATELIMIT_STORAGE_URI: ""
   RATE_LIMIT_MAX: ""
   RATE_WINDOW_MS: ""
+  API_URL: ""
+  API_KEY: ""
+  API_TIMEOUT: ""
+  API_RETRIES: ""
   NODE_ENV: ""
 
 autoscaling:
