@@ -7,13 +7,13 @@ import { devLog, devError } from '#src/scripts/helpers/index.js';
 const router = express.Router();
 
 /**
- * Handle client details view with API data
+ * Handle case details view with API data
  * @param {Request} req Express request object
  * @param {Response} res Express response object
  * @param {string} activeTab The active tab of the primary navigation
  * @returns {Promise<void>} Page to be returned
  */
-async function handleClientDetails(req: Request, res: Response, activeTab: string): Promise<void> {
+async function handleCaseDetailsTab(req: Request, res: Response, activeTab: string): Promise<void> {
   // eslint-disable-next-line @typescript-eslint/prefer-destructuring -- false positive, already using destructuring
   const { caseReference } = req.params;
 
@@ -26,10 +26,12 @@ async function handleClientDetails(req: Request, res: Response, activeTab: strin
   }
 
   try {
-    devLog(`Fetching client details for case: ${caseReference}`);
+    devLog(`Fetching case details for case: ${caseReference}, tab: ${activeTab}`);
 
     // Fetch client details from API
-    const response = await apiService.getClientDetails(req.axiosMiddleware, { caseReference });
+    const response = await apiService.getClientDetails(req.axiosMiddleware, {
+      caseReference
+    });
 
     if (response.status === 'success' && response.data !== null) {
       res.render('case_details/index.njk', {
@@ -57,22 +59,22 @@ async function handleClientDetails(req: Request, res: Response, activeTab: strin
 
 /* GET client details for a specific case. */
 router.get('/:caseReference/client-details', async function (req: Request, res: Response): Promise<void> {
-  await handleClientDetails(req, res, 'client_details');
+  await handleCaseDetailsTab(req, res, 'client_details');
 });
 
 /* GET scope details for a specific case. */
 router.get('/:caseReference/scope', async function (req: Request, res: Response): Promise<void> {
-  await handleClientDetails(req, res, 'scope');
+  await handleCaseDetailsTab(req, res, 'scope');
 });
 
 /* GET financial eligibility details for a specific case. */
 router.get('/:caseReference/financial-eligibility', async function (req: Request, res: Response): Promise<void> {
-  await handleClientDetails(req, res, 'financial_eligibility');
+  await handleCaseDetailsTab(req, res, 'financial_eligibility');
 });
 
 /* GET notes and history for a specific case. */
 router.get('/:caseReference/notes-and-history', async function (req: Request, res: Response): Promise<void> {
-  await handleClientDetails(req, res, 'notes_and_history');
+  await handleCaseDetailsTab(req, res, 'notes_and_history');
 });
 
 export default router;

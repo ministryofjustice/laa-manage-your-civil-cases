@@ -1,0 +1,155 @@
+{#
+  Summary Card Component Macro
+
+  A reusable component that extends the GOV.UK Summary List with card functionality.
+  Supports passing data arrays and optional actions at both card and row levels.
+
+  Features:
+  - Card-based layout with optional title and actions
+  - Row-level actions support
+  - Data array processing with flexible key mapping
+  - Optional formatting filters
+
+  Usage:
+  {% from "components/summaryCardComponent.njk" import summaryCardComponent %}
+
+  {{ summaryCardComponent({
+    card: {
+      title: {
+        text: "Client information"
+      },
+      actions: {
+        items: [
+          {
+            href: "/edit-client",
+            text: "Edit",
+            visuallyHiddenText: "client information"
+          }
+        ]
+      }
+    },
+    data: clientData,
+    rows: [
+      {
+        key: "fullName",
+        label: "Name",
+      },
+      {
+        key: "dateOfBirth",
+        label: "Date of birth",
+        filter: "formatDate"
+      },
+      {
+        key: "email",
+        label: "Email"
+        actions: {
+          items: [
+            {
+              href: "/change-email",
+              text: "Change",
+              visuallyHiddenText: "email address"
+            }
+          ]
+        }
+      }
+    ]
+  }) }}
+
+  Options:
+  - card: Card configuration object (optional)
+    * title: Card title configuration
+    * actions: Array of card-level actions
+  - data: Data object to extract values from
+  - rows: Array of row configurations:
+    * key: Property key in data object
+    * label: Display label for the row
+    * filter: Optional Nunjucks filter to apply to the value
+    * actions: Optional array of row-level actions
+    * html: Boolean - set to true to force HTML rendering (optional, auto-detects HTML tags)
+
+#}
+
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% macro summaryCardComponent(options) %}
+  {# Build the rows array for govukSummaryList #}
+  {% set summaryRows = [] %}
+  {% set hasAnyData = false %}
+
+  {% for row in options.rows %}
+    {# Extract value from data object using the key #}
+    {% set rawValue = options.data[row.key] if options.data and row.key else
+      null %}
+
+    {# Apply filter if specified #}
+    {% set processedValue = rawValue %}
+    {% if rawValue and row.filter %}
+      {% if row.filter == "formatDate" %}
+        {% set processedValue = rawValue | formatDate %}
+      {% elif row.filter == "upper" %}
+        {% set processedValue = rawValue | upper %}
+      {% elif row.filter == "lower" %}
+        {% set processedValue = rawValue | lower %}
+      {% elif row.filter == "capitalize" %}
+        {% set processedValue = rawValue | capitalize %}
+      {% endif %}
+    {% endif %}
+
+    {# Check if this row has actual data #}
+    {% if processedValue %}
+      {% set hasAnyData = true %}
+    {% endif %}
+
+    {# Use processed value or fallback to "No data" #}
+    {% set finalValue = processedValue if processedValue else
+        '<span class="govuk-visually-hidden">No data</span>' %}
+
+    {# Check if finalValue contains HTML or if html flag is set #}
+    {% set isHtml = row.html === true or (finalValue and ('<' in finalValue)) %}
+
+    {# Build the row object conditionally to avoid duplication #}
+    {% if row.actions and row.actions.items %}
+      {% set summaryRow = {
+        key: {
+          text: row.label
+        },
+        value: {
+          text: finalValue if not isHtml,
+          html: finalValue if isHtml
+        },
+        actions: row.actions
+      } %}
+    {% else %}
+      {% set summaryRow = {
+        key: {
+          text: row.label
+        },
+        value: {
+          text: finalValue if not isHtml,
+          html: finalValue if isHtml
+        }
+      } %}
+    {% endif %}
+
+    {% set summaryRows = (summaryRows.push(summaryRow), summaryRows) %}
+  {% endfor %}
+
+  {# Only render the card if there's actual data to show #}
+  {% if hasAnyData %}
+    {# Build the final configuration for govukSummaryList #}
+    {% set summaryConfig = {
+      rows: summaryRows
+    } %}
+
+    {# Add card configuration if provided #}
+    {% if options.card %}
+      {% set summaryConfig = {
+        rows: summaryRows,
+        card: options.card
+      } %}
+    {% endif %}
+
+    {# Render the summary list #}
+    {{ govukSummaryList(summaryConfig) }}
+  {% endif %}
+{% endmacro %}

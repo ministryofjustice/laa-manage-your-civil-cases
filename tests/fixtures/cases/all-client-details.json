@@ -404,13 +404,27 @@
       "day": "11",
       "year": "1989"
     },
-    "clientIsVulnerable": "False",
-    "reasonableAdjustments": "Callback preference",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "BSL - Webcam",
+        "Skype"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
     "language": "English",
-    "phoneNumber ": "0776744581",
-    "safeToCall": "Yes",
-    "announceCall ": "True",
-    "emailAddress ": "sarah@khan.com",
+    "phoneNumber": "0776744581",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "sarah@khan.com",
     "address": "80 Pythagoras Place, Birmingham",
     "postcode": "B1 1DW"
   },
@@ -819,13 +833,26 @@
       "day": "27",
       "year": "1996"
     },
-    "clientIsVulnerable": "False",
-    "reasonableAdjustments": "BSL - Webcam",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Minicom"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Additional information about client communication"
+    },
     "language": "English",
-    "phoneNumber ": "0745671234",
-    "safeToCall": "Yes",
-    "announceCall ": "True",
-    "emailAddress ": "nina@taylor.com",
+    "phoneNumber": "0745671234",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "nina@taylor.com",
     "address": "1 Hadamard Gate, Oxford",
     "postcode": "OX1 1AW"
   },
@@ -1205,13 +1232,26 @@
       "day": "18",
       "year": "1981"
     },
-    "clientIsVulnerable": "False",
-    "reasonableAdjustments": "Text relay",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Text relay"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Additional information about client communication"
+    },
     "language": "English",
-    "phoneNumber ": "0712345678",
-    "safeToCall": "No",
-    "announceCall ": "True",
-    "emailAddress ": "jack@young.com",
+    "phoneNumber": "0712345678",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "jack@young.com",
     "address": "Flat 4, 1 Smith Street, London",
     "postcode": "SE5 THE"
   },
@@ -1620,13 +1660,28 @@
       "day": "12",
       "year": "1979"
     },
-    "clientIsVulnerable": "False",
-    "reasonableAdjustments": "Minicom",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Text relay"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Additional information about client communication"
+    },
     "language": "English",
-    "phoneNumber ": "0772345481",
-    "safeToCall": "Yes",
-    "announceCall ": "True",
-    "emailAddress ": "grace@baker.com",
+    "phoneNumber": "0772345481",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "grace@baker.com",
     "address": "Flat 20, Einstein Road, Manchester",
     "postcode": "M1 1AD"
   }
