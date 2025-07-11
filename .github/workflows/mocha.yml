@@ -3,9 +3,9 @@ on:
   workflow_dispatch: # Allow manual triggering only
     inputs:
     environment:
-      description: 'Deployment environment'
+      description: "Deployment environment"
       required: false
-      default: 'uat'
+      default: "uat"
   workflow_call: # Allow this workflow to be called by other workflows
 
 jobs:
@@ -19,7 +19,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24.3.0'
+          node-version: "24.3.0"
 
       - name: Enable Corepack
         run: corepack enable
@@ -29,3 +29,11 @@ jobs:
 
       - name: Run Mocha unit tests
         run: yarn test:unit
+        env:
+          NODE_ENV: "test"
+          SESSION_SECRET: "mocha-test-secret"
+          SESSION_NAME: "sessionId"
+          API_URL: "https://daa67ecf-f87f-4495-9f84-0ab3e9d679ac.mock.pstmn.io"
+          API_KEY: "${{ secrets.POSTMAN_API_KEY }}"
+          API_TIMEOUT: "5000"
+          API_RETRIES: "3"

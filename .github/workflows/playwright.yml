@@ -59,6 +59,11 @@ jobs:
           RATELIMIT_HEADERS_ENABLED: "true"
           RATE_LIMIT_MAX: "100"
           RATE_WINDOW_MS: "900000"
+          # API configuration for testing
+          API_URL: "https://daa67ecf-f87f-4495-9f84-0ab3e9d679ac.mock.pstmn.io"
+          API_KEY: "${{ secrets.POSTMAN_API_KEY }}"
+          API_TIMEOUT: "5000"
+          API_RETRIES: "3"
       - name: Upload trace artifacts
         if: always()
         uses: actions/upload-artifact@v4
