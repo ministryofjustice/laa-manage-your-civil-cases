@@ -6,7 +6,6 @@ import caseDetailsRouter from './caseDetails.js';
 // Create a new router
 const router = express.Router();
 const SUCCESSFUL_REQUEST = 200;
-const UNSUCCESSFUL_REQUEST = 500;
 
 /* GET home page - redirect to cases. */
 router.get('/', function (req: Request, res: Response): void {
@@ -39,11 +38,6 @@ router.get('/status', function (req: Request, res: Response): void {
 
 router.get('/health', function (req: Request, res: Response): void {
   res.status(SUCCESSFUL_REQUEST).send('Healthy');
-});
-
-router.get('/error', function (req: Request, res: Response): void {
-  // Simulate an error
-  res.set('X-Error-Tag', 'TEST_500_ALERT').status(UNSUCCESSFUL_REQUEST).send('Internal Server Error');
 });
 
 export default router;

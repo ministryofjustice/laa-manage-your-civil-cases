@@ -23,8 +23,6 @@
   {% if data.reasonableAdjustments.additionalInfo %}
     <br><br>{{ data.reasonableAdjustments.additionalInfo }}
   {% endif %}
-{% else %}
-  None
 {% endif %}
 {% endset %}
 
@@ -52,7 +50,7 @@
   computedAddress: addressWithPostcode
 } %}
 
-<h2 class="govuk-heading-l">Client details</h2>
+<h2 class="govuk-heading-m">Client details</h2>
 {# Client info summary card #}
 {{ summaryCardComponent({
   data: constructedData,

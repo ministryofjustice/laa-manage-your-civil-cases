@@ -1,6 +1,6 @@
 import express from 'express';
 import type { Request, Response } from 'express';
-import { apiService, type ApiResponse } from '#src/services/apiService.js';
+import { apiService } from '#src/services/apiService.js';
 import type { CaseData } from '#types/case-types.js';
 import { devLog, devError } from '#src/scripts/helpers/index.js';
 
@@ -27,14 +27,19 @@ function parsePageNumber(pageParam: unknown): number {
 }
 
 /**
- * Load cases data using the mock API service
- * This interface will remain the same when switching to real API
+ * Load cases data using the API service with axios middleware
+ * @param {Request} req Express request object (contains axios middleware)
  * @param {string} caseType Type of case (new, accepted, opened, closed)
  * @param {string} sortOrder Sort order (asc/desc)
  * @param {number} page Page number for pagination
- * @returns {Promise<{data: CaseData[], meta: ApiResponse<CaseData>['meta']}>} Case data with pagination metadata
+ * @returns {Promise<{data: CaseData[], pagination: {total: number, page: number, limit: number, totalPages?: number}}>} Case data with pagination metadata
  */
-async function loadCasesData(caseType: string, sortOrder = 'desc', page = DEFAULT_PAGE): Promise<{ data: CaseData[], meta: ApiResponse<CaseData>['meta'] }> {
+async function loadCasesData(
+  req: Request,
+  caseType: string,
+  sortOrder = 'desc',
+  page = DEFAULT_PAGE
+): Promise<{ data: CaseData[], pagination: { total: number, page: number, limit: number, totalPages?: number } }> {
   try {
     // Validate case type
     const validCaseTypes = ['new', 'accepted', 'opened', 'closed'] as const;
@@ -50,15 +55,15 @@ async function loadCasesData(caseType: string, sortOrder = 'desc', page = DEFAUL
 
     if (!isValidCaseType(caseType)) {
       devError(`Invalid case type: ${caseType}`);
-      return { data: [], meta: { total: EMPTY_TOTAL, page: DEFAULT_PAGE, limit: DEFAULT_LIMIT, sortBy: 'dateReceived', sortOrder: 'desc' } };
+      return { data: [], pagination: { total: EMPTY_TOTAL, page: DEFAULT_PAGE, limit: DEFAULT_LIMIT } };
     }
 
     // Validate sort order
     const validSortOrder: 'asc' | 'desc' = sortOrder === 'asc' ? 'asc' : 'desc';
     const validPage = Math.max(DEFAULT_PAGE, page);
 
-    // Use API service (currently mock, will be real API in future)
-    const response = await apiService.getCases({
+    // Use API service with axios middleware
+    const response = await apiService.getCases(req.axiosMiddleware, {
       caseType,
       sortOrder: validSortOrder,
       sortBy: 'dateReceived',
@@ -67,14 +72,22 @@ async function loadCasesData(caseType: string, sortOrder = 'desc', page = DEFAUL
 
     if (response.status === 'error') {
       devError(`API error loading ${caseType} cases: ${response.message ?? 'Unknown error'}`);
-      return { data: [], meta: { total: EMPTY_TOTAL, page: validPage, limit: DEFAULT_LIMIT, sortBy: 'dateReceived', sortOrder: validSortOrder } };
+      return { data: [], pagination: { total: EMPTY_TOTAL, page: validPage, limit: DEFAULT_LIMIT } };
     }
 
     devLog(`Successfully loaded ${response.data.length} ${caseType} cases via API service (page ${validPage})`);
-    return { data: response.data, meta: response.meta };
+    return {
+      data: response.data,
+      pagination: {
+        total: response.pagination.total ?? EMPTY_TOTAL,
+        page: response.pagination.page,
+        limit: response.pagination.limit,
+        totalPages: response.pagination.totalPages
+      }
+    };
   } catch (error) {
     devError(`Error loading ${caseType} cases: ${String(error)}`);
-    return { data: [], meta: { total: EMPTY_TOTAL, page: DEFAULT_PAGE, limit: DEFAULT_LIMIT, sortBy: 'dateReceived', sortOrder: 'desc' } };
+    return { data: [], pagination: { total: EMPTY_TOTAL, page: DEFAULT_PAGE, limit: DEFAULT_LIMIT } };
   }
 }
 
@@ -82,28 +95,27 @@ async function loadCasesData(caseType: string, sortOrder = 'desc', page = DEFAUL
 router.get('/new', async function (req: Request, res: Response): Promise<void> {
   const sortOrder = req.query.sort === 'asc' ? 'asc' : 'desc';
   const page = parsePageNumber(req.query.page);
-  const result = await loadCasesData('new', sortOrder, page);
+  const result = await loadCasesData(req, 'new', sortOrder, page);
 
   res.render('cases/index', {
     activeTab: 'new',
     data: result.data,
     sortOrder,
-    pagination: result.meta
+    pagination: result.pagination
   });
 });
-
 
 /* GET your cases - opened tab. */
 router.get('/opened', async function (req: Request, res: Response): Promise<void> {
   const sortOrder = req.query.sort === 'asc' ? 'asc' : 'desc';
   const page = parsePageNumber(req.query.page);
-  const result = await loadCasesData('opened', sortOrder, page);
+  const result = await loadCasesData(req, 'opened', sortOrder, page);
 
   res.render('cases/index', {
     activeTab: 'opened',
     data: result.data,
     sortOrder,
-    pagination: result.meta
+    pagination: result.pagination
   });
 });
 
@@ -111,13 +123,13 @@ router.get('/opened', async function (req: Request, res: Response): Promise<void
 router.get('/accepted', async function (req: Request, res: Response): Promise<void> {
   const sortOrder = req.query.sort === 'asc' ? 'asc' : 'desc';
   const page = parsePageNumber(req.query.page);
-  const result = await loadCasesData('accepted', sortOrder, page);
+  const result = await loadCasesData(req, 'accepted', sortOrder, page);
 
   res.render('cases/index', {
     activeTab: 'accepted',
     data: result.data,
     sortOrder,
-    pagination: result.meta
+    pagination: result.pagination
   });
 });
 
@@ -125,13 +137,13 @@ router.get('/accepted', async function (req: Request, res: Response): Promise<vo
 router.get('/closed', async function (req: Request, res: Response): Promise<void> {
   const sortOrder = req.query.sort === 'asc' ? 'asc' : 'desc';
   const page = parsePageNumber(req.query.page);
-  const result = await loadCasesData('closed', sortOrder, page);
+  const result = await loadCasesData(req, 'closed', sortOrder, page);
 
   res.render('cases/index', {
     activeTab: 'closed',
     data: result.data,
     sortOrder,
-    pagination: result.meta
+    pagination: result.pagination
   });
 });
 

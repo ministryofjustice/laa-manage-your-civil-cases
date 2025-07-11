@@ -9,7 +9,7 @@ const DEFAULT_PORT = 3000;
 
 // Validate required session env vars
 if (process.env.SESSION_SECRET == null || process.env.SESSION_SECRET === '' ||
-    process.env.SESSION_NAME == null || process.env.SESSION_NAME === '') {
+  process.env.SESSION_NAME == null || process.env.SESSION_NAME === '') {
   throw new Error('SESSION_SECRET and SESSION_NAME must be defined in environment variables.');
 }
 
@@ -47,6 +47,13 @@ const config: Config = {
   paths: {
     static: 'public',  // Path for serving static files
     views: 'src/views',  // Path for Nunjucks views
+  },
+  // Postman Mock Server Configuration
+  api: {
+    baseUrl: process.env.API_URL ?? 'https://daa67ecf-f87f-4495-9f84-0ab3e9d679ac.mock.pstmn.io',
+    apiKey: process.env.API_KEY ?? '',
+    timeout: Number(process.env.API_TIMEOUT ?? '5000'), // 5 seconds default
+    retries: Number(process.env.API_RETRIES ?? '3')
   }
 };
 
