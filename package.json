@@ -36,7 +36,7 @@
     "debug": "~4.4.1",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
-    "express-rate-limit": "^7.5.0",
+    "express-rate-limit": "^7.5.1",
     "express-session": "^1.18.0",
     "express-validator": "^7.2.1",
     "figlet": "^1.8.1",
