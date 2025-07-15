@@ -8,10 +8,7 @@
 		"tsx"
 	],
 	"spec": "tests/unit/**/*.spec.ts",
-	"reporter": [
-		"mocha-junit-reporter", "list"
-	],
-	"reporter-options": "mochaFile=test-results/results.xml",
+	"reporter": "list",
 	"node-env": {
 		"TS_NODE_PROJECT": "./tsconfig.test.json",
 		"TS_NODE_TRANSPILE_ONLY": "true",
