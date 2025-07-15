@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test('client details selected from accepted cases tab has correct page elements', async ({ page }) => {
   // Navigate to the client details
-  await page.goto('/case/PC-1922-1879/client-details');
+  await page.goto('/cases/PC-1922-1879/client-details');
 
   const new_tag = page.locator('.govuk-tag');
   const legal_help_form_button = page.getByRole('button', { name: 'Generate legal help form' })

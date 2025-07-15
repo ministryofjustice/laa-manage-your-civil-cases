@@ -95,13 +95,14 @@
       {% endif %}
     {% endif %}
 
-    {# Check if this row has actual data #}
-    {% if processedValue %}
+    {# Check if this row has actual data (trim whitespace and check for meaningful content) #}
+    {% set trimmedValue = processedValue | trim if processedValue else '' %}
+    {% if trimmedValue %}
       {% set hasAnyData = true %}
     {% endif %}
 
     {# Use processed value or fallback to "No data" #}
-    {% set finalValue = processedValue if processedValue else
+    {% set finalValue = trimmedValue if trimmedValue else
         '<span class="govuk-visually-hidden">No data</span>' %}
 
     {# Check if finalValue contains HTML or if html flag is set #}
