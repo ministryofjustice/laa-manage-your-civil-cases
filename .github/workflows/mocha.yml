@@ -27,5 +27,12 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Run Mocha unit tests
-        run: yarn test:unit
+      - name: Run Mocha unit tests & c8 code coverage
+        run: yarn c8 yarn test:unit --check-coverage
+
+      - name: Upload coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-report
+          path: coverage/
