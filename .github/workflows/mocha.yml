@@ -30,10 +30,15 @@ jobs:
       - name: Run Mocha unit tests & c8 code coverage
         run: yarn c8 yarn test:unit --check-coverage
 
-      - name: Publish Test Summary Results
-        run: npx github-actions-ctrf coverage/
+      - name: Publish test report to GitHub UI
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Mocha Unit Tests
+          path: test-results/results.xml
+          reporter: java-junit
 
-      - name: Download coverage result artifact as a zip file
+      - name: Upload coverage artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
