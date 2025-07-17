@@ -56,6 +56,14 @@
   {% endif %}
 {% endset %}
 
+{% set relationshipToClient %}
+  {% if data.thirdParty.relationshipToClient.selected %}
+    {{ data.thirdParty.relationshipToClient.selected | join(', ') }}
+  {% else %}
+    ""
+  {% endif %}
+{% endset %}
+
 {# Create enhanced data object with computed phone content #}
 {% set constructedData = {
   fullName: data.fullName,
@@ -74,7 +82,7 @@
   computedAddressThirdParty: addressWithPostcodeThirdParty,
   computedPhoneNumberThirdParty: phoneNumberContentThirdParty,
   emailAddressThirdParty: data.thirdParty.emailAddress,
-  relationshipToClientThirdParty: data.thirdParty.relationshipToClient.selected,
+  relationshipToClientThirdParty: relationshipToClient,
   passphraseContent: passphraseContent
 } %}
 
@@ -196,7 +204,7 @@
   ]
 }) }}
 
-{% if data.thirdParty is not defined or data.thirdParty is none %}
+{% if data.thirdParty %}
   <h2 class="govuk-heading-m">Third party contact</h2>
   {# Third party info summary card #}
   {{ summaryCardComponent({
