@@ -52,12 +52,20 @@ inputs:
     description: "Slack webhook url"
   api_url:
     description: "API base URL"
-  api_key:
-    description: "API authentication key"
+  api_prefix:
+    description: "API prefix path"
   api_timeout:
     description: "API request timeout in milliseconds"
   api_retries:
     description: "Number of API retry attempts"
+  api_username:
+    description: "API authentication username"
+  api_password:
+    description: "API authentication password"
+  api_client_id:
+    description: "API client ID"
+  api_client_secret:
+    description: "API client secret"
 
 runs:
   using: "composite"
@@ -98,9 +106,13 @@ runs:
         echo "RATE_LIMIT_MAX=${{ inputs.ratelimit_max || '100' }}" >> $GITHUB_ENV
         echo "RATE_WINDOW_MS=${{ inputs.ratewindow_ms || '900000' }}" >> $GITHUB_ENV
         echo "API_URL=${{ inputs.api_url || '' }}" >> $GITHUB_ENV
-        echo "API_KEY=${{ inputs.api_key || '' }}" >> $GITHUB_ENV
+        echo "API_PREFIX=${{ inputs.api_prefix || '/latest/mock' }}" >> $GITHUB_ENV
         echo "API_TIMEOUT=${{ inputs.api_timeout || '5000' }}" >> $GITHUB_ENV
         echo "API_RETRIES=${{ inputs.api_retries || '3' }}" >> $GITHUB_ENV
+        echo "API_USERNAME=${{ inputs.api_username || '' }}" >> $GITHUB_ENV
+        echo "API_PASSWORD=${{ inputs.api_password || '' }}" >> $GITHUB_ENV
+        echo "API_CLIENT_ID=${{ inputs.api_client_id || '' }}" >> $GITHUB_ENV
+        echo "API_CLIENT_SECRET=${{ inputs.api_client_secret || '' }}" >> $GITHUB_ENV
         echo "NODE_ENV=production" >> $GITHUB_ENV
 
     - name: Deploy using Helm

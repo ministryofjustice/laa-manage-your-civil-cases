@@ -33,9 +33,13 @@ deploy_branch() {
                 --set env.RATE_LIMIT_MAX="$RATE_LIMIT_MAX" \
                 --set env.RATE_WINDOW_MS="$RATE_WINDOW_MS" \
                 --set env.API_URL="$API_URL" \
-                --set env.API_KEY="$API_KEY" \
+                --set env.API_PREFIX="$API_PREFIX" \
                 --set env.API_TIMEOUT="$API_TIMEOUT" \
                 --set env.API_RETRIES="$API_RETRIES" \
+                --set env.API_USERNAME="$API_USERNAME" \
+                --set env.API_PASSWORD="$API_PASSWORD" \
+                --set env.API_CLIENT_ID="$API_CLIENT_ID" \
+                --set env.API_CLIENT_SECRET="$API_CLIENT_SECRET" \
                 --set env.NODE_ENV="$NODE_ENV"
 }
 
@@ -60,9 +64,13 @@ deploy_main() {
                           --set env.RATE_LIMIT_MAX="$RATE_LIMIT_MAX" \
                           --set env.RATE_WINDOW_MS="$RATE_WINDOW_MS" \
                           --set env.API_URL="$API_URL" \
-                          --set env.API_KEY="$API_KEY" \
+                          --set env.API_PREFIX="$API_PREFIX" \
                           --set env.API_TIMEOUT="$API_TIMEOUT" \
                           --set env.API_RETRIES="$API_RETRIES" \
+                          --set env.API_USERNAME="$API_USERNAME" \
+                          --set env.API_PASSWORD="$API_PASSWORD" \
+                          --set env.API_CLIENT_ID="$API_CLIENT_ID" \
+                          --set env.API_CLIENT_SECRET="$API_CLIENT_SECRET" \
                           --set env.NODE_ENV="$NODE_ENV"
 }
 

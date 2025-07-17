@@ -94,9 +94,13 @@ env:
   RATE_LIMIT_MAX: ""
   RATE_WINDOW_MS: ""
   API_URL: ""
-  API_KEY: ""
+  API_PREFIX: ""
   API_TIMEOUT: ""
   API_RETRIES: ""
+  API_USERNAME: ""
+  API_PASSWORD: ""
+  API_CLIENT_ID: ""
+  API_CLIENT_SECRET: ""
   NODE_ENV: ""
 
 autoscaling:

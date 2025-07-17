@@ -34,11 +34,86 @@ jobs:
       - name: Install Playwright Chromium
         run: yarn playwright install chromium --with-deps
 
+      - name: Debug API connectivity
+        run: |
+          echo "Testing API connectivity..."
+          echo "API_URL: $API_URL"
+          echo "API_PREFIX: $API_PREFIX"
+          echo "API_USERNAME: $API_USERNAME"
+          echo "API_CLIENT_ID: $API_CLIENT_ID"
+          echo "Full API endpoint: $API_URL$API_PREFIX"
+          
+          # Test basic API connectivity
+          curl -v "$API_URL$API_PREFIX/health" || echo "Health endpoint not available"
+          
+          # Test token endpoint
+          echo "Testing token endpoint..."
+          curl -v -X POST "$API_URL/latest/token" \
+            -H "Content-Type: application/x-www-form-urlencoded" \
+            -d "grant_type=password&username=$API_USERNAME&password=$API_PASSWORD&client_id=$API_CLIENT_ID&client_secret=$API_CLIENT_SECRET" \
+            || echo "Token endpoint test failed"
+        env:
+          API_URL: "https://laa-civil-case-api-uat.cloud-platform.service.justice.gov.uk"
+          API_PREFIX: ${{ vars.API_PREFIX }}
+          API_USERNAME: ${{ vars.API_USERNAME }}
+          API_PASSWORD: ${{ vars.API_PASSWORD }}
+          API_CLIENT_ID: ${{ vars.API_CLIENT_ID }}
+          API_CLIENT_SECRET: ${{ vars.API_CLIENT_SECRET }}
+
       - name: Cache Playwright browsers
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-chromium-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Test server startup
+        run: |
+          echo "Testing server startup..."
+          # Start the server in background
+          yarn start &
+          SERVER_PID=$!
+          
+          # Wait for server to be ready
+          for i in {1..30}; do
+            if curl -f http://localhost:3000 > /dev/null 2>&1; then
+              echo "Server is ready!"
+              break
+            fi
+            echo "Waiting for server... (attempt $i/30)"
+            sleep 2
+          done
+          
+          # Test if server is actually responding
+          if curl -f http://localhost:3000 > /dev/null 2>&1; then
+            echo "Server is responding correctly"
+          else
+            echo "Server failed to start properly"
+            exit 1
+          fi
+          
+          # Kill the server
+          kill $SERVER_PID
+        env:
+          NODE_ENV: "test"
+          SESSION_SECRET: "playwright-test-secret"
+          SESSION_NAME: "sessionId"
+          SERVICE_NAME: "Manage your civil cases"
+          SERVICE_PHASE: "Beta"
+          DEPARTMENT_NAME: "Legal Aid Agency"
+          DEPARTMENT_URL: "https://www.gov.uk/government/organisations/legal-aid-agency"
+          CONTACT_EMAIL: "your-team@digital.justice.gov.uk"
+          SERVICE_URL: "https://www.gov.uk/legal-aid"
+          RATELIMIT_HEADERS_ENABLED: "true"
+          RATE_LIMIT_MAX: "100"
+          RATE_WINDOW_MS: "900000"
+          API_URL: "https://laa-civil-case-api-uat.cloud-platform.service.justice.gov.uk"
+          API_PREFIX: ${{ vars.API_PREFIX }}
+          API_USERNAME: ${{ vars.API_USERNAME }}
+          API_PASSWORD: ${{ vars.API_PASSWORD }}
+          API_CLIENT_ID: ${{ vars.API_CLIENT_ID }}
+          API_CLIENT_SECRET: ${{ vars.API_CLIENT_SECRET }}
+          API_TIMEOUT: "5000"
+          API_RETRIES: "3"
 
       - name: Run Playwright tests
         run: yarn playwright test
@@ -60,8 +135,12 @@ jobs:
           RATE_LIMIT_MAX: "100"
           RATE_WINDOW_MS: "900000"
           # API configuration for testing
-          API_URL: "https://daa67ecf-f87f-4495-9f84-0ab3e9d679ac.mock.pstmn.io"
-          API_KEY: ${{ secrets.POSTMAN_API_KEY }}
+          API_URL: "https://laa-civil-case-api-uat.cloud-platform.service.justice.gov.uk"
+          API_PREFIX: ${{ vars.API_PREFIX }}
+          API_USERNAME: ${{ vars.API_USERNAME }}
+          API_PASSWORD: ${{ vars.API_PASSWORD }}
+          API_CLIENT_ID: ${{ vars.API_CLIENT_ID }}
+          API_CLIENT_SECRET: ${{ vars.API_CLIENT_SECRET }}
           API_TIMEOUT: "5000"
           API_RETRIES: "3"
       - name: Upload trace artifacts
