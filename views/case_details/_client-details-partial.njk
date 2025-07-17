@@ -19,8 +19,8 @@
 {% endset %}
 
 {% set phoneNumberContentThirdParty %}
-  {% if data.safeToCallThirdParty %}
-    {{ data.contactNumberThirdParty }}
+  {% if data.thirdParty.safeToCall %}
+    {{ data.thirdParty.contactNumber }}
   {% else %}
     The third party is not safe to call
   {% endif %}
@@ -46,13 +46,13 @@
 {% endmacro %}
 
 {% set addressWithPostcode = renderAddress(data.address, data.postcode) %}
-{% set addressWithPostcodeThirdParty = renderAddress(data.addressThirdParty, data.postcodeThirdParty) %}
+{% set addressWithPostcodeThirdParty = renderAddress(data.thirdParty.address, data.thirdParty.postcode) %}
 
 {% set passphraseContent %}
-  {% if data.passphraseSetUpThirdParty %}
-    {{ data.passphraseThirdParty }}
+  {% if data.thirdParty.passphraseSetUp %}
+    {{ data.thirdParty.passphrase }}
   {% else %}
-    No, {{ data.passphraseNotSetUpReasonThirdParty }}
+    No, {{ data.thirdParty.passphraseNotSetUpReason }}
   {% endif %}
 {% endset %}
 
@@ -70,11 +70,11 @@
   postcode: data.postcode,
   computedPhoneNumber: phoneNumberContent,
   computedAddress: addressWithPostcode,
-  fullNameThirdParty: data.fullNameThirdParty,
+  fullNameThirdParty: data.thirdParty.fullName,
   computedAddressThirdParty: addressWithPostcodeThirdParty,
   computedPhoneNumberThirdParty: phoneNumberContentThirdParty,
-  emailAddressThirdParty: data.emailAddressThirdParty,
-  relationshipToClientThirdParty: data.relationshipToClientThirdParty.selected,
+  emailAddressThirdParty: data.thirdParty.emailAddress,
+  relationshipToClientThirdParty: data.thirdParty.relationshipToClient.selected,
   passphraseContent: passphraseContent
 } %}
 
@@ -197,7 +197,7 @@
   ]
 }) }}
 
-{% if data.fullNameThirdParty %}
+{% if data.thirdParty is not defined or data.thirdParty is none %}
   <h2 class="govuk-heading-m">Third party contact</h2>
   {# Third party info summary card #}
   {{ summaryCardComponent({
