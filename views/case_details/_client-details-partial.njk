@@ -1,5 +1,6 @@
 {% from "components/summaryCardComponent.njk" import summaryCardComponent %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% set phoneNumberContent %}
 {% if data.safeToCall and data.announceCall %}
@@ -17,6 +18,14 @@
   {% endif %}
 {% endset %}
 
+{% set phoneNumberContentThirdParty %}
+  {% if data.safeToCallThirdParty %}
+    {{ data.contactNumberThirdParty }}
+  {% else %}
+    The third party is not safe to call
+  {% endif %}
+{% endset %}
+
 {% set reasonableAdjustmentsContent %}
 {% if data.reasonableAdjustments and data.reasonableAdjustments.selected and data.reasonableAdjustments.selected.length > 0 %}
   {{ data.reasonableAdjustments.selected | join('<br>') | safe }}
@@ -26,12 +35,25 @@
 {% endif %}
 {% endset %}
 
-{% set addressWithPostcode %}
-{% if data.address %}
-  {{ data.address }}
-  {% if data.postcode %}<br>{{ data.postcode }}
+{% macro renderAddress(address, postcode) %}
+  {% if address %}
+    {{ address }}
+    {% if postcode %}
+      <br>
+      {{ postcode }}
+    {% endif %}
   {% endif %}
-{% endif %}
+{% endmacro %}
+
+{% set addressWithPostcode = renderAddress(data.address, data.postcode) %}
+{% set addressWithPostcodeThirdParty = renderAddress(data.addressThirdParty, data.postcodeThirdParty) %}
+
+{% set passphraseContent %}
+  {% if data.passphraseSetUpThirdParty %}
+    {{ data.passphraseThirdParty }}
+  {% else %}
+    No, {{ data.passphraseNotSetUpReasonThirdParty }}
+  {% endif %}
 {% endset %}
 
 {# Create enhanced data object with computed phone content #}
@@ -47,7 +69,13 @@
   address: data.address,
   postcode: data.postcode,
   computedPhoneNumber: phoneNumberContent,
-  computedAddress: addressWithPostcode
+  computedAddress: addressWithPostcode,
+  fullNameThirdParty: data.fullNameThirdParty,
+  computedAddressThirdParty: addressWithPostcodeThirdParty,
+  computedPhoneNumberThirdParty: phoneNumberContentThirdParty,
+  emailAddressThirdParty: data.emailAddressThirdParty,
+  relationshipToClientThirdParty: data.relationshipToClientThirdParty.selected,
+  passphraseContent: passphraseContent
 } %}
 
 <h2 class="govuk-heading-m">Client details</h2>
@@ -168,3 +196,64 @@
     }
   ]
 }) }}
+
+{% if data.fullNameThirdParty %}
+  <h2 class="govuk-heading-m">Third party contact</h2>
+  {# Third party info summary card #}
+  {{ summaryCardComponent({
+    data: constructedData,
+    card: {
+      title: {
+        text: "Third party contact"
+      },
+      actions: {
+        items: [
+          {
+            href: "#",
+            text: "Change",
+            visuallyHiddenText: "Change Third party contact details"
+          },
+          {
+            href: "#",
+            text: "Remove",
+            visuallyHiddenText: "Remove Third party contact details"
+          }
+        ]
+      }
+    },
+    rows: [
+      {
+        label: "Name",
+        key: "fullNameThirdParty"
+      },
+      {
+        label: "Address",
+        key: "computedAddressThirdParty",
+        html: true
+      },
+      {
+        label: "Contact number",
+        key: "computedPhoneNumberThirdParty",
+        html: true
+      },
+      {
+        label: "Email address",
+        key: "emailAddressThirdParty"
+      },
+      {
+        label: "Relationship to Client",
+        key: "relationshipToClientThirdParty"
+      },
+      {
+        label: "Passphrase",
+        key: "passphraseContent",
+        html: true
+      }
+    ]
+  }) }}
+{% else %}
+  {{ govukButton({
+    text: "Add third party contact",
+    classes: "govuk-button--secondary"
+  }) }}
+{% endif %}
