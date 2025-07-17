@@ -117,11 +117,11 @@
       {# Format cell content based on column type #}
       {% set cellContent %}
       {% if column.key == "dateReceived" %}
-        {{ row[column.key] | formatDate }}
+        {{ row[column.key] }}
       {% elif column.key == "lastModified" %}
-        {{ row[column.key] | formatDate }}
+        {{ row[column.key] }}
       {% elif column.key == "dateClosed" %}
-        {{ row[column.key] | formatDate }}
+        {{ row[column.key] }}
       {% else %}
         {% if row[column.key] %}
           {{ row[column.key] }}
