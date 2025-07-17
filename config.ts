@@ -48,12 +48,17 @@ const config: Config = {
     static: 'public',  // Path for serving static files
     views: 'src/views',  // Path for Nunjucks views
   },
-  // Postman Mock Server Configuration
+  // API Configuration for JWT authentication
   api: {
-    baseUrl: process.env.API_URL ?? 'https://daa67ecf-f87f-4495-9f84-0ab3e9d679ac.mock.pstmn.io',
-    apiKey: process.env.API_KEY ?? '',
+    baseUrl: process.env.API_URL ?? '',
     timeout: Number(process.env.API_TIMEOUT ?? '5000'), // 5 seconds default
-    retries: Number(process.env.API_RETRIES ?? '3')
+    retries: Number(process.env.API_RETRIES ?? '3'),
+    auth: {
+      username: process.env.API_USERNAME ?? '',
+      password: process.env.API_PASSWORD ?? '',
+      clientId: process.env.API_CLIENT_ID ?? '',
+      clientSecret: process.env.API_CLIENT_SECRET ?? ''
+    }
   }
 };
 
