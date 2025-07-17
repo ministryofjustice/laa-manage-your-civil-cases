@@ -40,6 +40,305 @@ jobs:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-chromium-${{ hashFiles('**/yarn.lock') }}
 
+      - name: Start Mock API Server (CI only - VPN not available)
+        run: |
+          # Create a simple mock API server for CI testing
+          mkdir -p mock-api
+
+          # Create package.json for the mock API to enable ES modules
+          cat > mock-api/package.json << 'EOF'
+          {
+            "type": "module",
+            "dependencies": {
+              "express": "*"
+            }
+          }
+          EOF
+
+          cat > mock-api/server.js << 'EOF'
+          import express from 'express';
+          const app = express();
+
+          app.use(express.json());
+          app.use(express.urlencoded({ extended: true }));
+
+          // Enable CORS for all requests
+          app.use((req, res, next) => {
+            res.header('Access-Control-Allow-Origin', '*');
+            res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+            res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+            if (req.method === 'OPTIONS') {
+              res.sendStatus(200);
+            } else {
+              next();
+            }
+          });
+
+          // Health check endpoint
+          app.get('/health', (req, res) => {
+            res.json({ status: 'ok', message: 'Mock API server is running' });
+          });
+
+          app.get('/mock-api/health', (req, res) => {
+            res.json({ status: 'ok', message: 'Mock API server is running' });
+          });
+
+          // Mock token endpoint
+          app.post('/latest/token', (req, res) => {
+            console.log('Token request received:', req.body);
+            res.json({
+              access_token: 'mock-jwt-token-for-ci',
+              token_type: 'Bearer',
+              expires_in: 3600
+            });
+          });
+
+          // Mock cases endpoint
+          app.get('/mock-api/cases/:caseType', (req, res) => {
+            const { caseType } = req.params;
+            const { sortBy = 'dateReceived', sortOrder = 'desc', page = 1, limit = 20 } = req.query;
+
+            console.log(`GET /mock-api/cases/${caseType}`, { sortBy, sortOrder, page, limit });
+
+            // Mock data for different case types
+            const mockCases = {
+              new: [
+                {
+                  fullName: 'John Smith',
+                  caseReference: 'PC-1922-1879',
+                  refCode: 'NEW001',
+                  dateReceived: '2024-01-15',
+                  caseStatus: 'New',
+                  dateOfBirth: '1985-03-22',
+                  lastModified: '2024-01-15',
+                  phoneNumber: '01234 567890',
+                  safeToCall: true,
+                  announceCall: false,
+                  emailAddress: 'john.smith@example.com',
+                  clientIsVulnerable: false,
+                  language: 'English',
+                  address: '123 Test Street, Test City',
+                  postcode: 'TE1 2ST'
+                },
+                {
+                  fullName: 'Jane Doe',
+                  caseReference: 'PC-1923-1880',
+                  refCode: 'NEW002',
+                  dateReceived: '2024-01-16',
+                  caseStatus: 'New',
+                  dateOfBirth: '1990-07-10',
+                  lastModified: '2024-01-16',
+                  phoneNumber: '01234 567891',
+                  safeToCall: true,
+                  announceCall: true,
+                  emailAddress: 'jane.doe@example.com',
+                  clientIsVulnerable: true,
+                  language: 'English',
+                  address: '456 Another Street, Test City',
+                  postcode: 'TE2 3ST'
+                }
+              ],
+              opened: [
+                {
+                  fullName: 'Bob Johnson',
+                  caseReference: 'PC-1924-1881',
+                  refCode: 'OPN001',
+                  dateReceived: '2024-01-10',
+                  caseStatus: 'Opened',
+                  dateOfBirth: '1978-12-05',
+                  lastModified: '2024-01-17',
+                  phoneNumber: '01234 567892',
+                  safeToCall: false,
+                  announceCall: false,
+                  emailAddress: 'bob.johnson@example.com',
+                  clientIsVulnerable: false,
+                  language: 'English',
+                  address: '789 Open Street, Test City',
+                  postcode: 'TE3 4ST'
+                }
+              ],
+              accepted: [
+                {
+                  fullName: 'Alice Brown',
+                  caseReference: 'PC-1925-1882',
+                  refCode: 'ACC001',
+                  dateReceived: '2024-01-05',
+                  caseStatus: 'Accepted',
+                  dateOfBirth: '1992-04-18',
+                  lastModified: '2024-01-18',
+                  phoneNumber: '01234 567893',
+                  safeToCall: true,
+                  announceCall: false,
+                  emailAddress: 'alice.brown@example.com',
+                  clientIsVulnerable: false,
+                  language: 'Welsh',
+                  address: '321 Accepted Road, Test City',
+                  postcode: 'TE4 5ST'
+                }
+              ],
+              closed: [
+                {
+                  fullName: 'David Wilson',
+                  caseReference: 'PC-1926-1883',
+                  refCode: 'CLS001',
+                  dateReceived: '2023-12-20',
+                  caseStatus: 'Closed',
+                  dateOfBirth: '1980-09-25',
+                  lastModified: '2024-01-19',
+                  dateClosed: '2024-01-19',
+                  phoneNumber: '01234 567894',
+                  safeToCall: true,
+                  announceCall: true,
+                  emailAddress: 'david.wilson@example.com',
+                  clientIsVulnerable: true,
+                  language: 'English',
+                  address: '654 Closed Avenue, Test City',
+                  postcode: 'TE5 6ST',
+                  specialNotes: 'Case resolved successfully'
+                }
+              ]
+            };
+
+            const cases = mockCases[caseType] || [];
+            const total = cases.length;
+            const pageNum = parseInt(page);
+            const limitNum = parseInt(limit);
+            const totalPages = Math.ceil(total / limitNum);
+
+            // Add pagination headers
+            res.set({
+              'X-Total-Count': total.toString(),
+              'X-Page': pageNum.toString(),
+              'X-Per-Page': limitNum.toString(),
+              'X-Total-Pages': totalPages.toString()
+            });
+
+            console.log(`Returning ${cases.length} cases for type: ${caseType}`);
+            res.json(cases);
+          });
+
+          // Mock case details endpoint
+          app.get('/mock-api/cases/:caseReference', (req, res) => {
+            const { caseReference } = req.params;
+
+            console.log(`GET /mock-api/cases/${caseReference}`);
+
+            // Mock detailed case data for specific case references used in tests
+            const mockCaseDetails = {
+              'PC-1922-1879': {
+                fullName: 'John Smith',
+                caseReference: 'PC-1922-1879',
+                refCode: 'NEW001',
+                dateReceived: '2024-01-15',
+                caseStatus: 'New',
+                dateOfBirth: '1985-03-22',
+                lastModified: '2024-01-15',
+                phoneNumber: '01234 567890',
+                safeToCall: true,
+                announceCall: false,
+                emailAddress: 'john.smith@example.com',
+                clientIsVulnerable: false,
+                reasonableAdjustments: {
+                  mobility: false,
+                  hearing: false,
+                  visual: false,
+                  learningDifficulty: false,
+                  other: false,
+                  details: ''
+                },
+                language: 'English',
+                address: '123 Test Street, Test City',
+                postcode: 'TE1 2ST',
+                specialNotes: 'Test case for new client details'
+              },
+              'PC-1923-1880': {
+                fullName: 'Jane Doe',
+                caseReference: 'PC-1923-1880',
+                refCode: 'NEW002',
+                dateReceived: '2024-01-16',
+                caseStatus: 'New',
+                dateOfBirth: '1990-07-10',
+                lastModified: '2024-01-16',
+                phoneNumber: '01234 567891',
+                safeToCall: true,
+                announceCall: true,
+                emailAddress: 'jane.doe@example.com',
+                clientIsVulnerable: true,
+                reasonableAdjustments: {
+                  mobility: true,
+                  hearing: false,
+                  visual: false,
+                  learningDifficulty: false,
+                  other: false,
+                  details: 'Requires wheelchair access'
+                },
+                language: 'English',
+                address: '456 Another Street, Test City',
+                postcode: 'TE2 3ST',
+                specialNotes: 'Client has mobility requirements'
+              }
+            };
+
+            const caseDetails = mockCaseDetails[caseReference] || {
+              fullName: 'Default User',
+              caseReference: caseReference,
+              dateOfBirth: '1990-01-01',
+              phoneNumber: '01234 000000',
+              emailAddress: 'default@example.com',
+              caseStatus: 'Unknown',
+              address: 'Default Address',
+              postcode: 'DE1 2LT'
+            };
+
+            console.log(`Returning case details for: ${caseReference}`);
+            res.json(caseDetails);
+          });
+
+          // Catch-all error handler
+          app.use((err, req, res, next) => {
+            console.error('Mock API Error:', err);
+            res.status(500).json({ error: 'Internal server error', message: err.message });
+          });
+
+          // 404 handler
+          app.use((req, res) => {
+            console.log(`404 - Route not found: ${req.method} ${req.url}`);
+            res.status(404).json({ error: 'Not found', path: req.url });
+          });
+
+          const PORT = process.env.MOCK_API_PORT || 3001;
+          app.listen(PORT, () => {
+            console.log(`Mock API server running on port ${PORT}`);
+          });
+          EOF
+
+          # Install express for the mock API
+          cd mock-api && npm install express
+          
+          # Start the mock API server in background
+          node server.js &
+          MOCK_API_PID=$!
+          echo "MOCK_API_PID=$MOCK_API_PID" >> $GITHUB_ENV
+
+          # Wait for mock API to be ready
+          echo "Waiting for mock API to start..."
+          for i in {1..30}; do
+            if curl -f http://localhost:3001/health > /dev/null 2>&1; then
+              echo "Mock API is ready!"
+              break
+            fi
+            echo "Waiting for mock API... (attempt $i/30)"
+            sleep 1
+          done
+
+          # Test endpoints
+          echo "Testing mock API endpoints..."
+          curl -f http://localhost:3001/health || echo "Health check failed"
+          curl -X POST http://localhost:3001/latest/token -H "Content-Type: application/x-www-form-urlencoded" -d "grant_type=password&username=test&password=test" || echo "Token endpoint failed"
+          curl -f http://localhost:3001/mock-api/cases/new || echo "Cases endpoint failed"
+        env:
+          MOCK_API_PORT: 3001
+
       - name: Run Playwright tests
         run: yarn playwright test
         env:
@@ -59,6 +358,25 @@ jobs:
           RATELIMIT_HEADERS_ENABLED: "true"
           RATE_LIMIT_MAX: "100"
           RATE_WINDOW_MS: "900000"
+          # API configuration for testing - use local mock for CI since VPN is not available
+          API_URL: "http://localhost:3001"
+          API_PREFIX: "/mock-api"
+          API_USERNAME: "test-user"
+          API_PASSWORD: ${{ vars.API_PASSWORD }}
+          API_CLIENT_ID: "test-client-id"
+          API_CLIENT_SECRET: "test-client-secret"
+          API_TIMEOUT: "5000"
+          API_RETRIES: "3"
+          # Flag to indicate we're in CI without VPN access
+          USE_MOCK_API: "true"
+
+      - name: Cleanup Mock API Server
+        if: always()
+        run: |
+          if [ ! -z "$MOCK_API_PID" ]; then
+            kill $MOCK_API_PID || true
+          fi
+
       - name: Upload trace artifacts
         if: always()
         uses: actions/upload-artifact@v4

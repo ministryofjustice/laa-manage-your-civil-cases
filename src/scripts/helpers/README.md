@@ -49,11 +49,16 @@ import { formatDate } from '#src/scripts/helpers/dateFormatter.js';
       - [Functions](#functions-2)
       - [Usage](#usage-2)
       - [Format](#format)
+    - [⚠️ Error Handler (`errorHandler.ts`)](#️-error-handler-errorhandlerts)
+      - [Functions](#functions-3)
+      - [Usage](#usage-3)
+      - [Error Types](#error-types)
   - [Implementation Guidelines](#implementation-guidelines)
     - [🎯 Best Practices](#-best-practices)
     - [🔄 Usage Patterns](#-usage-patterns)
       - [Replacing Console Calls](#replacing-console-calls)
       - [Data Validation](#data-validation)
+      - [Error Handling](#error-handling)
     - [🧪 Testing](#-testing)
     - [📁 File Organization](#-file-organization)
     - [🚀 Adding New Helpers](#-adding-new-helpers)
@@ -109,19 +114,21 @@ Type-safe utilities for transforming and validating data from JSON fixtures and 
 
 #### Functions
 
-- `isValidDateOfBirth(value: unknown): value is DateOfBirth` - Type guard for DateOfBirth objects
 - `safeString(value: unknown): string` - Safely convert unknown value to string
 - `safeOptionalString(value: unknown): string | undefined` - Safely convert to optional string
 - `isRecord(value: unknown): value is Record<string, unknown>` - Type guard for object records
+- `safeStringFromRecord(obj: unknown, key: string): string | null` - Safely extract string from record
+- `hasProperty(obj: unknown, key: string): obj is Record<string, unknown>` - Check if object has property
 
 #### Usage
 
 ```typescript
 import { 
-  isValidDateOfBirth, 
   safeString, 
   safeOptionalString, 
-  isRecord 
+  isRecord,
+  safeStringFromRecord,
+  hasProperty
 } from '#src/scripts/helpers/index.js';
 
 // Transform API data safely
@@ -133,9 +140,7 @@ function transformCaseData(rawData: unknown) {
   return {
     name: safeString(rawData.name),
     description: safeOptionalString(rawData.description),
-    dateOfBirth: isValidDateOfBirth(rawData.dateOfBirth) 
-      ? formatDateOfBirth(rawData.dateOfBirth)
-      : ''
+    dateOfBirth: safeString(rawData.dateOfBirth)
   };
 }
 ```
@@ -173,6 +178,155 @@ const displayDate = formatDate('2023-01-06T00:00:00.000Z');
 - Output: Human-readable format (`"06 Jan 2023"`)
 - Locale: British English (`en-GB`)
 - Fallback: Returns original string if parsing fails
+
+---
+
+### ⚠️ Error Handler (`errorHandler.ts`)
+
+Comprehensive error handling utilities for API requests and network operations, providing user-friendly error messages and structured logging.
+
+#### Functions
+
+- `extractErrorMessage(error: unknown): string` - Extract user-friendly error message from various error types
+- `createProcessedError(error: unknown, context: string): Error` - Create processed error with user-friendly message for global handler
+- `extractAndLogError(error: unknown, context: string): string` - Extract error message and log it with context (for API services)
+- `isHttpError(error: unknown, status: number): boolean` - Check if error is a specific HTTP status code
+- `isAuthError(error: unknown): boolean` - Check if error is authentication failure (401)
+- `isForbiddenError(error: unknown): boolean` - Check if error is forbidden access (403)
+- `isNotFoundError(error: unknown): boolean` - Check if error is not found (404)
+- `isServerError(error: unknown): boolean` - Check if error is server error (5xx)
+
+#### Usage
+
+```typescript
+import { 
+  extractErrorMessage, 
+  createProcessedError,
+  extractAndLogError,
+  isAuthError, 
+  isServerError 
+} from '#src/scripts/helpers/index.js';
+
+// For route handlers - create processed errors for global handler
+try {
+  await loadUserData();
+} catch (error) {
+  const processedError = createProcessedError(error, 'loading user data');
+  next(processedError); // Pass to global error handler
+}
+
+// For API services - extract and log errors for service responses
+try {
+  const response = await externalApiCall();
+  return { data: response, status: 'success' };
+} catch (error) {
+  const errorMessage = extractAndLogError(error, 'External API error');
+  return { data: null, status: 'error', message: errorMessage };
+}
+
+// Basic error message extraction
+try {
+  await apiCall();
+} catch (error) {
+  const userMessage = extractErrorMessage(error);
+  // Returns: "Authentication failed. Please log in again." for 401 errors
+  
+  // Handle specific error types
+  if (isAuthError(error)) {
+    // Redirect to login
+  } else if (isServerError(error)) {
+    // Show retry option
+  }
+}
+```
+
+#### Error Types
+
+**HTTP Status Codes:**
+- `400` → "Invalid request. Please check your input and try again."
+- `401` → "Authentication failed. Please log in again."
+- `403` → "You do not have permission to access this resource."
+- `404` → "The requested information could not be found."
+- `500` → "Internal server error. Please try again later."
+- `502/503` → "Service temporarily unavailable. Please try again later."
+
+**Network Errors:**
+- `ECONNREFUSED` → "Unable to connect to the service. Please try again later."
+- `ETIMEDOUT` → "Request timed out. Please try again."
+- `ENOTFOUND` → "Service not found. Please check your connection and try again."
+
+**Features:**
+- Extracts custom error messages from API responses
+- Provides fallback messages for unknown errors
+- Includes structured logging for debugging
+- Type-safe error detection with proper type guards
+
+### 🔧 Error Handling Function Selection Guide
+
+Choose the appropriate error handling function based on your use case:
+
+#### Use `extractAndLogError()`
+
+- **When:** In service layer methods that make API calls
+- **Purpose:** Process errors and return detailed information for further handling
+- **Example Use Cases:**
+  - `apiService.getCases()` - needs to process and return error details
+  - `authService.validateToken()` - requires structured error information
+  - Any service method that needs to handle errors and pass details to caller
+
+#### Use `createProcessedError()`
+
+- **When:** In route handlers or middleware that need to return errors to client
+- **Purpose:** Create user-friendly error objects ready for HTTP responses
+- **Example Use Cases:**
+  - Express route handlers returning errors to frontend
+  - Middleware that processes errors for API responses
+  - Any endpoint that needs to send formatted errors to client
+
+#### Use `extractErrorMessage()`
+
+- **When:** You only need the error message string without additional processing
+- **Purpose:** Extract clean, user-friendly error messages from various error types
+- **Example Use Cases:**
+  - Simple error logging without structured information
+  - Template rendering where only message text is needed
+  - Basic error display in UI components
+
+### 📋 Error Handling Pattern Examples
+
+```typescript
+// Service Layer Pattern
+export async function getCases(params: CaseApiParams) {
+  try {
+    const response = await axiosWrapper.get<ApiResponse<CaseData>>(endpoint, { params });
+    return response.data;
+  } catch (error) {
+    const { message, statusCode } = extractAndLogError(error, 'getCases');
+    throw new Error(message); // Re-throw with processed message
+  }
+}
+```
+
+```typescript
+// Route Handler Pattern
+router.get('/cases', async (req, res, next) => {
+  try {
+    const cases = await apiService.getCases(req.query);
+    res.json(cases);
+  } catch (error) {
+    const processedError = createProcessedError(error, 'GET /cases');
+    next(processedError); // Pass to error middleware
+  }
+});
+```
+
+```typescript
+// Simple Message Extraction
+function displayError(error: unknown) {
+  const message = extractErrorMessage(error);
+  console.log(`Error: ${message}`);
+}
+```
 
 ---
 
@@ -248,6 +402,37 @@ function processApiResponse(data: unknown) {
 }
 ```
 
+#### Error Handling
+
+When making API calls or handling errors:
+
+```typescript
+import { extractErrorMessage, isAuthError, isServerError } from '#src/scripts/helpers/index.js';
+
+async function fetchUserData() {
+  try {
+    const response = await apiCall();
+    return response;
+  } catch (error) {
+    const userMessage = extractErrorMessage(error);
+    
+    // Handle specific error types
+    if (isAuthError(error)) {
+      // Redirect to login page
+      window.location.href = '/login';
+    } else if (isServerError(error)) {
+      // Show retry option
+      showRetryDialog(userMessage);
+    } else {
+      // Show general error message
+      showErrorMessage(userMessage);
+    }
+    
+    throw error; // Re-throw for caller to handle
+  }
+}
+```
+
 ### 🧪 Testing
 
 All helpers should be thoroughly tested:
@@ -259,13 +444,14 @@ All helpers should be thoroughly tested:
 
 ### 📁 File Organization
 
-```
+```text
 src/scripts/helpers/
 ├── README.md                 # This file
 ├── index.ts                  # Central export file
 ├── dataTransformers.ts       # Data validation and transformation
 ├── dateFormatter.ts          # Date formatting utilities
 ├── devLogger.ts             # Development logging
+├── errorHandler.ts          # Error handling and user-friendly messages
 └── [future-helper].ts       # Additional helpers as needed
 ```
 
@@ -311,8 +497,9 @@ export function helperFunction(param: Type): ReturnType {
 | Helper | Purpose | Key Functions |
 |--------|---------|---------------|
 | `devLogger` | Development logging | `devLog`, `devWarn`, `devError` |
-| `dataTransformers` | Data validation/transformation | `safeString`, `isRecord`, `isValidDateOfBirth` |
+| `dataTransformers` | Data validation/transformation | `safeString`, `isRecord`, `safeStringFromRecord` |
 | `dateFormatter` | Date formatting | `formatDate` |
+| `errorHandler` | Error handling/user-friendly messages | `extractErrorMessage`, `createProcessedError`, `extractAndLogError`, `isAuthError`, `isServerError` |
 
 Import any helper with:
 

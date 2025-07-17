@@ -3,9 +3,9 @@ on:
   workflow_dispatch: # Allow manual triggering only
     inputs:
     environment:
-      description: 'Deployment environment'
+      description: "Deployment environment"
       required: false
-      default: 'uat'
+      default: "uat"
   workflow_call: # Allow this workflow to be called by other workflows
 
 jobs:
@@ -19,7 +19,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24.3.0'
+          node-version: "24.3.0"
 
       - name: Enable Corepack
         run: corepack enable
@@ -29,6 +29,18 @@ jobs:
 
       - name: Run Mocha unit tests & c8 code coverage
         run: yarn c8 yarn test:unit --check-coverage
+        env:
+          NODE_ENV: "test"
+          SESSION_SECRET: "mocha-test-secret"
+          SESSION_NAME: "sessionId"
+          API_URL: "${{ vars.API_URL }}"
+          API_PREFIX: "${{ vars.API_PREFIX }}"
+          API_USERNAME: "${{ secrets.API_USERNAME }}"
+          API_PASSWORD: "${{ secrets.API_PASSWORD }}"
+          API_CLIENT_ID: "${{ secrets.API_CLIENT_ID }}"
+          API_CLIENT_SECRET: "${{ secrets.API_CLIENT_SECRET }}"
+          API_TIMEOUT: "5000"
+          API_RETRIES: "3"
 
       - name: Upload coverage artifact
         if: always()

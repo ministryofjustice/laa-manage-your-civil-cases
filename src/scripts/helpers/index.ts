@@ -19,13 +19,26 @@ export {
 
 // Data transformation utilities
 export {
-  isValidDateOfBirth,
   safeString,
   safeOptionalString,
-  isRecord
+  isRecord,
+  safeStringFromRecord,
+  hasProperty
 } from './dataTransformers.js';
 
 // Date formatting utilities
 export {
   formatDate
 } from './dateFormatter.js';
+
+// Error handling utilities
+export {
+  extractErrorMessage,
+  isHttpError,
+  isAuthError,
+  isForbiddenError,
+  isNotFoundError,
+  isServerError,
+  createProcessedError,
+  extractAndLogError
+} from './errorHandler.js';
