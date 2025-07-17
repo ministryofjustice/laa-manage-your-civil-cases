@@ -17,7 +17,7 @@ router.get('/', function (req: Request, res: Response): void {
 router.use('/cases', yourCasesRouter);
 
 // Mount the case details routes
-router.use('/case', caseDetailsRouter);
+router.use('/cases', caseDetailsRouter);
 
 // Health check routes
 
