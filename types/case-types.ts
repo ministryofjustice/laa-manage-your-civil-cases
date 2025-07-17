@@ -1,17 +1,9 @@
 /**
  * Case-related type definitions
- * 
+ *
  * Shared interfaces for case data across the application
  */
 
-/**
- * Date of birth object structure used in fixture data
- */
-export interface DateOfBirth {
-  day: string;
-  month: string;
-  year: string;
-}
 
 /**
  * Reasonable adjustments structure
@@ -57,7 +49,7 @@ export interface CaseDataRaw {
   refCode: string;
   dateReceived: string;
   caseStatus: string;
-  dateOfBirth: DateOfBirth;
+  dateOfBirth: string;
   lastModified?: string;
   dateClosed?: string;
 }

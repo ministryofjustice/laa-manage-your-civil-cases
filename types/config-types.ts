@@ -28,9 +28,14 @@ export interface PathsConfig {
 
 export interface ApiConfig {
   baseUrl: string;
-  apiKey: string;
   timeout: number;
   retries: number;
+  auth: {
+    username: string;
+    password: string;
+    clientId: string;
+    clientSecret: string;
+  };
 }
 
 export interface Config {
