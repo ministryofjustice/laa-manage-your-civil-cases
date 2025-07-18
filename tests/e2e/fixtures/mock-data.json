@@ -1,0 +1,6373 @@
+[
+  {
+    "fullName": "Ember Hamilton",
+    "caseReference": "PC-3184-5962",
+    "refCode": "",
+    "dateReceived": "2025-01-08T19:00:00-05:00",
+    "lastModified": "2025-01-09T14:30:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1987-02-19T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "No accommodations required"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Needs extra time for responses"
+    },
+    "language": "Arabic",
+    "phoneNumber": "0784104271",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "emberhamilton@gmail.com",
+    "address": "490 Oak Avenue, Stoke-on-Trent",
+    "postcode": "HU1 5NT",
+    "laaReference": "3080639",
+    "thirdParty": {
+      "fullName": "Chris Green",
+      "emailAddress": "chris@green.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "22 Baker Street, London",
+      "postcode": "NW1 6XE",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "LetMeIn"
+    }
+  },
+  {
+    "fullName": "Lisa Chen",
+    "caseReference": "PC-1924-9560",
+    "refCode": "",
+    "dateReceived": "2025-01-14T19:00:00-05:00",
+    "lastModified": "2025-01-15T10:45:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1993-11-15T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "Welsh",
+    "phoneNumber": "0782326094",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "lisa_chen@outlook.com",
+    "address": "220 Newton Court, Newcastle",
+    "postcode": "WV1 3YJ",
+    "laaReference": "1087882",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Parent or Guardian"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "LetMeIn"
+    }
+  },
+  {
+    "fullName": "Leo Robinson",
+    "caseReference": "PC-1298-8020",
+    "refCode": "",
+    "dateReceived": "2025-01-14T19:00:00-05:00",
+    "lastModified": "2025-01-16T09:20:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1972-06-17T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "BSL - Webcam"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Client prefers morning appointments"
+    },
+    "language": "English",
+    "phoneNumber": "0778750146",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "leo_robinson@outlook.com",
+    "address": "733 Oak Avenue, Leicester",
+    "postcode": "BD1 4TS",
+    "laaReference": "4336567",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Professional"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Not required",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Brooklyn Russell",
+    "caseReference": "PC-4873-9516",
+    "refCode": "",
+    "dateReceived": "2025-01-16T19:00:00-05:00",
+    "lastModified": "2025-01-17T13:15:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1992-09-21T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Skype",
+        "BSL - Webcam",
+        "No accommodations required"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "Arabic",
+    "phoneNumber": "0786458681",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "brooklyn.russell@email.com",
+    "address": "59 Churchill Avenue, Edinburgh",
+    "postcode": "EH1 3UX",
+    "laaReference": "3611022",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Professional"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "OpenSesame"
+    }
+  },
+  {
+    "fullName": "Kinsley Butler",
+    "caseReference": "PC-4062-1738",
+    "refCode": "",
+    "dateReceived": "2025-01-22T19:00:00-05:00",
+    "lastModified": "2025-01-23T11:30:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1988-06-02T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Minicom",
+        "Text relay",
+        "BSL - Webcam"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "Mandarin",
+    "phoneNumber": "0787451639",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "kinsley.butler@email.com",
+    "address": "636 Queen Street, Sheffield",
+    "postcode": "LS1 3UD",
+    "laaReference": "6402787",
+    "thirdParty": {
+      "fullName": "Samira Patel",
+      "emailAddress": "samira@patel.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Parent or Guardian"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Client declined",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Knox Hayes",
+    "caseReference": "PC-8407-1523",
+    "refCode": "",
+    "dateReceived": "2025-02-03T19:00:00-05:00",
+    "lastModified": "2025-02-04T15:45:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1988-03-25T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Text relay",
+        "Callback preference"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Client prefers morning appointments"
+    },
+    "language": "French",
+    "phoneNumber": "0781595396",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "knoxhayes@gmail.com",
+    "address": "196 Church Street, Nottingham",
+    "postcode": "BD1 1YQ",
+    "laaReference": "8580118",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Legal adviser"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Secret123"
+    }
+  },
+  {
+    "fullName": "Ryder Wallace",
+    "caseReference": "PC-6315-2748",
+    "refCode": "",
+    "dateReceived": "2025-02-11T19:00:00-05:00",
+    "lastModified": "2025-02-12T08:20:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1993-04-06T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Client prefers morning appointments"
+    },
+    "language": "Polish",
+    "phoneNumber": "0787796833",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "ryder.wallace@email.com",
+    "address": "757 Main Street, Birmingham",
+    "postcode": "LS1 1QZ",
+    "laaReference": "7764166",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Parent or Guardian"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "No telephone",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Paisley Flores",
+    "caseReference": "PC-9485-6271",
+    "refCode": "",
+    "dateReceived": "2025-02-14T19:00:00-05:00",
+    "lastModified": "2025-02-15T12:40:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1986-08-16T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Minicom",
+        "BSL - Webcam",
+        "Callback preference"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "German",
+    "phoneNumber": "0776283010",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "paisley.flores@email.com",
+    "address": "94 The Green, Leeds",
+    "postcode": "BD1 6WT",
+    "laaReference": "5924344",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "10 King Street, Leeds",
+      "postcode": "LS1 2HL",
+      "relationshipToClient": {
+        "selected": [
+          "Professional"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "No telephone",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Priya Patel",
+    "caseReference": "PC-1930-9763",
+    "refCode": "",
+    "dateReceived": "2025-02-22T19:00:00-05:00",
+    "lastModified": "2025-02-23T16:25:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1988-07-02T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Client prefers morning appointments"
+    },
+    "language": "Urdu",
+    "phoneNumber": "0782586245",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "priyapatel@gmail.com",
+    "address": "569 Main Street, Sheffield",
+    "postcode": "CV1 4ZL",
+    "laaReference": "5691571",
+    "thirdParty": {
+      "fullName": "Pamela Teahouse",
+      "emailAddress": "pamela@teahouse.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "10 King Street, Leeds",
+      "postcode": "LS1 2HL",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "No telephone",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Kayden Gonzales",
+    "caseReference": "PC-7650-3281",
+    "refCode": "",
+    "dateReceived": "2025-02-26T19:00:00-05:00",
+    "lastModified": "2025-02-27T14:10:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1987-10-05T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Skype",
+        "BSL - Webcam",
+        "Text relay"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Needs extra time for responses"
+    },
+    "language": "Arabic",
+    "phoneNumber": "0778441481",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "kayden@gonzales.com",
+    "address": "262 The Green, Leeds",
+    "postcode": "LS1 6FN",
+    "laaReference": "1656592",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Legal adviser"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Secret123"
+    }
+  },
+  {
+    "fullName": "Charlotte Anderson",
+    "caseReference": "PC-8765-4322",
+    "refCode": "",
+    "dateReceived": "2025-03-08T19:00:00-05:00",
+    "lastModified": "2025-03-09T10:55:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1984-01-12T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Requires written confirmation"
+    },
+    "language": "Mandarin",
+    "phoneNumber": "0788566307",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "charlotte.anderson@email.com",
+    "address": "210 Victoria Road, Cardiff",
+    "postcode": "WV1 3ER",
+    "laaReference": "8086703",
+    "thirdParty": {
+      "fullName": "Chris Green",
+      "emailAddress": "chris@green.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "No telephone",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Grayson Simmons",
+    "caseReference": "PC-8394-5217",
+    "refCode": "",
+    "dateReceived": "2025-03-16T19:00:00-05:00",
+    "lastModified": "2025-03-17T13:35:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1985-12-09T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Text relay"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "Spanish",
+    "phoneNumber": "0789346188",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "gsimmons@yahoo.com",
+    "address": "530 School Lane, Newcastle",
+    "postcode": "LE1 8TH",
+    "laaReference": "5421479",
+    "thirdParty": {
+      "fullName": "Pamela Teahouse",
+      "emailAddress": "pamela@teahouse.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Legal adviser"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Not required",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Phoenix Graham",
+    "caseReference": "PC-7428-9051",
+    "refCode": "",
+    "dateReceived": "2025-03-21T19:00:00-05:00",
+    "lastModified": "2025-03-22T09:15:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1989-06-14T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Skype"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "Arabic",
+    "phoneNumber": "0782858791",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "phoenix.graham@email.com",
+    "address": "245 Church Street, Bristol",
+    "postcode": "L1 2FT",
+    "laaReference": "6268413",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Parent or Guardian"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "LetMeIn"
+    }
+  },
+  {
+    "fullName": "Declan Griffin",
+    "caseReference": "PC-2604-7139",
+    "refCode": "",
+    "dateReceived": "2025-03-30T19:00:00-05:00",
+    "lastModified": "2025-03-31T15:50:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1986-05-18T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Text relay",
+        "Callback preference"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Needs extra time for responses"
+    },
+    "language": "Spanish",
+    "phoneNumber": "0787307744",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "declangriffin@gmail.com",
+    "address": "569 Maple Gardens, Leicester",
+    "postcode": "BS1 5HN",
+    "laaReference": "7550189",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Secret123"
+    }
+  },
+  {
+    "fullName": "Oliver Martinez",
+    "caseReference": "PC-3210-6547",
+    "refCode": "",
+    "dateReceived": "2025-04-12T19:00:00-05:00",
+    "lastModified": "2025-04-13T12:20:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1987-08-25T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Client prefers morning appointments"
+    },
+    "language": "Arabic",
+    "phoneNumber": "0787681167",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "oliver.martinez@email.com",
+    "address": "577 Pythagoras Place, Sheffield",
+    "postcode": "WV1 6GW",
+    "laaReference": "3636042",
+    "thirdParty": {
+      "fullName": "Chris Green",
+      "emailAddress": "chris@green.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "22 Baker Street, London",
+      "postcode": "NW1 6XE",
+      "relationshipToClient": {
+        "selected": [
+          "Professional"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Not required",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Sebastian Torres",
+    "caseReference": "PC-6271-9485",
+    "refCode": "",
+    "dateReceived": "2025-04-19T19:00:00-05:00",
+    "lastModified": "2025-04-20T11:05:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1990-03-28T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Minicom"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "English",
+    "phoneNumber": "0782430651",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "sebastiantorres@gmail.com",
+    "address": "606 School Lane, Coventry",
+    "postcode": "WV1 4YD",
+    "laaReference": "7840224",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Parent or Guardian"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Would you like some tea?"
+    }
+  },
+  {
+    "fullName": "Willow Bryant",
+    "caseReference": "PC-3281-7650",
+    "refCode": "",
+    "dateReceived": "2025-04-22T19:00:00-05:00",
+    "lastModified": "2025-04-23T14:40:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1989-01-14T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "Spanish",
+    "phoneNumber": "0782782987",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "willow.bryant@email.com",
+    "address": "340 Churchill Avenue, Hull",
+    "postcode": "BS1 8WA",
+    "laaReference": "7855971",
+    "thirdParty": {
+      "fullName": "Pamela Teahouse",
+      "emailAddress": "pamela@teahouse.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Parent or Guardian"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "TeaTime"
+    }
+  },
+  {
+    "fullName": "Sage Myers",
+    "caseReference": "PC-1523-8407",
+    "refCode": "",
+    "dateReceived": "2025-04-28T19:00:00-05:00",
+    "lastModified": "2025-04-29T16:25:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1985-08-11T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Skype"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Client prefers morning appointments"
+    },
+    "language": "Polish",
+    "phoneNumber": "0778308940",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "sage_myers@outlook.com",
+    "address": "720 Mill Lane, Liverpool",
+    "postcode": "LS1 5RU",
+    "laaReference": "6894155",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "10 King Street, Leeds",
+      "postcode": "LS1 2HL",
+      "relationshipToClient": {
+        "selected": [
+          "Professional"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "OpenSesame"
+    }
+  },
+  {
+    "fullName": "Rowan Alexander",
+    "caseReference": "PC-9516-4873",
+    "refCode": "",
+    "dateReceived": "2025-05-09T19:00:00-05:00",
+    "lastModified": "2025-05-10T08:30:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1984-07-30T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Minicom",
+        "Skype",
+        "No accommodations required"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "Spanish",
+    "phoneNumber": "0785518683",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "rowanalexander@gmail.com",
+    "address": "167 Queen Street, Manchester",
+    "postcode": "CV1 4ES",
+    "laaReference": "3302747",
+    "thirdParty": {
+      "fullName": "Chris Green",
+      "emailAddress": "chris@green.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "10 King Street, Leeds",
+      "postcode": "LS1 2HL",
+      "relationshipToClient": {
+        "selected": [
+          "Legal adviser"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "OpenSesame"
+    }
+  },
+  {
+    "fullName": "Colton Ford",
+    "caseReference": "PC-5962-3184",
+    "refCode": "",
+    "dateReceived": "2025-05-14T19:00:00-05:00",
+    "lastModified": "2025-05-15T13:45:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1991-11-03T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "No accommodations required",
+        "Callback preference",
+        "Skype"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Client prefers morning appointments"
+    },
+    "language": "German",
+    "phoneNumber": "0789944000",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "colton@ford.com",
+    "address": "41 Main Street, Bradford",
+    "postcode": "CF1 8EU",
+    "laaReference": "9743725",
+    "thirdParty": {
+      "fullName": "Chris Green",
+      "emailAddress": "chris@green.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Family member of friend"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Would you like some tea?"
+    }
+  },
+  {
+    "fullName": "Ivy Sullivan",
+    "caseReference": "PC-9051-7428",
+    "refCode": "",
+    "dateReceived": "2025-05-26T19:00:00-05:00",
+    "lastModified": "2025-05-27T10:20:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1984-10-28T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Minicom"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "Polish",
+    "phoneNumber": "0788570685",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "ivysullivan@gmail.com",
+    "address": "568 Main Street, Birmingham",
+    "postcode": "HU1 1FS",
+    "laaReference": "5668679",
+    "thirdParty": {
+      "fullName": "Pamela Teahouse",
+      "emailAddress": "pamela@teahouse.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Professional"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Client declined",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Maverick Washington",
+    "caseReference": "PC-1738-4062",
+    "refCode": "",
+    "dateReceived": "2025-05-31T19:00:00-05:00",
+    "lastModified": "2025-06-01T15:10:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1993-11-24T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Minicom",
+        "No accommodations required"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Client prefers morning appointments"
+    },
+    "language": "French",
+    "phoneNumber": "0786140148",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "maverickwashington@gmail.com",
+    "address": "862 Mill Lane, Sheffield",
+    "postcode": "BD1 3YJ",
+    "laaReference": "6557727",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Family member of friend"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "OpenSesame"
+    }
+  },
+  {
+    "fullName": "Delilah Foster",
+    "caseReference": "PC-5217-8394",
+    "refCode": "",
+    "dateReceived": "2025-06-04T19:00:00-05:00",
+    "lastModified": "2025-06-05T12:35:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1991-04-17T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "No accommodations required",
+        "Callback preference",
+        "BSL - Webcam"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "Arabic",
+    "phoneNumber": "0781150114",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "delilah_foster@outlook.com",
+    "address": "432 The Green, Bristol",
+    "postcode": "BD1 1DZ",
+    "laaReference": "9631908",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "10 King Street, Leeds",
+      "postcode": "LS1 2HL",
+      "relationshipToClient": {
+        "selected": [
+          "Professional"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Client declined",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Autumn Diaz",
+    "caseReference": "PC-7139-2604",
+    "refCode": "",
+    "dateReceived": "2025-06-16T19:00:00-05:00",
+    "lastModified": "2025-06-17T09:50:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1990-12-07T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Needs extra time for responses"
+    },
+    "language": "Spanish",
+    "phoneNumber": "0789982370",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "autumn.diaz@email.com",
+    "address": "243 Main Street, Leicester",
+    "postcode": "CV1 6YT",
+    "laaReference": "5673187",
+    "thirdParty": {
+      "fullName": "Samira Patel",
+      "emailAddress": "samira@patel.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "10 King Street, Leeds",
+      "postcode": "LS1 2HL",
+      "relationshipToClient": {
+        "selected": [
+          "Parent or Guardian"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Secret123"
+    }
+  },
+  {
+    "fullName": "Aisha Yusuf",
+    "caseReference": "PC-1393-7199",
+    "refCode": "Operator recommends second opinion",
+    "dateReceived": "2025-07-09T19:00:00-05:00",
+    "lastModified": "2025-07-10T14:15:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1982-03-13T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "BSL - Webcam"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Requires written confirmation"
+    },
+    "language": "Welsh",
+    "phoneNumber": "0787276200",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "aisha.yusuf@email.com",
+    "address": "934 King Street, Glasgow",
+    "postcode": "S1 1TE",
+    "laaReference": "3245977",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Parent or Guardian"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "TeaTime"
+    }
+  },
+  {
+    "fullName": "Harry Walker",
+    "caseReference": "PC-4350-9987",
+    "refCode": "",
+    "dateReceived": "2025-07-10T19:00:00-05:00",
+    "lastModified": "2025-07-11T11:40:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1976-05-01T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Text relay",
+        "Minicom"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "English",
+    "phoneNumber": "0785943518",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "harry@walker.com",
+    "address": "458 Main Street, Sheffield",
+    "postcode": "NE1 9QR",
+    "laaReference": "9109635",
+    "thirdParty": {
+      "fullName": "Samira Patel",
+      "emailAddress": "samira@patel.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Parent or Guardian"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "OpenSesame"
+    }
+  },
+  {
+    "fullName": "Charlie Harris",
+    "caseReference": "PC-1235-7091",
+    "refCode": "",
+    "dateReceived": "2025-07-22T19:00:00-05:00",
+    "lastModified": "2025-07-23T16:55:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1989-12-22T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "BSL - Webcam"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Requires written confirmation"
+    },
+    "language": "Polish",
+    "phoneNumber": "0787057895",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "charlie@harris.com",
+    "address": "963 Park Road, Birmingham",
+    "postcode": "S1 7QU",
+    "laaReference": "7941874",
+    "thirdParty": {
+      "fullName": "Chris Green",
+      "emailAddress": "chris@green.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "10 King Street, Leeds",
+      "postcode": "LS1 2HL",
+      "relationshipToClient": {
+        "selected": [
+          "Legal adviser"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "No telephone",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Mia Thompson",
+    "caseReference": "PC-2812-1933",
+    "refCode": "",
+    "dateReceived": "2025-08-01T19:00:00-05:00",
+    "lastModified": "2025-08-02T13:25:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1980-02-02T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Minicom",
+        "Skype"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "Polish",
+    "phoneNumber": "0779159190",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "mia.thompson@email.com",
+    "address": "95 Oak Avenue, Bradford",
+    "postcode": "S1 7PJ",
+    "laaReference": "4843581",
+    "thirdParty": {
+      "fullName": "Samira Patel",
+      "emailAddress": "samira@patel.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Not required",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Sarah Khan",
+    "caseReference": "PC-7735-3284",
+    "refCode": "Operator recommends second opinion",
+    "dateReceived": "2025-08-19T19:00:00-05:00",
+    "lastModified": "2025-08-20T10:30:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1989-02-11T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "BSL - Webcam",
+        "Minicom",
+        "Text relay"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "Spanish",
+    "phoneNumber": "0778693826",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "sarahkhan@gmail.com",
+    "address": "937 Newton Court, Coventry",
+    "postcode": "M1 3AN",
+    "laaReference": "2080063",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Parent or Guardian"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Not required",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Noah Brown",
+    "caseReference": "PC-4575-7150",
+    "refCode": "",
+    "dateReceived": "2025-01-05T19:00:00-05:00",
+    "dateClosed": "2025-01-09T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1982-09-06T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Text relay",
+        "BSL - Webcam",
+        "Minicom"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Requires written confirmation"
+    },
+    "language": "Arabic",
+    "phoneNumber": "0783990658",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "noah_brown@outlook.com",
+    "address": "647 King Street, Cardiff",
+    "postcode": "ST1 5QU",
+    "laaReference": "1731666",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "22 Baker Street, London",
+      "postcode": "NW1 6XE",
+      "relationshipToClient": {
+        "selected": [
+          "Legal adviser"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Would you like some tea?"
+    }
+  },
+  {
+    "fullName": "Harley Torres",
+    "caseReference": "PC-6395-8017",
+    "refCode": "Out of scope for CLA",
+    "dateReceived": "2025-01-06T19:00:00-05:00",
+    "dateClosed": "2025-01-11T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1994-07-21T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "No accommodations required",
+        "Callback preference"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "Arabic",
+    "phoneNumber": "0782694728",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "harley@torres.com",
+    "address": "286 The Green, Leeds",
+    "postcode": "NE1 7BG",
+    "laaReference": "1596466",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Family member of friend"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Would you like some tea?"
+    }
+  },
+  {
+    "fullName": "Skylar Watson",
+    "caseReference": "PC-6048-1375",
+    "refCode": "",
+    "dateReceived": "2025-01-15T19:00:00-05:00",
+    "dateClosed": "2025-01-20T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1987-11-26T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "BSL - Webcam",
+        "Skype",
+        "No accommodations required"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Requires written confirmation"
+    },
+    "language": "German",
+    "phoneNumber": "0788619582",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "skylar@watson.com",
+    "address": "285 Oak Avenue, Glasgow",
+    "postcode": "BS1 2RL",
+    "laaReference": "2980194",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Professional"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Client declined",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Henry Lee",
+    "caseReference": "PC-7799-8800",
+    "refCode": "",
+    "dateReceived": "2025-01-20T19:00:00-05:00",
+    "dateClosed": "2025-01-25T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1978-04-16T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Needs extra time for responses"
+    },
+    "language": "French",
+    "phoneNumber": "0778645133",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "henrylee@gmail.com",
+    "address": "599 Maple Gardens, Stoke-on-Trent",
+    "postcode": "BS1 6HU",
+    "laaReference": "7618071",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Legal adviser"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Secret123"
+    }
+  },
+  {
+    "fullName": "Raelynn Bailey",
+    "caseReference": "PC-5734-9061",
+    "refCode": "",
+    "dateReceived": "2025-01-31T19:00:00-05:00",
+    "dateClosed": "2025-02-05T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1993-03-07T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Text relay",
+        "Callback preference"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Needs extra time for responses"
+    },
+    "language": "Spanish",
+    "phoneNumber": "0783106913",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "raelynn.bailey@email.com",
+    "address": "54 Queen Street, Bristol",
+    "postcode": "S1 8LL",
+    "laaReference": "7236169",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Legal adviser"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Would you like some tea?"
+    }
+  },
+  {
+    "fullName": "Melody Reed",
+    "caseReference": "PC-8139-2467",
+    "refCode": "Duplicate of existing case",
+    "dateReceived": "2025-02-05T19:00:00-05:00",
+    "dateClosed": "2025-02-10T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1984-05-31T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "BSL - Webcam"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Requires written confirmation"
+    },
+    "language": "Mandarin",
+    "phoneNumber": "0781139161",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "melody@reed.com",
+    "address": "940 Queen Street, Liverpool",
+    "postcode": "BD1 5UN",
+    "laaReference": "8129808",
+    "thirdParty": {
+      "fullName": "Pamela Teahouse",
+      "emailAddress": "pamela@teahouse.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "22 Baker Street, London",
+      "postcode": "NW1 6XE",
+      "relationshipToClient": {
+        "selected": [
+          "Professional"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Would you like some tea?"
+    }
+  },
+  {
+    "fullName": "Alexander White",
+    "caseReference": "PC-1122-3344",
+    "refCode": "",
+    "dateReceived": "2025-02-15T19:00:00-05:00",
+    "dateClosed": "2025-02-20T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1979-07-03T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "BSL - Webcam",
+        "Minicom",
+        "Callback preference"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Needs extra time for responses"
+    },
+    "language": "French",
+    "phoneNumber": "0785020922",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "awhite@yahoo.com",
+    "address": "348 Park Road, Birmingham",
+    "postcode": "B1 1NE",
+    "laaReference": "3161040",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "22 Baker Street, London",
+      "postcode": "NW1 6XE",
+      "relationshipToClient": {
+        "selected": [
+          "Professional"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "OpenSesame"
+    }
+  },
+  {
+    "fullName": "Journee Cox",
+    "caseReference": "PC-4582-1739",
+    "refCode": "",
+    "dateReceived": "2025-02-18T19:00:00-05:00",
+    "dateClosed": "2025-02-23T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1989-11-04T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Skype"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Needs extra time for responses"
+    },
+    "language": "German",
+    "phoneNumber": "0788819084",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "jcox@yahoo.com",
+    "address": "560 Oak Avenue, Newcastle",
+    "postcode": "LE1 7UW",
+    "laaReference": "9577547",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Professional"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "TeaTime"
+    }
+  },
+  {
+    "fullName": "Serenity Price",
+    "caseReference": "PC-7204-3519",
+    "refCode": "",
+    "dateReceived": "2025-02-24T19:00:00-05:00",
+    "dateClosed": "2025-03-01T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1988-04-15T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "Mandarin",
+    "phoneNumber": "0785178060",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "serenity.price@email.com",
+    "address": "926 Main Street, Glasgow",
+    "postcode": "CF1 3XB",
+    "laaReference": "9030151",
+    "thirdParty": {
+      "fullName": "Pamela Teahouse",
+      "emailAddress": "pamela@teahouse.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Parent or Guardian"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "OpenSesame"
+    }
+  },
+  {
+    "fullName": "Adalynn Cooper",
+    "caseReference": "PC-3826-7194",
+    "refCode": "",
+    "dateReceived": "2025-03-04T19:00:00-05:00",
+    "dateClosed": "2025-03-09T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1990-12-18T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Minicom"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "Arabic",
+    "phoneNumber": "0781094314",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "adalynncooper@gmail.com",
+    "address": "42 Victoria Road, Birmingham",
+    "postcode": "CV1 6TA",
+    "laaReference": "3340233",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "LetMeIn"
+    }
+  },
+  {
+    "fullName": "Sienna Woods",
+    "caseReference": "PC-4157-8926",
+    "refCode": "",
+    "dateReceived": "2025-03-12T19:00:00-05:00",
+    "dateClosed": "2025-03-17T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1990-09-22T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Client prefers morning appointments"
+    },
+    "language": "Welsh",
+    "phoneNumber": "0782678691",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "sienna@woods.com",
+    "address": "836 Churchill Avenue, Manchester",
+    "postcode": "ST1 1QZ",
+    "laaReference": "2458701",
+    "thirdParty": {
+      "fullName": "Samira Patel",
+      "emailAddress": "samira@patel.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Professional"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Client declined",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Magnolia Gray",
+    "caseReference": "PC-2946-5173",
+    "refCode": "Not financially eligible for CLA",
+    "dateReceived": "2025-03-19T19:00:00-05:00",
+    "dateClosed": "2025-03-24T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1991-08-14T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Skype",
+        "Text relay"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "Welsh",
+    "phoneNumber": "0781467791",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "mgray@yahoo.com",
+    "address": "145 Darwin Way, Stoke-on-Trent",
+    "postcode": "S1 4BT",
+    "laaReference": "3085730",
+    "thirdParty": {
+      "fullName": "Pamela Teahouse",
+      "emailAddress": "pamela@teahouse.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "10 King Street, Leeds",
+      "postcode": "LS1 2HL",
+      "relationshipToClient": {
+        "selected": [
+          "Professional"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Would you like some tea?"
+    }
+  },
+  {
+    "fullName": "Victoria Thompson",
+    "caseReference": "PC-5566-7788",
+    "refCode": "Out of scope for CLA",
+    "dateReceived": "2025-03-28T19:00:00-05:00",
+    "dateClosed": "2025-04-02T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1991-10-18T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Minicom"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Needs extra time for responses"
+    },
+    "language": "French",
+    "phoneNumber": "0788329274",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "victoria@thompson.com",
+    "address": "230 Station Road, Sheffield",
+    "postcode": "EH1 7DN",
+    "laaReference": "1339337",
+    "thirdParty": {
+      "fullName": "Chris Green",
+      "emailAddress": "chris@green.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Family member of friend"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Not required",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Genesis Kelly",
+    "caseReference": "PC-9582-4760",
+    "refCode": "Out of scope for CLA",
+    "dateReceived": "2025-03-28T19:00:00-05:00",
+    "dateClosed": "2025-04-02T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1986-08-19T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Skype",
+        "Text relay",
+        "Callback preference"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Needs extra time for responses"
+    },
+    "language": "Spanish",
+    "phoneNumber": "0777861134",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "genesis@kelly.com",
+    "address": "801 Cedar Drive, Sheffield",
+    "postcode": "EH1 7YS",
+    "laaReference": "7118686",
+    "thirdParty": {
+      "fullName": "Pamela Teahouse",
+      "emailAddress": "pamela@teahouse.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Legal adviser"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Not required",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Isabella Rodriguez",
+    "caseReference": "PC-3366-5577",
+    "refCode": "Not financially eligible for CLA",
+    "dateReceived": "2025-04-03T19:00:00-05:00",
+    "dateClosed": "2025-04-08T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1993-06-21T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "BSL - Webcam",
+        "Callback preference"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Client prefers morning appointments"
+    },
+    "language": "Polish",
+    "phoneNumber": "0782707489",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "isabella_rodriguez@outlook.com",
+    "address": "2 Main Street, Hull",
+    "postcode": "NG1 6AZ",
+    "laaReference": "4742275",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Professional"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "No telephone",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Easton Bennett",
+    "caseReference": "PC-3519-7204",
+    "refCode": "Not financially eligible for CLA",
+    "dateReceived": "2025-04-09T19:00:00-05:00",
+    "dateClosed": "2025-04-14T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1992-07-30T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Client prefers morning appointments"
+    },
+    "language": "Welsh",
+    "phoneNumber": "0789188301",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "easton.bennett@email.com",
+    "address": "750 Oak Avenue, Bristol",
+    "postcode": "BD1 5PT",
+    "laaReference": "1986820",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Client declined",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Kaiden Cook",
+    "caseReference": "PC-2467-8139",
+    "refCode": "",
+    "dateReceived": "2025-04-16T19:00:00-05:00",
+    "dateClosed": "2025-04-21T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1988-10-12T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Skype",
+        "Callback preference",
+        "No accommodations required"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Client prefers morning appointments"
+    },
+    "language": "Arabic",
+    "phoneNumber": "0788656417",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "kaiden_cook@outlook.com",
+    "address": "161 Cedar Drive, Coventry",
+    "postcode": "NE1 5PP",
+    "laaReference": "7440327",
+    "thirdParty": {
+      "fullName": "Samira Patel",
+      "emailAddress": "samira@patel.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "22 Baker Street, London",
+      "postcode": "NW1 6XE",
+      "relationshipToClient": {
+        "selected": [
+          "Family member of friend"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Would you like some tea?"
+    }
+  },
+  {
+    "fullName": "Cash Ward",
+    "caseReference": "PC-1739-4582",
+    "refCode": "",
+    "dateReceived": "2025-04-23T19:00:00-05:00",
+    "dateClosed": "2025-04-28T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1986-01-17T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "BSL - Webcam"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "Arabic",
+    "phoneNumber": "0777209471",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "cash.ward@email.com",
+    "address": "832 Churchill Avenue, Edinburgh",
+    "postcode": "NG1 7XE",
+    "laaReference": "6282719",
+    "thirdParty": {
+      "fullName": "Pamela Teahouse",
+      "emailAddress": "pamela@teahouse.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Professional"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Secret123"
+    }
+  },
+  {
+    "fullName": "Karter Richardson",
+    "caseReference": "PC-7194-3826",
+    "refCode": "Not financially eligible for CLA",
+    "dateReceived": "2025-05-01T19:00:00-05:00",
+    "dateClosed": "2025-05-06T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1987-06-29T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "BSL - Webcam"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Requires written confirmation"
+    },
+    "language": "English",
+    "phoneNumber": "0789283436",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "karter.richardson@email.com",
+    "address": "620 King Street, Bradford",
+    "postcode": "LS1 3BF",
+    "laaReference": "6479471",
+    "thirdParty": {
+      "fullName": "Chris Green",
+      "emailAddress": "chris@green.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "22 Baker Street, London",
+      "postcode": "NW1 6XE",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Not required",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Jaxon Fisher",
+    "caseReference": "PC-8926-4157",
+    "refCode": "Out of scope for CLA",
+    "dateReceived": "2025-05-07T19:00:00-05:00",
+    "dateClosed": "2025-05-12T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1985-12-08T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Skype",
+        "BSL - Webcam",
+        "Text relay"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "Polish",
+    "phoneNumber": "0782083743",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "jaxon.fisher@email.com",
+    "address": "875 The Green, Cardiff",
+    "postcode": "CV1 1UP",
+    "laaReference": "4779620",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Legal adviser"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Client declined",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "William Garcia",
+    "caseReference": "PC-9900-1122",
+    "refCode": "",
+    "dateReceived": "2025-05-10T19:00:00-05:00",
+    "dateClosed": "2025-05-15T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1986-12-05T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "No accommodations required",
+        "Text relay"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "French",
+    "phoneNumber": "0788779866",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "william_garcia@outlook.com",
+    "address": "49 School Lane, Hull",
+    "postcode": "BD1 2GL",
+    "laaReference": "6827118",
+    "thirdParty": {
+      "fullName": "Chris Green",
+      "emailAddress": "chris@green.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "TeaTime"
+    }
+  },
+  {
+    "fullName": "Kameron Peterson",
+    "caseReference": "PC-8017-6395",
+    "refCode": "",
+    "dateReceived": "2025-05-15T19:00:00-05:00",
+    "dateClosed": "2025-05-20T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1983-04-08T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Callback preference",
+        "No accommodations required"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "Urdu",
+    "phoneNumber": "0789824014",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "kpeterson@yahoo.com",
+    "address": "557 High Street, Edinburgh",
+    "postcode": "M1 6BJ",
+    "laaReference": "6601755",
+    "thirdParty": {
+      "fullName": "Chris Green",
+      "emailAddress": "chris@green.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Family member of friend"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Not required",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Braxton Sanders",
+    "caseReference": "PC-4760-9582",
+    "refCode": "",
+    "dateReceived": "2025-05-20T19:00:00-05:00",
+    "dateClosed": "2025-05-25T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1991-01-05T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Minicom",
+        "Skype"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "English",
+    "phoneNumber": "0785857511",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "braxton_sanders@outlook.com",
+    "address": "938 Cedar Drive, Leicester",
+    "postcode": "L1 1PZ",
+    "laaReference": "9117566",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "22 Baker Street, London",
+      "postcode": "NW1 6XE",
+      "relationshipToClient": {
+        "selected": [
+          "Professional"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "No telephone",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Axel Brooks",
+    "caseReference": "PC-1375-6048",
+    "refCode": "",
+    "dateReceived": "2025-06-02T19:00:00-05:00",
+    "dateClosed": "2025-06-07T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1989-02-13T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Skype"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "Urdu",
+    "phoneNumber": "0783460030",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "axelbrooks@gmail.com",
+    "address": "336 Churchill Avenue, Bristol",
+    "postcode": "M1 2YW",
+    "laaReference": "6332307",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Family member of friend"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "LetMeIn"
+    }
+  },
+  {
+    "fullName": "Beau Rivera",
+    "caseReference": "PC-9061-5734",
+    "refCode": "Out of scope for CLA",
+    "dateReceived": "2025-06-09T19:00:00-05:00",
+    "dateClosed": "2025-06-14T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1985-09-23T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Minicom",
+        "Callback preference"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Requires written confirmation"
+    },
+    "language": "Mandarin",
+    "phoneNumber": "0784117706",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "brivera@yahoo.com",
+    "address": "91 Queen Street, Liverpool",
+    "postcode": "NG1 8LA",
+    "laaReference": "2440940",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "22 Baker Street, London",
+      "postcode": "NW1 6XE",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Would you like some tea?"
+    }
+  },
+  {
+    "fullName": "Emily Watson",
+    "caseReference": "PC-1039-3711",
+    "refCode": "Not financially eligible for CLA",
+    "dateReceived": "2025-06-21T19:00:00-05:00",
+    "dateClosed": "2025-06-25T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1977-12-17T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "BSL - Webcam",
+        "Skype"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "Mandarin",
+    "phoneNumber": "0786975768",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "emilywatson@gmail.com",
+    "address": "816 High Street, Leicester",
+    "postcode": "ST1 5ND",
+    "laaReference": "5387497",
+    "thirdParty": {
+      "fullName": "Chris Green",
+      "emailAddress": "chris@green.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Family member of friend"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "LetMeIn"
+    }
+  },
+  {
+    "fullName": "Freddie Evans",
+    "caseReference": "PC-4831-8090",
+    "refCode": "",
+    "dateReceived": "2025-06-25T19:00:00-05:00",
+    "dateClosed": "2025-06-26T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1987-09-09T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "Urdu",
+    "phoneNumber": "0782346851",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "fevans@yahoo.com",
+    "address": "170 Elm Close, Sheffield",
+    "postcode": "NG1 5TG",
+    "laaReference": "3436225",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Family member of friend"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "No telephone",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "John Smith",
+    "caseReference": "PC-7880-7835",
+    "refCode": "",
+    "dateReceived": "2025-07-05T19:00:00-05:00",
+    "dateClosed": "2025-07-09T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1982-03-06T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "BSL - Webcam"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Client prefers morning appointments"
+    },
+    "language": "Welsh",
+    "phoneNumber": "0784826219",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "johnsmith@gmail.com",
+    "address": "845 Park Road, Bristol",
+    "postcode": "L1 2LY",
+    "laaReference": "1276153",
+    "thirdParty": {
+      "fullName": "Pamela Teahouse",
+      "emailAddress": "pamela@teahouse.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "22 Baker Street, London",
+      "postcode": "NW1 6XE",
+      "relationshipToClient": {
+        "selected": [
+          "Parent or Guardian"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Client declined",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Nina Taylor",
+    "caseReference": "PC-4344-8239",
+    "refCode": "",
+    "dateReceived": "2025-07-06T19:00:00-05:00",
+    "dateClosed": "2025-07-10T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1996-10-27T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Minicom"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "Mandarin",
+    "phoneNumber": "0784764672",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "ninataylor@gmail.com",
+    "address": "13 Darwin Way, Birmingham",
+    "postcode": "G1 5XQ",
+    "laaReference": "2430905",
+    "thirdParty": {
+      "fullName": "Pamela Teahouse",
+      "emailAddress": "pamela@teahouse.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Parent or Guardian"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Client declined",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "George Allen",
+    "caseReference": "PC-9159-2337",
+    "refCode": "",
+    "dateReceived": "2025-01-08T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1977-06-10T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Callback preference",
+        "BSL - Webcam",
+        "No accommodations required"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Needs extra time for responses"
+    },
+    "language": "Spanish",
+    "phoneNumber": "0781892249",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "georgeallen@gmail.com",
+    "address": "255 Newton Court, Leeds",
+    "postcode": "WV1 2ZQ",
+    "laaReference": "7921179",
+    "thirdParty": {
+      "fullName": "Pamela Teahouse",
+      "emailAddress": "pamela@teahouse.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "No telephone",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Zoe Anderson",
+    "caseReference": "PC-1357-2468",
+    "refCode": "",
+    "dateReceived": "2025-01-12T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1984-08-22T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "Urdu",
+    "phoneNumber": "0779461997",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "zoe@anderson.com",
+    "address": "588 Park Road, Birmingham",
+    "postcode": "M1 5YA",
+    "laaReference": "4663510",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "22 Baker Street, London",
+      "postcode": "NW1 6XE",
+      "relationshipToClient": {
+        "selected": [
+          "Family member of friend"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Would you like some tea?"
+    }
+  },
+  {
+    "fullName": "Jason Moore",
+    "caseReference": "PC-3571-9284",
+    "refCode": "Operator recommends second opinion",
+    "dateReceived": "2025-01-19T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1982-07-04T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Minicom",
+        "BSL - Webcam",
+        "No accommodations required"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Requires written confirmation"
+    },
+    "language": "Arabic",
+    "phoneNumber": "0781677634",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "jason.moore@email.com",
+    "address": "513 Churchill Avenue, Nottingham",
+    "postcode": "LE1 1YL",
+    "laaReference": "1828935",
+    "thirdParty": {
+      "fullName": "Chris Green",
+      "emailAddress": "chris@green.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "10 King Street, Leeds",
+      "postcode": "LS1 2HL",
+      "relationshipToClient": {
+        "selected": [
+          "Parent or Guardian"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Not required",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "James Wilson",
+    "caseReference": "PC-9876-5432",
+    "refCode": "",
+    "dateReceived": "2025-01-25T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1975-11-30T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "French",
+    "phoneNumber": "0783698468",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "james@wilson.com",
+    "address": "955 Elm Close, Leeds",
+    "postcode": "NE1 9BF",
+    "laaReference": "9072020",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Family member of friend"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "LetMeIn"
+    }
+  },
+  {
+    "fullName": "Daniel Moore",
+    "caseReference": "PC-3360-2295",
+    "refCode": "",
+    "dateReceived": "2025-01-27T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1994-08-03T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Skype",
+        "No accommodations required"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Client prefers morning appointments"
+    },
+    "language": "Mandarin",
+    "phoneNumber": "0786240009",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "daniel@moore.com",
+    "address": "736 Newton Court, Hull",
+    "postcode": "L1 6AW",
+    "laaReference": "3636677",
+    "thirdParty": {
+      "fullName": "Samira Patel",
+      "emailAddress": "samira@patel.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Would you like some tea?"
+    }
+  },
+  {
+    "fullName": "Austin Lewis",
+    "caseReference": "PC-6419-8372",
+    "refCode": "",
+    "dateReceived": "2025-02-07T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1991-04-15T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "BSL - Webcam",
+        "Minicom",
+        "Text relay"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "German",
+    "phoneNumber": "0789965395",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "austin@lewis.com",
+    "address": "418 Pythagoras Place, Manchester",
+    "postcode": "LS1 6NS",
+    "laaReference": "2574244",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Family member of friend"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Would you like some tea?"
+    }
+  },
+  {
+    "fullName": "Emma Johnson",
+    "caseReference": "PC-7890-3456",
+    "refCode": "",
+    "dateReceived": "2025-02-10T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1988-05-14T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Minicom"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "Welsh",
+    "phoneNumber": "0782266893",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "emma@johnson.com",
+    "address": "573 Elm Close, Leicester",
+    "postcode": "WV1 6YN",
+    "laaReference": "7859817",
+    "thirdParty": {
+      "fullName": "Samira Patel",
+      "emailAddress": "samira@patel.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "22 Baker Street, London",
+      "postcode": "NW1 6XE",
+      "relationshipToClient": {
+        "selected": [
+          "Family member of friend"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "OpenSesame"
+    }
+  },
+  {
+    "fullName": "Sophia Lee",
+    "caseReference": "PC-9999-0000",
+    "refCode": "",
+    "dateReceived": "2025-02-18T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1989-07-11T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "BSL - Webcam",
+        "Text relay"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "German",
+    "phoneNumber": "0788055521",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "sophia@lee.com",
+    "address": "163 Park Road, Nottingham",
+    "postcode": "BS1 8ZR",
+    "laaReference": "5607785",
+    "thirdParty": {
+      "fullName": "Chris Green",
+      "emailAddress": "chris@green.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Professional"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Secret123"
+    }
+  },
+  {
+    "fullName": "Chloe Taylor",
+    "caseReference": "PC-8642-9753",
+    "refCode": "",
+    "dateReceived": "2025-02-28T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1993-10-05T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Callback preference",
+        "Skype"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Client prefers morning appointments"
+    },
+    "language": "English",
+    "phoneNumber": "0787225666",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "ctaylor@yahoo.com",
+    "address": "401 High Street, Leicester",
+    "postcode": "B1 1BU",
+    "laaReference": "1959581",
+    "thirdParty": {
+      "fullName": "Samira Patel",
+      "emailAddress": "samira@patel.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Parent or Guardian"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "No telephone",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Mary Flynn",
+    "caseReference": "PC-3630-9387",
+    "refCode": "Split from another case",
+    "dateReceived": "2025-03-06T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1971-10-01T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Text relay",
+        "BSL - Webcam",
+        "Skype"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "Urdu",
+    "phoneNumber": "0784531607",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "mary_flynn@outlook.com",
+    "address": "970 Oak Avenue, Bristol",
+    "postcode": "M1 1ZU",
+    "laaReference": "5657549",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Parent or Guardian"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Would you like some tea?"
+    }
+  },
+  {
+    "fullName": "Maya Patel",
+    "caseReference": "PC-8765-4321",
+    "refCode": "",
+    "dateReceived": "2025-03-14T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1986-06-09T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "BSL - Webcam",
+        "Text relay"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Requires written confirmation"
+    },
+    "language": "English",
+    "phoneNumber": "0777842384",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "maya@patel.com",
+    "address": "320 Victoria Road, Leeds",
+    "postcode": "LE1 7GQ",
+    "laaReference": "5173578",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Legal adviser"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Not required",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Michael Brown",
+    "caseReference": "PC-5432-1098",
+    "refCode": "Operator recommends second opinion",
+    "dateReceived": "2025-03-20T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1992-12-08T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Client prefers morning appointments"
+    },
+    "language": "Spanish",
+    "phoneNumber": "0779638755",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "michael_brown@outlook.com",
+    "address": "999 Darwin Way, Liverpool",
+    "postcode": "G1 2LB",
+    "laaReference": "4809574",
+    "thirdParty": {
+      "fullName": "Pamela Teahouse",
+      "emailAddress": "pamela@teahouse.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Family member of friend"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "OpenSesame"
+    }
+  },
+  {
+    "fullName": "Grace Miller",
+    "caseReference": "PC-5555-6666",
+    "refCode": "",
+    "dateReceived": "2025-03-22T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1987-12-03T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Needs extra time for responses"
+    },
+    "language": "Arabic",
+    "phoneNumber": "0787164074",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "grace@miller.com",
+    "address": "337 Station Road, Nottingham",
+    "postcode": "CV1 7RZ",
+    "laaReference": "8389863",
+    "thirdParty": {
+      "fullName": "Pamela Teahouse",
+      "emailAddress": "pamela@teahouse.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Legal adviser"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "OpenSesame"
+    }
+  },
+  {
+    "fullName": "Tyler Wilson",
+    "caseReference": "PC-1593-7428",
+    "refCode": "",
+    "dateReceived": "2025-03-26T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1987-09-28T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "BSL - Webcam"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "German",
+    "phoneNumber": "0785428008",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "tylerwilson@gmail.com",
+    "address": "866 Elm Close, Coventry",
+    "postcode": "LS1 2JZ",
+    "laaReference": "5374512",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Family member of friend"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Secret123"
+    }
+  },
+  {
+    "fullName": "Anna Rodriguez",
+    "caseReference": "PC-1111-2222",
+    "refCode": "",
+    "dateReceived": "2025-04-08T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1990-02-14T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "Arabic",
+    "phoneNumber": "0787283710",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "annarodriguez@gmail.com",
+    "address": "926 Church Street, Sheffield",
+    "postcode": "G1 6SL",
+    "laaReference": "1680544",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "22 Baker Street, London",
+      "postcode": "NW1 6XE",
+      "relationshipToClient": {
+        "selected": [
+          "Parent or Guardian"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Not required",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Sophie Williams",
+    "caseReference": "PC-2341-8765",
+    "refCode": "",
+    "dateReceived": "2025-04-15T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1985-09-22T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Client prefers morning appointments"
+    },
+    "language": "Spanish",
+    "phoneNumber": "0779170550",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "swilliams@yahoo.com",
+    "address": "1 The Green, Coventry",
+    "postcode": "BS1 9QN",
+    "laaReference": "9866101",
+    "thirdParty": {
+      "fullName": "Samira Patel",
+      "emailAddress": "samira@patel.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "22 Baker Street, London",
+      "postcode": "NW1 6XE",
+      "relationshipToClient": {
+        "selected": [
+          "Parent or Guardian"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Would you like some tea?"
+    }
+  },
+  {
+    "fullName": "Nathan Brown",
+    "caseReference": "PC-7531-9642",
+    "refCode": "",
+    "dateReceived": "2025-04-17T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1985-12-31T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Text relay",
+        "Skype"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Requires written confirmation"
+    },
+    "language": "Urdu",
+    "phoneNumber": "0782137966",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "nathan_brown@outlook.com",
+    "address": "185 Main Street, Edinburgh",
+    "postcode": "L1 8UG",
+    "laaReference": "8176099",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Not required",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Ruby Clark",
+    "caseReference": "PC-9284-3571",
+    "refCode": "",
+    "dateReceived": "2025-04-25T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1989-11-20T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Minicom",
+        "BSL - Webcam",
+        "Skype"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "Mandarin",
+    "phoneNumber": "0779885677",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "rubyclark@gmail.com",
+    "address": "331 Churchill Avenue, Bradford",
+    "postcode": "ST1 3TG",
+    "laaReference": "7572006",
+    "thirdParty": {
+      "fullName": "Chris Green",
+      "emailAddress": "chris@green.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Family member of friend"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Would you like some tea?"
+    }
+  },
+  {
+    "fullName": "Connor White",
+    "caseReference": "PC-1234-5678",
+    "refCode": "",
+    "dateReceived": "2025-04-30T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1992-01-25T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Minicom",
+        "No accommodations required"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Needs extra time for responses"
+    },
+    "language": "Mandarin",
+    "phoneNumber": "0788847138",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "cwhite@yahoo.com",
+    "address": "385 Station Road, Newcastle",
+    "postcode": "NG1 7UR",
+    "laaReference": "3745628",
+    "thirdParty": {
+      "fullName": "Chris Green",
+      "emailAddress": "chris@green.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "22 Baker Street, London",
+      "postcode": "NW1 6XE",
+      "relationshipToClient": {
+        "selected": [
+          "Family member of friend"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Client declined",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Tom Andrews",
+    "caseReference": "PC-3027-4448",
+    "refCode": "",
+    "dateReceived": "2025-05-05T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1970-04-04T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Callback preference",
+        "Minicom",
+        "Text relay"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Needs extra time for responses"
+    },
+    "language": "Urdu",
+    "phoneNumber": "0788616856",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "tom@andrews.com",
+    "address": "669 Victoria Road, Leicester",
+    "postcode": "CF1 7GQ",
+    "laaReference": "5004751",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "No telephone",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Lily Johnson",
+    "caseReference": "PC-9642-7531",
+    "refCode": "",
+    "dateReceived": "2025-05-08T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1990-05-13T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "No accommodations required"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "Polish",
+    "phoneNumber": "0776809552",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "ljohnson@yahoo.com",
+    "address": "264 Maple Gardens, Coventry",
+    "postcode": "NE1 6TU",
+    "laaReference": "1597482",
+    "thirdParty": {
+      "fullName": "Samira Patel",
+      "emailAddress": "samira@patel.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "TeaTime"
+    }
+  },
+  {
+    "fullName": "David Thompson",
+    "caseReference": "PC-3333-4444",
+    "refCode": "",
+    "dateReceived": "2025-05-12T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1983-09-07T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Text relay",
+        "Skype",
+        "No accommodations required"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "Urdu",
+    "phoneNumber": "0776903483",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "davidthompson@gmail.com",
+    "address": "827 Darwin Way, Sheffield",
+    "postcode": "CF1 1QA",
+    "laaReference": "6991012",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Family member of friend"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Not required",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Hazel Walker",
+    "caseReference": "PC-8372-6419",
+    "refCode": "",
+    "dateReceived": "2025-05-19T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1986-01-08T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Client prefers morning appointments"
+    },
+    "language": "French",
+    "phoneNumber": "0783017079",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "hwalker@yahoo.com",
+    "address": "798 Mill Lane, Bradford",
+    "postcode": "HU1 7TT",
+    "laaReference": "7310481",
+    "thirdParty": {
+      "fullName": "Pamela Teahouse",
+      "emailAddress": "pamela@teahouse.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Family member of friend"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Would you like some tea?"
+    }
+  },
+  {
+    "fullName": "Ethan Davis",
+    "caseReference": "PC-2468-1357",
+    "refCode": "",
+    "dateReceived": "2025-05-25T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1991-11-16T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Text relay",
+        "BSL - Webcam"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Needs extra time for responses"
+    },
+    "language": "English",
+    "phoneNumber": "0787406129",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "ethan@davis.com",
+    "address": "903 Darwin Way, Leeds",
+    "postcode": "S1 1WB",
+    "laaReference": "9730657",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "22 Baker Street, London",
+      "postcode": "NW1 6XE",
+      "relationshipToClient": {
+        "selected": [
+          "Family member of friend"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Client declined",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Lucas Martinez",
+    "caseReference": "PC-9753-8642",
+    "refCode": "Operator recommends second opinion",
+    "dateReceived": "2025-06-03T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1988-03-19T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Minicom",
+        "No accommodations required"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Client prefers morning appointments"
+    },
+    "language": "Welsh",
+    "phoneNumber": "0778092610",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "lmartinez@yahoo.com",
+    "address": "718 Maple Gardens, Manchester",
+    "postcode": "CV1 6QJ",
+    "laaReference": "3286062",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "10 King Street, Leeds",
+      "postcode": "LS1 2HL",
+      "relationshipToClient": {
+        "selected": [
+          "Legal adviser"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Would you like some tea?"
+    }
+  },
+  {
+    "fullName": "Jacob King",
+    "caseReference": "PC-8891-1836",
+    "refCode": "",
+    "dateReceived": "2025-06-07T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1994-04-08T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Skype",
+        "Callback preference",
+        "BSL - Webcam"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "Welsh",
+    "phoneNumber": "0785573480",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "jacob@king.com",
+    "address": "241 Newton Court, Cardiff",
+    "postcode": "WV1 2FD",
+    "laaReference": "1077839",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Parent or Guardian"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "TeaTime"
+    }
+  },
+  {
+    "fullName": "Aria Smith",
+    "caseReference": "PC-7428-1593",
+    "refCode": "",
+    "dateReceived": "2025-06-11T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1994-02-17T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "No accommodations required",
+        "Text relay"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Needs extra time for responses"
+    },
+    "language": "Polish",
+    "phoneNumber": "0781226731",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "aria_smith@outlook.com",
+    "address": "87 Oak Avenue, Birmingham",
+    "postcode": "WV1 4WG",
+    "laaReference": "3416626",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "22 Baker Street, London",
+      "postcode": "NW1 6XE",
+      "relationshipToClient": {
+        "selected": [
+          "Family member of friend"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Secret123"
+    }
+  },
+  {
+    "fullName": "Ryan Garcia",
+    "caseReference": "PC-7777-8888",
+    "refCode": "Operator recommends second opinion",
+    "dateReceived": "2025-06-15T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1995-04-28T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Text relay"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Requires written confirmation"
+    },
+    "language": "Welsh",
+    "phoneNumber": "0787122610",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "ryangarcia@gmail.com",
+    "address": "718 Newton Court, Edinburgh",
+    "postcode": "S1 7QB",
+    "laaReference": "7500745",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "10 King Street, Leeds",
+      "postcode": "LS1 2HL",
+      "relationshipToClient": {
+        "selected": [
+          "Legal adviser"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "No telephone",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Jack Young",
+    "caseReference": "PC-1922-1879",
+    "refCode": "",
+    "dateReceived": "2025-07-06T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1981-08-18T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Text relay",
+        "Skype",
+        "No accommodations required"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Requires written confirmation"
+    },
+    "language": "German",
+    "phoneNumber": "0786442261",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "jack@young.com",
+    "address": "870 King Street, Sheffield",
+    "postcode": "G1 2LQ",
+    "laaReference": "8196672",
+    "thirdParty": null
+  },
+  {
+    "fullName": "Ian Phillips",
+    "caseReference": "PC-9173-4826",
+    "refCode": "Operator recommends second opinion",
+    "dateReceived": "2025-01-14T19:00:00-05:00",
+    "lastModified": "2025-01-15T10:30:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1991-12-19T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "No accommodations required",
+        "Callback preference"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "Urdu",
+    "phoneNumber": "0784019408",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "ianphillips@gmail.com",
+    "address": "38 Oak Avenue, Sheffield",
+    "postcode": "NE1 8DR",
+    "laaReference": "3767316",
+    "thirdParty": {
+      "fullName": "Samira Patel",
+      "emailAddress": "samira@patel.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Parent or Guardian"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "No telephone",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Luna Nelson",
+    "caseReference": "PC-9630-7412",
+    "refCode": "",
+    "dateReceived": "2025-01-30T19:00:00-05:00",
+    "lastModified": "2025-01-31T14:20:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1993-12-04T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "No accommodations required",
+        "Skype",
+        "BSL - Webcam"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "French",
+    "phoneNumber": "0788166575",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "lnelson@yahoo.com",
+    "address": "296 Pythagoras Place, Nottingham",
+    "postcode": "CV1 9SR",
+    "laaReference": "7651742",
+    "thirdParty": {
+      "fullName": "Pamela Teahouse",
+      "emailAddress": "pamela@teahouse.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Legal adviser"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Client declined",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Aurora Evans",
+    "caseReference": "PC-5184-7392",
+    "refCode": "Manually allocated by operator",
+    "dateReceived": "2025-02-09T19:00:00-05:00",
+    "lastModified": "2025-02-10T09:45:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1994-11-13T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Minicom"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Requires written confirmation"
+    },
+    "language": "Spanish",
+    "phoneNumber": "0779238102",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "aurora@evans.com",
+    "address": "365 Maple Gardens, Hull",
+    "postcode": "WV1 8FS",
+    "laaReference": "5425067",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Parent or Guardian"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Not required",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Scarlett King",
+    "caseReference": "PC-3702-8519",
+    "refCode": "",
+    "dateReceived": "2025-02-16T19:00:00-05:00",
+    "lastModified": "2025-02-17T11:15:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1985-11-07T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Text relay",
+        "No accommodations required"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Requires written confirmation"
+    },
+    "language": "Welsh",
+    "phoneNumber": "0789006315",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "sking@yahoo.com",
+    "address": "685 King Street, Bradford",
+    "postcode": "S1 8TR",
+    "laaReference": "6273881",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Family member of friend"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Secret123"
+    }
+  },
+  {
+    "fullName": "Blake Mitchell",
+    "caseReference": "PC-3694-8521",
+    "refCode": "",
+    "dateReceived": "2025-02-21T19:00:00-05:00",
+    "lastModified": "2025-02-22T16:30:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1986-10-15T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "No accommodations required",
+        "Text relay"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Client prefers morning appointments"
+    },
+    "language": "Welsh",
+    "phoneNumber": "0783425668",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "blakemitchell@gmail.com",
+    "address": "768 Newton Court, Leeds",
+    "postcode": "BS1 3AJ",
+    "laaReference": "2249758",
+    "thirdParty": {
+      "fullName": "Pamela Teahouse",
+      "emailAddress": "pamela@teahouse.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "LetMeIn"
+    }
+  },
+  {
+    "fullName": "Evelyn Green",
+    "caseReference": "PC-1472-5836",
+    "refCode": "Manually allocated by operator",
+    "dateReceived": "2025-03-07T19:00:00-05:00",
+    "lastModified": "2025-03-08T13:45:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1987-04-12T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Minicom"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Requires written confirmation"
+    },
+    "language": "Spanish",
+    "phoneNumber": "0789617529",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "egreen@yahoo.com",
+    "address": "68 Main Street, Manchester",
+    "postcode": "L1 7AZ",
+    "laaReference": "4452758",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Legal adviser"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "TeaTime"
+    }
+  },
+  {
+    "fullName": "Madison Hall",
+    "caseReference": "PC-2580-4691",
+    "refCode": "",
+    "dateReceived": "2025-03-11T19:00:00-05:00",
+    "lastModified": "2025-03-12T08:20:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1988-06-23T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Text relay",
+        "BSL - Webcam",
+        "Minicom"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Client prefers morning appointments"
+    },
+    "language": "German",
+    "phoneNumber": "0788273653",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "madison_hall@outlook.com",
+    "address": "173 Newton Court, Sheffield",
+    "postcode": "ST1 1RN",
+    "laaReference": "4495116",
+    "thirdParty": {
+      "fullName": "Pamela Teahouse",
+      "emailAddress": "pamela@teahouse.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Legal adviser"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Not required",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Ali Mahmood",
+    "caseReference": "PC-7611-8652",
+    "refCode": "",
+    "dateReceived": "2025-03-13T19:00:00-05:00",
+    "lastModified": "2025-03-14T15:10:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1996-11-15T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "BSL - Webcam",
+        "Skype",
+        "Minicom"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "Spanish",
+    "phoneNumber": "0778382547",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "ali.mahmood@email.com",
+    "address": "810 Church Street, Newcastle",
+    "postcode": "ST1 4AP",
+    "laaReference": "5303134",
+    "thirdParty": {
+      "fullName": "Chris Green",
+      "emailAddress": "chris@green.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "10 King Street, Leeds",
+      "postcode": "LS1 2HL",
+      "relationshipToClient": {
+        "selected": [
+          "Legal adviser"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "No telephone",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Caleb Roberts",
+    "caseReference": "PC-1648-7539",
+    "refCode": "",
+    "dateReceived": "2025-03-18T19:00:00-05:00",
+    "lastModified": "2025-03-19T12:35:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1992-05-22T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "Mandarin",
+    "phoneNumber": "0777961746",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "caleb.roberts@email.com",
+    "address": "654 Churchill Avenue, Leicester",
+    "postcode": "S1 9ZU",
+    "laaReference": "2995960",
+    "thirdParty": {
+      "fullName": "Samira Patel",
+      "emailAddress": "samira@patel.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Legal adviser"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Secret123"
+    }
+  },
+  {
+    "fullName": "Wyatt Parker",
+    "caseReference": "PC-6410-2975",
+    "refCode": "",
+    "dateReceived": "2025-03-23T19:00:00-05:00",
+    "lastModified": "2025-03-24T10:50:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1989-06-27T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "BSL - Webcam",
+        "Minicom",
+        "No accommodations required"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Requires written confirmation"
+    },
+    "language": "Arabic",
+    "phoneNumber": "0783014917",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "wyatt@parker.com",
+    "address": "725 The Green, Edinburgh",
+    "postcode": "G1 9XQ",
+    "laaReference": "7791120",
+    "thirdParty": {
+      "fullName": "Samira Patel",
+      "emailAddress": "samira@patel.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Client declined",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Violet Turner",
+    "caseReference": "PC-4826-9173",
+    "refCode": "",
+    "dateReceived": "2025-04-05T19:00:00-05:00",
+    "lastModified": "2025-04-06T14:25:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1985-09-08T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Skype",
+        "No accommodations required",
+        "Minicom"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "Urdu",
+    "phoneNumber": "0777494444",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "vturner@yahoo.com",
+    "address": "890 School Lane, Wolverhampton",
+    "postcode": "NG1 3NZ",
+    "laaReference": "1919352",
+    "thirdParty": {
+      "fullName": "Pamela Teahouse",
+      "emailAddress": "pamela@teahouse.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Secret123"
+    }
+  },
+  {
+    "fullName": "Hunter Baker",
+    "caseReference": "PC-7412-9630",
+    "refCode": "Operator recommends second opinion",
+    "dateReceived": "2025-04-14T19:00:00-05:00",
+    "lastModified": "2025-04-15T09:15:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1984-03-26T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Text relay",
+        "Callback preference",
+        "Skype"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Needs extra time for responses"
+    },
+    "language": "English",
+    "phoneNumber": "0782370595",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "hbaker@yahoo.com",
+    "address": "493 King Street, Liverpool",
+    "postcode": "L1 7DB",
+    "laaReference": "6011802",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "OpenSesame"
+    }
+  },
+  {
+    "fullName": "Gabriel Young",
+    "caseReference": "PC-4691-2580",
+    "refCode": "Operator recommends second opinion",
+    "dateReceived": "2025-04-29T19:00:00-05:00",
+    "lastModified": "2025-04-30T11:40:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1992-09-14T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "French",
+    "phoneNumber": "0778858539",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "gabrielyoung@gmail.com",
+    "address": "548 Queen Street, Leicester",
+    "postcode": "NE1 4SE",
+    "laaReference": "7482211",
+    "thirdParty": {
+      "fullName": "Chris Green",
+      "emailAddress": "chris@green.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Secret123"
+    }
+  },
+  {
+    "fullName": "Nova Carter",
+    "caseReference": "PC-8521-3694",
+    "refCode": "",
+    "dateReceived": "2025-05-03T19:00:00-05:00",
+    "lastModified": "2025-05-04T16:20:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1990-07-09T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "French",
+    "phoneNumber": "0784503049",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "nova_carter@outlook.com",
+    "address": "656 King Street, Stoke-on-Trent",
+    "postcode": "LE1 1NJ",
+    "laaReference": "7183782",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "10 King Street, Leeds",
+      "postcode": "LS1 2HL",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "OpenSesame"
+    }
+  },
+  {
+    "fullName": "Benjamin Taylor",
+    "caseReference": "PC-4567-8901",
+    "refCode": "Manually allocated by operator",
+    "dateReceived": "2025-05-18T19:00:00-05:00",
+    "lastModified": "2025-05-19T08:45:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1990-03-17T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Text relay"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Needs extra time for responses"
+    },
+    "language": "Spanish",
+    "phoneNumber": "0776264887",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "benjamin.taylor@email.com",
+    "address": "857 Park Road, Manchester",
+    "postcode": "WV1 4GD",
+    "laaReference": "2532017",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "22 Baker Street, London",
+      "postcode": "NW1 6XE",
+      "relationshipToClient": {
+        "selected": [
+          "Parent or Guardian"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "No telephone",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Logan Wright",
+    "caseReference": "PC-8519-3702",
+    "refCode": "",
+    "dateReceived": "2025-05-23T19:00:00-05:00",
+    "lastModified": "2025-05-24T13:30:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1991-01-29T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "French",
+    "phoneNumber": "0787305003",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "logan.wright@email.com",
+    "address": "353 Elm Close, Stoke-on-Trent",
+    "postcode": "BD1 5HX",
+    "laaReference": "6130977",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "10 King Street, Leeds",
+      "postcode": "LS1 2HL",
+      "relationshipToClient": {
+        "selected": [
+          "Professional"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Not required",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Penelope Campbell",
+    "caseReference": "PC-2975-6410",
+    "refCode": "",
+    "dateReceived": "2025-05-27T19:00:00-05:00",
+    "lastModified": "2025-05-28T10:15:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1987-02-03T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Text relay",
+        "Callback preference",
+        "Skype"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "English",
+    "phoneNumber": "0776343841",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "penelopecampbell@gmail.com",
+    "address": "277 Mill Lane, Nottingham",
+    "postcode": "EH1 1FY",
+    "laaReference": "8066653",
+    "thirdParty": {
+      "fullName": "Pamela Teahouse",
+      "emailAddress": "pamela@teahouse.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Family member of friend"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Would you like some tea?"
+    }
+  },
+  {
+    "fullName": "Carson Adams",
+    "caseReference": "PC-5836-1472",
+    "refCode": "",
+    "dateReceived": "2025-06-08T19:00:00-05:00",
+    "lastModified": "2025-06-09T12:50:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1989-08-18T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "BSL - Webcam",
+        "No accommodations required"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Needs extra time for responses"
+    },
+    "language": "English",
+    "phoneNumber": "0782289045",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "carson@adams.com",
+    "address": "375 The Green, Hull",
+    "postcode": "M1 2LF",
+    "laaReference": "5568859",
+    "thirdParty": {
+      "fullName": "Samira Patel",
+      "emailAddress": "samira@patel.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "22 Baker Street, London",
+      "postcode": "NW1 6XE",
+      "relationshipToClient": {
+        "selected": [
+          "Family member of friend"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "TeaTime"
+    }
+  },
+  {
+    "fullName": "Stella Perez",
+    "caseReference": "PC-7539-1648",
+    "refCode": "Manually allocated by operator",
+    "dateReceived": "2025-06-12T19:00:00-05:00",
+    "lastModified": "2025-06-13T15:25:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1988-01-31T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "No accommodations required"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "Welsh",
+    "phoneNumber": "0779066816",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "stellaperez@gmail.com",
+    "address": "981 Darwin Way, Stoke-on-Trent",
+    "postcode": "EH1 3LZ",
+    "laaReference": "3322642",
+    "thirdParty": {
+      "fullName": "Pamela Teahouse",
+      "emailAddress": "pamela@teahouse.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "10 King Street, Leeds",
+      "postcode": "LS1 2HL",
+      "relationshipToClient": {
+        "selected": [
+          "Parent or Guardian"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "No telephone",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Amelia Hall",
+    "caseReference": "PC-7598-3195",
+    "refCode": "",
+    "dateReceived": "2025-06-15T19:00:00-05:00",
+    "lastModified": "2025-06-16T09:40:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1983-11-10T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Text relay",
+        "No accommodations required",
+        "Minicom"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Requires written confirmation"
+    },
+    "language": "Mandarin",
+    "phoneNumber": "0781102890",
+    "safeToCall": false,
+    "announceCall": true,
+    "emailAddress": "amelia.hall@email.com",
+    "address": "783 Victoria Road, Leicester",
+    "postcode": "B1 7WX",
+    "laaReference": "3222668",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Professional"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Would you like some tea?"
+    }
+  },
+  {
+    "fullName": "Olivia Clarke",
+    "caseReference": "PC-7016-1852",
+    "refCode": "",
+    "dateReceived": "2025-06-22T19:00:00-05:00",
+    "lastModified": "2025-06-23T11:20:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1972-01-15T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "German",
+    "phoneNumber": "0781322627",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "olivia@clarke.com",
+    "address": "465 Elm Close, Bradford",
+    "postcode": "B1 1HZ",
+    "laaReference": "7650514",
+    "thirdParty": {
+      "fullName": "Chris Green",
+      "emailAddress": "chris@green.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "10 King Street, Leeds",
+      "postcode": "LS1 2HL",
+      "relationshipToClient": {
+        "selected": [
+          "Legal adviser"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Secret123"
+    }
+  },
+  {
+    "fullName": "Emma Wilson",
+    "caseReference": "PC-1872-4899",
+    "refCode": "",
+    "dateReceived": "2025-06-23T19:00:00-05:00",
+    "lastModified": "2025-06-24T14:35:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1997-06-11T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Text relay",
+        "No accommodations required"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "German",
+    "phoneNumber": "0786635066",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "emma_wilson@outlook.com",
+    "address": "703 Oak Avenue, Bradford",
+    "postcode": "EH1 4WX",
+    "laaReference": "2347089",
+    "thirdParty": {
+      "fullName": "Chris Green",
+      "emailAddress": "chris@green.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Professional"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "OpenSesame"
+    }
+  },
+  {
+    "fullName": "Sophie Cooper",
+    "caseReference": "PC-6204-3242",
+    "refCode": "",
+    "dateReceived": "2025-07-07T19:00:00-05:00",
+    "lastModified": "2025-07-08T16:10:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1981-05-22T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "Callback preference",
+        "Skype"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Requires written confirmation"
+    },
+    "language": "Arabic",
+    "phoneNumber": "0776354243",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "sophie.cooper@email.com",
+    "address": "231 Oak Avenue, Coventry",
+    "postcode": "NE1 5NF",
+    "laaReference": "9826965",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "1 Hadamard Gate, Oxford",
+      "postcode": "OX1 1AW",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Not required",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Mark Jones",
+    "caseReference": "PC-3936-2651",
+    "refCode": "",
+    "dateReceived": "2025-07-09T19:00:00-05:00",
+    "lastModified": "2025-07-10T08:55:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1971-06-12T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Needs extra time for responses"
+    },
+    "language": "Arabic",
+    "phoneNumber": "0779158591",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "mark.jones@email.com",
+    "address": "94 Park Road, Coventry",
+    "postcode": "HU1 1FJ",
+    "laaReference": "8567584",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Professional"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Client declined",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Rachel Green",
+    "caseReference": "PC-6960-2586",
+    "refCode": "Operator recommends second opinion",
+    "dateReceived": "2025-07-14T19:00:00-05:00",
+    "lastModified": "2025-07-15T12:30:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1997-04-26T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Skype"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "Spanish",
+    "phoneNumber": "0782836977",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "rachel.green@email.com",
+    "address": "906 Darwin Way, Hull",
+    "postcode": "ST1 8ZG",
+    "laaReference": "5310126",
+    "thirdParty": {
+      "fullName": "Samira Patel",
+      "emailAddress": "samira@patel.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "TeaTime"
+    }
+  },
+  {
+    "fullName": "Liam Davis",
+    "caseReference": "PC-3606-4275",
+    "refCode": "",
+    "dateReceived": "2025-08-04T19:00:00-05:00",
+    "lastModified": "2025-08-05T10:20:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1986-10-13T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "Mandarin",
+    "phoneNumber": "0777100984",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "ldavis@yahoo.com",
+    "address": "830 School Lane, Newcastle",
+    "postcode": "NE1 3LR",
+    "laaReference": "6473220",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": true,
+      "passphraseNotSetUpReason": "",
+      "passphrase": "Secret123"
+    }
+  },
+  {
+    "fullName": "Isla Scott",
+    "caseReference": "PC-9440-3645",
+    "refCode": "",
+    "dateReceived": "2025-08-06T19:00:00-05:00",
+    "lastModified": "2025-08-07T13:45:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1983-03-08T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "Arabic",
+    "phoneNumber": "0776064938",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "isla.scott@email.com",
+    "address": "36 Darwin Way, Wolverhampton",
+    "postcode": "M1 6XY",
+    "laaReference": "2224842",
+    "thirdParty": {
+      "fullName": "Jonny Spalding",
+      "emailAddress": "jonny@spalding.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Parent or Guardian"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Client declined",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Ella Lewis",
+    "caseReference": "PC-9812-5580",
+    "refCode": "",
+    "dateReceived": "2025-08-07T19:00:00-05:00",
+    "lastModified": "2025-08-08T15:15:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1991-06-28T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "reasonableAdjustments": {
+      "selected": [],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": "Prefers phone over video calls"
+    },
+    "language": "Arabic",
+    "phoneNumber": "0783298798",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "ella.lewis@email.com",
+    "address": "707 Newton Court, Bradford",
+    "postcode": "M1 9FL",
+    "laaReference": "6845271",
+    "thirdParty": {
+      "fullName": "Pamela Teahouse",
+      "emailAddress": "pamela@teahouse.com",
+      "contactNumber": "",
+      "safeToCall": true,
+      "address": "5 Maple Avenue, Manchester",
+      "postcode": "M1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "Other"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "Not required",
+      "passphrase": ""
+    }
+  },
+  {
+    "fullName": "Grace Baker",
+    "caseReference": "PC-1869-9154",
+    "refCode": "",
+    "dateReceived": "2025-08-07T19:00:00-05:00",
+    "lastModified": "2025-08-08T17:30:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1979-11-12T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "reasonableAdjustments": {
+      "selected": [
+        "Skype",
+        "BSL - Webcam"
+      ],
+      "available": [
+        "BSL - Webcam",
+        "Callback preference",
+        "Minicom",
+        "Skype",
+        "Text relay",
+        "No accommodations required"
+      ],
+      "additionalInfo": ""
+    },
+    "language": "Polish",
+    "phoneNumber": "0777929124",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "grace_baker@outlook.com",
+    "address": "544 King Street, Newcastle",
+    "postcode": "LE1 1UL",
+    "laaReference": "2850581",
+    "thirdParty": {
+      "fullName": "Samira Patel",
+      "emailAddress": "samira@patel.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "Legal adviser"
+        ],
+        "available": [
+          "Parent or Guardian",
+          "Family member of friend",
+          "Professional",
+          "Legal adviser",
+          "Other"
+        ]
+      },
+      "passphraseSetUp": false,
+      "passphraseNotSetUpReason": "No telephone",
+      "passphrase": ""
+    }
+  }
+]
