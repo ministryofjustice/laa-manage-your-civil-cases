@@ -3,7 +3,7 @@ name: Deploy with Helm
 on:
   push:
     branches:
-      - '**'
+      - "**"
   workflow_dispatch: # Allows manual triggering of the workflow
 
 jobs:
@@ -17,7 +17,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24.3.0'
+          node-version: "24.3.0"
 
       - name: Enable Corepack
         run: corepack enable
@@ -38,7 +38,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24.3.0'
+          node-version: "24.3.0"
 
       - name: Enable Corepack
         run: corepack enable
@@ -112,7 +112,7 @@ jobs:
       - build-image
     # Only run tests when deploying to UAT
     if: success() && github.event_name != 'workflow_dispatch' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'uat' || github.event.inputs.environment == null)
-  
+
   deploy-uat:
     environment: uat
     runs-on: ubuntu-latest
@@ -150,7 +150,16 @@ jobs:
           ratelimit_storage_uri: ${{ vars.RATELIMIT_STORAGE_URI }}
           ratelimit_max: ${{ vars.RATE_LIMIT_MAX }}
           ratewindow_ms: ${{ vars.RATE_WINDOW_MS }}
-  
+          api_url: ${{ vars.API_URL }}
+          api_prefix: ${{ vars.API_PREFIX }}
+          # Use repository secrets for JWT auth
+          api_username: ${{ secrets.API_USERNAME }}
+          api_password: ${{ secrets.API_PASSWORD }}
+          api_client_id: ${{ secrets.API_CLIENT_ID }}
+          api_client_secret: ${{ secrets.API_CLIENT_SECRET }}
+          api_timeout: ${{ vars.API_TIMEOUT }}
+          api_retries: ${{ vars.API_RETRIES }}
+
   deploy-staging:
     environment: staging
     runs-on: ubuntu-latest
@@ -183,6 +192,15 @@ jobs:
           ratelimit_storage_uri: ${{ vars.RATELIMIT_STORAGE_URI }}
           ratelimit_max: ${{ vars.RATE_LIMIT_MAX }}
           ratewindow_ms: ${{ vars.RATE_WINDOW_MS }}
+          api_url: ${{ vars.API_URL }}
+          api_prefix: ${{ vars.API_PREFIX }}
+          # Use repository secrets for JWT auth (more secure, only accessible from main branch)
+          api_username: ${{ secrets.API_USERNAME }}
+          api_password: ${{ secrets.API_PASSWORD }}
+          api_client_id: ${{ secrets.API_CLIENT_ID }}
+          api_client_secret: ${{ secrets.API_CLIENT_SECRET }}
+          api_timeout: ${{ vars.API_TIMEOUT }}
+          api_retries: ${{ vars.API_RETRIES }}
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   deploy-production:
@@ -217,4 +235,13 @@ jobs:
           ratelimit_storage_uri: ${{ vars.RATELIMIT_STORAGE_URI }}
           ratelimit_max: ${{ vars.RATE_LIMIT_MAX }}
           ratewindow_ms: ${{ vars.RATE_WINDOW_MS }}
+          api_url: ${{ vars.API_URL}}
+          api_prefix: ${{ vars.API_PREFIX }}
+          # Use repository secrets for JWT auth (more secure, only accessible from main branch)
+          api_username: ${{ secrets.API_USERNAME }}
+          api_password: ${{ secrets.API_PASSWORD }}
+          api_client_id: ${{ secrets.API_CLIENT_ID }}
+          api_client_secret: ${{ secrets.API_CLIENT_SECRET }}
+          api_timeout: ${{ vars.API_TIMEOUT }}
+          api_retries: ${{ vars.API_RETRIES }}
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}

@@ -59,6 +59,11 @@ jobs:
           RATELIMIT_HEADERS_ENABLED: "true"
           RATE_LIMIT_MAX: "100"
           RATE_WINDOW_MS: "900000"
+          # API configuration for testing - use local mock for CI since VPN is not available
+          API_URL: "http://localhost:3001"
+          # Flag to indicate to use mock API
+          API_PREFIX: "/mock-api"
+          USE_MOCK_API: "true"
       - name: Upload trace artifacts
         if: always()
         uses: actions/upload-artifact@v4

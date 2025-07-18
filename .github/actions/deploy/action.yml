@@ -1,70 +1,86 @@
 name: "Deploy"
 description: "Deploy docker image to namespace"
 inputs:
-    kube-cert:
-        description: "Kubernetes cluster authentication certificate"
-        required: true
-    kube-token:
-        description: "Kubernetes cluster authentication token"
-        required: true
-    kube-cluster:
-        description: "Kubernetes cluster name"
-        required: true
-    kube-namespace:
-        description: "Kubernetes cluster namespace"
-        required: true
-    app-environment:
-        description: "environment to which the app is being deployed [staging, production, etc]"
-        required: true
-    ecr-repository:
-        description: "ECR repository"
-        required: true
-    ecr-registry_url:
-        description: "ECR registry url"
-        required: true
-    session_secret:
-        description: "Session secret"
-    service_name:
-        description: "Service name"
-    service_phase:
-        description: "Service phase"
-    department_name:
-        description: "Department name"
-    department_url:
-        description: "Department url"
-    contact_email:
-        description: "Contact email"
-    contact_phone:
-        description: "Contact phone"
-    service_url:
-        description: "Service url"
-    session_name:
-        description: "Session name"
-    ratelimit_headers_enabled:
-        description: "Rate limit headers enabled"
-    ratelimit_storage_uri:
-        description: "Rate limit storage uri"
-    ratelimit_max:
-        description: "Rate limit max"
-    ratewindow_ms:
-        description: "Rate limit max"
-    slack_webhook_url:
-        description: "Slack webhook url"
+  kube-cert:
+    description: "Kubernetes cluster authentication certificate"
+    required: true
+  kube-token:
+    description: "Kubernetes cluster authentication token"
+    required: true
+  kube-cluster:
+    description: "Kubernetes cluster name"
+    required: true
+  kube-namespace:
+    description: "Kubernetes cluster namespace"
+    required: true
+  app-environment:
+    description: "environment to which the app is being deployed [staging, production, etc]"
+    required: true
+  ecr-repository:
+    description: "ECR repository"
+    required: true
+  ecr-registry_url:
+    description: "ECR registry url"
+    required: true
+  session_secret:
+    description: "Session secret"
+  service_name:
+    description: "Service name"
+  service_phase:
+    description: "Service phase"
+  department_name:
+    description: "Department name"
+  department_url:
+    description: "Department url"
+  contact_email:
+    description: "Contact email"
+  contact_phone:
+    description: "Contact phone"
+  service_url:
+    description: "Service url"
+  session_name:
+    description: "Session name"
+  ratelimit_headers_enabled:
+    description: "Rate limit headers enabled"
+  ratelimit_storage_uri:
+    description: "Rate limit storage uri"
+  ratelimit_max:
+    description: "Rate limit max"
+  ratewindow_ms:
+    description: "Rate limit max"
+  slack_webhook_url:
+    description: "Slack webhook url"
+  api_url:
+    description: "API base URL"
+  api_prefix:
+    description: "API prefix path"
+  api_timeout:
+    description: "API request timeout in milliseconds"
+  api_retries:
+    description: "Number of API retry attempts"
+  api_username:
+    description: "API authentication username"
+  api_password:
+    description: "API authentication password"
+  api_client_id:
+    description: "API client ID"
+  api_client_secret:
+    description: "API client secret"
 
 runs:
-    using: "composite"
-    steps:
+  using: "composite"
+  steps:
     - name: Checkout
       uses: actions/checkout@v4
 
     - name: Authenticate to the cluster
       uses: ministryofjustice/laa-reusable-github-actions/.github/actions/authenticate_to_cluster@2aa2676c3cd9876ec7037ee8b3d729d0306cb7c6
       with:
-            kube-cert: ${{ inputs.kube-cert }}
-            kube-token: ${{ inputs.kube-token }}
-            kube-cluster: ${{ inputs.kube-cluster }}
-            kube-namespace: ${{ inputs.kube-namespace }}
- 
+        kube-cert: ${{ inputs.kube-cert }}
+        kube-token: ${{ inputs.kube-token }}
+        kube-cluster: ${{ inputs.kube-cluster }}
+        kube-namespace: ${{ inputs.kube-namespace }}
+
     - name: Deploy infrastructure to UAT
       shell: bash
       run: |
@@ -89,13 +105,21 @@ runs:
         echo "RATELIMIT_STORAGE_URI=${{ inputs.ratelimit_storage_uri || '' }}" >> $GITHUB_ENV
         echo "RATE_LIMIT_MAX=${{ inputs.ratelimit_max || '100' }}" >> $GITHUB_ENV
         echo "RATE_WINDOW_MS=${{ inputs.ratewindow_ms || '900000' }}" >> $GITHUB_ENV
+        echo "API_URL=${{ inputs.api_url || '' }}" >> $GITHUB_ENV
+        echo "API_PREFIX=${{ inputs.api_prefix || '/latest/mock' }}" >> $GITHUB_ENV
+        echo "API_TIMEOUT=${{ inputs.api_timeout || '5000' }}" >> $GITHUB_ENV
+        echo "API_RETRIES=${{ inputs.api_retries || '3' }}" >> $GITHUB_ENV
+        echo "API_USERNAME=${{ inputs.api_username || '' }}" >> $GITHUB_ENV
+        echo "API_PASSWORD=${{ inputs.api_password || '' }}" >> $GITHUB_ENV
+        echo "API_CLIENT_ID=${{ inputs.api_client_id || '' }}" >> $GITHUB_ENV
+        echo "API_CLIENT_SECRET=${{ inputs.api_client_secret || '' }}" >> $GITHUB_ENV
         echo "NODE_ENV=production" >> $GITHUB_ENV
 
     - name: Deploy using Helm
       shell: bash
       run: ./scripts/deploy.sh ${{ inputs.app-environment }}
       env:
-        REGISTRY: ${{ inputs.ecr-registry_url }} 
+        REGISTRY: ${{ inputs.ecr-registry_url }}
         REPOSITORY: ${{ inputs.ecr-repository }}
         IMAGE_TAG: ${{ github.sha }}
         GITHUB_SHA: ${{ github.sha }}
