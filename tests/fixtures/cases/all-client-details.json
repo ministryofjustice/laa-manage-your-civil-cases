@@ -426,30 +426,7 @@
     "announceCall": true,
     "emailAddress": "sarah@khan.com",
     "address": "80 Pythagoras Place, Birmingham",
-    "postcode": "B1 1DW",
-    "thirdParty": {
-      "fullName": "Jonny Spalding",
-      "emailAddress": "",
-      "contactNumber": "",
-      "safeToCall": false,
-      "address": "84 Zoo Lane, Birmingham",
-      "postcode": "B88 1RW",
-      "relationshipToClient": {
-        "selected": [
-          ""
-        ],
-        "available": [
-          "Parent or Guardian",
-          "Family member of friend",
-          "Professional",
-          "Legal adviser",
-          "Other"
-        ]
-      },
-      "passphraseSetUp": false,
-      "passphraseNotSetUpReason": "No telephone",
-      "passphrase": ""
-    }
+    "postcode": "B1 1DW"
   },
   {
     "fullName": "Noah Brown",
@@ -877,30 +854,7 @@
     "announceCall": false,
     "emailAddress": "nina@taylor.com",
     "address": "1 Hadamard Gate, Oxford",
-    "postcode": "OX1 1AW",
-    "thirdParty": {
-      "fullName": "Pamela Teahouse",
-      "emailAddress": "pamela@teahouse.com",
-      "contactNumber": "",
-      "safeToCall": true,
-      "address": "1 Hadamard Gate, Oxford",
-      "postcode": "OX1 1AW",
-      "relationshipToClient": {
-        "selected": [
-          "Family member of friend"
-        ],
-        "available": [
-          "Parent or Guardian",
-          "Family member of friend",
-          "Professional",
-          "Legal adviser",
-          "Other"
-        ]
-      },
-      "passphraseSetUp": true,
-      "passphraseNotSetUpReason": "",
-      "passphrase": "Would you like some tea?"
-    }
+    "postcode": "OX1 1AW"
   },
   {
     "fullName": "George Allen",
@@ -1299,30 +1253,7 @@
     "announceCall": true,
     "emailAddress": "jack@young.com",
     "address": "Flat 4, 1 Smith Street, London",
-    "postcode": "SE5 THE",
-    "thirdParty": {
-      "fullName": "Brian Wilson",
-      "emailAddress": "brian@wilosn.com",
-      "contactNumber": "0712345687",
-      "safeToCall": true,
-      "address": "Flat 56, 4 Smithereen Street, London",
-      "postcode": "SE23 THE",
-      "relationshipToClient": {
-        "selected": [
-          "Parent or Guardian"
-        ],
-        "available": [
-          "Parent or Guardian",
-          "Family member of friend",
-          "Professional",
-          "Legal adviser",
-          "Other"
-        ]
-      },
-      "passphraseSetUp": true,
-      "passphraseNotSetUpReason": "",
-      "passphrase": "Sandwich"
-    }
+    "postcode": "SE5 THE"
   },
   {
     "fullName": "Ian Phillips",
@@ -1752,29 +1683,6 @@
     "announceCall": true,
     "emailAddress": "grace@baker.com",
     "address": "Flat 20, Einstein Road, Manchester",
-    "postcode": "M1 1AD",
-    "thirdParty": {
-      "fullName": "Melvyn Watson",
-      "emailAddress": "melvyn@watson.com",
-      "contactNumber": "",
-      "safeToCall": false,
-      "address": "6 Watson Meadow, Manchester",
-      "postcode": "M56 6BD",
-      "relationshipToClient": {
-        "selected": [
-          ""
-        ],
-        "available": [
-          "Parent or Guardian",
-          "Family member of friend",
-          "Professional",
-          "Legal adviser",
-          "Other"
-        ]
-      },
-      "passphraseSetUp": true,
-      "passphraseNotSetUpReason": "",
-      "passphrase": "Computer is Big"
-    }
+    "postcode": "M1 1AD"
   }
 ]
