@@ -24,30 +24,6 @@ inputs:
         required: true
     session_secret:
         description: "Session secret"
-    service_name:
-        description: "Service name"
-    service_phase:
-        description: "Service phase"
-    department_name:
-        description: "Department name"
-    department_url:
-        description: "Department url"
-    contact_email:
-        description: "Contact email"
-    contact_phone:
-        description: "Contact phone"
-    service_url:
-        description: "Service url"
-    session_name:
-        description: "Session name"
-    ratelimit_headers_enabled:
-        description: "Rate limit headers enabled"
-    ratelimit_storage_uri:
-        description: "Rate limit storage uri"
-    ratelimit_max:
-        description: "Rate limit max"
-    ratewindow_ms:
-        description: "Rate limit max"
     slack_webhook_url:
         description: "Slack webhook url"
 
@@ -73,24 +49,6 @@ runs:
           kubectl apply --record=false -f ./infrastructure/laa-manage-your-civil-cases-uat/
         fi
 
-    - name: Set environment variables
-      shell: bash
-      run: |
-        echo "SERVICE_NAME=${{ inputs.service_name || 'Manage your civil cases' }}" >> $GITHUB_ENV
-        echo "SERVICE_PHASE=${{ inputs.service_phase || 'Beta' }}" >> $GITHUB_ENV
-        echo "DEPARTMENT_NAME=${{ inputs.department_name || 'Legal Aid Agency' }}" >> $GITHUB_ENV
-        echo "DEPARTMENT_URL=${{ inputs.department_url || 'https://www.gov.uk/government/organisations/legal-aid-agency' }}" >> $GITHUB_ENV
-        echo "CONTACT_EMAIL=${{ inputs.contact_email || 'eligibility@justice.gov.uk' }}" >> $GITHUB_ENV
-        echo "CONTACT_PHONE=${{ inputs.contact_email || '' }}" >> $GITHUB_ENV
-        echo "SERVICE_URL=${{ inputs.service_url || 'https://www.gov.uk/legal-aid' }}" >> $GITHUB_ENV
-        echo "SESSION_SECRET=${{ inputs.sessions_secret || 'default-session-secret' }}" >> $GITHUB_ENV
-        echo "SESSION_NAME=${{ inputs.session_name || 'sessionId' }}" >> $GITHUB_ENV
-        echo "RATELIMIT_HEADERS_ENABLED=${{ inputs.ratelimit_headers_enabled || 'true' }}" >> $GITHUB_ENV
-        echo "RATELIMIT_STORAGE_URI=${{ inputs.ratelimit_storage_uri || '' }}" >> $GITHUB_ENV
-        echo "RATE_LIMIT_MAX=${{ inputs.ratelimit_max || '100' }}" >> $GITHUB_ENV
-        echo "RATE_WINDOW_MS=${{ inputs.ratewindow_ms || '900000' }}" >> $GITHUB_ENV
-        echo "NODE_ENV=production" >> $GITHUB_ENV
-
     - name: Deploy using Helm
       shell: bash
       run: ./scripts/deploy.sh ${{ inputs.app-environment }}
@@ -101,6 +59,7 @@ runs:
         GITHUB_SHA: ${{ github.sha }}
         GITHUB_REF_NAME: ${{ github.ref_name }}
         K8S_NAMESPACE: ${{ inputs.kube-namespace }}
+        SESSION_SECRET: ${{ inputs.session_secret }}
 
     - name: Notify deployment failure
       shell: bash
