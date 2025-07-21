@@ -51,11 +51,25 @@ jobs:
 
   snyk:
     name: Snyk Security Scan
-    uses: ministryofjustice/laa-reusable-github-actions/.github/workflows/snyk.yml@73a98b3336f71a21c46e6b588cd3afaaab052649
-    with:
-      tag: "laa-manage-your-civil-cases"
-    secrets:
-      snyk_token: ${{ secrets.SNYK_TOKEN }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build local Docker image
+        working-directory: ${{ github.workspace }}
+        run: |
+          pwd
+          ls
+          docker build -t laa-manage-your-civil-cases ./
+          docker save laa-manage-your-civil-cases -o image.tar     
+      - name: Run Snyk to scan Docker image from tarball
+        uses: snyk/actions/docker@master
+        with:
+          image: image.tar
+          args: --docker --severity-threshold=high
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
   build-image:
     name: Build Docker Image
