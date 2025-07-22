@@ -3,7 +3,7 @@ name: Deploy with Helm
 on:
   push:
     branches:
-      - '**'
+      - "**"
   workflow_dispatch: # Allows manual triggering of the workflow
 
 jobs:
@@ -59,10 +59,8 @@ jobs:
       - name: Build local Docker image
         working-directory: ${{ github.workspace }}
         run: |
-          pwd
-          ls
           docker build -t laa-manage-your-civil-cases ./
-          docker save laa-manage-your-civil-cases -o image.tar     
+          docker save laa-manage-your-civil-cases -o image.tar
 
       - name: Run Snyk to scan Docker image from tarball
         uses: snyk/actions/docker@master
@@ -127,7 +125,7 @@ jobs:
       - build-image
     # Only run tests when deploying to UAT
     if: success() && github.event_name != 'workflow_dispatch' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'uat' || github.event.inputs.environment == null)
-  
+
   deploy-uat:
     environment: uat
     runs-on: ubuntu-latest
@@ -155,6 +153,10 @@ jobs:
           kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
           session_secret: ${{ secrets.SESSION_SECRET }}
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          api_username: ${{ secrets.API_USERNAME }}
+          api_password: ${{ secrets.API_PASSWORD }}
+          api_client_id: ${{ secrets.API_CLIENT_ID }}
+          api_client_secret: ${{ secrets.API_CLIENT_SECRET }}
   
   deploy-staging:
     environment: staging
@@ -178,6 +180,10 @@ jobs:
           kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
           session_secret: ${{ secrets.SESSION_SECRET }}
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          api_username: ${{ secrets.API_USERNAME }}
+          api_password: ${{ secrets.API_PASSWORD }}
+          api_client_id: ${{ secrets.API_CLIENT_ID }}
+          api_client_secret: ${{ secrets.API_CLIENT_SECRET }}
 
   deploy-production:
     environment: production
@@ -201,3 +207,7 @@ jobs:
           kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
           session_secret: ${{ secrets.SESSION_SECRET }}
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          api_username: ${{ secrets.API_USERNAME }}
+          api_password: ${{ secrets.API_PASSWORD }}
+          api_client_id: ${{ secrets.API_CLIENT_ID }}
+          api_client_secret: ${{ secrets.API_CLIENT_SECRET }}

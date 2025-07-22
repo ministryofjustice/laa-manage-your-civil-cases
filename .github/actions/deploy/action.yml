@@ -28,19 +28,19 @@ inputs:
         description: "Slack webhook url"
 
 runs:
-    using: "composite"
-    steps:
+  using: "composite"
+  steps:
     - name: Checkout
       uses: actions/checkout@v4
 
     - name: Authenticate to the cluster
       uses: ministryofjustice/laa-reusable-github-actions/.github/actions/authenticate_to_cluster@2aa2676c3cd9876ec7037ee8b3d729d0306cb7c6
       with:
-            kube-cert: ${{ inputs.kube-cert }}
-            kube-token: ${{ inputs.kube-token }}
-            kube-cluster: ${{ inputs.kube-cluster }}
-            kube-namespace: ${{ inputs.kube-namespace }}
- 
+        kube-cert: ${{ inputs.kube-cert }}
+        kube-token: ${{ inputs.kube-token }}
+        kube-cluster: ${{ inputs.kube-cluster }}
+        kube-namespace: ${{ inputs.kube-namespace }}
+
     - name: Deploy infrastructure to UAT
       shell: bash
       run: |
@@ -53,13 +53,17 @@ runs:
       shell: bash
       run: ./scripts/deploy.sh ${{ inputs.app-environment }}
       env:
-        REGISTRY: ${{ inputs.ecr-registry_url }} 
+        REGISTRY: ${{ inputs.ecr-registry_url }}
         REPOSITORY: ${{ inputs.ecr-repository }}
         IMAGE_TAG: ${{ github.sha }}
         GITHUB_SHA: ${{ github.sha }}
         GITHUB_REF_NAME: ${{ github.ref_name }}
         K8S_NAMESPACE: ${{ inputs.kube-namespace }}
         SESSION_SECRET: ${{ inputs.session_secret }}
+        API_USERNAME: ${{ inputs.api_username }}
+        API_PASSWORD: ${{ inputs.api_password }}
+        API_CLIENT_ID: ${{ inputs.api_client_id }}
+        API_CLIENT_SECRET: ${{ inputs.api_client_secret }}
 
     - name: Notify deployment failure
       shell: bash

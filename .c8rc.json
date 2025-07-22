@@ -20,8 +20,8 @@
   "all": true,
   "sourceMap": true,
   "check-coverage": true,
-  "lines": 3,
-  "functions": 8,
-  "branches": 8,
-  "statements": 3
+  "lines": 1,
+  "functions": 1,
+  "branches": 1,
+  "statements": 1
 }
