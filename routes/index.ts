@@ -19,8 +19,6 @@ router.use('/cases', yourCasesRouter);
 // Mount the case details routes
 router.use('/cases', caseDetailsRouter);
 
-// Health check routes
-
 // liveness and readiness probes for Helm deployments
 router.get('/status', function (req: Request, res: Response): void {
   res.status(SUCCESSFUL_REQUEST).send('OK');
@@ -29,8 +27,6 @@ router.get('/status', function (req: Request, res: Response): void {
 router.get('/health', function (req: Request, res: Response): void {
   res.status(SUCCESSFUL_REQUEST).send('Healthy');
 });
-
-// Error handling
 
 // Global 404 handler - must be after all other routes
 router.use(function (req: Request, res: Response): void {

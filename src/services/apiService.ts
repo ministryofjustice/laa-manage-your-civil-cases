@@ -68,11 +68,6 @@ function transformClientDetailsItem(item: unknown): ClientDetailsResponse {
  * @param {unknown} item Raw case item
  * @returns {CaseData} Transformed case item
  */
-/**
- * Transform case item from raw fixture data to typed CaseData
- * @param {unknown} item Raw case item from fixture
- * @returns {CaseData} Transformed case data
- */
 function transformCaseItem(item: unknown): CaseData {
   if (!isRecord(item)) {
     throw new Error('Invalid case item: expected object');
@@ -87,7 +82,6 @@ function transformCaseItem(item: unknown): CaseData {
     dateOfBirth: formatDate(safeString(item.dateOfBirth)),
     lastModified: formatDate(safeOptionalString(item.lastModified) ?? ''),
     dateClosed: formatDate(safeOptionalString(item.dateClosed) ?? ''),
-// Additional client details fields
     phoneNumber: safeOptionalString(item.phoneNumber),
     safeToCall: Boolean(item.safeToCall),
     announceCall: Boolean(item.announceCall),
@@ -106,32 +100,6 @@ function transformCaseItem(item: unknown): CaseData {
  * Uses axios middleware from Express request for API calls
  */
 class ApiService {
-  /**
-   * Create configured axios instance with API credentials
-   * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
-   * @returns {AxiosInstanceWrapper} Configured axios instance
-   */
-  private static configureAxiosInstance(axiosMiddleware: AxiosInstanceWrapper): AxiosInstanceWrapper {
-    // Override base URL and add API-specific headers
-    const { axiosInstance } = axiosMiddleware;
-    const { defaults } = axiosInstance;
-    const { api: { baseUrl, timeout } } = config;
-
-    // Safely configure axios defaults
-    if (typeof baseUrl === 'string') {
-      defaults.baseURL = baseUrl;
-    }
-
-    if (typeof timeout === 'number') {
-      defaults.timeout = timeout;
-    }
-
-    defaults.headers.common['Content-Type'] = 'application/json';
-    defaults.headers.common.Accept = 'application/json';
-
-    return axiosMiddleware;
-  }
-
   /**
    * Get cases from API server using axios middleware
    * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
@@ -248,6 +216,32 @@ class ApiService {
       limit: limitFromHeader !== null ? parseInt(limitFromHeader, 10) : limit,
       totalPages: totalPagesFromHeader !== null ? parseInt(totalPagesFromHeader, 10) : undefined
     };
+  }
+
+  /**
+   * Create configured axios instance with API credentials
+   * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+   * @returns {AxiosInstanceWrapper} Configured axios instance
+   */
+  private static configureAxiosInstance(axiosMiddleware: AxiosInstanceWrapper): AxiosInstanceWrapper {
+    // Override base URL and add API-specific headers
+    const { axiosInstance } = axiosMiddleware;
+    const { defaults } = axiosInstance;
+    const { api: { baseUrl, timeout } } = config;
+
+    // Safely configure axios defaults
+    if (typeof baseUrl === 'string') {
+      defaults.baseURL = baseUrl;
+    }
+
+    if (typeof timeout === 'number') {
+      defaults.timeout = timeout;
+    }
+
+    defaults.headers.common['Content-Type'] = 'application/json';
+    defaults.headers.common.Accept = 'application/json';
+
+    return axiosMiddleware;
   }
 }
 
