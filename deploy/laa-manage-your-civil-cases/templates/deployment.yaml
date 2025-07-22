@@ -85,14 +85,6 @@ spec:
               value: "{{ .Values.env.API_TIMEOUT }}"
             - name: API_RETRIES
               value: "{{ .Values.env.API_RETRIES }}"
-            - name: API_USERNAME
-              value: "{{ .Values.env.API_USERNAME }}"
-            - name: API_PASSWORD
-              value: "{{ .Values.env.API_PASSWORD }}"
-            - name: API_CLIENT_ID
-              value: "{{ .Values.env.API_CLIENT_ID }}"
-            - name: API_CLIENT_SECRET
-              value: "{{ .Values.env.API_CLIENT_SECRET }}"
             - name: NODE_ENV
               value: "{{ .Values.env.NODE_ENV }}"
       {{- with .Values.volumes }}

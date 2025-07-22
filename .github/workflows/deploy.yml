@@ -155,6 +155,10 @@ jobs:
           kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
           session_secret: ${{ secrets.SESSION_SECRET }}
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          api_username: ${{ secrets.API_USERNAME }}
+          api_password: ${{ secrets.API_PASSWORD }}
+          api_client_id: ${{ secrets.API_CLIENT_ID }}
+          api_client_secret: ${{ secrets.API_CLIENT_SECRET }}
   
   deploy-staging:
     environment: staging
@@ -178,6 +182,10 @@ jobs:
           kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
           session_secret: ${{ secrets.SESSION_SECRET }}
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          api_username: ${{ secrets.API_USERNAME }}
+          api_password: ${{ secrets.API_PASSWORD }}
+          api_client_id: ${{ secrets.API_CLIENT_ID }}
+          api_client_secret: ${{ secrets.API_CLIENT_SECRET }}
 
   deploy-production:
     environment: production
@@ -201,3 +209,7 @@ jobs:
           kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
           session_secret: ${{ secrets.SESSION_SECRET }}
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          api_username: ${{ secrets.API_USERNAME }}
+          api_password: ${{ secrets.API_PASSWORD }}
+          api_client_id: ${{ secrets.API_CLIENT_ID }}
+          api_client_secret: ${{ secrets.API_CLIENT_SECRET }}
