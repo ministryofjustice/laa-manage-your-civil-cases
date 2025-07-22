@@ -13,9 +13,9 @@ RUN corepack enable
 # Install dependencies
 RUN yarn install --immutable
 
-# Create a non-root user
+# Create a non-root user  
 RUN addgroup -g 1001 -S appuser && \
-    adduser -u 1001 -G appuser -S appuser
+    adduser -u 1001 -S -G appuser appuser
 
 # Copy the rest of the application code to the working directory
 # and set ownership to the non-root user
