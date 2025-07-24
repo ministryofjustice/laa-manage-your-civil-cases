@@ -15,7 +15,7 @@ const messages: string[] = [
     "Welcome to GOVUK Frontend Express.",
     "Like what you see? Want to work with us?",
     "View our job availabilities or sign up for alerts:",
-    "{URL link to your departments jobs}" // Update this dynamically if needed
+    "https://www.jobtrain.co.uk/justicedigital"
 ];
 
 /**
