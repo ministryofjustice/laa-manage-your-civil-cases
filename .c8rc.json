@@ -17,7 +17,8 @@
     "**/*.d.ts",
     "**/*.test.ts",
     "src/scripts/custom.ts",
-    "src/scripts/frontendPackagesEntry.ts"
+    "src/scripts/frontendPackagesEntry.ts",
+    "middleware/index.ts"
   ],
   "all": true,
   "sourceMap": true,
