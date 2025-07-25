@@ -24,7 +24,8 @@
     "utils/helmetSetup.ts",
     "utils/rateLimitSetUp.ts",
     "utils/index.ts",
-    "utils/axiosSetup.ts" 
+    "utils/axiosSetup.ts",
+    "utils/nunjucksSetup.ts" 
   ],
   "all": true,
   "sourceMap": true,
