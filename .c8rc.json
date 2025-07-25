@@ -18,7 +18,11 @@
     "**/*.test.ts",
     "src/scripts/custom.ts",
     "src/scripts/frontendPackagesEntry.ts",
-    "middleware/index.ts"
+    "src/scripts/helpers/index.ts",
+    "src/scripts/pages/yourCases.ts",
+    "middleware/index.ts",
+    "utils/helmetSetup.ts",
+    "utils/index.ts"
   ],
   "all": true,
   "sourceMap": true,
