@@ -3,9 +3,6 @@ import { apiService } from '#src/services/apiService.js';
 import type { CaseData } from '#types/case-types.js';
 import { devLog, devError, createProcessedError } from '#src/scripts/helpers/index.js';
 
-// Create a new router for your-cases routes
-
-
 // Constants
 const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 20;
