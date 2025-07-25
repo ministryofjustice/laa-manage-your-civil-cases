@@ -22,7 +22,9 @@
     "src/scripts/pages/yourCases.ts",
     "middleware/index.ts",
     "utils/helmetSetup.ts",
-    "utils/index.ts"
+    "utils/rateLimitSetUp.ts",
+    "utils/index.ts",
+    "utils/axiosSetup.ts" 
   ],
   "all": true,
   "sourceMap": true,
