@@ -31,6 +31,11 @@ export {
   formatDate
 } from './dateFormatter.js';
 
+// Form validation utilities
+export {
+  validateForm
+} from './validateForm.js';
+
 // Error handling utilities
 export {
   extractErrorMessage,
@@ -40,5 +45,5 @@ export {
   isNotFoundError,
   isServerError,
   createProcessedError,
-  extractAndLogError
+  extractAndLogError,
 } from './errorHandler.js';

@@ -186,6 +186,37 @@ class ApiService {
   }
 
   /**
+   * Update client details by case reference
+   * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+   * @param {string} caseReference - Case reference number
+   * @param {Partial<ClientDetailsResponse>} updateData - Data to update
+   * @returns {Promise<ClientDetailsApiResponse>} API response with updated client details
+   */
+  static async updateClientDetails(
+    axiosMiddleware: AxiosInstanceWrapper,
+    caseReference: string,
+    updateData: Partial<ClientDetailsResponse>
+  ): Promise<ClientDetailsApiResponse> {
+    try {
+      devLog(`API: PUT ${API_PREFIX}/cases/${caseReference}`);
+      const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
+      const response = await configuredAxios.put(`${API_PREFIX}/cases/${caseReference}`, updateData);
+      devLog(`API: Update client details response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+      return {
+        data: transformClientDetailsItem(response.data),
+        status: 'success'
+      };
+    } catch (error) {
+      const errorMessage = extractAndLogError(error, 'API error');
+      return {
+        data: null,
+        status: 'error',
+        message: errorMessage
+      };
+    }
+  }
+
+  /**
    * Extract pagination metadata from response headers
    * @param {unknown} headers - Response headers from axios
    * @param {CaseApiParams} params - API parameters for fallback values

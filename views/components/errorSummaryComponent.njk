@@ -1,0 +1,23 @@
+{#
+  GOV.UK Error Summary Component Wrapper
+
+  Usage:
+  {% from "components/errorSummaryComponent.njk" import errorSummary %}
+
+  {{ errorSummary([
+    { text: "Enter a name", href: "#fullName" },
+    { text: "Another error", href: "#otherField" }
+  ]) }}
+
+  Parameters:
+  - errorList: Array of error objects ({ text, href })
+  - titleText: Optional, custom title (default: "There is a problem")
+#}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% macro errorSummary(errorList, titleText="There is a problem") %}
+  {{ govukErrorSummary({
+    titleText: titleText,
+    errorList: errorList
+  }) }}
+{% endmacro %}
