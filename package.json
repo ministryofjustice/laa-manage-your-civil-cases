@@ -74,7 +74,7 @@
     "chokidar": "4.0.3",
     "concurrently": "^9.2.0",
     "connect-livereload": "^0.6.1",
-    "cross-env": "^7.0.3",
+    "cross-env": "^10.0.0",
     "esbuild": "^0.25.6",
     "esbuild-plugin-copy": "^2.1.1",
     "esbuild-sass-plugin": "^3.3.1",
