@@ -13,22 +13,22 @@ export function getValidatedFormResult(fields: ValidationFields): ReturnValidati
     {
       isInvalid: fullNameEmpty,
       errorSummary: {
-        text: "Client name cannot be empty",
+        text: "Enter the client name",
         href: '#fullName',
       },
       inputError: {
-        text: "Enter the client's full name",
+        text: "Enter the client name",
         fieldName: 'fullName'
       }
     },
     {
       isInvalid: fullNameUnchanged,
       errorSummary: {
-        text: "You cannot save changes as you have not changed anything. You can make a change and save it, or select cancel.",
+        text: "Enter the client name, or select ‘Cancel'",
         href: '#fullName',
       },
       inputError: {
-        text: "Enter the client's full name.",
+        text: "Enter the client name, or select ‘Cancel’",
         fieldName: 'fullName'
       }
     },
