@@ -3,8 +3,10 @@
  */
 
 export interface ValidationFields {
-  fullName: string;
-  existingFullName: string;
+  fullName?: string;
+  existingFullName?: string;
+  emailAddress?: string;
+  existingEmail?: string;
 }
 
 export interface InputError {
