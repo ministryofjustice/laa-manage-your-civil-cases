@@ -29,6 +29,11 @@ jobs:
 
       - name: Run Mocha unit tests & c8 code coverage
         run: yarn c8 yarn test:unit --check-coverage
+        env:
+          CI: true
+          # Add session-related environment variables for unit tests
+          SESSION_SECRET: "mocha-test-secret" # Use a simple test secret for Mocha unit tests
+          SESSION_NAME: "sessionId"
 
       - name: Upload coverage artifact
         if: always()

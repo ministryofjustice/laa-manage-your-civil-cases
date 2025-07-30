@@ -102,6 +102,7 @@ export default [
       'node_modules/*',
       'public/*',
       'tests/**/*.spec.ts',
+      'tests/helpers/*', // Test helper utilities
       'docs/source/javascripts/application.js', // Parsing error this file was not found by the project service. Consider either including it in the `tsconfig.json` or including it in `allowDefaultProject`
       'eslint.config.js', // Parsing error this file was not found by the project service. Consider either including it in the `tsconfig.json` or including it in `allowDefaultProject`,
       'coverage' // Ignore the code coverage output from linter
