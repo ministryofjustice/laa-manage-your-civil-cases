@@ -76,7 +76,7 @@ export async function getEditClientEmailAddress(req: Request, res: Response, nex
   try {
     const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
     let currentEmail = '';
-    if (response.status === 'success' && response.data !== null) {
+    if (response.status === 'success' && response.data?.emailAddress) {
       currentEmail = safeString(response.data.emailAddress);
     }
     res.render('case_details/edit-client-email-address.njk', {
