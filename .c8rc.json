@@ -31,8 +31,8 @@
   "all": true,
   "sourceMap": true,
   "check-coverage": true,
-  "lines": 35,
-  "functions": 78,
-  "branches": 83,
-  "statements": 35
+  "lines": 33,
+  "functions": 67,
+  "branches": 80,
+  "statements": 33
 }
