@@ -51,7 +51,7 @@ describe("ASCII Art Banner", () => {
 			"Welcome to GOVUK Frontend Express.",
 			"Like what you see? Want to work with us?",
 			"View our job availabilities or sign up for alerts:",
-			"{URL link to your departments jobs}"
+			"https://www.jobtrain.co.uk/justicedigital"
 		];
 
 		// Check that each message is included in the output

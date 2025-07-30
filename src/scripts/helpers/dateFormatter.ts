@@ -10,14 +10,15 @@
  * @returns {string} Formatted date in D MMM YYYY format (e.g., "6 Jan 1986")
  */
 export function formatDate(dateString: string): string {
-  try {
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const month = date.toLocaleString('en-GB', { month: 'short' });
-    const year = date.getFullYear();
+  const date = new Date(dateString);
 
-    return `${day} ${month} ${year}`;
-  } catch {
+  if (isNaN(date.getTime())) {
     return dateString;
   }
+
+  const day = date.getDate();
+  const month = date.toLocaleString('en-GB', { month: 'short' });
+  const year = date.getFullYear();
+
+  return `${day} ${month} ${year}`;
 }
