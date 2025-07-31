@@ -1,3 +1,18 @@
+/**
+ * Form Validation Integration Tests
+ * 
+ * Tests the integration between validation rules and error formatting.
+ * Validates the complete form validation workflow including:
+ * - Error aggregation and filtering
+ * - GOV.UK error summary generation  
+ * - Input-specific error formatting
+ * - Form validity determination
+ * 
+ * Testing Level: Integration  
+ * Component: Form Processing Pipeline
+ * Dependencies: formValidationRules, form-validation types
+ */
+
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import { validateForm } from '#src/scripts/helpers/validateForm.js';
@@ -7,7 +22,7 @@ import type { ValidationFields } from '#types/form-validation.js';
 describe('Validate Form', () => {
   describe('validateForm', () => {
     describe('Valid Form Scenarios', () => {
-      it('should return no errors for valid name change', () => {
+      it('should process successful client name changes without validation errors', () => {
         const fields: ValidationFields = {
           fullName: 'John Doe',
           existingFullName: 'Jane Doe'
@@ -20,7 +35,7 @@ describe('Validate Form', () => {
         expect(result.errorSummaryList).to.be.empty;
       });
 
-      it('should return no errors for valid email change', () => {
+      it('should process successful client email changes without validation errors', () => {
         const fields: ValidationFields = {
           emailAddress: 'john@example.com',
           existingEmail: 'jane@example.com'
@@ -36,7 +51,7 @@ describe('Validate Form', () => {
     });
 
     describe('Invalid Form Scenarios', () => {
-      it('should return error for empty name', () => {
+      it('should generate appropriate error messages and summary for empty client name', () => {
         const fields: ValidationFields = {
           fullName: '',
           existingFullName: 'Jane Doe'

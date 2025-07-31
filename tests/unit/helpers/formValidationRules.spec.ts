@@ -1,3 +1,18 @@
+/**
+ * Form Validation Rules Tests
+ * 
+ * Tests the core validation logic for client details editing forms.
+ * Validates business rules for name and email field validation including:
+ * - Empty field detection
+ * - Unchanged value detection  
+ * - Email format validation
+ * - Error message generation for GOV.UK design system compliance
+ * 
+ * Testing Level: Unit
+ * Component: Business Logic Helpers
+ * Dependencies: form-validation types
+ */
+
 import { describe, it } from 'mocha';
 import { expect } from 'chai';
 import { getValidatedFormResult } from '#src/scripts/helpers/formValidationRules.js';
@@ -6,7 +21,7 @@ import type { ValidationFields } from '#types/form-validation.js';
 describe('Form Validation Rules', () => {
   describe('getValidatedFormResult', () => {
     describe('Full Name Validation', () => {
-      it('should return empty validation error when fullName is provided and different from existing', () => {
+      it('should pass validation when client name is provided and differs from existing value', () => {
         const fields: ValidationFields = {
           fullName: 'John Doe',
           existingFullName: 'Jane Doe'
@@ -18,7 +33,7 @@ describe('Form Validation Rules', () => {
         expect(fullNameErrors).to.have.length(0);
       });
 
-      it('should return empty name error when fullName is empty', () => {
+      it('should require client name when field is empty', () => {
         const fields: ValidationFields = {
           fullName: '',
           existingFullName: 'Jane Doe'
@@ -34,7 +49,7 @@ describe('Form Validation Rules', () => {
         expect(emptyNameError?.inputError?.fieldName).to.equal('fullName');
       });
 
-      it('should return unchanged name error when fullName matches existing (including empty)', () => {
+      it('should reject unchanged client name and suggest cancellation', () => {
         const fields: ValidationFields = {
           fullName: 'John Doe',
           existingFullName: 'John Doe'
@@ -51,7 +66,7 @@ describe('Form Validation Rules', () => {
         expect(unchangedNameError?.inputError?.fieldName).to.equal('fullName');
       });
 
-      it('should return both empty and unchanged errors when fullName is empty and matches existing empty', () => {
+      it('should trigger both empty and unchanged validation errors when name field is empty and matches existing empty value', () => {
         const fields: ValidationFields = {
           fullName: '',
           existingFullName: ''
@@ -72,7 +87,7 @@ describe('Form Validation Rules', () => {
         expect(unchangedNameError).to.exist;
       });
 
-      it('should handle whitespace in fullName correctly', () => {
+      it('should treat whitespace-only names as empty and trigger validation error', () => {
         const fields: ValidationFields = {
           fullName: '   ',
           existingFullName: 'Jane Doe'
@@ -89,7 +104,7 @@ describe('Form Validation Rules', () => {
     });
 
     describe('Email Address Validation', () => {
-      it('should return no validation errors when email is valid and different from existing', () => {
+      it('should pass validation when email address is valid and differs from existing value', () => {
         const fields: ValidationFields = {
           emailAddress: 'john@example.com',
           existingEmail: 'jane@example.com'
@@ -101,7 +116,7 @@ describe('Form Validation Rules', () => {
         expect(emailErrors).to.have.length(0);
       });
 
-      it('should return unchanged email error when email matches existing (non-empty)', () => {
+      it('should reject unchanged email address and suggest cancellation when email matches existing value', () => {
         const fields: ValidationFields = {
           emailAddress: 'john@example.com',
           existingEmail: 'john@example.com'
@@ -118,7 +133,7 @@ describe('Form Validation Rules', () => {
         expect(unchangedEmailError?.inputError?.fieldName).to.equal('emailAddress');
       });
 
-      it('should not return unchanged email error when email is empty (even if matches existing)', () => {
+      it('should allow empty email addresses without triggering unchanged validation (optional field behavior)', () => {
         const fields: ValidationFields = {
           emailAddress: '',
           existingEmail: ''
@@ -134,7 +149,7 @@ describe('Form Validation Rules', () => {
         expect(unchangedEmailError).to.not.exist; // Should not have unchanged error for empty emails
       });
 
-      it('should return format error for invalid email format', () => {
+      it('should reject invalid email format with GOV.UK standard error message', () => {
         const fields: ValidationFields = {
           emailAddress: 'invalid-email',
           existingEmail: 'valid@example.com'

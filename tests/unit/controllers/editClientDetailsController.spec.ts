@@ -1,8 +1,17 @@
 /**
  * Edit Client Details Controller Tests
  * 
- * Simple tests for the edit client details controller to boost function coverage.
- * These test the basic functionality without complex validation logic.
+ * Tests the Express.js controllers for client details editing functionality.
+ * Covers HTTP request/response handling for name and email editing forms including:
+ * - GET route handlers for form display
+ * - POST route handlers for form submission  
+ * - API integration and error handling
+ * - CSRF token management
+ * - Form data processing and validation integration
+ * 
+ * Testing Level: Unit (Controller Layer)
+ * Component: Express.js Controllers
+ * Dependencies: apiService, form validation helpers
  */
 
 import { describe, it, beforeEach, afterEach } from 'mocha';
@@ -65,7 +74,7 @@ describe('Edit Client Details Controller', () => {
   });
 
   describe('getEditClientName', () => {
-    it('should configure edit name form response with existing data', async () => {
+    it('should render name editing form with pre-populated client data and CSRF protection', async () => {
       // Arrange
       const mockApiResponse = {
         status: 'success',
@@ -85,7 +94,7 @@ describe('Edit Client Details Controller', () => {
       expect(renderStub.calledWith('case_details/edit-client-name.njk')).to.be.true;
     });
 
-    it('should handle API errors', async () => {
+    it('should delegate API errors to Express error handling middleware', async () => {
       // Arrange
       const error = new Error('API Error');
       apiServiceGetStub.rejects(error);
@@ -99,7 +108,7 @@ describe('Edit Client Details Controller', () => {
   });
 
   describe('postEditClientName', () => {
-    it('should process valid name update', async () => {
+    it('should process successful client name update and redirect to case details', async () => {
       // Arrange
       req.body = { fullName: 'Jane Smith' };
       
