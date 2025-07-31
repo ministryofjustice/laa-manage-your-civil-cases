@@ -9,10 +9,10 @@ import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import type { Request, Response, NextFunction } from 'express';
-import { handleCaseDetailsTab } from '../../../src/scripts/controllers/caseDetailsController.js';
-import { apiService } from '../../../src/services/apiService.js';
+import { handleCaseDetailsTab } from '#src/scripts/controllers/caseDetailsController.js';
+import { apiService } from '#src/services/apiService.js';
 // Import to get global type declarations for axiosMiddleware
-import '../../../utils/axiosSetup.js';
+import '#utils/axiosSetup.js';
 
 describe('Case Details Controller', () => {
   let req: Partial<Request>;

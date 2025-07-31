@@ -14,10 +14,10 @@ import {
   postEditClientName,
   getEditClientEmailAddress,
   postEditClientEmailAddress
-} from '../../../src/scripts/controllers/editClientDetailsController.js';
-import { apiService } from '../../../src/services/apiService.js';
+} from '#src/scripts/controllers/editClientDetailsController.js';
+import { apiService } from '#src/services/apiService.js';
 // Import to get global type declarations for axiosMiddleware
-import '../../../utils/axiosSetup.js';
+import '#utils/axiosSetup.js';
 
 // Define the RequestWithMiddleware interface for testing
 interface RequestWithMiddleware extends Request {
