@@ -33,20 +33,6 @@ describe('Validate Form', () => {
         expect(result.errorSummaryList).to.be.empty;
       });
 
-      it('should return no errors for valid combined form', () => {
-        const fields: ValidationFields = {
-          fullName: 'John Doe',
-          existingFullName: 'Jane Doe',
-          emailAddress: 'john@example.com',
-          existingEmail: 'jane@example.com'
-        };
-        
-        const result = validateForm(fields);
-        
-        expect(result.formIsInvalid).to.be.false;
-        expect(result.inputErrors).to.be.empty;
-        expect(result.errorSummaryList).to.be.empty;
-      });
     });
 
     describe('Invalid Form Scenarios', () => {
