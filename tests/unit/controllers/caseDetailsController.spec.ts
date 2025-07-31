@@ -73,7 +73,7 @@ describe('Case Details Controller', () => {
         req as Request,
         res as Response,
         next,
-        'details'
+        'opened'
       );
 
       // Assert

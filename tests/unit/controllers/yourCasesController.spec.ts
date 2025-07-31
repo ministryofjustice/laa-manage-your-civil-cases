@@ -52,7 +52,7 @@ describe('Your Cases Controller', () => {
       // Mock API response
       apiServiceStub.resolves({
         status: 'success',
-        data: [{ id: '1', caseReference: 'TEST123' }],
+        data: [{ caseReference: 'TEST123' }],
         pagination: { total: 1, page: 1, limit: 20 }
       });
 
