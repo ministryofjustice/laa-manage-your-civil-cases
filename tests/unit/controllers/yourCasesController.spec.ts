@@ -1,3 +1,18 @@
+/**
+ * Your Cases Controller Tests
+ * 
+ * Tests the Express.js controller factory for case listing functionality.
+ * Covers dynamic route handler generation for different case types including:
+ * - Case type routing (new, accepted, opened, closed)
+ * - API integration for case data fetching
+ * - Pagination handling and view rendering
+ * - Error state management and graceful degradation
+ * 
+ * Testing Level: Unit (Controller Layer)
+ * Component: Express.js Dynamic Route Handlers
+ * Dependencies: apiService, case listing templates
+ */
+
 import type { Request, Response, NextFunction } from 'express';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
@@ -33,7 +48,7 @@ describe('Your Cases Controller', () => {
   });
 
   describe('createCaseRouteHandler', () => {
-    it('should create handler that renders cases page successfully', async () => {
+    it('should generate route handler that successfully renders case listing page with API data and pagination', async () => {
       // Mock API response
       apiServiceStub.resolves({
         status: 'success',
@@ -48,7 +63,7 @@ describe('Your Cases Controller', () => {
       expect(apiServiceStub.calledOnce).to.be.true;
     });
 
-    it('should handle API errors gracefully', async () => {
+    it('should handle API service failures gracefully and still render page with empty state', async () => {
       apiServiceStub.resolves({
         status: 'error',
         message: 'API Error'

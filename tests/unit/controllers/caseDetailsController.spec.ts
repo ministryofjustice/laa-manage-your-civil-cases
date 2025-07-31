@@ -1,8 +1,16 @@
 /**
  * Case Details Controller Tests
  * 
- * Simple tests for the case details controller to boost function coverage.
- * These test the basic functionality without complex API mocking.
+ * Tests the Express.js controller for individual case detail viewing functionality.
+ * Covers case detail page routing and data presentation including:
+ * - Tab-based navigation handling (details, evidence, proceedings)
+ * - API integration for case-specific data retrieval
+ * - Error handling and user feedback
+ * - Template rendering with case context
+ * 
+ * Testing Level: Unit (Controller Layer)
+ * Component: Express.js Case Detail Controllers
+ * Dependencies: apiService, case detail templates
  */
 
 import { describe, it, beforeEach, afterEach } from 'mocha';
@@ -47,7 +55,7 @@ describe('Case Details Controller', () => {
   });
 
   describe('handleCaseDetailsTab', () => {
-    it('should configure response with correct template and client data', async () => {
+    it('should render case details page with client data and correct template for specified tab', async () => {
       // Arrange
       const mockApiResponse = {
         status: 'success',
@@ -74,7 +82,7 @@ describe('Case Details Controller', () => {
       expect(renderStub.calledWith('case_details/index.njk')).to.be.true;
     });
 
-    it('should return 400 status for missing case reference', async () => {
+    it('should return 400 Bad Request status when case reference parameter is missing from URL', async () => {
       // Arrange
       req.params = {};
 
@@ -91,7 +99,7 @@ describe('Case Details Controller', () => {
       expect(statusStub.calledWith(400)).to.be.true;
     });
 
-    it('should pass processed errors to error handler', async () => {
+    it('should delegate API errors to Express error handling middleware with user-friendly message', async () => {
       // Arrange
       const error = new Error('API Error');
       apiServiceStub.rejects(error);
