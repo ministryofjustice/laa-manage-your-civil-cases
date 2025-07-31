@@ -3,18 +3,16 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% set phoneNumberContent %}
-{% if data.safeToCall and data.announceCall %}
-  {{ data.phoneNumber }}
-{% elif data.safeToCall and not data.announceCall %}
-  {{ data.phoneNumber }}
-  {{ govukWarningText({
+  {% if data.safeToCall %}
+    {{ data.phoneNumber }}
+    {% if not data.announceCall %}
+      {{ govukWarningText({
         text: "Do not say the call is from Civil Legal Advice",
         iconFallbackText: "Warning"
       }) }}
-{% elif not data.safeToCall %}
+    {% endif %}
+  {% else %}
     The client is not safe to call
-{% else %}
-    No phone number conditions met
   {% endif %}
 {% endset %}
 
@@ -167,7 +165,7 @@
       actions: {
         items: [
           {
-            href: "/",
+            href: "/cases/" + data.caseReference + "/client-details/edit/phone-number",
             text: "Change",
             visuallyHiddenText: "Change Phone number"
           }

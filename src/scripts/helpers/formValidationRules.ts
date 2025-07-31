@@ -79,5 +79,60 @@ export function getValidatedFormResult(fields: ValidationFields): ReturnValidati
     );
   }
 
+  if (typeof fields.phoneNumber === 'string' && typeof fields.existingPhoneNumber === 'string') {
+    /**
+     * Phone number regex validation
+     * Accepts digits, spaces, dashes, and starts with optional + or 0
+     * E.g., +447986512345, 07986 512345, 020-7946-0018
+     * @param {string} phoneNumber - The phone number to check
+     * @returns {boolean} returns boolean, as to whether the phone number matches the validation
+     * 
+     */
+    function isValidPhoneNumber(phoneNumber: string): boolean {
+      const phoneNumberRegex = /^(\+?\d{1,3})?[-\s]?\(?\d{2,5}\)?[-\s]?\d{3,5}[-\s]?\d{3,5}$/;
+      return phoneNumberRegex.test(phoneNumber.trim());
+    }
+
+    const phoneNumberEmpty = fields.phoneNumber.trim() === '';
+    const phoneNumberUnchanged = fields.phoneNumber === fields.existingPhoneNumber;
+    const phoneNumberFormatNotValid = !phoneNumberEmpty && !isValidPhoneNumber(fields.phoneNumber);
+
+    validations.push(
+      {
+        isInvalid: phoneNumberEmpty,
+        errorSummary: {
+          text: "Enter the client phone number",
+          href: '#phoneNumber',
+        },
+        inputError: {
+          text: "Enter the phone number",
+          fieldName: 'phoneNumber'
+        }
+      },
+      {
+        isInvalid: phoneNumberUnchanged,
+        errorSummary: {
+          text: "Update if the client is safe to call, update the client phone number, or select ‘Cancel’",
+          href: '#phoneNumber',
+        },
+        inputError: {
+          text: "Update if the client is safe to call, update the client phone number, or select ‘Cancel’",
+          fieldName: 'phoneNumber'
+        }
+      },
+      {
+        isInvalid: phoneNumberFormatNotValid,
+        errorSummary: {
+          text: "Enter a valid phone number",
+          href: '#phoneNumber',
+        },
+        inputError: {
+          text: "Enter a valid phone number",
+          fieldName: 'phoneNumber'
+        }
+      }
+    );
+  }
+
   return validations;
 }
