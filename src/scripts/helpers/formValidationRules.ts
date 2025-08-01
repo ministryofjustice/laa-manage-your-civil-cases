@@ -1,4 +1,5 @@
 import type { ReturnValidation, ValidationFields } from '#types/form-validation.js';
+import { isValidPhoneNumber } from 'libphonenumber-js';
 
 /**
  * Returns an array of validation rules for client details.
@@ -88,19 +89,20 @@ export function getValidatedFormResult(fields: ValidationFields): ReturnValidati
      * @returns {boolean} returns boolean, as to whether the phone number matches the validation
      * 
      */
-    function isValidPhoneNumber(phoneNumber: string): boolean {
+    function isValidUKPhoneNumber(phoneNumber: string): boolean {
       const phoneNumberRegex = /^(\+?\d{1,3})?[-\s]?\(?\d{2,5}\)?[-\s]?\d{3,5}[-\s]?\d{3,5}$/;
       return phoneNumberRegex.test(phoneNumber.trim());
     }
 
     const phoneNumberEmpty = fields.phoneNumber.trim() === '';
-    const phoneNumberFormatNotValid = !phoneNumberEmpty && !isValidPhoneNumber(fields.phoneNumber);
+    const phoneNumberFormatNotValid = !phoneNumberEmpty && !isValidUKPhoneNumber(fields.phoneNumber) && !isValidPhoneNumber(fields.phoneNumber, 'IN');
+    const phoneNumberUnchanged = fields.phoneNumber === fields.existingPhoneNumber;
     const safeToCallUnchanged = !phoneNumberFormatNotValid && !phoneNumberEmpty && fields.safeToCall === fields.existingSafeToCall;
-    const phoneNumberUnchanged = safeToCallUnchanged && fields.phoneNumber === fields.existingPhoneNumber;
+    const combinedSafeToCallAndPhoneNumberUnchanged = phoneNumberUnchanged && safeToCallUnchanged
 
     validations.push(
       {
-        isInvalid: safeToCallUnchanged,
+        isInvalid: combinedSafeToCallAndPhoneNumberUnchanged,
         errorSummary: {
           text: "Update if the client is safe to call, update the client phone number, or select ‘Cancel’",
           href: '#safeToCall',
@@ -111,7 +113,7 @@ export function getValidatedFormResult(fields: ValidationFields): ReturnValidati
         }
       },
       {
-        isInvalid: phoneNumberUnchanged,
+        isInvalid: combinedSafeToCallAndPhoneNumberUnchanged,
         errorSummary: {
           text: "Update if the client is safe to call, update the client phone number, or select ‘Cancel’",
           href: '#phoneNumber',
