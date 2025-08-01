@@ -1,4 +1,5 @@
 import type { ReturnValidation, ValidationFields } from '#types/form-validation.js';
+import { isValidPhoneNumber } from 'libphonenumber-js';
 
 /**
  * Returns an array of validation rules for client details.
@@ -49,9 +50,10 @@ export function getValidatedFormResult(fields: ValidationFields): ReturnValidati
       return emailRegex.test(email);
     }
 
-    const emailEmpty = fields.emailAddress.trim() === '';
-    const emailUnchanged = !emailEmpty && fields.emailAddress === fields.existingEmail;
-    const emailFormatNotValid = !emailEmpty && !isValidEmail(fields.emailAddress);
+    const trimmedEmail = fields.emailAddress.trim();
+    const emailEmpty = trimmedEmail === '';
+    const emailUnchanged = trimmedEmail === fields.existingEmail;
+    const emailFormatNotValid = !emailEmpty && !isValidEmail(trimmedEmail);
 
     validations.push(
       {
@@ -74,6 +76,63 @@ export function getValidatedFormResult(fields: ValidationFields): ReturnValidati
         inputError: {
           text: "Enter an email address in the correct format, like name@example.com",
           fieldName: 'emailAddress'
+        }
+      }
+    );
+  }
+
+  if (typeof fields.phoneNumber === 'string' && typeof fields.existingPhoneNumber === 'string') {
+    const trimmedPhone = fields.phoneNumber.trim();
+    const isPhoneEmpty = trimmedPhone === '';
+    const isPhoneUnchanged = fields.phoneNumber === fields.existingPhoneNumber;
+    const phoneIsValid = isValidPhoneNumber(trimmedPhone, 'GB') || isValidPhoneNumber(trimmedPhone, 'IN');
+    const isPhoneInvalid = !isPhoneEmpty && !phoneIsValid;
+    const isSafeToCallUnchanged = fields.safeToCall === fields.existingSafeToCall;
+    const isCombinedUnchanged = isPhoneUnchanged && isSafeToCallUnchanged;
+
+    validations.push(
+      {
+        isInvalid: isCombinedUnchanged,
+        errorSummary: {
+          text: "Update if the client is safe to call or select ‘Cancel’",
+          href: '#safeToCall',
+        },
+        inputError: {
+          text: "Update if the client is safe to call or select ‘Cancel’",
+          fieldName: 'safeToCall'
+        }
+      },
+      {
+        isInvalid: isCombinedUnchanged,
+        errorSummary: {
+          text: "Update the client phone number or select ‘Cancel’",
+          href: '#phoneNumber',
+        },
+        inputError: {
+          text: "Update the client phone number or select ‘Cancel’",
+          fieldName: 'phoneNumber'
+        }
+      },
+      {
+        isInvalid: isPhoneEmpty,
+        errorSummary: {
+          text: "Enter the client phone number",
+          href: '#phoneNumber',
+        },
+        inputError: {
+          text: "Enter the phone number",
+          fieldName: 'phoneNumber'
+        }
+      },
+      {
+        isInvalid: isPhoneInvalid,
+        errorSummary: {
+          text: "Enter a valid phone number",
+          href: '#phoneNumber',
+        },
+        inputError: {
+          text: "Enter a valid phone number",
+          fieldName: 'phoneNumber'
         }
       }
     );
