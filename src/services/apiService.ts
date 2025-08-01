@@ -47,6 +47,26 @@ const EMPTY_TOTAL = 0;
 const API_PREFIX = process.env.API_PREFIX ?? '/latest/mock'; // API endpoint prefix - configurable via env
 
 /**
+ * Safely format a date string for display, handling empty or invalid dates
+ * @param {string} dateString - Date string from API
+ * @returns {string} Formatted date or placeholder for empty/invalid dates
+ */
+function safeFormatDate(dateString: string): string {
+  // Handle empty or whitespace-only strings
+  if (dateString === '' || dateString.trim() === '') {
+    return '-';
+  }
+  
+  try {
+    return formatDate(dateString);
+  } catch (error) {
+    // Log the invalid date for debugging but don't block the UI
+    devLog(`Invalid date format received: "${dateString}"`);
+    return 'Invalid date';
+  }
+}
+
+/**
  * Transform raw client details item to display format
  * @param {unknown} item Raw client details item
  * @returns {ClientDetailsResponse} Transformed client details item
@@ -62,7 +82,7 @@ function transformClientDetailsItem(item: unknown): ClientDetailsResponse {
     // Then override specific fields
     caseReference: safeString(item.caseReference),
     fullName: safeString(item.fullName),
-    dateOfBirth: formatDate(safeString(item.dateOfBirth))
+    dateOfBirth: safeFormatDate(safeString(item.dateOfBirth))
   };
 }
 
@@ -100,11 +120,11 @@ function transformCaseItem(item: unknown): CaseData {
     fullName: safeString(item.fullName),
     caseReference: safeString(item.caseReference),
     refCode: safeString(item.refCode),
-    dateReceived: formatDate(safeString(item.dateReceived)),
+    dateReceived: safeFormatDate(safeString(item.dateReceived)),
     caseStatus: safeString(item.caseStatus),
-    dateOfBirth: formatDate(safeString(item.dateOfBirth)),
-    lastModified: formatDate(safeOptionalString(item.lastModified) ?? ''),
-    dateClosed: formatDate(safeOptionalString(item.dateClosed) ?? ''),
+    dateOfBirth: safeFormatDate(safeString(item.dateOfBirth)),
+    lastModified: safeFormatDate(safeOptionalString(item.lastModified) ?? ''),
+    dateClosed: safeFormatDate(safeOptionalString(item.dateClosed) ?? ''),
     phoneNumber: safeOptionalString(item.phoneNumber),
     safeToCall: Boolean(item.safeToCall),
     announceCall: Boolean(item.announceCall),
