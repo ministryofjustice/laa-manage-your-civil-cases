@@ -91,22 +91,22 @@ export function getValidatedFormResult(fields: ValidationFields): ReturnValidati
       {
         isInvalid: combinedSafeToCallAndPhoneNumberUnchanged,
         errorSummary: {
-          text: "Update if the client is safe to call, update the client phone number, or select ‘Cancel’",
+          text: "Update if the client is safe to call or select ‘Cancel’",
           href: '#safeToCall',
         },
         inputError: {
-          text: "Update if the client is safe to call, update the client phone number, or select ‘Cancel’",
+          text: "Update if the client is safe to call or select ‘Cancel’",
           fieldName: 'safeToCall'
         }
       },
       {
         isInvalid: combinedSafeToCallAndPhoneNumberUnchanged,
         errorSummary: {
-          text: "Update if the client is safe to call, update the client phone number, or select ‘Cancel’",
+          text: "Update the client phone number or select ‘Cancel’",
           href: '#phoneNumber',
         },
         inputError: {
-          text: "Update if the client is safe to call, update the client phone number, or select ‘Cancel’",
+          text: "Update the client phone number or select ‘Cancel’",
           fieldName: 'phoneNumber'
         }
       },
