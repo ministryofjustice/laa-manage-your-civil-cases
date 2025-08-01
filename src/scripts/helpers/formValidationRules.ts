@@ -50,9 +50,10 @@ export function getValidatedFormResult(fields: ValidationFields): ReturnValidati
       return emailRegex.test(email);
     }
 
-    const emailEmpty = fields.emailAddress.trim() === '';
-    const emailUnchanged = !emailEmpty && fields.emailAddress === fields.existingEmail;
-    const emailFormatNotValid = !emailEmpty && !isValidEmail(fields.emailAddress);
+    const trimmedEmail = fields.emailAddress.trim();
+    const emailEmpty = trimmedEmail === '';
+    const emailUnchanged = trimmedEmail === fields.existingEmail;
+    const emailFormatNotValid = !emailEmpty && !isValidEmail(trimmedEmail);
 
     validations.push(
       {
@@ -81,15 +82,16 @@ export function getValidatedFormResult(fields: ValidationFields): ReturnValidati
   }
 
   if (typeof fields.phoneNumber === 'string' && typeof fields.existingPhoneNumber === 'string') {
-    const phoneNumberEmpty = fields.phoneNumber.trim() === '';
-    const phoneNumberFormatNotValid = !phoneNumberEmpty && !isValidPhoneNumber(fields.phoneNumber, 'GB') && !isValidPhoneNumber(fields.phoneNumber, 'IN');
-    const phoneNumberUnchanged = fields.phoneNumber === fields.existingPhoneNumber;
-    const safeToCallUnchanged = !phoneNumberFormatNotValid && !phoneNumberEmpty && fields.safeToCall === fields.existingSafeToCall;
-    const combinedSafeToCallAndPhoneNumberUnchanged = phoneNumberUnchanged && safeToCallUnchanged
+    const trimmedPhone = fields.phoneNumber.trim();
+    const isPhoneEmpty = trimmedPhone === '';
+    const isPhoneUnchanged = fields.phoneNumber === fields.existingPhoneNumber;
+    const isPhoneInvalid = !isPhoneEmpty && !isValidPhoneNumber(trimmedPhone, 'GB') || !isValidPhoneNumber(trimmedPhone, 'IN');
+    const isSafeToCallUnchanged = fields.safeToCall === fields.existingSafeToCall;
+    const isCombinedUnchanged = isPhoneUnchanged && isSafeToCallUnchanged;
 
     validations.push(
       {
-        isInvalid: combinedSafeToCallAndPhoneNumberUnchanged,
+        isInvalid: isCombinedUnchanged,
         errorSummary: {
           text: "Update if the client is safe to call or select ‘Cancel’",
           href: '#safeToCall',
@@ -100,7 +102,7 @@ export function getValidatedFormResult(fields: ValidationFields): ReturnValidati
         }
       },
       {
-        isInvalid: combinedSafeToCallAndPhoneNumberUnchanged,
+        isInvalid: isCombinedUnchanged,
         errorSummary: {
           text: "Update the client phone number or select ‘Cancel’",
           href: '#phoneNumber',
@@ -111,7 +113,7 @@ export function getValidatedFormResult(fields: ValidationFields): ReturnValidati
         }
       },
       {
-        isInvalid: phoneNumberEmpty,
+        isInvalid: isPhoneEmpty,
         errorSummary: {
           text: "Enter the client phone number",
           href: '#phoneNumber',
@@ -122,7 +124,7 @@ export function getValidatedFormResult(fields: ValidationFields): ReturnValidati
         }
       },
       {
-        isInvalid: phoneNumberFormatNotValid,
+        isInvalid: isPhoneInvalid,
         errorSummary: {
           text: "Enter a valid phone number",
           href: '#phoneNumber',
