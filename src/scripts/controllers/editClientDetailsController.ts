@@ -139,9 +139,9 @@ export async function getEditClientPhoneNumber(req: Request, res: Response, next
     const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
     let currentSafeToCall = '';
     let currentPhoneNumber = '';
-    const announceCall = response.data?.announceCall
-    const phoneNumber = response.data?.phoneNumber
     const safeToCall = response.data?.safeToCall
+    const phoneNumber = response.data?.phoneNumber
+    const announceCall = response.data?.announceCall
     if (response.status === 'success' && typeof phoneNumber === 'string' && typeof safeToCall === 'boolean') {
       currentSafeToCall = safeString(safeToCall)
       currentPhoneNumber = safeString(phoneNumber);
@@ -175,7 +175,7 @@ export async function postEditClientPhoneNumber(req: Request, res: Response, nex
 
   const announceCall = hasProperty(req.body, 'announceCall') ? req.body.announceCall : false;
 
-  const { inputErrors, errorSummaryList, formIsInvalid } = validateForm({ phoneNumber, existingPhoneNumber });
+  const { inputErrors, errorSummaryList, formIsInvalid } = validateForm({ safeToCall, existingSafeToCall, phoneNumber, existingPhoneNumber });
 
   if (formIsInvalid) {
     const renderOptions = {

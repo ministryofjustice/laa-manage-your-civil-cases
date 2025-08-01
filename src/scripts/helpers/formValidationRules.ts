@@ -94,8 +94,8 @@ export function getValidatedFormResult(fields: ValidationFields): ReturnValidati
     }
 
     const phoneNumberEmpty = fields.phoneNumber.trim() === '';
-    const phoneNumberUnchanged = fields.phoneNumber === fields.existingPhoneNumber;
     const phoneNumberFormatNotValid = !phoneNumberEmpty && !isValidPhoneNumber(fields.phoneNumber);
+    const safeToCallAndPhoneNumberUnchanged = fields.phoneNumber === fields.existingPhoneNumber && fields.safeToCall === fields.existingSafeToCall;
 
     validations.push(
       {
@@ -106,17 +106,6 @@ export function getValidatedFormResult(fields: ValidationFields): ReturnValidati
         },
         inputError: {
           text: "Enter the phone number",
-          fieldName: 'phoneNumber'
-        }
-      },
-      {
-        isInvalid: phoneNumberUnchanged,
-        errorSummary: {
-          text: "Update if the client is safe to call, update the client phone number, or select ‘Cancel’",
-          href: '#phoneNumber',
-        },
-        inputError: {
-          text: "Update if the client is safe to call, update the client phone number, or select ‘Cancel’",
           fieldName: 'phoneNumber'
         }
       },
@@ -132,7 +121,38 @@ export function getValidatedFormResult(fields: ValidationFields): ReturnValidati
         }
       }
     );
+
+    if (safeToCallAndPhoneNumberUnchanged) {
+      const message = "Update if the client is safe to call, update the client phone number, or select ‘Cancel’";
+
+      validations.push(
+        {
+          isInvalid: safeToCallAndPhoneNumberUnchanged,
+          errorSummary: {
+            text: message,
+            href: '#phoneNumber',
+          },
+          inputError: {
+            text: message,
+            fieldName: 'phoneNumber'
+          }
+        },
+        {
+          isInvalid: true,
+          errorSummary: {
+            text: message,
+            href: '#safeToCall',
+          },
+          inputError: {
+            text: message,
+            fieldName: 'safeToCall'
+          }
+        }
+      );
+    }
   }
+
+
 
   return validations;
 }
