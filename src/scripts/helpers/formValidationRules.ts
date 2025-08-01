@@ -85,7 +85,8 @@ export function getValidatedFormResult(fields: ValidationFields): ReturnValidati
     const trimmedPhone = fields.phoneNumber.trim();
     const isPhoneEmpty = trimmedPhone === '';
     const isPhoneUnchanged = fields.phoneNumber === fields.existingPhoneNumber;
-    const isPhoneInvalid = !isPhoneEmpty && !isValidPhoneNumber(trimmedPhone, 'GB') || !isValidPhoneNumber(trimmedPhone, 'IN');
+    const phoneIsValid = isValidPhoneNumber(trimmedPhone, 'GB') || isValidPhoneNumber(trimmedPhone, 'IN');
+    const isPhoneInvalid = !isPhoneEmpty && !phoneIsValid;
     const isSafeToCallUnchanged = fields.safeToCall === fields.existingSafeToCall;
     const isCombinedUnchanged = isPhoneUnchanged && isSafeToCallUnchanged;
 
