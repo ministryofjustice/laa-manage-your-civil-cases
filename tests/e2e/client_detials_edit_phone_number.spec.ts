@@ -94,7 +94,7 @@ test('safeToCall & phoneNumber not changed and correct validation errors display
   await expect(errorSummary).toContainText('There is a problem');
 
   // Check error summary links to problem field
-  await expect(errorLinkSafeToCall).toBeVisible();
+  await expect(errorLinkSafeToCall).toHaveCount(1);
   await expect(errorLinkPhoneNumber).toBeVisible();
 
   // Submit form with blank phoneNumber
