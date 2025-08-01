@@ -3,6 +3,7 @@ import type { Request, Response, NextFunction } from 'express';
 import yourCasesRouter from './yourCases.js';
 import caseDetailsRouter from './caseDetails.js';
 import editClientDetailsRouter from './editClientDetails.js';
+import editDateOfBirthRouter from './editDateOfBirth.js';
 import { devError, extractErrorMessage } from '#src/scripts/helpers/index.js';
 
 // Create a new router
@@ -22,6 +23,9 @@ router.use('/cases', caseDetailsRouter);
 
 // Mount the edit client details routes
 router.use('/cases', editClientDetailsRouter);
+
+// Mount the edit date of birth routes
+router.use('/cases', editDateOfBirthRouter);
 
 // liveness and readiness probes for Helm deployments
 router.get('/status', function (req: Request, res: Response): void {

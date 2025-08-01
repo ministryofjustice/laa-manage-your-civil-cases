@@ -48,10 +48,29 @@ export interface ClientDetailsResponse {
 }
 
 /**
+ * Raw client details interface (for editing) - preserves ISO date format
+ */
+export interface RawClientDetailsResponse {
+  caseReference: string;
+  fullName: string;
+  dateOfBirth: string; // ISO format: YYYY-MM-DD
+  [key: string]: unknown; // Allow for additional fields
+}
+
+/**
  * API response interface for single client details
  */
 export interface ClientDetailsApiResponse {
   data: ClientDetailsResponse | null;
+  status: 'success' | 'error';
+  message?: string;
+}
+
+/**
+ * API response interface for raw client details (for editing)
+ */
+export interface RawClientDetailsApiResponse {
+  data: RawClientDetailsResponse | null;
   status: 'success' | 'error';
   message?: string;
 }
@@ -80,4 +99,12 @@ export interface ApiErrorResponse extends BaseApiResponse {
 export interface ApiSuccessResponse<T = unknown> extends BaseApiResponse {
   status: 'success';
   data: T;
+}
+
+/**
+ * Client details update interface
+ */
+export interface ClientDetailsUpdate {
+  dateOfBirth?: string;
+  [key: string]: unknown; // Allow for future additional fields
 }
