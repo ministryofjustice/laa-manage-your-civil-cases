@@ -95,8 +95,8 @@ export function getValidatedFormResult(fields: ValidationFields): ReturnValidati
 
     const phoneNumberEmpty = fields.phoneNumber.trim() === '';
     const phoneNumberFormatNotValid = !phoneNumberEmpty && !isValidPhoneNumber(fields.phoneNumber);
-    const phoneNumberUnchanged = fields.phoneNumber === fields.existingPhoneNumber;
     const safeToCallUnchanged = !phoneNumberFormatNotValid && !phoneNumberEmpty && fields.safeToCall === fields.existingSafeToCall;
+    const phoneNumberUnchanged = safeToCallUnchanged && fields.phoneNumber === fields.existingPhoneNumber;
 
     validations.push(
       {
