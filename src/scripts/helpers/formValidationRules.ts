@@ -95,9 +95,32 @@ export function getValidatedFormResult(fields: ValidationFields): ReturnValidati
 
     const phoneNumberEmpty = fields.phoneNumber.trim() === '';
     const phoneNumberFormatNotValid = !phoneNumberEmpty && !isValidPhoneNumber(fields.phoneNumber);
-    const safeToCallAndPhoneNumberUnchanged = fields.phoneNumber === fields.existingPhoneNumber && fields.safeToCall === fields.existingSafeToCall;
+    const phoneNumberUnchanged = fields.phoneNumber === fields.existingPhoneNumber;
+    const safeToCallUnchanged = !phoneNumberFormatNotValid && !phoneNumberEmpty && fields.safeToCall === fields.existingSafeToCall;
 
     validations.push(
+      {
+        isInvalid: safeToCallUnchanged,
+        errorSummary: {
+          text: "Update if the client is safe to call, update the client phone number, or select ‘Cancel’",
+          href: '#safeToCall',
+        },
+        inputError: {
+          text: "Update if the client is safe to call, update the client phone number, or select ‘Cancel’",
+          fieldName: 'safeToCall'
+        }
+      },
+      {
+        isInvalid: phoneNumberUnchanged,
+        errorSummary: {
+          text: "Update if the client is safe to call, update the client phone number, or select ‘Cancel’",
+          href: '#phoneNumber',
+        },
+        inputError: {
+          text: "Update if the client is safe to call, update the client phone number, or select ‘Cancel’",
+          fieldName: 'phoneNumber'
+        }
+      },
       {
         isInvalid: phoneNumberEmpty,
         errorSummary: {
@@ -121,38 +144,7 @@ export function getValidatedFormResult(fields: ValidationFields): ReturnValidati
         }
       }
     );
-
-    if (safeToCallAndPhoneNumberUnchanged) {
-      const message = "Update if the client is safe to call, update the client phone number, or select ‘Cancel’";
-
-      validations.push(
-        {
-          isInvalid: safeToCallAndPhoneNumberUnchanged,
-          errorSummary: {
-            text: message,
-            href: '#phoneNumber',
-          },
-          inputError: {
-            text: message,
-            fieldName: 'phoneNumber'
-          }
-        },
-        {
-          isInvalid: true,
-          errorSummary: {
-            text: message,
-            href: '#safeToCall',
-          },
-          inputError: {
-            text: message,
-            fieldName: 'safeToCall'
-          }
-        }
-      );
-    }
   }
-
-
 
   return validations;
 }
