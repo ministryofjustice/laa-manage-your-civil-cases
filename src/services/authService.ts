@@ -139,7 +139,7 @@ export class AuthService {
       return responseData.access_token;
 
     } catch (error) {
-      devError(`Failed to acquire JWT token: ${error instanceof Error ? error.message : String(error)}`);
+      devError(`Failed to acquire JWT token: ${error instanceof Error ? error.message : error?.toString()}`);
       this.tokenStorage = null;
       throw error;
     }
