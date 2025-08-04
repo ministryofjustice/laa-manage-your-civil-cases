@@ -30,7 +30,7 @@
     "@ministryofjustice/frontend": "^5.1.5",
     "axios": "^1.11.0",
     "body-parser": "^2.2.0",
-    "chalk": "^5.4.1",
+    "chalk": "^5.5.0",
     "compression": "^1.8.1",
     "cookie-parser": "~1.4.6",
     "csrf-sync": "^4.2.1",
@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
-    "@playwright/test": "^1.54.1",
+    "@playwright/test": "^1.54.2",
     "@types/chai": "^5.2.2",
     "@types/compression": "^1.7.5",
     "@types/connect-livereload": "^0.6.3",
@@ -64,7 +64,7 @@
     "@types/livereload": "^0.9.5",
     "@types/mocha": "^10.0.10",
     "@types/morgan": "^1.9.9",
-    "@types/node": "^24.1.0",
+    "@types/node": "^24.2.0",
     "@types/nunjucks": "^3.2.6",
     "@types/sinon": "^17.0.4",
     "@typescript-eslint/eslint-plugin": "^8.38.0",
@@ -81,11 +81,11 @@
     "eslint": "^9.32.0",
     "eslint-config-love": "^121.0.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-jsdoc": "^52.0.0",
+    "eslint-plugin-jsdoc": "^52.0.2",
     "globals": "^16.3.0",
     "husky": "^9.1.7",
     "jsdom": "^26.1.0",
-    "lint-staged": "^16.1.2",
+    "lint-staged": "^16.1.4",
     "livereload": "^0.9.3",
     "middleware-axios": "^3.0.0",
     "mocha": "^11.7.1",
@@ -96,7 +96,7 @@
     "sass-embedded": "^1.89.2",
     "sinon": "^21.0.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.2"
   },
   "husky": {
     "hooks": {
