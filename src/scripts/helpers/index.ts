@@ -28,7 +28,9 @@ export {
 
 // Date formatting utilities
 export {
-  formatDate
+  formatDate,
+  formatDateForApi,
+  parseIsoDateToForm
 } from './dateFormatter.js';
 
 // Form validation utilities

@@ -17,7 +17,7 @@ export function safeString(value: unknown): string {
     return value;
   }
   if (typeof value === 'number' || typeof value === 'boolean') {
-    return String(value);
+    return value.toString();
   }
   return '';
 }
@@ -35,7 +35,7 @@ export function safeOptionalString(value: unknown): string | undefined {
     return value;
   }
   if (typeof value === 'number' || typeof value === 'boolean') {
-    return String(value);
+    return value.toString();
   }
   return undefined;
 }

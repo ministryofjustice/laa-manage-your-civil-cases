@@ -15,8 +15,8 @@ describe('formatDate()', () => {
     expect(formatDate('2023-02-05')).to.equal('5 Feb 2023');
   });
 
-    it('handles invalid date strings by returning the original input', () => {
-    expect(formatDate('invalid-date')).to.equal('invalid-date');
-    expect(formatDate('')).to.equal('');
+  it('throws error for invalid date strings', () => {
+    expect(() => formatDate('invalid-date')).to.throw('Invalid ISO date string received: "invalid-date". Expected format: YYYY-MM-DD');
+    expect(() => formatDate('')).to.throw('Invalid ISO date string received: "". Expected format: YYYY-MM-DD');
   });
 });
