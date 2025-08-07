@@ -66,11 +66,12 @@ describe('Search Controller', () => {
       it('should render empty search form when no parameters provided', async () => {
         await processSearch(req as Request, res as Response, next);
 
-        expect((res.render as sinon.SinonStub).calledWith('search/index.njk', {
+        expect((res.render as sinon.SinonStub).calledWith('search/index.njk', sinon.match({
           searchKeyword: '',
           statusSelect: 'all',
-          searchPerformed: false
-        })).to.be.true;
+          searchPerformed: false,
+          request: req
+        }))).to.be.true;
         expect(apiServiceStub.called).to.be.false;
       });
 
@@ -79,11 +80,12 @@ describe('Search Controller', () => {
 
         await processSearch(req as Request, res as Response, next);
 
-        expect((res.render as sinon.SinonStub).calledWith('search/index.njk', {
+        expect((res.render as sinon.SinonStub).calledWith('search/index.njk', sinon.match({
           searchKeyword: '',
           statusSelect: 'all',
-          searchPerformed: false
-        })).to.be.true;
+          searchPerformed: false,
+          request: req
+        }))).to.be.true;
         expect(apiServiceStub.called).to.be.false;
       });
     });
@@ -112,15 +114,16 @@ describe('Search Controller', () => {
           limit: 20
         })).to.be.true;
 
-        expect((res.render as sinon.SinonStub).calledWith('search/index.njk', {
+        expect((res.render as sinon.SinonStub).calledWith('search/index.njk', sinon.match({
           searchKeyword: 'test',
           statusSelect: 'all',
           searchResults: mockApiResponse.data,
           pagination: mockApiResponse.pagination,
           searchPerformed: true,
           sortBy: 'lastModified',
-          sortOrder: ''
-        })).to.be.true;
+          sortOrder: '',
+          request: req
+        }))).to.be.true;
       });
 
       it('should execute search and render results when status filter is provided', async () => {
@@ -143,15 +146,16 @@ describe('Search Controller', () => {
           limit: 20
         })).to.be.true;
 
-        expect((res.render as sinon.SinonStub).calledWith('search/index.njk', {
+        expect((res.render as sinon.SinonStub).calledWith('search/index.njk', sinon.match({
           searchKeyword: '',
           statusSelect: 'new',
           searchResults: mockApiResponse.data,
           pagination: mockApiResponse.pagination,
           searchPerformed: true,
           sortBy: 'lastModified',
-          sortOrder: ''
-        })).to.be.true;
+          sortOrder: '',
+          request: req
+        }))).to.be.true;
       });
 
       it('should execute search with both keyword and status filter', async () => {

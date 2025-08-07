@@ -84,18 +84,21 @@ function getSearchParameters(req: Request): { keyword: string; status: string } 
 
 /**
  * Helper function to render empty search form
+ * @param {Request} req - Express request object
  * @param {Response} res - Express response object
  */
-function renderEmptyForm(res: Response): void {
+function renderEmptyForm(req: Request, res: Response): void {
   res.render('search/index.njk', {
     searchKeyword: '',
     statusSelect: 'all',
-    searchPerformed: false
+    searchPerformed: false,
+    request: req
   });
 }
 
 /**
  * Helper function to render search results
+ * @param {Request} req - Express request object
  * @param {Response} res - Express response object
  * @param {object} params - Parameters object containing search data
  * @param {string} params.keyword - Search keyword
@@ -105,7 +108,7 @@ function renderEmptyForm(res: Response): void {
  * @param {unknown} params.apiResponse.data - Search results data
  * @param {unknown} params.apiResponse.pagination - Pagination information
  */
-function renderSearchResults(res: Response, params: {
+function renderSearchResults(req: Request, res: Response, params: {
   keyword: string;
   status: string;
   sortOrder: string;
@@ -120,7 +123,8 @@ function renderSearchResults(res: Response, params: {
     pagination: apiResponse.pagination,
     searchPerformed: true,
     sortBy: DEFAULT_SORT_BY,
-    sortOrder
+    sortOrder,
+    request: req
   });
 }
 
@@ -145,7 +149,7 @@ export async function processSearch(req: Request, res: Response, next: NextFunct
 
     // Show empty form if no search or navigation activity
     if (keyword === '' && status === 'all' && !isPaginationOrSort) {
-      renderEmptyForm(res);
+      renderEmptyForm(req, res);
       return;
     }
 
@@ -161,7 +165,7 @@ export async function processSearch(req: Request, res: Response, next: NextFunct
       limit
     });
 
-    renderSearchResults(res, {
+    renderSearchResults(req, res, {
       keyword,
       status,
       sortOrder: finalSortOrder,

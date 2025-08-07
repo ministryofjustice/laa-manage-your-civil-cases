@@ -51,11 +51,12 @@
     {
       href: "/cases/new",
       text: "Your cases",
-      active: true
+      active: not request or not request.originalUrl or not request.originalUrl.startsWith('/search')
     },
     {
       href: "/search",
-      text: "Search"
+      text: "Search",
+      active: request and request.originalUrl and request.originalUrl.startsWith('/search')
     }
     ]
   }) }}
