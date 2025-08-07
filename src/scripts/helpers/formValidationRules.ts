@@ -49,10 +49,9 @@ export function getValidatedFormResult(fields: ValidationFields): ReturnValidati
       return emailRegex.test(email);
     }
 
-    const trimmedEmail = fields.emailAddress.trim();
-    const emailEmpty = trimmedEmail === '';
-    const emailUnchanged = trimmedEmail === fields.existingEmail;
-    const emailFormatNotValid = !emailEmpty && !isValidEmail(trimmedEmail);
+    const emailEmpty = fields.emailAddress.trim() === '';
+    const emailUnchanged = !emailEmpty && fields.emailAddress === fields.existingEmail;
+    const emailFormatNotValid = !emailEmpty && !isValidEmail(fields.emailAddress);
 
     validations.push(
       {
