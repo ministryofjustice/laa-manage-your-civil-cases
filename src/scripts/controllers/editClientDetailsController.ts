@@ -183,17 +183,15 @@ export async function postEditClientPhoneNumber(req: Request, res: Response, nex
     const resultingErrors = validationErrors.array().map((err: { msg: string }) => {
       const { msg } = err;
 
-      let fieldName = msg;
       let inlineMessage = msg;
       let summaryMessage = msg;
 
       const errorData = JSON.parse(msg) as unknown;
-      fieldName = safeStringFromRecord(errorData, 'fieldName') ?? 'phoneNumber';
       inlineMessage = safeStringFromRecord(errorData, 'inlineMessage') ?? '';
       summaryMessage = safeStringFromRecord(errorData, 'summaryMessage') ?? '';
 
       return {
-        fieldName,
+        fieldName: 'phoneNumber',
         inlineMessage,
         summaryMessage,
       };
