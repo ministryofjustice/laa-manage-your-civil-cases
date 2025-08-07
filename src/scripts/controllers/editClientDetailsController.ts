@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
 import { safeString, hasProperty, validateForm } from '#src/scripts/helpers/index.js';
 import { type Result, validationResult } from 'express-validator'
+import { z } from 'zod';
 
 const BAD_REQUEST = 400;
 
@@ -179,26 +180,25 @@ export async function postEditClientPhoneNumber(req: Request, res: Response, nex
   const validationErrors: Result = validationResult(req);
 
   if (!validationErrors.isEmpty()) {
-    const resultingErrors = validationErrors.array().map((err: { msg: string; path: string }) => {
-      const fieldName = 'phoneNumber';
-      const { msg } = err;
-      let inlineMessage = msg;
-      let summaryMessage = msg;
+    const ParsedErrorSchema = z.object({
+      fieldName: z.string(),
+      summaryMessage: z.string(),
+      inlineMessage: z.string(),
+    });
 
-      if (msg === 'Enter the client phone number') {
-        inlineMessage = 'Enter the phone number';
-        summaryMessage = 'Enter the client phone number';
+    type ParsedError = z.infer<typeof ParsedErrorSchema>;
+
+    const resultingErrors: ParsedError[] = validationErrors.array().map((err: { msg: string }) => {
+      const parseResult = ParsedErrorSchema.safeParse(JSON.parse(err.msg));
+      if (parseResult.success) {
+        return parseResult.data;
+      } else {
+        return {
+          fieldName: err.msg,
+          summaryMessage: err.msg,
+          inlineMessage: err.msg,
+        };
       }
-
-      if (err.path === 'notChanged') {
-        inlineMessage = '';
-      }
-
-      return {
-        fieldName,
-        inlineMessage,
-        summaryMessage,
-      };
     });
 
     const inputErrors = resultingErrors.reduce<Record<string, string>>((acc, { fieldName, inlineMessage }) => {
