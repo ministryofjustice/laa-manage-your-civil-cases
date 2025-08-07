@@ -32,6 +32,7 @@
 		"types/**/*.ts",
 		"playwright.config.ts",
 		"tests/**/*.spec.ts",
+		"tests/**/*.ts"
 	],
 	"exclude": [
 		"node_modules",

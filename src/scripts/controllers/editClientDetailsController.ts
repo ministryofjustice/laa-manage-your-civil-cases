@@ -1,4 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
+import 'csrf-sync'; // Import to ensure CSRF types are loaded
 import { apiService } from '#src/services/apiService.js';
 import { safeString, hasProperty, validateForm, safeStringFromRecord } from '#src/scripts/helpers/index.js';
 import { type Result, validationResult } from 'express-validator'

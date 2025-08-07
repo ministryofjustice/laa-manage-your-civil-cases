@@ -24,13 +24,13 @@
     "coverage": "c8 yarn test:unit --check-coverage"
   },
   "engines": {
-    "node": "24.4.1"
+    "node": "24.5.0"
   },
   "dependencies": {
     "@ministryofjustice/frontend": "^5.1.5",
     "axios": "^1.11.0",
     "body-parser": "^2.2.0",
-    "chalk": "^5.4.1",
+    "chalk": "^5.5.0",
     "compression": "^1.8.1",
     "cookie-parser": "~1.4.6",
     "csrf-sync": "^4.2.1",
@@ -41,7 +41,7 @@
     "express-session": "^1.18.2",
     "express-validator": "^7.2.1",
     "figlet": "^1.8.2",
-    "fs-extra": "^11.3.0",
+    "fs-extra": "^11.3.1",
     "govuk-frontend": "^5.11.1",
     "helmet": "^8.1.0",
     "http-errors": "~2.0.0",
@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
-    "@playwright/test": "^1.54.1",
+    "@playwright/test": "^1.54.2",
     "@types/chai": "^5.2.2",
     "@types/compression": "^1.7.5",
     "@types/connect-livereload": "^0.6.3",
@@ -65,11 +65,11 @@
     "@types/livereload": "^0.9.5",
     "@types/mocha": "^10.0.10",
     "@types/morgan": "^1.9.9",
-    "@types/node": "^24.1.0",
+    "@types/node": "^24.2.0",
     "@types/nunjucks": "^3.2.6",
     "@types/sinon": "^17.0.4",
-    "@typescript-eslint/eslint-plugin": "^8.38.0",
-    "@typescript-eslint/parser": "^8.38.0",
+    "@typescript-eslint/eslint-plugin": "^8.39.0",
+    "@typescript-eslint/parser": "^8.39.0",
     "c8": "^10.1.3",
     "chai": "^5.2.1",
     "chokidar": "4.0.3",
@@ -82,22 +82,22 @@
     "eslint": "^9.32.0",
     "eslint-config-love": "^121.0.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-jsdoc": "^52.0.0",
+    "eslint-plugin-jsdoc": "^52.0.4",
     "globals": "^16.3.0",
     "husky": "^9.1.7",
     "jsdom": "^26.1.0",
-    "lint-staged": "^16.1.2",
+    "lint-staged": "^16.1.4",
     "livereload": "^0.9.3",
     "middleware-axios": "^3.0.0",
     "mocha": "^11.7.1",
     "nodemon": "^3.1.9",
     "prettier": "^3.6.2",
     "rimraf": "^6.0.1",
-    "sass": "^1.86.3",
-    "sass-embedded": "^1.89.2",
+    "sass": "^1.90.0",
+    "sass-embedded": "^1.90.0",
     "sinon": "^21.0.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.2"
   },
   "husky": {
     "hooks": {
