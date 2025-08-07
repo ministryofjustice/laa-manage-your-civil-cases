@@ -1,3 +1,4 @@
+import { hasProperty, isRecord } from '#src/scripts/helpers/dataTransformers.js';
 import { checkSchema, type Meta } from 'express-validator';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 
@@ -14,15 +15,12 @@ interface ClientPhoneNumberBody {
  * @returns {body is ClientPhoneNumberBody} True if the body matches ClientPhoneNumberBody shape
  */
 function isClientPhoneNumberBody(body: unknown): body is ClientPhoneNumberBody {
-  return (
-    typeof body === 'object' &&
-    body !== null &&
-    'phoneNumber' in body &&
-    'existingPhoneNumber' in body &&
-    'safeToCall' in body &&
-    'existingSafeToCall' in body
-  );
-}
+  return isRecord(body) &&
+    hasProperty(body, 'phoneNumber') &&
+    hasProperty(body, 'existingPhoneNumber') &&
+    hasProperty(body, 'safeToCall') &&
+    hasProperty(body, 'existingSafeToCall');
+};
 
 /**
  * Validation middleware when user edits client's phone number.
@@ -74,8 +72,8 @@ export const validateEditClientPhoneNumber = (): ReturnType<typeof checkSchema> 
          * @param {Meta} meta - `express-validator` context containing request object
          * @returns {boolean} True if phoneNumber or safeToCall has changed
          */
-        options: (_value: string, meta: Meta ): boolean => {
-          const {req} = meta;
+        options: (_value: string, meta: Meta): boolean => {
+          const { req } = meta;
           if (!isClientPhoneNumberBody(req.body)) {
             return true;
           }
