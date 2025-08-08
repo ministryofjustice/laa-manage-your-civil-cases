@@ -1,5 +1,4 @@
-import type { CustomSchema } from '#src/validation/index.js';
-import type { CustomValidator, Meta } from 'express-validator';
+import type { CustomValidator, Meta, Schema } from 'express-validator';
 import {
   MIN_DAY,
   MAX_DAY,
@@ -229,9 +228,9 @@ const yearValidator: CustomValidator = (value: string, meta: Meta): true => {
  * - ✅ **Easy Maintenance**: Changes made directly in single schema file
  * - ✅ **Message-Based Priority**: Formatter handles priority and global scope
  * 
- * @constant {CustomSchema} dateOfBirthSchema
+ * @constant {Schema} dateOfBirthSchema
  */
-export const dateOfBirthSchema: CustomSchema = {
+export const dateOfBirthSchema: Schema = {
   'dateOfBirth-day': {
     custom: {
       options: dayValidator  // All validation logic including global validations

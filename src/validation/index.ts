@@ -9,9 +9,9 @@
  * @since 2025-08-05
  */
 
-// Main exports - Custom ExpressValidator instance and helpers
+
+// Main exports - Express-validator functions and GOV.UK error formatter
 export {
-  customExpressValidator,
   body,
   checkSchema,
   validationResult,
@@ -19,12 +19,10 @@ export {
   param,
   query,
   header,
-  cookie,
-  createValidationChain,
-  createValidationSchema,
-  type CustomValidationChain,
-  type CustomSchema
-} from './customExpressValidator.js';
+  cookie
+} from 'express-validator';
+
+export { govUkErrorFormatter } from './errorFormatters/govUkErrorFormatter.js';
 
 // 🆕 GOV.UK error types and utilities
 export type {
