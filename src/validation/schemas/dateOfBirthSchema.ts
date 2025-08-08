@@ -38,9 +38,7 @@ import { DATE_VALIDATION_MESSAGES } from '../constants/errorMessages.js';
  * @param {string} message - Error message from DATE_VALIDATION_MESSAGES
  * @returns {never} Never returns, always throws
  */
-function throwValidationError(message: string): never {
-  throw new Error(message);
-}
+
 
 /**
  * Type-safe number validation helper for range checking
@@ -61,7 +59,7 @@ function throwValidationError(message: string): never {
 const validateNumberInRange = (value: string, min: number, max: number, errorMessage: string): void => {
   const numValue = parseInt(value, 10);
   if (isNaN(numValue) || numValue < min || numValue > max) {
-    throwValidationError(errorMessage);
+    throw new Error(errorMessage);
   }
 };
 
@@ -76,17 +74,17 @@ const validateGlobalDateRules = (dateFields: DateFields, body: Record<string, un
   if (day !== '' && month !== '' && year !== '') {
     // Priority 4: Real date validation - AC-validated message  
     if (!isRealDate(day, month, year)) {
-      throwValidationError(DATE_VALIDATION_MESSAGES.INVALID_DATE);
+      throw new Error(DATE_VALIDATION_MESSAGES.INVALID_DATE);
     }
     
     // Priority 5: Future date validation - AC-validated message
     if (!isNotFutureDate(day, month, year)) {
-      throwValidationError(DATE_VALIDATION_MESSAGES.FUTURE_DATE);
+      throw new Error(DATE_VALIDATION_MESSAGES.FUTURE_DATE);
     }
     
     // Priority 6: Date changed validation - AC-validated message
     if (isUnchangedDate(body)) {
-      throwValidationError(DATE_VALIDATION_MESSAGES.UNCHANGED);
+      throw new Error(DATE_VALIDATION_MESSAGES.UNCHANGED);
     }
   }
 };
@@ -127,12 +125,12 @@ const dayValidator: CustomValidator = (value: string, meta: Meta): true => {
   
   // Priority 1: All fields missing - AC-validated message
   if (day === '' && month === '' && year === '') {
-    throwValidationError(DATE_VALIDATION_MESSAGES.ALL_MISSING);
+    throw new Error(DATE_VALIDATION_MESSAGES.ALL_MISSING);
   }
   
   // Priority 2: Individual missing day field - AC-validated message
   if (day === '' && (month !== '' || year !== '')) {
-    throwValidationError(DATE_VALIDATION_MESSAGES.DAY_MISSING);
+    throw new Error(DATE_VALIDATION_MESSAGES.DAY_MISSING);
   }
   
   // Priority 3: Day format validation - AC-validated message
@@ -167,7 +165,7 @@ const monthValidator: CustomValidator = (value: string, meta: Meta): true => {
   // Skip global validations - handled by day field
   // Individual missing month field - AC-validated message
   if (month === '' && (day !== '' || year !== '')) {
-    throwValidationError(DATE_VALIDATION_MESSAGES.MONTH_MISSING);
+    throw new Error(DATE_VALIDATION_MESSAGES.MONTH_MISSING);
   }
   
   // Month format validation - AC-validated message
@@ -199,14 +197,14 @@ const yearValidator: CustomValidator = (value: string, meta: Meta): true => {
   // Skip global validations - handled by day field
   // Individual missing year field - AC-validated message
   if (year === '' && (day !== '' || month !== '')) {
-    throwValidationError(DATE_VALIDATION_MESSAGES.YEAR_MISSING);
+    throw new Error(DATE_VALIDATION_MESSAGES.YEAR_MISSING);
   }
   
   // Year format validation - AC-validated message
   if (year !== '') {
     // Year format validation with AC-validated message
     if (!/^\d{4}$/.test(year) || year.startsWith('0')) {
-      throwValidationError(DATE_VALIDATION_MESSAGES.YEAR_FORMAT);
+      throw new Error(DATE_VALIDATION_MESSAGES.YEAR_FORMAT);
     }
   }
   

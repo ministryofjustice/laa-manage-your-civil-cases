@@ -27,7 +27,6 @@ export { govUkErrorFormatter } from './errorFormatters/govUkErrorFormatter.js';
 // 🆕 GOV.UK error types and utilities
 export type {
   GovUkValidationError,
-  GovUkComplexValidationError,
   GovUkFormErrorData,
   GovUkErrorSummaryItem,
   ErrorCode,
