@@ -23,6 +23,9 @@ import type {
   CaseApiParams,
   ClientDetailsResponse,
   ClientDetailsApiResponse,
+  RawClientDetailsResponse,
+  RawClientDetailsApiResponse,
+  ClientDetailsUpdate,
   PaginationMeta
 } from '#types/api-types.js';
 import {
@@ -38,10 +41,30 @@ import config from '../../config.js';
 
 // Constants
 const DEFAULT_PAGE = 1;
-const DEFAULT_LIMIT = parseInt(process.env.PAGINATION_LIMIT ?? '20', 10); // Configurable via env
+const DEFAULT_LIMIT = Number.parseInt(process.env.PAGINATION_LIMIT ?? '20', 10); // Configurable via env
 const JSON_INDENT = 2;
 const EMPTY_TOTAL = 0;
 const API_PREFIX = process.env.API_PREFIX ?? '/latest/mock'; // API endpoint prefix - configurable via env
+
+/**
+ * Safely format a date string for display, handling empty or invalid dates
+ * @param {string} dateString - Date string from API
+ * @returns {string} Formatted date or placeholder for empty/invalid dates
+ */
+function safeFormatDate(dateString: string): string {
+  // Handle empty or whitespace-only strings
+  if (dateString === '' || dateString.trim() === '') {
+    return '-';
+  }
+  
+  try {
+    return formatDate(dateString);
+  } catch (error) {
+    // Log the invalid date for debugging but don't block the UI
+    devLog(`Invalid date format received: "${dateString}"`);
+    return 'Invalid date';
+  }
+}
 
 /**
  * Transform raw client details item to display format
@@ -59,7 +82,27 @@ function transformClientDetailsItem(item: unknown): ClientDetailsResponse {
     // Then override specific fields
     caseReference: safeString(item.caseReference),
     fullName: safeString(item.fullName),
-    dateOfBirth: formatDate(safeString(item.dateOfBirth))
+    dateOfBirth: safeFormatDate(safeString(item.dateOfBirth))
+  };
+}
+
+/**
+ * Transform raw client details item without formatting dates (for editing)
+ * @param {unknown} item Raw client details item
+ * @returns {RawClientDetailsResponse} Transformed raw client details item
+ */
+function transformRawClientDetailsItem(item: unknown): RawClientDetailsResponse {
+  if (!isRecord(item)) {
+    throw new Error('Invalid client details item: expected object');
+  }
+
+  return {
+    // Allow for additional fields from the API first
+    ...item,
+    // Then override specific fields
+    caseReference: safeString(item.caseReference),
+    fullName: safeString(item.fullName),
+    dateOfBirth: safeString(item.dateOfBirth) // Keep ISO format for editing
   };
 }
 
@@ -77,11 +120,11 @@ function transformCaseItem(item: unknown): CaseData {
     fullName: safeString(item.fullName),
     caseReference: safeString(item.caseReference),
     refCode: safeString(item.refCode),
-    dateReceived: formatDate(safeString(item.dateReceived)),
+    dateReceived: safeFormatDate(safeString(item.dateReceived)),
     caseStatus: safeString(item.caseStatus),
-    dateOfBirth: formatDate(safeString(item.dateOfBirth)),
-    lastModified: formatDate(safeOptionalString(item.lastModified) ?? ''),
-    dateClosed: formatDate(safeOptionalString(item.dateClosed) ?? ''),
+    dateOfBirth: safeFormatDate(safeString(item.dateOfBirth)),
+    lastModified: safeFormatDate(safeOptionalString(item.lastModified) ?? ''),
+    dateClosed: safeFormatDate(safeOptionalString(item.dateClosed) ?? ''),
     phoneNumber: safeOptionalString(item.phoneNumber),
     safeToCall: Boolean(item.safeToCall),
     announceCall: Boolean(item.announceCall),
@@ -186,16 +229,49 @@ class ApiService {
   }
 
   /**
+   * Get raw client details by case reference (for editing forms)
+   * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+   * @param {string} caseReference - Case reference number
+   * @returns {Promise<RawClientDetailsApiResponse>} API response with raw client details (ISO dates preserved)
+   */
+  static async getRawClientDetails(axiosMiddleware: AxiosInstanceWrapper, caseReference: string): Promise<RawClientDetailsApiResponse> {
+    try {
+      devLog(`API: GET ${API_PREFIX}/cases/${caseReference} (raw)`);
+
+      const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
+
+      // Call API endpoint
+      const response = await configuredAxios.get(`${API_PREFIX}/cases/${caseReference}`);
+
+      devLog(`API: Raw client details response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+
+      return {
+        data: transformRawClientDetailsItem(response.data),
+        status: 'success'
+      };
+
+    } catch (error) {
+      const errorMessage = extractAndLogError(error, 'API error');
+
+      return {
+        data: null,
+        status: 'error',
+        message: errorMessage
+      };
+    }
+  }
+
+  /**
    * Update client details by case reference
    * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
    * @param {string} caseReference - Case reference number
-   * @param {Partial<ClientDetailsResponse>} updateData - Data to update
+   * @param {ClientDetailsUpdate} updateData - Data to update
    * @returns {Promise<ClientDetailsApiResponse>} API response with updated client details
    */
   static async updateClientDetails(
     axiosMiddleware: AxiosInstanceWrapper,
     caseReference: string,
-    updateData: Partial<ClientDetailsResponse>
+    updateData: ClientDetailsUpdate
   ): Promise<ClientDetailsApiResponse> {
     try {
       devLog(`API: PUT ${API_PREFIX}/cases/${caseReference}`);
@@ -232,20 +308,20 @@ class ApiService {
     const limitFromHeader = safeStringFromRecord(headers, 'x-per-page');
     const totalPagesFromHeader = safeStringFromRecord(headers, 'x-total-pages');
 
-    let total = totalFromHeader !== null ? parseInt(totalFromHeader, 10) : null;
+    let total = totalFromHeader !== null ? Number.parseInt(totalFromHeader, 10) : null;
 
     // If we have totalPages but no total, calculate it
     if (total === null && totalPagesFromHeader !== null) {
-      const totalPages = parseInt(totalPagesFromHeader, 10);
+      const totalPages = Number.parseInt(totalPagesFromHeader, 10);
       total = totalPages * limit;
       devLog(`API: Calculated total from X-Total-Pages: ${totalPages} pages × ${limit} = ${total} items`);
     }
 
     return {
       total,
-      page: pageFromHeader !== null ? parseInt(pageFromHeader, 10) : page,
-      limit: limitFromHeader !== null ? parseInt(limitFromHeader, 10) : limit,
-      totalPages: totalPagesFromHeader !== null ? parseInt(totalPagesFromHeader, 10) : undefined
+      page: pageFromHeader !== null ? Number.parseInt(pageFromHeader, 10) : page,
+      limit: limitFromHeader !== null ? Number.parseInt(limitFromHeader, 10) : limit,
+      totalPages: totalPagesFromHeader !== null ? Number.parseInt(totalPagesFromHeader, 10) : undefined
     };
   }
 
