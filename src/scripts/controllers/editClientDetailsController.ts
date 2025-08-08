@@ -1,8 +1,9 @@
 import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
 import { apiService } from '#src/services/apiService.js';
-import { safeString, hasProperty, validateForm, safeStringFromRecord } from '#src/scripts/helpers/index.js';
-import { type Result, validationResult } from 'express-validator'
+import { safeString, hasProperty, validateForm } from '#src/scripts/helpers/index.js';
+import { type Result, validationResult } from 'express-validator';
+import { formatValidationError, type ValidationErrorData } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 
 const BAD_REQUEST = 400;
 
@@ -177,23 +178,17 @@ export async function postEditClientPhoneNumber(req: Request, res: Response, nex
 
   const announceCall = hasProperty(req.body, 'announceCall') ? req.body.announceCall : false;
 
-  const validationErrors: Result = validationResult(req);
+  const validationErrors: Result<ValidationErrorData> = validationResult(req).formatWith(formatValidationError);
 
   if (!validationErrors.isEmpty()) {
-    const resultingErrors = validationErrors.array().map((err: { msg: string }) => {
-      const { msg } = err;
-
-      let inlineMessage = msg;
-      let summaryMessage = msg;
-
-      const errorData = JSON.parse(msg) as unknown;
-      inlineMessage = safeStringFromRecord(errorData, 'inlineMessage') ?? '';
-      summaryMessage = safeStringFromRecord(errorData, 'summaryMessage') ?? '';
+    const resultingErrors = validationErrors.array().map((errorData: ValidationErrorData) => {
+      // Use inlineMessage if it's not empty, otherwise fallback to summaryMessage
+      const inlineMessage = errorData.inlineMessage !== '' ? errorData.inlineMessage : errorData.summaryMessage;
 
       return {
         fieldName: 'phoneNumber',
         inlineMessage,
-        summaryMessage,
+        summaryMessage: errorData.summaryMessage,
       };
     });
 
@@ -219,8 +214,9 @@ export async function postEditClientPhoneNumber(req: Request, res: Response, nex
         errorSummaryList
       },
       csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
-    }); return;
-  };
+    });
+    return;
+  }
 
   try {
     await apiService.updateClientDetails(req.axiosMiddleware, caseReference, { safeToCall, phoneNumber });
