@@ -7,9 +7,7 @@ import {
   ERROR_PRIORITIES,
   ERROR_CODES,
   isGovUkValidationError,
-  isGovUkComplexValidationError,
   type GovUkValidationError,
-  type GovUkComplexValidationError,
   type ErrorPriority,
   type ErrorCode
 } from '#src/validation/types/govUkErrorTypes.js';
@@ -97,82 +95,6 @@ describe('GOV.UK Error Types', () => {
         };
 
         expect(isGovUkValidationError(wrongType)).to.be.false;
-      });
-    });
-
-    describe('isGovUkComplexValidationError', () => {
-      it('should correctly identify complex validation errors', () => {
-        const complexError = new Error('Test message') as GovUkComplexValidationError;
-        Object.defineProperty(complexError, 'msg', { value: 'Test message', enumerable: true });
-        Object.defineProperty(complexError, 'param', { value: 'testField', enumerable: true });
-        Object.defineProperty(complexError, 'href', { value: '#testField', enumerable: true });
-        Object.defineProperty(complexError, 'type', { value: 'validation_error', enumerable: true });
-        Object.defineProperty(complexError, 'fieldName', { value: 'testField', enumerable: true });
-        Object.defineProperty(complexError, 'priority', { value: ERROR_PRIORITIES.FORMAT_ERROR, enumerable: true });
-        Object.defineProperty(complexError, 'timestamp', { value: new Date().toISOString(), enumerable: true });
-        Object.defineProperty(complexError, 'relatedFields', { value: ['field1', 'field2'], enumerable: true });
-        Object.defineProperty(complexError, 'rule', { value: 'custom-rule', enumerable: true });
-
-        expect(isGovUkComplexValidationError(complexError)).to.be.true;
-      });
-
-      it('should accept errors with only relatedFields', () => {
-        const errorWithRelated = new Error('Test message') as GovUkComplexValidationError;
-        Object.defineProperty(errorWithRelated, 'msg', { value: 'Test message', enumerable: true });
-        Object.defineProperty(errorWithRelated, 'param', { value: 'testField', enumerable: true });
-        Object.defineProperty(errorWithRelated, 'href', { value: '#testField', enumerable: true });
-        Object.defineProperty(errorWithRelated, 'type', { value: 'validation_error', enumerable: true });
-        Object.defineProperty(errorWithRelated, 'fieldName', { value: 'testField', enumerable: true });
-        Object.defineProperty(errorWithRelated, 'priority', { value: ERROR_PRIORITIES.FORMAT_ERROR, enumerable: true });
-        Object.defineProperty(errorWithRelated, 'timestamp', { value: new Date().toISOString(), enumerable: true });
-        Object.defineProperty(errorWithRelated, 'relatedFields', { value: ['field1'], enumerable: true });
-
-        expect(isGovUkComplexValidationError(errorWithRelated)).to.be.true;
-      });
-
-      it('should accept errors with only rule', () => {
-        const errorWithRule = new Error('Test message') as GovUkComplexValidationError;
-        Object.defineProperty(errorWithRule, 'msg', { value: 'Test message', enumerable: true });
-        Object.defineProperty(errorWithRule, 'param', { value: 'testField', enumerable: true });
-        Object.defineProperty(errorWithRule, 'href', { value: '#testField', enumerable: true });
-        Object.defineProperty(errorWithRule, 'type', { value: 'validation_error', enumerable: true });
-        Object.defineProperty(errorWithRule, 'fieldName', { value: 'testField', enumerable: true });
-        Object.defineProperty(errorWithRule, 'priority', { value: ERROR_PRIORITIES.FORMAT_ERROR, enumerable: true });
-        Object.defineProperty(errorWithRule, 'timestamp', { value: new Date().toISOString(), enumerable: true });
-        Object.defineProperty(errorWithRule, 'rule', { value: 'custom-rule', enumerable: true });
-
-        expect(isGovUkComplexValidationError(errorWithRule)).to.be.true;
-      });
-
-      it('should accept errors with only context', () => {
-        const errorWithContext = new Error('Test message') as GovUkComplexValidationError;
-        Object.defineProperty(errorWithContext, 'msg', { value: 'Test message', enumerable: true });
-        Object.defineProperty(errorWithContext, 'param', { value: 'testField', enumerable: true });
-        Object.defineProperty(errorWithContext, 'href', { value: '#testField', enumerable: true });
-        Object.defineProperty(errorWithContext, 'type', { value: 'validation_error', enumerable: true });
-        Object.defineProperty(errorWithContext, 'fieldName', { value: 'testField', enumerable: true });
-        Object.defineProperty(errorWithContext, 'priority', { value: ERROR_PRIORITIES.FORMAT_ERROR, enumerable: true });
-        Object.defineProperty(errorWithContext, 'timestamp', { value: new Date().toISOString(), enumerable: true });
-        Object.defineProperty(errorWithContext, 'context', { value: { additionalInfo: 'test' }, enumerable: true });
-
-        expect(isGovUkComplexValidationError(errorWithContext)).to.be.true;
-      });
-
-      it('should reject basic GOV.UK validation errors', () => {
-        const basicError = {
-          name: 'Error',
-          message: 'Test message',
-          msg: 'Test message',
-          param: 'testField',
-          href: '#testField',
-          type: 'validation_error',
-          fieldName: 'testField',
-          priority: ERROR_PRIORITIES.FORMAT_ERROR,
-          timestamp: new Date().toISOString()
-          // No complex properties
-        } as GovUkValidationError;
-
-        expect(isGovUkComplexValidationError(basicError)).to.be.false;
       });
     });
   });

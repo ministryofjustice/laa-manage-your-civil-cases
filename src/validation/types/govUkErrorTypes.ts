@@ -82,21 +82,6 @@ export interface GovUkValidationError extends Error {
 }
 
 /**
- * Extended GOV.UK validation error with additional context.
- * 
- * Used for complex validation scenarios that require additional
- * metadata or related field information.
- */
-export interface GovUkComplexValidationError extends GovUkValidationError {
-  /** Related field names for compound validation errors */
-  readonly relatedFields?: readonly string[];
-  /** Validation rule that triggered the error */
-  readonly rule?: string;
-  /** Additional context data for error resolution */
-  readonly context?: Readonly<Record<string, unknown>>;
-}
-
-/**
  * Error summary item structure for GOV.UK error summary component.
  * 
  * Used to populate the error summary list at the top of forms.
@@ -138,15 +123,4 @@ export function isGovUkValidationError(error: unknown): error is GovUkValidation
          'param' in error &&
          'href' in error &&
          'priority' in error;
-}
-
-/**
- * Type guard to check if an error is a complex GOV.UK validation error.
- * 
- * @param {unknown} error - Error object to check
- * @returns {boolean} True if error is a complex GOV.UK validation error
- */
-export function isGovUkComplexValidationError(error: unknown): error is GovUkComplexValidationError {
-  return isGovUkValidationError(error) && 
-         ('relatedFields' in error || 'rule' in error || 'context' in error);
 }
