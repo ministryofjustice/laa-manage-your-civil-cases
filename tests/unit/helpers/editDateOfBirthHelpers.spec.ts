@@ -11,7 +11,6 @@ import {
   populateExistingDate,
   generateCsrfToken,
   processValidationErrors,
-  createErrorRenderOptions,
   handleSuccessfulUpdate
 } from '#src/scripts/controllers/helpers/editDateOfBirthHelpers.js';
 
@@ -106,33 +105,17 @@ describe('editDateOfBirthHelpers', () => {
   });
 
   describe('processValidationErrors', () => {
-    it('returns formatted errors', () => {
+    it('returns formatted errors and render options', () => {
       const rawErrors = [{ param: 'dateOfBirth-day', msg: 'Missing', value: '', location: 'body', type: 'field', path: 'dateOfBirth-day' } as any];
-      const result = processValidationErrors(rawErrors);
-      expect(result).to.be.an('array');
-    });
-  });
-
-  describe('createErrorRenderOptions', () => {
-    it('returns render options with error state', () => {
+      const caseReference = 'REF';
       const formData = { day: '1', month: '2', year: '2000', originalDay: '1', originalMonth: '2', originalYear: '2000' };
-      const govUkErrors = [{
-        param: 'dateOfBirth-day',
-        msg: 'Missing',
-        href: '',
-        priority: 1,
-        isGlobal: false,
-        type: 'validation_error',
-        fieldName: 'dateOfBirth-day',
-        timestamp: Date.now(),
-        name: 'ValidationError',
-        message: 'Missing',
-      }] as any;
       const req = { axiosMiddleware: {}, csrfToken: () => 'token' } as any;
-      const result = createErrorRenderOptions('REF', formData, govUkErrors, req);
-      expect(result.caseReference).to.equal('REF');
-      expect(result.error).to.exist;
-      expect(result.csrfToken).to.equal('token');
+      const result = processValidationErrors(rawErrors, caseReference, formData, req) as Record<string, any>;
+      expect(result).to.be.an('object');
+      expect(result.errorState).to.be.an('object');
+      expect(result.errorState.errors).to.be.an('array');
+      expect(result.error).to.be.an('object');
+      expect(result.error.errorSummaryList).to.be.an('array');
     });
   });
 

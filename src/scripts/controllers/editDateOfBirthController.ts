@@ -23,9 +23,8 @@ import {
   extractFormData,
   populateExistingDate,
   generateCsrfToken,
-  processValidationErrors,
-  createErrorRenderOptions,
-  handleSuccessfulUpdate
+  handleSuccessfulUpdate,
+  processValidationErrors
 } from './helpers/editDateOfBirthHelpers.js';
 
 // Constants
@@ -104,10 +103,9 @@ export async function postEditDateOfBirth(req: RequestWithMiddleware, res: Respo
   if (!validationErrors.isEmpty()) {
     // Enhanced error array processing with type safety
     const rawErrors = validationErrors.array();
-    const govUkErrors = processValidationErrors(rawErrors);
     
     // Use the validated error array for processing
-    const renderOptions = createErrorRenderOptions(caseReference, formData, govUkErrors, req);
+    const renderOptions = processValidationErrors(rawErrors, caseReference, formData, req);
     
     res.status(BAD_REQUEST).render('case_details/edit-date-of-birth.njk', renderOptions);
     return;

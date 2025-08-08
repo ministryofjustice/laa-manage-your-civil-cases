@@ -296,52 +296,45 @@ function isGovUkValidationError(obj: unknown): obj is GovUkValidationError {
 /**
  * Process validation errors with enhanced debugging
  * @param {ValidationError[]} rawErrors - Array of raw validation errors from express-validator
+ * @param caseReference
+ * @param formData
+ * @param req
  * @returns {GovUkValidationError[]} Array of processed GovUk validation errors
  */
-export function processValidationErrors(rawErrors: ValidationError[]): GovUkValidationError[] {
+/**
+ * Process validation errors with enhanced debugging
+ * @param {ValidationError[]} rawErrors - Array of raw validation errors from express-validator
+ * @param {string} caseReference - Unique case reference identifier
+ * @param {ExtendedDateFields} formData - Object containing date fields and original values
+ * @param {RequestWithMiddleware} req - Express request object with middleware
+ * @returns {Record<string, unknown>} Object containing error state and render options
+ */
+export function processValidationErrors(
+  rawErrors: ValidationError[],
+  caseReference: string,
+  formData: ExtendedDateFields,
+  req: RequestWithMiddleware
+): Record<string, unknown> {
   // Transform errors using our formatter which returns GovUkValidationError objects
-  const transformedErrors: GovUkValidationError[] = rawErrors
+  const govUkErrors: GovUkValidationError[] = rawErrors
     .map((error) => {
       const formatted = govUkErrorFormatter(error);
       if (isGovUkValidationError(formatted)) {
         return formatted;
       } else {
         console.warn('⚠️ govUkErrorFormatter returned an invalid error object:', formatted);
-        // Optionally, return a default error or skip
         return null;
       }
     })
     .filter((e): e is GovUkValidationError => e !== null);
-  
-  // Validation error safety check
-  if (transformedErrors.length === EMPTY_VALUE && rawErrors.length > EMPTY_VALUE) {
+  if (govUkErrors.length === EMPTY_VALUE && rawErrors.length > EMPTY_VALUE) {
     console.warn('⚠️ Validation errors detected but transformation failed:', rawErrors);
   }
-  
-  return transformedErrors;
-}
-
-/**
- * Create render options for error state
- * @param {string} caseReference - Case reference string
- * @param {ExtendedDateFields} formData - Form data object containing date values and original values
- * @param {GovUkValidationError[]} govUkErrors - Array of processed validation errors
- * @param {RequestWithMiddleware} req - Express request object for CSRF token
- * @returns {Record<string, unknown>} Render options object for template
- */
-export function createErrorRenderOptions(
-  caseReference: string,
-  formData: ExtendedDateFields,
-  govUkErrors: GovUkValidationError[],
-  req: RequestWithMiddleware
-): Record<string, unknown> {
+  // Merge createErrorRenderOptions logic
   const { formIsInvalid, inputErrors, errorSummaryList } = createFormErrorData(govUkErrors, true);
-  
-  // Enhanced date-specific display logic with robust error handling
   const inlineErrorMessage = getDateInlineErrorMessage(inputErrors);
   const fieldHighlighting = getDateFieldHighlighting(inputErrors, govUkErrors);
-  
-  const renderOptions = {
+  return {
     caseReference,
     currentDay: formData.day,
     currentMonth: formData.month,
@@ -376,8 +369,6 @@ export function createErrorRenderOptions(
     highlightYear: fieldHighlighting.highlightYear,
     csrfToken: generateCsrfToken(req)
   };
-  
-  return renderOptions;
 }
 
 /**
