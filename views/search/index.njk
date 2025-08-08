@@ -1,0 +1,119 @@
+{% extends "base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{%- from "components/sortableTableComponent.njk" import sortableTableComponent -%}
+{%- from "components/paginationComponent.njk" import paginationComponent -%}
+
+{% block pageContent %}
+  <h1 class="govuk-heading-xl">Search for a case</h1>
+  <p>Enter details in at least one field to search </p>
+  <div class="moj-filter__selected">
+    <div class="moj-filter__heading-title">
+      <h2 class="govuk-heading-m">Case details</h2>
+    </div>
+    <div id="search-hint" class="govuk-hint">
+      <p class="govuk-body">You can search by:</p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>case ID (eg. EH-1234-2925)</li>
+        <li>phone number</li>
+        <li>name</li>
+        <li>postcode</li>
+        <li>address</li>
+      </ul>
+    </div>
+    <form action="/search" method="GET" class="govuk-form">
+
+      {{ govukInput({
+      id: "searchKeyword",
+      name: "searchKeyword",
+      type: "text",
+      classes: "govuk-!-width-two-thirds",
+      value: searchKeyword,
+      label: {
+        text: "Search by case ID, client name, phone number, postcode or address",
+        classes: "govuk-visually-hidden"
+      }
+    }) }}
+
+      {{ govukSelect({
+      id: "statusSelect",
+      name: "statusSelect",
+      label: {
+        text: "Status",
+        classes: "govuk-label--m"
+      },
+      items: [
+        {
+          value: "all",
+          text: "Show all",
+          selected: statusSelect === "all"
+        },
+        {
+          value: "new",
+          text: "New",
+          selected: statusSelect === "new"
+        },
+        {
+          value: "opened",
+          text: "Opened",
+          selected: statusSelect === "opened"
+        },
+        {
+          value: "accepted",
+          text: "Accepted",
+          selected: statusSelect === "accepted"
+        },
+        {
+          value: "closed",
+          text: "Closed",
+          selected: statusSelect === "closed"
+        }
+      ]
+    }) }}
+
+      <div class="govuk-button-group">
+        {{ govukButton({
+        text: "Search"
+      }) }}
+
+        <a class="govuk-link" href="/search/clear">Clear all</a>
+      </div>
+    </form>
+  </div>
+  {% if searchPerformed %}
+    <div class="govuk-!-margin-top-8">
+      {% if searchResults and searchResults.length > 0 %}
+        <h2 class="govuk-heading-m">{{ pagination.total }} Search result{% if pagination.total != 1 %}s{% endif %}</h2>
+
+        {{ sortableTableComponent({
+          id: "search-results-table",
+          data: searchResults,
+          columns: [
+            { key: "fullName", text: "Name", link: "/cases/{{caseReference}}/client-details" },
+            { key: "caseReference", text: "Case ID" },
+            { key: "phoneNumber", text: "Phone number" },
+            { key: "dateOfBirth", text: "Date of birth" },
+            { key: "caseStatus", text: "Status" },
+            { key: "lastModified", text: "Last modified", sortable: true, classes: "govuk-table__header--numeric", cellClasses: "govuk-table__cell--numeric" }
+          ],
+          sortBy: sortBy or "lastModified",
+          sortOrder: sortOrder or "desc",
+          basePath: "/search"
+        }) }}
+
+        {% if pagination %}
+          {{ paginationComponent({
+            pagination: pagination,
+            sortOrder: sortOrder or "desc",
+            basePath: "/search"
+          }) }}
+        {% endif %}
+      {% else %}
+        <h2 class="govuk-heading-m">No results found</h2>
+        <p class="govuk-body">There are no results that match the search criteria</p>
+      {% endif %}
+    </div>
+  {% endif %}
+
+{% endblock %}

@@ -8,6 +8,9 @@ import { devLog, devError } from '#src/scripts/helpers/index.js';
 const DEFAULT_TIMEOUT = 5000;
 const HTTP_UNAUTHORIZED = 401;
 
+// Singleton AuthService instance to persist tokens across requests
+let authServiceInstance: ReturnType<typeof createAuthService> | undefined = undefined;
+
 // Extend Express Request to include our axiosMiddleware
 declare global {
   namespace Express {
@@ -18,6 +21,20 @@ declare global {
 }
 
 // NOTE: This module exports axiosMiddleware
+
+/**
+ * Get or create singleton AuthService instance
+ * @returns {ReturnType<typeof createAuthService>} AuthService instance or null
+ */
+function getAuthService(): ReturnType<typeof createAuthService> {
+  if (authServiceInstance === undefined) {
+    authServiceInstance = createAuthService();
+    if (authServiceInstance !== null) {
+      devLog('Created singleton AuthService instance for token caching');
+    }
+  }
+  return authServiceInstance;
+}
 
 /**
  * Convert unknown error to Error instance
@@ -61,7 +78,7 @@ export const axiosMiddleware = (req: Request, res: Response, next: NextFunction)
   });
 
   // Add JWT authentication interceptor for API calls
-  const authService = createAuthService();
+  const authService = getAuthService();
   if (authService !== null) {
     // Request interceptor for JWT auth
     axiosWrapper.axiosInstance.interceptors.request.use(
