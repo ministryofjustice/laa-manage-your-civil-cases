@@ -9,13 +9,13 @@
 {% endblock %}
 
 {% block content %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "/cases/" + caseReference + "/client-details"
+  }) }}
+  
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      
-      {{ govukBackLink({
-        text: "Back",
-        href: "/cases/" + caseReference + "/client-details"
-      }) }}
       
       {% if errorState.hasErrors %}
         {{ govukErrorSummary({
