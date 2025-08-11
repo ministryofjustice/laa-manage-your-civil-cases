@@ -45,7 +45,8 @@
             }
           },
           hint: {
-            text: "For example, 27 3 2024"
+            text: "For example, 27 3 2024",
+            classes: "govuk-!-margin-top-2 govuk-!-margin-bottom-4"
           },
           errorMessage: {
             html: inlineErrorMessage | replace('\n', '<br>')
@@ -81,13 +82,13 @@
           ]
         }) }}
 
-        {{ govukButton({
-          text: "Save and continue"
-        }) }}
-        
-        <p class="govuk-body">
-          <a href="/cases/{{ caseReference }}/client-details" class="govuk-link">Cancel</a>
-        </p>
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: "Save"
+          }) }}
+          <a class="govuk-link" href="/cases/{{ caseReference }}/client-details">Cancel</a>
+        </div>
+
         
       </form>
       
