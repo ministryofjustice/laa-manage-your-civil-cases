@@ -24,8 +24,6 @@
         }) }}
       {% endif %}
       
-      <h1 class="govuk-heading-l">Client's date of birth</h1>
-      
       <form method="POST" action="/cases/{{ caseReference }}/client-details/edit/date-of-birth">
         
         <!-- CSRF Protection -->
@@ -41,13 +39,13 @@
           namePrefix: "dateOfBirth",
           fieldset: {
             legend: {
-              text: "What is the client's date of birth?",
-              isPageHeading: false,
-              classes: "govuk-fieldset__legend--m"
+              text: "Client's date of birth",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l govuk-!-margin-bottom-6"
             }
           },
           hint: {
-            text: "For example, 27 3 1987."
+            text: "For example, 27 3 2024"
           },
           errorMessage: {
             html: inlineErrorMessage | replace('\n', '<br>')
