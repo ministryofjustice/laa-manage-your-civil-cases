@@ -21,6 +21,7 @@ import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
 import type {
   ApiResponse,
   CaseApiParams,
+  SearchApiParams,
   ClientDetailsResponse,
   ClientDetailsApiResponse,
   PaginationMeta
@@ -213,6 +214,76 @@ class ApiService {
         status: 'error',
         message: errorMessage
       };
+    }
+  }
+
+  /**
+   * Search for cases based on keyword and status
+   * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+   * @param {object} params - Search parameters
+   * @param {string} params.keyword - Search keyword (required)
+   * @param {string} [params.status] - Case status filter (optional)
+   * @param {number} [params.page] - Page number for pagination
+   * @param {number} [params.limit] - Number of results per page
+   * @param {string} [params.sortOrder] - Sort direction (asc or desc)
+   * @returns {Promise<ApiResponse<CaseData>>} API response with case data and pagination
+   */
+  static async searchCases(
+    axiosMiddleware: AxiosInstanceWrapper,
+    params: SearchApiParams
+  ): Promise<ApiResponse<CaseData>> {
+    const { keyword, status } = params;
+    const page = params.page ?? DEFAULT_PAGE;
+    const limit = params.limit ?? DEFAULT_LIMIT;
+    // Set sortOrder to 'desc' if not provided or empty
+    const sortOrder = params.sortOrder !== undefined && params.sortOrder.trim() !== '' ? params.sortOrder : 'desc';
+
+    try {
+      // Build API params - only include status if it has a value
+      const apiParams: { keyword: string; sortOrder: string; page: number; limit: number; status?: string } = {
+        keyword,
+        sortOrder,
+        page,
+        limit
+      };
+
+      if (status !== undefined && status.trim() !== '') {
+        apiParams.status = status;
+      }
+
+      devLog(`API: GET ${API_PREFIX}/cases/search with params: ${JSON.stringify(apiParams, null, JSON_INDENT)}`);
+
+      const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
+
+      // Call API endpoint
+      const response = await configuredAxios.get(`${API_PREFIX}/cases/search`, {
+        params: apiParams
+      });
+
+      // Transform the response data
+      const transformedData = Array.isArray(response.data)
+        ? response.data.map(transformCaseItem)
+        : [];
+
+      // Extract pagination metadata from response headers (use 'new' as dummy value since it's not used for search)
+      const paginationParams: CaseApiParams = { caseType: 'new', page, limit };
+      const paginationMeta = ApiService.extractPaginationMeta(response.headers, paginationParams);
+
+      devLog(`API: Returning ${transformedData.length} search results (total: ${paginationMeta.total})`);
+
+      return {
+        data: transformedData,
+        pagination: paginationMeta,
+        status: 'success'
+      };
+
+    } catch (error) {
+      const errorMessage = extractAndLogError(error, 'API search error');
+
+      // Instead of returning error response, throw the error to be handled by global handler
+      const searchError = new Error(errorMessage);
+      searchError.cause = error;
+      throw searchError;
     }
   }
 
