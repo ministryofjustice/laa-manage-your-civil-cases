@@ -18,7 +18,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
-import { processSearch, clearSearch, getSearch } from '#src/scripts/controllers/searchController.js';
+import { processSearch, clearSearch } from '#src/scripts/controllers/searchController.js';
 import { apiService } from '#src/services/apiService.js';
 import '#utils/axiosSetup.js'; // Import to get global type declarations
 
@@ -51,14 +51,6 @@ describe('Search Controller', () => {
 
   afterEach(() => {
     sinon.restore();
-  });
-
-  describe('getSearch', () => {
-    it('should redirect to /search', () => {
-      getSearch(req as Request, res as Response);
-
-      expect((res.redirect as sinon.SinonStub).calledWith('/search')).to.be.true;
-    });
   });
 
   describe('processSearch', () => {

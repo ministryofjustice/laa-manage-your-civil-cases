@@ -2,12 +2,23 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "components/errorSummaryComponent.njk" import errorSummary %}
 {%- from "components/sortableTableComponent.njk" import sortableTableComponent -%}
 {%- from "components/paginationComponent.njk" import paginationComponent -%}
 
 {% block pageContent %}
+  {% if error %}
+    {{ errorSummary(error.errorSummaryList) }}
+    {% set searchKeywordErrorMessage = {
+      text: error.inputErrors.searchKeyword
+    }
+    if error.inputErrors.searchKeyword %}
+  {% endif %}
+
   <h1 class="govuk-heading-xl">Search for a case</h1>
   <p>Enter details in at least one field to search </p>
+
+
   <div class="moj-filter__selected">
     <div class="moj-filter__heading-title">
       <h2 class="govuk-heading-m">Case details</h2>
@@ -22,7 +33,8 @@
         <li>address</li>
       </ul>
     </div>
-    <form action="/search" method="GET" class="govuk-form">
+    <form action="/search" method="POST" class="govuk-form">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}">
 
       {{ govukInput({
       id: "searchKeyword",
@@ -30,6 +42,7 @@
       type: "text",
       classes: "govuk-!-width-two-thirds",
       value: searchKeyword,
+      errorMessage: searchKeywordErrorMessage,
       label: {
         text: "Search by case ID, client name, phone number, postcode or address",
         classes: "govuk-visually-hidden"
@@ -84,7 +97,8 @@
   {% if searchPerformed %}
     <div class="govuk-!-margin-top-8">
       {% if searchResults and searchResults.length > 0 %}
-        <h2 class="govuk-heading-m">{{ pagination.total }} Search result{% if pagination.total != 1 %}s{% endif %}</h2>
+        <h2 class="govuk-heading-m">{{ pagination.total }} Search result{% if pagination.total != 1 %}s{% endif %}
+        </h2>
 
         {{ sortableTableComponent({
           id: "search-results-table",

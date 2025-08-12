@@ -32,3 +32,29 @@ test('search page should have rendered correctly', async ({ page }) => {
   await expect(clearButton).toBeVisible();
 
 });
+
+test('if no keyword is entered error message shows', async ({ page }) => {
+  // Navigate to the search page
+  await page.goto('/search');
+
+  // Click the search button
+  const searchButton = page.getByRole('button', { name: 'Search' });
+  await searchButton.click();
+
+  // Check for the error message
+  const errorMessage = page.getByText('Enter at least one search criteria');
+  await expect(errorMessage).toBeVisible();
+});
+
+
+test('if clear button clicked page should refresh', async ({ page }) => {
+  // Navigate to the search page
+  await page.goto('/search');
+
+  // Click the clear button
+  const clearButton = page.getByRole('link', { name: 'Clear all' });
+  await clearButton.click();
+
+  // Check that the page has refreshed
+  await expect(page).toHaveURL('/search');
+});

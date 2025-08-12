@@ -1,12 +1,15 @@
 import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
 import { apiService } from '#src/services/apiService.js';
-import { safeString, safeOptionalString } from '#src/scripts/helpers/index.js';
+import { safeString, safeOptionalString, hasProperty } from '#src/scripts/helpers/index.js';
+import { validationResult } from 'express-validator';
+import { formatValidationError, type ValidationErrorData } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 
 // Constants
 const DEFAULT_SORT_BY = 'lastModified';
 const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 20;
+const BAD_REQUEST = 400;
 
 // Extend the Express session type to include our search parameters
 declare module 'express-session' {
@@ -14,17 +17,6 @@ declare module 'express-session' {
     searchKeyword?: string;
     statusSelect?: string;
   }
-}
-
-/**
- * Renders the search page.
- * @param {Request} req - Express request object
- * @param {Response} res - Express response object
- */
-export function getSearch(req: Request, res: Response): void {
-  // This function is not used anymore since processSearch handles all cases
-  // Redirect to the search processor
-  res.redirect('/search');
 }
 
 /**
@@ -43,18 +35,55 @@ function getPaginationParameters(req: Request): { sortOrder: string; sort: strin
 }
 
 /**
+ * Helper function to extract search parameters from request
+ * @param {Request} req - Express request object
+ * @returns {{ keyword: string; status: string }} Raw parameters from body or query
+ */
+function extractRawSearchParameters(req: Request): { keyword: string; status: string } {
+  const bodyKeyword = hasProperty(req.body, 'searchKeyword') ? safeString(req.body.searchKeyword) : '';
+  const queryKeyword = safeString(req.query.searchKeyword);
+  const bodyStatus = hasProperty(req.body, 'statusSelect') ? safeString(req.body.statusSelect) : '';
+  const queryStatus = safeString(req.query.statusSelect);
+
+  const keyword = bodyKeyword !== '' ? bodyKeyword : queryKeyword;
+  const status = bodyStatus !== '' ? bodyStatus : queryStatus;
+
+  return { keyword, status };
+}
+
+/**
+ * Helper function to handle session-based parameter retrieval
+ * @param {Request} req - Express request object
+ * @param {boolean} isPaginationOrSort - Whether this is a pagination/sort request
+ * @returns {{ keyword: string; status: string }} Parameters from session
+ */
+function getSessionParameters(req: Request, isPaginationOrSort: boolean): { keyword: string; status: string } {
+  if (!isPaginationOrSort) {
+    return { keyword: '', status: 'all' };
+  }
+
+  const sessionKeyword = safeOptionalString(req.session.searchKeyword);
+  const sessionStatus = safeOptionalString(req.session.statusSelect);
+
+  const keyword = (sessionKeyword !== undefined && sessionKeyword !== '') ? sessionKeyword : '';
+  const status = (sessionStatus !== undefined && sessionStatus !== '') ? sessionStatus : 'all';
+
+  return { keyword, status };
+}
+
+/**
  * Helper function to get search parameters from session or query
  * @param {Request} req - Express request object
  * @returns {{ keyword: string; status: string }} Object with keyword and status
  */
 function getSearchParameters(req: Request): { keyword: string; status: string } {
-  // Extract all query parameters
-  let keyword = safeString(req.query.searchKeyword);
-  let status = safeString(req.query.statusSelect);
+  let { keyword, status } = extractRawSearchParameters(req);
   const { isPaginationOrSort } = getPaginationParameters(req);
 
   // Default status to 'all' if no statusSelect parameter exists
-  if (status === '' && req.query.statusSelect === undefined) {
+  const hasBodyStatus = hasProperty(req.body, 'statusSelect');
+  const hasQueryStatus = req.query.statusSelect !== undefined;
+  if (status === '' && !hasBodyStatus && !hasQueryStatus) {
     status = 'all';
   }
 
@@ -64,19 +93,9 @@ function getSearchParameters(req: Request): { keyword: string; status: string } 
     req.session.statusSelect = status;
   }
   // If navigating pages without search params, use session values
-  else if (isPaginationOrSort) {
-    const sessionKeyword = safeOptionalString(req.session.searchKeyword);
-    const sessionStatus = safeOptionalString(req.session.statusSelect);
-
-    if (sessionKeyword !== undefined && sessionKeyword !== '') {
-      keyword = sessionKeyword;
-    }
-
-    if (sessionStatus !== undefined && sessionStatus !== '') {
-      status = sessionStatus;
-    } else {
-      status = 'all';
-    }
+  else {
+    const sessionParams = getSessionParameters(req, isPaginationOrSort);
+    ({ keyword, status } = sessionParams);
   }
 
   return { keyword, status };
@@ -137,6 +156,43 @@ function renderSearchResults(req: Request, res: Response, params: {
  */
 export async function processSearch(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
+    // Handle validation errors first
+    const validationErrors = validationResult(req);
+    if (!validationErrors.isEmpty()) {
+      const formattedErrors = validationErrors.formatWith(formatValidationError);
+      const errorArray = formattedErrors.array();
+
+      const inputErrors = errorArray.reduce<Record<string, string>>((acc, validationErrorData: ValidationErrorData) => {
+        const fieldName = 'searchKeyword'; // For search we only have one field
+        const { inlineMessage } = validationErrorData;
+        if (inlineMessage.trim() !== '') {
+          acc[fieldName] = inlineMessage;
+        }
+        return acc;
+      }, {});
+
+      const errorSummaryList = errorArray.map((validationErrorData: ValidationErrorData) => ({
+        text: validationErrorData.summaryMessage,
+        href: '#searchKeyword',
+      }));
+
+      // Get current form values to preserve user input
+      const { keyword, status } = getSearchParameters(req);
+
+      res.status(BAD_REQUEST).render('search/index.njk', {
+        searchKeyword: keyword,
+        statusSelect: status,
+        searchPerformed: false,
+        error: {
+          inputErrors,
+          errorSummaryList
+        },
+        csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
+        request: req
+      });
+      return;
+    }
+
     // Get search parameters from query or session
     const { keyword, status } = getSearchParameters(req);
 

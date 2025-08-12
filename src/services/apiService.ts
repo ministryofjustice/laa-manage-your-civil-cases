@@ -21,6 +21,7 @@ import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
 import type {
   ApiResponse,
   CaseApiParams,
+  SearchApiParams,
   ClientDetailsResponse,
   ClientDetailsApiResponse,
   PaginationMeta
@@ -229,7 +230,7 @@ class ApiService {
    */
   static async searchCases(
     axiosMiddleware: AxiosInstanceWrapper,
-    params: { keyword: string; status?: string; page?: number; limit?: number; sortOrder?: string }
+    params: SearchApiParams
   ): Promise<ApiResponse<CaseData>> {
     const { keyword, status } = params;
     const page = params.page ?? DEFAULT_PAGE;
