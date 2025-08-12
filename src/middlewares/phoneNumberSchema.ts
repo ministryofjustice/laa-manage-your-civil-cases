@@ -35,29 +35,36 @@ export const validateEditClientPhoneNumber = (): ReturnType<typeof checkSchema> 
       trim: true,
       custom: {
         /**
-         * Schema to check if the number inputted is empty and/or valid UK or International phone number.
+         * Schema to check if the number inputted is valid UK or International phone number.
          * @param {string} numberInputted - The number user has inputted
-         * @returns {true} Returns true if the phone number is valid
-         * @throws {Error} Throws error with a user-friendly message if invalid
+         * @returns {boolean} Returns true if the phone number is valid, false otherwise
          */
-        options: (numberInputted: string): true => {
+        options: (numberInputted: string): boolean => {
           if (numberInputted.trim() === '') {
-            throw new TypedValidationError({
-              summaryMessage: 'Enter the client phone number',
-              inlineMessage: 'Enter the phone number'
-            });
+            return true; // Let the notEmpty validator handle empty values
           }
 
           const valid = isValidPhoneNumber(numberInputted, 'GB') || isValidPhoneNumber(numberInputted, 'IN');
-          if (!valid) {
-            throw new TypedValidationError({
-              summaryMessage: 'Enter the phone number in the correct format',
-              inlineMessage: 'Enter the phone number in the correct format'
-            });
-          }
-
-          return true;
+          return valid;
         },
+        /**
+         * Custom error message for invalid phone number format
+         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+         */
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: 'Enter the phone number in the correct format',
+          inlineMessage: 'Enter the phone number in the correct format'
+        })
+      },
+      notEmpty: {
+        /**
+         * Custom error message for empty phone number
+         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+         */
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: 'Enter the client phone number',
+          inlineMessage: 'Enter the phone number'
+        })
       },
     },
     notChanged: {
@@ -76,14 +83,16 @@ export const validateEditClientPhoneNumber = (): ReturnType<typeof checkSchema> 
           }
           const phoneChanged = req.body.phoneNumber !== req.body.existingPhoneNumber;
           const safeToCallChanged = req.body.safeToCall !== req.body.existingSafeToCall;
-          if (!phoneChanged && !safeToCallChanged) {
-            throw new TypedValidationError({
-              summaryMessage: 'Update if the client is safe to call, update the client phone number, or select \'Cancel\'',
-              inlineMessage: 'You must make a change before saving',
-            });
-          }
-          return true;
+          return phoneChanged || safeToCallChanged;
         },
+        /**
+         * Custom error message for when no changes are made
+         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+         */
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: 'Update if the client is safe to call, update the client phone number, or select \'Cancel\'',
+          inlineMessage: '',
+        })
       },
     },
   });

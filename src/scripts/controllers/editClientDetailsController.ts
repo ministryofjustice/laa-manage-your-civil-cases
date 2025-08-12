@@ -181,19 +181,17 @@ export async function postEditClientPhoneNumber(req: Request, res: Response, nex
   const validationErrors: Result<ValidationErrorData> = validationResult(req).formatWith(formatValidationError);
 
   if (!validationErrors.isEmpty()) {
-    const resultingErrors = validationErrors.array().map((errorData: ValidationErrorData) => {
-      // Use inlineMessage if it's not empty, otherwise fallback to summaryMessage
-      const inlineMessage = errorData.inlineMessage !== '' ? errorData.inlineMessage : errorData.summaryMessage;
+    const resultingErrors = validationErrors.array().map((errorData: ValidationErrorData) => ({
+      fieldName: 'phoneNumber',
+      inlineMessage: errorData.inlineMessage,
+      summaryMessage: errorData.summaryMessage,
+    }));
 
-      return {
-        fieldName: 'phoneNumber',
-        inlineMessage,
-        summaryMessage: errorData.summaryMessage,
-      };
-    });
-
+    // Only use inline messages that are not empty
     const inputErrors = resultingErrors.reduce<Record<string, string>>((acc, { fieldName, inlineMessage }) => {
-      acc[fieldName] = inlineMessage;
+      if (inlineMessage.trim() !== '') {
+        acc[fieldName] = inlineMessage;
+      }
       return acc;
     }, {});
 
