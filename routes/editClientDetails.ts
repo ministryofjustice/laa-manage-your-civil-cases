@@ -7,7 +7,9 @@ import {
   getEditClientPhoneNumber,
   postEditClientPhoneNumber
 } from '#src/scripts/controllers/editClientDetailsController.js';
+import { getEditClientAddress, postEditClientAddress } from '#src/scripts/controllers/editClientAddressController.js';
 import { validateEditClientPhoneNumber } from '#src/middlewares/phoneNumberSchema.js';
+import { validateEditClientAddress } from '#src/middlewares/clientAddressSchema.js';
 
 const router = express.Router();
 
@@ -19,5 +21,8 @@ router.post('/:caseReference/client-details/edit/email-address', postEditClientE
 
 router.get('/:caseReference/client-details/edit/phone-number', getEditClientPhoneNumber);
 router.post('/:caseReference/client-details/edit/phone-number', validateEditClientPhoneNumber(), postEditClientPhoneNumber);
+
+router.get('/:caseReference/client-details/edit/address', getEditClientAddress);
+router.post('/:caseReference/client-details/edit/address', validateEditClientAddress(), postEditClientAddress);
 
 export default router;
