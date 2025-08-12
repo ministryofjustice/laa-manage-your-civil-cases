@@ -38,6 +38,17 @@ export interface CaseApiParams {
 }
 
 /**
+ * API request parameters for case search
+ */
+export interface SearchApiParams {
+  keyword: string;
+  status?: string;
+  page?: number;
+  limit?: number;
+  sortOrder?: string;
+}
+
+/**
  * Client details API response interface
  */
 export interface ClientDetailsResponse {
