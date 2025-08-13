@@ -140,20 +140,22 @@ export async function getEditClientPhoneNumber(req: Request, res: Response, next
   const caseReference = safeString(req.params.caseReference);
   try {
     const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
-    let currentSafeToCall = '';
     let currentPhoneNumber = '';
+    let currentSafeToCall = '';
+    let currentAnnounceCall = '';
     const safeToCall = response.data?.safeToCall
     const phoneNumber = response.data?.phoneNumber
     const announceCall = response.data?.announceCall
-    if (response.status === 'success' && typeof phoneNumber === 'string' && typeof safeToCall === 'boolean') {
-      currentSafeToCall = safeString(safeToCall)
+    if (response.status === 'success' && typeof phoneNumber === 'string' && typeof safeToCall === 'boolean' && typeof announceCall === 'boolean') {
       currentPhoneNumber = safeString(phoneNumber);
+      currentSafeToCall = safeString(safeToCall)
+      currentAnnounceCall = safeString(announceCall)
     }
     res.render('case_details/edit-client-phone-number.njk', {
       caseReference,
-      currentSafeToCall,
       currentPhoneNumber,
-      announceCall
+      currentSafeToCall,
+      currentAnnounceCall
     });
   } catch (error) {
     next(error);
@@ -170,13 +172,14 @@ export async function getEditClientPhoneNumber(req: Request, res: Response, next
 export async function postEditClientPhoneNumber(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
-  const safeToCall = hasProperty(req.body, 'safeToCall') ? safeString(req.body.safeToCall).trim() : '';
-  const existingSafeToCall = hasProperty(req.body, 'existingSafeToCall') ? safeString(req.body.existingSafeToCall).trim() : '';
-
   const phoneNumber = hasProperty(req.body, 'phoneNumber') ? safeString(req.body.phoneNumber).trim() : '';
   const existingPhoneNumber = hasProperty(req.body, 'existingPhoneNumber') ? safeString(req.body.existingPhoneNumber).trim() : '';
 
-  const announceCall = hasProperty(req.body, 'announceCall') ? req.body.announceCall : false;
+  const safeToCall = hasProperty(req.body, 'safeToCall') ? safeString(req.body.safeToCall).trim() : '';
+  const existingSafeToCall = hasProperty(req.body, 'existingSafeToCall') ? safeString(req.body.existingSafeToCall).trim() : '';
+  
+  const announceCall = hasProperty(req.body, 'announceCall') ? safeString(req.body.announceCall).trim() : '';
+  const existingAnnounceCall = hasProperty(req.body, 'existingAnnounceCall') ? safeString(req.body.existingAnnounceCall).trim() : '';
 
   const validationErrors: Result<ValidationErrorData> = validationResult(req).formatWith(formatValidationError);
 
@@ -202,11 +205,12 @@ export async function postEditClientPhoneNumber(req: Request, res: Response, nex
 
     res.status(BAD_REQUEST).render('case_details/edit-client-phone-number.njk', {
       caseReference,
-      currentSafeToCall: safeToCall,
-      existingSafeToCall,
       currentPhoneNumber: phoneNumber,
       existingPhoneNumber,
-      announceCall,
+      currentSafeToCall: safeToCall,
+      existingSafeToCall,
+      currentAnnounceCall: announceCall,
+      existingAnnounceCall,
       error: {
         inputErrors,
         errorSummaryList
@@ -217,7 +221,7 @@ export async function postEditClientPhoneNumber(req: Request, res: Response, nex
   }
 
   try {
-    await apiService.updateClientDetails(req.axiosMiddleware, caseReference, { safeToCall, phoneNumber });
+    await apiService.updateClientDetails(req.axiosMiddleware, caseReference, { safeToCall, phoneNumber, announceCall });
     res.redirect(`/cases/${caseReference}/client-details`);
   } catch (error) {
     next(error);

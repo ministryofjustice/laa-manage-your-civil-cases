@@ -29,7 +29,21 @@
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
         <input type="hidden" name="existingSafeToCall" value="{{ existingSafeToCall | default(currentSafeToCall) }}">
         <input type="hidden" name="existingPhoneNumber" value="{{ existingPhoneNumber | default(currentPhoneNumber) }}">
-        <input type="hidden" name="announceCall" value="{{ announceCall }}">
+        <input type="hidden" name="existingAnnounceCall" value="{{ existingAnnounceCall | default(currentAnnounceCall) }}">
+        {{ govukInput({
+          label: {
+            text: "Client phone number",
+            classes: "govuk-label--l",
+            isPageHeading: true
+          },
+          errorMessage: phoneNumberErrorMessage,
+          id: "phoneNumber",
+          name: "phoneNumber",
+          type: "tel",
+          autocomplete: "off",
+          classes: "govuk-input--width-20",
+          value: currentPhoneNumber
+        }) }}
         {{ govukRadios({
           name: "safeToCall",
           value: currentSafeToCall,
@@ -37,8 +51,8 @@
           fieldset: {
             legend: {
               text: "Is the client safe to call?",
-              isPageHeading: true,
-              classes: "govuk-fieldset__legend--l"
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--m"
             }
           },
           items: [
@@ -52,25 +66,28 @@
             }
           ]
         }) }}
-        {{ govukInput({
-          label: {
-            text: "Phone number",
-            classes: "govuk-label--m"
+        {{ govukRadios({
+          name: "announceCall",
+          value: currentAnnounceCall,
+          errorMessage: announceCallErrorMessage,
+          fieldset: {
+            legend: {
+              text: "Can we say we're calling from Civil Legal Advice?",
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--m"
+            }
           },
-          errorMessage: phoneNumberErrorMessage,
-          id: "phoneNumber",
-          name: "phoneNumber",
-          type: "tel",
-          autocomplete: "off",
-          classes: "govuk-input--width-20",
-          value: currentPhoneNumber
+          items: [
+            {
+              value: "true",
+              text: "Yes"
+            },
+            {
+              value: "false",
+              text: "No"
+            }
+          ]
         }) }}
-        {% if not announceCall %}
-          {{ govukWarningText({
-            text: "Do not say the call is from Civil Legal Advice",
-            iconFallbackText: "Warning"
-          }) }}
-        {% endif %}
         <div class="govuk-button-group">
           {{ govukButton({
             text: "Save"
