@@ -140,9 +140,9 @@ describe('Client Date of Birth Schema Validation', () => {
         expect(errorArray).to.have.length(4);
         
         // Look for required field errors (format errors should be skipped for empty fields)
-        const dayRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Enter a day');
-        const monthRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Enter a month');
-        const yearRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Enter a year');
+        const dayRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'The date of birth must include a day');
+        const monthRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Enter the client date of birth');
+        const yearRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'The date of birth must include a year');
         const changeError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Update the client date of birth or select \'Cancel\'');
         
         expect(dayRequiredError).to.exist;
@@ -171,7 +171,7 @@ describe('Client Date of Birth Schema Validation', () => {
         // Should only get the required field error for the empty month - no change detection error since there's a change
         expect(errorArray).to.have.length(1);
         
-        const monthError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Enter a month');
+        const monthError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Enter the client date of birth');
         expect(monthError).to.exist;
       });
     });

@@ -38,8 +38,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
       trim: true,
       notEmpty: {
         errorMessage: () => new TypedValidationError({
-          summaryMessage: 'Enter a day',
-          inlineMessage: 'Enter a day',
+          summaryMessage: 'The date of birth must include a day',
+          inlineMessage: 'The date of birth must include a day',
         })
       },
       isInt: {
@@ -56,8 +56,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
       trim: true,
       notEmpty: {
         errorMessage: () => new TypedValidationError({
-          summaryMessage: 'Enter a month',
-          inlineMessage: 'Enter a month',
+          summaryMessage: 'Enter the client date of birth',
+          inlineMessage: 'Enter the client date of birth',
         })
       },
       isInt: {
@@ -74,8 +74,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
       trim: true,
       notEmpty: {
         errorMessage: () => new TypedValidationError({
-          summaryMessage: 'Enter a year',
-          inlineMessage: 'Enter a year',
+          summaryMessage: 'The date of birth must include a year',
+          inlineMessage: 'The date of birth must include a year',
         })
       },
       isLength: {
