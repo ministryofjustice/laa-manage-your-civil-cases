@@ -58,7 +58,7 @@ export async function getEditClientDateOfBirth(req: Request, res: Response, next
       formData,
       originalData,
       errorState: { hasErrors: false, errors: [] },
-      csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
+      csrfToken: typeof (req as any).csrfToken === 'function' ? (req as any).csrfToken() : undefined,
     });
   } catch (error) {
     next(error);
