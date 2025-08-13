@@ -78,9 +78,17 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
           inlineMessage: 'Enter a year',
         })
       },
+      isLength: {
+        options: { min: 4, max: 4 },
+        if: (value: any) => value !== '', // Only validate length if not empty
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: 'Year must include 4 numbers',
+          inlineMessage: 'Year must include 4 numbers',
+        })
+      },
       isInt: {
         options: { min: 1, max: new Date().getFullYear() },
-        if: (value: any) => value !== '', // Only validate format if not empty
+        if: (value: any) => value !== '' && value.length === 4, // Only validate range if not empty and has correct length
         errorMessage: () => new TypedValidationError({
           summaryMessage: `Year must be ${new Date().getFullYear()} or earlier`,
           inlineMessage: `Year must be ${new Date().getFullYear()} or earlier`,

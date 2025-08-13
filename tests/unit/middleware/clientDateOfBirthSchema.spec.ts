@@ -260,6 +260,72 @@ describe('Client Date of Birth Schema Validation', () => {
         const dayError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Day must be between 1 and 31');
         expect(dayError).to.exist;
       });
+
+      it('should fail validation for year with incorrect length (too short)', async () => {
+        const mockReq = createMockRequest({
+          'dateOfBirth-day': '15',
+          'dateOfBirth-month': '3',
+          'dateOfBirth-year': '99', // Only 2 digits
+          originalDay: '21',
+          originalMonth: '2',
+          originalYear: '2022'
+        });
+
+        const middleware = validateEditClientDateOfBirth();
+        await Promise.all(middleware.map(m => m(mockReq as Request, {} as any, () => {})));
+
+        const errors = validationResult(mockReq as Request);
+        expect(errors.isEmpty()).to.be.false;
+        
+        const errorArray = errors.array();
+        const yearLengthError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Year must include 4 numbers');
+        expect(yearLengthError).to.exist;
+      });
+
+      it('should fail validation for year with incorrect length (too long)', async () => {
+        const mockReq = createMockRequest({
+          'dateOfBirth-day': '15',
+          'dateOfBirth-month': '3',
+          'dateOfBirth-year': '19999', // 5 digits
+          originalDay: '21',
+          originalMonth: '2',
+          originalYear: '2022'
+        });
+
+        const middleware = validateEditClientDateOfBirth();
+        await Promise.all(middleware.map(m => m(mockReq as Request, {} as any, () => {})));
+
+        const errors = validationResult(mockReq as Request);
+        expect(errors.isEmpty()).to.be.false;
+        
+        const errorArray = errors.array();
+        const yearLengthError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Year must include 4 numbers');
+        expect(yearLengthError).to.exist;
+      });
+
+      it('should prioritize year length validation over range validation', async () => {
+        const mockReq = createMockRequest({
+          'dateOfBirth-day': '15',
+          'dateOfBirth-month': '3',
+          'dateOfBirth-year': '99999', // Too long and would be out of range
+          originalDay: '21',
+          originalMonth: '2',
+          originalYear: '2022'
+        });
+
+        const middleware = validateEditClientDateOfBirth();
+        await Promise.all(middleware.map(m => m(mockReq as Request, {} as any, () => {})));
+
+        const errors = validationResult(mockReq as Request);
+        expect(errors.isEmpty()).to.be.false;
+        
+        const errorArray = errors.array();
+        // Should only see length error, not range error
+        const yearLengthError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Year must include 4 numbers');
+        const yearRangeError = errorArray.find(err => err.msg.errorData?.summaryMessage.includes('or earlier'));
+        expect(yearLengthError).to.exist;
+        expect(yearRangeError).to.not.exist;
+      });
     });
 
     describe('Field Trimming', () => {
