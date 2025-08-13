@@ -76,22 +76,8 @@ export function handleDateOfBirthValidationErrors(
 
   // Map validation errors to field names for date of birth form
   const resultingErrors = validationErrors.array().map((errorData: ValidationErrorData) => {
-    // Determine field name based on the validation error
-    let fieldName = 'dateOfBirth'; // default to the main dateOfBirth field
-    
-    if (errorData.summaryMessage.toLowerCase().includes('day')) {
-      fieldName = 'dateOfBirth-day';
-    } else if (errorData.summaryMessage.toLowerCase().includes('month')) {
-      fieldName = 'dateOfBirth-month';
-    } else if (errorData.summaryMessage.toLowerCase().includes('year')) {
-      fieldName = 'dateOfBirth-year';
-    } else if (errorData.summaryMessage.toLowerCase().includes('update the client date of birth')) {
-      // Change detection error - no specific field
-      fieldName = 'dateOfBirth'; // Default to main field for summary href
-    }
-    
     return {
-      fieldName,
+      fieldName: 'dateOfBirth', // Simple - just use main field for summary href
       inlineMessage: errorData.inlineMessage,
       summaryMessage: errorData.summaryMessage,
     };
@@ -125,16 +111,14 @@ export function handleDateOfBirthValidationErrors(
     year: hasProperty(req.body, 'originalYear') ? safeString(req.body.originalYear) : ''
   };
 
-  // Determine which fields should be highlighted with error styling
-  const highlightDay = inputErrors['dateOfBirth-day'] !== undefined || inputErrors['dateOfBirth'] !== undefined;
-  const highlightMonth = inputErrors['dateOfBirth-month'] !== undefined || inputErrors['dateOfBirth'] !== undefined;
-  const highlightYear = inputErrors['dateOfBirth-year'] !== undefined || inputErrors['dateOfBirth'] !== undefined;
+  // Simple highlighting - highlight all fields if there's any error
+  const hasErrors = Object.keys(inputErrors).length > 0;
+  const highlightDay = hasErrors;
+  const highlightMonth = hasErrors;
+  const highlightYear = hasErrors;
 
-  // Get inline error message (prioritize specific field errors, fall back to general)
-  const inlineErrorMessage = inputErrors['dateOfBirth'] || 
-                             inputErrors['dateOfBirth-day'] || 
-                             inputErrors['dateOfBirth-month'] || 
-                             inputErrors['dateOfBirth-year'] || '';
+  // Get inline error message
+  const inlineErrorMessage = inputErrors['dateOfBirth'] || '';
 
   // Re-render the form with errors and preserve user input
   res.status(BAD_REQUEST).render('case_details/edit-date-of-birth.njk', {
