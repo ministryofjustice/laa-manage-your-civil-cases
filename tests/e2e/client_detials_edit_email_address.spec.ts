@@ -3,10 +3,10 @@ import { test, expect } from '@playwright/test';
 test('viewing change email-address form, to see the expected elements', async ({ page }) => {
   const emailInput = page.locator('#emailAddress');
   const saveButton = page.getByRole('button', { name: 'Save' });
-  
-  // Navigate to the `/edit/email-address`
-  await page.goto('/cases/PC-1922-1879/client-details/edit/email-address');
-  
+
+  // Navigate to the `/change/email-address`
+  await page.goto('/cases/PC-1922-1879/client-details/change/email-address');
+
   // Expect to see the following elements
   await expect(page.locator('h1')).toContainText("Client's email address (optional)");
   await expect(emailInput).toBeVisible();
@@ -21,8 +21,8 @@ test('change email address form displays validation errors correctly', async ({ 
   const errorMessage = page.locator('.govuk-error-message');
   const emailInput = page.locator('#emailAddress');
 
-  // Navigate to the edit form
-  await page.goto('/cases/PC-1922-1879/client-details/edit/email-address');
+  // Navigate to the change form
+  await page.goto('/cases/PC-1922-1879/client-details/change/email-address');
 
   // Submit form with invalid email
   await page.locator('#emailAddress').fill('JackYoungs.com');
@@ -32,7 +32,7 @@ test('change email address form displays validation errors correctly', async ({ 
   await saveButton.click();
 
   // Should stay on same page (not redirect)
-  expect(page.url()).toContain('/edit/email-address');
+  expect(page.url()).toContain('/change/email-address');
 
   // Check GOV.UK error summary appears
   await expect(errorSummary).toBeVisible();
