@@ -79,11 +79,11 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
         })
       },
       isInt: {
-        options: { min: 1900, max: new Date().getFullYear() },
+        options: { min: 1, max: new Date().getFullYear() },
         if: (value: any) => value !== '', // Only validate format if not empty
         errorMessage: () => new TypedValidationError({
-          summaryMessage: `Year must be between 1900 and ${new Date().getFullYear()}`,
-          inlineMessage: `Year must be between 1900 and ${new Date().getFullYear()}`,
+          summaryMessage: `Year must be ${new Date().getFullYear()} or earlier`,
+          inlineMessage: `Year must be ${new Date().getFullYear()} or earlier`,
         })
       },
     },

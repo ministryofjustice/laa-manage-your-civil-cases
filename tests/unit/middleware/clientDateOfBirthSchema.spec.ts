@@ -223,7 +223,7 @@ describe('Client Date of Birth Schema Validation', () => {
         const mockReq = createMockRequest({
           'dateOfBirth-day': '21',
           'dateOfBirth-month': '2',
-          'dateOfBirth-year': '1800', // Invalid year (too old)
+          'dateOfBirth-year': '2030', // Invalid year (future date)
           originalDay: '21',
           originalMonth: '2',
           originalYear: '2022'
@@ -236,7 +236,7 @@ describe('Client Date of Birth Schema Validation', () => {
         expect(errors.isEmpty()).to.be.false;
         
         const errorArray = errors.array();
-        const yearError = errorArray.find(err => err.msg.errorData?.summaryMessage?.includes('Year must be between 1900 and'));
+        const yearError = errorArray.find(err => err.msg.errorData?.summaryMessage?.includes('or earlier'));
         expect(yearError).to.exist;
       });
 
