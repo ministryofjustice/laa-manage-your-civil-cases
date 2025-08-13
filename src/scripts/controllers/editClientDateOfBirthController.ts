@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import { validationResult, type Result } from 'express-validator';
-import { safeString, hasProperty } from '#src/scripts/helpers/index.js';
+import { safeString, hasProperty, isRecord } from '#src/scripts/helpers/index.js';
 import { formatValidationError, handleDateOfBirthValidationErrors, type ValidationErrorData } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 import { apiService } from '#src/services/apiService.js';
 
@@ -86,9 +86,9 @@ export async function postEditClientDateOfBirth(req: Request, res: Response, nex
     }
 
     // No validation errors - construct date and save to data service
-    const day = hasProperty(req.body, 'dateOfBirthDay') ? safeString(req.body.dateOfBirthDay) : '';
-    const month = hasProperty(req.body, 'dateOfBirthMonth') ? safeString(req.body.dateOfBirthMonth) : '';
-    const year = hasProperty(req.body, 'dateOfBirthYear') ? safeString(req.body.dateOfBirthYear) : '';
+    const day = hasProperty(req.body, 'dateOfBirth-day') ? safeString(req.body['dateOfBirth-day']) : '';
+    const month = hasProperty(req.body, 'dateOfBirth-month') ? safeString(req.body['dateOfBirth-month']) : '';
+    const year = hasProperty(req.body, 'dateOfBirth-year') ? safeString(req.body['dateOfBirth-year']) : '';
     
     // Construct ISO date string (YYYY-MM-DD) for API
     let dateOfBirth = '';

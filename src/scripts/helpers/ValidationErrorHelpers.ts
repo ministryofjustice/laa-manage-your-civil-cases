@@ -114,9 +114,9 @@ export function handleDateOfBirthValidationErrors(
 
   // Get form data from request body to preserve user input
   const formData = {
-    day: hasProperty(req.body, 'dateOfBirthDay') ? safeString(req.body.dateOfBirthDay) : '',
-    month: hasProperty(req.body, 'dateOfBirthMonth') ? safeString(req.body.dateOfBirthMonth) : '',
-    year: hasProperty(req.body, 'dateOfBirthYear') ? safeString(req.body.dateOfBirthYear) : ''
+    day: hasProperty(req.body, 'dateOfBirth-day') ? safeString(req.body['dateOfBirth-day']) : '',
+    month: hasProperty(req.body, 'dateOfBirth-month') ? safeString(req.body['dateOfBirth-month']) : '',
+    year: hasProperty(req.body, 'dateOfBirth-year') ? safeString(req.body['dateOfBirth-year']) : ''
   };
 
   const originalData = {

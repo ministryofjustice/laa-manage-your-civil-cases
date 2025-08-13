@@ -3,9 +3,9 @@ import { checkSchema, type Meta } from 'express-validator';
 import { TypedValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 
 interface ClientDateOfBirthBody {
-  dateOfBirthDay: string;
-  dateOfBirthMonth: string;
-  dateOfBirthYear: string;
+  'dateOfBirth-day': string;
+  'dateOfBirth-month': string;
+  'dateOfBirth-year': string;
   originalDay: string;
   originalMonth: string;
   originalYear: string;
@@ -17,13 +17,24 @@ interface ClientDateOfBirthBody {
  * @returns {body is ClientDateOfBirthBody} True if the body matches ClientDateOfBirthBody shape
  */
 function isClientDateOfBirthBody(body: unknown): body is ClientDateOfBirthBody {
-  return isRecord(body) &&
-    hasProperty(body, 'dateOfBirthDay') &&
-    hasProperty(body, 'dateOfBirthMonth') &&
-    hasProperty(body, 'dateOfBirthYear') &&
-    hasProperty(body, 'originalDay') &&
-    hasProperty(body, 'originalMonth') &&
-    hasProperty(body, 'originalYear');
+  console.log('DEBUG: Checking body structure:', JSON.stringify(body, null, 2));
+  
+  const isRecord1 = isRecord(body);
+  console.log('DEBUG: isRecord(body):', isRecord1);
+  
+  if (!isRecord1) return false;
+  
+  const hasDOBDay = hasProperty(body, 'dateOfBirth-day');
+  const hasDOBMonth = hasProperty(body, 'dateOfBirth-month');
+  const hasDOBYear = hasProperty(body, 'dateOfBirth-year');
+  const hasOrigDay = hasProperty(body, 'originalDay');
+  const hasOrigMonth = hasProperty(body, 'originalMonth');
+  const hasOrigYear = hasProperty(body, 'originalYear');
+  
+  console.log('DEBUG: hasDOBDay:', hasDOBDay, 'hasDOBMonth:', hasDOBMonth, 'hasDOBYear:', hasDOBYear);
+  console.log('DEBUG: hasOrigDay:', hasOrigDay, 'hasOrigMonth:', hasOrigMonth, 'hasOrigYear:', hasOrigYear);
+  
+  return hasDOBDay && hasDOBMonth && hasDOBYear && hasOrigDay && hasOrigMonth && hasOrigYear;
 }
 
 /**
@@ -33,20 +44,17 @@ function isClientDateOfBirthBody(body: unknown): body is ClientDateOfBirthBody {
  */
 export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> =>
   checkSchema({
-    dateOfBirthDay: {
+    'dateOfBirth-day': {
       in: ['body'],
       trim: true,
-      // TODO: Add validation rules
     },
-    dateOfBirthMonth: {
+    'dateOfBirth-month': {
       in: ['body'],
       trim: true,
-      // TODO: Add validation rules
     },
-    dateOfBirthYear: {
+    'dateOfBirth-year': {
       in: ['body'],
       trim: true,
-      // TODO: Add validation rules
     },
     notChanged: {
       in: ['body'],
@@ -60,14 +68,29 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
         options: (_value: string, meta: Meta): boolean => {
           const { req } = meta;
           if (!isClientDateOfBirthBody(req.body)) {
+            console.log('DEBUG: Body structure validation failed');
             return true;
           }
           
-          const dayChanged = req.body.dateOfBirthDay.trim() !== req.body.originalDay.trim();
-          const monthChanged = req.body.dateOfBirthMonth.trim() !== req.body.originalMonth.trim();
-          const yearChanged = req.body.dateOfBirthYear.trim() !== req.body.originalYear.trim();
+          console.log('DEBUG: req.body["dateOfBirth-day"]:', req.body['dateOfBirth-day']);
+          console.log('DEBUG: req.body["dateOfBirth-month"]:', req.body['dateOfBirth-month']);
+          console.log('DEBUG: req.body["dateOfBirth-year"]:', req.body['dateOfBirth-year']);
+          console.log('DEBUG: req.body.originalDay:', req.body.originalDay);
+          console.log('DEBUG: req.body.originalMonth:', req.body.originalMonth);
+          console.log('DEBUG: req.body.originalYear:', req.body.originalYear);
           
-          return dayChanged || monthChanged || yearChanged;
+          const dayChanged = req.body['dateOfBirth-day'].trim() !== req.body.originalDay.trim();
+          const monthChanged = req.body['dateOfBirth-month'].trim() !== req.body.originalMonth.trim();
+          const yearChanged = req.body['dateOfBirth-year'].trim() !== req.body.originalYear.trim();
+          
+          console.log('DEBUG: dayChanged:', dayChanged, `("${req.body['dateOfBirth-day'].trim()}" !== "${req.body.originalDay.trim()}")`);
+          console.log('DEBUG: monthChanged:', monthChanged, `("${req.body['dateOfBirth-month'].trim()}" !== "${req.body.originalMonth.trim()}")`);
+          console.log('DEBUG: yearChanged:', yearChanged, `("${req.body['dateOfBirth-year'].trim()}" !== "${req.body.originalYear.trim()}")`);
+          
+          const result = dayChanged || monthChanged || yearChanged;
+          console.log('DEBUG: notChanged validation result:', result);
+          
+          return result;
         },
         /**
          * Custom error message for when no changes are made (AC5)
