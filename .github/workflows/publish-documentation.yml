@@ -27,7 +27,7 @@ jobs:
       # We only checkout the docs directory, which allows us to keep all necessary files for
       # generating the docs separate from the app.
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           sparse-checkout: |
             docs
@@ -72,7 +72,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download a Build Artifact from build
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: github-pages
           path: github-pages
