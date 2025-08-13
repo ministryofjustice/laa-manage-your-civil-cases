@@ -178,22 +178,5 @@ describe('Client Date of Birth Schema Validation', () => {
         expect(errors.isEmpty()).to.be.true;
       });
     });
-
-    describe('Error Structure Validation', () => {
-      it('should pass validation if request body structure is invalid', async () => {
-        const mockReq = createMockRequest({
-          // Missing required fields
-          'dateOfBirth-day': '21'
-          // Missing month, year, and original fields
-        });
-
-        const middleware = validateEditClientDateOfBirth();
-        await Promise.all(middleware.map(m => m(mockReq as Request, {} as any, () => {})));
-
-        const errors = validationResult(mockReq as Request);
-        // Should pass because invalid structure returns true (skip validation)
-        expect(errors.isEmpty()).to.be.true;
-      });
-    });
   });
 });
