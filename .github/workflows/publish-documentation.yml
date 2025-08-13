@@ -20,7 +20,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: ministryofjustice/tech-docs-github-pages-publisher:v6.0.1
+      image: ministryofjustice/tech-docs-github-pages-publisher:v4.0.0
     permissions:
       contents: read
     steps:
