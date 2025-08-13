@@ -1,8 +1,8 @@
 import express from 'express';
-import { 
-  getEditClientName, 
-  postEditClientName, 
-  getEditClientEmailAddress, 
+import {
+  getEditClientName,
+  postEditClientName,
+  getEditClientEmailAddress,
   postEditClientEmailAddress,
   getEditClientPhoneNumber,
   postEditClientPhoneNumber
@@ -11,13 +11,13 @@ import { validateEditClientPhoneNumber } from '#src/middlewares/phoneNumberSchem
 
 const router = express.Router();
 
-router.get('/:caseReference/client-details/edit/name', getEditClientName);
-router.post('/:caseReference/client-details/edit/name', postEditClientName);
+router.get('/:caseReference/client-details/change/name', getEditClientName);
+router.post('/:caseReference/client-details/change/name', postEditClientName);
 
-router.get('/:caseReference/client-details/edit/email-address', getEditClientEmailAddress);
-router.post('/:caseReference/client-details/edit/email-address', postEditClientEmailAddress);
+router.get('/:caseReference/client-details/change/email-address', getEditClientEmailAddress);
+router.post('/:caseReference/client-details/change/email-address', postEditClientEmailAddress);
 
-router.get('/:caseReference/client-details/edit/phone-number', getEditClientPhoneNumber);
-router.post('/:caseReference/client-details/edit/phone-number', validateEditClientPhoneNumber(), postEditClientPhoneNumber);
+router.get('/:caseReference/client-details/change/phone-number', getEditClientPhoneNumber);
+router.post('/:caseReference/client-details/change/phone-number', validateEditClientPhoneNumber(), postEditClientPhoneNumber);
 
 export default router;
