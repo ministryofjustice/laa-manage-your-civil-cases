@@ -42,6 +42,14 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
           inlineMessage: 'Enter a day',
         })
       },
+      isInt: {
+        options: { min: 1, max: 31 },
+        if: (value: any) => value !== '', // Only validate format if not empty
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: 'Day must be between 1 and 31',
+          inlineMessage: 'Day must be between 1 and 31',
+        })
+      },
     },
     'dateOfBirth-month': {
       in: ['body'],
@@ -52,6 +60,14 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
           inlineMessage: 'Enter a month',
         })
       },
+      isInt: {
+        options: { min: 1, max: 12 },
+        if: (value: any) => value !== '', // Only validate format if not empty
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: 'Month must be between 1 and 12',
+          inlineMessage: 'Month must be between 1 and 12',
+        })
+      },
     },
     'dateOfBirth-year': {
       in: ['body'],
@@ -60,6 +76,14 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
         errorMessage: () => new TypedValidationError({
           summaryMessage: 'Enter a year',
           inlineMessage: 'Enter a year',
+        })
+      },
+      isInt: {
+        options: { min: 1900, max: new Date().getFullYear() },
+        if: (value: any) => value !== '', // Only validate format if not empty
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: `Year must be between 1900 and ${new Date().getFullYear()}`,
+          inlineMessage: `Year must be between 1900 and ${new Date().getFullYear()}`,
         })
       },
     },

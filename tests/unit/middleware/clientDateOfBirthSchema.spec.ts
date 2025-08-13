@@ -135,19 +135,19 @@ describe('Client Date of Birth Schema Validation', () => {
         expect(errors.isEmpty()).to.be.false;
         
         const errorArray = errors.array();
-        // We expect required field errors to take priority
-        // Express-validator runs all validations, so we get 3 required + 1 change detection = 4 total
+        // Now with conditional format validation, empty fields only trigger required validation
+        // 3 required + 1 change detection = 4 total
         expect(errorArray).to.have.length(4);
         
-        // Look for errors by message content since param shows as 'unknown'
-        const dayError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Enter a day');
-        const monthError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Enter a month');
-        const yearError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Enter a year');
+        // Look for required field errors (format errors should be skipped for empty fields)
+        const dayRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Enter a day');
+        const monthRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Enter a month');
+        const yearRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Enter a year');
         const changeError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Update the client date of birth or select \'Cancel\'');
         
-        expect(dayError).to.exist;
-        expect(monthError).to.exist;
-        expect(yearError).to.exist;
+        expect(dayRequiredError).to.exist;
+        expect(monthRequiredError).to.exist;
+        expect(yearRequiredError).to.exist;
         expect(changeError).to.exist;
       });
 
@@ -173,6 +173,92 @@ describe('Client Date of Birth Schema Validation', () => {
         
         const monthError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Enter a month');
         expect(monthError).to.exist;
+      });
+    });
+
+    describe('Format Validation', () => {
+      it('should fail validation for invalid day values', async () => {
+        const mockReq = createMockRequest({
+          'dateOfBirth-day': '32', // Invalid day
+          'dateOfBirth-month': '2',
+          'dateOfBirth-year': '2022',
+          originalDay: '21',
+          originalMonth: '2',
+          originalYear: '2022'
+        });
+
+        const middleware = validateEditClientDateOfBirth();
+        await Promise.all(middleware.map(m => m(mockReq as Request, {} as any, () => {})));
+
+        const errors = validationResult(mockReq as Request);
+        expect(errors.isEmpty()).to.be.false;
+        
+        const errorArray = errors.array();
+        const dayError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Day must be between 1 and 31');
+        expect(dayError).to.exist;
+      });
+
+      it('should fail validation for invalid month values', async () => {
+        const mockReq = createMockRequest({
+          'dateOfBirth-day': '21',
+          'dateOfBirth-month': '13', // Invalid month
+          'dateOfBirth-year': '2022',
+          originalDay: '21',
+          originalMonth: '2',
+          originalYear: '2022'
+        });
+
+        const middleware = validateEditClientDateOfBirth();
+        await Promise.all(middleware.map(m => m(mockReq as Request, {} as any, () => {})));
+
+        const errors = validationResult(mockReq as Request);
+        expect(errors.isEmpty()).to.be.false;
+        
+        const errorArray = errors.array();
+        const monthError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Month must be between 1 and 12');
+        expect(monthError).to.exist;
+      });
+
+      it('should fail validation for invalid year values', async () => {
+        const mockReq = createMockRequest({
+          'dateOfBirth-day': '21',
+          'dateOfBirth-month': '2',
+          'dateOfBirth-year': '1800', // Invalid year (too old)
+          originalDay: '21',
+          originalMonth: '2',
+          originalYear: '2022'
+        });
+
+        const middleware = validateEditClientDateOfBirth();
+        await Promise.all(middleware.map(m => m(mockReq as Request, {} as any, () => {})));
+
+        const errors = validationResult(mockReq as Request);
+        expect(errors.isEmpty()).to.be.false;
+        
+        const errorArray = errors.array();
+        const yearError = errorArray.find(err => err.msg.errorData?.summaryMessage?.includes('Year must be between 1900 and'));
+        expect(yearError).to.exist;
+      });
+
+      it('should fail validation for non-numeric values', async () => {
+        const mockReq = createMockRequest({
+          'dateOfBirth-day': 'abc', // Non-numeric
+          'dateOfBirth-month': '2',
+          'dateOfBirth-year': '2022',
+          originalDay: '21',
+          originalMonth: '2',
+          originalYear: '2022'
+        });
+
+        const middleware = validateEditClientDateOfBirth();
+        await Promise.all(middleware.map(m => m(mockReq as Request, {} as any, () => {})));
+
+        const errors = validationResult(mockReq as Request);
+        expect(errors.isEmpty()).to.be.false;
+        
+        const errorArray = errors.array();
+        const dayError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Day must be between 1 and 31');
+        expect(dayError).to.exist;
       });
     });
 
