@@ -36,14 +36,32 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
     'dateOfBirth-day': {
       in: ['body'],
       trim: true,
+      notEmpty: {
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: 'Enter a day',
+          inlineMessage: 'Enter a day',
+        })
+      },
     },
     'dateOfBirth-month': {
       in: ['body'],
       trim: true,
+      notEmpty: {
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: 'Enter a month',
+          inlineMessage: 'Enter a month',
+        })
+      },
     },
     'dateOfBirth-year': {
       in: ['body'],
       trim: true,
+      notEmpty: {
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: 'Enter a year',
+          inlineMessage: 'Enter a year',
+        })
+      },
     },
     notChanged: {
       in: ['body'],
