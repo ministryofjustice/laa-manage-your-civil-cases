@@ -87,6 +87,111 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
         })
       },
     },
+    validDate: {
+      in: ['body'],
+      custom: {
+        /**
+         * Schema to check if the day/month/year combination forms a valid date (AC8).
+         * @param {string} _value - Placeholder value (unused)
+         * @param {Meta} meta - `express-validator` context containing request object
+         * @returns {boolean} True if the date combination is valid
+         */
+        options: (_value: string, meta: Meta): boolean => {
+          const { req } = meta;
+          if (!isClientDateOfBirthBody(req.body)) {
+            return true;
+          }
+
+          const day = req.body['dateOfBirth-day'].trim();
+          const month = req.body['dateOfBirth-month'].trim();
+          const year = req.body['dateOfBirth-year'].trim();
+
+          // Skip validation if any field is empty (handled by required validation)
+          if (!day || !month || !year) {
+            return true;
+          }
+
+          // Skip validation if any field is not a valid integer (handled by format validation)
+          const dayNum = parseInt(day, 10);
+          const monthNum = parseInt(month, 10);
+          const yearNum = parseInt(year, 10);
+
+          if (isNaN(dayNum) || isNaN(monthNum) || isNaN(yearNum)) {
+            return true;
+          }
+
+          // Check if the date is valid (handles leap years, month lengths, etc.)
+          const date = new Date(yearNum, monthNum - 1, dayNum);
+          return date.getFullYear() === yearNum && 
+                 date.getMonth() === monthNum - 1 && 
+                 date.getDate() === dayNum;
+        },
+        /**
+         * Custom error message for invalid date combinations (AC8)
+         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+         */
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: 'Enter a date in the correct format',
+          inlineMessage: 'Enter a date in the correct format',
+        })
+      },
+    },
+    notFutureDate: {
+      in: ['body'],
+      custom: {
+        /**
+         * Schema to check if the date is not in the future (AC7).
+         * @param {string} _value - Placeholder value (unused)
+         * @param {Meta} meta - `express-validator` context containing request object
+         * @returns {boolean} True if the date is in the past
+         */
+        options: (_value: string, meta: Meta): boolean => {
+          const { req } = meta;
+          if (!isClientDateOfBirthBody(req.body)) {
+            return true;
+          }
+
+          const day = req.body['dateOfBirth-day'].trim();
+          const month = req.body['dateOfBirth-month'].trim();
+          const year = req.body['dateOfBirth-year'].trim();
+
+          // Skip validation if any field is empty (handled by required validation)
+          if (!day || !month || !year) {
+            return true;
+          }
+
+          // Skip validation if any field is not a valid integer (handled by format validation)
+          const dayNum = parseInt(day, 10);
+          const monthNum = parseInt(month, 10);
+          const yearNum = parseInt(year, 10);
+
+          if (isNaN(dayNum) || isNaN(monthNum) || isNaN(yearNum)) {
+            return true;
+          }
+
+          // Skip validation if date is invalid (handled by validDate validation)
+          const date = new Date(yearNum, monthNum - 1, dayNum);
+          if (date.getFullYear() !== yearNum || 
+              date.getMonth() !== monthNum - 1 || 
+              date.getDate() !== dayNum) {
+            return true;
+          }
+
+          // Check if the date is in the future (today's date is acceptable)
+          const today = new Date();
+          today.setHours(23, 59, 59, 999); // End of today
+          return date <= today;
+        },
+        /**
+         * Custom error message for future dates (AC7)
+         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+         */
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: 'Date of birth must be in the past',
+          inlineMessage: 'Date of birth must be in the past',
+        })
+      },
+    },
     notChanged: {
       in: ['body'],
       custom: {

@@ -298,5 +298,151 @@ describe('Client Date of Birth Schema Validation', () => {
         expect(errors.isEmpty()).to.be.true;
       });
     });
+
+    describe('Logical Validation (AC7/AC8)', () => {
+      it('should fail validation for invalid dates (AC8)', async () => {
+        const mockReq = createMockRequest({
+          'dateOfBirth-day': '31',
+          'dateOfBirth-month': '2',
+          'dateOfBirth-year': '1990',
+          originalDay: '15',
+          originalMonth: '3',
+          originalYear: '1990'
+        });
+
+        const middleware = validateEditClientDateOfBirth();
+        await Promise.all(middleware.map(m => m(mockReq as Request, {} as any, () => {})));
+
+        const errors = validationResult(mockReq as Request);
+        expect(errors.isEmpty()).to.be.false;
+        
+        const errorArray = errors.array();
+        const formatError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Enter a date in the correct format');
+        expect(formatError).to.exist;
+      });
+
+      it('should fail validation for leap year edge cases (AC8)', async () => {
+        const mockReq = createMockRequest({
+          'dateOfBirth-day': '29',
+          'dateOfBirth-month': '2',
+          'dateOfBirth-year': '1990', // Not a leap year
+          originalDay: '15',
+          originalMonth: '3',
+          originalYear: '1990'
+        });
+
+        const middleware = validateEditClientDateOfBirth();
+        await Promise.all(middleware.map(m => m(mockReq as Request, {} as any, () => {})));
+
+        const errors = validationResult(mockReq as Request);
+        expect(errors.isEmpty()).to.be.false;
+        
+        const errorArray = errors.array();
+        const formatError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Enter a date in the correct format');
+        expect(formatError).to.exist;
+      });
+
+      it('should pass validation for valid leap year dates (AC8)', async () => {
+        const mockReq = createMockRequest({
+          'dateOfBirth-day': '29',
+          'dateOfBirth-month': '2',
+          'dateOfBirth-year': '1992', // Leap year
+          originalDay: '15',
+          originalMonth: '3',
+          originalYear: '1990'
+        });
+
+        const middleware = validateEditClientDateOfBirth();
+        await Promise.all(middleware.map(m => m(mockReq as Request, {} as any, () => {})));
+
+        const errors = validationResult(mockReq as Request);
+        expect(errors.isEmpty()).to.be.true;
+      });
+
+      it('should fail validation for future dates (AC7)', async () => {
+        const futureYear = new Date().getFullYear() + 1;
+        const mockReq = createMockRequest({
+          'dateOfBirth-day': '15',
+          'dateOfBirth-month': '3',
+          'dateOfBirth-year': futureYear.toString(),
+          originalDay: '15',
+          originalMonth: '3',
+          originalYear: '1990'
+        });
+
+        const middleware = validateEditClientDateOfBirth();
+        await Promise.all(middleware.map(m => m(mockReq as Request, {} as any, () => {})));
+
+        const errors = validationResult(mockReq as Request);
+        expect(errors.isEmpty()).to.be.false;
+        
+        const errorArray = errors.array();
+        const futureError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Date of birth must be in the past');
+        expect(futureError).to.exist;
+      });
+
+      it('should pass validation for today\'s date (AC7)', async () => {
+        const today = new Date();
+        const mockReq = createMockRequest({
+          'dateOfBirth-day': today.getDate().toString(),
+          'dateOfBirth-month': (today.getMonth() + 1).toString(),
+          'dateOfBirth-year': today.getFullYear().toString(),
+          originalDay: '15',
+          originalMonth: '3',
+          originalYear: '1990'
+        });
+
+        const middleware = validateEditClientDateOfBirth();
+        await Promise.all(middleware.map(m => m(mockReq as Request, {} as any, () => {})));
+
+        const errors = validationResult(mockReq as Request);
+        expect(errors.isEmpty()).to.be.true;
+      });
+
+      it('should pass validation for yesterday\'s date (AC7)', async () => {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        const mockReq = createMockRequest({
+          'dateOfBirth-day': yesterday.getDate().toString(),
+          'dateOfBirth-month': (yesterday.getMonth() + 1).toString(),
+          'dateOfBirth-year': yesterday.getFullYear().toString(),
+          originalDay: '15',
+          originalMonth: '3',
+          originalYear: '1990'
+        });
+
+        const middleware = validateEditClientDateOfBirth();
+        await Promise.all(middleware.map(m => m(mockReq as Request, {} as any, () => {})));
+
+        const errors = validationResult(mockReq as Request);
+        expect(errors.isEmpty()).to.be.true;
+      });
+
+      it('should prioritize format validation over future date validation', async () => {
+        const futureYear = new Date().getFullYear() + 1;
+        const mockReq = createMockRequest({
+          'dateOfBirth-day': '31',
+          'dateOfBirth-month': '2',
+          'dateOfBirth-year': futureYear.toString(),
+          originalDay: '15',
+          originalMonth: '3',
+          originalYear: '1990'
+        });
+
+        const middleware = validateEditClientDateOfBirth();
+        await Promise.all(middleware.map(m => m(mockReq as Request, {} as any, () => {})));
+
+        const errors = validationResult(mockReq as Request);
+        expect(errors.isEmpty()).to.be.false;
+        
+        const errorArray = errors.array();
+        // Should only see format error, not future date error
+        const formatError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Enter a date in the correct format');
+        const futureError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Date of birth must be in the past');
+        expect(formatError).to.exist;
+        expect(futureError).to.not.exist;
+      });
+    });
   });
 });
