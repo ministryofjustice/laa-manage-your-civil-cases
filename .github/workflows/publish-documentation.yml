@@ -18,6 +18,7 @@ concurrency:
 
 jobs:
   build:
+    name: Build application
     runs-on: ubuntu-latest
     container:
       image: ministryofjustice/tech-docs-github-pages-publisher:v4.0.0
@@ -32,12 +33,6 @@ jobs:
           sparse-checkout: |
             docs
           sparse-checkout-cone-mode: false
-      # We move the docs directory to the root so it is treated as if the docs directory was
-      # the only thing in the repository.
-      - name: Move directory to root
-        run: |
-          mv docs/* .
-          rm -rf docs
       - name: Compile Markdown to HTML and create artifact
         # Not in this repo, but in this image: `ministryofjustice/tech-docs-github-pages-publisher:v4.0.0`
         run: |
