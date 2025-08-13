@@ -17,8 +17,8 @@ export const validateSearchInput = (): ReturnType<typeof checkSchema> =>
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: 'Enter at least one search criteria',
-          inlineMessage: 'Enter search criteria'
+          summaryMessage: 'Enter some case details',
+          inlineMessage: 'Enter some case details'
         })
       }
     }

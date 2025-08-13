@@ -116,12 +116,12 @@
     {% for column in options.columns %}
       {# Format cell content based on column type #}
       {% set cellContent %}
-      {% if column.key == "dateReceived" %}
-        {{ row[column.key] }}
-      {% elif column.key == "lastModified" %}
-        {{ row[column.key] }}
-      {% elif column.key == "dateClosed" %}
-        {{ row[column.key] }}
+      {% if column.key == "phoneNumber" %}
+        {% if row.safeToCall %}
+          {{ row[column.key] }}
+        {% else %}
+          Not safe to call
+        {% endif %}
       {% else %}
         {% if row[column.key] %}
           {{ row[column.key] }}
