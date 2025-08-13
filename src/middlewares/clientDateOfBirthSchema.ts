@@ -88,10 +88,17 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
       },
       isInt: {
         options: { min: 1, max: new Date().getFullYear() },
-        if: (value: any) => value !== '' && value.length === 4, // Only validate range if not empty and has correct length
+        if: (value: any, { req }: any) => {
+          if (value === '' || value.length !== 4) return false;
+          // Only validate range if all fields are present (to prioritize empty field errors)
+          if (!isClientDateOfBirthBody(req.body)) return false;
+          const day = req.body['dateOfBirth-day'].trim();
+          const month = req.body['dateOfBirth-month'].trim();
+          return day !== '' && month !== '';
+        },
         errorMessage: () => new TypedValidationError({
-          summaryMessage: `Year must be ${new Date().getFullYear()} or earlier`,
-          inlineMessage: `Year must be ${new Date().getFullYear()} or earlier`,
+          summaryMessage: 'The date of birth must be in the past',
+          inlineMessage: 'The date of birth must be in the past',
         })
       },
     },
@@ -116,6 +123,11 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
 
           // Skip validation if any field is empty (handled by required validation)
           if (!day || !month || !year) {
+            return true;
+          }
+
+          // Skip validation if year doesn't have correct length (handled by length validation)
+          if (year.length !== 4) {
             return true;
           }
 
@@ -165,6 +177,11 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
 
           // Skip validation if any field is empty (handled by required validation)
           if (!day || !month || !year) {
+            return true;
+          }
+
+          // Skip validation if year doesn't have correct length (handled by length validation)
+          if (year.length !== 4) {
             return true;
           }
 
