@@ -1,5 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
-import { safeString } from '#src/scripts/helpers/index.js';
+import { validationResult, type Result } from 'express-validator';
+import { safeString, hasProperty } from '#src/scripts/helpers/index.js';
+import { formatValidationError, handleDateOfBirthValidationErrors, type ValidationErrorData } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 import { apiService } from '#src/services/apiService.js';
 
 /**
@@ -67,7 +69,7 @@ export async function getEditClientDateOfBirth(req: Request, res: Response, next
 
 /**
  * Handles POST request for editing client date of birth form.
- * This will be expanded with validation in the next step.
+ * Validates input and either displays errors or updates the client details.
  * @param {Request} req - Express request object
  * @param {Response} res - Express response object  
  * @param {NextFunction} next - Express next middleware function
@@ -76,9 +78,32 @@ export async function postEditClientDateOfBirth(req: Request, res: Response, nex
   const caseReference = safeString(req.params.caseReference);
   
   try {
-    // TODO: Add validation middleware and error handling
-    // For now, just redirect back (this will be implemented in validation step)
+    const validationErrors: Result<ValidationErrorData> = validationResult(req).formatWith(formatValidationError);
+    
+    if (!validationErrors.isEmpty()) {
+      handleDateOfBirthValidationErrors(validationErrors, req, res, caseReference);
+      return;
+    }
+
+    // No validation errors - construct date and save to data service
+    const day = hasProperty(req.body, 'dateOfBirthDay') ? safeString(req.body.dateOfBirthDay) : '';
+    const month = hasProperty(req.body, 'dateOfBirthMonth') ? safeString(req.body.dateOfBirthMonth) : '';
+    const year = hasProperty(req.body, 'dateOfBirthYear') ? safeString(req.body.dateOfBirthYear) : '';
+    
+    // Construct ISO date string (YYYY-MM-DD) for API
+    let dateOfBirth = '';
+    if (day && month && year) {
+      const paddedDay = day.padStart(2, '0');
+      const paddedMonth = month.padStart(2, '0');
+      dateOfBirth = `${year}-${paddedMonth}-${paddedDay}`;
+    }
+    
+    await apiService.updateClientDetails(req.axiosMiddleware, caseReference, { 
+      dateOfBirth 
+    });
+    
     res.redirect(`/cases/${caseReference}/client-details`);
+    
   } catch (error) {
     next(error);
   }
