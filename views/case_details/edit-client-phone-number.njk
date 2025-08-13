@@ -25,7 +25,7 @@
         {% set safeToCallErrorMessage = { text: error.inputErrors.safeToCall } if error.inputErrors.safeToCall %}
         {% set phoneNumberErrorMessage = { text: error.inputErrors.phoneNumber } if error.inputErrors.phoneNumber %}
       {% endif %}
-      <form method="post" action="/cases/{{ caseReference }}/client-details/edit/phone-number">
+      <form method="post" action="/cases/{{ caseReference }}/client-details/change/phone-number">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
         <input type="hidden" name="existingSafeToCall" value="{{ existingSafeToCall | default(currentSafeToCall) }}">
         <input type="hidden" name="existingPhoneNumber" value="{{ existingPhoneNumber | default(currentPhoneNumber) }}">

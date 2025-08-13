@@ -23,7 +23,7 @@
         {% set fullNameErrorMessage = { text: error.inputErrors.fullName } %}
         {{ errorSummary(error.errorSummaryList) }}
       {% endif %}
-      <form method="post" action="/cases/{{ caseReference }}/client-details/edit/name">
+      <form method="post" action="/cases/{{ caseReference }}/client-details/change/name">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
         <input type="hidden" name="existingFullName" value="{{ existingFullName | default(currentName) }}">
         {{ govukInput({
