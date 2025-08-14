@@ -88,7 +88,7 @@ export function createChangeDetectionValidator(
        */
       options: (_value: string, meta: Meta): boolean => {
         const { req } = meta;
-        if (req.body === null || req.body === undefined || typeof req.body !== 'object') {
+        if (!isRecord(req.body)) {
           return true;
         }
 
