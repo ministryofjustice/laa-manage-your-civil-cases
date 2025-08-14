@@ -12,10 +12,21 @@ export const validateEditClientAddress = (): ReturnType<typeof checkSchema> =>
       in: ['body'],
       trim: true,
     },
+    /**
+     * Postcode field validation and sanitisation.
+     * Converts postcode to uppercase for consistency.
+     * @param {string} value - The postcode value to sanitise.
+     * @returns {string} The sanitised postcode in uppercase, or the original value if not a string.
+     */
     postcode: {
       in: ['body'],
       trim: true,
       customSanitizer: {
+        /**
+         * Sanitises the postcode value to uppercase.
+         * @param {string} value - The postcode value to sanitise.
+         * @returns {string} The sanitised postcode in uppercase, or the original value if not a string.
+         */
         options: (value: string) => typeof value === 'string' ? value.toUpperCase() : value
       },
     },
