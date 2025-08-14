@@ -34,7 +34,7 @@ export async function getEditClientAddress(req: Request, res: Response, next: Ne
       }
     }
     
-    res.render('case_details/edit-client-address.njk', {
+    res.render('case_details/change-client-address.njk', {
       caseReference,
       currentAddress,
       currentPostcode,

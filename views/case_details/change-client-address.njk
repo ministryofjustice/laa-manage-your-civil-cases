@@ -28,7 +28,7 @@
         {% endif %}
         {{ errorSummary(error.errorSummaryList) }}
       {% endif %}
-      <form method="post" action="/cases/{{ caseReference }}/client-details/edit/address">
+      <form method="post" action="/cases/{{ caseReference }}/client-details/change/address">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
         <input type="hidden" name="existingAddress" value="{{ existingAddress | default(currentAddress) }}">
         <input type="hidden" name="existingPostcode" value="{{ existingPostcode | default(currentPostcode) }}">
