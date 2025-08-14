@@ -41,9 +41,19 @@ test('if no keyword is entered error message shows', async ({ page }) => {
   const searchButton = page.getByRole('button', { name: 'Search' });
   await searchButton.click();
 
-  // Check for the error message
-  const errorMessage = page.getByText('Enter at least one search criteria');
-  await expect(errorMessage).toBeVisible();
+  // Check for the error summary
+  const errorSummary = page.locator('.govuk-error-summary');
+  await expect(errorSummary).toBeVisible();
+
+  // Check for the specific error message in the summary
+  const errorSummaryLink = page.locator('.govuk-error-summary a[href="#searchKeyword"]');
+  await expect(errorSummaryLink).toBeVisible();
+  await expect(errorSummaryLink).toHaveText('Enter some case details');
+
+  // Check for the field error message
+  const fieldErrorMessage = page.locator('#searchKeyword-error');
+  await expect(fieldErrorMessage).toBeVisible();
+  await expect(fieldErrorMessage).toContainText('Enter some case details');
 });
 
 
