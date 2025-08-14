@@ -1,4 +1,4 @@
-import type { ValidationError, Result } from 'express-validator';
+import type { ValidationError, Result, Meta, Location } from 'express-validator';
 import type { Request, Response } from 'express';
 import { isRecord, hasProperty, safeString } from './dataTransformers.js';
 
@@ -56,6 +56,57 @@ export function formatValidationError(error: ValidationError): ValidationErrorDa
   return {
     summaryMessage: message,
     inlineMessage: message
+  };
+}
+
+/**
+ * Creates a change detection validator that checks if any of the specified field pairs have changed
+ * @param {Array<{ current: string; original: string }>} fieldMappings - Array of {current, original} field name pairs to compare
+ * @param {object} errorMessage - Error message to show when no changes detected
+ * @param {string} errorMessage.summaryMessage - Summary error message
+ * @param {string} errorMessage.inlineMessage - Inline error message
+ * @returns {object} Express-validator custom validator configuration
+ */
+export function createChangeDetectionValidator(
+  fieldMappings: Array<{ current: string; original: string }>,
+  errorMessage: { summaryMessage: string; inlineMessage: string }
+): {
+  in: Location[];
+  custom: {
+    options: (_value: string, meta: Meta) => boolean;
+    errorMessage: () => TypedValidationError;
+  };
+} {
+  return {
+    in: ['body'] as Location[],
+    custom: {
+      /**
+       * Schema to check if any of the specified field values have been unchanged.
+       * @param {string} _value - Placeholder value (unused)
+       * @param {Meta} meta - `express-validator` context containing request object
+       * @returns {boolean} True if any field has changed
+       */
+      options: (_value: string, meta: Meta): boolean => {
+        const { req } = meta;
+        if (req.body === null || req.body === undefined || typeof req.body !== 'object') {
+          return true;
+        }
+
+        // Check if any field has changed using type-safe property access
+        return fieldMappings.some(({ current, original }) => {
+          const currentRaw = hasProperty(req.body, current) ? req.body[current] : '';
+          const originalRaw = hasProperty(req.body, original) ? req.body[original] : '';
+          const currentValue = safeString(currentRaw).trim();
+          const originalValue = safeString(originalRaw).trim();
+          return currentValue !== originalValue;
+        });
+      },
+      /**
+       * Custom error message for when no changes are made
+       * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+       */
+      errorMessage: () => new TypedValidationError(errorMessage)
+    }
   };
 }
 
