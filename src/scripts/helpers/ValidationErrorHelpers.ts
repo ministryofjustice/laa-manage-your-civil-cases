@@ -160,7 +160,7 @@ export function handleValidationErrors(
   }));
 
   // Re-render the form with errors and preserve user input
-  res.status(BAD_REQUEST).render('case_details/edit-client-address.njk', {
+  res.status(BAD_REQUEST).render('case_details/change-client-address.njk', {
     caseReference,
     currentAddress: hasProperty(req.body, 'address') ? safeString(req.body.address) : '',
     currentPostcode: hasProperty(req.body, 'postcode') ? safeString(req.body.postcode) : '',

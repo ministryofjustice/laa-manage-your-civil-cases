@@ -22,7 +22,7 @@ router.post('/:caseReference/client-details/edit/email-address', postEditClientE
 router.get('/:caseReference/client-details/edit/phone-number', getEditClientPhoneNumber);
 router.post('/:caseReference/client-details/edit/phone-number', validateEditClientPhoneNumber(), postEditClientPhoneNumber);
 
-router.get('/:caseReference/client-details/edit/address', getEditClientAddress);
-router.post('/:caseReference/client-details/edit/address', validateEditClientAddress(), postEditClientAddress);
+router.get('/:caseReference/client-details/change/address', getEditClientAddress);
+router.post('/:caseReference/client-details/change/address', validateEditClientAddress(), postEditClientAddress);
 
 export default router;

@@ -5,8 +5,8 @@ test('viewing change address form, to see the expected elements', async ({ page 
   const postcodeInput = page.locator('#postcode');
   const saveButton = page.getByRole('button', { name: 'Save' });
 
-  // Navigate to the `/edit/address`
-  await page.goto('/cases/PC-1922-1879/client-details/edit/address');
+  // Navigate to the `/change/address`
+  await page.goto('/cases/PC-1922-1879/client-details/change/address');
 
   // Expect to see the following elements
   await expect(page.locator('h1')).toContainText("Client's contact address (optional)");
@@ -23,7 +23,7 @@ test('unchanged fields trigger change detection error (AC5)', async ({ page }) =
   const errorSummary = page.locator('.govuk-error-summary');
 
   // Navigate to the edit form
-  await page.goto('/cases/PC-1922-1879/client-details/edit/address');
+  await page.goto('/cases/PC-1922-1879/client-details/change/address');
 
   // Submit form (should trigger AC5 validation error)
   await expect(saveButton).toBeVisible();
