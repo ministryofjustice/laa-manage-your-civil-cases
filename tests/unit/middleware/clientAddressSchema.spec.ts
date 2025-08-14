@@ -187,7 +187,7 @@ describe('Client Address Schema Validation', () => {
         
         const changeError = errors.array().find(error => error.summaryMessage.includes('Update the client address'));
         expect(changeError).to.exist;
-        expect(changeError?.summaryMessage).to.equal('Update the client address, update the postcode, or select \'Cancel\'');
+        expect(changeError?.summaryMessage).to.equal('Update the client address, or select \'Cancel\'');
       });
 
       it('should pass validation when address changes', async () => {
