@@ -18,8 +18,8 @@ import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import type { Request, Response, NextFunction } from 'express';
-import { 
-  getEditClientName, 
+import {
+  getEditClientName,
   postEditClientName,
   getEditClientEmailAddress,
   postEditClientEmailAddress
@@ -51,19 +51,19 @@ describe('Edit Client Details Controller', () => {
       axiosMiddleware: {} as any,
       csrfToken: () => 'test-csrf-token'
     } as Partial<RequestWithMiddleware>;
-    
+
     renderStub = sinon.stub();
     redirectStub = sinon.stub();
     statusStub = sinon.stub().returns({ render: renderStub });
-    
+
     res = {
       render: renderStub,
       redirect: redirectStub,
       status: statusStub
     };
-    
+
     next = sinon.stub();
-    
+
     // Stub the API service methods
     apiServiceGetStub = sinon.stub(apiService, 'getClientDetails');
     apiServiceUpdateStub = sinon.stub(apiService, 'updateClientDetails');
@@ -83,7 +83,7 @@ describe('Edit Client Details Controller', () => {
           caseReference: 'TEST123'
         }
       };
-      
+
       apiServiceGetStub.resolves(mockApiResponse);
 
       // Act
@@ -111,7 +111,7 @@ describe('Edit Client Details Controller', () => {
     it('should process successful client name update and redirect to case details', async () => {
       // Arrange
       req.body = { fullName: 'Jane Smith' };
-      
+
       apiServiceUpdateStub.resolves({
         status: 'success',
         data: { fullName: 'Jane Smith' }
@@ -148,7 +148,7 @@ describe('Edit Client Details Controller', () => {
           caseReference: 'TEST123'
         }
       };
-      
+
       apiServiceGetStub.resolves(mockApiResponse);
 
       // Act
@@ -176,7 +176,7 @@ describe('Edit Client Details Controller', () => {
     it('should process valid email update', async () => {
       // Arrange
       req.body = { emailAddress: 'jane@example.com' };
-      
+
       apiServiceUpdateStub.resolves({
         status: 'success',
         data: { emailAddress: 'jane@example.com' }
@@ -192,7 +192,10 @@ describe('Edit Client Details Controller', () => {
 
     it('should handle validation errors', async () => {
       // Arrange
-      req.body = { emailAddress: 'invalid-email' }; // Invalid format
+      req.body = {
+        emailAddress: 'invalid-email', // Invalid format
+        existingEmail: 'valid@example.com' // Provide existing email for validation
+      };
 
       // Act
       await postEditClientEmailAddress(req as RequestWithMiddleware, res as Response, next);
