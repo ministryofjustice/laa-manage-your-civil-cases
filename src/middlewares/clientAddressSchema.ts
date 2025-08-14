@@ -22,7 +22,7 @@ export const validateEditClientAddress = (): ReturnType<typeof checkSchema> =>
         { current: 'postcode', original: 'existingPostcode' }
       ],
       {
-        summaryMessage: 'Update the client address, update the postcode, or select \'Cancel\'',
+        summaryMessage: 'Update the client address, or select \'Cancel\'',
         inlineMessage: ''
       }
     ),
