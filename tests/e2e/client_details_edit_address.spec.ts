@@ -25,33 +25,6 @@ test('unchanged fields trigger change detection error (AC5)', async ({ page }) =
   // Navigate to the edit form
   await page.goto('/cases/PC-1922-1879/client-details/edit/address');
 
-  // Fill in form with values and set hidden existing fields to same values
-  // This simulates what would happen when form is pre-populated and user doesn't change anything
-  await page.evaluate(() => {
-    const addressField = document.querySelector('#address') as HTMLInputElement;
-    const postcodeField = document.querySelector('#postcode') as HTMLInputElement;
-    const form = document.querySelector('form');
-    
-    if (addressField && postcodeField && form) {
-      // Set form values
-      addressField.value = 'Test Address';
-      postcodeField.value = 'SW1A 1AA';
-      
-      // Add hidden existing values that match current values (to trigger AC5)
-      const existingAddressInput = document.createElement('input');
-      existingAddressInput.type = 'hidden';
-      existingAddressInput.name = 'existingAddress';
-      existingAddressInput.value = 'Test Address';
-      form.appendChild(existingAddressInput);
-      
-      const existingPostcodeInput = document.createElement('input');
-      existingPostcodeInput.type = 'hidden';
-      existingPostcodeInput.name = 'existingPostcode';
-      existingPostcodeInput.value = 'SW1A 1AA';
-      form.appendChild(existingPostcodeInput);
-    }
-  });
-
   // Submit form (should trigger AC5 validation error)
   await expect(saveButton).toBeVisible();
   await saveButton.click();
@@ -59,7 +32,7 @@ test('unchanged fields trigger change detection error (AC5)', async ({ page }) =
   // Check GOV.UK error summary appears for change detection
   await expect(errorSummary).toBeVisible();
   await expect(errorSummary).toContainText('There is a problem');
-  await expect(errorSummary).toContainText('Update the client address, update the postcode, or select \'Cancel\'');
+  await expect(errorSummary).toContainText('Update the client address, or select \'Cancel\'');
   
   // AC5 change detection error should NOT have inline field error messages
   const addressErrorMessage = page.locator('#address-error');
