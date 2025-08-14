@@ -15,6 +15,9 @@ export const validateEditClientAddress = (): ReturnType<typeof checkSchema> =>
     postcode: {
       in: ['body'],
       trim: true,
+      customSanitizer: {
+        options: (value: string) => typeof value === 'string' ? value.toUpperCase() : value
+      },
     },
     notChanged: createChangeDetectionValidator(
       [
