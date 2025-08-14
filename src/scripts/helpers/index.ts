@@ -23,7 +23,8 @@ export {
   safeOptionalString,
   isRecord,
   safeStringFromRecord,
-  hasProperty
+  hasProperty,
+  capitaliseFirst
 } from './dataTransformers.js';
 
 // Date formatting utilities
@@ -35,6 +36,12 @@ export {
 export {
   validateForm
 } from './validateForm.js';
+
+// Form controller helpers
+export {
+  handleGetEditForm,
+  handlePostEditForm
+} from './formControllerHelpers.js';
 
 // Error handling utilities
 export {
