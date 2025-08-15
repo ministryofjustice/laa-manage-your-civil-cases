@@ -8,6 +8,8 @@ interface ClientPhoneNumberBody {
   existingPhoneNumber: string;
   safeToCall: boolean;
   existingSafeToCall: boolean;
+  announceCall: boolean;
+  existingAnnounceCall: boolean;
 }
 
 /**
@@ -20,7 +22,9 @@ function isClientPhoneNumberBody(body: unknown): body is ClientPhoneNumberBody {
     hasProperty(body, 'phoneNumber') &&
     hasProperty(body, 'existingPhoneNumber') &&
     hasProperty(body, 'safeToCall') &&
-    hasProperty(body, 'existingSafeToCall');
+    hasProperty(body, 'existingSafeToCall') &&
+    hasProperty(body, 'announceCall') &&
+    hasProperty(body, 'existingAnnounceCall');
 };
 
 /**
@@ -83,14 +87,15 @@ export const validateEditClientPhoneNumber = (): ReturnType<typeof checkSchema> 
           }
           const phoneChanged = req.body.phoneNumber !== req.body.existingPhoneNumber;
           const safeToCallChanged = req.body.safeToCall !== req.body.existingSafeToCall;
-          return phoneChanged || safeToCallChanged;
+          const announceCallChanged = req.body.announceCall !== req.body.existingAnnounceCall;
+          return phoneChanged || safeToCallChanged || announceCallChanged;
         },
         /**
          * Custom error message for when no changes are made
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: 'Update if the client is safe to call, update the client phone number, or select \'Cancel\'',
+          summaryMessage: 'Change information on the page, or select \'Cancel\'',
           inlineMessage: '',
         })
       },

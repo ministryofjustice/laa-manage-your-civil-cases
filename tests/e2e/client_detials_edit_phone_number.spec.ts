@@ -1,17 +1,19 @@
 import { test, expect } from '@playwright/test';
 
 test('viewing change phone-number form, to see the expected elements', async ({ page }) => {
-  const safeToCallInput = page.locator('#safeToCall');
   const phoneInput = page.locator('#phoneNumber');
+  const safeToCallInput = page.locator('#safeToCall');
+  const announceCallInput = page.locator('#announceCall');
   const saveButton = page.getByRole('button', { name: 'Save' });
 
   // Navigate to the `/change/phone-number`
   await page.goto('/cases/PC-1922-1879/client-details/change/phone-number');
 
   // Expect to see the following elements
-  await expect(page.locator('h1')).toContainText("Is the client safe to call?");
-  await expect(safeToCallInput).toBeVisible();
+  await expect(page.locator('h1')).toContainText("Client phone number");
   await expect(phoneInput).toBeVisible();
+  await expect(safeToCallInput).toBeVisible();
+  await expect(announceCallInput).toBeVisible();
   await expect(saveButton).toBeVisible();
 });
 
@@ -75,7 +77,7 @@ test('phoneNumber is not valid and correct validation errors display', async ({ 
   await expect(errorLinkSafeToCall).not.toBeVisible();
 });
 
-test('safeToCall & phoneNumber not changed and correct validation errors displayed', async ({ page }) => {
+test('safeToCall & phoneNumber & announceCall not changed and correct validation errors displayed', async ({ page }) => {
   const saveButton = page.getByRole('button', { name: 'Save' });
   const errorSummary = page.locator('.govuk-error-summary');
 

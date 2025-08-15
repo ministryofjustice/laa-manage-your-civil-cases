@@ -22,11 +22,23 @@ import {
   getEditClientName,
   postEditClientName,
   getEditClientEmailAddress,
-  postEditClientEmailAddress
+  postEditClientEmailAddress,
+  getEditClientPhoneNumber,
+  postEditClientPhoneNumber
 } from '#src/scripts/controllers/editClientDetailsController.js';
 import { apiService } from '#src/services/apiService.js';
 // Import to get global type declarations for axiosMiddleware
 import '#utils/axiosSetup.js';
+import { validateEditClientPhoneNumber } from '#src/middlewares/phoneNumberSchema.js';
+import { ValidationChain } from '#node_modules/express-validator/lib/index.js';
+
+// Run an express-validator schema against a fake request
+const runSchema = async (req: any, schema: ValidationChain[] | ValidationChain): Promise<void> => {
+  const chains = Array.isArray(schema) ? schema : [schema];
+  for (const chain of chains) {
+    await chain.run(req);
+  }
+};
 
 // Define the RequestWithMiddleware interface for testing
 interface RequestWithMiddleware extends Request {
@@ -203,6 +215,80 @@ describe('Edit Client Details Controller', () => {
       // Assert - Should configure form response with errors, not redirect
       expect(redirectStub.called).to.be.false;
       expect(renderStub.calledWith('case_details/edit-client-email-address.njk')).to.be.true;
+    });
+  });
+
+  describe('getEditClientPhoneNumber', () => {
+    it('should configure edit phone number form response with existing data', async () => {
+      // Arrange
+      const mockApiResponse = {
+        status: 'success',
+        data: {
+          phoneNumber: '07777777777',
+          safeToCall: true,
+          announceCall: true
+        }
+      };
+      
+      apiServiceGetStub.resolves(mockApiResponse);
+
+      // Act
+      await getEditClientPhoneNumber(req as RequestWithMiddleware, res as Response, next);
+
+      // Assert
+      expect(apiServiceGetStub.calledOnce).to.be.true;
+      expect(renderStub.calledWith('case_details/edit-client-phone-number.njk')).to.be.true;
+    });
+
+    it('should handle API errors', async () => {
+      // Arrange
+      const error = new Error('API Error');
+      apiServiceGetStub.rejects(error);
+
+      // Act
+      await getEditClientPhoneNumber(req as RequestWithMiddleware, res as Response, next);
+
+      // Assert
+      expect(next.calledOnce).to.be.true;
+    });
+  });
+
+  describe('postEditClientPhoneNumber', () => {
+    it('should process valid phone update', async () => {
+      // Arrange
+      req.body = { phoneNumber: '07864422612', safeToCall: true };
+
+      apiServiceUpdateStub.resolves({
+        status: 'success',
+        data: { phoneNumber: '07864422612', safeToCall: true }
+      });
+      // Act
+      await postEditClientPhoneNumber(req as RequestWithMiddleware, res as Response, next);
+
+      // Assert
+      expect(apiServiceUpdateStub.calledOnce).to.be.true;
+      expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
+    });
+
+    it('should handle validation errors', async () => {
+      // Arrange
+      req.body = {
+        phoneNumber: 'invalid-phoneNumber', // Invalid format
+        existingPhoneNumber: '07864422612',
+        safeToCall: 'true',
+        existingSafeToCall: 'true',
+        announceCall: 'true',
+        existingAnnounceCall: 'true'
+      };
+
+      await runSchema(req as any, validateEditClientPhoneNumber());
+
+      // Act
+      await postEditClientPhoneNumber(req as RequestWithMiddleware, res as Response, next);
+
+      // Assert - Should configure form response with errors, not redirect
+      expect(redirectStub.called).to.be.false;
+      expect(renderStub.calledWith('case_details/edit-client-phone-number.njk')).to.be.true;
     });
   });
 });
