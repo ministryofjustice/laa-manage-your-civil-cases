@@ -11,10 +11,6 @@ import {
 } from '#src/scripts/helpers/ValidationDateHelpers.js';
 import { apiService } from '#src/services/apiService.js';
 
-// Constants
-const DATE_PADDING_WIDTH = 2;
-const DATE_PADDING_CHAR = '0';
-
 // Interface for request with CSRF token
 interface RequestWithCSRF extends Request {
   csrfToken?: () => string;
