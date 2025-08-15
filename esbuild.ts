@@ -68,6 +68,10 @@ const externalModules: string[] = [
 	'figlet',
 	'csrf-sync',
 	'http-errors',
+	'joi',
+	'express-joi-validation',
+	'validator',
+	'express-validator',
 	'*.node'
 ];
 
