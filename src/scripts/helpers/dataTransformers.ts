@@ -73,3 +73,18 @@ export function safeStringFromRecord(obj: unknown, key: string): string | null {
 export function hasProperty(obj: unknown, key: string): obj is Record<string, unknown> {
   return isRecord(obj) && key in obj;
 }
+
+/**
+ * Capitalize the first letter of a string
+ * @param {string} str - String to capitalize
+ * @returns {string} String with first letter capitalized
+ */
+export function capitaliseFirst(str: string): string {
+  const FIRST_CHAR_INDEX = 0;
+  const REST_CHARS_START = 1;
+
+  if (str === '' || str.length === FIRST_CHAR_INDEX) {
+    return '';
+  }
+  return str.charAt(FIRST_CHAR_INDEX).toUpperCase() + str.slice(REST_CHARS_START);
+}
