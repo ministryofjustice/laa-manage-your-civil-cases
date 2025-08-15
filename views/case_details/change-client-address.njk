@@ -1,0 +1,72 @@
+{% extends "base.njk" %}
+
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "components/errorSummaryComponent.njk" import errorSummary %}
+
+{% set backLinkHref = "/cases/" + caseReference + "/client-details" %}
+
+{% block backLink %}
+  {{ govukBackLink({
+      text: "Back",
+      href: backLinkHref,
+      classes: "govuk-!-margin-bottom-0"
+    }) }}
+{% endblock %}
+
+{% block pageContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% if error %}
+        {% if error.inputErrors.address %}
+          {% set addressErrorMessage = { text: error.inputErrors.address } %}
+        {% endif %}
+        {% if error.inputErrors.postcode %}
+          {% set postcodeErrorMessage = { text: error.inputErrors.postcode } %}
+        {% endif %}
+        {{ errorSummary(error.errorSummaryList) }}
+      {% endif %}
+      <form method="post" action="/cases/{{ caseReference }}/client-details/change/address">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+        <input type="hidden" name="existingAddress" value="{{ existingAddress | default(currentAddress) }}">
+        <input type="hidden" name="existingPostcode" value="{{ existingPostcode | default(currentPostcode) }}">
+        
+        <h1 class="govuk-heading-l">Client address (optional)</h1>
+        
+        {{ govukTextarea({
+          label: {
+            text: "Address",
+            classes: "govuk-label--m"
+          },
+          id: "address",
+          name: "address",
+          value: currentAddress,
+          errorMessage: addressErrorMessage,
+          autocomplete: "off"
+        }) }}
+        
+        {{ govukInput({
+          label: {
+            text: "Postcode",
+            classes: "govuk-label--m"
+          },
+          id: "postcode",
+          name: "postcode",
+          classes: "govuk-input--width-10",
+          value: currentPostcode,
+          errorMessage: postcodeErrorMessage,
+          autocomplete: "off"
+        }) }}
+        
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: "Save"
+          }) }}
+          <a class="govuk-link" href="{{ backLinkHref }}">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

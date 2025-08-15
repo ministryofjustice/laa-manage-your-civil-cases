@@ -37,9 +37,11 @@
   {% if address %}
     {{ address }}
     {% if postcode %}
-      <br>
-      {{ postcode }}
+        <br>
     {% endif %}
+  {% endif %}
+  {% if postcode %}
+    {{ postcode }}  
   {% endif %}
 {% endmacro %}
 
@@ -192,7 +194,7 @@
       actions: {
         items: [
           {
-            href: "/",
+            href: "/cases/" + data.caseReference + "/client-details/change/address",
             text: "Change",
             visuallyHiddenText: "Change Address"
           }
