@@ -10,6 +10,7 @@ import {
   handleDateOfBirthValidationErrors
 } from '#src/scripts/helpers/ValidationDateHelpers.js';
 import { apiService } from '#src/services/apiService.js';
+import { dateStringFromThreeFields } from '#src/scripts/helpers/dateFormatter.js';
 
 // Interface for request with CSRF token
 interface RequestWithCSRF extends Request {
@@ -83,9 +84,7 @@ export async function postEditClientDateOfBirth(req: Request, res: Response, nex
     // Construct ISO date string (YYYY-MM-DD) for API
     let dateOfBirth = '';
     if (day !== '' && month !== '' && year !== '') {
-      const paddedDay = day.padStart(DATE_PADDING_WIDTH, DATE_PADDING_CHAR);
-      const paddedMonth = month.padStart(DATE_PADDING_WIDTH, DATE_PADDING_CHAR);
-      dateOfBirth = `${year}-${paddedMonth}-${paddedDay}`;
+      dateOfBirth = dateStringFromThreeFields(day, month, year);
     }
     
     await apiService.updateClientDetails(req.axiosMiddleware, caseReference, { 

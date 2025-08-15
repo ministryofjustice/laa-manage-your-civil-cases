@@ -31,10 +31,10 @@ export function formatDate(dateString: string): string {
  * Constructs a date string in the format 'YYYY-MM-DD' from separate day, month, and year fields.
  * Pads the day and month values to ensure two digits using predefined padding width and character.
  *
- * @param day - The day part of the date as a string (e.g., '1', '09').
- * @param month - The month part of the date as a string (e.g., '2', '11').
- * @param year - The year part of the date as a string (e.g., '2024').
- * @returns The formatted date string in 'YYYY-MM-DD' format.
+ * @param {string} day - The day part of the date as a string (e.g., '1', '09').
+ * @param {string} month - The month part of the date as a string (e.g., '2', '11').
+ * @param {string} year - The year part of the date as a string (e.g., '2024').
+ * @returns {string} The formatted date string in 'YYYY-MM-DD' format.
  */
 export function dateStringFromThreeFields(day: string, month: string, year: string): string {
   const paddedMonth = month.padStart(DATE_PADDING_WIDTH, DATE_PADDING_CHAR);

@@ -1,6 +1,7 @@
 import { hasProperty, isRecord } from '#src/scripts/helpers/dataTransformers.js';
 import { checkSchema, type Meta } from 'express-validator';
 import { TypedValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
+import { dateStringFromThreeFields } from '#src/scripts/helpers/dateFormatter.js';
 import { isDate, isBefore } from 'validator';
 
 // Constants for validation boundaries
@@ -10,8 +11,6 @@ const MIN_MONTH = 1;
 const MAX_MONTH = 12;
 const YEAR_LENGTH = 4;
 const MIN_YEAR = 1;
-const DATE_PADDING_WIDTH = 2;
-const DATE_PADDING_CHAR = '0';
 const NEXT_DAY_OFFSET = 1;
 
 interface ClientDateOfBirthBody {
@@ -151,10 +150,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
           const month = req.body['dateOfBirth-month'].trim();
           const year = req.body['dateOfBirth-year'].trim();
 
-          // Use validator.js isDate() instead of custom date validation
-          const paddedMonth = month.padStart(DATE_PADDING_WIDTH, DATE_PADDING_CHAR);
-          const paddedDay = day.padStart(DATE_PADDING_WIDTH, DATE_PADDING_CHAR);
-          const dateString = `${year}-${paddedMonth}-${paddedDay}`;
+          // Use validator.js isDate() with dateStringFromThreeFields helper
+          const dateString = dateStringFromThreeFields(day, month, year);
           
           return isDate(dateString);
         },
@@ -187,10 +184,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
           const month = req.body['dateOfBirth-month'].trim();
           const year = req.body['dateOfBirth-year'].trim();
 
-          // Use validator.js isBefore() for future date validation
-          const paddedMonth = month.padStart(DATE_PADDING_WIDTH, DATE_PADDING_CHAR);
-          const paddedDay = day.padStart(DATE_PADDING_WIDTH, DATE_PADDING_CHAR);
-          const inputDateString = `${year}-${paddedMonth}-${paddedDay}`;
+          // Use validator.js isBefore() with dateStringFromThreeFields helper
+          const inputDateString = dateStringFromThreeFields(day, month, year);
           
           const tomorrow = new Date();
           tomorrow.setDate(tomorrow.getDate() + NEXT_DAY_OFFSET);
