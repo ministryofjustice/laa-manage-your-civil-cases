@@ -9,7 +9,7 @@ test('viewing change address form, to see the expected elements', async ({ page 
   await page.goto('/cases/PC-1922-1879/client-details/change/address');
 
   // Expect to see the following elements
-  await expect(page.locator('h1')).toContainText("Client's contact address (optional)");
+  await expect(page.locator('h1')).toContainText("Client address (optional)");
   await expect(addressInput).toBeVisible();
   await expect(postcodeInput).toBeVisible();
   await expect(saveButton).toBeVisible();
