@@ -7,6 +7,28 @@ import { formatValidationError, type ValidationErrorData } from '#src/scripts/he
 
 const BAD_REQUEST = 400;
 
+// Extend the Express session type to include our search parameters
+declare module 'express-session' {
+  interface SessionData {
+    stuff?: string;
+    stuff2?: string;
+    stuff3?: string;
+    stuff4?: string;
+    stuff5?: string;
+    stuff6?: string;
+  }
+}
+interface StuffStep1Body {
+  stuff?: string;
+  stuff2?: string;
+  stuff3?: string;
+}
+interface StuffStep2Body {
+  stuff4?: string;
+  stuff5?: string;
+  stuff6?: string;
+}
+
 /**
  * Renders the edit client name form for a given case reference.
  * @param {Request} req - Express request object
@@ -223,6 +245,99 @@ export async function postEditClientPhoneNumber(req: Request, res: Response, nex
   try {
     await apiService.updateClientDetails(req.axiosMiddleware, caseReference, { safeToCall, phoneNumber, announceCall });
     res.redirect(`/cases/${caseReference}/client-details`);
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
+ * Renders the change stuff form.
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
+ * @returns {void}
+ */
+export function getStuff(req: Request, res: Response, next: NextFunction): void {
+  try {
+    const { stuff = '', stuff2 = '', stuff3 = '' } = req.session;
+    res.render('case_details/edit-stuff.njk', { stuff, stuff2, stuff3 });
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
+ * Handles the submission of the change stuff form, and redirects to next form
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
+ * @returns {void}
+ */
+export function postStuff(req: Request<Record<string, never>, unknown, StuffStep1Body>,res: Response,next: NextFunction): void {
+  try {
+    const { stuff = '', stuff2 = '', stuff3 = '' } = req.body ?? {};
+
+    // Save to session
+    req.session.stuff = stuff;
+    req.session.stuff2 = stuff2;
+    req.session.stuff3 = stuff3;
+
+    req.session.save(err => {
+      if (err) { next(err); return; }
+      res.render('case_details/edit-stuff-continues.njk')
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
+ * Renders the change stuff-continues form.
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
+ * @returns {void}
+ */
+export function getStuffContinues(req: Request, res: Response, next: NextFunction): void {
+  try {
+    const {stuff = '', stuff2 = '', stuff3 = '', stuff4 = '', stuff5 = '', stuff6 = ''} = req.session;
+    res.render('case_details/edit-stuff-continues.njk', { stuff, stuff2, stuff3, stuff4, stuff5, stuff6 });
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
+ * Handles the submission of the change stuff-continues form.
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
+ * @returns {Promise<void>}
+ */
+export async function postStuffContinues(req: Request<Record<string, never>, unknown, StuffStep2Body>, res: Response, next: NextFunction): Promise<void> {
+  try {
+
+    // 1) Read what we already saved from step 1
+    const { stuff = '', stuff2 = '', stuff3 = '' } = req.session;
+
+    // 2) Read what’s just been posted on step 2
+    const { stuff4 = '', stuff5 = '', stuff6 = '' } = req.body ?? {};
+
+    // 3) Payload for API
+    const payload = { stuff, stuff2, stuff3, stuff4, stuff5, stuff6 };
+
+    // 4) Call your backend (replace with your real service)
+    // await apiService.saveStuff(req.axiosMiddleware, payload);
+
+    // 6) Clear wizard fields
+    delete req.session.stuff;
+    delete req.session.stuff2;
+    delete req.session.stuff3;
+    delete req.session.stuff4;
+    delete req.session.stuff5;
+    delete req.session.stuff6;
+
+    res.redirect('/cases/new');
   } catch (error) {
     next(error);
   }

@@ -1,0 +1,76 @@
+{% extends "base.njk" %}
+
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "components/errorSummaryComponent.njk" import errorSummary %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+{% set backLinkHref = "/cases/client-details/change/stuff" %}
+
+{% block backLink %}
+  {{ govukBackLink({
+      text: "Back",
+      href: backLinkHref,
+      classes: "govuk-!-margin-bottom-0"
+    }) }}
+{% endblock %}
+
+{% block pageContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% if error %}
+        {{ errorSummary(error.errorSummaryList) }}
+        {% set stuff4ErrorMessage = { text: error.inputErrors.stuff4 } if error.inputErrors.stuff4 %}
+        {% set stuff5ErrorMessage = { text: error.inputErrors.stuff5 } if error.inputErrors.stuff5 %}
+        {% set stuff6ErrorMessage = { text: error.inputErrors.stuff6 } if error.inputErrors.stuff6 %}      
+      {% endif %}
+      <form method="post" action="/cases/client-details/change/stuff-continues">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+        {{ govukInput({
+          label: {
+            text: "Stuff continues",
+            classes: "govuk-label--l",
+            isPageHeading: true
+          },
+          errorMessage: phoneNumberErrorMessage,
+          id: "stuff4",
+          name: "stuff4",
+          autocomplete: "off",
+          classes: "govuk-input--width-20"
+        }) }}
+        {{ govukInput({
+          label: {
+            text: "Stuff 5",
+            classes: "govuk-label--m",
+            isPageHeading: false
+          },
+          errorMessage: phoneNumberErrorMessage,
+          id: "stuff5",
+          name: "stuff5",
+          autocomplete: "off",
+          classes: "govuk-input--width-20"
+        }) }}
+        {{ govukInput({
+          label: {
+            text: "Stuff 6",
+            classes: "govuk-label--m",
+            isPageHeading: false
+          },
+          errorMessage: phoneNumberErrorMessage,
+          id: "stuff6",
+          name: "stuff6",
+          autocomplete: "off",
+          classes: "govuk-input--width-20"
+        }) }}
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: "Save"
+          }) }}
+          <a class="govuk-link" href="{{ backLinkHref }}">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

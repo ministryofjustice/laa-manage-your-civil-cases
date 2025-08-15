@@ -5,7 +5,11 @@ import {
   getEditClientEmailAddress,
   postEditClientEmailAddress,
   getEditClientPhoneNumber,
-  postEditClientPhoneNumber
+  postEditClientPhoneNumber,
+  getStuff,
+  getStuffContinues,
+  postStuff,
+  postStuffContinues
 } from '#src/scripts/controllers/editClientDetailsController.js';
 import { getEditClientAddress, postEditClientAddress } from '#src/scripts/controllers/editClientAddressController.js';
 import { validateEditClientPhoneNumber } from '#src/middlewares/phoneNumberSchema.js';
@@ -24,5 +28,10 @@ router.post('/:caseReference/client-details/change/phone-number', validateEditCl
 
 router.get('/:caseReference/client-details/change/address', getEditClientAddress);
 router.post('/:caseReference/client-details/change/address', validateEditClientAddress(), postEditClientAddress);
+
+router.get('/client-details/change/stuff', getStuff);
+router.post('/client-details/change/stuff', postStuff);
+router.get('/client-details/change/stuff-continues', getStuffContinues);
+router.post('/client-details/change/stuff-continues', postStuffContinues);
 
 export default router;
