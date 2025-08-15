@@ -1,19 +1,51 @@
 import Joi from 'joi';
+import { isRecord, hasProperty, safeString } from '#src/scripts/helpers/dataTransformers.js';
+
+/**
+ * Interface for client date of birth request body
+ */
+interface ClientDateOfBirthBody {
+  'dateOfBirth-day': string;
+  'dateOfBirth-month': string;
+  'dateOfBirth-year': string;
+  originalDay: string;
+  originalMonth: string;
+  originalYear: string;
+}
+
+/**
+ * Type guard to check if value has the expected structure of ClientDateOfBirthBody
+ * @param {unknown} value - The value to check
+ * @returns {value is ClientDateOfBirthBody} True if the value matches ClientDateOfBirthBody shape
+ */
+function isClientDateOfBirthBody(value: unknown): value is ClientDateOfBirthBody {
+  return isRecord(value) &&
+    hasProperty(value, 'dateOfBirth-day') &&
+    hasProperty(value, 'dateOfBirth-month') &&
+    hasProperty(value, 'dateOfBirth-year') &&
+    hasProperty(value, 'originalDay') &&
+    hasProperty(value, 'originalMonth') &&
+    hasProperty(value, 'originalYear');
+}
 
 /**
  * Custom validation function to check if at least one of the three date fields has changed
- * @param {any} value - The full request body
+ * @param {unknown} value - The full request body
  * @param {Joi.CustomHelpers} helpers - Joi validation helpers
- * @returns {any} The validated value or throws validation error
+ * @returns {unknown} The validated value or throws validation error
  */
-const validateFieldsChanged = (value: any, helpers: Joi.CustomHelpers) => {
-  const currentDay = value['dateOfBirth-day']?.trim() || '';
-  const currentMonth = value['dateOfBirth-month']?.trim() || '';
-  const currentYear = value['dateOfBirth-year']?.trim() || '';
+const validateFieldsChanged = (value: unknown, helpers: Joi.CustomHelpers): unknown => {
+  if (!isClientDateOfBirthBody(value)) {
+    return value;
+  }
+
+  const currentDay = safeString(value['dateOfBirth-day']).trim();
+  const currentMonth = safeString(value['dateOfBirth-month']).trim();
+  const currentYear = safeString(value['dateOfBirth-year']).trim();
   
-  const originalDay = value.originalDay?.trim() || '';
-  const originalMonth = value.originalMonth?.trim() || '';
-  const originalYear = value.originalYear?.trim() || '';
+  const originalDay = safeString(value.originalDay).trim();
+  const originalMonth = safeString(value.originalMonth).trim();
+  const originalYear = safeString(value.originalYear).trim();
 
   // Check if any field has changed
   const dayChanged = currentDay !== originalDay;
@@ -22,7 +54,8 @@ const validateFieldsChanged = (value: any, helpers: Joi.CustomHelpers) => {
 
   if (!dayChanged && !monthChanged && !yearChanged) {
     return helpers.error('fields.unchanged', {
-      message: "Update the client date of birth or select 'Cancel'"
+      message: "Update the client date of birth or select 'Cancel'",
+      priority: 1
     });
   }
 
