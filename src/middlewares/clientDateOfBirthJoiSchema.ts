@@ -1,7 +1,16 @@
 import Joi from 'joi';
 import { createValidator } from 'express-joi-validation';
 import type { Request, Response, NextFunction } from 'express';
-import { safeString } from '#src/scripts/helpers/dataTransformers.js';
+import type { ExpressJoiError } from 'express-joi-validation';
+import { safeString, hasProperty, isRecord } from '#src/scripts/helpers/dataTransformers.js';
+
+/**
+ * Interface for the joi validation error structure used by middleware
+ */
+export interface JoiValidationError {
+  message: string;
+  priority: number;
+}
 
 /**
  * Custom validation function to check if at least one of the three date fields has changed
@@ -10,13 +19,13 @@ import { safeString } from '#src/scripts/helpers/dataTransformers.js';
  * @returns {unknown} The validated value or throws validation error
  */
 const validateFieldsChanged = (value: unknown, helpers: Joi.CustomHelpers): unknown => {
-  const currentDay = safeString((value as any)?.['dateOfBirth-day']).trim();
-  const currentMonth = safeString((value as any)?.['dateOfBirth-month']).trim();
-  const currentYear = safeString((value as any)?.['dateOfBirth-year']).trim();
+  const currentDay = hasProperty(value, 'dateOfBirth-day') ? safeString(value['dateOfBirth-day']).trim() : '';
+  const currentMonth = hasProperty(value, 'dateOfBirth-month') ? safeString(value['dateOfBirth-month']).trim() : '';
+  const currentYear = hasProperty(value, 'dateOfBirth-year') ? safeString(value['dateOfBirth-year']).trim() : '';
   
-  const originalDay = safeString((value as any)?.originalDay).trim();
-  const originalMonth = safeString((value as any)?.originalMonth).trim();
-  const originalYear = safeString((value as any)?.originalYear).trim();
+  const originalDay = hasProperty(value, 'originalDay') ? safeString(value.originalDay).trim() : '';
+  const originalMonth = hasProperty(value, 'originalMonth') ? safeString(value.originalMonth).trim() : '';
+  const originalYear = hasProperty(value, 'originalYear') ? safeString(value.originalYear).trim() : '';
 
   // Check if any field has changed
   const dayChanged = currentDay !== originalDay;
@@ -65,29 +74,3 @@ const validator = createValidator({
  * @returns Express middleware function
  */
 export const validateEditClientDateOfBirthJoi = () => validator.body(dateOfBirthChangeSchema);
-
-/**
- * Custom middleware to catch joi validation errors and format them for controller use
- * This allows the controller to handle joi errors the same way as express-validator errors
- * @param {unknown} err - The error object to check
- * @param {Request} req - Express request object
- * @param {Response} res - Express response object
- * @param {NextFunction} next - Express next function
- */
-export const handleJoiValidationErrors = (err: unknown, req: Request, res: Response, next: NextFunction): void => {
-  // Check if this is a joi validation error
-  if (err && typeof err === 'object' && 'error' in err && err.error && typeof err.error === 'object' && 'isJoi' in err.error && (err.error as any).isJoi) {
-    // Store the joi error in a format the controller can access
-    (req as any).joiValidationError = {
-      message: (err.error as any).details?.[0]?.message || (err.error as any).toString(),
-      priority: (err.error as any).details?.[0]?.context?.priority || 1
-    };
-    
-    // Continue to the controller instead of throwing
-    next();
-    return;
-  }
-  
-  // If it's not a joi error, pass it along normally
-  next(err);
-};

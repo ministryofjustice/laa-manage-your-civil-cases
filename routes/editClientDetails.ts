@@ -15,7 +15,7 @@ import {
 import { validateEditClientPhoneNumber } from '#src/middlewares/phoneNumberSchema.js';
 import { validateEditClientAddress } from '#src/middlewares/clientAddressSchema.js';
 import { validateEditClientDateOfBirth } from '#src/middlewares/clientDateOfBirthSchema.js';
-import { validateEditClientDateOfBirthJoi, handleJoiValidationErrors } from '#src/middlewares/clientDateOfBirthJoiSchema.js';
+import { validateEditClientDateOfBirthJoi } from '#src/middlewares/clientDateOfBirthJoiSchema.js';
 
 const router = express.Router();
 
@@ -32,6 +32,6 @@ router.get('/:caseReference/client-details/change/address', getEditClientAddress
 router.post('/:caseReference/client-details/change/address', validateEditClientAddress(), postEditClientAddress);
 
 router.get('/:caseReference/client-details/change/date-of-birth', getEditClientDateOfBirth);
-router.post('/:caseReference/client-details/change/date-of-birth', validateEditClientDateOfBirthJoi(), handleJoiValidationErrors, postEditClientDateOfBirth);
+router.post('/:caseReference/client-details/change/date-of-birth', validateEditClientDateOfBirthJoi(), postEditClientDateOfBirth);
 
 export default router;

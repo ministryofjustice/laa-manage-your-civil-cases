@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { validationResult, type Result } from 'express-validator';
-import { safeString, hasProperty } from '#src/scripts/helpers/index.js';
+import type { ExpressJoiError } from 'express-joi-validation';
+import { safeString, hasProperty, isRecord } from '#src/scripts/helpers/index.js';
 import { 
   formatValidationError, 
   type ValidationErrorData
@@ -68,30 +69,7 @@ export async function postEditClientDateOfBirth(req: Request, res: Response, nex
   const caseReference = safeString(req.params.caseReference);
   
   try {
-    // Check for joi validation errors first
-    if ((req as any).joiValidationError) {
-      const joiError = (req as any).joiValidationError;
-      
-      // Create a mock validation result compatible with handleDateOfBirthValidationErrors
-      const mockValidationErrors = {
-        /**
-         *
-         */
-        isEmpty: () => false,
-        /**
-         *
-         */
-        array: () => [{
-          summaryMessage: `${joiError.message} (Priority: ${joiError.priority})`,
-          inlineMessage: ''
-        }]
-      } as Result<ValidationErrorData>;
-      
-      handleDateOfBirthValidationErrors(mockValidationErrors, req, res, caseReference);
-      return;
-    }
-
-    // Check for express-validator errors (fallback for old schema)
+    // Check for express-validator errors (old schema)
     const validationErrors: Result<ValidationErrorData> = validationResult(req).formatWith(formatValidationError);
     
     if (!validationErrors.isEmpty()) {
@@ -118,6 +96,27 @@ export async function postEditClientDateOfBirth(req: Request, res: Response, nex
     res.redirect(`/cases/${caseReference}/client-details`);
     
   } catch (error) {
+    // Handle joi validation errors here using express-joi-validation's error structure
+    if (isRecord(error) && hasProperty(error, 'error') && hasProperty(error, 'type')) {
+      const joiError = error as ExpressJoiError;
+      const firstDetail = joiError.error.details?.[0];
+      const message = firstDetail?.message || 'Validation error';
+      const priority = firstDetail?.context?.priority || 1;
+      
+      const errorData: ValidationErrorData = {
+        summaryMessage: `${message} (Priority: ${priority})`,
+        inlineMessage: ''
+      };
+      
+      const mockResult = {
+        isEmpty: () => false,
+        array: () => [errorData]
+      } as Result<ValidationErrorData>;
+      
+      handleDateOfBirthValidationErrors(mockResult, req, res, caseReference);
+      return;
+    }
+    
     next(error);
   }
 }
