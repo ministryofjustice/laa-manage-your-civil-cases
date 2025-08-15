@@ -1,16 +1,6 @@
 import Joi from 'joi';
 import { createValidator } from 'express-joi-validation';
-import type { Request, Response, NextFunction } from 'express';
-import type { ExpressJoiError } from 'express-joi-validation';
-import { safeString, hasProperty, isRecord } from '#src/scripts/helpers/dataTransformers.js';
-
-/**
- * Interface for the joi validation error structure used by middleware
- */
-export interface JoiValidationError {
-  message: string;
-  priority: number;
-}
+import { safeString, hasProperty } from '#src/scripts/helpers/dataTransformers.js';
 
 /**
  * Custom validation function to check if at least one of the three date fields has changed

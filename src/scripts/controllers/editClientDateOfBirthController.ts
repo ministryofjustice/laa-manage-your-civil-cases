@@ -1,7 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import { validationResult, type Result } from 'express-validator';
-import type { ExpressJoiError } from 'express-joi-validation';
-import { safeString, hasProperty, isRecord } from '#src/scripts/helpers/index.js';
+import { safeString, hasProperty } from '#src/scripts/helpers/index.js';
 import { 
   formatValidationError, 
   type ValidationErrorData
@@ -96,27 +95,6 @@ export async function postEditClientDateOfBirth(req: Request, res: Response, nex
     res.redirect(`/cases/${caseReference}/client-details`);
     
   } catch (error) {
-    // Handle joi validation errors here using express-joi-validation's error structure
-    if (isRecord(error) && hasProperty(error, 'error') && hasProperty(error, 'type')) {
-      const joiError = error as ExpressJoiError;
-      const firstDetail = joiError.error.details?.[0];
-      const message = firstDetail?.message || 'Validation error';
-      const priority = firstDetail?.context?.priority || 1;
-      
-      const errorData: ValidationErrorData = {
-        summaryMessage: `${message} (Priority: ${priority})`,
-        inlineMessage: ''
-      };
-      
-      const mockResult = {
-        isEmpty: () => false,
-        array: () => [errorData]
-      } as Result<ValidationErrorData>;
-      
-      handleDateOfBirthValidationErrors(mockResult, req, res, caseReference);
-      return;
-    }
-    
     next(error);
   }
 }
