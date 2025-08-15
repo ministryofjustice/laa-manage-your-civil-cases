@@ -74,7 +74,13 @@ export async function postEditClientDateOfBirth(req: Request, res: Response, nex
       
       // Create a mock validation result compatible with handleDateOfBirthValidationErrors
       const mockValidationErrors = {
+        /**
+         *
+         */
         isEmpty: () => false,
+        /**
+         *
+         */
         array: () => [{
           summaryMessage: `${joiError.message} (Priority: ${joiError.priority})`,
           inlineMessage: ''

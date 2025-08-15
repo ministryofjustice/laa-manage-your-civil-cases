@@ -63,13 +63,15 @@ const validator = createValidator({
  * Joi middleware function for validating client date of birth changes
  * @returns Express middleware function
  */
-export const validateEditClientDateOfBirthJoi = () => {
-  return validator.body(dateOfBirthChangeSchema);
-};
+export const validateEditClientDateOfBirthJoi = () => validator.body(dateOfBirthChangeSchema);
 
 /**
  * Custom middleware to catch joi validation errors and format them for controller use
  * This allows the controller to handle joi errors the same way as express-validator errors
+ * @param err
+ * @param req
+ * @param res
+ * @param next
  */
 export const handleJoiValidationErrors = (err: any, req: any, res: any, next: any) => {
   // Check if this is a joi validation error
