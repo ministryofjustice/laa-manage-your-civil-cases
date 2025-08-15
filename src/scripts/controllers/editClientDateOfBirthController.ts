@@ -76,7 +76,7 @@ export async function postEditClientDateOfBirth(req: Request, res: Response, nex
       const mockValidationErrors = {
         isEmpty: () => false,
         array: () => [{
-          summaryMessage: joiError.message,
+          summaryMessage: `${joiError.message} (Priority: ${joiError.priority})`,
           inlineMessage: ''
         }]
       } as Result<ValidationErrorData>;
