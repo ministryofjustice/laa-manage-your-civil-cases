@@ -375,6 +375,52 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hapi/address@npm:^5.1.1":
+  version: 5.1.1
+  resolution: "@hapi/address@npm:5.1.1"
+  dependencies:
+    "@hapi/hoek": "npm:^11.0.2"
+  checksum: 10c0/78138effe1e9a36fd12eb42e24adf97f3ca94b9ab1f6db65e3136cf0e5cdbd1578c14adffde18a50d776db2f326a8cb3a16d783b6705b22571a603fa47c8c3d3
+  languageName: node
+  linkType: hard
+
+"@hapi/formula@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "@hapi/formula@npm:3.0.2"
+  checksum: 10c0/794d30dd13ecc070b9d93e01dacad8175c270f89bcfaa92300f843b7666d915b319d0b792694385d79270c84b52f003a4310f117202303cce3069808751f7a41
+  languageName: node
+  linkType: hard
+
+"@hapi/hoek@npm:^11.0.2, @hapi/hoek@npm:^11.0.7":
+  version: 11.0.7
+  resolution: "@hapi/hoek@npm:11.0.7"
+  checksum: 10c0/39a4a3ae9526ed66509f6d03c6eb43179a2590df6e98443328c966cfa5e7cbb9d340f61fdbe0afe092662d5377d5a611c3303c808fee26a9c9cfd6bd3737dc1c
+  languageName: node
+  linkType: hard
+
+"@hapi/pinpoint@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@hapi/pinpoint@npm:2.0.1"
+  checksum: 10c0/b3072f2c57c9fa2e44d85168e253e331324158509e1c45dae2676f31555326410345fd2422f890c41201e2783c5e9bb8c7b0bdcf6abe01079742a943b0c300b9
+  languageName: node
+  linkType: hard
+
+"@hapi/tlds@npm:^1.1.1":
+  version: 1.1.2
+  resolution: "@hapi/tlds@npm:1.1.2"
+  checksum: 10c0/1735a13c0acc68c07f9cfe79110dfe53ac0beb6b5716ca57823cd3ff8a1e3bfe95ef513df9fef1073d5a5270da1f9bb4176319335eb3471cfd6948371602c0a5
+  languageName: node
+  linkType: hard
+
+"@hapi/topo@npm:^6.0.2":
+  version: 6.0.2
+  resolution: "@hapi/topo@npm:6.0.2"
+  dependencies:
+    "@hapi/hoek": "npm:^11.0.2"
+  checksum: 10c0/5a0079805e9a542bdb852912ce6ed3221ddd0a58569354b3900e165faabe50fb1d2d488067db97c494194835684b055828b6267be3064ac42cf2ce28db02edfc
+  languageName: node
+  linkType: hard
+
 "@humanfs/core@npm:^0.19.1":
   version: 0.19.1
   resolution: "@humanfs/core@npm:0.19.1"
@@ -762,6 +808,13 @@ __metadata:
     "@sinonjs/commons": "npm:^3.0.1"
     type-detect: "npm:^4.1.0"
   checksum: 10c0/9bf57a8f8a484b3455696786e1679db7f0d6017de62099ee304bd364281fcb20895b7c6b05292aa10fecf76df27691e914fc3e1cb8a56d88c027e87d869dcf0c
+  languageName: node
+  linkType: hard
+
+"@standard-schema/spec@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@standard-schema/spec@npm:1.0.0"
+  checksum: 10c0/a1ab9a8bdc09b5b47aa8365d0e0ec40cc2df6437be02853696a0e377321653b0d3ac6f079a8c67d5ddbe9821025584b1fb71d9cc041a6666a96f1fadf2ece15f
   languageName: node
   linkType: hard
 
@@ -2915,6 +2968,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"express-joi-validation@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "express-joi-validation@npm:6.1.0"
+  peerDependencies:
+    joi: 17
+  checksum: 10c0/2dbde9eb978bac5eacc372b117b277cda0213ea4198543ebcb316298643321801c7c8a2fd41fd41e3edf3731108a433a1a0fd8aae35e5b81d74201c8716066df
+  languageName: node
+  linkType: hard
+
 "express-rate-limit@npm:^8.0.1":
   version: 8.0.1
   resolution: "express-rate-limit@npm:8.0.1"
@@ -4076,6 +4138,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"joi@npm:^18.0.0":
+  version: 18.0.0
+  resolution: "joi@npm:18.0.0"
+  dependencies:
+    "@hapi/address": "npm:^5.1.1"
+    "@hapi/formula": "npm:^3.0.2"
+    "@hapi/hoek": "npm:^11.0.7"
+    "@hapi/pinpoint": "npm:^2.0.1"
+    "@hapi/tlds": "npm:^1.1.1"
+    "@hapi/topo": "npm:^6.0.2"
+    "@standard-schema/spec": "npm:^1.0.0"
+  checksum: 10c0/13bacd15e3b3d08a32f110f5543214f0c57ff985aca006c208e912973373082296f9cf586a16dc6de25b028d33e5e7732e2852b9c42e1a22e8280dd823b416f0
+  languageName: node
+  linkType: hard
+
 "js-yaml@npm:^4.1.0":
   version: 4.1.0
   resolution: "js-yaml@npm:4.1.0"
@@ -4662,6 +4739,7 @@ __metadata:
     eslint-config-prettier: "npm:^10.1.8"
     eslint-plugin-jsdoc: "npm:^52.0.4"
     express: "npm:^5.1.0"
+    express-joi-validation: "npm:^6.1.0"
     express-rate-limit: "npm:^8.0.1"
     express-session: "npm:^1.18.2"
     express-validator: "npm:^7.2.1"
@@ -4672,6 +4750,7 @@ __metadata:
     helmet: "npm:^8.1.0"
     http-errors: "npm:~2.0.0"
     husky: "npm:^9.1.7"
+    joi: "npm:^18.0.0"
     jsdom: "npm:^26.1.0"
     libphonenumber-js: "npm:^1.12.10"
     lint-staged: "npm:^16.1.5"
