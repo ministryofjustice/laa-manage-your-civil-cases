@@ -51,7 +51,7 @@ export const dateOfBirthChangeSchema = Joi.object({
  * Create the joi validator instance
  */
 const validator = createValidator({
-  passError: true,
+  passError: true, // Pass errors to custom middleware instead of responding directly
   joi: {
     allowUnknown: false,
     stripUnknown: true,
@@ -65,4 +65,26 @@ const validator = createValidator({
  */
 export const validateEditClientDateOfBirthJoi = () => {
   return validator.body(dateOfBirthChangeSchema);
+};
+
+/**
+ * Custom middleware to catch joi validation errors and format them for controller use
+ * This allows the controller to handle joi errors the same way as express-validator errors
+ */
+export const handleJoiValidationErrors = (err: any, req: any, res: any, next: any) => {
+  // Check if this is a joi validation error
+  if (err && 'error' in err && err.error && 'isJoi' in err.error && err.error.isJoi) {
+    // Store the joi error in a format the controller can access
+    req.joiValidationError = {
+      message: err.error.details?.[0]?.message || err.error.toString(),
+      priority: err.error.details?.[0]?.context?.priority || 1
+    };
+    
+    // Continue to the controller instead of throwing
+    next();
+    return;
+  }
+  
+  // If it's not a joi error, pass it along normally
+  next(err);
 };

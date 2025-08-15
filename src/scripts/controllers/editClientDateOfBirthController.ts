@@ -68,6 +68,24 @@ export async function postEditClientDateOfBirth(req: Request, res: Response, nex
   const caseReference = safeString(req.params.caseReference);
   
   try {
+    // Check for joi validation errors first
+    if ((req as any).joiValidationError) {
+      const joiError = (req as any).joiValidationError;
+      
+      // Create a mock validation result compatible with handleDateOfBirthValidationErrors
+      const mockValidationErrors = {
+        isEmpty: () => false,
+        array: () => [{
+          summaryMessage: joiError.message,
+          inlineMessage: ''
+        }]
+      } as Result<ValidationErrorData>;
+      
+      handleDateOfBirthValidationErrors(mockValidationErrors, req, res, caseReference);
+      return;
+    }
+
+    // Check for express-validator errors (fallback for old schema)
     const validationErrors: Result<ValidationErrorData> = validationResult(req).formatWith(formatValidationError);
     
     if (!validationErrors.isEmpty()) {

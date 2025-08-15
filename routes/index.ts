@@ -5,7 +5,6 @@ import caseDetailsRouter from './caseDetails.js';
 import editClientDetailsRouter from './editClientDetails.js';
 import searchRouter from './search.js';
 import { devError, extractErrorMessage } from '#src/scripts/helpers/index.js';
-import type { ExpressJoiError } from 'express-joi-validation';
 
 // Create a new router
 const router = express.Router();
@@ -66,40 +65,14 @@ router.use(function (req: Request, res: Response): void {
 });
 
 // Global error handler middleware
-router.use(function (err: Error | ExpressJoiError, req: Request, res: Response, next: NextFunction): void {
+router.use(function (err: Error, req: Request, res: Response, next: NextFunction): void {
   const { originalUrl } = req;
 
-  // Check if this is a joi validation error
-  if (err && 'error' in err && err.error && 'isJoi' in err.error && err.error.isJoi) {
-    const joiError = err as ExpressJoiError;
-    
-    // Extract the validation error message and metadata
-    const errorDetail = joiError.error.details?.[0];
-    const validationMessage = errorDetail?.message || joiError.error.toString();
-    const priority = errorDetail?.context?.priority;
-    
-    // Log with priority information if available
-    const priorityInfo = priority ? ` (Priority: ${priority})` : '';
-    devError(`Joi validation error - URL: ${originalUrl}, Type: ${joiError.type}, Error: ${joiError.error.toString()}${priorityInfo}`);
-    
-    const httpBadRequest = 400;
-    res.status(httpBadRequest).render('main/error.njk', {
-      status: '400',
-      error: validationMessage,
-      // Pass priority as additional context if needed by the template
-      priority: priority
-    });
-    return;
-  }
-
-  // Handle regular errors (existing logic) - cast to Error since we know it's not a joi error
-  const regularError = err as Error;
-  
   // Check if error already has user-friendly message, otherwise extract it
-  const userFriendlyMessage = regularError.message !== '' ? regularError.message : extractErrorMessage(regularError);
+  const userFriendlyMessage = err.message !== '' ? err.message : extractErrorMessage(err);
 
   // Log original error details for debugging (check if there's a cause)
-  const originalError = regularError.cause instanceof Error ? regularError.cause : regularError;
+  const originalError = err.cause instanceof Error ? err.cause : err;
   devError(`Global error handler - URL: ${originalUrl}, Error: ${originalError.message}`);
 
   const httpInternalServerError = 500;
