@@ -37,9 +37,11 @@
   {% if address %}
     {{ address }}
     {% if postcode %}
-      <br>
-      {{ postcode }}
+        <br>
     {% endif %}
+  {% endif %}
+  {% if postcode %}
+    {{ postcode }}  
   {% endif %}
 {% endmacro %}
 
