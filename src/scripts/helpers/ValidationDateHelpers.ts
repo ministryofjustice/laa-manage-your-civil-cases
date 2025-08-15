@@ -220,10 +220,10 @@ export function handleDateOfBirthValidationErrors(
   const { inlineMessage: inlineErrorMessage } = prioritizedError;
   
   // Simple highlighting - highlight all fields if there's any inline error
-  const highlightDay = !!inlineErrorMessage;
-  const highlightMonth = !!inlineErrorMessage;
-  const highlightYear = !!inlineErrorMessage;
-  
+  const highlightDay = /day/i.test(inlineErrorMessage);
+  const highlightMonth = /month/i.test(inlineErrorMessage);
+  const highlightYear = /year/i.test(inlineErrorMessage);
+
   // Re-render the form with errors and preserve user input
   res.status(BAD_REQUEST).render('case_details/edit-date-of-birth.njk', {
     caseReference,
