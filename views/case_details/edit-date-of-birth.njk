@@ -8,11 +8,15 @@
   {% if errorState.hasErrors %}Error: {% endif %}{{ pageTitle or "Client's date of birth" }} - Manage your civil cases
 {% endblock %}
 
-{% block content %}
+{% block backLink %}
   {{ govukBackLink({
-    text: "Back",
-    href: "/cases/" + caseReference + "/client-details"
-  }) }}
+      text: "Back",
+      href: "/cases/" + caseReference + "/client-details",
+      classes: "govuk-!-margin-bottom-0"
+    }) }}
+{% endblock %}
+
+{% block pageContent %}
   
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -45,9 +49,7 @@
             }
           },
           hint: {
-            text: "For example, 27 3 2007",
-            classes: "govuk-!-margin-top-2 govuk-!-margin-bottom-4"
-          },
+            text: "For example, 27 3 2007"          },
           errorMessage: {
             html: inlineErrorMessage | replace('\n', '<br>')
           } if inlineErrorMessage,
