@@ -1,0 +1,99 @@
+{% extends "base.njk" %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+
+{% block pageTitle %}
+  {% if errorState.hasErrors %}Error: {% endif %}{{ pageTitle or "Client's date of birth" }} - Manage your civil cases
+{% endblock %}
+
+{% block backLink %}
+  {{ govukBackLink({
+      text: "Back",
+      href: "/cases/" + caseReference + "/client-details",
+      classes: "govuk-!-margin-bottom-0"
+    }) }}
+{% endblock %}
+
+{% block pageContent %}
+  
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      
+      {% if errorState.hasErrors %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errorState.errors
+        }) }}
+      {% endif %}
+      
+      <form method="POST" action="/cases/{{ caseReference }}/client-details/change/date-of-birth">
+        
+        <!-- CSRF Protection -->
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+        
+        <!-- Original values for change detection -->
+        <input type="hidden" name="originalDay" value="{{ originalData.day }}" />
+        <input type="hidden" name="originalMonth" value="{{ originalData.month }}" />
+        <input type="hidden" name="originalYear" value="{{ originalData.year }}" />
+        
+        {{ govukDateInput({
+          id: "dateOfBirth",
+          namePrefix: "dateOfBirth",
+          fieldset: {
+            legend: {
+              text: "Client date of birth",
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l govuk-!-margin-bottom-6"
+            }
+          },
+          hint: {
+            text: "For example, 27 3 2007"          },
+          errorMessage: {
+            html: inlineErrorMessage | replace('\n', '<br>')
+          } if inlineErrorMessage,
+          items: [
+            {
+              name: "day",
+              classes: "govuk-input--width-2" + (" govuk-input--error" if highlightDay),
+              value: formData.day,
+              attributes: {
+                "aria-describedby": "dateOfBirth-error" if highlightDay,
+                "autocomplete": "off"
+              }
+            },
+            {
+              name: "month", 
+              classes: "govuk-input--width-2" + (" govuk-input--error" if highlightMonth),
+              value: formData.month,
+              attributes: {
+                "aria-describedby": "dateOfBirth-error" if highlightMonth,
+                "autocomplete": "off"
+              }
+            },
+            {
+              name: "year",
+              classes: "govuk-input--width-4" + (" govuk-input--error" if highlightYear),
+              value: formData.year,
+              attributes: {
+                "aria-describedby": "dateOfBirth-error" if highlightYear,
+                "autocomplete": "off"
+              }
+            }
+          ]
+        }) }}
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: "Save"
+          }) }}
+          <a class="govuk-link" href="/cases/{{ caseReference }}/client-details">Cancel</a>
+        </div>
+
+        
+      </form>
+      
+    </div>
+  </div>
+{% endblock %}
