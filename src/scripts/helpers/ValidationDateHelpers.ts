@@ -4,9 +4,10 @@ import type { Request, Response } from 'express';
 import type { Result } from 'express-validator';
 
 // Constants for magic numbers
-const FIRST_ELEMENT_INDEX = 0;
 const MINIMUM_YEAR = 1;
 const BAD_REQUEST = 400;
+const NO_EMPTY_FIELDS = 0;
+const ALL_FIELDS_MISSING = 3;
 
 // Interface for request with CSRF token
 interface RequestWithCSRF extends Request {
@@ -44,15 +45,6 @@ export function isRequestBodyWithDates(body: unknown): body is RequestBodyWithDa
 }
 
 /**
- * Three-tier error priority classification for date validation
- */
-enum ErrorPriority {
-  CRITICAL = 1,    // Required field errors, change detection
-  IMPORTANT = 2,   // Format/length validation errors
-  STANDARD = 3     // Logical validation (date validity, future dates)
-}
-
-/**
  * Parse date string into day, month, year components
  * @param {string} dateString - ISO date string (YYYY-MM-DD) or empty string
  * @returns {DateFormData} Object with day, month, year properties
@@ -61,7 +53,6 @@ export function parseDateString(dateString: string): DateFormData {
   if (dateString.trim() === '') {
     return { day: '', month: '', year: '' };
   }
-
 
   const date = new Date(dateString);
   if (isNaN(date.getTime())) {
@@ -73,7 +64,6 @@ export function parseDateString(dateString: string): DateFormData {
     month: (date.getMonth() + MINIMUM_YEAR).toString(), // getMonth() returns 0-11
     year: date.getFullYear().toString()
   };
-
 }
 
 /**
@@ -103,94 +93,8 @@ export function extractOriginalDateData(body: RequestBodyWithDates): DateFormDat
 }
 
 /**
- * Check if error message indicates format/length validation error
- * @param {string} summaryMessage - Summary message in lowercase
- * @param {string} inlineMessage - Inline message in lowercase
- * @returns {boolean} True if this is a format/length error
- */
-function isFormatError(summaryMessage: string, inlineMessage: string): boolean {
-  return summaryMessage.includes('must include 4 numbers') ||
-    summaryMessage.includes('must be between') ||
-    summaryMessage.includes('must be in the past') ||
-    summaryMessage.includes('must be a number') ||
-    inlineMessage.includes('must be a number') ||
-    inlineMessage.includes('must include 4 numbers');
-}
-
-/**
- * Check if error message indicates required field or change detection error
- * @param {string} summaryMessage - Summary message in lowercase
- * @returns {boolean} True if this is a critical error
- */
-function isCriticalError(summaryMessage: string): boolean {
-  return summaryMessage.includes('must include') || 
-    summaryMessage.includes('enter the client') ||
-    summaryMessage.includes('update the client') ||
-    summaryMessage.includes('select \'cancel\'') ||
-    summaryMessage.includes('date of birth is required') ||
-    summaryMessage.includes('day is required') ||
-    summaryMessage.includes('month is required') ||
-    summaryMessage.includes('year is required');
-}
-
-/**
- * Determine error priority based on error message content for date validation
- * @param {ValidationErrorData} error - The validation error object
- * @returns {ErrorPriority} Priority level of the error
- */
-function determineErrorPriority(error: ValidationErrorData): ErrorPriority {
-  const summaryMessage = error.summaryMessage.toLowerCase();
-  const inlineMessage = error.inlineMessage.toLowerCase();
-  
-  // IMPORTANT: Format/length validation errors (check these first to avoid false matches)
-  if (isFormatError(summaryMessage, inlineMessage)) {
-    return ErrorPriority.IMPORTANT;
-  }
-  
-  // CRITICAL: Required field errors and change detection
-  if (isCriticalError(summaryMessage)) {
-    return ErrorPriority.CRITICAL;
-  }
-  
-  // STANDARD: Logical validation (date validity, future dates)
-  return ErrorPriority.STANDARD;
-}
-
-/**
- * Prioritizes validation errors using a three-tier priority system for date validation
- * Returns the single highest priority error for display
- * @param {ValidationErrorData[]} errors - Array of validation errors
- * @returns {ValidationErrorData} The highest priority error
- */
-export function prioritizeValidationErrors(errors: ValidationErrorData[]): ValidationErrorData {
-  if (errors.length === FIRST_ELEMENT_INDEX) {
-    throw new Error('Cannot prioritize empty error array');
-  }
-  
-  if (errors.length === MINIMUM_YEAR) {
-    return errors[FIRST_ELEMENT_INDEX];
-  }
-  
-  // Sort errors by priority (highest first)
-  const prioritizedErrors = errors
-    .map(error => ({
-      error,
-      priority: determineErrorPriority(error)
-    }))
-    .sort((a, b) => {
-      // Sort by priority enum value (CRITICAL=1, IMPORTANT=2, STANDARD=3)
-      if (a.priority !== b.priority) {
-        return a.priority - b.priority;
-      }
-      // If same priority, maintain original order
-      return FIRST_ELEMENT_INDEX;
-    });
-  
-  return prioritizedErrors[FIRST_ELEMENT_INDEX].error;
-}
-
-/**
  * Handles validation errors for date of birth form by rendering the form with error messages
+ * Filters errors intelligently - if any field is empty, only show field-missing errors
  * @param {Result<ValidationErrorData>} validationErrors - Validation errors from express-validator
  * @param {Request} req - Express request object
  * @param {Response} res - Express response object
@@ -202,27 +106,65 @@ export function handleDateOfBirthValidationErrors(
   res: Response,
   caseReference: string
 ): void {
-  // Use sophisticated error prioritization to get the single highest priority error
-  const prioritizedError = prioritizeValidationErrors(validationErrors.array());
-  
-  // Build error summary list for the error summary component
-  const errorSummaryList = [{
-    text: prioritizedError.summaryMessage,
-    href: '#dateOfBirth',
-  }];
+  const allErrors = validationErrors.array();
 
-  // Get form data from request body to preserve user input
+  // Check if any required fields are empty
   const bodyWithDates = isRequestBodyWithDates(req.body) ? req.body : {};
   const formData = extractDateFormData(bodyWithDates);
+  const { day, month, year } = formData;
+
+  // Count empty fields manually to satisfy linter
+  let emptyFieldsCount = NO_EMPTY_FIELDS;
+  if (day === '') emptyFieldsCount++;
+  if (month === '') emptyFieldsCount++;
+  if (year === '') emptyFieldsCount++;
+
+  // Filter errors based on field completeness
+  const relevantErrors = emptyFieldsCount > NO_EMPTY_FIELDS
+    ? allErrors.filter(error => {
+      const { summaryMessage } = error;
+      // When fields are missing, only show:
+      // 1. Individual field missing errors (always show these)
+      // 2. Comprehensive error ONLY when ALL fields are missing
+      return summaryMessage.includes('must include a day') ||
+        summaryMessage.includes('must include a month') ||
+        summaryMessage.includes('must include a year') ||
+        (emptyFieldsCount === ALL_FIELDS_MISSING && summaryMessage.includes('must include a day, month and year'));
+    })
+    : allErrors; // Show all errors when all fields are complete
+
+  // Build error summary list with filtered errors
+  const errorSummaryList = relevantErrors.map(error => ({
+    text: error.summaryMessage,
+    href: '#dateOfBirth',
+  }));
+
+  // Use the first relevant error for inline message
+  const [firstError] = relevantErrors;
+  const { inlineMessage: inlineErrorMessage } = firstError;
   const originalData = extractOriginalDateData(bodyWithDates);
 
-  // Simple highlighting - highlight all fields if there's any error
-  const highlightDay = true;
-  const highlightMonth = true;
-  const highlightYear = true;
+  // Smart highlighting - determine which fields should be highlighted based on error messages
+  const errorMessages = allErrors.map(error => error.summaryMessage.toLowerCase());
 
-  // Use the prioritized error's inline message
-  const { inlineMessage: inlineErrorMessage } = prioritizedError;
+  const highlightDay = errorMessages.some(msg =>
+    msg.includes('day') ||
+    msg.includes('must include a day') ||
+    msg.includes('day must be between')
+  );
+
+  const highlightMonth = errorMessages.some(msg =>
+    msg.includes('month') ||
+    msg.includes('must include a month') ||
+    msg.includes('month must be between')
+  );
+
+  const highlightYear = errorMessages.some(msg =>
+    msg.includes('year') ||
+    msg.includes('must include a year') ||
+    msg.includes('year must') ||
+    msg.includes('must include 4 numbers')
+  );
 
   // Re-render the form with errors and preserve user input
   res.status(BAD_REQUEST).render('case_details/edit-date-of-birth.njk', {
@@ -231,7 +173,7 @@ export function handleDateOfBirthValidationErrors(
     originalData,
     errorState: {
       hasErrors: true,
-      errors: errorSummaryList
+      errors: errorSummaryList // Contains errors with automatic prioritization from bail()
     },
     highlightDay,
     highlightMonth,

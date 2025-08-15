@@ -1,8 +1,8 @@
 import { hasProperty, isRecord } from '#src/scripts/helpers/dataTransformers.js';
-import { createChangeDetectionValidator , TypedValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
+import { createChangeDetectionValidator, TypedValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 import { checkSchema, type Meta } from 'express-validator';
 import { dateStringFromThreeFields } from '#src/scripts/helpers/dateFormatter.js';
-import { isDate, isBefore } from 'validator';
+import { isBefore, isDate } from 'validator';
 
 // Constants for validation boundaries
 const MIN_DAY = 1;
@@ -11,7 +11,8 @@ const MIN_MONTH = 1;
 const MAX_MONTH = 12;
 const YEAR_LENGTH = 4;
 const MIN_YEAR = 1;
-const NEXT_DAY_OFFSET = 1;
+const NEXT_DAY_OFFSET = 1
+const TOTAL_DATE_FIELDS = 3;
 
 interface ClientDateOfBirthBody {
   'dateOfBirth-day': string;
@@ -55,7 +56,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
         errorMessage: () => new TypedValidationError({
           summaryMessage: 'The date of birth must include a day',
           inlineMessage: 'The date of birth must include a day',
-        })
+        }),
+        bail: true, // Stop this field's validation if day is missing
       },
       isInt: {
         options: { min: MIN_DAY, max: MAX_DAY },
@@ -80,7 +82,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
         errorMessage: () => new TypedValidationError({
           summaryMessage: 'The date of birth must include a month',
           inlineMessage: 'The date of birth must include a month',
-        })
+        }),
+        bail: true, // Stop this field's validation if month is missing
       },
       isInt: {
         options: { min: MIN_MONTH, max: MAX_MONTH },
@@ -105,7 +108,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
         errorMessage: () => new TypedValidationError({
           summaryMessage: 'The date of birth must include a year',
           inlineMessage: 'The date of birth must include a year',
-        })
+        }),
+        bail: true, // Stop this field's validation if year is missing
       },
       isLength: {
         options: { min: YEAR_LENGTH, max: YEAR_LENGTH },
@@ -116,7 +120,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
         errorMessage: () => new TypedValidationError({
           summaryMessage: 'Year must include 4 numbers',
           inlineMessage: 'Year must include 4 numbers',
-        })
+        }),
+        bail: true, // Stop further year validation if format is wrong
       },
       isInt: {
         options: { min: MIN_YEAR, max: new Date().getFullYear() },
@@ -128,6 +133,45 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
           summaryMessage: 'The date of birth must be in the past',
           inlineMessage: 'The date of birth must be in the past',
         })
+      },
+    },
+    // Check basic field requirements first - if any fail, higher priority errors should be shown
+    checkCriticalFieldsComplete: {
+      in: ['body'],
+      custom: {
+        /**
+         * Check if any critical date fields are missing - this gives us cross-field awareness
+         * Only shows error when ALL fields are missing to avoid duplicate messages with individual field errors
+         * @param {string} _value - Placeholder value (unused)
+         * @param {Meta} meta - `express-validator` context containing request object
+         * @returns {boolean} True unless ALL fields are missing
+         */
+        options: (_value: string, meta: Meta): boolean => {
+          const { req } = meta;
+
+          if (!isClientDateOfBirthBody(req.body)) {
+            return false;
+          }
+
+          const day = req.body['dateOfBirth-day'].trim();
+          const month = req.body['dateOfBirth-month'].trim();
+          const year = req.body['dateOfBirth-year'].trim();
+
+          const emptyFields = [day, month, year].filter(field => field === '');
+
+          // Only fail (show this error) when ALL fields are missing
+          // If 1-2 fields are missing, let individual field validators handle it
+          return emptyFields.length < TOTAL_DATE_FIELDS;
+        },
+        /**
+         * Error message when ALL required fields are missing
+         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+         */
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: 'The date of birth must include a day, month and year',
+          inlineMessage: 'Enter a complete date of birth',
+        }),
+        bail: true, // Stop all further validation if all required fields are missing
       },
     },
     validDate: {
