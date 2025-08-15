@@ -58,24 +58,22 @@ enum ErrorPriority {
  * @returns {DateFormData} Object with day, month, year properties
  */
 export function parseDateString(dateString: string): DateFormData {
-  if (dateString === '' || dateString.trim() === '') {
+  if (dateString.trim() === '') {
     return { day: '', month: '', year: '' };
   }
 
-  try {
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) {
-      return { day: '', month: '', year: '' };
-    }
 
-    return {
-      day: date.getDate().toString(),
-      month: (date.getMonth() + MINIMUM_YEAR).toString(), // getMonth() returns 0-11
-      year: date.getFullYear().toString()
-    };
-  } catch {
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) {
     return { day: '', month: '', year: '' };
   }
+
+  return {
+    day: date.getDate().toString(),
+    month: (date.getMonth() + MINIMUM_YEAR).toString(), // getMonth() returns 0-11
+    year: date.getFullYear().toString()
+  };
+
 }
 
 /**
