@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import { createValidator } from 'express-joi-validation';
+import type { Request, Response, NextFunction } from 'express';
 import { safeString } from '#src/scripts/helpers/dataTransformers.js';
 
 /**
@@ -68,18 +69,18 @@ export const validateEditClientDateOfBirthJoi = () => validator.body(dateOfBirth
 /**
  * Custom middleware to catch joi validation errors and format them for controller use
  * This allows the controller to handle joi errors the same way as express-validator errors
- * @param err
- * @param req
- * @param res
- * @param next
+ * @param {unknown} err - The error object to check
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next function
  */
-export const handleJoiValidationErrors = (err: any, req: any, res: any, next: any) => {
+export const handleJoiValidationErrors = (err: unknown, req: Request, res: Response, next: NextFunction): void => {
   // Check if this is a joi validation error
-  if (err && 'error' in err && err.error && 'isJoi' in err.error && err.error.isJoi) {
+  if (err && typeof err === 'object' && 'error' in err && err.error && typeof err.error === 'object' && 'isJoi' in err.error && (err.error as any).isJoi) {
     // Store the joi error in a format the controller can access
-    req.joiValidationError = {
-      message: err.error.details?.[0]?.message || err.error.toString(),
-      priority: err.error.details?.[0]?.context?.priority || 1
+    (req as any).joiValidationError = {
+      message: (err.error as any).details?.[0]?.message || (err.error as any).toString(),
+      priority: (err.error as any).details?.[0]?.context?.priority || 1
     };
     
     // Continue to the controller instead of throwing
