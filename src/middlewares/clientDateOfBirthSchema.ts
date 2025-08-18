@@ -169,44 +169,6 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
         })
       },
     },
-    notFutureDate: {
-      in: ['body'],
-      custom: {
-        /**
-         * Schema to check if the date is not in the future (AC7).
-         * @param {string} _value - Placeholder value (unused)
-         * @param {Meta} meta - `express-validator` context containing request object
-         * @returns {boolean} True if the date is in the past
-         */
-        options: (_value: string, meta: Meta): boolean => {
-          const { req } = meta;
-          if (!isClientDateOfBirthBody(req.body)) {
-            return true;
-          }
-
-          const day = req.body['dateOfBirth-day'].trim();
-          const month = req.body['dateOfBirth-month'].trim();
-          const year = req.body['dateOfBirth-year'].trim();
-
-          // Use validator.js isBefore() with dateStringFromThreeFields helper
-          const inputDateString = dateStringFromThreeFields(day, month, year);
-          
-          const tomorrow = new Date();
-          tomorrow.setDate(tomorrow.getDate() + NEXT_DAY_OFFSET);
-          const [tomorrowString] = tomorrow.toISOString().split('T');
-          
-          return isBefore(inputDateString, tomorrowString);
-        },
-        /**
-         * Custom error message for future dates (AC7)
-         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
-         */
-        errorMessage: () => new TypedValidationError({
-          summaryMessage: 'Date of birth must be in the past',
-          inlineMessage: 'Date of birth must be in the past',
-        })
-      },
-    },
     notChanged: createChangeDetectionValidator(
       [
         { current: 'dateOfBirth-day', original: 'originalDay' },
