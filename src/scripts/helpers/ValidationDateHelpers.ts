@@ -122,32 +122,13 @@ export function handleDateOfBirthValidationErrors(
   // Filter errors based on field completeness
   let relevantErrors: ValidationErrorData[];
   if (emptyFieldsCount > NO_EMPTY_FIELDS) {
-    // Build a single error message for all missing fields
     const missingFields: string[] = [];
     if (day === '') missingFields.push('day');
     if (month === '') missingFields.push('month');
     if (year === '') missingFields.push('year');
-
-    if (missingFields.length > 0) {
-      // Order: day, month, year
-      const orderedFields = ['day', 'month', 'year'].filter(f => missingFields.includes(f));
-      let fieldText = '';
-      if (orderedFields.length === 1) {
-        fieldText = orderedFields[0];
-      } else if (orderedFields.length === 2) {
-        fieldText = `${orderedFields[0]} and ${orderedFields[1]}`;
-      } else if (orderedFields.length === 3) {
-        fieldText = `${orderedFields[0]}, ${orderedFields[1]} and ${orderedFields[2]}`;
-      }
-      relevantErrors = [{
-        summaryMessage: `Date of birth must include a ${fieldText}`,
-        inlineMessage: `Date of birth must include a ${fieldText}`
-      }];
-    } else {
-      relevantErrors = [];
-    }
+    relevantErrors = buildMissingFieldsError(missingFields);
   } else {
-    relevantErrors = allErrors; // Show all errors when all fields are complete
+    relevantErrors = allErrors;
   }
 
   // Build error summary list with filtered errors
@@ -158,30 +139,11 @@ export function handleDateOfBirthValidationErrors(
 
   // Use the first relevant error for inline message
   const [firstError] = relevantErrors;
-  const { inlineMessage: inlineErrorMessage } = firstError;
+  const inlineErrorMessage = firstError?.inlineMessage || '';
   const originalData = extractOriginalDateData(bodyWithDates);
 
   // Smart highlighting - determine which fields should be highlighted based on error messages
-  const errorMessages = allErrors.map(error => error.summaryMessage.toLowerCase());
-
-  const highlightDay = errorMessages.some(msg =>
-    msg.includes('day') ||
-    msg.includes('must include a day') ||
-    msg.includes('day must be between')
-  );
-
-  const highlightMonth = errorMessages.some(msg =>
-    msg.includes('month') ||
-    msg.includes('must include a month') ||
-    msg.includes('month must be between')
-  );
-
-  const highlightYear = errorMessages.some(msg =>
-    msg.includes('year') ||
-    msg.includes('must include a year') ||
-    msg.includes('year must') ||
-    msg.includes('must include 4 numbers')
-  );
+  const { highlightDay, highlightMonth, highlightYear } = getDateFieldHighlights(allErrors);
 
   // Re-render the form with errors and preserve user input
   res.status(BAD_REQUEST).render('case_details/edit-date-of-birth.njk', {
@@ -198,4 +160,51 @@ export function handleDateOfBirthValidationErrors(
     inlineErrorMessage,
     csrfToken: (req as RequestWithCSRF).csrfToken?.(),
   });
+/**
+ * Builds a missing fields error message for date of birth validation
+ * @param {string[]} missingFields - Array of missing field names (day, month, year)
+ * @returns {ValidationErrorData[]} Array with a single error object, or empty if no fields missing
+ */
+function buildMissingFieldsError(missingFields: string[]): ValidationErrorData[] {
+  if (missingFields.length === 0) return [];
+  const orderedFields = ['day', 'month', 'year'].filter(f => missingFields.includes(f));
+  let fieldText = '';
+  if (orderedFields.length === 1) {
+    fieldText = orderedFields[0];
+  } else if (orderedFields.length === 2) {
+    fieldText = `${orderedFields[0]} and ${orderedFields[1]}`;
+  } else if (orderedFields.length === 3) {
+    fieldText = `${orderedFields[0]}, ${orderedFields[1]} and ${orderedFields[2]}`;
+  }
+  return [{
+    summaryMessage: `Date of birth must include a ${fieldText}`,
+    inlineMessage: `Date of birth must include a ${fieldText}`
+  }];
+}
+
+/**
+ * Determines which date fields should be highlighted based on error messages
+ * @param {ValidationErrorData[]} errors - Array of validation errors
+ * @returns {{ highlightDay: boolean, highlightMonth: boolean, highlightYear: boolean }} Highlight flags for each field
+ */
+function getDateFieldHighlights(errors: ValidationErrorData[]): { highlightDay: boolean, highlightMonth: boolean, highlightYear: boolean } {
+  const errorMessages = errors.map(error => error.summaryMessage.toLowerCase());
+  const highlightDay = errorMessages.some(msg =>
+    msg.includes('day') ||
+    msg.includes('must include a day') ||
+    msg.includes('day must be between')
+  );
+  const highlightMonth = errorMessages.some(msg =>
+    msg.includes('month') ||
+    msg.includes('must include a month') ||
+    msg.includes('month must be between')
+  );
+  const highlightYear = errorMessages.some(msg =>
+    msg.includes('year') ||
+    msg.includes('must include a year') ||
+    msg.includes('year must') ||
+    msg.includes('must include 4 numbers')
+  );
+  return { highlightDay, highlightMonth, highlightYear };
+}
 }
