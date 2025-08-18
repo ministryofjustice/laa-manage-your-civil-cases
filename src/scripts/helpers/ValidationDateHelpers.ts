@@ -148,7 +148,7 @@ function filterDateOfBirthErrors(formData: DateFormData, allErrors: ValidationEr
 
   // Use the first relevant error for inline message
   const firstError = relevantErrors.length > NO_EMPTY_FIELDS ? relevantErrors[NO_EMPTY_FIELDS] : undefined;
-  const inlineErrorMessage = (firstError?.inlineMessage !== undefined && firstError.inlineMessage !== null && firstError.inlineMessage !== '') ? firstError.inlineMessage : '';
+  const inlineErrorMessage = firstError?.inlineMessage ?? '';
   const originalData = extractOriginalDateData(bodyWithDates);
 
   // Smart highlighting - determine which fields should be highlighted based on error messages
