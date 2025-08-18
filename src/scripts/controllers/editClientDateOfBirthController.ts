@@ -16,9 +16,6 @@ import { dateStringFromThreeFields } from '#src/scripts/helpers/dateFormatter.js
 interface RequestWithCSRF extends Request {
   csrfToken?: () => string;
 }
-
-/**
- * Renders the edit client date of birth form for a given case reference.
  
 /**
  * Renders the edit client date of birth form for a given case reference.

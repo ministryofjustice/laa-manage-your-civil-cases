@@ -136,7 +136,7 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
       in: ['body'],
       custom: {
         /**
-         * Schema to check if the day/month/year combination forms a valid date (AC8).
+         * Schema to check if the day/month/year combination forms a valid date.
          * @param {string} _value - Placeholder value (unused)
          * @param {Meta} meta - `express-validator` context containing request object
          * @returns {boolean} True if the date combination is valid
@@ -158,7 +158,7 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
           return isDate(dateString);
         },
         /**
-         * Custom error message for invalid date combinations (AC8)
+         * Custom error message for invalid date combinations 
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: () => new TypedValidationError({
