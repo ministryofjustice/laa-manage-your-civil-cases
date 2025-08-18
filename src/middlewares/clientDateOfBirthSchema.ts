@@ -2,7 +2,7 @@ import { hasProperty, isRecord } from '#src/scripts/helpers/dataTransformers.js'
 import { createChangeDetectionValidator, TypedValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 import { checkSchema, type Meta } from 'express-validator';
 import { dateStringFromThreeFields } from '#src/scripts/helpers/dateFormatter.js';
-import { isDate } from 'validator';
+import { isDate, isBefore } from 'validator';
 
 // Constants for validation boundaries
 const MIN_DAY = 1;
@@ -121,14 +121,13 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
         bail: true, // Stop further year validation if format is wrong
       },
       isInt: {
-        options: { max: new Date().getFullYear() },
         /**
-         * Validates that the year is not in the future
-         * @returns {TypedValidationError} Error for future year
+         * Validates that the year is a valid integer
+         * @returns {TypedValidationError} Error for invalid year
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: 'The date of birth must be in the past',
-          inlineMessage: 'The date of birth must be in the past',
+          summaryMessage: 'Year must be a valid number',
+          inlineMessage: 'Year must be a valid number',
         })
       },
     },
@@ -164,6 +163,40 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
         errorMessage: () => new TypedValidationError({
           summaryMessage: 'Enter a date in the correct format',
           inlineMessage: 'Enter a date in the correct format',
+        })
+      },
+    },
+    dateInPast: {
+      in: ['body'],
+      custom: {
+        /**
+         * Validates that the complete date is in the past using validator's before function
+         * @param {string} _value - Placeholder value (unused)
+         * @param {Meta} meta - `express-validator` context containing request object
+         * @returns {boolean} True if the date is in the past
+         */
+        options: (_value: string, meta: Meta): boolean => {
+          const { req } = meta;
+          const day = req.body['dateOfBirth-day'].trim();
+          const month = req.body['dateOfBirth-month'].trim();
+          const year = req.body['dateOfBirth-year'].trim();
+
+          // First check if it's a valid date
+          const dateString = dateStringFromThreeFields(day, month, year);
+   
+          // Use validator's isBefore function to check if date is before or equal to today
+          const tomorrow = new Date();
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          const tomorrowString = tomorrow.toISOString().split('T')[0]; // YYYY-MM-DD format
+          return isBefore(dateString, tomorrowString);
+        },
+        /**
+         * Error message for dates not in the past
+         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+         */
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: 'The date of birth must be in the past',
+          inlineMessage: 'The date of birth must be in the past',
         })
       },
     },
