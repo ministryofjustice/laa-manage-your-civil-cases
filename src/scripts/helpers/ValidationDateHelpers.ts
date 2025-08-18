@@ -120,18 +120,35 @@ export function handleDateOfBirthValidationErrors(
   if (year === '') emptyFieldsCount++;
 
   // Filter errors based on field completeness
-  const relevantErrors = emptyFieldsCount > NO_EMPTY_FIELDS
-    ? allErrors.filter(error => {
-      const { summaryMessage } = error;
-      // When fields are missing, only show:
-      // 1. Individual field missing errors (always show these)
-      // 2. Comprehensive error ONLY when ALL fields are missing
-      return summaryMessage.includes('must include a day') ||
-        summaryMessage.includes('must include a month') ||
-        summaryMessage.includes('must include a year') ||
-        (emptyFieldsCount === ALL_FIELDS_MISSING && summaryMessage.includes('must include a day, month and year'));
-    })
-    : allErrors; // Show all errors when all fields are complete
+  let relevantErrors: ValidationErrorData[];
+  if (emptyFieldsCount > NO_EMPTY_FIELDS) {
+    // Build a single error message for all missing fields
+    const missingFields: string[] = [];
+    if (day === '') missingFields.push('day');
+    if (month === '') missingFields.push('month');
+    if (year === '') missingFields.push('year');
+
+    if (missingFields.length > 0) {
+      // Order: day, month, year
+      const orderedFields = ['day', 'month', 'year'].filter(f => missingFields.includes(f));
+      let fieldText = '';
+      if (orderedFields.length === 1) {
+        fieldText = orderedFields[0];
+      } else if (orderedFields.length === 2) {
+        fieldText = `${orderedFields[0]} and ${orderedFields[1]}`;
+      } else if (orderedFields.length === 3) {
+        fieldText = `${orderedFields[0]}, ${orderedFields[1]} and ${orderedFields[2]}`;
+      }
+      relevantErrors = [{
+        summaryMessage: `Date of birth must include a ${fieldText}`,
+        inlineMessage: `Date of birth must include a ${fieldText}`
+      }];
+    } else {
+      relevantErrors = [];
+    }
+  } else {
+    relevantErrors = allErrors; // Show all errors when all fields are complete
+  }
 
   // Build error summary list with filtered errors
   const errorSummaryList = relevantErrors.map(error => ({
