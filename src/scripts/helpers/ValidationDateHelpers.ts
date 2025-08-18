@@ -118,26 +118,34 @@ export function handleDateOfBirthValidationErrors(
   // Filter errors based on field completeness
   const relevantErrors = filterDateOfBirthErrors({ day, month, year }, allErrors);
 /**
- * Filters date of birth validation errors based on field completeness
+ * Filters date of birth validation errors based on simplified rules
+ * Shows only the first error unless there are multiple missing fields to consolidate
  * @param {DateFormData} formData - The form data containing day, month, year
  * @param {ValidationErrorData[]} allErrors - All validation errors
  * @returns {ValidationErrorData[]} Filtered relevant errors
  */
 function filterDateOfBirthErrors(formData: DateFormData, allErrors: ValidationErrorData[]): ValidationErrorData[] {
-  const { day, month, year } = formData;
-  let emptyFieldsCount = NO_EMPTY_FIELDS;
-  if (day === '') emptyFieldsCount++;
-  if (month === '') emptyFieldsCount++;
-  if (year === '') emptyFieldsCount++;
-  if (emptyFieldsCount > NO_EMPTY_FIELDS) {
-    const missingFields: string[] = [];
-    if (day === '') missingFields.push('day');
-    if (month === '') missingFields.push('month');
-    if (year === '') missingFields.push('year');
-    return buildMissingFieldsError(missingFields);
-  } else {
-    return allErrors;
+  // If no errors, return empty array
+  if (allErrors.length === NO_EMPTY_FIELDS) {
+    return [];
   }
+
+  const { day, month, year } = formData;
+  
+  // Check for multiple missing fields - these should be consolidated
+  const missingFields: string[] = [];
+  if (day === '') missingFields.push('day');
+  if (month === '') missingFields.push('month');
+  if (year === '') missingFields.push('year');
+  
+  // If multiple fields are missing, consolidate them into a single error
+  if (missingFields.length > ONE_FIELD) {
+    return buildMissingFieldsError(missingFields);
+  }
+  
+  // For all other cases, show only the first error
+  // This takes advantage of the predictable validation ordering
+  return [allErrors[0]];
 }
 
   // Build error summary list with filtered errors

@@ -163,27 +163,33 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
         errorMessage: () => new TypedValidationError({
           summaryMessage: 'Enter a date in the correct format',
           inlineMessage: 'Enter a date in the correct format',
-        })
+        }),
+        bail: true, // Stop validation if date format is invalid
       },
     },
     dateInPast: {
       in: ['body'],
       custom: {
         /**
-         * Validates that the complete date is in the past using validator's before function
+         * Validates that the complete date is in the past - only runs if validDate passes
          * @param {string} _value - Placeholder value (unused)
          * @param {Meta} meta - `express-validator` context containing request object
-         * @returns {boolean} True if the date is in the past
+         * @returns {boolean} True if the date is in the past or equal to today
          */
         options: (_value: string, meta: Meta): boolean => {
           const { req } = meta;
+          
+          if (!isClientDateOfBirthBody(req.body)) {
+            return true;
+          }
+
           const day = req.body['dateOfBirth-day'].trim();
           const month = req.body['dateOfBirth-month'].trim();
           const year = req.body['dateOfBirth-year'].trim();
 
-          // First check if it's a valid date
+          // At this point, we know the date is valid due to upstream validations
           const dateString = dateStringFromThreeFields(day, month, year);
-   
+
           // Use validator's isBefore function to check if date is before or equal to today
           const tomorrow = new Date();
           tomorrow.setDate(tomorrow.getDate() + 1);
