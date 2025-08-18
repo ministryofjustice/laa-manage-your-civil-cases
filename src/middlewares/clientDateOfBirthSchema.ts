@@ -12,7 +12,6 @@ const MAX_MONTH = 12;
 const YEAR_LENGTH = 4;
 const MIN_YEAR = 1;
 const NEXT_DAY_OFFSET = 1
-const TOTAL_DATE_FIELDS = 3;
 
 interface ClientDateOfBirthBody {
   'dateOfBirth-day': string;

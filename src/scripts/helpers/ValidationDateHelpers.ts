@@ -7,7 +7,9 @@ import type { Result } from 'express-validator';
 const MINIMUM_YEAR = 1;
 const BAD_REQUEST = 400;
 const NO_EMPTY_FIELDS = 0;
-const ALL_FIELDS_MISSING = 3;
+const ONE_FIELD = 1;
+const TWO_FIELDS = 2;
+const THREE_FIELDS = 3;
 
 // Interface for request with CSRF token
 interface RequestWithCSRF extends Request {
@@ -113,23 +115,30 @@ export function handleDateOfBirthValidationErrors(
   const formData = extractDateFormData(bodyWithDates);
   const { day, month, year } = formData;
 
-  // Count empty fields manually to satisfy linter
+  // Filter errors based on field completeness
+  const relevantErrors = filterDateOfBirthErrors({ day, month, year }, allErrors);
+/**
+ * Filters date of birth validation errors based on field completeness
+ * @param {DateFormData} formData - The form data containing day, month, year
+ * @param {ValidationErrorData[]} allErrors - All validation errors
+ * @returns {ValidationErrorData[]} Filtered relevant errors
+ */
+function filterDateOfBirthErrors(formData: DateFormData, allErrors: ValidationErrorData[]): ValidationErrorData[] {
+  const { day, month, year } = formData;
   let emptyFieldsCount = NO_EMPTY_FIELDS;
   if (day === '') emptyFieldsCount++;
   if (month === '') emptyFieldsCount++;
   if (year === '') emptyFieldsCount++;
-
-  // Filter errors based on field completeness
-  let relevantErrors: ValidationErrorData[];
   if (emptyFieldsCount > NO_EMPTY_FIELDS) {
     const missingFields: string[] = [];
     if (day === '') missingFields.push('day');
     if (month === '') missingFields.push('month');
     if (year === '') missingFields.push('year');
-    relevantErrors = buildMissingFieldsError(missingFields);
+    return buildMissingFieldsError(missingFields);
   } else {
-    relevantErrors = allErrors;
+    return allErrors;
   }
+}
 
   // Build error summary list with filtered errors
   const errorSummaryList = relevantErrors.map(error => ({
@@ -138,8 +147,8 @@ export function handleDateOfBirthValidationErrors(
   }));
 
   // Use the first relevant error for inline message
-  const [firstError] = relevantErrors;
-  const inlineErrorMessage = firstError?.inlineMessage || '';
+  const firstError = relevantErrors.length > NO_EMPTY_FIELDS ? relevantErrors[NO_EMPTY_FIELDS] : undefined;
+  const inlineErrorMessage = (firstError?.inlineMessage !== undefined && firstError.inlineMessage !== null && firstError.inlineMessage !== '') ? firstError.inlineMessage : '';
   const originalData = extractOriginalDateData(bodyWithDates);
 
   // Smart highlighting - determine which fields should be highlighted based on error messages
@@ -166,15 +175,18 @@ export function handleDateOfBirthValidationErrors(
  * @returns {ValidationErrorData[]} Array with a single error object, or empty if no fields missing
  */
 function buildMissingFieldsError(missingFields: string[]): ValidationErrorData[] {
-  if (missingFields.length === 0) return [];
+  if (missingFields.length === NO_EMPTY_FIELDS) return [];
   const orderedFields = ['day', 'month', 'year'].filter(f => missingFields.includes(f));
   let fieldText = '';
-  if (orderedFields.length === 1) {
-    fieldText = orderedFields[0];
-  } else if (orderedFields.length === 2) {
-    fieldText = `${orderedFields[0]} and ${orderedFields[1]}`;
-  } else if (orderedFields.length === 3) {
-    fieldText = `${orderedFields[0]}, ${orderedFields[1]} and ${orderedFields[2]}`;
+  if (orderedFields.length === ONE_FIELD) {
+    const [firstField] = orderedFields;
+    fieldText = firstField;
+  } else if (orderedFields.length === TWO_FIELDS) {
+    const [firstField, secondField] = orderedFields;
+    fieldText = `${firstField} and ${secondField}`;
+  } else if (orderedFields.length === THREE_FIELDS) {
+    const [firstField, secondField, thirdField] = orderedFields;
+    fieldText = `${firstField}, ${secondField} and ${thirdField}`;
   }
   return [{
     summaryMessage: `Date of birth must include a ${fieldText}`,
@@ -189,21 +201,28 @@ function buildMissingFieldsError(missingFields: string[]): ValidationErrorData[]
  */
 function getDateFieldHighlights(errors: ValidationErrorData[]): { highlightDay: boolean, highlightMonth: boolean, highlightYear: boolean } {
   const errorMessages = errors.map(error => error.summaryMessage.toLowerCase());
+  const [dayStr, monthStr, yearStr, fourNumbersStr] = ['day', 'month', 'year', 'must include 4 numbers'];
+  const mustIncludeDayStr = 'must include a day';
+  const dayBetweenStr = 'day must be between';
+  const mustIncludeMonthStr = 'must include a month';
+  const monthBetweenStr = 'month must be between';
+  const mustIncludeYearStr = 'must include a year';
+  const yearMustStr = 'year must';
   const highlightDay = errorMessages.some(msg =>
-    msg.includes('day') ||
-    msg.includes('must include a day') ||
-    msg.includes('day must be between')
+    msg.includes(dayStr) ||
+    msg.includes(mustIncludeDayStr) ||
+    msg.includes(dayBetweenStr)
   );
   const highlightMonth = errorMessages.some(msg =>
-    msg.includes('month') ||
-    msg.includes('must include a month') ||
-    msg.includes('month must be between')
+    msg.includes(monthStr) ||
+    msg.includes(mustIncludeMonthStr) ||
+    msg.includes(monthBetweenStr)
   );
   const highlightYear = errorMessages.some(msg =>
-    msg.includes('year') ||
-    msg.includes('must include a year') ||
-    msg.includes('year must') ||
-    msg.includes('must include 4 numbers')
+    msg.includes(yearStr) ||
+    msg.includes(mustIncludeYearStr) ||
+    msg.includes(yearMustStr) ||
+    msg.includes(fourNumbersStr)
   );
   return { highlightDay, highlightMonth, highlightYear };
 }
