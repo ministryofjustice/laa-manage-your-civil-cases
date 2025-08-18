@@ -2,7 +2,7 @@ import { hasProperty, isRecord } from '#src/scripts/helpers/dataTransformers.js'
 import { createChangeDetectionValidator, TypedValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 import { checkSchema, type Meta } from 'express-validator';
 import { dateStringFromThreeFields } from '#src/scripts/helpers/dateFormatter.js';
-import { isBefore, isDate } from 'validator';
+import { isDate } from 'validator';
 
 // Constants for validation boundaries
 const MIN_DAY = 1;
@@ -10,8 +10,6 @@ const MAX_DAY = 31;
 const MIN_MONTH = 1;
 const MAX_MONTH = 12;
 const YEAR_LENGTH = 4;
-const MIN_YEAR = 1;
-const NEXT_DAY_OFFSET = 1
 
 interface ClientDateOfBirthBody {
   'dateOfBirth-day': string;
@@ -123,7 +121,7 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
         bail: true, // Stop further year validation if format is wrong
       },
       isInt: {
-        options: { min: MIN_YEAR, max: new Date().getFullYear() },
+        options: { max: new Date().getFullYear() },
         /**
          * Validates that the year is not in the future
          * @returns {TypedValidationError} Error for future year
