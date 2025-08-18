@@ -10,6 +10,7 @@ const MAX_DAY = 31;
 const MIN_MONTH = 1;
 const MAX_MONTH = 12;
 const YEAR_LENGTH = 4;
+const DATE_OFFSET = 1; 
 
 interface ClientDateOfBirthBody {
   'dateOfBirth-day': string;
@@ -192,8 +193,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
 
           // Use validator's isBefore function to check if date is before or equal to today
           const tomorrow = new Date();
-          tomorrow.setDate(tomorrow.getDate() + 1);
-          const tomorrowString = tomorrow.toISOString().split('T')[0]; // YYYY-MM-DD format
+          tomorrow.setDate(tomorrow.getDate() + DATE_OFFSET);
+          const [tomorrowString] = tomorrow.toISOString().split('T'); // YYYY-MM-DD format
           return isBefore(dateString, tomorrowString);
         },
         /**

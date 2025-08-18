@@ -125,6 +125,7 @@ export function handleDateOfBirthValidationErrors(
  * @returns {ValidationErrorData[]} Filtered relevant errors
  */
 function filterDateOfBirthErrors(formData: DateFormData, allErrors: ValidationErrorData[]): ValidationErrorData[] {
+  const firstError = 0
   // If no errors, return empty array
   if (allErrors.length === NO_EMPTY_FIELDS) {
     return [];
@@ -145,7 +146,7 @@ function filterDateOfBirthErrors(formData: DateFormData, allErrors: ValidationEr
   
   // For all other cases, show only the first error
   // This takes advantage of the predictable validation ordering
-  return [allErrors[0]];
+  return [allErrors[firstError]];
 }
 
   // Build error summary list with filtered errors

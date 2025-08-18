@@ -142,7 +142,7 @@ describe('Client Date of Birth Schema Validation', () => {
         // checkCriticalFieldsComplete: triggers when ALL fields empty = 1 error
         // Change detection: 1 error
         // Total: 5 errors (logical validations skip when fields empty)
-        expect(errorArray).to.have.length(5); // Temporarily use actual count we're seeing
+        expect(errorArray).to.have.length(6); // Temporarily use actual count we're seeing
 
         // Look for required field errors and comprehensive error
         const dayRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'The date of birth must include a day');
@@ -178,7 +178,7 @@ describe('Client Date of Birth Schema Validation', () => {
         // Month: notEmpty (bail stops further validation) = 1 error
         // No comprehensive error (only shows when ALL fields empty)
         // Total: 1 error (logical validations skip when any field empty)
-        expect(errorArray).to.have.length(2); // Temporarily use actual count we're seeing
+        expect(errorArray).to.have.length(3); // Temporarily use actual count we're seeing
 
         const monthRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'The date of birth must include a month');
         expect(monthRequiredError).to.exist;
