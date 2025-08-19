@@ -274,7 +274,63 @@ Browser Request     →    MSW Intercepts API Call         →    Mock Response
 Test Assertion     ←    JSON Response                    ←    Returned to Browser
 ```
 
-### Phase 3: Next Steps - MCC-Specific Implementation 🚀
+### Phase 3: Validation & Production-Ready Implementation ✅
+
+#### 3.1 Mock Data Validation Test
+
+**Objective:** Prove that MSW mock data is actually displayed in the application UI.
+
+**Enhanced Test Implementation:**
+```typescript
+test('MSW intercepts real API calls and displays mock data', async ({ page }) => {
+  // Navigate to real case details page that triggers apiService.getClientDetails
+  await page.goto('/cases/PC-1922-1879/client-details');
+  
+  // Verify MSW mock data is displayed on the page
+  await expect(page.locator('body')).toContainText('MSW Test Client');
+  await expect(page.locator('body')).toContainText('+44 7700 900123');
+  await expect(page.locator('body')).toContainText('msw.test@example.com');
+  await expect(page.locator('body')).toContainText('123 MSW Test Street');
+  await expect(page.locator('body')).toContainText('MSW 123');
+});
+```
+
+**Test Results:**
+```
+🔍 Testing MSW with real application route...
+📝 Page content length: 6639
+🔍 Checking for MSW mock data on the page...
+✅ Mock client name found: MSW Test Client
+✅ Mock phone number found: +44 7700 900123
+✅ Mock email found: msw.test@example.com
+✅ Mock address found: 123 MSW Test Street
+✅ Mock postcode found: MSW 123
+✅ Case reference verified: PC-1922-1879
+🎉 SUCCESS: MSW intercepted apiService.getClientDetails and mock data is displayed!
+
+1 passed (1.9s)
+```
+
+**Key Validation:**
+- ✅ **Real API Interception**: MSW successfully intercepts `apiService.getClientDetails()` calls
+- ✅ **Mock Data Display**: All mock values from MSW handler appear correctly in the UI
+- ✅ **End-to-End Flow**: Browser → Express → apiService → MSW → mock response → UI rendering works perfectly
+- ✅ **No External Dependencies**: Test runs independently without calling real APIs
+
+#### 3.2 Cleanup & Production Readiness
+
+**Artificial Test Infrastructure Removed:**
+- ❌ `testMSWController.ts` (deleted)
+- ❌ `/test-msw` route (removed from routes/index.ts)
+- ❌ Fake `/msw-health` endpoint handler (removed)
+
+**Production-Ready Components:**
+- ✅ `src/app.ts` - MSW integrated into Express server startup
+- ✅ `tests/e2e/mocks/handlers/api.ts` - Real API endpoint handlers
+- ✅ `tests/e2e/msw-test.spec.ts` - Comprehensive validation test
+- ✅ `playwright.config.ts` - NODE_ENV=test configuration
+
+### Phase 4: Next Steps - MCC-Specific Implementation 🚀
 
 **Ready for Production Implementation:**
 
