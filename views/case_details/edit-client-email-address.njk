@@ -25,7 +25,7 @@
       {% endif %}
       <form method="post" action="/cases/{{ caseReference }}/client-details/change/email-address">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-        <input type="hidden" name="existingEmail" value="{{ existingEmailAddress | default(currentEmailAddress) }}">
+        <input type="hidden" name="existingEmail" value="{{ existingEmailAddress }}">
         {{ govukInput({
           label: {
             text: "Client's email address (optional)",

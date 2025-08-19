@@ -150,26 +150,26 @@ export function extractCurrentFields(
   data: unknown,
   fieldConfigs: Array<{ field: string; type?: 'string' | 'boolean' | 'number'; currentName?: string; keepOriginal?: boolean; includeExisting?: boolean }>
 ): Record<string, unknown> {
-  return fieldConfigs.reduce<Record<string, unknown>>((acc, config) => {
+  return fieldConfigs.reduce<Record<string, unknown>>((formData, config) => {
     const { field, type, currentName, keepOriginal = false, includeExisting = false } = config;
     const fieldValue = safeApiField(data, field, type);
 
     // Set current field value
     const currentKey = currentName ?? `current${capitaliseFirst(field)}`;
-    acc[currentKey] = fieldValue;
+    formData[currentKey] = fieldValue;
 
     // Create existing field if requested (for forms that need change detection)
     if (includeExisting) {
       const existingKey = `existing${capitaliseFirst(field)}`;
-      acc[existingKey] = fieldValue;
+      formData[existingKey] = fieldValue;
     }
 
     // Keep original value if requested (for complex types like boolean)
     if (keepOriginal && isRecord(data) && hasProperty(data, field)) {
       const { [field]: originalValue } = data;
-      acc[field] = originalValue;
+      formData[field] = originalValue;
     }
 
-    return acc;
+    return formData;
   }, {});
 }
