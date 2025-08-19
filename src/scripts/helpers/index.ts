@@ -33,8 +33,14 @@ export {
 
 // Date formatting utilities
 export {
-  formatDate
+  formatDate,
+  dateStringFromThreeFields
 } from './dateFormatter.js';
+
+// Date validation utilities
+export {
+  extractAndConvertDateFields
+} from './ValidationDateHelpers.js';
 
 // Form validation utilities
 export {
