@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-console */
+
 // Test server startup script that initializes MSW before starting Express
 // This ensures MSW runs in the same process as the Express server
 
