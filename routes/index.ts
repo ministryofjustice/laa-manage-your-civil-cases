@@ -4,7 +4,6 @@ import yourCasesRouter from './yourCases.js';
 import caseDetailsRouter from './caseDetails.js';
 import editClientDetailsRouter from './editClientDetails.js';
 import searchRouter from './search.js';
-import { testMSW } from '#src/scripts/controllers/testMSWController.js';
 import { devError, extractErrorMessage } from '#src/scripts/helpers/index.js';
 
 // Create a new router
@@ -36,11 +35,6 @@ router.get('/status', function (req: Request, res: Response): void {
 router.get('/health', function (req: Request, res: Response): void {
   res.status(SUCCESSFUL_REQUEST).send('Healthy');
 });
-
-// MSW test endpoint (only in test environment)
-if (process.env.NODE_ENV === 'test') {
-  router.get('/test-msw', testMSW);
-}
 
 // Global 404 handler - must be after all other routes
 router.use(function (req: Request, res: Response): void {
