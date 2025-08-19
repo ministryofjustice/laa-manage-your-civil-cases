@@ -42,7 +42,7 @@ export default defineConfig({
     url: 'http://127.0.0.1:3000',
     reuseExistingServer: process.env.CI !== 'true',
     env: {
-      NODE_ENV: 'test'
+      NODE_ENV: 'test' // This will trigger MSW to start in the Express server
     }
   },
 });

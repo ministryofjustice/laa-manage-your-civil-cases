@@ -115,5 +115,10 @@
   "packageManager": "yarn@4.9.2",
   "resolutions": {
     "form-data": "4.0.4"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }

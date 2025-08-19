@@ -12,13 +12,41 @@ import livereload from 'connect-livereload';
 
 const TRUST_FIRST_PROXY = 1;
 
+// MSW setup for testing
+async function setupMSWForTesting(): Promise<void> {
+  console.log(chalk.blue(`🔍 NODE_ENV = "${process.env.NODE_ENV}"`));
+  
+  if (process.env.NODE_ENV === 'test') {
+    console.log(chalk.yellow('🎭 Initializing MSW for testing...'));
+    
+    const { setupServer } = await import('msw/node');
+    const { handlers } = await import('../tests/e2e/mocks/handlers/index.js');
+    
+    console.log(chalk.blue(`📦 Loaded ${handlers.length} MSW handlers`));
+    
+    const server = setupServer(...handlers);
+    server.listen({ 
+      onUnhandledRequest: 'warn' 
+    });
+    
+    console.log(chalk.green('🎭 MSW server started for testing - API calls will be mocked'));
+  } else {
+    console.log(chalk.gray('⏭️  MSW not started - not in test environment'));
+  }
+}
+
 /**
  * Creates and configures an Express application.
  * Then starts the server listening on the configured port.
  *
  * @returns {import('express').Application} The configured Express application
  */
-const createApp = (): express.Application => {
+const createApp = async (): Promise<express.Application> => {
+	console.log(chalk.blue(`🚀 Starting Express server with NODE_ENV="${process.env.NODE_ENV}"`));
+	
+	// Set up MSW for testing BEFORE creating the app
+	await setupMSWForTesting();
+
 	const app = express();
 
 	// Set up common middleware for handling cookies, body parsing, etc.
@@ -95,7 +123,7 @@ const createApp = (): express.Application => {
 };
 
 // Self-execute the app directly to allow app.js to be executed directly
-createApp();
+createApp().catch(console.error);
 
 // Export the createApp function for testing/import purposes
 export default createApp;
