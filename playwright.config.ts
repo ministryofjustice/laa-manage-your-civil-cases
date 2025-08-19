@@ -22,7 +22,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:3001',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: process.env.CI === 'true' ? 'on' : 'on-first-retry',
@@ -38,11 +38,15 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'yarn start',
-    url: 'http://127.0.0.1:3000',
+    command: 'PORT=3001 NODE_ENV=test API_URL=http://localhost:3001 API_PREFIX=/mock-api USE_MOCK_API=true yarn tsx src/test-server.ts',
+    url: 'http://127.0.0.1:3001',
     reuseExistingServer: process.env.CI !== 'true',
     env: {
-      NODE_ENV: 'test' // This will trigger MSW to start in the Express server
+      NODE_ENV: 'test',
+      PORT: '3001',
+      API_URL: 'http://localhost:3001',
+      API_PREFIX: '/mock-api',
+      USE_MOCK_API: 'true'
     }
   },
 });
