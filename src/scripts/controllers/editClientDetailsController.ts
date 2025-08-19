@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
-import { safeString, hasProperty, isRecord, handleGetEditForm, handlePostEditForm } from '#src/scripts/helpers/index.js';
+import { handleGetEditForm, handlePostEditForm, extractFormFields } from '#src/scripts/helpers/index.js';
 
 
 /**
@@ -13,16 +13,9 @@ import { safeString, hasProperty, isRecord, handleGetEditForm, handlePostEditFor
 export async function getEditClientName(req: Request, res: Response, next: NextFunction): Promise<void> {
   await handleGetEditForm(req, res, next, {
     templatePath: 'case_details/edit-client-name.njk',
-    /**
-     * Extracts current name data from API response
-     * @param {unknown} data - API response data
-     * @returns {object} Object containing current name for form
-     */
-    dataExtractor: (data: unknown) => ({
-      currentName: isRecord(data) && typeof data.fullName === 'string'
-        ? safeString(data.fullName)
-        : ''
-    })
+    fieldConfigs: [
+      { field: 'fullName', type: 'string', includeExisting: true }
+    ]
   });
 }
 
@@ -34,13 +27,12 @@ export async function getEditClientName(req: Request, res: Response, next: NextF
  * @returns {Promise<void>}
  */
 export async function postEditClientName(req: Request, res: Response, next: NextFunction): Promise<void> {
-  const fullName = hasProperty(req.body, 'fullName') ? safeString(req.body.fullName).trim() : '';
-  const existingFullName = hasProperty(req.body, 'existingFullName') ? safeString(req.body.existingFullName).trim() : '';
+  const formFields = extractFormFields(req.body, ['fullName', 'existingFullName']);
 
   await handlePostEditForm(req, res, next, {
     templatePath: 'case_details/edit-client-name.njk',
-    fields: [{ name: 'fullName', value: fullName, existingValue: existingFullName }],
-    apiUpdateData: { fullName }
+    fields: [{ name: 'fullName', value: formFields.fullName, existingValue: formFields.existingFullName }],
+    apiUpdateData: { fullName: formFields.fullName }
   });
 }
 
@@ -54,16 +46,9 @@ export async function postEditClientName(req: Request, res: Response, next: Next
 export async function getEditClientEmailAddress(req: Request, res: Response, next: NextFunction): Promise<void> {
   await handleGetEditForm(req, res, next, {
     templatePath: 'case_details/edit-client-email-address.njk',
-    /**
-     * Extracts current email data from API response
-     * @param {unknown} data - API response data
-     * @returns {object} Object containing current email for form
-     */
-    dataExtractor: (data: unknown) => ({
-      currentEmail: isRecord(data) && typeof data.emailAddress === 'string'
-        ? safeString(data.emailAddress)
-        : ''
-    })
+    fieldConfigs: [
+      { field: 'emailAddress', type: 'string', includeExisting: true }
+    ]
   });
 }
 
@@ -75,13 +60,12 @@ export async function getEditClientEmailAddress(req: Request, res: Response, nex
  * @returns {Promise<void>}
  */
 export async function postEditClientEmailAddress(req: Request, res: Response, next: NextFunction): Promise<void> {
-  const emailAddress = hasProperty(req.body, 'emailAddress') ? safeString(req.body.emailAddress).trim() : '';
-  const existingEmail = hasProperty(req.body, 'existingEmail') ? safeString(req.body.existingEmail).trim() : '';
+  const formFields = extractFormFields(req.body, ['emailAddress', 'existingEmail']);
 
   await handlePostEditForm(req, res, next, {
     templatePath: 'case_details/edit-client-email-address.njk',
-    fields: [{ name: 'emailAddress', value: emailAddress, existingValue: existingEmail }],
-    apiUpdateData: { emailAddress }
+    fields: [{ name: 'emailAddress', value: formFields.emailAddress, existingValue: formFields.existingEmail }],
+    apiUpdateData: { emailAddress: formFields.emailAddress }
   });
 }
 
@@ -95,22 +79,11 @@ export async function postEditClientEmailAddress(req: Request, res: Response, ne
 export async function getEditClientPhoneNumber(req: Request, res: Response, next: NextFunction): Promise<void> {
   await handleGetEditForm(req, res, next, {
     templatePath: 'case_details/edit-client-phone-number.njk',
-    /**
-     * Extracts current phone data from API response
-     * @param {unknown} data - API response data
-     * @returns {object} Object containing current phone data for form
-     */
-    dataExtractor: (data: unknown) => ({
-      currentSafeToCall: isRecord(data) && typeof data.safeToCall === 'boolean'
-        ? safeString(data.safeToCall)
-        : '',
-      currentPhoneNumber: isRecord(data) && typeof data.phoneNumber === 'string'
-        ? safeString(data.phoneNumber)
-        : '',
-      announceCall: isRecord(data) && hasProperty(data, 'announceCall')
-        ? data.announceCall
-        : undefined
-    })
+    fieldConfigs: [
+      { field: 'safeToCall', type: 'boolean', includeExisting: true },
+      { field: 'phoneNumber', type: 'string', includeExisting: true },
+      { field: 'announceCall', keepOriginal: true, includeExisting: true }
+    ]
   });
 }
 
@@ -122,19 +95,24 @@ export async function getEditClientPhoneNumber(req: Request, res: Response, next
  * @returns {Promise<void>}
  */
 export async function postEditClientPhoneNumber(req: Request, res: Response, next: NextFunction): Promise<void> {
-  const safeToCall = hasProperty(req.body, 'safeToCall') ? safeString(req.body.safeToCall).trim() : '';
-  const existingSafeToCall = hasProperty(req.body, 'existingSafeToCall') ? safeString(req.body.existingSafeToCall).trim() : '';
-  const phoneNumber = hasProperty(req.body, 'phoneNumber') ? safeString(req.body.phoneNumber).trim() : '';
-  const existingPhoneNumber = hasProperty(req.body, 'existingPhoneNumber') ? safeString(req.body.existingPhoneNumber).trim() : '';
-  const announceCall = hasProperty(req.body, 'announceCall') ? req.body.announceCall : false;
+  const formFields = extractFormFields(req.body, [
+    'safeToCall', 'existingSafeToCall',
+    'phoneNumber', 'existingPhoneNumber',
+    'announceCall', 'existingAnnounceCall'
+  ]);
 
   await handlePostEditForm(req, res, next, {
     templatePath: 'case_details/edit-client-phone-number.njk',
     fields: [
-      { name: 'safeToCall', value: safeToCall, existingValue: existingSafeToCall },
-      { name: 'phoneNumber', value: phoneNumber, existingValue: existingPhoneNumber }
+      { name: 'safeToCall', value: formFields.safeToCall, existingValue: formFields.existingSafeToCall },
+      { name: 'phoneNumber', value: formFields.phoneNumber, existingValue: formFields.existingPhoneNumber },
+      { name: 'announceCall', value: formFields.announceCall, existingValue: formFields.existingAnnounceCall }
     ],
-    apiUpdateData: { safeToCall, phoneNumber, announceCall },
+    apiUpdateData: {
+      safeToCall: formFields.safeToCall,
+      phoneNumber: formFields.phoneNumber,
+      announceCall: formFields.announceCall
+    },
     useCustomValidation: true
   });
 }

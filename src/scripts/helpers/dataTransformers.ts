@@ -88,3 +88,88 @@ export function capitaliseFirst(str: string): string {
   }
   return str.charAt(FIRST_CHAR_INDEX).toUpperCase() + str.slice(REST_CHARS_START);
 }
+
+/**
+ * Safely extract and trim a string value from request body
+ * @param {unknown} body - Request body object
+ * @param {string} key - Key to extract
+ * @returns {string} Trimmed string value or empty string if not found
+ */
+export function safeBodyString(body: unknown, key: string): string {
+  return hasProperty(body, key) ? safeString(body[key]).trim() : '';
+}
+
+/**
+ * Extract multiple form field values from request body
+ * @param {unknown} body - Request body object
+ * @param {string[]} keys - Array of keys to extract
+ * @returns {Record<string, string>} Object with extracted and trimmed string values
+ */
+export function extractFormFields(body: unknown, keys: string[]): Record<string, string> {
+  return keys.reduce<Record<string, string>>((acc, key) => {
+    acc[key] = safeBodyString(body, key);
+    return acc;
+  }, {});
+}
+
+/**
+ * Safely extract a field value from API data with optional type checking
+ * @param {unknown} data - API response data
+ * @param {string} fieldName - Name of the field to extract
+ * @param {'string' | 'boolean' | 'number'} [expectedType] - Expected type of the field (optional)
+ * @returns {string} Safe string value or empty string
+ */
+export function safeApiField(data: unknown, fieldName: string, expectedType?: 'string' | 'boolean' | 'number'): string {
+  if (!isRecord(data) || !(fieldName in data)) {
+    return '';
+  }
+
+  const { [fieldName]: value } = data;
+
+  // If expectedType is specified, check the type
+  if (expectedType !== undefined) {
+    if (
+      (expectedType === 'string' && typeof value !== 'string') ||
+      (expectedType === 'boolean' && typeof value !== 'boolean') ||
+      (expectedType === 'number' && typeof value !== 'number')
+    ) {
+      return '';
+    }
+  }
+
+  return safeString(value);
+}
+
+/**
+ * Extract current field values for form rendering from API data
+ * @param {unknown} data - API response data
+ * @param {Array<{field: string, type?: 'string' | 'boolean' | 'number', currentName?: string, keepOriginal?: boolean, includeExisting?: boolean}>} fieldConfigs - Field configurations
+ * @returns {Record<string, unknown>} Object with current field values
+ */
+export function extractCurrentFields(
+  data: unknown,
+  fieldConfigs: Array<{ field: string; type?: 'string' | 'boolean' | 'number'; currentName?: string; keepOriginal?: boolean; includeExisting?: boolean }>
+): Record<string, unknown> {
+  return fieldConfigs.reduce<Record<string, unknown>>((acc, config) => {
+    const { field, type, currentName, keepOriginal = false, includeExisting = false } = config;
+    const fieldValue = safeApiField(data, field, type);
+
+    // Set current field value
+    const currentKey = currentName ?? `current${capitaliseFirst(field)}`;
+    acc[currentKey] = fieldValue;
+
+    // Create existing field if requested (for forms that need change detection)
+    if (includeExisting) {
+      const existingKey = `existing${capitaliseFirst(field)}`;
+      acc[existingKey] = fieldValue;
+    }
+
+    // Keep original value if requested (for complex types like boolean)
+    if (keepOriginal && isRecord(data) && hasProperty(data, field)) {
+      const { [field]: originalValue } = data;
+      acc[field] = originalValue;
+    }
+
+    return acc;
+  }, {});
+}

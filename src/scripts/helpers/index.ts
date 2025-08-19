@@ -24,7 +24,11 @@ export {
   isRecord,
   safeStringFromRecord,
   hasProperty,
-  capitaliseFirst
+  capitaliseFirst,
+  safeBodyString,
+  extractFormFields,
+  safeApiField,
+  extractCurrentFields
 } from './dataTransformers.js';
 
 // Date formatting utilities

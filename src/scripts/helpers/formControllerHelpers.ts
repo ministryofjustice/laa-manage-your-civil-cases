@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
 import { apiService } from '#src/services/apiService.js';
-import { safeString,validateForm, capitaliseFirst } from '#src/scripts/helpers/index.js';
+import { safeString, validateForm, capitaliseFirst, extractCurrentFields } from '#src/scripts/helpers/index.js';
 import { type Result, validationResult } from 'express-validator';
 import { formatValidationError, type ValidationErrorData } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 import type {
@@ -12,6 +12,7 @@ import type {
 } from '#types/form-controller-types.js';
 
 const BAD_REQUEST = 400;
+const MINIMUM_FIELDS_LENGTH = 0;
 
 /**
  * Generic function to handle GET requests for edit forms
@@ -30,9 +31,20 @@ export async function handleGetEditForm(
   const caseReference = safeString(req.params.caseReference);
   try {
     const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
+
+    let extractedData: Record<string, unknown> = {};
+    if (options.fieldConfigs !== undefined) {
+      // Use field configurations for data extraction
+      extractedData = extractCurrentFields(response.data, options.fieldConfigs);
+    } else if (options.dataExtractor !== undefined) {
+      // Use custom data extractor function
+      extractedData = options.dataExtractor(response.data);
+    }
+
     const templateData = {
       caseReference,
-      ...options.dataExtractor(response.data)
+      csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
+      ...extractedData
     };
     res.render(options.templatePath, templateData);
   } catch (error) {
@@ -62,21 +74,43 @@ export async function handlePostEditForm(
   let formIsInvalid = false;
 
   if (useCustomValidation) {
-    // Use express-validator for phone number validation
+    // Use express-validator validation
     const validationErrors: Result<ValidationErrorData> = validationResult(req).formatWith(formatValidationError);
 
     if (!validationErrors.isEmpty()) {
-      const resultingErrors = validationErrors.array().map((errorData: ValidationErrorData) => ({
-        fieldName: 'phoneNumber',
-        inlineMessage: errorData.inlineMessage,
-        summaryMessage: errorData.summaryMessage,
-      }));
+      const resultingErrors = validationErrors.array().map((errorData: ValidationErrorData) => {
+        // Determine field name based on the validation error content
+        let fieldName = ''; // default to empty string
 
-      inputErrors = resultingErrors.reduce<Record<string, string>>((acc, { fieldName, inlineMessage }) => {
-        if (inlineMessage.trim() !== '') {
-          acc[fieldName] = inlineMessage;
+        // Check for specific validation types
+        if (errorData.summaryMessage.toLowerCase().includes('postcode')) {
+          fieldName = 'postcode';
+        } else if (errorData.summaryMessage.toLowerCase().includes('update the client address')) {
+          // Change detection error - use address as default for href
+          fieldName = 'address';
+        } else if (errorData.summaryMessage.toLowerCase().includes('phone')) {
+          fieldName = 'phoneNumber';
+        } else if (fields.some(field => field.name === 'address')) {
+          // If we have address fields, default to address
+          fieldName = 'address';
+        } else if (fields.length !== MINIMUM_FIELDS_LENGTH) {
+          // If we have fields, use the first one as fallback
+          const [{ name }] = fields;
+          fieldName = name;
         }
-        return acc;
+
+        return {
+          fieldName,
+          inlineMessage: errorData.inlineMessage,
+          summaryMessage: errorData.summaryMessage,
+        };
+      });
+
+      inputErrors = resultingErrors.reduce<Record<string, string>>((errors, { fieldName, inlineMessage }) => {
+        if (inlineMessage.trim() !== '') {
+          errors[fieldName] = inlineMessage;
+        }
+        return errors;
       }, {});
 
       errorSummaryList = resultingErrors.map(({ summaryMessage, fieldName }) => ({
@@ -88,12 +122,12 @@ export async function handlePostEditForm(
     }
   } else {
     // Use custom validation for name and email
-    const validationData = fields.reduce<Record<string, string>>((acc, { name, value, existingValue }) => {
-      acc[name] = value;
+    const validationData = fields.reduce<Record<string, string>>((data, { name, value, existingValue }) => {
+      data[name] = value;
       // Special case for email validation which expects 'existingEmail' not 'existingEmailAddress'
       const existingKey = name === 'emailAddress' ? 'existingEmail' : `existing${capitaliseFirst(name)}`;
-      acc[existingKey] = existingValue;
-      return acc;
+      data[existingKey] = existingValue;
+      return data;
     }, {});
 
     const validation: ValidationResult = validateForm(validationData);

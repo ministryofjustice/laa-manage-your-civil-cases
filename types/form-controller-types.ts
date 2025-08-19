@@ -23,11 +23,23 @@ export interface RenderData {
 }
 
 /**
+ * Field configuration for extracting data from API response
+ */
+export interface FieldConfig {
+  field: string;
+  type?: 'string' | 'boolean' | 'number';
+  currentName?: string;
+  keepOriginal?: boolean;
+  includeExisting?: boolean;
+}
+
+/**
  * Configuration options for GET form handlers
  */
 export interface GetFormOptions {
   templatePath: string;
-  dataExtractor: (data: unknown) => Record<string, unknown>;
+  dataExtractor?: (data: unknown) => Record<string, unknown>;
+  fieldConfigs?: FieldConfig[];
 }
 
 /**
