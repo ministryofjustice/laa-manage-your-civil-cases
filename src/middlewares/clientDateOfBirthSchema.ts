@@ -2,7 +2,7 @@ import { hasProperty, isRecord } from '#src/scripts/helpers/dataTransformers.js'
 import { createChangeDetectionValidator, TypedValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 import { checkSchema, type Meta } from 'express-validator';
 import { dateStringFromThreeFields } from '#src/scripts/helpers/dateFormatter.js';
-import { isDate, isBefore } from 'validator';
+import validator from 'validator';
 
 // Constants for validation boundaries
 const MIN_DAY = 1;
@@ -155,7 +155,7 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
           // Use validator.js isDate() with dateStringFromThreeFields helper
           const dateString = dateStringFromThreeFields(day, month, year);
           
-          return isDate(dateString);
+          return validator.isDate(dateString);
         },
         /**
          * Custom error message for invalid date combinations 
@@ -195,7 +195,7 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
           const tomorrow = new Date();
           tomorrow.setDate(tomorrow.getDate() + DATE_OFFSET);
           const [tomorrowString] = tomorrow.toISOString().split('T'); // YYYY-MM-DD format
-          return isBefore(dateString, tomorrowString);
+          return validator.isBefore(dateString, tomorrowString);
         },
         /**
          * Error message for dates not in the past
