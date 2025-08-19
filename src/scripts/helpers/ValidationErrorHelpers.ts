@@ -1,4 +1,5 @@
-import type { ValidationError } from 'express-validator';
+import type { ValidationError, Result, Meta, Location } from 'express-validator';
+import type { Request, Response } from 'express';
 import { isRecord, hasProperty, safeString } from './dataTransformers.js';
 
 /**
@@ -56,4 +57,119 @@ export function formatValidationError(error: ValidationError): ValidationErrorDa
     summaryMessage: message,
     inlineMessage: message
   };
+}
+
+/**
+ * Creates a change detection validator that checks if any of the specified field pairs have changed
+ * @param {Array<{ current: string; original: string }>} fieldMappings - Array of {current, original} field name pairs to compare
+ * @param {object} errorMessage - Error message to show when no changes detected
+ * @param {string} errorMessage.summaryMessage - Summary error message
+ * @param {string} errorMessage.inlineMessage - Inline error message
+ * @returns {object} Express-validator custom validator configuration
+ */
+export function createChangeDetectionValidator(
+  fieldMappings: Array<{ current: string; original: string }>,
+  errorMessage: { summaryMessage: string; inlineMessage: string }
+): {
+  in: Location[];
+  custom: {
+    options: (_value: string, meta: Meta) => boolean;
+    errorMessage: () => TypedValidationError;
+  };
+} {
+  return {
+    in: ['body'] as Location[],
+    custom: {
+      /**
+       * Schema to check if any of the specified field values have been unchanged.
+       * @param {string} _value - Placeholder value (unused)
+       * @param {Meta} meta - `express-validator` context containing request object
+       * @returns {boolean} True if any field has changed
+       */
+      options: (_value: string, meta: Meta): boolean => {
+        const { req } = meta;
+        if (!isRecord(req.body)) {
+          return true;
+        }
+
+        // Check if any field has changed using type-safe property access
+        return fieldMappings.some(({ current, original }) => {
+          const currentRaw = hasProperty(req.body, current) ? req.body[current] : '';
+          const originalRaw = hasProperty(req.body, original) ? req.body[original] : '';
+          const currentValue = safeString(currentRaw).trim();
+          const originalValue = safeString(originalRaw).trim();
+          return currentValue !== originalValue;
+        });
+      },
+      /**
+       * Custom error message for when no changes are made
+       * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+       */
+      errorMessage: () => new TypedValidationError(errorMessage)
+    }
+  };
+}
+
+/**
+ * Handles validation errors by rendering the form with error messages
+ * @param {Result<ValidationErrorData>} validationErrors - Validation errors from express-validator
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {string} caseReference - Case reference number
+ */
+export function handleValidationErrors(
+  validationErrors: Result<ValidationErrorData>,
+  req: Request,
+  res: Response,
+  caseReference: string
+): void {
+  const BAD_REQUEST = 400;
+
+  // Map validation errors to field names following phone number pattern
+  const resultingErrors = validationErrors.array().map((errorData: ValidationErrorData) => {
+    // Determine field name based on the validation error
+    let fieldName = 'address'; // default
+    
+    if (errorData.summaryMessage.toLowerCase().includes('postcode')) {
+      fieldName = 'postcode';
+    } else if (errorData.summaryMessage.toLowerCase().includes('update the client address')) {
+      // Change detection error - no specific field
+      fieldName = 'address'; // Default to address for summary href
+    }
+    
+    return {
+      fieldName,
+      inlineMessage: errorData.inlineMessage,
+      summaryMessage: errorData.summaryMessage,
+    };
+  });
+
+  // Build input errors object for individual field error messages
+  // Only use inline messages that are not empty
+  const inputErrors = resultingErrors.reduce<Record<string, string>>((acc, { fieldName, inlineMessage }) => {
+    if (inlineMessage.trim() !== '') {
+      acc[fieldName] = inlineMessage;
+    }
+    return acc;
+  }, {});
+
+  // Build error summary list for the error summary component
+  const errorSummaryList = resultingErrors.map(({ summaryMessage, fieldName }) => ({
+    text: summaryMessage,
+    href: `#${fieldName}`,
+  }));
+
+  // Re-render the form with errors and preserve user input
+  res.status(BAD_REQUEST).render('case_details/change-client-address.njk', {
+    caseReference,
+    currentAddress: hasProperty(req.body, 'address') ? safeString(req.body.address) : '',
+    currentPostcode: hasProperty(req.body, 'postcode') ? safeString(req.body.postcode) : '',
+    existingAddress: hasProperty(req.body, 'existingAddress') ? safeString(req.body.existingAddress) : '',
+    existingPostcode: hasProperty(req.body, 'existingPostcode') ? safeString(req.body.existingPostcode) : '',
+    error: {
+      inputErrors,
+      errorSummaryList
+    },
+    csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
+  });
 }
