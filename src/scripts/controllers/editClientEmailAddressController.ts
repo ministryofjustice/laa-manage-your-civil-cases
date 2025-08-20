@@ -31,7 +31,6 @@ export async function postEditClientEmailAddress(req: Request, res: Response, ne
   await handlePostEditForm(req, res, next, {
     templatePath: 'case_details/edit-client-email-address.njk',
     fields: [{ name: 'emailAddress', value: formFields.emailAddress, existingValue: formFields.existingEmailAddress }],
-    apiUpdateData: { emailAddress: formFields.emailAddress },
-    useDefaultValidator: false // Temporarily using legacy validation until migration to express-validator
+    apiUpdateData: { emailAddress: formFields.emailAddress }
   });
 }

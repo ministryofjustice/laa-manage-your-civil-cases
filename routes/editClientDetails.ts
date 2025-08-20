@@ -8,6 +8,7 @@ import { getEditClientAddress, postEditClientAddress } from '#src/scripts/contro
 import { validateEditClientName } from '#src/middlewares/clientNameSchema.js';
 import { validateEditClientDateOfBirth } from '#src/middlewares/clientDateOfBirthSchema.js';
 import { validateEditClientPhoneNumber } from '#src/middlewares/clientPhoneNumberSchema.js';
+import { validateEditClientEmailAddress } from '#src/middlewares/clientEmailAddressSchema.js';
 import { validateEditClientAddress } from '#src/middlewares/clientAddressSchema.js';
 
 const router = express.Router();
@@ -22,7 +23,7 @@ router.get('/:caseReference/client-details/change/phone-number', getEditClientPh
 router.post('/:caseReference/client-details/change/phone-number', validateEditClientPhoneNumber(), postEditClientPhoneNumber);
 
 router.get('/:caseReference/client-details/change/email-address', getEditClientEmailAddress);
-router.post('/:caseReference/client-details/change/email-address', postEditClientEmailAddress);
+router.post('/:caseReference/client-details/change/email-address', validateEditClientEmailAddress(), postEditClientEmailAddress);
 
 router.get('/:caseReference/client-details/change/address', getEditClientAddress);
 router.post('/:caseReference/client-details/change/address', validateEditClientAddress(), postEditClientAddress);

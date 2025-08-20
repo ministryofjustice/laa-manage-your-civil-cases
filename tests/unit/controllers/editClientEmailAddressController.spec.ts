@@ -25,12 +25,22 @@ import {
 import { apiService } from '#src/services/apiService.js';
 // Import to get global type declarations for axiosMiddleware
 import '#utils/axiosSetup.js';
+import { validateEditClientEmailAddress } from '#src/middlewares/clientEmailAddressSchema.js';
+import { ValidationChain } from '#node_modules/express-validator/lib/index.js';
 
 // Define the RequestWithMiddleware interface for testing
 interface RequestWithMiddleware extends Request {
   axiosMiddleware: any;
   csrfToken?: () => string;
 }
+
+// Run an express-validator schema against a fake request
+const runSchema = async (req: any, schema: ValidationChain[] | ValidationChain): Promise<void> => {
+  const chains = Array.isArray(schema) ? schema : [schema];
+  for (const chain of chains) {
+    await chain.run(req);
+  }
+};
 
 describe('Edit Client Email Address Controller', () => {
   let req: Partial<RequestWithMiddleware>;
@@ -129,6 +139,8 @@ describe('Edit Client Email Address Controller', () => {
         emailAddress: 'invalid-email', // Invalid format
         existingEmailAddress: 'valid@example.com' // Provide existing email for validation
       };
+
+      await runSchema(req as any, validateEditClientEmailAddress());
 
       // Act
       await postEditClientEmailAddress(req as RequestWithMiddleware, res as Response, next);
