@@ -38,7 +38,7 @@ export function getValidatedFormResult(fields: ValidationFields): ReturnValidati
     );
   }
 
-  if (typeof fields.emailAddress === 'string' && typeof fields.existingEmail === 'string') {
+  if (typeof fields.emailAddress === 'string' && typeof fields.existingEmailAddress === 'string') {
     /**
      * Email validation using regex
      * @param {string} email - The email to check
@@ -50,7 +50,7 @@ export function getValidatedFormResult(fields: ValidationFields): ReturnValidati
     }
 
     const emailEmpty = fields.emailAddress.trim() === '';
-    const emailUnchanged = !emailEmpty && fields.emailAddress === fields.existingEmail;
+    const emailUnchanged = !emailEmpty && fields.emailAddress === fields.existingEmailAddress;
     const emailFormatNotValid = !emailEmpty && !isValidEmail(fields.emailAddress);
 
     validations.push(

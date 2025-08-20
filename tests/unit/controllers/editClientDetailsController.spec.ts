@@ -206,7 +206,7 @@ describe('Edit Client Details Controller', () => {
       // Arrange
       req.body = {
         emailAddress: 'invalid-email', // Invalid format
-        existingEmail: 'valid@example.com' // Provide existing email for validation
+        existingEmailAddress: 'valid@example.com' // Provide existing email for validation
       };
 
       // Act

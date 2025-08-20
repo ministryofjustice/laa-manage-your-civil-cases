@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
 import { apiService } from '#src/services/apiService.js';
-import { safeString, validateForm, capitaliseFirst, extractCurrentFields, devLog } from '#src/scripts/helpers/index.js';
+import { safeString, validateForm, capitaliseFirst, extractCurrentFields } from '#src/scripts/helpers/index.js';
 import { validationResult } from 'express-validator';
 import { formatValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 import type {
@@ -82,7 +82,6 @@ export async function handlePostEditForm(
       const resultingErrors = rawErrors.map((error) => {
         // Get field name from express-validator's path property
         const fieldName = 'path' in error && typeof error.path === 'string' ? error.path : '';
-        devLog(`Extracted fieldName: "${fieldName}"`);
 
         // Format the error message
         const errorData = formatValidationError(error);
@@ -112,9 +111,7 @@ export async function handlePostEditForm(
     // Use custom validation for name and email
     const validationData = fields.reduce<Record<string, string>>((data, { name, value, existingValue }) => {
       data[name] = value;
-      // Special case for email validation which expects 'existingEmail' not 'existingEmailAddress'
-      const existingKey = name === 'emailAddress' ? 'existingEmail' : `existing${capitaliseFirst(name)}`;
-      data[existingKey] = existingValue;
+      data[`existing${capitaliseFirst(name)}`] = existingValue;
       return data;
     }, {});
 

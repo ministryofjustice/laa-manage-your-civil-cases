@@ -60,11 +60,11 @@ export async function getEditClientEmailAddress(req: Request, res: Response, nex
  * @returns {Promise<void>}
  */
 export async function postEditClientEmailAddress(req: Request, res: Response, next: NextFunction): Promise<void> {
-  const formFields = extractFormFields(req.body, ['emailAddress', 'existingEmail']);
+  const formFields = extractFormFields(req.body, ['emailAddress', 'existingEmailAddress']);
 
   await handlePostEditForm(req, res, next, {
     templatePath: 'case_details/edit-client-email-address.njk',
-    fields: [{ name: 'emailAddress', value: formFields.emailAddress, existingValue: formFields.existingEmail }],
+    fields: [{ name: 'emailAddress', value: formFields.emailAddress, existingValue: formFields.existingEmailAddress }],
     apiUpdateData: { emailAddress: formFields.emailAddress }
   });
 }
