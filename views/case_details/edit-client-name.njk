@@ -25,7 +25,7 @@
       {% endif %}
       <form method="post" action="/cases/{{ caseReference }}/client-details/change/name">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-        <input type="hidden" name="existingFullName" value="{{ existingFullName | default(currentName) }}">
+        <input type="hidden" name="existingFullName" value="{{ existingFullName }}">
         {{ govukInput({
           label: {
             text: "Client name",
@@ -34,7 +34,7 @@
           },
           id: "fullName",
           name: "fullName",
-          value: currentName,
+          value: currentFullName,
           errorMessage: fullNameErrorMessage
         }) }}
         <div class="govuk-button-group">

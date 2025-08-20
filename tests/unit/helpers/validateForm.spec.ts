@@ -38,7 +38,7 @@ describe('Validate Form', () => {
       it('should process successful client email changes without validation errors', () => {
         const fields: ValidationFields = {
           emailAddress: 'john@example.com',
-          existingEmail: 'jane@example.com'
+          existingEmailAddress: 'jane@example.com'
         };
         
         const result = validateForm(fields);
@@ -89,7 +89,7 @@ describe('Validate Form', () => {
       it('should return error for unchanged email', () => {
         const fields: ValidationFields = {
           emailAddress: 'john@example.com',
-          existingEmail: 'john@example.com'
+          existingEmailAddress: 'john@example.com'
         };
         
         const result = validateForm(fields);
@@ -108,7 +108,7 @@ describe('Validate Form', () => {
       it('should return error for invalid email format', () => {
         const fields: ValidationFields = {
           emailAddress: 'invalid-email',
-          existingEmail: 'valid@example.com'
+          existingEmailAddress: 'valid@example.com'
         };
         
         const result = validateForm(fields);
@@ -126,7 +126,7 @@ describe('Validate Form', () => {
           fullName: '',
           existingFullName: 'Jane Doe',
           emailAddress: 'invalid-email',
-          existingEmail: 'valid@example.com'
+          existingEmailAddress: 'valid@example.com'
         };
         
         const result = validateForm(fields);
@@ -142,7 +142,7 @@ describe('Validate Form', () => {
           fullName: 'John Doe',
           existingFullName: 'John Doe',
           emailAddress: 'john@example.com',
-          existingEmail: 'john@example.com'
+          existingEmailAddress: 'john@example.com'
         };
         
         const result = validateForm(fields);
@@ -227,7 +227,7 @@ describe('Validate Form', () => {
       it('should ensure inputErrors values are strings', () => {
         const fields: ValidationFields = {
           emailAddress: 'invalid-email',
-          existingEmail: 'valid@example.com'
+          existingEmailAddress: 'valid@example.com'
         };
         
         const result = validateForm(fields);

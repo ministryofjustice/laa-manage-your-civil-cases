@@ -30,8 +30,8 @@
       {% endif %}
       <form method="post" action="/cases/{{ caseReference }}/client-details/change/address">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-        <input type="hidden" name="existingAddress" value="{{ existingAddress | default(currentAddress) }}">
-        <input type="hidden" name="existingPostcode" value="{{ existingPostcode | default(currentPostcode) }}">
+        <input type="hidden" name="existingAddress" value="{{ existingAddress }}">
+        <input type="hidden" name="existingPostcode" value="{{ existingPostcode }}">
         
         <h1 class="govuk-heading-l">Client address (optional)</h1>
         

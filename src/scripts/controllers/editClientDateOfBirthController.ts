@@ -1,22 +1,41 @@
 import type { Request, Response, NextFunction } from 'express';
 import { validationResult, type Result } from 'express-validator';
-import { safeString, hasProperty } from '#src/scripts/helpers/index.js';
-import { 
-  formatValidationError, 
+import { safeString, handleGetEditForm, isRecord, handlePostEditForm, extractAndConvertDateFields } from '#src/scripts/helpers/index.js';
+import {
+  formatValidationError,
   type ValidationErrorData
 } from '#src/scripts/helpers/ValidationErrorHelpers.js';
-import { 
+import {
   parseDateString,
   handleDateOfBirthValidationErrors
 } from '#src/scripts/helpers/ValidationDateHelpers.js';
-import { apiService } from '#src/services/apiService.js';
-import { dateStringFromThreeFields } from '#src/scripts/helpers/dateFormatter.js';
 
-// Interface for request with CSRF token
-interface RequestWithCSRF extends Request {
-  csrfToken?: () => string;
+/**
+ * Custom data extractor for date of birth fields
+ * @param {unknown} data - API response data
+ * @returns {Record<string, unknown>} Extracted date components and original data
+ */
+function extractDateOfBirthData(data: unknown): Record<string, unknown> {
+  let formData = { day: '', month: '', year: '' };
+  let originalData = { day: '', month: '', year: '' };
+
+  if (isRecord(data)) {
+    const dateOfBirth = safeString(data.dateOfBirth);
+
+    if (dateOfBirth !== '') {
+      const parsedDate = parseDateString(dateOfBirth);
+      formData = parsedDate;
+      originalData = parsedDate;
+    }
+  }
+
+  return {
+    formData,
+    originalData,
+    errorState: { hasErrors: false, errors: [] }
+  };
 }
- 
+
 /**
  * Renders the edit client date of birth form for a given case reference.
  * @param {Request} req - Express request object
@@ -24,72 +43,49 @@ interface RequestWithCSRF extends Request {
  * @param {NextFunction} next - Express next middleware function
  */
 export async function getEditClientDateOfBirth(req: Request, res: Response, next: NextFunction): Promise<void> {
-  const caseReference = safeString(req.params.caseReference);
-  
-  try {
-    const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
-    
-    let formData = { day: '', month: '', year: '' };
-    let originalData = { day: '', month: '', year: '' };
-    
-    if (response.status === 'success' && response.data !== null) {
-      const dateOfBirth = safeString(response.data.dateOfBirth);
-      
-      if (dateOfBirth !== '') {
-        const parsedDate = parseDateString(dateOfBirth);
-        formData = parsedDate;
-        originalData = parsedDate;
-      }
-    }
-    
-    res.render('case_details/edit-date-of-birth.njk', {
-      caseReference,
-      formData,
-      originalData,
-      errorState: { hasErrors: false, errors: [] },
-      csrfToken: (req as RequestWithCSRF).csrfToken?.(),
-    });
-  } catch (error) {
-    next(error);
-  }
+  await handleGetEditForm(req, res, next, {
+    templatePath: 'case_details/edit-date-of-birth.njk',
+    dataExtractor: extractDateOfBirthData
+  });
 }
 
 /**
  * Handles POST request for editing client date of birth form.
- * Validates input and either displays errors or updates the client details.
+ * Uses hybrid approach: custom validation + existing POST helper for API call.
  * @param {Request} req - Express request object
- * @param {Response} res - Express response object  
+ * @param {Response} res - Express response object
  * @param {NextFunction} next - Express next middleware function
  */
 export async function postEditClientDateOfBirth(req: Request, res: Response, next: NextFunction): Promise<void> {
-  const caseReference = safeString(req.params.caseReference);
-  
   try {
     const validationErrors: Result<ValidationErrorData> = validationResult(req).formatWith(formatValidationError);
-    
+
     if (!validationErrors.isEmpty()) {
-      // Handle validation errors by rendering the form with error messages
+      // Handle validation errors with date error handling
+      const caseReference = safeString(req.params.caseReference);
       handleDateOfBirthValidationErrors(validationErrors, req, res, caseReference);
       return;
     }
 
-    // No validation errors - construct date and save to data service
-    const day = hasProperty(req.body, 'dateOfBirth-day') ? safeString(req.body['dateOfBirth-day']) : '';
-    const month = hasProperty(req.body, 'dateOfBirth-month') ? safeString(req.body['dateOfBirth-month']) : '';
-    const year = hasProperty(req.body, 'dateOfBirth-year') ? safeString(req.body['dateOfBirth-year']) : '';
-    
-    // Construct ISO date string (YYYY-MM-DD) for API
-    let dateOfBirth = '';
-    if (day !== '' && month !== '' && year !== '') {
-      dateOfBirth = dateStringFromThreeFields(day, month, year);
-    }
-    
-    await apiService.updateClientDetails(req.axiosMiddleware, caseReference, { 
-      dateOfBirth 
+    // Extract and transform date using the helper
+    const dateOfBirth = extractAndConvertDateFields(req, [
+      'dateOfBirth-day',
+      'dateOfBirth-month',
+      'dateOfBirth-year'
+    ]);
+
+    await handlePostEditForm(req, res, next, {
+      templatePath: 'case_details/edit-date-of-birth.njk',
+      fields: [
+        { name: 'dateOfBirth', value: dateOfBirth, existingValue: '' }
+      ],
+      apiUpdateData: { dateOfBirth },
+      // Use custom validation because DOB requires complex validation handling
+      // that includes custom error processing and date field transformation
+      // which would make the express-validator helper overly complex
+      useDefaultValidator: false
     });
-    
-    res.redirect(`/cases/${caseReference}/client-details`);
-    
+
   } catch (error) {
     next(error);
   }

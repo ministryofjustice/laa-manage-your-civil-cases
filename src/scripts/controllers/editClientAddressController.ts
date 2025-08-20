@@ -1,82 +1,44 @@
 import type { Request, Response, NextFunction } from 'express';
-import { validationResult, type Result } from 'express-validator';
-import { safeString, hasProperty } from '#src/scripts/helpers/index.js';
-import { formatValidationError, handleValidationErrors, type ValidationErrorData } from '#src/scripts/helpers/ValidationErrorHelpers.js';
-import { apiService } from '#src/services/apiService.js';
+import 'csrf-sync'; // Import to ensure CSRF types are loaded
+import { handleGetEditForm, handlePostEditForm, extractFormFields } from '#src/scripts/helpers/index.js';
 
 /**
  * Renders the edit client address form for a given case reference.
  * @param {Request} req - Express request object
  * @param {Response} res - Express response object
  * @param {NextFunction} next - Express next middleware function
+ * @returns {Promise<void>}
  */
 export async function getEditClientAddress(req: Request, res: Response, next: NextFunction): Promise<void> {
-  const caseReference = safeString(req.params.caseReference);
-  try {
-    const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
-    let currentAddress = '';
-    let currentPostcode = '';
-    let existingAddress = '';
-    let existingPostcode = '';
-    
-    if (response.status === 'success' && response.data !== null) {
-      const address = safeString(response.data.address);
-      const postcode = safeString(response.data.postcode);
-      
-      if (address !== '') {
-        currentAddress = address;
-        existingAddress = address;
-      }
-      
-      if (postcode !== '') {
-        currentPostcode = postcode;
-        existingPostcode = postcode;
-      }
-    }
-    
-    res.render('case_details/change-client-address.njk', {
-      caseReference,
-      currentAddress,
-      currentPostcode,
-      existingAddress,
-      existingPostcode,
-      csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
-    });
-  } catch (error) {
-    next(error);
-  }
+  await handleGetEditForm(req, res, next, {
+    templatePath: 'case_details/change-client-address.njk',
+    fieldConfigs: [
+      { field: 'address', type: 'string', includeExisting: true },
+      { field: 'postcode', type: 'string', includeExisting: true }
+    ]
+  });
 }
 
 /**
  * Handles POST request for editing client address form.
  * Validates input and either displays errors or reloads the page.
  * @param {Request} req - Express request object
- * @param {Response} res - Express response object  
+ * @param {Response} res - Express response object
  * @param {NextFunction} next - Express next middleware function
+ * @returns {Promise<void>}
  */
 export async function postEditClientAddress(req: Request, res: Response, next: NextFunction): Promise<void> {
-  const caseReference = safeString(req.params.caseReference);
-  
-  try {
-    const validationErrors: Result<ValidationErrorData> = validationResult(req).formatWith(formatValidationError);
-    
-    if (!validationErrors.isEmpty()) {
-      handleValidationErrors(validationErrors, req, res, caseReference);
-      return;
-    }
+  const formFields = extractFormFields(req.body, [
+    'address', 'existingAddress',
+    'postcode', 'existingPostcode'
+  ]);
 
-    // No validation errors - save to data service and redirect to client details
-    const address = hasProperty(req.body, 'address') ? safeString(req.body.address) : '';
-    const postcode = hasProperty(req.body, 'postcode') ? safeString(req.body.postcode) : '';
-    
-    await apiService.updateClientDetails(req.axiosMiddleware, caseReference, { 
-      address, 
-      postcode 
-    });
-    
-    res.redirect(`/cases/${caseReference}/client-details`);
-    
-  } catch (error) {
-    next(error);
-  }
+  await handlePostEditForm(req, res, next, {
+    templatePath: 'case_details/change-client-address.njk',
+    fields: [
+      { name: 'address', value: formFields.address, existingValue: formFields.existingAddress },
+      { name: 'postcode', value: formFields.postcode, existingValue: formFields.existingPostcode }
+    ],
+    apiUpdateData: { address: formFields.address, postcode: formFields.postcode }
+  });
 }

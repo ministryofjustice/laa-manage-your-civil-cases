@@ -1,4 +1,5 @@
-import { hasProperty, safeString } from './dataTransformers.js';
+import { hasProperty, safeString, extractFormFields } from './dataTransformers.js';
+import { dateStringFromThreeFields } from './dateFormatter.js';
 import type { ValidationErrorData } from './ValidationErrorHelpers.js';
 import type { Request, Response } from 'express';
 import type { Result } from 'express-validator';
@@ -95,6 +96,26 @@ export function extractOriginalDateData(body: RequestBodyWithDates): DateFormDat
 }
 
 /**
+ * Extracts date fields from request body and converts to date string if all fields are present
+ * @param {Request} req - Express request object
+ * @param {string[]} fieldNames - Array of field names to extract (e.g., ['dateOfBirth-day', 'dateOfBirth-month', 'dateOfBirth-year'])
+ * @returns {string} Date string in YYYY-MM-DD format if all fields present, empty string otherwise
+ */
+export function extractAndConvertDateFields(req: Request, fieldNames: [string, string, string]): string {
+  const [dayField, monthField, yearField] = fieldNames;
+
+  // Use existing extractFormFields helper for consistent extraction
+  const formFields = extractFormFields(req.body, fieldNames);
+
+  const { [dayField]: day, [monthField]: month, [yearField]: year } = formFields;
+
+  // Return date string only if all fields are non-empty
+  return (day !== '' && month !== '' && year !== '')
+    ? dateStringFromThreeFields(day, month, year)
+    : '';
+}
+
+/**
  * Handles validation errors for date of birth form by rendering the form with error messages
  * Filters errors intelligently - if any field is empty, only show field-missing errors
  * @param {Result<ValidationErrorData>} validationErrors - Validation errors from express-validator
@@ -117,37 +138,37 @@ export function handleDateOfBirthValidationErrors(
 
   // Filter errors based on field completeness
   const relevantErrors = filterDateOfBirthErrors({ day, month, year }, allErrors);
-/**
- * Filters date of birth validation errors based on simplified rules
- * Shows only the first error unless there are multiple missing fields to consolidate
- * @param {DateFormData} formData - The form data containing day, month, year
- * @param {ValidationErrorData[]} allErrors - All validation errors
- * @returns {ValidationErrorData[]} Filtered relevant errors
- */
-function filterDateOfBirthErrors(formData: DateFormData, allErrors: ValidationErrorData[]): ValidationErrorData[] {
-  const firstError = 0
-  // If no errors, return empty array
-  if (allErrors.length === NO_EMPTY_FIELDS) {
-    return [];
-  }
+  /**
+   * Filters date of birth validation errors based on simplified rules
+   * Shows only the first error unless there are multiple missing fields to consolidate
+   * @param {DateFormData} formData - The form data containing day, month, year
+   * @param {ValidationErrorData[]} allErrors - All validation errors
+   * @returns {ValidationErrorData[]} Filtered relevant errors
+   */
+  function filterDateOfBirthErrors(formData: DateFormData, allErrors: ValidationErrorData[]): ValidationErrorData[] {
+    const firstError = 0
+    // If no errors, return empty array
+    if (allErrors.length === NO_EMPTY_FIELDS) {
+      return [];
+    }
 
-  const { day, month, year } = formData;
-  
-  // Check for multiple missing fields - these should be consolidated
-  const missingFields: string[] = [];
-  if (day === '') missingFields.push('day');
-  if (month === '') missingFields.push('month');
-  if (year === '') missingFields.push('year');
-  
-  // If multiple fields are missing, consolidate them into a single error
-  if (missingFields.length > ONE_FIELD) {
-    return buildMissingFieldsError(missingFields);
+    const { day, month, year } = formData;
+
+    // Check for multiple missing fields - these should be consolidated
+    const missingFields: string[] = [];
+    if (day === '') missingFields.push('day');
+    if (month === '') missingFields.push('month');
+    if (year === '') missingFields.push('year');
+
+    // If multiple fields are missing, consolidate them into a single error
+    if (missingFields.length > ONE_FIELD) {
+      return buildMissingFieldsError(missingFields);
+    }
+
+    // For all other cases, show only the first error
+    // This takes advantage of the predictable validation ordering
+    return [allErrors[firstError]];
   }
-  
-  // For all other cases, show only the first error
-  // This takes advantage of the predictable validation ordering
-  return [allErrors[firstError]];
-}
 
   // Build error summary list with filtered errors
   const errorSummaryList = relevantErrors.map(error => ({
@@ -178,61 +199,61 @@ function filterDateOfBirthErrors(formData: DateFormData, allErrors: ValidationEr
     inlineErrorMessage,
     csrfToken: (req as RequestWithCSRF).csrfToken?.(),
   });
-/**
- * Builds a missing fields error message for date of birth validation
- * @param {string[]} missingFields - Array of missing field names (day, month, year)
- * @returns {ValidationErrorData[]} Array with a single error object, or empty if no fields missing
- */
-function buildMissingFieldsError(missingFields: string[]): ValidationErrorData[] {
-  if (missingFields.length === NO_EMPTY_FIELDS) return [];
-  const orderedFields = ['day', 'month', 'year'].filter(f => missingFields.includes(f));
-  let fieldText = '';
-  if (orderedFields.length === ONE_FIELD) {
-    const [firstField] = orderedFields;
-    fieldText = firstField;
-  } else if (orderedFields.length === TWO_FIELDS) {
-    const [firstField, secondField] = orderedFields;
-    fieldText = `${firstField} and ${secondField}`;
-  } else if (orderedFields.length === THREE_FIELDS) {
-    const [firstField, secondField, thirdField] = orderedFields;
-    fieldText = `${firstField}, ${secondField} and ${thirdField}`;
+  /**
+   * Builds a missing fields error message for date of birth validation
+   * @param {string[]} missingFields - Array of missing field names (day, month, year)
+   * @returns {ValidationErrorData[]} Array with a single error object, or empty if no fields missing
+   */
+  function buildMissingFieldsError(missingFields: string[]): ValidationErrorData[] {
+    if (missingFields.length === NO_EMPTY_FIELDS) return [];
+    const orderedFields = ['day', 'month', 'year'].filter(f => missingFields.includes(f));
+    let fieldText = '';
+    if (orderedFields.length === ONE_FIELD) {
+      const [firstField] = orderedFields;
+      fieldText = firstField;
+    } else if (orderedFields.length === TWO_FIELDS) {
+      const [firstField, secondField] = orderedFields;
+      fieldText = `${firstField} and ${secondField}`;
+    } else if (orderedFields.length === THREE_FIELDS) {
+      const [firstField, secondField, thirdField] = orderedFields;
+      fieldText = `${firstField}, ${secondField} and ${thirdField}`;
+    }
+    return [{
+      summaryMessage: `Date of birth must include a ${fieldText}`,
+      inlineMessage: `Date of birth must include a ${fieldText}`
+    }];
   }
-  return [{
-    summaryMessage: `Date of birth must include a ${fieldText}`,
-    inlineMessage: `Date of birth must include a ${fieldText}`
-  }];
-}
 
-/**
- * Determines which date fields should be highlighted based on error messages
- * @param {ValidationErrorData[]} errors - Array of validation errors
- * @returns {{ highlightDay: boolean, highlightMonth: boolean, highlightYear: boolean }} Highlight flags for each field
- */
-function getDateFieldHighlights(errors: ValidationErrorData[]): { highlightDay: boolean, highlightMonth: boolean, highlightYear: boolean } {
-  const errorMessages = errors.map(error => error.summaryMessage.toLowerCase());
-  const [dayStr, monthStr, yearStr, fourNumbersStr] = ['day', 'month', 'year', 'must include 4 numbers'];
-  const mustIncludeDayStr = 'must include a day';
-  const dayBetweenStr = 'day must be between';
-  const mustIncludeMonthStr = 'must include a month';
-  const monthBetweenStr = 'month must be between';
-  const mustIncludeYearStr = 'must include a year';
-  const yearMustStr = 'year must';
-  const highlightDay = errorMessages.some(msg =>
-    msg.includes(dayStr) ||
-    msg.includes(mustIncludeDayStr) ||
-    msg.includes(dayBetweenStr)
-  );
-  const highlightMonth = errorMessages.some(msg =>
-    msg.includes(monthStr) ||
-    msg.includes(mustIncludeMonthStr) ||
-    msg.includes(monthBetweenStr)
-  );
-  const highlightYear = errorMessages.some(msg =>
-    msg.includes(yearStr) ||
-    msg.includes(mustIncludeYearStr) ||
-    msg.includes(yearMustStr) ||
-    msg.includes(fourNumbersStr)
-  );
-  return { highlightDay, highlightMonth, highlightYear };
-}
+  /**
+   * Determines which date fields should be highlighted based on error messages
+   * @param {ValidationErrorData[]} errors - Array of validation errors
+   * @returns {{ highlightDay: boolean, highlightMonth: boolean, highlightYear: boolean }} Highlight flags for each field
+   */
+  function getDateFieldHighlights(errors: ValidationErrorData[]): { highlightDay: boolean, highlightMonth: boolean, highlightYear: boolean } {
+    const errorMessages = errors.map(error => error.summaryMessage.toLowerCase());
+    const [dayStr, monthStr, yearStr, fourNumbersStr] = ['day', 'month', 'year', 'must include 4 numbers'];
+    const mustIncludeDayStr = 'must include a day';
+    const dayBetweenStr = 'day must be between';
+    const mustIncludeMonthStr = 'must include a month';
+    const monthBetweenStr = 'month must be between';
+    const mustIncludeYearStr = 'must include a year';
+    const yearMustStr = 'year must';
+    const highlightDay = errorMessages.some(msg =>
+      msg.includes(dayStr) ||
+      msg.includes(mustIncludeDayStr) ||
+      msg.includes(dayBetweenStr)
+    );
+    const highlightMonth = errorMessages.some(msg =>
+      msg.includes(monthStr) ||
+      msg.includes(mustIncludeMonthStr) ||
+      msg.includes(monthBetweenStr)
+    );
+    const highlightYear = errorMessages.some(msg =>
+      msg.includes(yearStr) ||
+      msg.includes(mustIncludeYearStr) ||
+      msg.includes(yearMustStr) ||
+      msg.includes(fourNumbersStr)
+    );
+    return { highlightDay, highlightMonth, highlightYear };
+  }
 }
