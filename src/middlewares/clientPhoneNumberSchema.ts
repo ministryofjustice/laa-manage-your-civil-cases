@@ -1,31 +1,6 @@
-import { hasProperty, isRecord } from '#src/scripts/helpers/dataTransformers.js';
-import { checkSchema, type Meta } from 'express-validator';
+import { checkSchema } from 'express-validator';
 import { isValidPhoneNumber } from 'libphonenumber-js';
-import { TypedValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
-
-interface ClientPhoneNumberBody {
-  phoneNumber: string;
-  existingPhoneNumber: string;
-  safeToCall: boolean;
-  existingSafeToCall: boolean;
-  announceCall: boolean;
-  existingAnnounceCall: boolean;
-}
-
-/**
- * Checks whether the given body object has the expected structure of ClientPhoneNumberBody.
- * @param {unknown} body - The body object to check
- * @returns {body is ClientPhoneNumberBody} True if the body matches ClientPhoneNumberBody shape
- */
-function isClientPhoneNumberBody(body: unknown): body is ClientPhoneNumberBody {
-  return isRecord(body) &&
-    hasProperty(body, 'phoneNumber') &&
-    hasProperty(body, 'existingPhoneNumber') &&
-    hasProperty(body, 'safeToCall') &&
-    hasProperty(body, 'existingSafeToCall') &&
-    hasProperty(body, 'announceCall') &&
-    hasProperty(body, 'existingAnnounceCall');
-};
+import { createChangeDetectionValidator, TypedValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 
 /**
  * Validation middleware when user edits client's phone number.
@@ -71,33 +46,15 @@ export const validateEditClientPhoneNumber = (): ReturnType<typeof checkSchema> 
         })
       },
     },
-    notChanged: {
-      in: ['body'],
-      custom: {
-        /**
-         * Schema to check if the phoneNumber or safeToCall values have been unchanged.
-         * @param {string} _value - Placeholder value (unused)
-         * @param {Meta} meta - `express-validator` context containing request object
-         * @returns {boolean} True if phoneNumber or safeToCall has changed
-         */
-        options: (_value: string, meta: Meta): boolean => {
-          const { req } = meta;
-          if (!isClientPhoneNumberBody(req.body)) {
-            return true;
-          }
-          const phoneChanged = req.body.phoneNumber !== req.body.existingPhoneNumber;
-          const safeToCallChanged = req.body.safeToCall !== req.body.existingSafeToCall;
-          const announceCallChanged = req.body.announceCall !== req.body.existingAnnounceCall;
-          return phoneChanged || safeToCallChanged || announceCallChanged;
-        },
-        /**
-         * Custom error message for when no changes are made
-         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
-         */
-        errorMessage: () => new TypedValidationError({
-          summaryMessage: 'Change information on the page, or select \'Cancel\'',
-          inlineMessage: '',
-        })
-      },
-    },
+    notChanged: createChangeDetectionValidator(
+      [
+        { current: 'phoneNumber', original: 'existingPhoneNumber' },
+        { current: 'safeToCall', original: 'existingSafeToCall' },
+        { current: 'announceCall', original: 'existingAnnounceCall' }
+      ],
+      {
+        summaryMessage: "Change information on the page, or select 'Cancel'",
+        inlineMessage: ''
+      }
+    ),
   });
