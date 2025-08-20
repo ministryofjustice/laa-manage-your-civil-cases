@@ -38,15 +38,14 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'PORT=3001 NODE_ENV=test API_URL=http://localhost:3001 API_PREFIX=/mock-api USE_MOCK_API=true yarn tsx src/test-server.ts',
+    command: 'yarn tsx scripts/test-server-with-msw.js',
     url: 'http://127.0.0.1:3001',
     reuseExistingServer: process.env.CI !== 'true',
     env: {
       NODE_ENV: 'test',
       PORT: '3001',
-      API_URL: 'http://localhost:3001',
-      API_PREFIX: '/mock-api',
-      USE_MOCK_API: 'true'
+      API_URL: 'https://laa-civil-case-api-uat.cloud-platform.service.justice.gov.uk',
+      API_PREFIX: '/latest/mock'
     }
   },
 });
