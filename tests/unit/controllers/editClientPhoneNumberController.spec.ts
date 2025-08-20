@@ -25,7 +25,7 @@ import {
 import { apiService } from '#src/services/apiService.js';
 // Import to get global type declarations for axiosMiddleware
 import '#utils/axiosSetup.js';
-import { validateEditClientPhoneNumber } from '#src/middlewares/phoneNumberSchema.js';
+import { validateEditClientPhoneNumber } from '#src/middlewares/clientPhoneNumberSchema.js';
 import { ValidationChain } from '#node_modules/express-validator/lib/index.js';
 
 // Run an express-validator schema against a fake request

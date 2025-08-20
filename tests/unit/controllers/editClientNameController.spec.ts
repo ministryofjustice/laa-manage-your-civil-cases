@@ -25,12 +25,22 @@ import {
 import { apiService } from '#src/services/apiService.js';
 // Import to get global type declarations for axiosMiddleware
 import '#utils/axiosSetup.js';
+import { validateEditClientName } from '#src/middlewares/clientNameSchema.js';
+import { ValidationChain } from '#node_modules/express-validator/lib/index.js';
 
 // Define the RequestWithMiddleware interface for testing
 interface RequestWithMiddleware extends Request {
   axiosMiddleware: any;
   csrfToken?: () => string;
 }
+
+// Run an express-validator schema against a fake request
+const runSchema = async (req: any, schema: ValidationChain[] | ValidationChain): Promise<void> => {
+  const chains = Array.isArray(schema) ? schema : [schema];
+  for (const chain of chains) {
+    await chain.run(req);
+  }
+};
 
 describe('Edit Client Name Controller', () => {
   let req: Partial<RequestWithMiddleware>;
@@ -125,7 +135,9 @@ describe('Edit Client Name Controller', () => {
 
     it('should handle validation errors', async () => {
       // Arrange
-      req.body = { fullName: '' }; // Empty name should trigger validation
+      req.body = { fullName: '', existingFullName: 'John Carpenter' }; // Empty name should trigger validation
+
+      await runSchema(req as any, validateEditClientName());
 
       // Act
       await postEditClientName(req as RequestWithMiddleware, res as Response, next);

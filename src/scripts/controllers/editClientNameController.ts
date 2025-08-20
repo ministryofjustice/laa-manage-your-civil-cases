@@ -31,7 +31,6 @@ export async function postEditClientName(req: Request, res: Response, next: Next
   await handlePostEditForm(req, res, next, {
     templatePath: 'case_details/edit-client-name.njk',
     fields: [{ name: 'fullName', value: formFields.fullName, existingValue: formFields.existingFullName }],
-    apiUpdateData: { fullName: formFields.fullName },
-    useDefaultValidator: false // Temporarily using legacy validation until migration to express-validator
+    apiUpdateData: { fullName: formFields.fullName }
   });
 }

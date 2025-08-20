@@ -5,14 +5,15 @@ import { getEditClientPhoneNumber,postEditClientPhoneNumber} from '#src/scripts/
 import { getEditClientEmailAddress, postEditClientEmailAddress, } from '#src/scripts/controllers/editClientEmailAddressController.js'
 import { getEditClientAddress, postEditClientAddress } from '#src/scripts/controllers/editClientAddressController.js';
 
+import { validateEditClientName } from '#src/middlewares/clientNameSchema.js';
 import { validateEditClientDateOfBirth } from '#src/middlewares/clientDateOfBirthSchema.js';
-import { validateEditClientPhoneNumber } from '#src/middlewares/phoneNumberSchema.js';
+import { validateEditClientPhoneNumber } from '#src/middlewares/clientPhoneNumberSchema.js';
 import { validateEditClientAddress } from '#src/middlewares/clientAddressSchema.js';
 
 const router = express.Router();
 
 router.get('/:caseReference/client-details/change/name', getEditClientName);
-router.post('/:caseReference/client-details/change/name', postEditClientName);
+router.post('/:caseReference/client-details/change/name', validateEditClientName(), postEditClientName);
 
 router.get('/:caseReference/client-details/change/date-of-birth', getEditClientDateOfBirth);
 router.post('/:caseReference/client-details/change/date-of-birth', validateEditClientDateOfBirth(), postEditClientDateOfBirth);
