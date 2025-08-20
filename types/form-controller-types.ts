@@ -49,7 +49,7 @@ export interface PostFormOptions {
   templatePath: string;
   fields: FormField[];
   apiUpdateData: Record<string, unknown>;
-  useCustomValidation?: boolean;
+  useDefaultValidator?: boolean;
 }
 
 // Re-export commonly used validation types for convenience

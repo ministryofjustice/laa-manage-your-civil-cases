@@ -39,7 +39,6 @@ export async function postEditClientAddress(req: Request, res: Response, next: N
       { name: 'address', value: formFields.address, existingValue: formFields.existingAddress },
       { name: 'postcode', value: formFields.postcode, existingValue: formFields.existingPostcode }
     ],
-    apiUpdateData: { address: formFields.address, postcode: formFields.postcode },
-    useCustomValidation: true
+    apiUpdateData: { address: formFields.address, postcode: formFields.postcode }
   });
 }

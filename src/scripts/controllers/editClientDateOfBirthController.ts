@@ -80,7 +80,10 @@ export async function postEditClientDateOfBirth(req: Request, res: Response, nex
         { name: 'dateOfBirth', value: dateOfBirth, existingValue: '' }
       ],
       apiUpdateData: { dateOfBirth },
-      useCustomValidation: false
+      // Use custom validation because DOB requires complex validation handling
+      // that includes custom error processing and date field transformation
+      // which would make the express-validator helper overly complex
+      useDefaultValidator: false
     });
 
   } catch (error) {

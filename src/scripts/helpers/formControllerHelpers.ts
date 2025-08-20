@@ -66,13 +66,13 @@ export async function handlePostEditForm(
   options: PostFormOptions
 ): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
-  const { templatePath, fields, apiUpdateData, useCustomValidation = false } = options;
+  const { templatePath, fields, apiUpdateData, useDefaultValidator = true } = options;
 
   let inputErrors: Record<string, string> = {};
   let errorSummaryList: Array<{ text: string; href: string }> = [];
   let formIsInvalid = false;
 
-  if (useCustomValidation) {
+  if (useDefaultValidator) {
     // Use express-validator validation - get raw errors first to access field information
     const rawValidationResult = validationResult(req);
 
@@ -108,7 +108,7 @@ export async function handlePostEditForm(
       formIsInvalid = true;
     }
   } else {
-    // Use custom validation for name and email
+    // Use custom validation for forms with complex requirements (e.g., date of birth)
     const validationData = fields.reduce<Record<string, string>>((data, { name, value, existingValue }) => {
       data[name] = value;
       data[`existing${capitaliseFirst(name)}`] = existingValue;
