@@ -8,6 +8,7 @@ import { isRecord, hasProperty, safeString } from './dataTransformers.js';
 export interface ValidationErrorData {
   summaryMessage: string;
   inlineMessage: string;
+  fieldPath?: string; // Add field path from express-validator
 }
 
 /**

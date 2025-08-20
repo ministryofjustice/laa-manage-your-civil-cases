@@ -52,10 +52,5 @@ export interface PostFormOptions {
   useCustomValidation?: boolean;
 }
 
-/**
- * Type guard function type for validating records
- */
-export type RecordValidator = (data: unknown) => data is Record<string, unknown>;
-
 // Re-export commonly used validation types for convenience
 export type { ValidationResult, ErrorSummary } from './form-validation.js';

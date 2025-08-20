@@ -1,9 +1,9 @@
 import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
 import { apiService } from '#src/services/apiService.js';
-import { safeString, validateForm, capitaliseFirst, extractCurrentFields } from '#src/scripts/helpers/index.js';
-import { type Result, validationResult } from 'express-validator';
-import { formatValidationError, type ValidationErrorData } from '#src/scripts/helpers/ValidationErrorHelpers.js';
+import { safeString, validateForm, capitaliseFirst, extractCurrentFields, devLog } from '#src/scripts/helpers/index.js';
+import { validationResult } from 'express-validator';
+import { formatValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 import type {
   RenderData,
   GetFormOptions,
@@ -12,7 +12,6 @@ import type {
 } from '#types/form-controller-types.js';
 
 const BAD_REQUEST = 400;
-const MINIMUM_FIELDS_LENGTH = 0;
 
 /**
  * Generic function to handle GET requests for edit forms
@@ -74,30 +73,19 @@ export async function handlePostEditForm(
   let formIsInvalid = false;
 
   if (useCustomValidation) {
-    // Use express-validator validation
-    const validationErrors: Result<ValidationErrorData> = validationResult(req).formatWith(formatValidationError);
+    // Use express-validator validation - get raw errors first to access field information
+    const rawValidationResult = validationResult(req);
 
-    if (!validationErrors.isEmpty()) {
-      const resultingErrors = validationErrors.array().map((errorData: ValidationErrorData) => {
-        // Determine field name based on the validation error content
-        let fieldName = ''; // default to empty string
+    if (!rawValidationResult.isEmpty()) {
+      const rawErrors = rawValidationResult.array();
 
-        // Check for specific validation types
-        if (errorData.summaryMessage.toLowerCase().includes('postcode')) {
-          fieldName = 'postcode';
-        } else if (errorData.summaryMessage.toLowerCase().includes('update the client address')) {
-          // Change detection error - use address as default for href
-          fieldName = 'address';
-        } else if (errorData.summaryMessage.toLowerCase().includes('phone')) {
-          fieldName = 'phoneNumber';
-        } else if (fields.some(field => field.name === 'address')) {
-          // If we have address fields, default to address
-          fieldName = 'address';
-        } else if (fields.length !== MINIMUM_FIELDS_LENGTH) {
-          // If we have fields, use the first one as fallback
-          const [{ name }] = fields;
-          fieldName = name;
-        }
+      const resultingErrors = rawErrors.map((error) => {
+        // Get field name from express-validator's path property
+        const fieldName = 'path' in error && typeof error.path === 'string' ? error.path : '';
+        devLog(`Extracted fieldName: "${fieldName}"`);
+
+        // Format the error message
+        const errorData = formatValidationError(error);
 
         return {
           fieldName,
