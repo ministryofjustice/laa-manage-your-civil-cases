@@ -1,5 +1,5 @@
 /**
- * Edit Client Details Controller Tests
+ * Edit Client Phone Number Controller Tests
  * 
  * Tests the Express.js controllers for client details editing functionality.
  * Covers HTTP request/response handling for name and email editing forms including:
@@ -19,13 +19,9 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import type { Request, Response, NextFunction } from 'express';
 import {
-  getEditClientName,
-  postEditClientName,
-  getEditClientEmailAddress,
-  postEditClientEmailAddress,
   getEditClientPhoneNumber,
   postEditClientPhoneNumber
-} from '#src/scripts/controllers/editClientDetailsController.js';
+} from '#src/scripts/controllers/editClientPhoneNumberController.js';
 import { apiService } from '#src/services/apiService.js';
 // Import to get global type declarations for axiosMiddleware
 import '#utils/axiosSetup.js';
@@ -46,7 +42,7 @@ interface RequestWithMiddleware extends Request {
   csrfToken?: () => string;
 }
 
-describe('Edit Client Details Controller', () => {
+describe('Edit Client Phone Number Controller', () => {
   let req: Partial<RequestWithMiddleware>;
   let res: any;
   let next: any;
@@ -83,139 +79,6 @@ describe('Edit Client Details Controller', () => {
 
   afterEach(() => {
     sinon.restore();
-  });
-
-  describe('getEditClientName', () => {
-    it('should render name editing form with pre-populated client data and CSRF protection', async () => {
-      // Arrange
-      const mockApiResponse = {
-        status: 'success',
-        data: {
-          fullName: 'John Doe',
-          caseReference: 'TEST123'
-        }
-      };
-
-      apiServiceGetStub.resolves(mockApiResponse);
-
-      // Act
-      await getEditClientName(req as RequestWithMiddleware, res as Response, next);
-
-      // Assert
-      expect(apiServiceGetStub.calledOnce).to.be.true;
-      expect(renderStub.calledWith('case_details/edit-client-name.njk')).to.be.true;
-    });
-
-    it('should delegate API errors to Express error handling middleware', async () => {
-      // Arrange
-      const error = new Error('API Error');
-      apiServiceGetStub.rejects(error);
-
-      // Act
-      await getEditClientName(req as RequestWithMiddleware, res as Response, next);
-
-      // Assert
-      expect(next.calledOnce).to.be.true;
-    });
-  });
-
-  describe('postEditClientName', () => {
-    it('should process successful client name update and redirect to case details', async () => {
-      // Arrange
-      req.body = { fullName: 'Jane Smith' };
-
-      apiServiceUpdateStub.resolves({
-        status: 'success',
-        data: { fullName: 'Jane Smith' }
-      });
-
-      // Act
-      await postEditClientName(req as RequestWithMiddleware, res as Response, next);
-
-      // Assert
-      expect(apiServiceUpdateStub.calledOnce).to.be.true;
-      expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
-    });
-
-    it('should handle validation errors', async () => {
-      // Arrange
-      req.body = { fullName: '' }; // Empty name should trigger validation
-
-      // Act
-      await postEditClientName(req as RequestWithMiddleware, res as Response, next);
-
-      // Assert - Should configure form response with errors, not redirect
-      expect(redirectStub.called).to.be.false;
-      expect(renderStub.calledWith('case_details/edit-client-name.njk')).to.be.true;
-    });
-  });
-
-  describe('getEditClientEmailAddress', () => {
-    it('should configure edit email form response with existing data', async () => {
-      // Arrange
-      const mockApiResponse = {
-        status: 'success',
-        data: {
-          emailAddress: 'john@example.com',
-          caseReference: 'TEST123'
-        }
-      };
-
-      apiServiceGetStub.resolves(mockApiResponse);
-
-      // Act
-      await getEditClientEmailAddress(req as RequestWithMiddleware, res as Response, next);
-
-      // Assert
-      expect(apiServiceGetStub.calledOnce).to.be.true;
-      expect(renderStub.calledWith('case_details/edit-client-email-address.njk')).to.be.true;
-    });
-
-    it('should handle API errors', async () => {
-      // Arrange
-      const error = new Error('API Error');
-      apiServiceGetStub.rejects(error);
-
-      // Act
-      await getEditClientEmailAddress(req as RequestWithMiddleware, res as Response, next);
-
-      // Assert
-      expect(next.calledOnce).to.be.true;
-    });
-  });
-
-  describe('postEditClientEmailAddress', () => {
-    it('should process valid email update', async () => {
-      // Arrange
-      req.body = { emailAddress: 'jane@example.com' };
-
-      apiServiceUpdateStub.resolves({
-        status: 'success',
-        data: { emailAddress: 'jane@example.com' }
-      });
-
-      // Act
-      await postEditClientEmailAddress(req as RequestWithMiddleware, res as Response, next);
-
-      // Assert
-      expect(apiServiceUpdateStub.calledOnce).to.be.true;
-      expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
-    });
-
-    it('should handle validation errors', async () => {
-      // Arrange
-      req.body = {
-        emailAddress: 'invalid-email', // Invalid format
-        existingEmailAddress: 'valid@example.com' // Provide existing email for validation
-      };
-
-      // Act
-      await postEditClientEmailAddress(req as RequestWithMiddleware, res as Response, next);
-
-      // Assert - Should configure form response with errors, not redirect
-      expect(redirectStub.called).to.be.false;
-      expect(renderStub.calledWith('case_details/edit-client-email-address.njk')).to.be.true;
-    });
   });
 
   describe('getEditClientPhoneNumber', () => {
