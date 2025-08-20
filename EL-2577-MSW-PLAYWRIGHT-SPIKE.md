@@ -104,6 +104,8 @@ yarn test:e2e tests/e2e/msw-test.spec.ts
 - ✅ Mock data ("MSW Test Client") displays in rendered HTML
 - ✅ No external API dependencies in test execution
 
+https://github.com/ministryofjustice/laa-manage-your-civil-cases/actions/runs/17096799118/job/48483144346?pr=221 shows a test succesfully verifying mocked data in the CI pipeline.
+
 ## Production Benefits
 
 **Clean Separation:**
