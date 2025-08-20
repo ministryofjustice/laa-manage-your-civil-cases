@@ -2,403 +2,244 @@
 
 ## Objective
 
-Investigate Playwright and MSW (Mock Service Worker) as a solution for full end-to-end testing of the Manage Your Civil Cases (MCC) application.
+Investigate MSW (Mock Service Worker) and Playwright integration for full end-to-end testing of the Manage Your Civil Cases (MCC) application, enabling testing of frontend behavior with mocked API responses.
 
-## Background
+## Summary
 
-This spike aims to evaluate whether MSW can effectively mock API responses during Playwright E2E tests, allowing us to test the frontend behavior independently of backend services while maintaining realistic test scenarios.
+**Result: ✅ SUCCESSFUL** - MSW + Playwright integration fully functional for intercepting outbound API calls from Express server-side rendered application.
 
-## Investigation Progress
+## Key Architectural Challenge
 
-### Phase 1: MSW Installation and Basic Verification ✅
+Unlike typical MSW examples that mock **inbound requests** to web servers, our use case required intercepting **outbound requests** from our Express server to external APIs. Standard Playwright + MSW patterns use browser Service Workers, but we needed Node.js process-level HTTP interception.
 
-#### 1.1 Installing MSW
+## Implementation Phases
 
-MSW was already present in the project dependencies, so no additional installation was required.
+### Phase 1: Initial Working Implementation ✅
 
-**Verify MSW installation:**
-```bash
-yarn list msw
-```
+**Commit Reference:** [working-version-0.1](https://github.com/ministryofjustice/laa-manage-your-civil-cases/releases/tag/working-version-0.1) 
 
-**MSW CLI commands available:**
-```bash
-yarn msw --help
-# Shows: init command for browser-based MSW setup
-```
+Initial integration where MSW was embedded directly in the Express application startup. This proved the concept worked but mixed test concerns with application code.
 
-#### 1.2 Basic MSW Operation Verification
+**Key learnings:**
+- MSW `setupServer()` successfully intercepts Node.js HTTP calls  
+- Express server-side API calls can be transparently mocked
+- Real API URLs (`https://laa-civil-case-api-uat.cloud-platform.service.justice.gov.uk`) get intercepted without Express knowing
 
-**Objective:** Verify that MSW can intercept network requests and return mock responses.
+### Phase 2: Clean Architecture Implementation ✅
 
-**Approach:** Create a standalone Node.js script to test MSW in isolation, separate from Playwright complexity.
+**Current Implementation**
 
-**Implementation:**
-
-Created `test-msw-standalone.mjs` with the following key components:
+Separated MSW patching from Express application to achieve clean architecture:
 
 ```javascript
-import { setupServer } from 'msw/node';
-import { http, HttpResponse } from 'msw';
+// scripts/test-server-with-msw.js
+// STEP 1: Patch Node.js HTTP modules with MSW (test-only)
+const mswServer = setupServer(...apiHandlers);
+mswServer.listen({ onUnhandledRequest: 'warn' });
 
-// Handlers with FULL URLs (critical for interception)
-const handlers = [
-  http.get('http://localhost:3000/api/health', () => {
-    console.log('🎯 MSW intercepted /api/health request!');
-    return HttpResponse.json({
-      status: 'ok',
-      timestamp: new Date().toISOString(),
-      source: 'MSW Mock Server',
-      message: 'MSW is working correctly!'
-    });
+// STEP 2: Start unchanged Express application  
+const { default: createApp } = await import('../src/app.js');
+const app = createApp();
+app.listen(port);
+```
+
+
+**Architectural Decision:** We chose Node.js process patching over typical MSW browser patterns because our Express server-side rendered application requires intercepting **outbound** API calls, not **inbound** requests. This approach provides transparent API mocking without modifying the Express application.
+
+**Architecture Benefits:**
+- ✅ **Express stays clean** - No test code in production application
+- ✅ **MSW only during tests** - Playwright webServer invokes MSW script
+- ✅ **Transparent interception** - Express makes normal API calls, MSW intercepts at Node.js level
+- ✅ **Zero configuration changes** - No environment detection in Express
+
+## Technical Architecture
+
+### Request Flow
+```
+Playwright Test → Express Server → apiService.getClientDetails()
+     ↓                 ↓                        ↓
+Browser Request → MSW Intercepts → Real API URL
+     ↓                 ↓                        ↓  
+Test Assertion ← JSON Response ← Mock Data
+```
+
+### Key Components
+
+**Test Server Script** (`scripts/test-server-with-msw.js`):
+- Patches Node.js HTTP stack before Express starts
+- Only runs during Playwright test execution
+- Express application remains completely unaware of MSW
+
+**Playwright Configuration**:
+```typescript
+webServer: {
+  command: 'yarn tsx scripts/test-server-with-msw.js',
+  url: 'http://127.0.0.1:3001',
+  env: { NODE_ENV: 'test', PORT: '3001' }
+}
+```
+
+**MSW Handlers** (`tests/e2e/mocks/handlers/api.ts`):
+```javascript
+http.get('https://laa-civil-case-api-uat.cloud-platform.service.justice.gov.uk/latest/mock/cases/:caseReference', 
+  () => HttpResponse.json({ 
+    fullName: 'MSW Test Client',
+    phoneNumber: '+44 7700 900123' 
   })
-];
-
-// Server setup
-const server = setupServer(...handlers);
-server.listen({ onUnhandledRequest: 'warn' });
+)
 ```
 
-**Test Execution:**
+## Validation Test Results
+
+**End-to-end test successfully proves MSW interception:**
+
 ```bash
-node test-msw-standalone.mjs
+yarn test:e2e tests/e2e/msw-test.spec.ts
 ```
 
-**Results:**
-- ✅ MSW server starts successfully
-- ✅ Request interception works correctly  
-- ✅ Mock responses returned as expected
-- ✅ Console output confirms interception: `🎯 MSW intercepted /api/health request!`
+**Test verifies:**
+- ✅ Navigation to real application route (`/cases/PC-1922-1879/client-details`)
+- ✅ Express server makes API calls to real external URLs  
+- ✅ MSW intercepts and returns mock client data
+- ✅ Mock data ("MSW Test Client") displays in rendered HTML
+- ✅ No external API dependencies in test execution
 
-**Key Findings:**
+## Production Benefits
 
-1. **Full URL Required**: MSW handlers must use complete URLs (`http://localhost:3000/api/health`) not relative paths (`/api/health`) for proper interception
-2. **Same Process Interception**: MSW successfully intercepts `fetch()` calls within the same Node.js process
-3. **Logging Capability**: MSW provides clear visibility into which requests are intercepted
-4. **JSON Response Handling**: Mock responses are properly formatted and accessible
+**Clean Separation:**
+- Development: `yarn start` → Clean Express, real API calls
+- Testing: Playwright → MSW-patched Express → Intercepted API calls
+- Production: Unchanged Express deployment
 
-**Test Output:**
-```
-🚀 Starting MSW server...
-✅ MSW server is running and ready to intercept requests!
-
-🧪 Testing MSW from within the same process...
-🎯 MSW intercepted /api/health request!
-✅ Internal test successful: {
-  status: 'ok',
-  timestamp: '2025-08-19T09:06:01.294Z',
-  source: 'MSW Mock Server', 
-  message: 'MSW is working correctly!'
-}
-```
-
-## Next Steps
-
-### Phase 2: Playwright Integration (In Progress) 🔄
-
-#### 2.1 Initial Playwright Integration Attempt
-
-**Objective:** Verify MSW can intercept browser-based requests in Playwright tests.
-
-**Approach:** Use Node.js MSW server with Playwright browser context.
-
-**Implementation:**
-```javascript
-test('MSW simplest integration - browser API call interception', async ({ page }) => {
-  await page.goto('/');
-  
-  const response = await page.evaluate(async () => {
-    const res = await fetch('/api/health');
-    return await res.json();
-  });
-  
-  expect(response).toHaveProperty('source', 'MSW Mock Server');
-});
-```
-
-**Results:**
-- ❌ **Failed**: `SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON`
-- 🚨 **Root Cause**: MSW Node.js mode doesn't intercept browser requests
-- 📝 **Key Learning**: Browser context requests require MSW browser mode (Service Workers)
-
-**Key Finding:**
-- **Node.js MSW** ≠ **Browser MSW**: Different interception mechanisms
-- Node.js mode intercepts same-process `fetch()` calls
-- Browser mode requires Service Worker setup for browser requests
-
-#### 2.3 Correct Architecture Discovery ✅
-
-**Critical Finding:** MSW must run in the same process as the Express server to intercept downstream API calls.
-
-**Problem Identified:**
-```
-Playwright Process          Express Server Process       External API
-┌─────────────────┐         ┌─────────────────────┐      ┌──────────────┐
-│ MSW Server      │         │ Express App         │────→ │ Real API     │
-│ (Wrong Location)│         │ Makes API calls     │      │ Returns Real │
-└─────────────────┘         └─────────────────────┘      │ Data         │
-```
-
-**Server Output Evidence:**
-- Express server logs: `API: GET /latest/mock/cases/PC-1922-1879`
-- Real API response: `"phoneNumber": "07864422999"` (not our mock)
-- MSW server in test process: Cannot intercept Express server's API calls
-
-**Solution Required:**
-MSW must be integrated into the Express server startup, not the test process.
-
-#### 2.5 Systematic Debugging Approach ✅
-
-**Investigation Method:** Step-by-step verification to answer fundamental questions.
-
-**Questions & Findings:**
-
-1. **Is MSW server running during test execution?**
-   - ✅ **Status**: CONFIRMED - MSW is working correctly
-   - 📝 **Evidence**: `/test-msw` endpoint returns proper JSON when `NODE_ENV=test`
-
-2. **Is MSW loading correct configuration?**
-   - ✅ **Status**: CONFIRMED - MSW handlers are loaded and intercepting
-   - 📝 **Evidence**: Mock response received from MSW health endpoint
-
-3. **Is server trying to match correct URL?**
-   - ✅ **Status**: CONFIRMED - MSW intercepting downstream API calls
-   - 📝 **Evidence**: Successful interception of `https://laa-civil-case-api-uat.cloud-platform.service.justice.gov.uk/msw-health`
-
-**Root Cause Identified:**
-- ✅ **RESOLVED**: Port conflict with development server
-- 🔧 **Issue**: Multiple servers running on port 3000 (dev mode vs test mode)
-- 📋 **Solution**: Playwright webServer needs dedicated port configuration
-
-**Working Test Verification:**
-```bash
-NODE_ENV=test curl -s http://localhost:3000/test-msw
-```
-
-**Response (Successful MSW Interception):**
-```json
-{
-  "success": true,
-  "mswResponse": {
-    "status": "MSW is working!",
-    "timestamp": "2025-08-19T10:31:44.286Z", 
-    "message": "This response proves MSW is active"
-  },
-  "message": "MSW is working if you see the mock response above"
-}
-```
-
-**Key Achievement**: 🎉 **MSW + Express Integration Working!**
-- MSW successfully intercepts downstream API calls from Express server
-- Mock responses returned correctly when `NODE_ENV=test`
-- Test endpoint confirms full integration functionality
-
-#### 2.6 Playwright Configuration Improvement 🔧
-
-**Current Issue**: Port conflicts between development server and test server both using port 3000.
-
-**Recommended Solution**: Configure Playwright to use dedicated test port.
-
-**Proposed playwright.config.ts Enhancement:**
-```typescript
-export default defineConfig({
-  // ... existing config
-  
-  webServer: {
-    command: 'PORT=3001 NODE_ENV=test yarn start',
-    url: 'http://127.0.0.1:3001', 
-    port: 3001,
-    reuseExistingServer: false, // Always start fresh for tests
-    env: {
-      NODE_ENV: 'test',
-      PORT: '3001'
-    }
-  },
-  
-  use: {
-    baseURL: 'http://localhost:3001', // Updated for test port
-    // ... other settings
-  }
-});
-```
-
-**Benefits:**
-- ✅ Eliminates port conflicts with development server
-- ✅ Ensures clean test environment (dedicated process)  
-- ✅ Prevents interference from concurrent development work
-- ✅ Makes MSW integration more predictable
-
-**Next Steps:**
-- [ ] Implement dedicated test port configuration
-- [ ] Test Playwright E2E with phone number edit functionality
-- [ ] Verify MSW intercepts specific MCC API endpoints
-
-#### 2.7 Playwright Integration Success ✅
-
-**Final Test Results**: All systems working correctly!
-
-**Test Execution:**
-```bash
-yarn test:e2e msw-test.spec.ts
-```
-
-**Test Output:**
-```
-🔍 Step 1: Testing MSW health check endpoint...
-📝 Raw response: {"success":true,"mswResponse":{"status":"MSW is working!","timestamp":"2025-08-19T10:35:09.048Z","message":"This response proves MSW is active"},"message":"MSW is working if you see the mock response above"}
-
-🔍 Step 2: Checking if MSW is intercepting...
-Response success: true
-MSW response: {
-  status: 'MSW is working!',
-  timestamp: '2025-08-19T10:35:09.048Z',
-  message: 'This response proves MSW is active'
-}
-✅ MSW is successfully intercepting API calls!
-
-1 passed (1.5s)
-```
-
-**Key Achievements:**
-- ✅ **Playwright WebServer**: Starting correctly with `NODE_ENV=test`
-- ✅ **MSW Integration**: Successfully intercepting downstream API calls
-- ✅ **Express Routes**: Test endpoint properly registered and responding
-- ✅ **End-to-End Flow**: Browser → Express → MSW → Mock Response → Test Pass
-
-**Architecture Confirmed Working:**
-```
-Playwright Test     →    Express Server (NODE_ENV=test)    →    External API
-     ↓                            ↓                              ↓
-Browser Request     →    MSW Intercepts API Call         →    Mock Response
-     ↓                            ↓                              ↓  
-Test Assertion     ←    JSON Response                    ←    Returned to Browser
-```
-
-### Phase 3: Validation & Production-Ready Implementation ✅
-
-#### 3.1 Mock Data Validation Test
-
-**Objective:** Prove that MSW mock data is actually displayed in the application UI.
-
-**Enhanced Test Implementation:**
-```typescript
-test('MSW intercepts real API calls and displays mock data', async ({ page }) => {
-  // Navigate to real case details page that triggers apiService.getClientDetails
-  await page.goto('/cases/PC-1922-1879/client-details');
-  
-  // Verify MSW mock data is displayed on the page
-  await expect(page.locator('body')).toContainText('MSW Test Client');
-  await expect(page.locator('body')).toContainText('+44 7700 900123');
-  await expect(page.locator('body')).toContainText('msw.test@example.com');
-  await expect(page.locator('body')).toContainText('123 MSW Test Street');
-  await expect(page.locator('body')).toContainText('MSW 123');
-});
-```
-
-**Test Results:**
-```
-🔍 Testing MSW with real application route...
-📝 Page content length: 6639
-🔍 Checking for MSW mock data on the page...
-✅ Mock client name found: MSW Test Client
-✅ Mock phone number found: +44 7700 900123
-✅ Mock email found: msw.test@example.com
-✅ Mock address found: 123 MSW Test Street
-✅ Mock postcode found: MSW 123
-✅ Case reference verified: PC-1922-1879
-🎉 SUCCESS: MSW intercepted apiService.getClientDetails and mock data is displayed!
-
-1 passed (1.9s)
-```
-
-**Key Validation:**
-- ✅ **Real API Interception**: MSW successfully intercepts `apiService.getClientDetails()` calls
-- ✅ **Mock Data Display**: All mock values from MSW handler appear correctly in the UI
-- ✅ **End-to-End Flow**: Browser → Express → apiService → MSW → mock response → UI rendering works perfectly
-- ✅ **No External Dependencies**: Test runs independently without calling real APIs
-
-#### 3.2 Cleanup & Production Readiness
-
-**Artificial Test Infrastructure Removed:**
-- ❌ `testMSWController.ts` (deleted)
-- ❌ `/test-msw` route (removed from routes/index.ts)
-- ❌ Fake `/msw-health` endpoint handler (removed)
-
-**Production-Ready Components:**
-- ✅ `src/app.ts` - MSW integrated into Express server startup
-- ✅ `tests/e2e/mocks/handlers/api.ts` - Real API endpoint handlers
-- ✅ `tests/e2e/msw-test.spec.ts` - Comprehensive validation test
-- ✅ `playwright.config.ts` - NODE_ENV=test configuration
-
-### Phase 4: Next Steps - MCC-Specific Implementation 🚀
-
-**Ready for Production Implementation:**
-
-- [ ] **Port Configuration**: Implement dedicated test port (3001) to avoid conflicts
-- [ ] **Phone Number Edit**: Test realistic MCC user journey with MSW mocks
-- [ ] **API Endpoint Mapping**: Mock all required MCC civil case API endpoints
-- [ ] **Test Data Management**: Create reusable mock response datasets
-- [ ] **Performance Analysis**: Measure test execution time vs real API calls
-- [ ] **CI/CD Integration**: Configure MSW for automated testing pipeline
-
-## Summary & Results
-
-### ✅ **Proof of Concept: SUCCESSFUL**
-
-**MSW + Playwright Integration for MCC E2E Testing is fully functional.**
-
-**Key Technical Achievements:**
-
-1. **Standalone MSW Verification**: ✅ Confirmed MSW core functionality
-2. **Express Server Integration**: ✅ MSW intercepts downstream API calls  
-3. **Playwright E2E Integration**: ✅ End-to-end testing with mocked APIs
-4. **Environment Configuration**: ✅ `NODE_ENV=test` triggers MSW activation
-
-**Performance Benefits Demonstrated:**
-- **Speed**: Mock responses return instantly vs network latency
-- **Reliability**: No dependency on external API availability  
-- **Isolation**: Tests run independently without side effects
+**Performance & Reliability:**
+- **Speed**: Instant mock responses vs network latency
+- **Isolation**: Tests independent of external API availability
 - **Flexibility**: Full control over API response scenarios
+- **Deterministic**: Consistent test data across runs
 
-**Production Readiness:**
-- ✅ **Architecture Validated**: MSW-in-Express pattern works correctly
-- ✅ **Test Framework Ready**: Playwright integration confirmed
-- ✅ **Development Workflow**: Existing dev server unaffected
-- 🔧 **Minor Enhancement**: Dedicated test port recommended
+## Implementation Files
 
-### Recommended Implementation Path
+**Required for MSW Integration:**
+- `scripts/test-server-with-msw.js` - Test server with MSW patching
+- `tests/e2e/mocks/handlers/api.js` - MSW request handlers
+- `tests/e2e/msw-test.spec.ts` - Validation test
+- `playwright.config.ts` - Updated webServer configuration
 
-1. **Immediate**: Use current setup for phone number edit E2E test
-2. **Short-term**: Implement dedicated test port configuration  
-3. **Medium-term**: Expand to cover all MCC API endpoints
-4. **Long-term**: Full test suite migration to MSW-based mocking
+**Status:** Ready for MCC E2E testing implementation.
 
-**Status**: Phase 2 Complete ✅ - **Ready for MCC Implementation**
+## Approach Comparison
 
-## Technical Notes
+### vs. Non-Playwright E2E Tests with Test Doubles
 
-### MSW Architecture
-- **Node.js Mode**: Intercepts requests at the network level within the Node.js process
-- **Browser Mode**: Uses Service Workers for browser-based interception
-- **Handler Pattern**: Declarative request/response mapping
+**Current Test Architecture:**
+- Controller tests use Jest with test doubles for API service mocking
+- Validation tests mock `apiService.getClientDetails()` at the service layer
+- Fast unit-level testing with isolated components
 
-### Current Limitations Identified
-- URL pattern matching requires careful configuration
-- Integration with Playwright test lifecycle needs investigation
-- Performance impact on test execution time unknown
+**MSW + Playwright Advantages:**
+- ✅ **Full browser rendering** - Tests actual HTML output, CSS interactions, JavaScript behavior
+- ✅ **Complete request flow** - HTTP requests go through full Express middleware stack
+- ✅ **Real API URLs** - Tests actual network calls rather than service layer abstractions
+- ✅ **User interaction testing** - Click events, form submissions, navigation flows
+- ✅ **Visual regression potential** - Could extend to screenshot comparisons
 
-## Files Created
+**MSW + Playwright Trade-offs:**
+- ❌ **Slower execution** - Browser startup overhead vs in-memory test doubles
+- ❌ **More complex setup** - Multiple processes (Playwright + Express + MSW) vs single Jest process
+- ❌ **Higher resource usage** - Full browser instances vs lightweight mocks
 
-- `test-msw-standalone.mjs` - Standalone MSW verification script
-- `EL-2577-MSW-PLAYWRIGHT-SPIKE.md` - This documentation
+**Recommendation:** Complementary approaches
+- **Controller tests** - Continue with Jest + test doubles for validation logic, edge cases, error handling
+- **E2E tests** - Use MSW + Playwright for critical user journeys, integration flows
 
-## Dependencies
+### vs. Network Layer Interception
 
-- MSW: Already installed in project
-- Node.js: v24.4.1 (ES modules support required)
-- Fetch API: Available in Node.js for testing
+**Alternative: HTTP Proxy/Middleware Approach**
+```javascript
+// Hypothetical network proxy
+app.use('/api/*', (req, res, next) => {
+  if (process.env.NODE_ENV === 'test') {
+    return mockApiResponse(req, res);
+  }
+  next(); // Forward to real API
+});
+```
+
+**Network Proxy Advantages:**
+- ✅ **Simpler mental model** - Traditional middleware pattern
+- ✅ **Express-native** - Uses familiar Express routing concepts
+- ✅ **Explicit configuration** - Clear test/production branching
+
+**MSW Advantages:**
+- ✅ **Zero Express modification** - No test code in production application
+- ✅ **External API URLs** - Intercepts real URLs without routing changes
+- ✅ **Industry standard** - MSW widely adopted for API mocking
+- ✅ **Request/response transparency** - Handlers mirror actual API contracts
+- ✅ **Development isolation** - MSW doesn't affect normal `yarn start`
+
+### CI Pipeline Implications
+
+**Current CI Architecture:**
+- Jest controller tests run in parallel
+- Fast feedback loop for validation logic
+- No external dependencies
+
+**MSW + Playwright Integration:**
+- ✅ **Deterministic** - No external API calls, consistent test data
+- ✅ **Parallel execution** - Multiple Playwright workers supported
+- ✅ **Artifact generation** - HTML reports, screenshots, traces for debugging
+- ❌ **Increased build time** - Browser setup overhead
+- ❌ **Resource requirements** - Higher memory/CPU usage for browser instances
+
+**CI Strategy Recommendation:**
+```yaml
+# Proposed CI pipeline structure
+test-unit:
+  - Jest controller tests (validation, error handling, business logic)
+  - Fast feedback, high coverage
+  
+test-integration:  
+  - MSW + Playwright E2E tests (critical user journeys)
+  - Run on feature branches and main
+  - Generate visual artifacts for debugging
+```
+
+### Validation Test Case Analysis
+
+**Current Validation Tests:**
+- Client details validation (required fields, format checking)
+- Phone number validation (format, length, special cases)
+- Date of birth validation (age restrictions, format validation)
+
+**MSW + Playwright Benefits for Validation:**
+- ✅ **Full form interaction** - Tests actual form submission, error display, user experience
+- ✅ **Server-side validation** - Tests Express middleware validation stack
+- ✅ **Error message rendering** - Verifies error messages appear correctly in UI
+- ✅ **Browser validation** - Tests HTML5 validation, JavaScript form enhancement
+
+**Example E2E Validation Test:**
+```javascript
+test('phone number validation displays appropriate error messages', async ({ page }) => {
+  await page.goto('/cases/PC-1922-1879/edit-phone-number');
+  
+  // Test invalid phone number
+  await page.fill('[name="phoneNumber"]', 'invalid');
+  await page.click('button[type="submit"]');
+  
+  // Verify error message appears
+  await expect(page.locator('.error-message')).toContainText('Enter a valid UK phone number');
+  
+  // Verify API not called with invalid data
+  // MSW would log any unexpected API calls
+});
+```
+
+**Complementary Testing Strategy:**
+1. **Unit tests** - Validation logic, edge cases, error conditions
+2. **Controller tests** - Middleware integration, request/response handling  
+3. **E2E tests** - Critical user journeys, form interactions, error display
+
+This layered approach provides comprehensive coverage while maintaining fast feedback loops and manageable CI execution times.
 
 ---
 
-**Status**: Phase 2 Complete ✅ - **MSW + Playwright Integration SUCCESSFUL**  
-**Next Review**: Ready for MCC phone number edit implementation
