@@ -3,7 +3,7 @@ import express from 'express';
 import chalk from 'chalk';
 import morgan from 'morgan';
 import compression from 'compression';
-import { setupCsrf, setupMiddlewares, setupConfig } from '#middleware/index.js';
+import { setupCsrf, setupMiddlewares, setupConfig, setupLocaleMiddleware } from '#middleware/index.js';
 import session from 'express-session';
 import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware, displayAsciiBanner } from '#utils/index.js';
 import config from '#config.js';
@@ -56,6 +56,9 @@ const createApp = (): express.Application => {
 
 	// Set up Cross-Site Request Forgery (CSRF) protection
 	setupCsrf(app);
+
+	// Set up locale middleware for internationalization
+	app.use(setupLocaleMiddleware);
 
 	// Set up Nunjucks as the template engine
 	nunjucksSetup(app);

@@ -2,7 +2,7 @@ import nunjucks from 'nunjucks';
 import path from 'node:path';
 import type { Application } from 'express';
 import { getLatestBuildFile } from './buildHelper.js';
-import { formatDate } from '#src/scripts/helpers/index.js';
+import { formatDate, t, getText, hasText } from '#src/scripts/helpers/index.js';
 
 /**
  * Sets up Nunjucks as the template engine for the given Express application.
@@ -49,4 +49,9 @@ export const nunjucksSetup = (app: Application): void => {
 
   // Add custom filters
   nunjucksEnv.addFilter('formatDate', formatDate);
+
+  // Add global variables
+  nunjucksEnv.addGlobal('t', t);
+  nunjucksEnv.addGlobal('getText', getText);
+  nunjucksEnv.addGlobal('hasText', hasText);
 };

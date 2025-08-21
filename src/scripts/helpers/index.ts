@@ -36,6 +36,20 @@ export {
   validateForm
 } from './validateForm.js';
 
+export {
+  createLocaleLoader,
+  getLocaleLoader,
+  getDefaultLocaleLoader,
+  getText,
+  hasText,
+  clearLocaleCache,
+  loadLocaleData,
+  t,
+  type ExpressLocaleLoader,
+  type LocaleData,
+  type LocaleLoader
+} from './localeLoader.js';
+
 // Error handling utilities
 export {
   extractErrorMessage,
