@@ -17,7 +17,7 @@ import { expect } from 'chai';
 import { validateEditClientAddress } from '#src/middlewares/clientAddressSchema.js';
 import { validationResult } from 'express-validator';
 import { formatValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
-import { initializeI18nextSync } from '#src/scripts/helpers/index.js';
+import { initializeI18nextSync, t } from '#src/scripts/helpers/index.js';
 
 // Mock Express request object for testing
 function createMockRequest(bodyData: Record<string, unknown>) {
@@ -193,7 +193,7 @@ describe('Client Address Schema Validation', () => {
         
         const changeError = errors.array().find(error => error.summaryMessage.includes('Update the client address'));
         expect(changeError).to.exist;
-        expect(changeError?.summaryMessage).to.equal('Update the client address, or select \'Cancel\'');
+        expect(changeError?.summaryMessage).to.equal(t('forms.clientDetails.address.validationError.notChanged'));
       });
 
       it('should pass validation when address changes', async () => {
@@ -241,7 +241,7 @@ describe('Client Address Schema Validation', () => {
         // Should detect as unchanged after trimming
         expect(errors.isEmpty()).to.be.false;
         
-        const changeError = errors.array().find(error => error.summaryMessage.includes('Update the client address'));
+        const changeError = errors.array().find(error => error.summaryMessage.includes(t('forms.clientDetails.address.validationError.notChanged')));
         expect(changeError).to.exist;
       });
     });

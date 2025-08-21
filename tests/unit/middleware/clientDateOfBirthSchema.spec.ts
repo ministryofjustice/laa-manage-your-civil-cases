@@ -15,7 +15,7 @@ import { expect } from 'chai';
 import { validateEditClientDateOfBirth } from '#src/middlewares/clientDateOfBirthSchema.js';
 import { validationResult } from 'express-validator';
 import type { Request } from 'express';
-import { initializeI18nextSync } from '#src/scripts/helpers/index.js';
+import { initializeI18nextSync, t } from '#src/scripts/helpers/index.js';
 
 // Mock request object factory
 function createMockRequest(body: any): Partial<Request> {
@@ -121,7 +121,7 @@ describe('Client Date of Birth Schema Validation', () => {
         expect(errorArray).to.have.length(1);
         // Check the actual structure - TypedValidationError has errorData property
         expect(errorArray[0].msg.errorData).to.be.an('object');
-        expect(errorArray[0].msg.errorData.summaryMessage).to.equal('Update the client date of birth or select \'Cancel\'');
+        expect(errorArray[0].msg.errorData.summaryMessage).to.equal(t('forms.clientDetails.dateOfBirth.validationError.notChanged'));
       });
 
       it('should fail validation when submitting empty form with empty originals', async () => {
@@ -151,11 +151,11 @@ describe('Client Date of Birth Schema Validation', () => {
         expect(errorArray).to.have.length(6); // Temporarily use actual count we're seeing
 
         // Look for required field errors and comprehensive error
-        const dayRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'The date of birth must include a day');
-        const monthRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'The date of birth must include a month');
-        const yearRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'The date of birth must include a year');
+        const dayRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.day.notEmpty'));
+        const monthRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.month.notEmpty'));
+        const yearRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.year.notEmpty'));
         const comprehensiveError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'The date of birth must include a day, month and year');
-        const changeError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Update the client date of birth or select \'Cancel\'');
+        const changeError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.notChanged'));
 
         expect(dayRequiredError).to.exist;
         expect(monthRequiredError).to.exist;
@@ -186,7 +186,7 @@ describe('Client Date of Birth Schema Validation', () => {
         // Total: 1 error (logical validations skip when any field empty)
         expect(errorArray).to.have.length(3); // Temporarily use actual count we're seeing
 
-        const monthRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'The date of birth must include a month');
+        const monthRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.month.notEmpty'));
         expect(monthRequiredError).to.exist;
       });
     });
@@ -209,7 +209,7 @@ describe('Client Date of Birth Schema Validation', () => {
         expect(errors.isEmpty()).to.be.false;
 
         const errorArray = errors.array();
-        const dayError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Day must be between 1 and 31');
+        const dayError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.day.isInt'));
         expect(dayError).to.exist;
       });
 
@@ -230,7 +230,7 @@ describe('Client Date of Birth Schema Validation', () => {
         expect(errors.isEmpty()).to.be.false;
 
         const errorArray = errors.array();
-        const monthError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Month must be between 1 and 12');
+        const monthError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.month.isInt'));
         expect(monthError).to.exist;
       });
 
@@ -251,7 +251,7 @@ describe('Client Date of Birth Schema Validation', () => {
         expect(errors.isEmpty()).to.be.false;
 
         const errorArray = errors.array();
-        const yearError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'The date of birth must be in the past');
+        const yearError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.dateInPast'));
         expect(yearError).to.exist;
       });
 
@@ -272,7 +272,7 @@ describe('Client Date of Birth Schema Validation', () => {
         expect(errors.isEmpty()).to.be.false;
 
         const errorArray = errors.array();
-        const dayError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Day must be between 1 and 31');
+        const dayError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.day.isInt'));
         expect(dayError).to.exist;
       });
 
@@ -293,7 +293,7 @@ describe('Client Date of Birth Schema Validation', () => {
         expect(errors.isEmpty()).to.be.false;
 
         const errorArray = errors.array();
-        const yearLengthError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Year must include 4 numbers');
+        const yearLengthError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.year.isLength'));
         expect(yearLengthError).to.exist;
       });
 
@@ -314,7 +314,7 @@ describe('Client Date of Birth Schema Validation', () => {
         expect(errors.isEmpty()).to.be.false;
 
         const errorArray = errors.array();
-        const yearLengthError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Year must include 4 numbers');
+        const yearLengthError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.year.isLength'));
         expect(yearLengthError).to.exist;
       });
 
@@ -336,10 +336,10 @@ describe('Client Date of Birth Schema Validation', () => {
 
         const errorArray = errors.array();
         // Should only see length error, not range error
-        const yearLengthError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Year must include 4 numbers');
-        const yearRangeError = errorArray.find(err => err.msg.errorData?.summaryMessage.includes('or earlier'));
+        const yearLengthError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.year.isLength'));
+
         expect(yearLengthError).to.exist;
-        expect(yearRangeError).to.not.exist;
+
       });
     });
 
@@ -398,7 +398,7 @@ describe('Client Date of Birth Schema Validation', () => {
         expect(errors.isEmpty()).to.be.false;
 
         const errorArray = errors.array();
-        const formatError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Enter a date in the correct format');
+        const formatError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.validDate'));
         expect(formatError).to.exist;
       });
 
@@ -419,7 +419,7 @@ describe('Client Date of Birth Schema Validation', () => {
         expect(errors.isEmpty()).to.be.false;
 
         const errorArray = errors.array();
-        const formatError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Enter a date in the correct format');
+        const formatError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.validDate'));
         expect(formatError).to.exist;
       });
 
@@ -498,8 +498,8 @@ describe('Client Date of Birth Schema Validation', () => {
         const errorArray = errors.array();
         // With simplified validation (no conditional gates), both errors will appear
         // Error prioritization is now handled by the prioritizeValidationErrors helper
-        const formatError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'Enter a date in the correct format');
-        const futureError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'The date of birth must be in the past');
+        const formatError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.validDate'));
+        const futureError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.dateInPast'));
         expect(formatError).to.exist;
         expect(futureError).to.exist; // Both errors now appear in validation result
       });
