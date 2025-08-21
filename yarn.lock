@@ -933,15 +933,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/i18next-fs-backend@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "@types/i18next-fs-backend@npm:1.2.0"
-  dependencies:
-    i18next-fs-backend: "npm:*"
-  checksum: 10c0/5f1b6f07ecb78d27e92002b00526c681269f12d7b2a2dba1e009eff5aef1c6c42d30887a0df81828f42f86338552d8b2ded6853c0105ed4a836d63996abf344c
-  languageName: node
-  linkType: hard
-
 "@types/istanbul-lib-coverage@npm:^2.0.1":
   version: 2.0.6
   resolution: "@types/istanbul-lib-coverage@npm:2.0.6"
@@ -3643,13 +3634,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next-fs-backend@npm:*, i18next-fs-backend@npm:^2.6.0":
-  version: 2.6.0
-  resolution: "i18next-fs-backend@npm:2.6.0"
-  checksum: 10c0/d54169d0fe757f2b0ec31ef5dcf5fe57e209a1afface07b397ec857e18a695c122aab79567d54b98e01185f6a5809cc9d881a412942fb6a06bbbde95a926690b
-  languageName: node
-  linkType: hard
-
 "i18next-http-middleware@npm:^3.8.0":
   version: 3.8.0
   resolution: "i18next-http-middleware@npm:3.8.0"
@@ -4673,7 +4657,6 @@ __metadata:
     "@types/express-session": "npm:^1.18.1"
     "@types/figlet": "npm:^1.7.0"
     "@types/fs-extra": "npm:^11.0.4"
-    "@types/i18next-fs-backend": "npm:^1.2.0"
     "@types/jsdom": "npm:^21.1.7"
     "@types/livereload": "npm:^0.9.5"
     "@types/mocha": "npm:^10.0.10"
@@ -4718,7 +4701,6 @@ __metadata:
     http-errors: "npm:~2.0.0"
     husky: "npm:^9.1.7"
     i18next: "npm:^25.4.0"
-    i18next-fs-backend: "npm:^2.6.0"
     i18next-http-middleware: "npm:^3.8.0"
     jsdom: "npm:^26.1.0"
     libphonenumber-js: "npm:^1.12.10"
