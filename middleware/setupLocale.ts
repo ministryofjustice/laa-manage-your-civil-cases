@@ -4,7 +4,7 @@
  */
 
 import type { Request, Response, NextFunction } from 'express';
-import { t, getText, hasText, type ExpressLocaleLoader } from '#src/scripts/helpers/localeLoader.js';
+import { t, getText, hasText, type ExpressLocaleLoader } from '#src/scripts/helpers/index.js';
 
 /**
  * Express middleware to inject locale data into template locals

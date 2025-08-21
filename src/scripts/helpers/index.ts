@@ -58,25 +58,15 @@ export {
   handlePostEditForm
 } from './formControllerHelpers.js';
 
-// Temporarily disabled locale exports to isolate CI issue
-// export {
-//   createLocaleLoader,
-//   getLocaleLoader,
-//   getDefaultLocaleLoader,
-//   getText,
-//   hasText,
-//   clearLocaleCache,
-//   loadLocaleData,
-//   t,
-//   type ExpressLocaleLoader,
-//   type LocaleData,
-//   type LocaleLoader
-// } from './localeLoader.js';
-
-// // Locale type definitions
-// export {
-//   type LocaleStructure
-// } from './localeTypes.js';
+export {
+  initializeI18nextSync,
+  i18next,
+  t,
+  getText,
+  hasText,
+  nunjucksT,
+  type ExpressLocaleLoader
+} from './i18nLoader.js';
 
 // Error handling utilities
 export {
