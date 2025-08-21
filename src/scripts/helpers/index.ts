@@ -39,7 +39,12 @@ export {
 
 // Date validation utilities
 export {
-  extractAndConvertDateFields
+  isRequestBodyWithDates,
+  parseDateString,
+  extractDateFormData,
+  extractOriginalDateData,
+  extractAndConvertDateFields,
+  handleDateOfBirthValidationErrors
 } from './ValidationDateHelpers.js';
 
 // Form validation utilities
@@ -53,24 +58,25 @@ export {
   handlePostEditForm
 } from './formControllerHelpers.js';
 
-export {
-  createLocaleLoader,
-  getLocaleLoader,
-  getDefaultLocaleLoader,
-  getText,
-  hasText,
-  clearLocaleCache,
-  loadLocaleData,
-  t,
-  type ExpressLocaleLoader,
-  type LocaleData,
-  type LocaleLoader
-} from './localeLoader.js';
+// Temporarily disabled locale exports to isolate CI issue
+// export {
+//   createLocaleLoader,
+//   getLocaleLoader,
+//   getDefaultLocaleLoader,
+//   getText,
+//   hasText,
+//   clearLocaleCache,
+//   loadLocaleData,
+//   t,
+//   type ExpressLocaleLoader,
+//   type LocaleData,
+//   type LocaleLoader
+// } from './localeLoader.js';
 
-// Locale type definitions
-export {
-  type LocaleStructure
-} from './localeTypes.js';
+// // Locale type definitions
+// export {
+//   type LocaleStructure
+// } from './localeTypes.js';
 
 // Error handling utilities
 export {
@@ -83,3 +89,10 @@ export {
   createProcessedError,
   extractAndLogError,
 } from './errorHandler.js';
+
+export {
+  createChangeDetectionValidator,
+  TypedValidationError,
+  formatValidationError,
+  handleValidationErrors,
+} from './ValidationErrorHelpers.js'

@@ -133,7 +133,25 @@
         "label": "Date of birth",
         "legend": "Client date of birth",
         "pageTitle": "Client date of birth – {caseReference} – {serviceName} – GOV.UK",
-        "hint": "For example, 27 3 2007"
+        "hint": "For example, 27 3 2007",
+        "validationError": {
+          "day":{
+            "notEmpty": "The date of birth must include a day",
+            "isInt": "Day must be between 1 and 31"
+          },
+          "month":{
+            "notEmpty": "The date of birth must include a month",
+            "isInt": "Month must be between 1 and 12"
+          },
+          "year":{
+            "notEmpty": "The date of birth must include a year",
+            "isLength": "Year must include 4 numbers",
+            "isInt": "Year must be a valid number"
+          },
+          "validDate": "Enter a date in the correct format",
+          "dateInPast": "The date of birth must be in the past",
+          "notChanged": "Update the client date of birth or select 'Cancel'"
+        }
       },
       "email": {
         "label": "Email",
@@ -147,7 +165,15 @@
         "safeToCall": "Is it safe to call this number?",
         "announceCall": "Can you say the call is from Civil Legal Advice?",
         "notSafeToCall": "The client is not safe to call",
-        "doNotAnnounce": "Do not say the call is from Civil Legal Advice"
+        "doNotAnnounce": "Do not say the call is from Civil Legal Advice",
+        "validationError":{
+          "invalidFormat": "Enter the phone number in the correct format",
+          "notEmpty":{
+            "summaryMessage": "Enter the client phone number",
+            "inlineMessage": "Enter the phone number"
+          },
+          "notChanged": "Change information on the page, or select 'Cancel'"
+        }
       },
       "address": {
         "label": "Address",
@@ -173,6 +199,11 @@
         "passphrase": "Passphrase",
         "notSafeToCall": "The third party is not safe to call",
         "passphraseNotSetUp": "No, {reason}"
+      }
+    },
+    "search":{
+      "validationError":{
+        "notEmpty": "Enter some case details"
       }
     }
   },

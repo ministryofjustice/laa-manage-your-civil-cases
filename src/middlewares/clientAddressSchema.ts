@@ -1,5 +1,6 @@
 import { checkSchema } from 'express-validator';
 import { createChangeDetectionValidator } from '#src/scripts/helpers/ValidationErrorHelpers.js';
+import { t } from '#src/scripts/helpers/localeLoader.js';
 
 /**
  * Validation middleware when user edits client's contact address.
@@ -36,7 +37,7 @@ export const validateEditClientAddress = (): ReturnType<typeof checkSchema> =>
         { current: 'postcode', original: 'existingPostcode' }
       ],
       {
-        summaryMessage: 'Update the client address, or select \'Cancel\'',
+        summaryMessage: t.forms.clientDetails.address.validationError.notChanged,
         inlineMessage: ''
       }
     ),

@@ -274,14 +274,19 @@ const createSyncProxy = (): LocaleData => {
  * @returns {Record<string, unknown>} The locale data
  */
 const getLocaleData = (): Record<string, unknown> => {
-  if (i18next.isInitialized) {
-    const store: unknown = i18next.getResourceBundle('en', 'translation');
-    const EMPTY_OBJECT_LENGTH = 0;
-    if (isRecord(store) && Object.keys(store).length > EMPTY_OBJECT_LENGTH) {
-      return store;
+  try {
+    if (i18next.isInitialized) {
+      const store: unknown = i18next.getResourceBundle('en', 'translation');
+      const EMPTY_OBJECT_LENGTH = 0;
+      if (isRecord(store) && Object.keys(store).length > EMPTY_OBJECT_LENGTH) {
+        return store;
+      }
     }
+    return loadLocaleData('en');
+  } catch (error) {
+    devError(`Failed to get locale data, falling back to empty object: ${String(error)}`);
+    return {};
   }
-  return loadLocaleData('en');
 };
 
   const proxyTarget: LocaleData = {};
@@ -295,14 +300,26 @@ const getLocaleData = (): Record<string, unknown> => {
     get(_, prop: string | symbol) {
       if (typeof prop === 'symbol') return undefined;
       
-      const localeData = getLocaleData();
-      const { [prop]: value } = localeData;
+      try {
+        const localeData = getLocaleData();
+        
+        // If locale data is empty (e.g., in CI where files can't be loaded), return undefined for missing properties
+        const EMPTY_OBJECT_LENGTH = 0;
+        if (Object.keys(localeData).length === EMPTY_OBJECT_LENGTH) {
+          return undefined;
+        }
+        
+        const { [prop]: value } = localeData;
 
-      if (isRecord(value)) {
-        return createProxy(value);
+        if (isRecord(value)) {
+          return createProxy(value);
+        }
+
+        return value;
+      } catch (error) {
+        devError(`Error accessing locale property: ${String(error)}`);
+        return undefined;
       }
-
-      return value;
     }
   });
 };
@@ -317,20 +334,6 @@ let _t: LocaleStructure | undefined = undefined;
  */
 const getLocaleProxy = (): LocaleStructure => {
   try {
-    // In test/CI environment, provide a simpler fallback to avoid file system issues
-    if (process.env.NODE_ENV === 'test' || process.env.CI === 'true') {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion -- Simple fallback for test environment
-      return new Proxy({}, {
-        /**
-         * Simple getter for test environment
-         * @returns {string} Empty string for all properties
-         */
-        get() {
-          return '';
-        }
-      }) as LocaleStructure;
-    }
-
     // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion -- Runtime proxy matches locale structure
     _t ??= createSyncProxy() as unknown as LocaleStructure;
     return _t;

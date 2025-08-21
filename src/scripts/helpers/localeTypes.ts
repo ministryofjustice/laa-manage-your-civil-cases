@@ -1,6 +1,7 @@
 /**
  * Auto-generated TypeScript types for locale data
- * Generated on: 2025-08-21T12:52:46.000Z
+ *
+ * DO NOT EDIT MANUALLY - This file is auto-generated
  */
 
 export interface LocaleStructure {

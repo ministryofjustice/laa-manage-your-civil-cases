@@ -1,7 +1,7 @@
-import { hasProperty, isRecord } from '#src/scripts/helpers/dataTransformers.js';
 import { checkSchema, type Meta } from 'express-validator';
 import { isValidPhoneNumber } from 'libphonenumber-js';
-import { TypedValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
+import { hasProperty, isRecord, TypedValidationError } from '#src/scripts/helpers/index.js';
+import { t } from '#src/scripts/helpers/localeLoader.js';
 
 interface ClientPhoneNumberBody {
   phoneNumber: string;
@@ -56,8 +56,8 @@ export const validateEditClientPhoneNumber = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: 'Enter the phone number in the correct format',
-          inlineMessage: 'Enter the phone number in the correct format'
+          summaryMessage: t.forms.clientDetails.phoneNumber.validationError.invalidFormat,
+          inlineMessage: t.forms.clientDetails.phoneNumber.validationError.invalidFormat
         })
       },
       notEmpty: {
@@ -66,8 +66,8 @@ export const validateEditClientPhoneNumber = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: 'Enter the client phone number',
-          inlineMessage: 'Enter the phone number'
+          summaryMessage: t.forms.clientDetails.phoneNumber.validationError.notEmpty.summaryMessage,
+          inlineMessage: t.forms.clientDetails.phoneNumber.validationError.notEmpty.inlineMessage
         })
       },
     },
@@ -95,7 +95,7 @@ export const validateEditClientPhoneNumber = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: 'Change information on the page, or select \'Cancel\'',
+          summaryMessage: t.forms.clientDetails.phoneNumber.validationError.notChanged,
           inlineMessage: '',
         })
       },

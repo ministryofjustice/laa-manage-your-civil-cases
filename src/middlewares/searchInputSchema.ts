@@ -1,5 +1,6 @@
 import { checkSchema } from 'express-validator';
-import { TypedValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
+import { TypedValidationError } from '#src/scripts/helpers/index.js';
+import { t } from '#src/scripts/helpers/localeLoader.js';
 
 /**
  * Validation middleware for search form input.
@@ -17,8 +18,8 @@ export const validateSearchInput = (): ReturnType<typeof checkSchema> =>
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: 'Enter some case details',
-          inlineMessage: 'Enter some case details'
+          summaryMessage: t.forms.search.validationError.notEmpty,
+          inlineMessage: t.forms.search.validationError.notEmpty
         })
       }
     }

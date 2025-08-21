@@ -39,7 +39,8 @@ function generateLocaleTypes(localeData) {
 
   return `/**
  * Auto-generated TypeScript types for locale data
- * Generated on: ${new Date().toISOString()}
+ *
+ * DO NOT EDIT MANUALLY - This file is auto-generated
  */
 
 ${interfaceContent}
