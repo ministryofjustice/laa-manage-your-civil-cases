@@ -107,7 +107,7 @@ describe('Form Validation Rules', () => {
       it('should pass validation when email address is valid and differs from existing value', () => {
         const fields: ValidationFields = {
           emailAddress: 'john@example.com',
-          existingEmail: 'jane@example.com'
+          existingEmailAddress: 'jane@example.com'
         };
         
         const result = getValidatedFormResult(fields);
@@ -119,7 +119,7 @@ describe('Form Validation Rules', () => {
       it('should reject unchanged email address and suggest cancellation when email matches existing value', () => {
         const fields: ValidationFields = {
           emailAddress: 'john@example.com',
-          existingEmail: 'john@example.com'
+          existingEmailAddress: 'john@example.com'
         };
         
         const result = getValidatedFormResult(fields);
@@ -136,7 +136,7 @@ describe('Form Validation Rules', () => {
       it('should allow empty email addresses without triggering unchanged validation (optional field behavior)', () => {
         const fields: ValidationFields = {
           emailAddress: '',
-          existingEmail: ''
+          existingEmailAddress: ''
         };
         
         const result = getValidatedFormResult(fields);
@@ -152,7 +152,7 @@ describe('Form Validation Rules', () => {
       it('should reject invalid email format with GOV.UK standard error message', () => {
         const fields: ValidationFields = {
           emailAddress: 'invalid-email',
-          existingEmail: 'valid@example.com'
+          existingEmailAddress: 'valid@example.com'
         };
         
         const result = getValidatedFormResult(fields);
@@ -185,7 +185,7 @@ describe('Form Validation Rules', () => {
         validEmails.forEach(email => {
           const fields: ValidationFields = {
             emailAddress: email,
-            existingEmail: 'different@example.com'
+            existingEmailAddress: 'different@example.com'
           };
           
           const result = getValidatedFormResult(fields);
@@ -200,7 +200,7 @@ describe('Form Validation Rules', () => {
         invalidEmails.forEach(email => {
           const fields: ValidationFields = {
             emailAddress: email,
-            existingEmail: 'different@example.com'
+            existingEmailAddress: 'different@example.com'
           };
           
           const result = getValidatedFormResult(fields);
@@ -216,7 +216,7 @@ describe('Form Validation Rules', () => {
       it('should handle empty email correctly (no format error for empty)', () => {
         const fields: ValidationFields = {
           emailAddress: '',
-          existingEmail: 'existing@example.com'
+          existingEmailAddress: 'existing@example.com'
         };
         
         const result = getValidatedFormResult(fields);
@@ -231,7 +231,7 @@ describe('Form Validation Rules', () => {
       it('should handle whitespace in email correctly', () => {
         const fields: ValidationFields = {
           emailAddress: '   ',
-          existingEmail: 'existing@example.com'
+          existingEmailAddress: 'existing@example.com'
         };
         
         const result = getValidatedFormResult(fields);
@@ -250,7 +250,7 @@ describe('Form Validation Rules', () => {
           fullName: 'John Doe',
           existingFullName: 'Jane Doe',
           emailAddress: 'john@example.com',
-          existingEmail: 'jane@example.com'
+          existingEmailAddress: 'jane@example.com'
         };
         
         const result = getValidatedFormResult(fields);
@@ -264,7 +264,7 @@ describe('Form Validation Rules', () => {
           fullName: '',
           existingFullName: 'Jane Doe',
           emailAddress: 'invalid-email',
-          existingEmail: 'valid@example.com'
+          existingEmailAddress: 'valid@example.com'
         };
         
         const result = getValidatedFormResult(fields);
@@ -278,7 +278,7 @@ describe('Form Validation Rules', () => {
       it('should handle missing name fields gracefully', () => {
         const fields: ValidationFields = {
           emailAddress: 'test@example.com',
-          existingEmail: 'different@example.com'
+          existingEmailAddress: 'different@example.com'
         };
         
         const result = getValidatedFormResult(fields);

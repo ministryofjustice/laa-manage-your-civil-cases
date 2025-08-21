@@ -1,33 +1,22 @@
 import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
-import { apiService } from '#src/services/apiService.js';
-import { safeString, hasProperty, validateForm } from '#src/scripts/helpers/index.js';
-import { type Result, validationResult } from 'express-validator';
-import { formatValidationError, type ValidationErrorData } from '#src/scripts/helpers/ValidationErrorHelpers.js';
+import { handleGetEditForm, handlePostEditForm, extractFormFields } from '#src/scripts/helpers/index.js';
 
-const BAD_REQUEST = 400;
 
 /**
  * Renders the edit client name form for a given case reference.
  * @param {Request} req - Express request object
  * @param {Response} res - Express response object
  * @param {NextFunction} next - Express next middleware function
+ * @returns {Promise<void>}
  */
 export async function getEditClientName(req: Request, res: Response, next: NextFunction): Promise<void> {
-  const caseReference = safeString(req.params.caseReference);
-  try {
-    const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
-    let currentName = '';
-    if (response.status === 'success' && response.data !== null) {
-      currentName = safeString(response.data.fullName);
-    }
-    res.render('case_details/edit-client-name.njk', {
-      caseReference,
-      currentName
-    });
-  } catch (error) {
-    next(error);
-  }
+  await handleGetEditForm(req, res, next, {
+    templatePath: 'case_details/edit-client-name.njk',
+    fieldConfigs: [
+      { field: 'fullName', type: 'string', includeExisting: true }
+    ]
+  });
 }
 
 /**
@@ -38,34 +27,14 @@ export async function getEditClientName(req: Request, res: Response, next: NextF
  * @returns {Promise<void>}
  */
 export async function postEditClientName(req: Request, res: Response, next: NextFunction): Promise<void> {
-  const caseReference = safeString(req.params.caseReference);
+  const formFields = extractFormFields(req.body, ['fullName', 'existingFullName']);
 
-  const fullName = hasProperty(req.body, 'fullName') ? safeString(req.body.fullName).trim() : '';
-  const existingFullName = hasProperty(req.body, 'existingFullName') ? safeString(req.body.existingFullName).trim() : '';
-
-  const { inputErrors, errorSummaryList, formIsInvalid } = validateForm({ fullName, existingFullName });
-
-  if (formIsInvalid) {
-    const renderOptions = {
-      caseReference,
-      currentName: fullName,
-      existingFullName,
-      error: {
-        inputErrors,
-        errorSummaryList
-      },
-      csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
-    };
-    res.status(BAD_REQUEST).render('case_details/edit-client-name.njk', renderOptions);
-    return;
-  }
-
-  try {
-    await apiService.updateClientDetails(req.axiosMiddleware, caseReference, { fullName });
-    res.redirect(`/cases/${caseReference}/client-details`);
-  } catch (error) {
-    next(error);
-  }
+  await handlePostEditForm(req, res, next, {
+    templatePath: 'case_details/edit-client-name.njk',
+    fields: [{ name: 'fullName', value: formFields.fullName, existingValue: formFields.existingFullName }],
+    apiUpdateData: { fullName: formFields.fullName },
+    useDefaultValidator: false // Temporarily using legacy validation until migration to express-validator
+  });
 }
 
 /**
@@ -73,23 +42,15 @@ export async function postEditClientName(req: Request, res: Response, next: Next
  * @param {Request} req - Express request object
  * @param {Response} res - Express response object
  * @param {NextFunction} next - Express next middleware function
+ * @returns {Promise<void>}
  */
 export async function getEditClientEmailAddress(req: Request, res: Response, next: NextFunction): Promise<void> {
-  const caseReference = safeString(req.params.caseReference);
-  try {
-    const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
-    let currentEmail = '';
-    const email = response.data?.emailAddress
-    if (response.status === 'success' && typeof email === 'string') {
-      currentEmail = safeString(email);
-    }
-    res.render('case_details/edit-client-email-address.njk', {
-      caseReference,
-      currentEmail
-    });
-  } catch (error) {
-    next(error);
-  }
+  await handleGetEditForm(req, res, next, {
+    templatePath: 'case_details/edit-client-email-address.njk',
+    fieldConfigs: [
+      { field: 'emailAddress', type: 'string', includeExisting: true }
+    ]
+  });
 }
 
 /**
@@ -100,34 +61,14 @@ export async function getEditClientEmailAddress(req: Request, res: Response, nex
  * @returns {Promise<void>}
  */
 export async function postEditClientEmailAddress(req: Request, res: Response, next: NextFunction): Promise<void> {
-  const caseReference = safeString(req.params.caseReference);
+  const formFields = extractFormFields(req.body, ['emailAddress', 'existingEmailAddress']);
 
-  const emailAddress = hasProperty(req.body, 'emailAddress') ? safeString(req.body.emailAddress).trim() : '';
-  const existingEmail = hasProperty(req.body, 'existingEmail') ? safeString(req.body.existingEmail).trim() : '';
-
-  const { inputErrors, errorSummaryList, formIsInvalid } = validateForm({ emailAddress, existingEmail });
-
-  if (formIsInvalid) {
-    const renderOptions = {
-      caseReference,
-      currentEmail: emailAddress,
-      existingEmail,
-      error: {
-        inputErrors,
-        errorSummaryList
-      },
-      csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
-    };
-    res.status(BAD_REQUEST).render('case_details/edit-client-email-address.njk', renderOptions);
-    return;
-  }
-
-  try {
-    await apiService.updateClientDetails(req.axiosMiddleware, caseReference, { emailAddress });
-    res.redirect(`/cases/${caseReference}/client-details`);
-  } catch (error) {
-    next(error);
-  }
+  await handlePostEditForm(req, res, next, {
+    templatePath: 'case_details/edit-client-email-address.njk',
+    fields: [{ name: 'emailAddress', value: formFields.emailAddress, existingValue: formFields.existingEmailAddress }],
+    apiUpdateData: { emailAddress: formFields.emailAddress },
+    useDefaultValidator: false // Temporarily using legacy validation until migration to express-validator
+  });
 }
 
 /**
@@ -135,31 +76,17 @@ export async function postEditClientEmailAddress(req: Request, res: Response, ne
  * @param {Request} req - Express request object
  * @param {Response} res - Express response object
  * @param {NextFunction} next - Express next middleware function
+ * @returns {Promise<void>}
  */
 export async function getEditClientPhoneNumber(req: Request, res: Response, next: NextFunction): Promise<void> {
-  const caseReference = safeString(req.params.caseReference);
-  try {
-    const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
-    let currentPhoneNumber = '';
-    let currentSafeToCall = '';
-    let currentAnnounceCall = '';
-    const safeToCall = response.data?.safeToCall
-    const phoneNumber = response.data?.phoneNumber
-    const announceCall = response.data?.announceCall
-    if (response.status === 'success' && typeof phoneNumber === 'string' && typeof safeToCall === 'boolean' && typeof announceCall === 'boolean') {
-      currentPhoneNumber = safeString(phoneNumber);
-      currentSafeToCall = safeString(safeToCall)
-      currentAnnounceCall = safeString(announceCall)
-    }
-    res.render('case_details/edit-client-phone-number.njk', {
-      caseReference,
-      currentPhoneNumber,
-      currentSafeToCall,
-      currentAnnounceCall
-    });
-  } catch (error) {
-    next(error);
-  }
+  await handleGetEditForm(req, res, next, {
+    templatePath: 'case_details/edit-client-phone-number.njk',
+    fieldConfigs: [
+      { field: 'safeToCall', type: 'boolean', includeExisting: true },
+      { field: 'phoneNumber', type: 'string', includeExisting: true },
+      { field: 'announceCall', keepOriginal: true, includeExisting: true }
+    ]
+  });
 }
 
 /**
@@ -170,60 +97,23 @@ export async function getEditClientPhoneNumber(req: Request, res: Response, next
  * @returns {Promise<void>}
  */
 export async function postEditClientPhoneNumber(req: Request, res: Response, next: NextFunction): Promise<void> {
-  const caseReference = safeString(req.params.caseReference);
+  const formFields = extractFormFields(req.body, [
+    'safeToCall', 'existingSafeToCall',
+    'phoneNumber', 'existingPhoneNumber',
+    'announceCall', 'existingAnnounceCall'
+  ]);
 
-  const phoneNumber = hasProperty(req.body, 'phoneNumber') ? safeString(req.body.phoneNumber).trim() : '';
-  const existingPhoneNumber = hasProperty(req.body, 'existingPhoneNumber') ? safeString(req.body.existingPhoneNumber).trim() : '';
-
-  const safeToCall = hasProperty(req.body, 'safeToCall') ? safeString(req.body.safeToCall).trim() : '';
-  const existingSafeToCall = hasProperty(req.body, 'existingSafeToCall') ? safeString(req.body.existingSafeToCall).trim() : '';
-  
-  const announceCall = hasProperty(req.body, 'announceCall') ? safeString(req.body.announceCall).trim() : '';
-  const existingAnnounceCall = hasProperty(req.body, 'existingAnnounceCall') ? safeString(req.body.existingAnnounceCall).trim() : '';
-
-  const validationErrors: Result<ValidationErrorData> = validationResult(req).formatWith(formatValidationError);
-
-  if (!validationErrors.isEmpty()) {
-    const resultingErrors = validationErrors.array().map((errorData: ValidationErrorData) => ({
-      fieldName: 'phoneNumber',
-      inlineMessage: errorData.inlineMessage,
-      summaryMessage: errorData.summaryMessage,
-    }));
-
-    // Only use inline messages that are not empty
-    const inputErrors = resultingErrors.reduce<Record<string, string>>((acc, { fieldName, inlineMessage }) => {
-      if (inlineMessage.trim() !== '') {
-        acc[fieldName] = inlineMessage;
-      }
-      return acc;
-    }, {});
-
-    const errorSummaryList = resultingErrors.map(({ summaryMessage, fieldName }) => ({
-      text: summaryMessage,
-      href: `#${fieldName}`,
-    }));
-
-    res.status(BAD_REQUEST).render('case_details/edit-client-phone-number.njk', {
-      caseReference,
-      currentPhoneNumber: phoneNumber,
-      existingPhoneNumber,
-      currentSafeToCall: safeToCall,
-      existingSafeToCall,
-      currentAnnounceCall: announceCall,
-      existingAnnounceCall,
-      error: {
-        inputErrors,
-        errorSummaryList
-      },
-      csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
-    });
-    return;
-  }
-
-  try {
-    await apiService.updateClientDetails(req.axiosMiddleware, caseReference, { safeToCall, phoneNumber, announceCall });
-    res.redirect(`/cases/${caseReference}/client-details`);
-  } catch (error) {
-    next(error);
-  }
+  await handlePostEditForm(req, res, next, {
+    templatePath: 'case_details/edit-client-phone-number.njk',
+    fields: [
+      { name: 'safeToCall', value: formFields.safeToCall, existingValue: formFields.existingSafeToCall },
+      { name: 'phoneNumber', value: formFields.phoneNumber, existingValue: formFields.existingPhoneNumber },
+      { name: 'announceCall', value: formFields.announceCall, existingValue: formFields.existingAnnounceCall }
+    ],
+    apiUpdateData: {
+      safeToCall: formFields.safeToCall,
+      phoneNumber: formFields.phoneNumber,
+      announceCall: formFields.announceCall
+    }
+  });
 }

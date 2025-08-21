@@ -6,7 +6,7 @@ export interface ValidationFields {
   fullName?: string;
   existingFullName?: string;
   emailAddress?: string;
-  existingEmail?: string;
+  existingEmailAddress?: string;
 }
 
 export interface InputError {

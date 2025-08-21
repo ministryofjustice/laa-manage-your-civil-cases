@@ -29,9 +29,9 @@
       {% endif %}
       <form method="post" action="/cases/{{ caseReference }}/client-details/change/phone-number">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-        <input type="hidden" name="existingSafeToCall" value="{{ existingSafeToCall | default(currentSafeToCall) }}">
-        <input type="hidden" name="existingPhoneNumber" value="{{ existingPhoneNumber | default(currentPhoneNumber) }}">
-        <input type="hidden" name="existingAnnounceCall" value="{{ existingAnnounceCall | default(currentAnnounceCall) }}">
+        <input type="hidden" name="existingSafeToCall" value="{{ existingSafeToCall }}">
+        <input type="hidden" name="existingPhoneNumber" value="{{ existingPhoneNumber }}">
+        <input type="hidden" name="existingAnnounceCall" value="{{ existingAnnounceCall }}">
         {{ govukInput({
           label: {
             text: t.forms.clientDetails.phoneNumber.title,
