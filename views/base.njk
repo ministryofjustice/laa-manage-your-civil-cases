@@ -79,12 +79,12 @@
   navigation: [
     {
       href: "/cases/new",
-      text: "Your cases",
+      text: t.navigation.mainNav.yourCases,
       active: not request or not request.originalUrl or not request.originalUrl.startsWith('/search')
     },
     {
       href: "/search",
-      text: "Search",
+      text: t.navigation.mainNav.search,
       active: request and request.originalUrl and request.originalUrl.startsWith('/search')
     }
     ]
@@ -116,27 +116,27 @@
       items: [
         {
           href: "#",
-          text: "Help"
+          text: t.navigation.footer.help
         },
         {
           href: "#",
-          text: "Feedback"
+          text: t.navigation.footer.feedback
         },
         {
           href: "#",
-          text: "Updates"
+          text: t.navigation.footer.updates
         },
         {
           href: "#",
-          text: "Privacy Policy"
+          text: t.navigation.footer.privacyPolicy
         },
         {
           href: "#",
-          text: "Cookie Policy"
+          text: t.navigation.footer.cookiePolicy
         },
         {
           href: "#",
-          text: "Accessibility"
+          text: t.navigation.footer.accessibility
         }
       ]
     }

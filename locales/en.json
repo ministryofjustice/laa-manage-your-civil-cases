@@ -1,0 +1,189 @@
+{
+  "common": {
+    "back": "Back",
+    "backToAllCases": "Back to all cases",
+    "change": "Change",
+    "remove": "Remove",
+    "save": "Save",
+    "cancel": "Cancel",
+    "yes": "Yes",
+    "no": "No",
+    "error": "Error",
+    "warning": "Warning",
+    "errorSummaryTitle": "There is a problem",
+    "status": {
+      "new": "New",
+      "opened": "Opened",
+      "accepted": "Accepted",
+      "closed": "Closed"
+    }
+  },
+  "navigation": {
+    "mainNav": {
+      "yourCases": "Your cases",
+      "search": "Search"
+    },
+    "footer": {
+      "help": "Help",
+      "feedback": "Feedback",
+      "updates": "Updates",
+      "privacyPolicy": "Privacy Policy",
+      "cookiePolicy": "Cookie Policy",
+      "accessibility": "Accessibility"
+    }
+  },
+  "components": {
+    "table": {
+      "noData": "No data",
+      "columns": {
+        "name": "Name",
+        "caseId": "Case ID",
+        "dateOfBirth": "Date of birth",
+        "details": "Details",
+        "dateModified": "Date modified",
+        "dateClosed": "Date closed",
+        "dateReceived": "Date received",
+        "phoneNumber": "Phone number",
+        "status": "Status",
+        "lastModified": "Last modified"
+      }
+    }
+  },
+  "pages": {
+    "home": {
+      "underConstruction": "This service is currently under construction"
+    },
+    "yourCases": {
+      "newCases": "New cases",
+      "openedCases": "Opened cases",
+      "acceptedCases": "Accepted cases",
+      "closedCases": "Closed cases",
+      "pageTitles": {
+        "new": "New cases – {serviceName} – GOV.UK",
+        "opened": "Opened cases – {serviceName} – GOV.UK",
+        "accepted": "Accepted cases – {serviceName} – GOV.UK",
+        "closed": "Closed cases – {serviceName} – GOV.UK"
+      }
+    },
+    "caseDetails": {
+      "dateReceived": "Date received",
+      "laaReference": "LAA reference",
+      "notProvided": "Not provided",
+      "tabs": {
+        "clientDetails": "Client details",
+        "scope": "Scope",
+        "financialEligibility": "Financial eligibility",
+        "notesAndHistory": "Notes and history"
+      },
+      "clientDetails": {
+        "heading": "Client details",
+        "aboutClient": "About the client",
+        "contactDetails": "Contact details",
+        "thirdPartyContact": "Third party contact"
+      },
+      "buttons": {
+        "acceptCase": "Accept case",
+        "rejectCase": "Reject case",
+        "splitCase": "Split case",
+        "closeCase": "Close case",
+        "leaveFeedback": "Leave feedback",
+        "generateLegalHelpForm": "Generate legal help form",
+        "reopenCase": "Reopen case",
+        "addThirdPartyContact": "Add third party contact"
+      }
+    },
+    "error": {
+      "pageTitle": "Sorry, there is a problem with the service – {serviceName} – GOV.UK"
+    },
+    "search": {
+      "heading": "Search for a case",
+      "intro": "Enter case details to search for a case",
+      "caseDetailsHeading": "Case details",
+      "searchHint": {
+        "intro": "You can search by:",
+        "items": {
+          "caseId": "case ID (eg. EH-1234-2925)",
+          "phoneNumber": "phone number",
+          "name": "name",
+          "postcode": "postcode",
+          "address": "address"
+        }
+      },
+      "inputLabel": "Search by case ID, client name, phone number, postcode or address",
+      "statusLabel": "Filter by status",
+      "statusOptions": {
+        "all": "Show all"
+      },
+      "searchButtonText": "Search",
+      "clearLink": "Clear all",
+      "noResults": {
+        "heading": "No results found",
+        "body": "There are no results that match the search criteria"
+      }
+    }
+  },
+  "forms": {
+    "clientDetails": {
+      "name": {
+        "label": "Full name",
+        "title": "Client's full name",
+        "pageTitle": "Client's full name – {caseReference} – {serviceName} – GOV.UK"
+      },
+      "dateOfBirth": {
+        "label": "Date of birth",
+        "legend": "Client's date of birth",
+        "pageTitle": "Client's date of birth – {caseReference} – {serviceName} – GOV.UK",
+        "hint": "For example, 31 3 1980"
+      },
+      "email": {
+        "label": "Email",
+        "title": "Client's email address (optional)",
+        "pageTitle": "Client's email address – {caseReference} – {serviceName} – GOV.UK"
+      },
+      "phoneNumber": {
+        "label": "Phone number",
+        "title": "Client phone number",
+        "pageTitle": "Client phone number – {caseReference} – {serviceName} – GOV.UK",
+        "safeToCall": "Is it safe to call this number?",
+        "announceCall": "Can you say the call is from Civil Legal Advice?",
+        "notSafeToCall": "The client is not safe to call",
+        "doNotAnnounce": "Do not say the call is from Civil Legal Advice"
+      },
+      "address": {
+        "label": "Address",
+        "title": "Client address (optional)",
+        "pageTitle": "Client address – {caseReference} – {serviceName} – GOV.UK",
+        "postcode": "Postcode"
+      },
+      "language": {
+        "label": "Language"
+      },
+      "reasonableAdjustments": {
+        "label": "Reasonable adjustments"
+      },
+      "thirdParty": {
+        "name": "Name",
+        "address": "Address",
+        "contactNumber": "Contact number",
+        "emailAddress": "Email address",
+        "relationshipToClient": "Relationship to Client",
+        "passphrase": "Passphrase",
+        "notSafeToCall": "The third party is not safe to call",
+        "passphraseNotSetUp": "No, {reason}"
+      }
+    }
+  },
+  "accessibility": {
+    "visuallyHiddenText": {
+      "changeName": "Change Name",
+      "changeDateOfBirth": "Change Date of birth",
+      "changePhoneNumber": "Change Phone number",
+      "changeEmail": "Change Email",
+      "changeAddress": "Change Address",
+      "changeLanguage": "Change Language",
+      "changeReasonableAdjustments": "Change Reasonable adjustments",
+      "changeThirdPartyContact": "Change Third party contact details",
+      "removeThirdPartyContact": "Remove Third party contact details"
+    }
+  }
+}

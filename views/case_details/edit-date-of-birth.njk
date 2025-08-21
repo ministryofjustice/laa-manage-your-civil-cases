@@ -5,12 +5,12 @@
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 
 {% block pageTitle %}
-  {% if errorState.hasErrors %}Error: {% endif %}{{ pageTitle or "Client's date of birth" }} - Manage your civil cases
+  {% if errorState.hasErrors %}{{ t.common.error }}: {% endif %}{{ pageTitle or t.forms.clientDetails.dateOfBirth.pageTitle | replace('{caseReference}', caseReference) | replace('{serviceName}', config.SERVICE_NAME) }}
 {% endblock %}
 
 {% block backLink %}
   {{ govukBackLink({
-      text: "Back",
+      text: t.common.back,
       href: "/cases/" + caseReference + "/client-details",
       classes: "govuk-!-margin-bottom-0"
     }) }}
@@ -23,7 +23,7 @@
       
       {% if errorState.hasErrors %}
         {{ govukErrorSummary({
-          titleText: "There is a problem",
+          titleText: t.common.errorSummaryTitle,
           errorList: errorState.errors
         }) }}
       {% endif %}
@@ -43,13 +43,14 @@
           namePrefix: "dateOfBirth",
           fieldset: {
             legend: {
-              text: "Client date of birth",
+              text: t.forms.clientDetails.dateOfBirth.legend,
               isPageHeading: true,
               classes: "govuk-fieldset__legend--l govuk-!-margin-bottom-6"
             }
           },
           hint: {
-            text: "For example, 27 3 2007"          },
+            text: t.forms.clientDetails.dateOfBirth.hint
+          },
           errorMessage: {
             html: inlineErrorMessage | replace('\n', '<br>')
           } if inlineErrorMessage,
@@ -86,9 +87,9 @@
 
         <div class="govuk-button-group">
           {{ govukButton({
-            text: "Save"
+            text: t.common.save
           }) }}
-          <a class="govuk-link" href="/cases/{{ caseReference }}/client-details">Cancel</a>
+          <a class="govuk-link" href="/cases/{{ caseReference }}/client-details">{{ t.common.cancel }}</a>
         </div>
 
         

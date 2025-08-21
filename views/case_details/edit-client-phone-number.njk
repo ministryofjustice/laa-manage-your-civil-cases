@@ -7,11 +7,13 @@
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 
+{% block pageTitle %}{{ t.forms.clientDetails.phoneNumber.pageTitle | replace('{caseReference}', caseReference) | replace('{serviceName}', config.SERVICE_NAME) }}{% endblock %}
+
 {% set backLinkHref = "/cases/" + caseReference + "/client-details" %}
 
 {% block backLink %}
   {{ govukBackLink({
-      text: "Back",
+      text: t.common.back,
       href: backLinkHref,
       classes: "govuk-!-margin-bottom-0"
     }) }}
@@ -32,7 +34,7 @@
         <input type="hidden" name="existingAnnounceCall" value="{{ existingAnnounceCall | default(currentAnnounceCall) }}">
         {{ govukInput({
           label: {
-            text: "Client phone number",
+            text: t.forms.clientDetails.phoneNumber.title,
             classes: "govuk-label--l",
             isPageHeading: true
           },
@@ -50,7 +52,7 @@
           errorMessage: safeToCallErrorMessage,
           fieldset: {
             legend: {
-              text: "Is the client safe to call?",
+              text: t.forms.clientDetails.phoneNumber.safeToCall,
               isPageHeading: false,
               classes: "govuk-fieldset__legend--m"
             }
@@ -58,11 +60,11 @@
           items: [
             {
               value: "true",
-              text: "Yes"
+              text: t.common.yes
             },
             {
               value: "false",
-              text: "No"
+              text: t.common.no
             }
           ]
         }) }}
@@ -72,7 +74,7 @@
           errorMessage: announceCallErrorMessage,
           fieldset: {
             legend: {
-              text: "Can we say we're calling from Civil Legal Advice?",
+              text: t.forms.clientDetails.phoneNumber.announceCall,
               isPageHeading: false,
               classes: "govuk-fieldset__legend--m"
             }
@@ -80,19 +82,19 @@
           items: [
             {
               value: "true",
-              text: "Yes"
+              text: t.common.yes
             },
             {
               value: "false",
-              text: "No"
+              text: t.common.no
             }
           ]
         }) }}
         <div class="govuk-button-group">
           {{ govukButton({
-            text: "Save"
+            text: t.common.save
           }) }}
-          <a class="govuk-link" href="{{ backLinkHref }}">Cancel</a>
+          <a class="govuk-link" href="{{ backLinkHref }}">{{ t.common.cancel }}</a>
         </div>
       </form>
     </div>

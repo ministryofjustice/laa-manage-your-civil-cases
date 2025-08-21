@@ -6,11 +6,13 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
 
+{% block pageTitle %}{{ t.forms.clientDetails.address.pageTitle | replace('{caseReference}', caseReference) | replace('{serviceName}', config.SERVICE_NAME) }}{% endblock %}
+
 {% set backLinkHref = "/cases/" + caseReference + "/client-details" %}
 
 {% block backLink %}
   {{ govukBackLink({
-      text: "Back",
+      text: t.common.back,
       href: backLinkHref,
       classes: "govuk-!-margin-bottom-0"
     }) }}
@@ -33,11 +35,11 @@
         <input type="hidden" name="existingAddress" value="{{ existingAddress | default(currentAddress) }}">
         <input type="hidden" name="existingPostcode" value="{{ existingPostcode | default(currentPostcode) }}">
         
-        <h1 class="govuk-heading-l">Client address (optional)</h1>
+        <h1 class="govuk-heading-l">{{ t.forms.clientDetails.address.title }}</h1>
         
         {{ govukTextarea({
           label: {
-            text: "Address",
+            text: t.forms.clientDetails.address.label,
             classes: "govuk-label--m"
           },
           id: "address",
@@ -49,7 +51,7 @@
         
         {{ govukInput({
           label: {
-            text: "Postcode",
+            text: t.forms.clientDetails.address.postcode,
             classes: "govuk-label--m"
           },
           id: "postcode",
@@ -62,9 +64,9 @@
         
         <div class="govuk-button-group">
           {{ govukButton({
-            text: "Save"
+            text: t.common.save
           }) }}
-          <a class="govuk-link" href="{{ backLinkHref }}">Cancel</a>
+          <a class="govuk-link" href="{{ backLinkHref }}">{{ t.common.cancel }}</a>
         </div>
       </form>
     </div>
