@@ -1,7 +1,6 @@
 import { checkSchema, type Meta } from 'express-validator';
 import { isValidPhoneNumber } from 'libphonenumber-js';
-import { hasProperty, isRecord, TypedValidationError } from '#src/scripts/helpers/index.js';
-import { t } from '#src/scripts/helpers/localeLoader.js';
+import { hasProperty, isRecord, TypedValidationError, t } from '#src/scripts/helpers/index.js';
 
 interface ClientPhoneNumberBody {
   phoneNumber: string;
@@ -56,8 +55,8 @@ export const validateEditClientPhoneNumber = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: t.forms.clientDetails.phoneNumber.validationError.invalidFormat,
-          inlineMessage: t.forms.clientDetails.phoneNumber.validationError.invalidFormat
+          summaryMessage: t('forms.clientDetails.phoneNumber.validationError.invalidFormat'),
+          inlineMessage: t('forms.clientDetails.phoneNumber.validationError.invalidFormat')
         })
       },
       notEmpty: {
@@ -66,8 +65,8 @@ export const validateEditClientPhoneNumber = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: t.forms.clientDetails.phoneNumber.validationError.notEmpty.summaryMessage,
-          inlineMessage: t.forms.clientDetails.phoneNumber.validationError.notEmpty.inlineMessage
+          summaryMessage: t('forms.clientDetails.phoneNumber.validationError.notEmpty.summaryMessage'),
+          inlineMessage: t('forms.clientDetails.phoneNumber.validationError.notEmpty.inlineMessage')
         })
       },
     },
@@ -95,7 +94,7 @@ export const validateEditClientPhoneNumber = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: t.forms.clientDetails.phoneNumber.validationError.notChanged,
+          summaryMessage: t('forms.clientDetails.phoneNumber.validationError.notChanged'),
           inlineMessage: '',
         })
       },

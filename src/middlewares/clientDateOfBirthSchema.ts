@@ -1,8 +1,7 @@
 
 import { checkSchema, type Meta } from 'express-validator';
 import { isDate, isBefore } from 'validator';
-import { hasProperty, isRecord, createChangeDetectionValidator, TypedValidationError, dateStringFromThreeFields } from '#src/scripts/helpers/index.js';
-import { t } from '#src/scripts/helpers/localeLoader.js';
+import { hasProperty, isRecord, createChangeDetectionValidator, TypedValidationError, dateStringFromThreeFields, t} from '#src/scripts/helpers/index.js';
 
 // Constants for validation boundaries
 const MIN_DAY = 1;
@@ -52,8 +51,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Error for missing day
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: t.forms.clientDetails.dateOfBirth.validationError.day.notEmpty,
-          inlineMessage: t.forms.clientDetails.dateOfBirth.validationError.day.notEmpty,
+          summaryMessage: t('forms.clientDetails.dateOfBirth.validationError.day.notEmpty'),
+          inlineMessage: t('forms.clientDetails.dateOfBirth.validationError.day.notEmpty'),
         }),
         bail: true, // Stop this field's validation if day is missing
       },
@@ -64,8 +63,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Error for invalid day range
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: t.forms.clientDetails.dateOfBirth.validationError.day.isInt,
-          inlineMessage: t.forms.clientDetails.dateOfBirth.validationError.day.isInt,
+          summaryMessage: t('forms.clientDetails.dateOfBirth.validationError.day.isInt'),
+          inlineMessage: t('forms.clientDetails.dateOfBirth.validationError.day.isInt'),
         })
       },
     },
@@ -78,8 +77,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Error for missing month
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: t.forms.clientDetails.dateOfBirth.validationError.month.notEmpty,
-          inlineMessage: t.forms.clientDetails.dateOfBirth.validationError.month.notEmpty,
+          summaryMessage: t('forms.clientDetails.dateOfBirth.validationError.month.notEmpty'),
+          inlineMessage: t('forms.clientDetails.dateOfBirth.validationError.month.notEmpty'),
         }),
         bail: true, // Stop this field's validation if month is missing
       },
@@ -90,8 +89,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Error for invalid month range
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: t.forms.clientDetails.dateOfBirth.validationError.month.isInt,
-          inlineMessage: t.forms.clientDetails.dateOfBirth.validationError.month.isInt,
+          summaryMessage: t('forms.clientDetails.dateOfBirth.validationError.month.isInt'),
+          inlineMessage: t('forms.clientDetails.dateOfBirth.validationError.month.isInt'),
         })
       },
     },
@@ -104,8 +103,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Error for missing year
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: t.forms.clientDetails.dateOfBirth.validationError.year.notEmpty,
-          inlineMessage: t.forms.clientDetails.dateOfBirth.validationError.year.notEmpty,
+          summaryMessage: t('forms.clientDetails.dateOfBirth.validationError.year.notEmpty'),
+          inlineMessage: t('forms.clientDetails.dateOfBirth.validationError.year.notEmpty'),
         }),
         bail: true, // Stop this field's validation if year is missing
       },
@@ -116,8 +115,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Error for invalid year length
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: t.forms.clientDetails.dateOfBirth.validationError.year.isLength,
-          inlineMessage: t.forms.clientDetails.dateOfBirth.validationError.year.isLength,
+          summaryMessage: t('forms.clientDetails.dateOfBirth.validationError.year.isLength'),
+          inlineMessage: t('forms.clientDetails.dateOfBirth.validationError.year.isLength'),
         }),
         bail: true, // Stop further year validation if format is wrong
       },
@@ -127,8 +126,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Error for invalid year
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: t.forms.clientDetails.dateOfBirth.validationError.year.isInt,
-          inlineMessage: t.forms.clientDetails.dateOfBirth.validationError.year.isInt,
+          summaryMessage: t('forms.clientDetails.dateOfBirth.validationError.year.isInt'),
+          inlineMessage: t('forms.clientDetails.dateOfBirth.validationError.year.isInt'),
         })
       },
     },
@@ -162,8 +161,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: t.forms.clientDetails.dateOfBirth.validationError.validDate,
-          inlineMessage: t.forms.clientDetails.dateOfBirth.validationError.validDate,
+          summaryMessage: t('forms.clientDetails.dateOfBirth.validationError.validDate'),
+          inlineMessage: t('forms.clientDetails.dateOfBirth.validationError.validDate'),
         }),
         bail: true, // Stop validation if date format is invalid
       },
@@ -202,8 +201,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: t.forms.clientDetails.dateOfBirth.validationError.dateInPast,
-          inlineMessage: t.forms.clientDetails.dateOfBirth.validationError.dateInPast,
+          summaryMessage: t('forms.clientDetails.dateOfBirth.validationError.dateInPast'),
+          inlineMessage: t('forms.clientDetails.dateOfBirth.validationError.dateInPast'),
         })
       },
     },
@@ -214,8 +213,12 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
         { current: 'dateOfBirth-year', original: 'originalYear' }
       ],
       {
-        summaryMessage: t.forms.clientDetails.dateOfBirth.validationError.notChanged,
+        /**
+         * Provides the summary message for unchanged date of birth validation.
+         * @returns {string} Localized error message for unchanged date of birth.
+         */
+        summaryMessage: () => t('forms.clientDetails.dateOfBirth.validationError.notChanged'),
         inlineMessage: ''
-      }
+}
     ),
   });
