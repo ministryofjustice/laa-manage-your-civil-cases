@@ -21,14 +21,25 @@ import {
 describe('Locale Loader', () => {
   let consoleErrorStub: sinon.SinonStub;
   let consoleLogStub: sinon.SinonStub;
+  let originalNodeEnv: string | undefined;
 
   beforeEach(() => {
+    // Store original NODE_ENV and set to development for consistent testing
+    originalNodeEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = 'development';
+
     consoleErrorStub = sinon.stub(console, 'error');
     consoleLogStub = sinon.stub(console, 'log');
+    // Clear locale cache before each test
+    clearLocaleCache();
   });
 
   afterEach(() => {
     sinon.restore();
+    // Clear locale cache after each test
+    clearLocaleCache();
+    // Restore original NODE_ENV
+    process.env.NODE_ENV = originalNodeEnv;
   });
 
   describe('loadLocaleData', () => {
@@ -50,7 +61,7 @@ describe('Locale Loader', () => {
     it('should handle file read errors', () => {
       const existsStub = sinon.stub(fs, 'existsSync').returns(true);
       const readStub = sinon.stub(fs, 'readFileSync').throws(new Error('Read error'));
-      const result = loadLocaleData('en');
+      const result = loadLocaleData('test-error');
       expect(result).to.deep.equal({});
       expect(consoleErrorStub.called).to.be.true;
       existsStub.restore();
@@ -60,7 +71,7 @@ describe('Locale Loader', () => {
     it('should handle invalid JSON', () => {
       const existsStub = sinon.stub(fs, 'existsSync').returns(true);
       const readStub = sinon.stub(fs, 'readFileSync').returns('invalid json');
-      const result = loadLocaleData('en');
+      const result = loadLocaleData('test-invalid');
       expect(result).to.deep.equal({});
       expect(consoleErrorStub.called).to.be.true;
       existsStub.restore();
@@ -68,13 +79,74 @@ describe('Locale Loader', () => {
     });
 
     it('should handle non-object JSON', () => {
+      const originalNodeEnv = process.env.NODE_ENV;
+      process.env.NODE_ENV = 'development'; // Enable devError console.error calls
+
       const existsStub = sinon.stub(fs, 'existsSync').returns(true);
-      const readStub = sinon.stub(fs, 'readFileSync').returns('"string"');
-      const result = loadLocaleData('en');
+      const statStub = sinon.stub(fs, 'statSync').returns({ mtime: { getTime: () => Date.now() } } as any);
+      const readStub = sinon.stub(fs, 'readFileSync').returns('[]');
+
+      const result = loadLocaleData('test-array');
       expect(result).to.deep.equal({});
       expect(consoleErrorStub.called).to.be.true;
+
       existsStub.restore();
+      statStub.restore();
       readStub.restore();
+
+      process.env.NODE_ENV = originalNodeEnv; // Reset
+    });
+
+    it('should return cached data if file unchanged', () => {
+      // Load the same locale twice to test caching
+      const result1 = loadLocaleData('en');
+      const result2 = loadLocaleData('en');
+
+      expect(result1).to.equal(result2); // Should be the same object from cache
+      expect(result1.common).to.be.an('object');
+    });
+
+    it('should set up file watcher in development and handle file changes', async () => {
+      const originalNodeEnv = process.env.NODE_ENV;
+      process.env.NODE_ENV = 'development';
+
+      clearLocaleCache();
+
+      // Initialize i18next first so isInitialized will be true
+      await createLocaleLoader();
+
+      // Stub reloadResources to track calls
+      const reloadResourcesStub = sinon.stub(i18next, 'reloadResources').resolves();
+
+      // Simple stubs for the file operations
+      const existsStub = sinon.stub(fs, 'existsSync').returns(true);
+      const statStub = sinon.stub(fs, 'statSync').returns({ mtime: { getTime: () => Date.now() } } as any);
+      const readStub = sinon.stub(fs, 'readFileSync').returns('{"test": "value"}');
+
+      // Capture the file watcher callback and immediately trigger it
+      const watchStub = sinon.stub(fs, 'watch').callsFake((file, callback) => {
+        // Immediately trigger the change event to execute lines 83-96
+        if (callback) {
+          callback('change', 'test-watch-locale.json');
+        }
+        return { close: sinon.stub() } as any;
+      });
+
+      // Load locale to trigger watcher setup and change event
+      loadLocaleData('test-watch-locale');
+
+      // Verify the watcher was called
+      expect(watchStub.called).to.be.true;
+      // Verify reloadResources was called (covering lines 93-95)
+      expect(reloadResourcesStub.called).to.be.true;
+
+      // Cleanup
+      reloadResourcesStub.restore();
+      existsStub.restore();
+      statStub.restore();
+      readStub.restore();
+      watchStub.restore();
+      process.env.NODE_ENV = originalNodeEnv;
     });
   });
 
@@ -217,16 +289,26 @@ describe('Locale Loader', () => {
     });
 
     it('should clear locale cache', () => {
+      const originalNodeEnv = process.env.NODE_ENV;
+      process.env.NODE_ENV = 'development'; // Ensure devLog logs in CI
+
       const isInitializedStub = sinon.stub(i18next, 'isInitialized').value(true);
       clearLocaleCache();
       expect(consoleLogStub.calledWith('Locale cache cleared (using preloaded resources)')).to.be.true;
+
       isInitializedStub.restore();
+      process.env.NODE_ENV = originalNodeEnv;
     });
 
     it('should handle clearLocaleCache when not initialized', () => {
+      // First clear any existing watchers and reset console log stub
+      clearLocaleCache();
+      consoleLogStub.resetHistory();
+
       const isInitializedStub = sinon.stub(i18next, 'isInitialized').value(false);
       clearLocaleCache();
-      expect(consoleLogStub.called).to.be.false;
+      // Should not log the "Locale cache cleared" message when not initialized
+      expect(consoleLogStub.calledWith('Locale cache cleared (using preloaded resources)')).to.be.false;
       isInitializedStub.restore();
     });
   });

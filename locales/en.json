@@ -126,14 +126,14 @@
     "clientDetails": {
       "name": {
         "label": "Full name",
-        "title": "Client's full name",
-        "pageTitle": "Client's full name – {caseReference} – {serviceName} – GOV.UK"
+        "title": "Client name",
+        "pageTitle": "Client name – {caseReference} – {serviceName} – GOV.UK"
       },
       "dateOfBirth": {
         "label": "Date of birth",
-        "legend": "Client's date of birth",
-        "pageTitle": "Client's date of birth – {caseReference} – {serviceName} – GOV.UK",
-        "hint": "For example, 31 3 1980"
+        "legend": "Client date of birth",
+        "pageTitle": "Client date of birth – {caseReference} – {serviceName} – GOV.UK",
+        "hint": "For example, 27 3 2007"
       },
       "email": {
         "label": "Email",
@@ -153,7 +153,10 @@
         "label": "Address",
         "title": "Client address (optional)",
         "pageTitle": "Client address – {caseReference} – {serviceName} – GOV.UK",
-        "postcode": "Postcode"
+        "postcode": "Postcode",
+        "validationError":{
+          "notChanged": "Update the client address, or select 'Cancel'"
+        }
       },
       "language": {
         "label": "Language"

@@ -67,6 +67,11 @@ export {
   type LocaleLoader
 } from './localeLoader.js';
 
+// Locale type definitions
+export {
+  type LocaleStructure
+} from './localeTypes.js';
+
 // Error handling utilities
 export {
   extractErrorMessage,
