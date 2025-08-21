@@ -15,22 +15,22 @@
     if error.inputErrors.searchKeyword %}
   {% endif %}
 
-  <h1 class="govuk-heading-xl">{{ t.pages.search.heading }}</h1>
-  <p>{{ t.pages.search.intro }}</p>
+  <h1 class="govuk-heading-xl">{{ t('pages.search.heading') }}</h1>
+  <p>{{ t('pages.search.intro') }}</p>
 
 
   <div class="moj-filter__selected">
     <div class="moj-filter__heading-title">
-      <h2 class="govuk-heading-m">{{ t.pages.search.caseDetailsHeading }}</h2>
+      <h2 class="govuk-heading-m">{{ t('pages.search.caseDetailsHeading') }}</h2>
     </div>
     <div id="search-hint" class="govuk-hint">
-      <p class="govuk-body">{{ t.pages.search.searchHint.intro }}</p>
+      <p class="govuk-body">{{ t('pages.search.searchHint.intro') }}</p>
       <ul class="govuk-list govuk-list--bullet">
-        <li>{{ t.pages.search.searchHint.items.caseId }}</li>
-        <li>{{ t.pages.search.searchHint.items.phoneNumber }}</li>
-        <li>{{ t.pages.search.searchHint.items.name }}</li>
-        <li>{{ t.pages.search.searchHint.items.postcode }}</li>
-        <li>{{ t.pages.search.searchHint.items.address }}</li>
+        <li>{{ t('pages.search.searchHint.items.caseId') }}</li>
+        <li>{{ t('pages.search.searchHint.items.phoneNumber') }}</li>
+        <li>{{ t('pages.search.searchHint.items.name') }}</li>
+        <li>{{ t('pages.search.searchHint.items.postcode') }}</li>
+        <li>{{ t('pages.search.searchHint.items.address') }}</li>
       </ul>
     </div>
     <form action="/search" method="POST" class="govuk-form">
@@ -44,7 +44,7 @@
       value: searchKeyword,
       errorMessage: searchKeywordErrorMessage,
       label: {
-        text: t.pages.search.inputLabel,
+        text: t('pages.search.inputLabel'),
         classes: "govuk-visually-hidden"
       }
     }) }}
@@ -53,33 +53,33 @@
       id: "statusSelect",
       name: "statusSelect",
       label: {
-        text: t.pages.search.statusLabel,
+        text: t('pages.search.statusLabel'),
         classes: "govuk-label--m"
       },
       items: [
         {
           value: "all",
-          text: t.pages.search.statusOptions.all,
+          text: t('pages.search.statusOptions.all'),
           selected: statusSelect === "all"
         },
         {
           value: "new",
-          text: t.common.status.new,
+          text: t('common.status.new'),
           selected: statusSelect === "new"
         },
         {
           value: "opened",
-          text: t.common.status.opened,
+          text: t('common.status.opened'),
           selected: statusSelect === "opened"
         },
         {
           value: "accepted",
-          text: t.common.status.accepted,
+          text: t('common.status.accepted'),
           selected: statusSelect === "accepted"
         },
         {
           value: "closed",
-          text: t.common.status.closed,
+          text: t('common.status.closed'),
           selected: statusSelect === "closed"
         }
       ]
@@ -87,10 +87,10 @@
 
       <div class="govuk-button-group">
         {{ govukButton({
-        text: t.pages.search.searchButtonText
+        text: t('pages.search.searchButtonText')
       }) }}
 
-        <a class="govuk-link" href="/search/clear">{{ t.pages.search.clearLink }}</a>
+        <a class="govuk-link" href="/search/clear">{{ t('pages.search.clearLink') }}</a>
       </div>
     </form>
   </div>
@@ -104,12 +104,12 @@
           id: "search-results-table",
           data: searchResults,
           columns: [
-            { key: "fullName", text: t.components.table.columns.name, link: "/cases/{{caseReference}}/client-details" },
-            { key: "caseReference", text: t.components.table.columns.caseId },
-            { key: "phoneNumber", text: t.components.table.columns.phoneNumber },
-            { key: "dateOfBirth", text: t.components.table.columns.dateOfBirth },
-            { key: "caseStatus", text: t.components.table.columns.status },
-            { key: "lastModified", text: t.components.table.columns.lastModified, sortable: true, classes: "govuk-table__header--numeric", cellClasses: "govuk-table__cell--numeric" }
+            { key: "fullName", text: t('components.table.columns.name'), link: "/cases/{{caseReference}}/client-details" },
+            { key: "caseReference", text: t('components.table.columns.caseId') },
+            { key: "phoneNumber", text: t('components.table.columns.phoneNumber') },
+            { key: "dateOfBirth", text: t('components.table.columns.dateOfBirth') },
+            { key: "caseStatus", text: t('components.table.columns.status') },
+            { key: "lastModified", text: t('components.table.columns.lastModified'), sortable: true, classes: "govuk-table__header--numeric", cellClasses: "govuk-table__cell--numeric" }
           ],
           sortBy: sortBy or "lastModified",
           sortOrder: sortOrder or "desc",
@@ -124,8 +124,8 @@
           }) }}
         {% endif %}
       {% else %}
-        <h2 class="govuk-heading-m">{{ t.pages.search.noResults.heading }}</h2>
-        <p class="govuk-body">{{ t.pages.search.noResults.body }}</p>
+        <h2 class="govuk-heading-m">{{ t('pages.search.noResults.heading') }}</h2>
+        <p class="govuk-body">{{ t('pages.search.noResults.body') }}</p>
       {% endif %}
     </div>
   {% endif %}

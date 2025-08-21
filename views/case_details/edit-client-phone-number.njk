@@ -7,13 +7,13 @@
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 
-{% block pageTitle %}{{ t.forms.clientDetails.phoneNumber.pageTitle | replace('{caseReference}', caseReference) | replace('{serviceName}', config.SERVICE_NAME) }}{% endblock %}
+{% block pageTitle %}{{ t('forms.clientDetails.phoneNumber.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}{% endblock %}
 
 {% set backLinkHref = "/cases/" + caseReference + "/client-details" %}
 
 {% block backLink %}
   {{ govukBackLink({
-      text: t.common.back,
+      text: t('common.back'),
       href: backLinkHref,
       classes: "govuk-!-margin-bottom-0"
     }) }}
@@ -34,7 +34,7 @@
         <input type="hidden" name="existingAnnounceCall" value="{{ existingAnnounceCall }}">
         {{ govukInput({
           label: {
-            text: t.forms.clientDetails.phoneNumber.title,
+            text: t('forms.clientDetails.phoneNumber.title'),
             classes: "govuk-label--l",
             isPageHeading: true
           },
@@ -52,7 +52,7 @@
           errorMessage: safeToCallErrorMessage,
           fieldset: {
             legend: {
-              text: t.forms.clientDetails.phoneNumber.safeToCall,
+              text: t('forms.clientDetails.phoneNumber.safeToCall'),
               isPageHeading: false,
               classes: "govuk-fieldset__legend--m"
             }
@@ -60,11 +60,11 @@
           items: [
             {
               value: "true",
-              text: t.common.yes
+              text: t('common.yes')
             },
             {
               value: "false",
-              text: t.common.no
+              text: t('common.no')
             }
           ]
         }) }}
@@ -74,7 +74,7 @@
           errorMessage: announceCallErrorMessage,
           fieldset: {
             legend: {
-              text: t.forms.clientDetails.phoneNumber.announceCall,
+              text: t('forms.clientDetails.phoneNumber.announceCall'),
               isPageHeading: false,
               classes: "govuk-fieldset__legend--m"
             }
@@ -82,19 +82,19 @@
           items: [
             {
               value: "true",
-              text: t.common.yes
+              text: t('common.yes')
             },
             {
               value: "false",
-              text: t.common.no
+              text: t('common.no')
             }
           ]
         }) }}
         <div class="govuk-button-group">
           {{ govukButton({
-            text: t.common.save
+            text: t('common.save')
           }) }}
-          <a class="govuk-link" href="{{ backLinkHref }}">{{ t.common.cancel }}</a>
+          <a class="govuk-link" href="{{ backLinkHref }}">{{ t('common.cancel') }}</a>
         </div>
       </form>
     </div>

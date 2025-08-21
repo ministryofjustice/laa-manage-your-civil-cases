@@ -79,12 +79,12 @@
   navigation: [
     {
       href: "/cases/new",
-      text: t.navigation.mainNav.yourCases,
+      text: t('navigation.mainNav.yourCases'),
       active: not request or not request.originalUrl or not request.originalUrl.startsWith('/search')
     },
     {
       href: "/search",
-      text: t.navigation.mainNav.search,
+      text: t('navigation.mainNav.search'),
       active: request and request.originalUrl and request.originalUrl.startsWith('/search')
     }
     ]
@@ -116,27 +116,27 @@
       items: [
         {
           href: "#",
-          text: t.navigation.footer.help
+          text: t('navigation.footer.help')
         },
         {
           href: "#",
-          text: t.navigation.footer.feedback
+          text: t('navigation.footer.feedback')
         },
         {
           href: "#",
-          text: t.navigation.footer.updates
+          text: t('navigation.footer.updates')
         },
         {
           href: "#",
-          text: t.navigation.footer.privacyPolicy
+          text: t('navigation.footer.privacyPolicy')
         },
         {
           href: "#",
-          text: t.navigation.footer.cookiePolicy
+          text: t('navigation.footer.cookiePolicy')
         },
         {
           href: "#",
-          text: t.navigation.footer.accessibility
+          text: t('navigation.footer.accessibility')
         }
       ]
     }

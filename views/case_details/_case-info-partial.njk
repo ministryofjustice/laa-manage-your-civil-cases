@@ -1,18 +1,18 @@
 {% set statusConfig = {
   "new": {
-    text: t.common.status.new,
+    text: t('common.status.new'),
     classes: "govuk-tag--yellow govuk-!-margin-bottom-2"
   },
   "opened": {
-    text: t.common.status.opened,
+    text: t('common.status.opened'),
     classes: "govuk-tag--orange govuk-!-margin-bottom-2"
   },
   "accepted": {
-    text: t.common.status.accepted,
+    text: t('common.status.accepted'),
     classes: "govuk-!-margin-bottom-2"
   },
   "closed": {
-    text: t.common.status.closed,
+    text: t('common.status.closed'),
     classes: "govuk-tag--grey govuk-!-margin-bottom-2"
   }
 } %}
@@ -24,52 +24,52 @@
   classes: statusConfig[currentStatus].classes
 }) }}
 
-<h2 class="govuk-heading-m govuk-!-margin-bottom-1">{{ t.pages.caseDetails.dateReceived }} <span class="govuk-body-l">{{ client.dateReceived | formatDate }}</span></h2>
-<h2 class="govuk-heading-m govuk-!-margin-bottom-7">{{ t.pages.caseDetails.laaReference }} <span class="govuk-body-l">{{ client.laaReference or t.pages.caseDetails.notProvided }}</span></h2>
+<h2 class="govuk-heading-m govuk-!-margin-bottom-1">{{ t('pages.caseDetails.dateReceived') }} <span class="govuk-body-l">{{ client.dateReceived | formatDate }}</span></h2>
+<h2 class="govuk-heading-m govuk-!-margin-bottom-7">{{ t('pages.caseDetails.laaReference') }} <span class="govuk-body-l">{{ client.laaReference or t('pages.caseDetails.notProvided') }}</span></h2>
 
 <div class="govuk-button-group">
   {% if currentStatus == "new" or currentStatus == "opened" %}
     {{ govukButton({
-      text: t.pages.caseDetails.buttons.acceptCase
+      text: t('pages.caseDetails.buttons.acceptCase')
     }) }}
     {{ govukButton({
-      text: t.pages.caseDetails.buttons.rejectCase,
+      text: t('pages.caseDetails.buttons.rejectCase'),
       classes: "govuk-button--secondary"
     }) }}
     {{ govukButton({
-      text: t.pages.caseDetails.buttons.splitCase,
+      text: t('pages.caseDetails.buttons.splitCase'),
       classes: "govuk-button--secondary"
     }) }}
     {{ govukButton({
-      text: t.pages.caseDetails.buttons.leaveFeedback,
+      text: t('pages.caseDetails.buttons.leaveFeedback'),
       classes: "govuk-button--secondary"
     }) }}
   {% elif currentStatus == "accepted" %}
     {{ govukButton({
-      text: t.pages.caseDetails.buttons.generateLegalHelpForm
+      text: t('pages.caseDetails.buttons.generateLegalHelpForm')
     }) }}
     {{ govukButton({
-      text: t.pages.caseDetails.buttons.rejectCase,
+      text: t('pages.caseDetails.buttons.rejectCase'),
       classes: "govuk-button--secondary"
     }) }}
     {{ govukButton({
-      text: t.pages.caseDetails.buttons.splitCase,
+      text: t('pages.caseDetails.buttons.splitCase'),
       classes: "govuk-button--secondary"
     }) }}
     {{ govukButton({
-      text: t.pages.caseDetails.buttons.closeCase,
+      text: t('pages.caseDetails.buttons.closeCase'),
       classes: "govuk-button--secondary"
     }) }}
     {{ govukButton({
-      text: t.pages.caseDetails.buttons.leaveFeedback,
+      text: t('pages.caseDetails.buttons.leaveFeedback'),
       classes: "govuk-button--secondary"
     }) }}
   {% elif currentStatus == "closed" %}
     {{ govukButton({
-      text: t.pages.caseDetails.buttons.reopenCase
+      text: t('pages.caseDetails.buttons.reopenCase')
     }) }}
     {{ govukButton({
-      text: t.pages.caseDetails.buttons.generateLegalHelpForm,
+      text: t('pages.caseDetails.buttons.generateLegalHelpForm'),
       classes: "govuk-button--secondary"
     }) }}
   {% endif %}

@@ -7,12 +7,12 @@
     {{ data.phoneNumber }}
     {% if not data.announceCall %}
       {{ govukWarningText({
-        text: t.forms.clientDetails.phoneNumber.doNotAnnounce,
+        text: t('forms.clientDetails.phoneNumber.doNotAnnounce'),
         iconFallbackText: t.common.warning
       }) }}
     {% endif %}
   {% else %}
-    {{ t.forms.clientDetails.phoneNumber.notSafeToCall }}
+    {{ t('forms.clientDetails.phoneNumber.notSafeToCall') }}
   {% endif %}
 {% endset %}
 
@@ -20,7 +20,7 @@
   {% if data.thirdParty.safeToCall %}
     {{ data.thirdParty.contactNumber }}
   {% else %}
-    {{ t.forms.clientDetails.thirdParty.notSafeToCall }}
+    {{ t('forms.clientDetails.thirdParty.notSafeToCall') }}
   {% endif %}
 {% endset %}
 
@@ -41,7 +41,7 @@
     {% endif %}
   {% endif %}
   {% if postcode %}
-    {{ postcode }}  
+    {{ postcode }}
   {% endif %}
 {% endmacro %}
 
@@ -52,7 +52,7 @@
   {% if data.thirdParty.passphraseSetUp %}
     {{ data.thirdParty.passphrase }}
   {% else %}
-    {{ t.forms.clientDetails.thirdParty.passphraseNotSetUp | replace('{reason}', data.thirdParty.passphraseNotSetUpReason) }}
+    {{ t('forms.clientDetails.thirdParty.passphraseNotSetUp', {reason: data.thirdParty.passphraseNotSetUpReason}) }}
   {% endif %}
 {% endset %}
 
@@ -92,32 +92,32 @@
   data: constructedData,
   card: {
     title: {
-      text: t.pages.caseDetails.clientDetails.aboutClient
+      text: t('pages.caseDetails.clientDetails.aboutClient')
     }
   },
   rows: [
     {
-      label: t.forms.clientDetails.name.label,
+      label: t('forms.clientDetails.name.label'),
       key: "fullName",
       actions: {
         items: [
           {
             href: "/cases/" + data.caseReference + "/client-details/change/name",
-            text: t.common.change,
-            visuallyHiddenText: t.accessibility.visuallyHiddenText.changeName
+            text: t('common.change'),
+            visuallyHiddenText: t('accessibility.visuallyHiddenText.changeName')
           }
         ]
       }
     },
     {
-      label: t.forms.clientDetails.dateOfBirth.label,
+      label: t('forms.clientDetails.dateOfBirth.label'),
       key: "dateOfBirth",
       actions: {
         items: [
           {
             href: "/cases/" + data.caseReference + "/client-details/change/date-of-birth",
-            text: t.common.change,
-            visuallyHiddenText: t.accessibility.visuallyHiddenText.changeDateOfBirth
+            text: t('common.change'),
+            visuallyHiddenText: t('accessibility.visuallyHiddenText.changeDateOfBirth')
           }
         ]
       }
@@ -129,74 +129,74 @@
   data: constructedData,
   card: {
     title: {
-      text: t.pages.caseDetails.clientDetails.contactDetails
+      text: t('pages.caseDetails.clientDetails.contactDetails')
     }
   },
   rows: [
     {
-      label: t.forms.clientDetails.reasonableAdjustments.label,
+      label: t('forms.clientDetails.reasonableAdjustments.label'),
       key: "computedReasonableAdjustments",
       html: true,
       actions: {
         items: [
           {
             href: "/",
-            text: t.common.change,
-            visuallyHiddenText: t.accessibility.visuallyHiddenText.changeReasonableAdjustments
+            text: t('common.change'),
+            visuallyHiddenText: t('accessibility.visuallyHiddenText.changeReasonableAdjustments')
           }
         ]
       }
     },
     {
-      label: t.forms.clientDetails.language.label,
+      label: t('forms.clientDetails.language.label'),
       key: "language",
       actions: {
         items: [
           {
             href: "/",
-            text: t.common.change,
-            visuallyHiddenText: t.accessibility.visuallyHiddenText.changeLanguage
+            text: t('common.change'),
+            visuallyHiddenText: t('accessibility.visuallyHiddenText.changeLanguage')
           }
         ]
       }
     },
     {
-      label: t.forms.clientDetails.phoneNumber.label,
+      label: t('forms.clientDetails.phoneNumber.label'),
       key: "computedPhoneNumber",
       html: true,
       actions: {
         items: [
           {
             href: "/cases/" + data.caseReference + "/client-details/change/phone-number",
-            text: t.common.change,
-            visuallyHiddenText: t.accessibility.visuallyHiddenText.changePhoneNumber
+            text: t('common.change'),
+            visuallyHiddenText: t('accessibility.visuallyHiddenText.changePhoneNumber')
           }
         ]
       }
     },
     {
-      label: t.forms.clientDetails.email.label,
+      label: t('forms.clientDetails.email.label'),
       key: "email",
       actions: {
         items: [
           {
             href: "/cases/" + data.caseReference + "/client-details/change/email-address",
-            text: t.common.change,
-            visuallyHiddenText: t.accessibility.visuallyHiddenText.changeEmail
+            text: t('common.change'),
+            visuallyHiddenText: t('accessibility.visuallyHiddenText.changeEmail')
           }
         ]
       }
     },
     {
-      label: t.forms.clientDetails.address.label,
+      label: t('forms.clientDetails.address.label'),
       key: "computedAddress",
       html: true,
       actions: {
         items: [
           {
             href: "/cases/" + data.caseReference + "/client-details/change/address",
-            text: t.common.change,
-            visuallyHiddenText: t.accessibility.visuallyHiddenText.changeAddress
+            text: t('common.change'),
+            visuallyHiddenText: t('accessibility.visuallyHiddenText.changeAddress')
           }
         ]
       }
@@ -205,54 +205,54 @@
 }) }}
 
 {% if data.thirdParty %}
-  <h2 class="govuk-heading-m">{{ t.pages.caseDetails.clientDetails.thirdPartyContact }}</h2>
+  <h2 class="govuk-heading-m">{{ t('pages.caseDetails.clientDetails.thirdPartyContact') }}</h2>
   {# Third party info summary card #}
   {{ summaryCardComponent({
     data: constructedData,
     card: {
       title: {
-        text: t.pages.caseDetails.clientDetails.thirdPartyContact
+        text: t('pages.caseDetails.clientDetails.thirdPartyContact')
       },
       actions: {
         items: [
           {
             href: "#",
-            text: t.common.change,
-            visuallyHiddenText: t.accessibility.visuallyHiddenText.changeThirdPartyContact
+            text: t('common.change'),
+            visuallyHiddenText: t('accessibility.visuallyHiddenText.changeThirdPartyContact')
           },
           {
             href: "#",
-            text: t.common.remove,
-            visuallyHiddenText: t.accessibility.visuallyHiddenText.removeThirdPartyContact
+            text: t('common.remove'),
+            visuallyHiddenText: t('accessibility.visuallyHiddenText.removeThirdPartyContact')
           }
         ]
       }
     },
     rows: [
       {
-        label: t.forms.clientDetails.thirdParty.name,
+        label: t('forms.clientDetails.thirdParty.name'),
         key: "fullNameThirdParty"
       },
       {
-        label: t.forms.clientDetails.thirdParty.address,
+        label: t('forms.clientDetails.thirdParty.address'),
         key: "computedAddressThirdParty",
         html: true
       },
       {
-        label: t.forms.clientDetails.thirdParty.contactNumber,
+        label: t('forms.clientDetails.thirdParty.contactNumber'),
         key: "computedPhoneNumberThirdParty",
         html: true
       },
       {
-        label: t.forms.clientDetails.thirdParty.emailAddress,
+        label: t('forms.clientDetails.thirdParty.emailAddress'),
         key: "emailAddressThirdParty"
       },
       {
-        label: t.forms.clientDetails.thirdParty.relationshipToClient,
+        label: t('forms.clientDetails.thirdParty.relationshipToClient'),
         key: "relationshipToClientThirdParty"
       },
       {
-        label: t.forms.clientDetails.thirdParty.passphrase,
+        label: t('forms.clientDetails.thirdParty.passphrase'),
         key: "passphraseContent",
         html: true
       }
@@ -260,7 +260,7 @@
   }) }}
 {% else %}
   {{ govukButton({
-    text: t.pages.caseDetails.buttons.addThirdPartyContact,
+    text: t('pages.caseDetails.buttons.addThirdPartyContact'),
     classes: "govuk-button--secondary"
   }) }}
 {% endif %}

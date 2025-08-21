@@ -6,7 +6,7 @@
 
 {% block backLink %}
   {{ govukBackLink({
-    text: t.common.backToAllCases,
+    text: t('common.backToAllCases'),
     href: "/cases/" + (client.caseStatus | lower),
     classes: "govuk-!-margin-bottom-0"
   }) }}
@@ -25,23 +25,23 @@
     tabs: [
       {
         id: "client_details",
-        text: t.pages.caseDetails.tabs.clientDetails,
+        text: t('pages.caseDetails.tabs.clientDetails'),
         href: "/cases/" + caseReference + "/client-details",
         partial: "case_details/_client-details-partial.njk"
       },
       {
         id: "scope",
-        text: t.pages.caseDetails.tabs.scope,
+        text: t('pages.caseDetails.tabs.scope'),
         href: "/cases/" + caseReference + "/scope"
       },
       {
         id: "financial_eligibility",
-        text: t.pages.caseDetails.tabs.financialEligibility,
+        text: t('pages.caseDetails.tabs.financialEligibility'),
         href: "/cases/" + caseReference + "/financial-eligibility"
       },
       {
         id: "notes_and_history",
-        text: t.pages.caseDetails.tabs.notesAndHistory,
+        text: t('pages.caseDetails.tabs.notesAndHistory'),
         href:"/cases/" + caseReference + "/notes-and-history"
       }
     ]

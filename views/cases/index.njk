@@ -2,13 +2,13 @@
 
 {% block pageTitle %}
   {%- if activeTab == 'opened' -%}
-    {{ t.pages.yourCases.pageTitles.opened | replace('{serviceName}', config.SERVICE_NAME) }}
+    {{ t('pages.yourCases.pageTitles.opened', { serviceName: config.SERVICE_NAME }) }}
   {%- elif activeTab == 'accepted' -%}
-    {{ t.pages.yourCases.pageTitles.accepted | replace('{serviceName}', config.SERVICE_NAME) }}
+    {{ t('pages.yourCases.pageTitles.accepted', { serviceName: config.SERVICE_NAME }) }}
   {%- elif activeTab == 'closed' -%}
-    {{ t.pages.yourCases.pageTitles.closed | replace('{serviceName}', config.SERVICE_NAME) }}
+    {{ t('pages.yourCases.pageTitles.closed', { serviceName: config.SERVICE_NAME }) }}
   {%- else -%}
-    {{ t.pages.yourCases.pageTitles.new | replace('{serviceName}', config.SERVICE_NAME) }}
+    {{ t('pages.yourCases.pageTitles.new', { serviceName: config.SERVICE_NAME }) }}
   {%- endif -%}
 {% endblock %}
 
@@ -24,13 +24,13 @@
   {# Main page heading - changes based on active tab #}
   <h1 class="govuk-heading-xl" id="page-heading">
     {%- if activeTab == 'opened' -%}
-        {{ t.pages.yourCases.openedCases }}
+        {{ t('pages.yourCases.openedCases') }}
       {%- elif activeTab == 'accepted' -%}
-        {{ t.pages.yourCases.acceptedCases }}
+        {{ t('pages.yourCases.acceptedCases') }}
       {%- elif activeTab == 'closed' -%}
-        {{ t.pages.yourCases.closedCases }}
+        {{ t('pages.yourCases.closedCases') }}
       {%- else -%}
-        {{ t.pages.yourCases.newCases }}
+        {{ t('pages.yourCases.newCases') }}
       {%- endif -%}
   </h1>
 
@@ -44,25 +44,25 @@
     tabs: [
       {
         id: "new",
-        text: t.common.status.new,
+        text: t('common.status.new'),
         href: "/cases/new",
         partial: "cases/_new-partial.njk"
       },
       {
         id: "opened",
-        text: t.common.status.opened,
+        text: t('common.status.opened'),
         href: "/cases/opened",
         partial: "cases/_opened-partial.njk"
       },
       {
         id: "accepted",
-        text: t.common.status.accepted,
+        text: t('common.status.accepted'),
         href: "/cases/accepted",
         partial: "cases/_accepted-partial.njk"
       },
       {
         id: "closed",
-        text: t.common.status.closed,
+        text: t('common.status.closed'),
         href: "/cases/closed",
         partial: "cases/_closed-partial.njk"
       }
