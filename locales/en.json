@@ -47,6 +47,9 @@
         "status": "Status",
         "lastModified": "Last modified"
       }
+    },
+    "errorSummary": {
+      "title": "There is a problem"
     }
   },
   "pages": {
@@ -170,7 +173,7 @@
           "invalidFormat": "Enter the phone number in the correct format",
           "notEmpty":{
             "summaryMessage": "Enter the client phone number",
-            "inlineMessage": "Enter the phone number"
+            "inlineMessage": "Enter the client phone number"
           },
           "notChanged": "Change information on the page, or select 'Cancel'"
         }
