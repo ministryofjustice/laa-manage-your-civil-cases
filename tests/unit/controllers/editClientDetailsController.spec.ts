@@ -14,7 +14,7 @@
  * Dependencies: apiService, form validation helpers
  */
 
-import { describe, it, beforeEach, afterEach } from 'mocha';
+import { describe, it, beforeEach, afterEach, before } from 'mocha';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import type { Request, Response, NextFunction } from 'express';
@@ -27,6 +27,7 @@ import {
   postEditClientPhoneNumber
 } from '#src/scripts/controllers/editClientDetailsController.js';
 import { apiService } from '#src/services/apiService.js';
+import { initializeI18nextSync } from '#src/scripts/helpers/index.js';
 // Import to get global type declarations for axiosMiddleware
 import '#utils/axiosSetup.js';
 import { validateEditClientPhoneNumber } from '#src/middlewares/phoneNumberSchema.js';
@@ -55,6 +56,11 @@ describe('Edit Client Details Controller', () => {
   let statusStub: sinon.SinonStub;
   let apiServiceGetStub: sinon.SinonStub;
   let apiServiceUpdateStub: sinon.SinonStub;
+
+  before(() => {
+    // Initialize i18next for translations to work in tests
+    initializeI18nextSync();
+  });
 
   beforeEach(() => {
     req = {

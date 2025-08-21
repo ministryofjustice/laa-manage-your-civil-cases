@@ -10,11 +10,12 @@
  * Dependencies: express-validator, ValidationErrorHelpers
  */
 
-import { describe, it } from 'mocha';
+import { describe, it, before } from 'mocha';
 import { expect } from 'chai';
 import { validateEditClientDateOfBirth } from '#src/middlewares/clientDateOfBirthSchema.js';
 import { validationResult } from 'express-validator';
 import type { Request } from 'express';
+import { initializeI18nextSync } from '#src/scripts/helpers/index.js';
 
 // Mock request object factory
 function createMockRequest(body: any): Partial<Request> {
@@ -24,6 +25,11 @@ function createMockRequest(body: any): Partial<Request> {
 }
 
 describe('Client Date of Birth Schema Validation', () => {
+  before(() => {
+    // Initialize i18next for translations to work in tests
+    initializeI18nextSync();
+  });
+
   describe('validateEditClientDateOfBirth', () => {
 
     describe('Change Detection', () => {

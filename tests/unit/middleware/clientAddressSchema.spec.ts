@@ -12,11 +12,12 @@
  * Dependencies: express-validator, ValidationErrorHelpers
  */
 
-import { describe, it } from 'mocha';
+import { describe, it, before } from 'mocha';
 import { expect } from 'chai';
 import { validateEditClientAddress } from '#src/middlewares/clientAddressSchema.js';
 import { validationResult } from 'express-validator';
 import { formatValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
+import { initializeI18nextSync } from '#src/scripts/helpers/index.js';
 
 // Mock Express request object for testing
 function createMockRequest(bodyData: Record<string, unknown>) {
@@ -26,6 +27,11 @@ function createMockRequest(bodyData: Record<string, unknown>) {
 }
 
 describe('Client Address Schema Validation', () => {
+  before(() => {
+    // Initialize i18next for translations to work in tests
+    initializeI18nextSync();
+  });
+
   describe('validateEditClientAddress', () => {
     it('should create validation schema without throwing an error', () => {
       expect(() => validateEditClientAddress()).to.not.throw();
