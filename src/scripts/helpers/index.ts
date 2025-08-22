@@ -62,8 +62,6 @@ export {
   initializeI18nextSync,
   i18next,
   t,
-  getText,
-  hasText,
   nunjucksT,
   type ExpressLocaleLoader
 } from './i18nLoader.js';

@@ -106,29 +106,10 @@ export const t = (key: string, options?: Record<string, unknown>): string => {
 };
 
 /**
- * Simple wrapper for t() for backwards compatibility
- * @param {string} key - Translation key with namespace
- * @param {Record<string, unknown>} [options] - Optional interpolation values
- * @returns {string} The translated string
- */
-export const getText = (key: string, options?: Record<string, unknown>): string =>
-  t(key, options);
-
-/**
- * Check if translation key exists
- * @param {string} key - The translation key to check
- * @returns {boolean} True if the key exists
- */
-export const hasText = (key: string): boolean =>
-  i18next.exists(key);
-
-/**
  * Express locale loader interface for backwards compatibility
  */
 export interface ExpressLocaleLoader {
   t: (key: string, options?: Record<string, unknown>) => string;
-  getText: typeof getText;
-  hasText: typeof hasText;
 }
 
 /**

@@ -29,14 +29,10 @@ describe('setupLocaleMiddleware', () => {
 
     // Verify res.locals has the locale functions
     expect(res.locals.t).to.be.a('function');
-    expect(res.locals.getText).to.be.a('function');
-    expect(res.locals.hasText).to.be.a('function');
 
     // Verify req.locale has the locale functions
     expect(req.locale).to.be.an('object');
     expect(req.locale.t).to.be.a('function');
-    expect(req.locale.getText).to.be.a('function');
-    expect(req.locale.hasText).to.be.a('function');
 
     // Verify next() was called
     expect(nextCalled).to.be.true;

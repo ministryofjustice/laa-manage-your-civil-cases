@@ -44,7 +44,7 @@ Makes locale functions globally available in all Nunjucks templates via the `nun
 ### In TypeScript Controllers
 
 ```typescript
-import { t, getText, hasText } from '#src/scripts/helpers/index.js';
+import { t } from '#src/scripts/helpers/index.js';
 
 // Use t() for all translations with namespace support
 const backButton = t('common.back');
@@ -54,19 +54,10 @@ const pageTitle = t('pages.caseDetails.title');
 const welcomeMessage = t('messages.welcome', { name: 'John' });
 const errorMessage = t('errors.http.default', { status: '404' });
 
-// Check if a key exists
-if (hasText('forms.clientDetails.name.label')) {
-  const label = t('forms.clientDetails.name.label');
-}
-
-// Use getText() as an alias for t() (backward compatibility)
-const sameResult = getText('common.back');
-
 // In Express controllers via req.locale
 export function myController(req: Request, res: Response): void {
   const errorMsg = req.locale.t('errors.general.caseNotFound');
   const welcomeMsg = req.locale.t('messages.welcome', { name: user.name });
-  const hasError = req.locale.hasText('errors.specific.someError');
 }
 ```
 
@@ -90,7 +81,7 @@ Locale functions are **globally available** through the `t` function:
   hint: { text: t('forms.clientDetails.name.hint') }
 }) }}
 
-{# Conditional rendering (note: hasText not available in templates) #}
+{# Conditional rendering #}
 <p class="govuk-error-message">{{ t('errors.validation.required') }}</p>
 ```
 
@@ -251,10 +242,9 @@ t('pages.title', { pageTitle: 'Case Details', serviceName: 'LAA Portal' });
 2. **Leverage interpolation** for dynamic content: `t('welcome', { name })`
 3. **Group related translations** in logical namespace hierarchies
 4. **Test interpolation variables** to ensure proper substitution
-5. **Use `hasText()` sparingly** - prefer graceful fallbacks
-6. **Keep translation keys** focused and context-specific
-7. **Validate locale changes** across all usage points
-8. **Follow consistent naming patterns** throughout the locale file
+5. **Keep translation keys** focused and context-specific
+6. **Validate locale changes** across all usage points
+7. **Follow consistent naming patterns** throughout the locale file
 
 ## Troubleshooting
 
@@ -279,7 +269,6 @@ const msg = t('messages.welcome', { name: 'John' });
 ```typescript
 // Check if translations work as expected
 console.log(t('common.back')); // Should output: "Back"
-console.log(hasText('common.back')); // Should output: true
 
 // Test interpolation
 console.log(t('messages.welcome', { name: 'Test' })); // Should output: "Welcome, Test!"

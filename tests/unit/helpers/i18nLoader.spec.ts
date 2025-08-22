@@ -10,8 +10,6 @@ import {
   initializeI18nextSync,
   i18next,
   t,
-  getText,
-  hasText,
   nunjucksT
 } from '#src/scripts/helpers/i18nLoader.js';
 
@@ -131,22 +129,6 @@ describe('i18nLoader', () => {
         expect(result).to.equal('back');
 
         Object.defineProperty(i18next, 'isInitialized', { value: originalIsInitialized, writable: true });
-      });
-    });
-
-    describe('getText', () => {
-      it('should return same result as t function', () => {
-        expect(getText('back')).to.equal(t('back'));
-      });
-    });
-
-    describe('hasText', () => {
-      it('should return true for existing keys', () => {
-        expect(hasText('back')).to.be.true;
-      });
-
-      it('should return false for non-existing keys', () => {
-        expect(hasText('nonexistent')).to.be.false;
       });
     });
 

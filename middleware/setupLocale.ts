@@ -4,7 +4,7 @@
  */
 
 import type { Request, Response, NextFunction } from 'express';
-import { t, getText, hasText, type ExpressLocaleLoader } from '#src/scripts/helpers/index.js';
+import { t, type ExpressLocaleLoader } from '#src/scripts/helpers/index.js';
 
 /**
  * Express middleware to inject locale data into template locals
@@ -18,17 +18,13 @@ import { t, getText, hasText, type ExpressLocaleLoader } from '#src/scripts/help
 export function setupLocaleMiddleware(req: Request, res: Response, next: NextFunction): void {
 
   const localeData: ExpressLocaleLoader = {
-    t,
-    getText,
-    hasText
+    t
   };
 
-  const { t: localeT, getText: getTextFn, hasText: hasTextFn } = localeData;
+  const { t: localeT } = localeData;
 
   // Make locale data available in all templates
   res.locals.t = localeT;
-  res.locals.getText = getTextFn;
-  res.locals.hasText = hasTextFn;
 
   // Also make it available on the request object for controllers
   req.locale = localeData;
