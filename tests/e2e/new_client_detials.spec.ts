@@ -1,19 +1,20 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures/index.js';
+import { t, getClientDetailsUrlByStatus } from './helpers/index.js';
 
-test('client details selected from new cases tab has correct page elements', async ({ page }) => {
+test('client details selected from new cases tab has correct page elements', async ({ page, i18nSetup }) => {
   // Navigate to the client details
-  await page.goto('/cases/PC-1922-1879/client-details');
+  await page.goto(getClientDetailsUrlByStatus('new'));
 
-  const new_tag = page.locator('.govuk-tag--yellow');
-  const accept_case_button = page.getByRole('button', { name: 'Accept case' })
-  const reject_case_button = page.getByRole('button', { name: 'Reject case' })
-  const split_case_button = page.getByRole('button', { name: 'Split case' })
-  const leave_feedback_button = page.getByRole('button', { name: 'Leave feedback' })
+  const new_tag = page.getByText('New', { exact: true });
+  const accept_case_button = page.getByRole('button', { name: t('pages.caseDetails.buttons.acceptCase') })
+  const reject_case_button = page.getByRole('button', { name: t('pages.caseDetails.buttons.rejectCase') })
+  const split_case_button = page.getByRole('button', { name: t('pages.caseDetails.buttons.splitCase') })
+  const leave_feedback_button = page.getByRole('button', { name: t('pages.caseDetails.buttons.leaveFeedback') })
 
   // expect to see the following elements
-  expect(new_tag).toBeVisible;
-  expect(accept_case_button).toBeVisible;
-  expect(reject_case_button).toBeVisible;
-  expect(split_case_button).toBeVisible;
-  expect(leave_feedback_button).toBeVisible;
+  await expect(new_tag).toBeVisible();
+  await expect(accept_case_button).toBeVisible();
+  await expect(reject_case_button).toBeVisible();
+  await expect(split_case_button).toBeVisible();
+  await expect(leave_feedback_button).toBeVisible();
 });

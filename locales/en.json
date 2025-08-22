@@ -6,6 +6,7 @@
     "remove": "Remove",
     "save": "Save",
     "cancel": "Cancel",
+    "signOut": "Sign out",
     "yes": "Yes",
     "no": "No",
     "error": "Error",
@@ -33,6 +34,10 @@
     }
   },
   "components": {
+    "phaseBanner": {
+      "feedbackText": "This is a new service. Help us improve it and ",
+      "feedbackLinkTextHTML": "<a class='govuk-link' href='#'>give your feedback by email</a>."
+    },
     "table": {
       "noData": "No data",
       "columns": {
@@ -113,7 +118,7 @@
         }
       },
       "inputLabel": "Search by case ID, client name, phone number, postcode or address",
-      "statusLabel": "Filter by status",
+      "statusLabel": "Status",
       "statusOptions": {
         "all": "Show all"
       },
@@ -159,7 +164,10 @@
       "email": {
         "label": "Email",
         "title": "Client's email address (optional)",
-        "pageTitle": "Client's email address – {caseReference} – {serviceName} – GOV.UK"
+        "pageTitle": "Client's email address – {caseReference} – {serviceName} – GOV.UK",
+        "validationError": {
+          "invalidFormat": "Enter an email address in the correct format, like name@example.com"
+        }
       },
       "phoneNumber": {
         "label": "Phone number",

@@ -65,7 +65,7 @@
               roronoa.zoro@law.com
             </li>
             <li class="moj-header__navigation-item">
-              <a class="moj-header__navigation-link govuk-!-font-weight-bold" href="#">Sign out</a>
+              <a class="moj-header__navigation-link govuk-!-font-weight-bold" href="#">{{t('common.signOut')}}</a>
             </li>
           </ul>
         </nav>
@@ -96,7 +96,7 @@
     tag: {
       text: config.SERVICE_PHASE
     },
-    html: 'This is a new service. Help us improve it and <a class="govuk-link" href="#">give your feedback by email</a>.'
+    html: t('components.phaseBanner.feedbackText') + t('components.phaseBanner.feedbackLinkTextHTML')
   }) }}
   {% block backLink %}{% endblock %}
 {% endblock %}
