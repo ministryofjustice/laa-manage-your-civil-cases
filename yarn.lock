@@ -3634,13 +3634,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next-http-middleware@npm:^3.8.0":
-  version: 3.8.0
-  resolution: "i18next-http-middleware@npm:3.8.0"
-  checksum: 10c0/ae2060f5b5cad0fac61d323daf5357cdaebe30ca77e84e926955d553a209e3f04d6cb601ab43e44438eefd3b35af4426f2efcaf8a3afb40bbe170cb08112b03e
-  languageName: node
-  linkType: hard
-
 "i18next@npm:^25.4.0":
   version: 25.4.0
   resolution: "i18next@npm:25.4.0"
@@ -4701,7 +4694,6 @@ __metadata:
     http-errors: "npm:~2.0.0"
     husky: "npm:^9.1.7"
     i18next: "npm:^25.4.0"
-    i18next-http-middleware: "npm:^3.8.0"
     jsdom: "npm:^26.1.0"
     libphonenumber-js: "npm:^1.12.10"
     lint-staged: "npm:^16.1.5"
