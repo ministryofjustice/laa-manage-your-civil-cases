@@ -257,6 +257,22 @@ When tests fail in CI:
 
 This provides a timeline view of the test execution with screenshots, DOM snapshots, and network requests to help diagnose issues.
 
+#### Route Coverage Analysis
+The `scripts/e2e_coverage/route-coverage-analysis.sh` script analyzes which Express routes have corresponding E2E tests, helping ensure comprehensive test coverage.
+
+```shell
+# Run the route coverage analysis
+./scripts/e2e_coverage/route-coverage-analysis.sh
+```
+
+The script:
+- Extracts all registered Express routes from the application
+- Runs E2E tests with debug logging to capture visited routes
+- Compares the two lists and reports coverage percentage
+- Shows which routes are missing E2E tests
+
+Use this to identify gaps in your E2E test coverage and ensure all user-facing routes are properly tested.
+
 ### Code coverage - unit tests
 We use the library [c8](https://github.com/bcoe/c8) which output unit test coverage reports using Node.js' built in coverage.
 
