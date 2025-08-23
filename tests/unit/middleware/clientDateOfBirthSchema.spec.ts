@@ -154,7 +154,7 @@ describe('Client Date of Birth Schema Validation', () => {
         const dayRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.day.notEmpty'));
         const monthRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.month.notEmpty'));
         const yearRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.year.notEmpty'));
-        const comprehensiveError = errorArray.find(err => err.msg.errorData?.summaryMessage === 'The date of birth must include a day, month and year');
+        const comprehensiveError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.allEmpty'));
         const changeError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.notChanged'));
 
         expect(dayRequiredError).to.exist;

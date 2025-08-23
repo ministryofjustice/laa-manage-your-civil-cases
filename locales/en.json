@@ -162,6 +162,7 @@
           },
           "validDate": "Enter a date in the correct format",
           "dateInPast": "The date of birth must be in the past",
+          "allEmpty": "The date of birth must include a day, month and year",
           "notChanged": "Update the client date of birth or select 'Cancel'"
         }
       },
