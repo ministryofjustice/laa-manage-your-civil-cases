@@ -18,7 +18,7 @@ function isLocaleData(value: unknown): value is Record<string, Record<string, st
 }
 
 /**
- * Initialize i18next synchronously using Node.js fs methods
+ * Initialise i18next synchronously using Node.js fs methods
  * This ensures i18next is ready before any modules that use translations are loaded
  */
 export function initializeI18nextSync(): void {

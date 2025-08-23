@@ -82,20 +82,20 @@ describe('i18nLoader', () => {
   describe('translation functions', () => {
     let i18nextStub: sinon.SinonStub;
     let i18nextExistsStub: sinon.SinonStub;
-    
+
     before(() => {
       // Stub i18next methods directly instead of trying to initialize
       i18nextStub = sinon.stub(i18next, 't');
       i18nextExistsStub = sinon.stub(i18next, 'exists');
-      
+
       // Setup return values for our test cases
       i18nextStub.withArgs('back').returns('Back');
       i18nextStub.withArgs('greeting', { name: 'John' }).returns('Hello John');
       i18nextStub.withArgs('nonexistent.key').returns('nonexistent.key');
-      
+
       i18nextExistsStub.withArgs('back').returns(true);
       i18nextExistsStub.withArgs('nonexistent').returns(false);
-      
+
       // Ensure isInitialized is true
       Object.defineProperty(i18next, 'isInitialized', { value: true, writable: true });
     });

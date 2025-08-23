@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { 
+import {
   parseDateString,
   extractDateFormData,
   extractOriginalDateData,
@@ -44,7 +44,7 @@ describe('ValidationDateHelpers', () => {
         'dateOfBirth-month': '5',
         'dateOfBirth-year': '1990'
       };
-      
+
       const result = extractDateFormData(body);
       expect(result).to.deep.equal({
         day: '15',
@@ -58,7 +58,7 @@ describe('ValidationDateHelpers', () => {
         'dateOfBirth-day': '15'
         // missing month and year
       };
-      
+
       const result = extractDateFormData(body);
       expect(result).to.deep.equal({
         day: '15',
@@ -75,7 +75,7 @@ describe('ValidationDateHelpers', () => {
         originalMonth: '3',
         originalYear: '1985'
       };
-      
+
       const result = extractOriginalDateData(body);
       expect(result).to.deep.equal({
         day: '10',
