@@ -135,7 +135,11 @@
       "name": {
         "label": "Full name",
         "title": "Client name",
-        "pageTitle": "Client name – {caseReference} – {serviceName} – GOV.UK"
+        "pageTitle": "Client name – {caseReference} – {serviceName} – GOV.UK",
+        "validationError": {
+          "notEmpty": "Enter the client name",
+          "notChanged": "Enter the client name, or select 'Cancel'"
+        }
       },
       "dateOfBirth": {
         "label": "Date of birth",
@@ -166,7 +170,8 @@
         "title": "Client's email address (optional)",
         "pageTitle": "Client's email address – {caseReference} – {serviceName} – GOV.UK",
         "validationError": {
-          "invalidFormat": "Enter an email address in the correct format, like name@example.com"
+          "invalidFormat": "Enter an email address in the correct format, like name@example.com",
+          "notChanged" : "Enter the client email address, or select 'Cancel'"
         }
       },
       "phoneNumber": {
@@ -179,56 +184,53 @@
         "doNotAnnounce": "Do not say the call is from Civil Legal Advice",
         "validationError":{
           "invalidFormat": "Enter the phone number in the correct format",
-          "notEmpty":{
-            "summaryMessage": "Enter the client phone number",
-            "inlineMessage": "Enter the client phone number"
-          },
+          "notEmpty": "Enter the client phone number",
           "notChanged": "Change information on the page, or select 'Cancel'"
+          }
+        },
+        "address": {
+          "label": "Address",
+          "title": "Client address (optional)",
+          "pageTitle": "Client address – {caseReference} – {serviceName} – GOV.UK",
+          "postcode": "Postcode",
+          "validationError":{
+            "notChanged": "Update the client address, or select 'Cancel'"
+          }
+        },
+        "language": {
+          "label": "Language"
+        },
+        "reasonableAdjustments": {
+          "label": "Reasonable adjustments"
+        },
+        "thirdParty": {
+          "name": "Name",
+          "address": "Address",
+          "contactNumber": "Contact number",
+          "emailAddress": "Email address",
+          "relationshipToClient": "Relationship to Client",
+          "passphrase": "Passphrase",
+          "notSafeToCall": "The third party is not safe to call",
+          "passphraseNotSetUp": "No, {reason}"
         }
       },
-      "address": {
-        "label": "Address",
-        "title": "Client address (optional)",
-        "pageTitle": "Client address – {caseReference} – {serviceName} – GOV.UK",
-        "postcode": "Postcode",
+      "search":{
         "validationError":{
-          "notChanged": "Update the client address, or select 'Cancel'"
+          "notEmpty": "Enter some case details"
         }
-      },
-      "language": {
-        "label": "Language"
-      },
-      "reasonableAdjustments": {
-        "label": "Reasonable adjustments"
-      },
-      "thirdParty": {
-        "name": "Name",
-        "address": "Address",
-        "contactNumber": "Contact number",
-        "emailAddress": "Email address",
-        "relationshipToClient": "Relationship to Client",
-        "passphrase": "Passphrase",
-        "notSafeToCall": "The third party is not safe to call",
-        "passphraseNotSetUp": "No, {reason}"
       }
     },
-    "search":{
-      "validationError":{
-        "notEmpty": "Enter some case details"
+    "accessibility": {
+      "visuallyHiddenText": {
+        "changeName": "Change Name",
+        "changeDateOfBirth": "Change Date of birth",
+        "changePhoneNumber": "Change Phone number",
+        "changeEmail": "Change Email",
+        "changeAddress": "Change Address",
+        "changeLanguage": "Change Language",
+        "changeReasonableAdjustments": "Change Reasonable adjustments",
+        "changeThirdPartyContact": "Change Third party contact details",
+        "removeThirdPartyContact": "Remove Third party contact details"
       }
     }
-  },
-  "accessibility": {
-    "visuallyHiddenText": {
-      "changeName": "Change Name",
-      "changeDateOfBirth": "Change Date of birth",
-      "changePhoneNumber": "Change Phone number",
-      "changeEmail": "Change Email",
-      "changeAddress": "Change Address",
-      "changeLanguage": "Change Language",
-      "changeReasonableAdjustments": "Change Reasonable adjustments",
-      "changeThirdPartyContact": "Change Third party contact details",
-      "removeThirdPartyContact": "Remove Third party contact details"
-    }
   }
-}

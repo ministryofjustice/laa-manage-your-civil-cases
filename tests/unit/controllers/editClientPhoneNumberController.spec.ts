@@ -98,7 +98,7 @@ describe('Edit Client Phone Number Controller', () => {
           announceCall: true
         }
       };
-      
+
       apiServiceGetStub.resolves(mockApiResponse);
 
       // Act

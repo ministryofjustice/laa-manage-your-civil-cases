@@ -1,5 +1,5 @@
 import { checkSchema } from 'express-validator';
-import { createChangeDetectionValidator, TypedValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
+import { createChangeDetectionValidator, TypedValidationError, t } from '#src/scripts/helpers/index.js';
 
 /**
  * Validation middleware when user edits client's email address.
@@ -17,15 +17,19 @@ export const validateEditClientEmailAddress = (): ReturnType<typeof checkSchema>
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: 'Enter an email address in the correct format, like name@example.com',
-          inlineMessage: 'Enter an email address in the correct format, like name@example.com'
+          summaryMessage: t('forms.clientDetails.email.validationError.invalidFormat'),
+          inlineMessage: t('forms.clientDetails.email.validationError.invalidFormat')
         })
       },
       ...createChangeDetectionValidator(
         [{ current: 'emailAddress', original: 'existingEmailAddress' }],
         {
-          summaryMessage: "Enter the client email address, or select 'Cancel'",
-          inlineMessage: "Enter the client email address, or select 'Cancel'",
-        }),
+          /**
+           * Returns the summary message for unchanged email address.
+           * @returns {string} Localized validation error message
+           */
+          summaryMessage: () => t('forms.clientDetails.email.validationError.notChanged'),
+          inlineMessage: '',
+}),
     }
   });

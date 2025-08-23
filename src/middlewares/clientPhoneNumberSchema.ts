@@ -1,6 +1,6 @@
 import { checkSchema } from 'express-validator';
 import { isValidPhoneNumber } from 'libphonenumber-js';
-import { createChangeDetectionValidator, TypedValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
+import { createChangeDetectionValidator, TypedValidationError, t } from '#src/scripts/helpers/index.js';
 
 /**
  * Validation middleware when user edits client's phone number.
@@ -31,8 +31,8 @@ export const validateEditClientPhoneNumber = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: 'Enter the phone number in the correct format',
-          inlineMessage: 'Enter the phone number in the correct format'
+          summaryMessage: t('forms.clientDetails.phoneNumber.validationError.invalidFormat'),
+          inlineMessage: t('forms.clientDetails.phoneNumber.validationError.invalidFormat')
         })
       },
       notEmpty: {
@@ -41,8 +41,8 @@ export const validateEditClientPhoneNumber = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: 'Enter the client phone number',
-          inlineMessage: 'Enter the phone number'
+          summaryMessage: t('forms.clientDetails.phoneNumber.validationError.notEmpty'),
+          inlineMessage: t('forms.clientDetails.phoneNumber.validationError.notEmpty')
         })
       },
     },
@@ -53,8 +53,12 @@ export const validateEditClientPhoneNumber = (): ReturnType<typeof checkSchema> 
         { current: 'announceCall', original: 'existingAnnounceCall' }
       ],
       {
-        summaryMessage: "Change information on the page, or select 'Cancel'",
+        /**
+         * Returns the summary message for unchanged phone number or call status.
+         * @returns {string} Localized validation error message
+         */
+        summaryMessage: () => t('forms.clientDetails.phoneNumber.validationError.notChanged'),
         inlineMessage: ''
-      }
+}
     ),
   });

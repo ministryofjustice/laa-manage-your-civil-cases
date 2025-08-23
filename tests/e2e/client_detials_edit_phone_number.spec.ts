@@ -43,7 +43,7 @@ test('phoneNumber is blank and correct validation errors display', async ({ page
 
   // Check error summary links to problem field
   await expect(errorLinkPhoneNumber).toBeVisible();
-  await expect(errorLinkPhoneNumber).toHaveText(t('forms.clientDetails.phoneNumber.validationError.notEmpty.summaryMessage'));
+  await expect(errorLinkPhoneNumber).toHaveText(t('forms.clientDetails.phoneNumber.validationError.notEmpty'));
   await expect(phoneInput).toHaveClass(/govuk-input--error/);
 
   // Check other error summary link not visible
@@ -103,13 +103,13 @@ test('safeToCall & phoneNumber & announceCall not changed and correct validation
   // If the page loads empty, we should see "required field"
   const errorText = await errorSummary.textContent();
   const hasNotChangedError = errorText?.includes(t('forms.clientDetails.phoneNumber.validationError.notChanged'));
-  const hasRequiredError = errorText?.includes(t('forms.clientDetails.phoneNumber.validationError.notEmpty.summaryMessage'));
+  const hasRequiredError = errorText?.includes(t('forms.clientDetails.phoneNumber.validationError.notEmpty'));
 
   // Assert that we get one of the expected errors
   if (hasNotChangedError) {
     await expect(errorSummary).toContainText(t('forms.clientDetails.phoneNumber.validationError.notChanged'));
   } else if (hasRequiredError) {
-    await expect(errorSummary).toContainText(t('forms.clientDetails.phoneNumber.validationError.notEmpty.summaryMessage'));
+    await expect(errorSummary).toContainText(t('forms.clientDetails.phoneNumber.validationError.notEmpty'));
   } else {
     throw new Error(`Expected either "not changed" or "required field" error, but got: ${errorText}`);
   }

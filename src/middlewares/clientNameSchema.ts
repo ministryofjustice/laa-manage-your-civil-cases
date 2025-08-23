@@ -1,5 +1,5 @@
 import { checkSchema } from 'express-validator';
-import { createChangeDetectionValidator, TypedValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
+import { createChangeDetectionValidator, TypedValidationError,t } from '#src/scripts/helpers/index.js';
 
 /**
  * Validation middleware when user edits client's name.
@@ -15,15 +15,19 @@ export const validateEditClientName = (): ReturnType<typeof checkSchema> =>
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: 'Enter the client name',
-          inlineMessage: 'Enter the client name'
+          summaryMessage: t('forms.clientDetails.name.validationError.notEmpty'),
+          inlineMessage: t('forms.clientDetails.name.validationError.notEmpty')
         })
       },
       ...createChangeDetectionValidator(
         [{ current: 'fullName', original: 'existingFullName' }],
         {
-          summaryMessage: "Enter the client name, or select 'Cancel'",
-          inlineMessage: "Enter the client name, or select 'Cancel'",
+          /**
+           * Returns the summary message for unchanged name.
+           * @returns {string} Localized validation error message
+           */
+          summaryMessage: () => t('forms.clientDetails.name.validationError.notChanged'),
+          inlineMessage: '',
         }),
       }
-    });
+});
