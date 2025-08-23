@@ -7,12 +7,12 @@
     {{ data.phoneNumber }}
     {% if not data.announceCall %}
       {{ govukWarningText({
-        text: "Do not say the call is from Civil Legal Advice",
-        iconFallbackText: "Warning"
+        text: t('forms.clientDetails.phoneNumber.doNotAnnounce'),
+        iconFallbackText: t.common.warning
       }) }}
     {% endif %}
   {% else %}
-    The client is not safe to call
+    {{ t('forms.clientDetails.phoneNumber.notSafeToCall') }}
   {% endif %}
 {% endset %}
 
@@ -20,7 +20,7 @@
   {% if data.thirdParty.safeToCall %}
     {{ data.thirdParty.contactNumber }}
   {% else %}
-    The third party is not safe to call
+    {{ t('forms.clientDetails.thirdParty.notSafeToCall') }}
   {% endif %}
 {% endset %}
 
@@ -41,7 +41,7 @@
     {% endif %}
   {% endif %}
   {% if postcode %}
-    {{ postcode }}  
+    {{ postcode }}
   {% endif %}
 {% endmacro %}
 
@@ -52,7 +52,7 @@
   {% if data.thirdParty.passphraseSetUp %}
     {{ data.thirdParty.passphrase }}
   {% else %}
-    No, {{ data.thirdParty.passphraseNotSetUpReason }}
+    {{ t('forms.clientDetails.thirdParty.passphraseNotSetUp', {reason: data.thirdParty.passphraseNotSetUpReason}) }}
   {% endif %}
 {% endset %}
 
@@ -86,38 +86,38 @@
   passphraseContent: passphraseContent
 } %}
 
-<h2 class="govuk-heading-m">Client details</h2>
+<h2 class="govuk-heading-m">{{ t.pages.caseDetails.clientDetails.heading }}</h2>
 {# Client info summary card #}
 {{ summaryCardComponent({
   data: constructedData,
   card: {
     title: {
-      text: "About the client"
+      text: t('pages.caseDetails.clientDetails.aboutClient')
     }
   },
   rows: [
     {
-      label: "Name",
+      label: t('forms.clientDetails.name.label'),
       key: "fullName",
       actions: {
         items: [
           {
             href: "/cases/" + data.caseReference + "/client-details/change/name",
-            text: "Change",
-            visuallyHiddenText: "Change Name"
+            text: t('common.change'),
+            visuallyHiddenText: t('accessibility.visuallyHiddenText.changeName')
           }
         ]
       }
     },
     {
-      label: "Date of birth",
+      label: t('forms.clientDetails.dateOfBirth.label'),
       key: "dateOfBirth",
       actions: {
         items: [
           {
             href: "/cases/" + data.caseReference + "/client-details/change/date-of-birth",
-            text: "Change",
-            visuallyHiddenText: "Change Date of birth"
+            text: t('common.change'),
+            visuallyHiddenText: t('accessibility.visuallyHiddenText.changeDateOfBirth')
           }
         ]
       }
@@ -129,74 +129,74 @@
   data: constructedData,
   card: {
     title: {
-      text: "Contact details"
+      text: t('pages.caseDetails.clientDetails.contactDetails')
     }
   },
   rows: [
     {
-      label: "Reasonable adjustments",
+      label: t('forms.clientDetails.reasonableAdjustments.label'),
       key: "computedReasonableAdjustments",
       html: true,
       actions: {
         items: [
           {
             href: "/",
-            text: "Change",
-            visuallyHiddenText: "Change Reasonable adjustments"
+            text: t('common.change'),
+            visuallyHiddenText: t('accessibility.visuallyHiddenText.changeReasonableAdjustments')
           }
         ]
       }
     },
     {
-      label: "Language",
+      label: t('forms.clientDetails.language.label'),
       key: "language",
       actions: {
         items: [
           {
             href: "/",
-            text: "Change",
-            visuallyHiddenText: "Change Language"
+            text: t('common.change'),
+            visuallyHiddenText: t('accessibility.visuallyHiddenText.changeLanguage')
           }
         ]
       }
     },
     {
-      label: "Phone number",
+      label: t('forms.clientDetails.phoneNumber.label'),
       key: "computedPhoneNumber",
       html: true,
       actions: {
         items: [
           {
             href: "/cases/" + data.caseReference + "/client-details/change/phone-number",
-            text: "Change",
-            visuallyHiddenText: "Change Phone number"
+            text: t('common.change'),
+            visuallyHiddenText: t('accessibility.visuallyHiddenText.changePhoneNumber')
           }
         ]
       }
     },
     {
-      label: "Email",
+      label: t('forms.clientDetails.email.label'),
       key: "email",
       actions: {
         items: [
           {
             href: "/cases/" + data.caseReference + "/client-details/change/email-address",
-            text: "Change",
-            visuallyHiddenText: "Change Email"
+            text: t('common.change'),
+            visuallyHiddenText: t('accessibility.visuallyHiddenText.changeEmail')
           }
         ]
       }
     },
     {
-      label: "Address",
+      label: t('forms.clientDetails.address.label'),
       key: "computedAddress",
       html: true,
       actions: {
         items: [
           {
             href: "/cases/" + data.caseReference + "/client-details/change/address",
-            text: "Change",
-            visuallyHiddenText: "Change Address"
+            text: t('common.change'),
+            visuallyHiddenText: t('accessibility.visuallyHiddenText.changeAddress')
           }
         ]
       }
@@ -205,54 +205,54 @@
 }) }}
 
 {% if data.thirdParty %}
-  <h2 class="govuk-heading-m">Third party contact</h2>
+  <h2 class="govuk-heading-m">{{ t('pages.caseDetails.clientDetails.thirdPartyContact') }}</h2>
   {# Third party info summary card #}
   {{ summaryCardComponent({
     data: constructedData,
     card: {
       title: {
-        text: "Third party contact"
+        text: t('pages.caseDetails.clientDetails.thirdPartyContact')
       },
       actions: {
         items: [
           {
             href: "#",
-            text: "Change",
-            visuallyHiddenText: "Change Third party contact details"
+            text: t('common.change'),
+            visuallyHiddenText: t('accessibility.visuallyHiddenText.changeThirdPartyContact')
           },
           {
             href: "#",
-            text: "Remove",
-            visuallyHiddenText: "Remove Third party contact details"
+            text: t('common.remove'),
+            visuallyHiddenText: t('accessibility.visuallyHiddenText.removeThirdPartyContact')
           }
         ]
       }
     },
     rows: [
       {
-        label: "Name",
+        label: t('forms.clientDetails.thirdParty.name'),
         key: "fullNameThirdParty"
       },
       {
-        label: "Address",
+        label: t('forms.clientDetails.thirdParty.address'),
         key: "computedAddressThirdParty",
         html: true
       },
       {
-        label: "Contact number",
+        label: t('forms.clientDetails.thirdParty.contactNumber'),
         key: "computedPhoneNumberThirdParty",
         html: true
       },
       {
-        label: "Email address",
+        label: t('forms.clientDetails.thirdParty.emailAddress'),
         key: "emailAddressThirdParty"
       },
       {
-        label: "Relationship to Client",
+        label: t('forms.clientDetails.thirdParty.relationshipToClient'),
         key: "relationshipToClientThirdParty"
       },
       {
-        label: "Passphrase",
+        label: t('forms.clientDetails.thirdParty.passphrase'),
         key: "passphraseContent",
         html: true
       }
@@ -260,7 +260,7 @@
   }) }}
 {% else %}
   {{ govukButton({
-    text: "Add third party contact",
+    text: t('pages.caseDetails.buttons.addThirdPartyContact'),
     classes: "govuk-button--secondary"
   }) }}
 {% endif %}

@@ -126,7 +126,7 @@
         {% if row[column.key] %}
           {{ row[column.key] }}
         {% else %}
-          <span class="govuk-visually-hidden">No data</span>
+          <span class="govuk-visually-hidden">{{ t.components.table.noData }}</span>
         {% endif %}
       {% endif %}
       {% endset %}

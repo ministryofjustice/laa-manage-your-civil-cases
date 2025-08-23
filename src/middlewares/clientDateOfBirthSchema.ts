@@ -1,8 +1,7 @@
-import { hasProperty, isRecord } from '#src/scripts/helpers/dataTransformers.js';
-import { createChangeDetectionValidator, TypedValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
+
 import { checkSchema, type Meta } from 'express-validator';
-import { dateStringFromThreeFields } from '#src/scripts/helpers/dateFormatter.js';
 import { isDate, isBefore } from 'validator';
+import { hasProperty, isRecord, createChangeDetectionValidator, TypedValidationError, dateStringFromThreeFields, t} from '#src/scripts/helpers/index.js';
 
 // Constants for validation boundaries
 const MIN_DAY = 1;
@@ -10,7 +9,7 @@ const MAX_DAY = 31;
 const MIN_MONTH = 1;
 const MAX_MONTH = 12;
 const YEAR_LENGTH = 4;
-const DATE_OFFSET = 1; 
+const DATE_OFFSET = 1;
 
 interface ClientDateOfBirthBody {
   'dateOfBirth-day': string;
@@ -52,8 +51,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Error for missing day
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: 'The date of birth must include a day',
-          inlineMessage: 'The date of birth must include a day',
+          summaryMessage: t('forms.clientDetails.dateOfBirth.validationError.day.notEmpty'),
+          inlineMessage: t('forms.clientDetails.dateOfBirth.validationError.day.notEmpty'),
         }),
         bail: true, // Stop this field's validation if day is missing
       },
@@ -64,8 +63,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Error for invalid day range
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: 'Day must be between 1 and 31',
-          inlineMessage: 'Day must be between 1 and 31',
+          summaryMessage: t('forms.clientDetails.dateOfBirth.validationError.day.isInt'),
+          inlineMessage: t('forms.clientDetails.dateOfBirth.validationError.day.isInt'),
         })
       },
     },
@@ -78,8 +77,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Error for missing month
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: 'The date of birth must include a month',
-          inlineMessage: 'The date of birth must include a month',
+          summaryMessage: t('forms.clientDetails.dateOfBirth.validationError.month.notEmpty'),
+          inlineMessage: t('forms.clientDetails.dateOfBirth.validationError.month.notEmpty'),
         }),
         bail: true, // Stop this field's validation if month is missing
       },
@@ -90,8 +89,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Error for invalid month range
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: 'Month must be between 1 and 12',
-          inlineMessage: 'Month must be between 1 and 12',
+          summaryMessage: t('forms.clientDetails.dateOfBirth.validationError.month.isInt'),
+          inlineMessage: t('forms.clientDetails.dateOfBirth.validationError.month.isInt'),
         })
       },
     },
@@ -104,8 +103,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Error for missing year
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: 'The date of birth must include a year',
-          inlineMessage: 'The date of birth must include a year',
+          summaryMessage: t('forms.clientDetails.dateOfBirth.validationError.year.notEmpty'),
+          inlineMessage: t('forms.clientDetails.dateOfBirth.validationError.year.notEmpty'),
         }),
         bail: true, // Stop this field's validation if year is missing
       },
@@ -116,8 +115,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Error for invalid year length
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: 'Year must include 4 numbers',
-          inlineMessage: 'Year must include 4 numbers',
+          summaryMessage: t('forms.clientDetails.dateOfBirth.validationError.year.isLength'),
+          inlineMessage: t('forms.clientDetails.dateOfBirth.validationError.year.isLength'),
         }),
         bail: true, // Stop further year validation if format is wrong
       },
@@ -127,8 +126,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Error for invalid year
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: 'Year must be a valid number',
-          inlineMessage: 'Year must be a valid number',
+          summaryMessage: t('forms.clientDetails.dateOfBirth.validationError.year.isInt'),
+          inlineMessage: t('forms.clientDetails.dateOfBirth.validationError.year.isInt'),
         })
       },
     },
@@ -143,7 +142,7 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
          */
         options: (_value: string, meta: Meta): boolean => {
           const { req } = meta;
-          
+
           if (!isClientDateOfBirthBody(req.body)) {
             return true;
           }
@@ -154,16 +153,16 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
 
           // Use validator.js isDate() with dateStringFromThreeFields helper
           const dateString = dateStringFromThreeFields(day, month, year);
-          
+
           return isDate(dateString);
         },
         /**
-         * Custom error message for invalid date combinations 
+         * Custom error message for invalid date combinations
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: 'Enter a date in the correct format',
-          inlineMessage: 'Enter a date in the correct format',
+          summaryMessage: t('forms.clientDetails.dateOfBirth.validationError.validDate'),
+          inlineMessage: t('forms.clientDetails.dateOfBirth.validationError.validDate'),
         }),
         bail: true, // Stop validation if date format is invalid
       },
@@ -179,7 +178,7 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
          */
         options: (_value: string, meta: Meta): boolean => {
           const { req } = meta;
-          
+
           if (!isClientDateOfBirthBody(req.body)) {
             return true;
           }
@@ -202,8 +201,8 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: 'The date of birth must be in the past',
-          inlineMessage: 'The date of birth must be in the past',
+          summaryMessage: t('forms.clientDetails.dateOfBirth.validationError.dateInPast'),
+          inlineMessage: t('forms.clientDetails.dateOfBirth.validationError.dateInPast'),
         })
       },
     },
@@ -214,8 +213,12 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
         { current: 'dateOfBirth-year', original: 'originalYear' }
       ],
       {
-        summaryMessage: "Update the client date of birth or select 'Cancel'",
+        /**
+         * Provides the summary message for unchanged date of birth validation.
+         * @returns {string} Localized error message for unchanged date of birth.
+         */
+        summaryMessage: () => t('forms.clientDetails.dateOfBirth.validationError.notChanged'),
         inlineMessage: ''
-      }
+}
     ),
   });

@@ -39,7 +39,12 @@ export {
 
 // Date validation utilities
 export {
-  extractAndConvertDateFields
+  isRequestBodyWithDates,
+  parseDateString,
+  extractDateFormData,
+  extractOriginalDateData,
+  extractAndConvertDateFields,
+  handleDateOfBirthValidationErrors
 } from './ValidationDateHelpers.js';
 
 // Form validation utilities
@@ -53,6 +58,14 @@ export {
   handlePostEditForm
 } from './formControllerHelpers.js';
 
+export {
+  initializeI18nextSync,
+  i18next,
+  t,
+  nunjucksT,
+  type ExpressLocaleLoader
+} from './i18nLoader.js';
+
 // Error handling utilities
 export {
   extractErrorMessage,
@@ -64,3 +77,10 @@ export {
   createProcessedError,
   extractAndLogError,
 } from './errorHandler.js';
+
+export {
+  createChangeDetectionValidator,
+  TypedValidationError,
+  formatValidationError,
+  handleValidationErrors,
+} from './ValidationErrorHelpers.js'

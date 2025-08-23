@@ -6,7 +6,7 @@
 
 {% block backLink %}
   {{ govukBackLink({
-    text: "Back to all cases",
+    text: t('common.backToAllCases'),
     href: "/cases/" + (client.caseStatus | lower),
     classes: "govuk-!-margin-bottom-0"
   }) }}
@@ -25,23 +25,23 @@
     tabs: [
       {
         id: "client_details",
-        text: "Client details",
+        text: t('pages.caseDetails.tabs.clientDetails'),
         href: "/cases/" + caseReference + "/client-details",
         partial: "case_details/_client-details-partial.njk"
       },
       {
         id: "scope",
-        text: "Scope",
+        text: t('pages.caseDetails.tabs.scope'),
         href: "/cases/" + caseReference + "/scope"
       },
       {
         id: "financial_eligibility",
-        text: "Financial eligibility",
+        text: t('pages.caseDetails.tabs.financialEligibility'),
         href: "/cases/" + caseReference + "/financial-eligibility"
       },
       {
         id: "notes_and_history",
-        text: "Notes and history",
+        text: t('pages.caseDetails.tabs.notesAndHistory'),
         href:"/cases/" + caseReference + "/notes-and-history"
       }
     ]
