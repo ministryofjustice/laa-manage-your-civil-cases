@@ -191,7 +191,7 @@ describe('Client Address Schema Validation', () => {
 
         expect(errors.isEmpty()).to.be.false;
 
-        const changeError = errors.array().find(error => error.summaryMessage.includes('Update the client address'));
+        const changeError = errors.array().find(error => error.summaryMessage.includes(t('forms.clientDetails.address.validationError.notChanged')));
         expect(changeError).to.exist;
         expect(changeError?.summaryMessage).to.equal(t('forms.clientDetails.address.validationError.notChanged'));
       });
