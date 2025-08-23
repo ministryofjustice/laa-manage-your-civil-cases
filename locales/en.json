@@ -148,21 +148,21 @@
         "hint": "For example, 27 3 2007",
         "validationError": {
           "day":{
-            "notEmpty": "The date of birth must include a day!",
+            "notEmpty": "The date of birth must include a day",
             "isInt": "Day must be between 1 and 31"
           },
           "month":{
-            "notEmpty": "The date of birth must include a month!",
+            "notEmpty": "The date of birth must include a month",
             "isInt": "Month must be between 1 and 12"
           },
           "year":{
-            "notEmpty": "The date of birth must include a year!",
+            "notEmpty": "The date of birth must include a year",
             "isLength": "Year must include 4 numbers",
             "isInt": "Year must be a valid number"
           },
           "validDate": "Enter a date in the correct format",
           "dateInPast": "The date of birth must be in the past",
-          "mustInclude": "The date of birth must include a {field}!",
+          "mustInclude": "The date of birth must include a {field}",
           "allEmpty": "Enter the client date of birth",
           "notChanged": "Change the client date of birth, or select 'Cancel'"
         }
