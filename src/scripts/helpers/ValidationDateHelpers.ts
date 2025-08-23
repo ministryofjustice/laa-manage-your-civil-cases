@@ -1,5 +1,6 @@
 import { hasProperty, safeString, extractFormFields } from './dataTransformers.js';
 import { dateStringFromThreeFields } from './dateFormatter.js';
+import { t } from './i18nLoader.js';
 import type { ValidationErrorData } from './ValidationErrorHelpers.js';
 import type { Request, Response } from 'express';
 import type { Result } from 'express-validator';
@@ -207,6 +208,15 @@ export function handleDateOfBirthValidationErrors(
   function buildMissingFieldsError(missingFields: string[]): ValidationErrorData[] {
     if (missingFields.length === NO_EMPTY_FIELDS) return [];
     const orderedFields = ['day', 'month', 'year'].filter(f => missingFields.includes(f));
+
+    // If all three fields are missing, use the allEmpty translation
+    if (orderedFields.length === THREE_FIELDS) {
+      return [{
+        summaryMessage: t('forms.clientDetails.dateOfBirth.validationError.allEmpty'),
+        inlineMessage: t('forms.clientDetails.dateOfBirth.validationError.allEmpty')
+      }];
+    }
+    // For day or month missing fields, build the dynamic message
     let fieldText = '';
     if (orderedFields.length === ONE_FIELD) {
       const [firstField] = orderedFields;
@@ -214,13 +224,10 @@ export function handleDateOfBirthValidationErrors(
     } else if (orderedFields.length === TWO_FIELDS) {
       const [firstField, secondField] = orderedFields;
       fieldText = `${firstField} and ${secondField}`;
-    } else if (orderedFields.length === THREE_FIELDS) {
-      const [firstField, secondField, thirdField] = orderedFields;
-      fieldText = `${firstField}, ${secondField} and ${thirdField}`;
     }
     return [{
-      summaryMessage: `Date of birth must include a ${fieldText}`,
-      inlineMessage: `Date of birth must include a ${fieldText}`
+      summaryMessage: t('forms.clientDetails.dateOfBirth.validationError.mustInclude', { field: fieldText }),
+      inlineMessage: t('forms.clientDetails.dateOfBirth.validationError.mustInclude', { field: fieldText })
     }];
   }
 
@@ -230,30 +237,29 @@ export function handleDateOfBirthValidationErrors(
    * @returns {{ highlightDay: boolean, highlightMonth: boolean, highlightYear: boolean }} Highlight flags for each field
    */
   function getDateFieldHighlights(errors: ValidationErrorData[]): { highlightDay: boolean, highlightMonth: boolean, highlightYear: boolean } {
-    const errorMessages = errors.map(error => error.summaryMessage.toLowerCase());
-    const [dayStr, monthStr, yearStr, fourNumbersStr] = ['day', 'month', 'year', 'must include 4 numbers'];
-    const mustIncludeDayStr = 'must include a day';
-    const dayBetweenStr = 'day must be between';
-    const mustIncludeMonthStr = 'must include a month';
-    const monthBetweenStr = 'month must be between';
-    const mustIncludeYearStr = 'must include a year';
-    const yearMustStr = 'year must';
-    const highlightDay = errorMessages.some(msg =>
-      msg.includes(dayStr) ||
-      msg.includes(mustIncludeDayStr) ||
-      msg.includes(dayBetweenStr)
-    );
-    const highlightMonth = errorMessages.some(msg =>
-      msg.includes(monthStr) ||
-      msg.includes(mustIncludeMonthStr) ||
-      msg.includes(monthBetweenStr)
-    );
-    const highlightYear = errorMessages.some(msg =>
-      msg.includes(yearStr) ||
-      msg.includes(mustIncludeYearStr) ||
-      msg.includes(yearMustStr) ||
-      msg.includes(fourNumbersStr)
-    );
-    return { highlightDay, highlightMonth, highlightYear };
+    const errorMessages = errors.map(error => error.summaryMessage);
+
+    // Get actual translation strings to match against
+    const dayMessages = [
+      t('forms.clientDetails.dateOfBirth.validationError.day.notEmpty'),
+      t('forms.clientDetails.dateOfBirth.validationError.day.isInt')
+    ];
+
+    const monthMessages = [
+      t('forms.clientDetails.dateOfBirth.validationError.month.notEmpty'),
+      t('forms.clientDetails.dateOfBirth.validationError.month.isInt')
+    ];
+
+    const yearMessages = [
+      t('forms.clientDetails.dateOfBirth.validationError.year.notEmpty'),
+      t('forms.clientDetails.dateOfBirth.validationError.year.isLength'),
+      t('forms.clientDetails.dateOfBirth.validationError.year.isInt')
+    ];
+
+    return {
+      highlightDay: errorMessages.some(msg => dayMessages.includes(msg)),
+      highlightMonth: errorMessages.some(msg => monthMessages.includes(msg)),
+      highlightYear: errorMessages.some(msg => yearMessages.includes(msg))
+    };
   }
 }
