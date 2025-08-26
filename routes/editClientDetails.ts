@@ -12,11 +12,13 @@ import {
   postEditClientAddress
 } from '#src/scripts/controllers/index.js';
 
-import { validateEditClientName } from '#src/middlewares/clientNameSchema.js';
-import { validateEditClientDateOfBirth } from '#src/middlewares/clientDateOfBirthSchema.js';
-import { validateEditClientPhoneNumber } from '#src/middlewares/clientPhoneNumberSchema.js';
-import { validateEditClientEmailAddress } from '#src/middlewares/clientEmailAddressSchema.js';
-import { validateEditClientAddress } from '#src/middlewares/clientAddressSchema.js';
+import { 
+  validateEditClientName,
+  validateEditClientDateOfBirth,
+  validateEditClientPhoneNumber,
+  validateEditClientEmailAddress,
+  validateEditClientAddress 
+} from '#src/middlewares/index.js';
 
 const router = express.Router();
 
