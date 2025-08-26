@@ -70,3 +70,10 @@ test('save button should redirect to client details when no validation errors', 
   // Should redirect to client details
   await expect(page).toHaveURL(clientDetailsUrl);
 });
+
+test('date of birth edit page should be accessible', {
+  tag: '@accessibility',
+}, async ({ page, checkAccessibility }) => {
+  await page.goto(visitUrl);
+  await checkAccessibility();
+});

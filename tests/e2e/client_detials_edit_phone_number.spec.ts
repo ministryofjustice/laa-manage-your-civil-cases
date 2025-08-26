@@ -115,3 +115,10 @@ test('safeToCall & phoneNumber & announceCall not changed and correct validation
   }
 });
 
+test('phone number edit page should be accessible', {
+  tag: '@accessibility',
+}, async ({ page, checkAccessibility }) => {
+  await page.goto(visitUrl);
+  await checkAccessibility();
+});
+

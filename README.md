@@ -273,6 +273,77 @@ The script:
 
 Use this to identify gaps in your E2E test coverage and ensure all user-facing routes are properly tested.
 
+### Accessibility Testing
+
+This project includes automated accessibility testing using [axe-core](https://github.com/dequelabs/axe-core) integrated with Playwright to ensure WCAG 2.2 AA compliance.
+
+#### How Accessibility Tests Work
+
+- Accessibility tests run automatically as part of the CI pipeline in a separate parallel job
+- Tests scan each page for WCAG violations using axe-core rules: `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`, `wcag22aa`
+- Each major page has a corresponding accessibility test (e.g., `homepage should be accessible`, `search page should be accessible`)
+
+#### Running Accessibility Tests Locally
+
+```shell
+# Run only accessibility tests
+yarn test:e2e --grep "should be accessible"
+
+# Run all tests (functional + accessibility)
+yarn test:e2e
+
+# Run accessibility tests in UI mode for debugging
+yarn playwright test --grep "should be accessible"
+```
+
+#### CI Integration
+
+Accessibility tests run in parallel with functional E2E tests in the GitHub Actions workflow:
+- **Functional Tests Job**: Runs all E2E tests except accessibility tests
+- **Accessibility Tests Job**: Runs only accessibility tests (filtered by `"should be accessible"`)
+
+Both jobs must pass for deployment to proceed.
+
+#### Accessibility Test Reports
+
+When accessibility tests fail in CI:
+
+1. **Access the Report**:
+   - Go to the failed CI run in GitHub Actions
+   - Scroll down to the "Artifacts" section
+   - Download `accessibility-report.zip`
+
+2. **View Detailed Results**:
+   - Extract the downloaded ZIP file
+   - Open `playwright-report/index.html` in your browser
+   - This provides an interactive report with:
+     - List of all accessibility violations found
+     - WCAG rule details and impact levels (serious, moderate, minor)
+     - Affected DOM elements with selectors
+     - Screenshots showing the violations
+     - Remediation guidance
+
+3. **Understanding Violations**:
+   Each violation includes:
+   - **Rule ID**: The specific WCAG rule violated (e.g., `color-contrast`, `document-title`)
+   - **Impact**: Severity level (serious, moderate, minor, critical)
+   - **Description**: What the rule checks for
+   - **Help**: How to fix the issue
+   - **Elements**: Specific HTML elements that failed the rule
+
+#### Adding Accessibility Tests
+
+To add accessibility testing to a new page:
+
+```typescript
+test('page name should be accessible', async ({ page, checkAccessibility }) => {
+  await page.goto('/your-page-url');
+  await checkAccessibility();
+});
+```
+
+The `checkAccessibility` fixture is available in all test files and will automatically scan the current page for WCAG violations.
+
 ### Code coverage - unit tests
 We use the library [c8](https://github.com/bcoe/c8) which output unit test coverage reports using Node.js' built in coverage.
 
@@ -513,6 +584,16 @@ yarn dev
 ```
 
 This command builds the project initially and then sets up all watch processes for continuous development.
+
+### Accessibility Testing
+The project includes automated WCAG 2.2 AA accessibility testing using Playwright and Axe-core.
+
+Run accessibility tests locally:
+```shell
+yarn test:accessibility
+```
+
+Accessibility tests run automatically in CI and will fail the build if violations are detected. Download the accessibility-report artifact from failed CI runs to see detailed violation reports.
 
 ### Type definitions
 - Type definitions for Node, Express, and other dependencies are included as dev dependencies (see `@types/*` packages in `package.json`).

@@ -5,7 +5,7 @@
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 
 {% block pageTitle %}
-  {% if errorState.hasErrors %}{{ t.common.error }}: {% endif %}{{ pageTitle or t.forms.clientDetails.dateOfBirth.pageTitle | replace('{caseReference}', caseReference) | replace('{serviceName}', config.SERVICE_NAME) }}
+  {% if errorState.hasErrors %}{{ t('common.error') }}: {% endif %}{{ t('forms.clientDetails.dateOfBirth.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
 {% endblock %}
 
 {% block backLink %}

@@ -21,3 +21,10 @@ test('client details selected from opened cases tab has correct page elements', 
   await expect(split_case_button).toBeVisible;
   await expect(leave_feedback_button).toBeVisible;
 });
+
+test('opened client details page should be accessible', {
+  tag: '@accessibility',
+}, async ({ page, checkAccessibility }) => {
+  await page.goto(getClientDetailsUrlByStatus('open'));
+  await checkAccessibility();
+});

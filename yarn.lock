@@ -18,6 +18,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@axe-core/playwright@npm:^4.10.2":
+  version: 4.10.2
+  resolution: "@axe-core/playwright@npm:4.10.2"
+  dependencies:
+    axe-core: "npm:~4.10.3"
+  peerDependencies:
+    playwright-core: ">= 1.0.0"
+  checksum: 10c0/3dc02d177eb1b4865bbef05df993a5ad94268cb862e7095a273d7c7191174855f9f5a444cd8ad3ccea4991fab884083d6fdc661d471515af0d6c571958162043
+  languageName: node
+  linkType: hard
+
 "@babel/runtime@npm:^7.27.6":
   version: 7.28.3
   resolution: "@babel/runtime@npm:7.28.3"
@@ -1523,6 +1534,13 @@ __metadata:
   dependencies:
     possible-typed-array-names: "npm:^1.0.0"
   checksum: 10c0/d07226ef4f87daa01bd0fe80f8f310982e345f372926da2e5296aecc25c41cab440916bbaa4c5e1034b453af3392f67df5961124e4b586df1e99793a1374bdb2
+  languageName: node
+  linkType: hard
+
+"axe-core@npm:^4.10.3, axe-core@npm:~4.10.3":
+  version: 4.10.3
+  resolution: "axe-core@npm:4.10.3"
+  checksum: 10c0/1b1c24f435b2ffe89d76eca0001cbfff42dbf012ad9bd37398b70b11f0d614281a38a28bc3069e8972e3c90ec929a8937994bd24b0ebcbaab87b8d1e241ab0c7
   languageName: node
   linkType: hard
 
@@ -3635,8 +3653,8 @@ __metadata:
   linkType: hard
 
 "i18next@npm:^25.4.0":
-  version: 25.4.0
-  resolution: "i18next@npm:25.4.0"
+  version: 25.4.2
+  resolution: "i18next@npm:25.4.2"
   dependencies:
     "@babel/runtime": "npm:^7.27.6"
   peerDependencies:
@@ -3644,7 +3662,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10c0/9437fc138aa114b3d8aef790280a3975d7fd43e65461ed62349f5d0c59a741d7ea48da1cd270da29703c54cdd6a91b1be7b1d9810acf3959305c36bcb89f286b
+  checksum: 10c0/f4f4e75f55c48f4af2036e0b03f2e3b141c60c441ef882f2ddf7f87c71352c25190472fe5414295f9a762faea926b1288c65ba782e4bead45855bb7aff159140
   languageName: node
   linkType: hard
 
@@ -4639,6 +4657,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "moj-express-skeleton@workspace:."
   dependencies:
+    "@axe-core/playwright": "npm:^4.10.2"
     "@eslint/js": "npm:^9.33.0"
     "@ministryofjustice/frontend": "npm:^5.1.5"
     "@playwright/test": "npm:^1.54.2"
@@ -4661,6 +4680,7 @@ __metadata:
     "@types/validator": "npm:^13.15.2"
     "@typescript-eslint/eslint-plugin": "npm:^8.39.0"
     "@typescript-eslint/parser": "npm:^8.39.0"
+    axe-core: "npm:^4.10.3"
     axios: "npm:^1.11.0"
     body-parser: "npm:^2.2.0"
     c8: "npm:^10.1.3"

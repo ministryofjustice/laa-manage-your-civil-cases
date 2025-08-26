@@ -17,3 +17,10 @@ test('client details selected from closed cases tab has correct page elements', 
   await expect(reopen_case_button).toBeVisible;
   await expect(legal_help_from_button).toBeVisible;
 });
+
+test('closed client details page should be accessible', {
+  tag: '@accessibility',
+}, async ({ page, checkAccessibility }) => {
+  await page.goto(getClientDetailsUrlByStatus('closed'));
+  await checkAccessibility();
+});

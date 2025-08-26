@@ -50,3 +50,10 @@ test('change email address form displays validation errors correctly', async ({ 
   await expect(errorMessage).toBeVisible();
   await expect(errorMessage).toContainText(t('forms.clientDetails.email.validationError.invalidFormat'));
 });
+
+test('email address edit page should be accessible', {
+  tag: '@accessibility',
+}, async ({ page, checkAccessibility }) => {
+  await page.goto(visitUrl);
+  await checkAccessibility();
+});
