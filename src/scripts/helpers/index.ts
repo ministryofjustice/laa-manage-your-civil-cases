@@ -42,11 +42,6 @@ export {
   extractAndConvertDateFields
 } from './ValidationDateHelpers.js';
 
-// Form validation utilities
-export {
-  validateForm
-} from './validateForm.js';
-
 // Form controller helpers
 export {
   handleGetEditForm,

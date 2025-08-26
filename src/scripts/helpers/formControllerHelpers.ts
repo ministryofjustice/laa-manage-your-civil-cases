@@ -1,14 +1,13 @@
 import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
 import { apiService } from '#src/services/apiService.js';
-import { safeString, validateForm, capitaliseFirst, extractCurrentFields } from '#src/scripts/helpers/index.js';
+import { safeString, capitaliseFirst, extractCurrentFields } from '#src/scripts/helpers/index.js';
 import { validationResult } from 'express-validator';
 import { formatValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 import type {
   RenderData,
   GetFormOptions,
   PostFormOptions,
-  ValidationResult
 } from '#types/form-controller-types.js';
 
 const BAD_REQUEST = 400;
@@ -66,61 +65,45 @@ export async function handlePostEditForm(
   options: PostFormOptions
 ): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
-  const { templatePath, fields, apiUpdateData, useDefaultValidator = true } = options;
+  const { templatePath, fields, apiUpdateData } = options;
 
   let inputErrors: Record<string, string> = {};
   let errorSummaryList: Array<{ text: string; href: string }> = [];
   let formIsInvalid = false;
 
-  if (useDefaultValidator) {
-    // Use express-validator validation - get raw errors first to access field information
-    const rawValidationResult = validationResult(req);
+  // Use express-validator validation - get raw errors first to access field information
+  const rawValidationResult = validationResult(req);
 
-    if (!rawValidationResult.isEmpty()) {
-      const rawErrors = rawValidationResult.array();
+  if (!rawValidationResult.isEmpty()) {
+    const rawErrors = rawValidationResult.array();
 
-      const resultingErrors = rawErrors.map((error) => {
-        // Get field name from express-validator's path property
-        const fieldName = 'path' in error && typeof error.path === 'string' ? error.path : '';
+    const resultingErrors = rawErrors.map((error) => {
+      // Get field name from express-validator's path property
+      const fieldName = 'path' in error && typeof error.path === 'string' ? error.path : '';
 
-        // Format the error message
-        const errorData = formatValidationError(error);
+      // Format the error message
+      const errorData = formatValidationError(error);
 
-        return {
-          fieldName,
-          inlineMessage: errorData.inlineMessage,
-          summaryMessage: errorData.summaryMessage,
-        };
-      });
+      return {
+        fieldName,
+        inlineMessage: errorData.inlineMessage,
+        summaryMessage: errorData.summaryMessage,
+      };
+    });
 
-      inputErrors = resultingErrors.reduce<Record<string, string>>((errors, { fieldName, inlineMessage }) => {
-        if (inlineMessage.trim() !== '') {
-          errors[fieldName] = inlineMessage;
-        }
-        return errors;
-      }, {});
-
-      errorSummaryList = resultingErrors.map(({ summaryMessage, fieldName }) => ({
-        text: summaryMessage,
-        href: `#${fieldName}`,
-      }));
-
-      formIsInvalid = true;
-    }
-  } else {
-    // Use custom validation for forms with complex requirements (e.g., date of birth)
-    const validationData = fields.reduce<Record<string, string>>((data, { name, value, existingValue }) => {
-      data[name] = value;
-      data[`existing${capitaliseFirst(name)}`] = existingValue;
-      return data;
+    inputErrors = resultingErrors.reduce<Record<string, string>>((errors, { fieldName, inlineMessage }) => {
+      if (inlineMessage.trim() !== '') {
+        errors[fieldName] = inlineMessage;
+      }
+      return errors;
     }, {});
 
-    const validation: ValidationResult = validateForm(validationData);
-    ({ inputErrors, formIsInvalid } = validation);
-    errorSummaryList = validation.errorSummaryList.map(summary => ({
-      text: summary.text,
-      href: summary.href ?? ''
+    errorSummaryList = resultingErrors.map(({ summaryMessage, fieldName }) => ({
+      text: summaryMessage,
+      href: `#${fieldName}`,
     }));
+
+    formIsInvalid = true;
   }
 
   if (formIsInvalid) {

@@ -28,7 +28,6 @@ describe('Form Controller Helpers', () => {
     templatePath: 'test.njk',
     fields: [{ name: 'testField', value: 'testValue', existingValue: 'oldValue' }],
     apiUpdateData: { testField: 'testValue' },
-    useDefaultValidator: false,
     ...overrides
   });
 
@@ -70,12 +69,8 @@ describe('Form Controller Helpers', () => {
       // Arrange
       apiServiceUpdateStub.resolves();
 
-      const formOptions = createFormOptions({
-        useDefaultValidator: true // Use express-validator
-      });
-
       // Act
-      await handlePostEditForm(req as Request, res as Response, next as NextFunction, formOptions);
+      await handlePostEditForm(req as Request, res as Response, next as NextFunction, createFormOptions());
 
       // Assert
       expect(redirectStub.calledOnce).to.be.true;
