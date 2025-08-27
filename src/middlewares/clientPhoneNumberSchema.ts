@@ -59,6 +59,6 @@ export const validateEditClientPhoneNumber = (): ReturnType<typeof checkSchema> 
          */
         summaryMessage: () => t('forms.clientDetails.phoneNumber.validationError.notChanged'),
         inlineMessage: ''
-}
+      }
     ),
   });
