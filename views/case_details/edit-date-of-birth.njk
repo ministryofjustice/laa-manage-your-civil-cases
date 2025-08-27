@@ -5,51 +5,52 @@
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 
 {% block pageTitle %}
-  {% if errorState.hasErrors %}Error: {% endif %}{{ pageTitle or "Client's date of birth" }} - Manage your civil cases
+  {% if errorState.hasErrors %}{{ t.common.error }}: {% endif %}{{ pageTitle or t.forms.clientDetails.dateOfBirth.pageTitle | replace('{caseReference}', caseReference) | replace('{serviceName}', config.SERVICE_NAME) }}
 {% endblock %}
 
 {% block backLink %}
   {{ govukBackLink({
-      text: "Back",
+      text: t('common.back'),
       href: "/cases/" + caseReference + "/client-details",
       classes: "govuk-!-margin-bottom-0"
     }) }}
 {% endblock %}
 
 {% block pageContent %}
-  
+
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      
+
       {% if errorState.hasErrors %}
         {{ govukErrorSummary({
-          titleText: "There is a problem",
+          titleText: t('common.errorSummaryTitle'),
           errorList: errorState.errors
         }) }}
       {% endif %}
-      
+
       <form method="POST" action="/cases/{{ caseReference }}/client-details/change/date-of-birth">
-        
+
         <!-- CSRF Protection -->
-        <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-        
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+
         <!-- Original values for change detection -->
-        <input type="hidden" name="originalDay" value="{{ originalData.day }}" />
-        <input type="hidden" name="originalMonth" value="{{ originalData.month }}" />
-        <input type="hidden" name="originalYear" value="{{ originalData.year }}" />
-        
+        <input type="hidden" name="originalDay" value="{{ originalData.day }}"/>
+        <input type="hidden" name="originalMonth" value="{{ originalData.month }}"/>
+        <input type="hidden" name="originalYear" value="{{ originalData.year }}"/>
+
         {{ govukDateInput({
           id: "dateOfBirth",
           namePrefix: "dateOfBirth",
           fieldset: {
             legend: {
-              text: "Client date of birth",
+              text: t('forms.clientDetails.dateOfBirth.legend'),
               isPageHeading: true,
               classes: "govuk-fieldset__legend--l govuk-!-margin-bottom-6"
             }
           },
           hint: {
-            text: "For example, 27 3 2007"          },
+            text: t('forms.clientDetails.dateOfBirth.hint')
+          },
           errorMessage: {
             html: inlineErrorMessage | replace('\n', '<br>')
           } if inlineErrorMessage,
@@ -64,7 +65,7 @@
               }
             },
             {
-              name: "month", 
+              name: "month",
               classes: "govuk-input--width-2" + (" govuk-input--error" if highlightMonth),
               value: formData.month,
               attributes: {
@@ -86,14 +87,13 @@
 
         <div class="govuk-button-group">
           {{ govukButton({
-            text: "Save"
+            text: t('common.save')
           }) }}
-          <a class="govuk-link" href="/cases/{{ caseReference }}/client-details">Cancel</a>
+          <a class="govuk-link" href="/cases/{{ caseReference }}/client-details">{{ t('common.cancel') }}</a>
         </div>
 
-        
       </form>
-      
+
     </div>
   </div>
 {% endblock %}
