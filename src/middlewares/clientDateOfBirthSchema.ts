@@ -1,7 +1,7 @@
 
 import { checkSchema, type Meta } from 'express-validator';
 import { isDate, isBefore } from 'validator';
-import { hasProperty, isRecord, createChangeDetectionValidator, TypedValidationError, dateStringFromThreeFields, t} from '#src/scripts/helpers/index.js';
+import { hasProperty, isRecord, createChangeDetectionValidator, TypedValidationError, dateStringFromThreeFields, t } from '#src/scripts/helpers/index.js';
 
 // Constants for validation boundaries
 const MIN_DAY = 1;
@@ -219,6 +219,6 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
          */
         summaryMessage: () => t('forms.clientDetails.dateOfBirth.validationError.notChanged'),
         inlineMessage: ''
-}
+      }
     ),
   });

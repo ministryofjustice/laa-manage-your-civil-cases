@@ -49,8 +49,4 @@ export interface PostFormOptions {
   templatePath: string;
   fields: FormField[];
   apiUpdateData: Record<string, unknown>;
-  useDefaultValidator?: boolean;
 }
-
-// Re-export commonly used validation types for convenience
-export type { ValidationResult, ErrorSummary } from './form-validation.js';

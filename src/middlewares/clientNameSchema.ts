@@ -1,5 +1,5 @@
 import { checkSchema } from 'express-validator';
-import { createChangeDetectionValidator, TypedValidationError,t } from '#src/scripts/helpers/index.js';
+import { createChangeDetectionValidator, TypedValidationError, t } from '#src/scripts/helpers/index.js';
 
 /**
  * Validation middleware when user edits client's name.
@@ -29,5 +29,5 @@ export const validateEditClientName = (): ReturnType<typeof checkSchema> =>
           summaryMessage: () => t('forms.clientDetails.name.validationError.notChanged'),
           inlineMessage: '',
         }),
-      }
-});
+    }
+  });

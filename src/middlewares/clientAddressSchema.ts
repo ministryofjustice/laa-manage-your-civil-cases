@@ -45,6 +45,6 @@ export const validateEditClientAddress = (): ReturnType<typeof checkSchema> =>
          */
         summaryMessage: () => t('forms.clientDetails.address.validationError.notChanged'),
         inlineMessage: ''
-}
+      }
     ),
   });
