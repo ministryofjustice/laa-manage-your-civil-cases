@@ -1,6 +1,7 @@
 import type { ValidationError, Result, Meta, Location } from 'express-validator';
 import type { Request, Response } from 'express';
 import { isRecord, hasProperty, safeString } from './dataTransformers.js';
+import { i18next } from './i18nLoader.js';
 
 /**
  * Interface for validation error data structure
@@ -70,7 +71,7 @@ export function formatValidationError(error: ValidationError): ValidationErrorDa
  */
 export function createChangeDetectionValidator(
   fieldMappings: Array<{ current: string; original: string }>,
-  errorMessage: { summaryMessage: string; inlineMessage: string }
+  errorMessage: { summaryMessage: string | (() => string); inlineMessage: string | (() => string) }
 ): {
   in: Location[];
   custom: {
@@ -106,7 +107,35 @@ export function createChangeDetectionValidator(
        * Custom error message for when no changes are made
        * @returns {TypedValidationError} Returns TypedValidationError with structured error data
        */
-      errorMessage: () => new TypedValidationError(errorMessage)
+      errorMessage: () => {
+        /**
+         * Resolve possibly lazy string value.
+         * @param {string | (() => string)} val - Value or thunk
+         * @returns {string} Resolved string
+         */
+        const resolve = (val: string | (() => string)): string => typeof val === 'function' ? val() : val;
+        let summaryMessage = resolve(errorMessage.summaryMessage);
+        let inlineMessage = resolve(errorMessage.inlineMessage);
+
+        /**
+         * Translate message if it appears to be a dotted key and translation exists.
+         * @param {string} msg - Original or key-like message
+         * @returns {string} Possibly translated message
+         */
+        const translateIfKey = (msg: string): string => {
+          if (!i18next.isInitialized) return msg;
+          if (!msg.includes('.')) return msg;
+          const translated = i18next.t(msg);
+          return translated !== '' && translated !== msg ? translated : msg;
+        };
+
+        summaryMessage = translateIfKey(summaryMessage);
+        if (inlineMessage !== '') {
+          inlineMessage = translateIfKey(inlineMessage);
+        }
+
+        return new TypedValidationError({ summaryMessage, inlineMessage });
+      }
     }
   };
 }
@@ -130,14 +159,14 @@ export function handleValidationErrors(
   const resultingErrors = validationErrors.array().map((errorData: ValidationErrorData) => {
     // Determine field name based on the validation error
     let fieldName = 'address'; // default
-    
+
     if (errorData.summaryMessage.toLowerCase().includes('postcode')) {
       fieldName = 'postcode';
     } else if (errorData.summaryMessage.toLowerCase().includes('update the client address')) {
       // Change detection error - no specific field
       fieldName = 'address'; // Default to address for summary href
     }
-    
+
     return {
       fieldName,
       inlineMessage: errorData.inlineMessage,
