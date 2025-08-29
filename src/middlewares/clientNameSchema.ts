@@ -19,15 +19,16 @@ export const validateEditClientName = (): ReturnType<typeof checkSchema> =>
           inlineMessage: t('forms.clientDetails.name.validationError.notEmpty')
         })
       },
-      ...createChangeDetectionValidator(
-        [{ current: 'fullName', original: 'existingFullName' }],
-        {
-          /**
-           * Returns the summary message for unchanged name.
-           * @returns {string} Localized validation error message
-           */
-          summaryMessage: () => t('forms.clientDetails.name.validationError.notChanged'),
-          inlineMessage: '',
-        }),
-    }
+    },
+    notChanged: createChangeDetectionValidator(
+      [{ current: 'fullName', original: 'existingFullName' }],
+      {
+        /**
+         * Returns the summary message for unchanged name.
+         * @returns {string} Localized validation error message
+         */
+        summaryMessage: () => t('forms.clientDetails.name.validationError.notChanged'),
+        inlineMessage: ''
+      }
+    ),
   });

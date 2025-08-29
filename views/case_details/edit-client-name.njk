@@ -22,8 +22,8 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       {% if error %}
-        {% set fullNameErrorMessage = { text: error.inputErrors.fullName } %}
         {{ errorSummary(error.errorSummaryList) }}
+        {% set fullNameErrorMessage = { text: error.inputErrors.fullName } if error.inputErrors.fullName %}
       {% endif %}
       <form method="post" action="/cases/{{ caseReference }}/client-details/change/name">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
