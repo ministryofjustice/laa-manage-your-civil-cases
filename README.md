@@ -28,6 +28,13 @@ Express.js is a fast, unopinionated, minimalist web framework for Node.js.
       - [Configuration](#configuration)
       - [CI/CD Integration](#cicd-integration)
       - [Debugging Failed Tests](#debugging-failed-tests)
+      - [Route Coverage Analysis](#route-coverage-analysis)
+    - [Accessibility Testing](#accessibility-testing)
+      - [How Accessibility Tests Work](#how-accessibility-tests-work)
+      - [Running Accessibility Tests Locally](#running-accessibility-tests-locally)
+      - [CI Integration](#ci-integration)
+      - [Accessibility Test Reports](#accessibility-test-reports)
+      - [Adding Accessibility Tests](#adding-accessibility-tests)
     - [Code coverage - unit tests](#code-coverage---unit-tests)
   - [Features](#features)
     - [Asset management](#asset-management)
@@ -49,6 +56,7 @@ Express.js is a fast, unopinionated, minimalist web framework for Node.js.
     - [Import paths and path aliases](#import-paths-and-path-aliases)
     - [Running and debugging](#running-and-debugging)
     - [Development workflow](#development-workflow)
+    - [Accessibility Testing](#accessibility-testing-1)
     - [Type definitions](#type-definitions)
   - [Licence](#licence)
 
@@ -258,7 +266,7 @@ When tests fail in CI:
 This provides a timeline view of the test execution with screenshots, DOM snapshots, and network requests to help diagnose issues.
 
 #### Route Coverage Analysis
-The `scripts/e2e_coverage/route-coverage-analysis.sh` script analyzes which Express routes have corresponding E2E tests, helping ensure comprehensive test coverage.
+The `scripts/e2e_coverage/route-coverage-analysis.sh` script analyses which Express routes have corresponding E2E tests, helping ensure comprehensive test coverage.
 
 ```shell
 # Run the route coverage analysis
