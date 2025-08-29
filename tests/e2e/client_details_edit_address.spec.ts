@@ -43,3 +43,10 @@ test('unchanged fields trigger change detection error (AC5)', async ({ page, i18
   await expect(addressErrorMessage).not.toBeVisible();
   await expect(postcodeErrorMessage).not.toBeVisible();
 });
+
+test('address edit page should be accessible', {
+  tag: '@accessibility',
+}, async ({ page, checkAccessibility }) => {
+  await page.goto(visitUrl);
+  await checkAccessibility();
+});

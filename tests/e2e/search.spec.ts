@@ -34,6 +34,13 @@ test('search page should have rendered correctly', async ({ page, i18nSetup }) =
 
 });
 
+test('search page should be accessible', {
+  tag: '@accessibility',
+}, async ({ page, checkAccessibility }) => {
+  await page.goto('/search');
+  await checkAccessibility();
+});
+
 test('if no keyword is entered error message shows', async ({ page, i18nSetup }) => {
   // Navigate to the search page
   await page.goto(visitUrl);

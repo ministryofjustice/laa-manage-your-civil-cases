@@ -35,3 +35,10 @@ test('homepage should display phase banner with hello content', async ({ page, i
   // Check if feedback link text is in the phase banner
   await expect(phaseBanner).toContainText(t('components.phaseBanner.feedbackText'));
 });
+
+test('homepage should be accessible', {
+  tag: '@accessibility',
+}, async ({ page, checkAccessibility }) => {
+  await page.goto('/');
+  await checkAccessibility();
+});
