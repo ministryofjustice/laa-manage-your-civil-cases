@@ -20,15 +20,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: ministryofjustice/tech-docs-github-pages-publisher:v6.0.1
+      image: ministryofjustice/tech-docs-github-pages-publisher:v3
     permissions:
       contents: read
     steps:
       # We only checkout the docs directory, which allows us to keep all necessary files for
       # generating the docs separate from the app.
       - name: Checkout
-        # Updated to actions/checkout@v5 with compatible v6.0.1 publisher image (EL-2592)
-        uses: actions/checkout@v5 
+        # updating to `actions/checkout@v5` had compatibility issues with the base image (EL-2591)
+        uses: actions/checkout@v4 
         with:
           sparse-checkout: |
             docs
