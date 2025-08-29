@@ -104,6 +104,7 @@ export default [
       'tests/**/*.spec.ts',
       'tests/helpers/*', // Test helper utilities
       'docs/source/javascripts/application.js', // Parsing error this file was not found by the project service. Consider either including it in the `tsconfig.json` or including it in `allowDefaultProject`
+      'docs/source/javascripts/govuk_frontend.js', // Documentation JavaScript file, not part of main TypeScript project
       'eslint.config.js', // Parsing error this file was not found by the project service. Consider either including it in the `tsconfig.json` or including it in `allowDefaultProject`,
       'coverage', // Ignore the code coverage output from linter
       'scripts/e2e_coverage/*' // Route coverage analysis scripts
