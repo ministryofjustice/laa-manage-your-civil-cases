@@ -27,8 +27,8 @@ jobs:
       # We only checkout the docs directory, which allows us to keep all necessary files for
       # generating the docs separate from the app.
       - name: Checkout
-        # updating to `actions/checkout@v5` had compatibility issues with the base image (EL-2591)
-        uses: actions/checkout@v4 
+        # Updated to v5 now that Docker image v6.0.1 resolved previous compatibility issues (EL-2591)
+        uses: actions/checkout@v5 
         with:
           sparse-checkout: |
             docs
@@ -83,4 +83,8 @@ jobs:
           tar -xvf artifact.tar
           npm install linkinator
           npx linkinator . --recurse --markdown \
-            --skip https://ministryofjustice.github.io/laa-manage-your-civil-cases/images/govuk-large.png
+            --skip https://ministryofjustice.github.io/laa-manage-your-civil-cases/images/govuk-large.png \
+            --skip javascripts/govuk_frontend.js
+            # Skip govuk_frontend.js due to MOJ Docker image template bug:
+            # The tech-docs-github-pages-publisher:v6.0.1 image generates HTML with
+            # <script src="javascripts/govuk_frontend.js"> but doesn't provide the file
