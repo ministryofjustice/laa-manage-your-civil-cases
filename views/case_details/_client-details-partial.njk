@@ -49,10 +49,10 @@
 {% set addressWithPostcodeThirdParty = renderAddress(data.thirdParty.address, data.thirdParty.postcode) %}
 
 {% set passphraseContent %}
-  {% if data.thirdParty.passphraseSetUp %}
-    {{ data.thirdParty.passphrase }}
+  {% if data.thirdParty.passphraseSetUp.selected[0] === "Yes" %}
+    {{ data.thirdParty.passphraseSetUp.passphrase }}
   {% else %}
-    {{ t('forms.clientDetails.thirdParty.passphraseNotSetUp', {reason: data.thirdParty.passphraseNotSetUpReason}) }}
+    {{ data.thirdParty.passphraseSetUp.selected[0] }}
   {% endif %}
 {% endset %}
 
