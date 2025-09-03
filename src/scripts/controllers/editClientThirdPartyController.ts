@@ -55,7 +55,7 @@ export async function postEditClientThirdParty(req: Request, res: Response, next
         fullName: formFields.thirdPartyFullName,
         emailAddress: formFields.thirdPartyEmailAddress,
         contactNumber: formFields.thirdPartyContactNumber,
-        safeToCall: formFields.thirdPartySafeToCall ? formFields.thirdPartySafeToCall : true,
+        safeToCall: formFields.thirdPartySafeToCall !== '' ? formFields.thirdPartySafeToCall : true,
         address: formFields.thirdPartyAddress,
         postcode: formFields.thirdPartyPostcode
       }
