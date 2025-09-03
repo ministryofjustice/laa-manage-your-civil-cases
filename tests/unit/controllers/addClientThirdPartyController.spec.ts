@@ -25,7 +25,7 @@ import {
 import { apiService } from '#src/services/apiService.js';
 // Import to get global type declarations for axiosMiddleware
 import '#utils/axiosSetup.js';
-import { validateEditClientThirdParty } from '#src/middlewares/clientThirdPartySchema.js';
+import { validateAddClientThirdParty } from '#src/middlewares/clientThirdPartySchema.js';
 import { ValidationChain } from '#node_modules/express-validator/lib/index.js';
 
 // Define the RequestWithMiddleware interface for testing
@@ -136,7 +136,7 @@ describe('Edit Client Name Controller', () => {
       // Arrange
       req.body = { thirdPartyFullName: '', existingThirdPartyFullName: 'John Carpenter' }; // Empty name should trigger validation
 
-      await runSchema(req as any, validateEditClientThirdParty());
+      await runSchema(req as any, validateAddClientThirdParty());
 
       // Act
       await postAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);
@@ -153,7 +153,7 @@ describe('Edit Client Name Controller', () => {
         thirdPartyEmailAddress: 'invalid-email', existingThirdPartyEmailAddress: '' // Invalid email format
       }; 
 
-      await runSchema(req as any, validateEditClientThirdParty());
+      await runSchema(req as any, validateAddClientThirdParty());
 
       // Act
       await postAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);
@@ -170,7 +170,7 @@ describe('Edit Client Name Controller', () => {
         thirdPartyContactNumber: '007', existingThirdPartyContactNumber: '' // Invalid phone number format
       }; 
 
-      await runSchema(req as any, validateEditClientThirdParty());
+      await runSchema(req as any, validateAddClientThirdParty());
 
       // Act
       await postAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);
@@ -187,7 +187,7 @@ describe('Edit Client Name Controller', () => {
         thirdPartyPassphraseSetUp: '', existingThirdPartyPassphraseSetUp: '' // Empty
       }; 
 
-      await runSchema(req as any, validateEditClientThirdParty());
+      await runSchema(req as any, validateAddClientThirdParty());
 
       // Act
       await postAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);

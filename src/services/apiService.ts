@@ -320,6 +320,37 @@ class ApiService {
   }
 
   /**
+   * Update third party contact for a case
+   * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+   * @param {string} caseReference - Case reference number
+   * @param {object} thirdPartyData - Third party data to update
+   * @returns {Promise<ClientDetailsApiResponse>} API response with updated client details
+   */
+  static async updateThirdPartyContact(
+    axiosMiddleware: AxiosInstanceWrapper,
+    caseReference: string,
+    thirdPartyData: object
+  ): Promise<ClientDetailsApiResponse> {
+    try {
+      devLog(`API: PUT ${API_PREFIX}/cases/${caseReference}/third-party`);
+      const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
+      const response = await configuredAxios.put(`${API_PREFIX}/cases/${caseReference}/third-party`, thirdPartyData);
+      devLog(`API: Update third party response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+      return {
+        data: transformClientDetailsItem(response.data),
+        status: 'success'
+      };
+    } catch (error) {
+      const errorMessage = extractAndLogError(error, 'API error');
+      return {
+        data: null,
+        status: 'error',
+        message: errorMessage
+      };
+    }
+  }
+
+  /**
    * Delete third party contact for a case
    * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
    * @param {string} caseReference - Case reference number

@@ -144,13 +144,15 @@ export async function handlePostEditForm(
  * @param {Response} res - Express response object
  * @param {string} caseReference - Case reference number
  * @param {Record<string, unknown>} formFields - Form field values
+ * @param {string} templatePath - Optional template path (defaults to add template)
  * @returns {boolean} - Returns true if there were validation errors, false otherwise
  */
 export function handleThirdPartyValidationErrors(
   req: Request,
   res: Response,
   caseReference: string,
-  formFields: Record<string, unknown>
+  formFields: Record<string, unknown>,
+  templatePath: string = 'case_details/third_party_details/add-client-third-party.njk'
 ): boolean {
   const rawValidationResult = validationResult(req);
 
@@ -195,10 +197,20 @@ export function handleThirdPartyValidationErrors(
     currentThirdPartyPostcode: formFields.thirdPartyPostcode,
     currentThirdPartyRelationshipToClient: formFields.thirdPartyRelationshipToClient,
     currentThirdPartyPassphraseSetUp: formFields.thirdPartyPassphraseSetUp,
-    currentThirdPartyPassphrase: formFields.thirdPartyPassphrase
+    currentThirdPartyPassphrase: formFields.thirdPartyPassphrase,
+    // Include existing values for edit forms (will be undefined for add forms)
+    existingThirdPartyFullName: formFields.existingThirdPartyFullName,
+    existingThirdPartyEmailAddress: formFields.existingThirdPartyEmailAddress,
+    existingThirdPartyContactNumber: formFields.existingThirdPartyContactNumber,
+    existingThirdPartySafeToCall: formFields.existingThirdPartySafeToCall,
+    existingThirdPartyAddress: formFields.existingThirdPartyAddress,
+    existingThirdPartyPostcode: formFields.existingThirdPartyPostcode,
+    existingThirdPartyRelationshipToClient: formFields.existingThirdPartyRelationshipToClient,
+    existingThirdPartyPassphraseSetUp: formFields.existingThirdPartyPassphraseSetUp,
+    existingThirdPartyPassphrase: formFields.existingThirdPartyPassphrase
   };
 
-  res.status(BAD_REQUEST).render('case_details/third_party_details/add-client-third-party.njk', renderData);
+  res.status(BAD_REQUEST).render(templatePath, renderData);
   return true;
 }
 

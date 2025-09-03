@@ -215,6 +215,8 @@
       "thirdParty": {
         "pageTitleAdd": "Add a third party contact – {caseReference} – {serviceName} – GOV.UK",
         "pageH1Add": "Add a third party contact",
+        "pageTitleEdit": "Edit third party contact – {caseReference} – {serviceName} – GOV.UK",
+        "pageH1Edit": "Edit third party contact",
         "name": "Name",
         "emailAddress": "Email address",
         "emailAddressH2": "Email address (optional)",
@@ -250,7 +252,8 @@
           "invalidFormatEmail": "Enter an email address in the correct format, like name@example.com",
           "invalidFormatContactNumber": "Enter the phone number in the correct format",
           "notEmptyRelationship": "Select if the client has set up a passphrase",
-          "notEmptyPassphrase": "Enter the passphrase "
+          "notEmptyPassphrase": "Enter the passphrase ",
+          "notChanged": "Change third party details, or select 'Cancel'"
         }
       }
     },
