@@ -46,16 +46,6 @@ export const validateEditClientThirdParty = (): ReturnType<typeof checkSchema> =
           inlineMessage: t('forms.clientDetails.thirdParty.validationError.invalidFormatEmail')
         }),
       },
-      ...createChangeDetectionValidator(
-        [{ current: 'thirdPartyEmailAddress', original: 'existingThirdPartyEmailAddress' }],
-        {
-          /**
-           * Returns the summary message for unchanged third party name.
-           * @returns {string} Localized validation error message
-           */
-          summaryMessage: () => t('forms.clientDetails.thirdParty.validationError.notChangedEmail'),
-          inlineMessage: '',
-        }),
     },
     thirdPartyContactNumber: {
       trim: true,
@@ -82,31 +72,11 @@ export const validateEditClientThirdParty = (): ReturnType<typeof checkSchema> =
           summaryMessage: t('forms.clientDetails.thirdParty.validationError.invalidFormatContactNumber'),
           inlineMessage: t('forms.clientDetails.thirdParty.validationError.invalidFormatContactNumber')
         }),
-        ...createChangeDetectionValidator(
-        [{ current: 'thirdPartyContactNumber', original: 'existingThirdPartyContactNumber' }],
-        {
-          /**
-           * Returns the summary message for unchanged third party contact number.
-           * @returns {string} Localized validation error message
-           */
-          summaryMessage: () => t('forms.clientDetails.thirdParty.validationError.notChangedContactNumber'),
-          inlineMessage: '',
-        }),
       },
     },
     thirdPartyAddress: {
       trim: true,
       optional: { options: { checkFalsy: true } },
-      ...createChangeDetectionValidator(
-        [{ current: 'thirdPartyAddress', original: 'existingThirdPartyAddress' }],
-        {
-          /**
-           * Returns the summary message for unchanged third party address.
-           * @returns {string} Localized validation error message
-           */
-          summaryMessage: () => t('forms.clientDetails.thirdParty.validationError.notChangedAddress'),
-          inlineMessage: '',
-        }),
     },
     thirdPartyPostcode: {
       trim: true,
@@ -119,15 +89,5 @@ export const validateEditClientThirdParty = (): ReturnType<typeof checkSchema> =
          */
         options: (value: string) => typeof value === 'string' ? value.toUpperCase() : value
       },
-      ...createChangeDetectionValidator(
-        [{ current: 'thirdPartyPostcode', original: 'existingThirdPartyPostcode' }],
-        {
-          /**
-           * Returns the summary message for unchanged third party postcode.
-           * @returns {string} Localized validation error message
-           */
-          summaryMessage: () => t('forms.clientDetails.thirdParty.validationError.notChangedPostcode'),
-          inlineMessage: '',
-        }),
     },
   });

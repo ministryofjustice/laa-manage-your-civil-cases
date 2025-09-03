@@ -217,7 +217,15 @@
         "addressH2": "Address (optional)",
         "addressHint": "Enter address",
         "postcodeHint": "Enter postcode",
-        "relationshipToClient": "Relationship to Client",
+        "relationshipToClient": {
+          "title": "Relationship to client",
+          "titleH2": "Relationship to client (optional)",
+          "parentOrGuardian": "Parent or Guardian",
+          "familyMemberOfFriend": "Family member of friend",
+          "professional": "Professional",
+          "legalAdvisor": "Legal adviser",
+          "other": "Other"
+        },
         "passphrase": "Passphrase",
         "safeToCall": "Is the third party safe to call?",
         "notSafeToCall": "The third party is not safe to call",
@@ -226,11 +234,7 @@
           "notEmptyName": "Enter the third party name",
           "notChangedName": "Change the client third party name, or select ‘Cancel’",
           "invalidFormatEmail": "Enter an email address in the correct format, like name@example.com",
-          "notChangedEmail": "Change the client email address, or select 'Cancel'",
-          "invalidFormatContactNumber": "Enter the phone number in the correct format",
-          "notChangedContactNumber": "Change information on the page, or select 'Cancel'",
-          "notChangedAddress": "Change the client address, or select 'Cancel'",
-          "notChangedPostcode": "Change the client postcode, or select 'Cancel'"
+          "invalidFormatContactNumber": "Enter the phone number in the correct format"
         }
       }
     },

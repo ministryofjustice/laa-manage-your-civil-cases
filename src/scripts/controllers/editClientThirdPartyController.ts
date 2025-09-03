@@ -18,7 +18,8 @@ export async function getEditClientThirdParty(req: Request, res: Response, next:
       { field: 'thirdPartyContactNumber', type: 'string', includeExisting: true },
       { field: 'thirdPartySafeToCall', type: 'boolean', includeExisting: true },
       { field: 'thirdPartyAddress', type: 'string', includeExisting: true },
-      { field: 'thirdPartyPostcode', type: 'string', includeExisting: true }
+      { field: 'thirdPartyPostcode', type: 'string', includeExisting: true },
+      { field: 'thirdPartyRelationshipToClient', type: 'string', includeExisting: true }
     ]
   });
 }
@@ -37,7 +38,8 @@ export async function postEditClientThirdParty(req: Request, res: Response, next
     'thirdPartyContactNumber', 'existingThirdPartyContactNumber',
     'thirdPartySafeToCall', 'existingThirdPartySafeToCall',
     'thirdPartyAddress', 'existingThirdPartyAddress',
-    'thirdPartyPostcode', 'existingThirdPartyPostcode'
+    'thirdPartyPostcode', 'existingThirdPartyPostcode',
+    'thirdPartyRelationshipToClient', 'existingThirdPartyRelationshipToClient'
   ]);
 
   await handlePostEditForm(req, res, next, {
@@ -48,16 +50,20 @@ export async function postEditClientThirdParty(req: Request, res: Response, next
       { name: 'thirdPartyContactNumber', value: formFields.thirdPartyContactNumber, existingValue: formFields.existingThirdPartyContactNumber },
       { name: 'thirdPartySafeToCall', value: formFields.thirdPartySafeToCall, existingValue: formFields.existingThirdPartySafeToCall },
       { name: 'thirdPartyAddress', value: formFields.thirdPartyAddress, existingValue: formFields.existingThirdPartyAddress },
-      { name: 'thirdPartyPostcode', value: formFields.thirdPartyPostcode, existingValue: formFields.existingThirdPartyPostcode }
+      { name: 'thirdPartyPostcode', value: formFields.thirdPartyPostcode, existingValue: formFields.existingThirdPartyPostcode },
+      { name: 'thirdPartyRelationshipToClient', value: formFields.thirdPartyRelationshipToClient, existingValue: formFields.existingThirdPartyRelationshipToClient }
     ],
-    apiUpdateData: { 
-      thirdParty: { 
+    apiUpdateData: {
+      thirdParty: {
         fullName: formFields.thirdPartyFullName,
         emailAddress: formFields.thirdPartyEmailAddress,
         contactNumber: formFields.thirdPartyContactNumber,
         safeToCall: formFields.thirdPartySafeToCall !== '' ? formFields.thirdPartySafeToCall : true,
         address: formFields.thirdPartyAddress,
-        postcode: formFields.thirdPartyPostcode
+        postcode: formFields.thirdPartyPostcode,
+        relationshipToClient: {
+          selected: Array.isArray(formFields.thirdPartyRelationshipToClient) ? formFields.thirdPartyRelationshipToClient : [formFields.thirdPartyRelationshipToClient]
+        }
       }
     }
   });

@@ -30,6 +30,7 @@
         {% set thirdPartySafeToCallErrorMessage = { text: error.inputErrors.thirdPartySafeToCall } if error.inputErrors.thirdPartySafeToCall %}
         {% set thirdPartyAddressErrorMessage = { text: error.inputErrors.thirdPartyAddress } if error.inputErrors.thirdPartyAddress %}
         {% set thirdPartyPostcodeErrorMessage = { text: error.inputErrors.thirdPartyPostcode } if error.inputErrors.thirdPartyPostcode %}
+        {% set thirdPartyRelationshipToClientErrorMessage = { text: error.inputErrors.thirdPartyRelationshipToClient } if error.inputErrors.thirdPartyRelationshipToClient %}
       {% endif %}
       <h1 class="govuk-heading-l">{{ t('forms.clientDetails.thirdParty.pageH1Add') }}</h1>
       <form method="post" action="/cases/{{ caseReference }}/add-third-party">
@@ -40,6 +41,7 @@
         <input type="hidden" name="existingThirdPartySafeToCall" value="{{ existingThirdPartySafeToCall }}">
         <input type="hidden" name="existingThirdPartyAddress" value="{{ existingThirdPartyAddress }}">
         <input type="hidden" name="existingThirdPartyPostcode" value="{{ existingThirdPartyPostcode }}">
+        <input type="hidden" name="existingThirdPartyRelationshipToClient" value="{{ existingThirdPartyRelationshipToClient }}">
         {{ govukInput({
           label: {
             text: t('forms.clientDetails.thirdParty.name'),
@@ -122,6 +124,39 @@
           value: currentThirdPartyPostcode,
           errorMessage: thirdPartyPostcodeErrorMessage,
           autocomplete: "off"
+        }) }}
+        {{ govukRadios({
+          name: "thirdPartyRelationshipToClient",
+          value: currentThirdPartyRelationshipToClient,
+          errorMessage: thirdPartyRelationshipToClientErrorMessage,
+          fieldset: {
+            legend: {
+              text: t('forms.clientDetails.thirdParty.relationshipToClient.titleH2'),
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: [
+            {
+              value: t('forms.clientDetails.thirdParty.relationshipToClient.parentOrGuardian'),
+              text: t('forms.clientDetails.thirdParty.relationshipToClient.parentOrGuardian')
+            },
+            {
+              value: t('forms.clientDetails.thirdParty.relationshipToClient.familyMemberOfFriend'),
+              text: t('forms.clientDetails.thirdParty.relationshipToClient.familyMemberOfFriend')
+            },
+            {
+              value: t('forms.clientDetails.thirdParty.relationshipToClient.professional'),
+              text: t('forms.clientDetails.thirdParty.relationshipToClient.professional')
+            },
+            {
+              value: t('forms.clientDetails.thirdParty.relationshipToClient.legalAdvisor'),
+              text: t('forms.clientDetails.thirdParty.relationshipToClient.legalAdvisor')
+            },
+            {
+              value: t('forms.clientDetails.thirdParty.relationshipToClient.other'),
+              text: t('forms.clientDetails.thirdParty.relationshipToClient.other')
+            }
+          ]
         }) }}
         <div class="govuk-button-group">
           {{ govukButton({
