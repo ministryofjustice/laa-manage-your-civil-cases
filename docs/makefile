@@ -1,23 +1,23 @@
-IMAGE := ghcr.io/ministryofjustice/tech-docs-github-pages-publisher:v6.0.1
+IMAGE := ministryofjustice/tech-docs-github-pages-publisher:v3
 
 # Use this to run a local instance of the documentation site, while editing
 .PHONY: preview check
 
 preview:
 	docker run --rm \
-		-v $$(pwd)/config:/tech-docs-github-pages-publisher/config \
-		-v $$(pwd)/source:/tech-docs-github-pages-publisher/source \
+		-v $$(pwd)/config:/app/config \
+		-v $$(pwd)/source:/app/source \
 		-p 4567:4567 \
-		-it $(IMAGE) /usr/local/bin/preview
+		-it $(IMAGE) /scripts/preview.sh
 
 deploy:
 	docker run --rm \
-		-v $$(pwd)/config:/tech-docs-github-pages-publisher/config \
-		-v $$(pwd)/source:/tech-docs-github-pages-publisher/source \
-		-it $(IMAGE) /usr/local/bin/package
+		-v $$(pwd)/config:/app/config \
+		-v $$(pwd)/source:/app/source \
+		-it $(IMAGE) /scripts/deploy.sh
 
 check:
 	docker run --rm \
-		-v $$(pwd)/config:/tech-docs-github-pages-publisher/config \
-		-v $$(pwd)/source:/tech-docs-github-pages-publisher/source \
-		-it $(IMAGE) /usr/local/bin/check-url-links
+		-v $$(pwd)/config:/app/config \
+		-v $$(pwd)/source:/app/source \
+		-it $(IMAGE) /scripts/check-url-links.sh
