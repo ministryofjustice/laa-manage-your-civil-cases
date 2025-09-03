@@ -248,7 +248,7 @@
         key: "emailAddressThirdParty"
       },
       {
-        label: t('forms.clientDetails.thirdParty.relationshipToClient'),
+        label: t('forms.clientDetails.thirdParty.relationshipToClient.title'),
         key: "relationshipToClientThirdParty"
       },
       {
@@ -260,6 +260,7 @@
   }) }}
 {% else %}
   {{ govukButton({
+    href: "/cases/" + data.caseReference + "/add-third-party",
     text: t('pages.caseDetails.buttons.addThirdPartyContact'),
     classes: "govuk-button--secondary"
   }) }}

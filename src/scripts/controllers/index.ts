@@ -10,3 +10,4 @@ export * from './editClientDateOfBirthController.js';
 export * from './editClientPhoneNumberController.js';
 export * from './editClientEmailAddressController.js';
 export * from './editClientAddressController.js';
+export * from './editClientThirdPartyController.js';

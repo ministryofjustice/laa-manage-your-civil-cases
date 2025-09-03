@@ -13,7 +13,7 @@ export const validateEditClientEmailAddress = (): ReturnType<typeof checkSchema>
       normalizeEmail: true,
       isEmail: {
         /**
-         * Custom error message for invalid phone number format
+         * Custom error message for invalid e-mail format
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: () => new TypedValidationError({
