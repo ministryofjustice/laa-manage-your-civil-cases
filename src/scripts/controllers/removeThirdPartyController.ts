@@ -65,7 +65,7 @@ export async function getRemoveThirdPartyConfirmation(req: Request, res: Respons
  * @param {Response} res Express response object
  * @param {NextFunction} next Express next function
  */
-export function deleteThirdParty(req: Request, res: Response, next: NextFunction): void {
+export async function deleteThirdParty(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
   if (typeof caseReference !== 'string' || caseReference.trim() === '') {
@@ -79,14 +79,20 @@ export function deleteThirdParty(req: Request, res: Response, next: NextFunction
   try {
     devLog(`Removing third party contact for case: ${caseReference}`);
 
-    // TODO: Call API service to remove third party data
-    // const response = await apiService.removeThirdPartyContact(req.axiosMiddleware, caseReference);
+    // Call API service to remove third party data
+    const response = await apiService.deleteThirdPartyContact(req.axiosMiddleware, caseReference);
 
-    // For now, just log the action and redirect
-    devLog(`Third party contact removal requested for case: ${caseReference}`);
-
-    // Redirect back to client details page
-    res.redirect(`/cases/${caseReference}/client-details`);
+    if (response.status === 'success') {
+      devLog(`Third party contact successfully removed for case: ${caseReference}`);
+      // Redirect back to client details page
+      res.redirect(`/cases/${caseReference}/client-details`);
+    } else {
+      devError(`Failed to remove third party contact for case: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);
+      res.status(NOT_FOUND).render('main/error.njk', {
+        status: '500',
+        error: response.message ?? 'Failed to remove third party contact'
+      });
+    }
   } catch (error) {
     // Use the error processing utility
     const processedError = createProcessedError(error, `removing third party contact for case ${caseReference}`);

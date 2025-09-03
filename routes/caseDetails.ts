@@ -32,8 +32,8 @@ router.get('/:caseReference/confirm/remove-third-party', async function (req: Re
 });
 
 /* DELETE third party contact. */
-router.post('/:caseReference/confirm/remove-third-party', function (req: Request, res: Response, next: NextFunction): void {
-  deleteThirdParty(req, res, next);
+router.post('/:caseReference/confirm/remove-third-party', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
+  await deleteThirdParty(req, res, next);
 });
 
 export default router;

@@ -287,6 +287,36 @@ class ApiService {
     }
   }
 
+
+  /**
+   * Delete third party contact for a case
+   * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+   * @param {string} caseReference - Case reference number
+   * @returns {Promise<ClientDetailsApiResponse>} API response confirming deletion
+   */
+  static async deleteThirdPartyContact(
+    axiosMiddleware: AxiosInstanceWrapper,
+    caseReference: string
+  ): Promise<ClientDetailsApiResponse> {
+    try {
+      devLog(`API: DELETE ${API_PREFIX}/cases/${caseReference}/third-party`);
+      const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
+      const response = await configuredAxios.delete(`${API_PREFIX}/cases/${caseReference}/third-party`);
+      devLog(`API: Delete third party response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+      return {
+        data: transformClientDetailsItem(response.data),
+        status: 'success'
+      };
+    } catch (error) {
+      const errorMessage = extractAndLogError(error, 'API error');
+      return {
+        data: null,
+        status: 'error',
+        message: errorMessage
+      };
+    }
+  }
+
   /**
    * Extract pagination metadata from response headers
    * @param {unknown} headers - Response headers from axios
