@@ -209,18 +209,23 @@
         "pageTitleAdd": "Add a third party contact – {caseReference} – {serviceName} – GOV.UK",
         "pageH1Add": "Add a third party contact",
         "name": "Name",
-        "address": "Address",
+        "emailAddress": "Email address",
+        "emailAddressH2": "Email address (optional)",
         "contactNumber": "Contact number",
-        "emailAddress": "Email address (optional)",
+        "contactNumberH2": "Phone number (optional)",
+        "address": "Address",
         "relationshipToClient": "Relationship to Client",
         "passphrase": "Passphrase",
+        "safeToCall": "Is the third party safe to call?",
         "notSafeToCall": "The third party is not safe to call",
         "passphraseNotSetUp": "No, {reason}",
         "validationError": {
           "notEmptyName": "Enter the third party name",
           "notChangedName": "Change the client third party name, or select ‘Cancel’",
           "invalidFormatEmail": "Enter an email address in the correct format, like name@example.com",
-          "notChangedEmail": "Change the client email address, or select 'Cancel'"
+          "notChangedEmail": "Change the client email address, or select 'Cancel'",
+          "invalidFormatContactNumber": "Enter the phone number in the correct format",
+          "notChangedContactNumber": "Change information on the page, or select 'Cancel'"
         }
       }
     },

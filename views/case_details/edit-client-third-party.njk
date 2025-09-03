@@ -4,6 +4,7 @@
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
 
 {% block pageTitle %}{{ t('forms.clientDetails.thirdParty.pageTitleAdd', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}{% endblock %}
 
@@ -24,12 +25,16 @@
         {{ errorSummary(error.errorSummaryList) }}
         {% set thirdPartyFullNameErrorMessage = { text: error.inputErrors.thirdPartyFullName } if error.inputErrors.thirdPartyFullName %}
         {% set thirdPartyEmailAddressErrorMessage = { text: error.inputErrors.thirdPartyEmailAddress } if error.inputErrors.thirdPartyEmailAddress %}
+        {% set thirdPartyContactNumberErrorMessage = { text: error.inputErrors.thirdPartyContactNumber } if error.inputErrors.thirdPartyContactNumber %}
+        {% set thirdPartySafeToCallErrorMessage = { text: error.inputErrors.thirdPartySafeToCall } if error.inputErrors.thirdPartySafeToCall %}
       {% endif %}
       <h1 class="govuk-heading-l">{{ t('forms.clientDetails.thirdParty.pageH1Add') }}</h1>
       <form method="post" action="/cases/{{ caseReference }}/add-third-party">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
         <input type="hidden" name="existingThirdPartyFullName" value="{{ existingThirdPartyFullName }}">
         <input type="hidden" name="existingThirdPartyEmailAddress" value="{{ existingThirdPartyEmailAddress }}">
+        <input type="hidden" name="existingThirdPartyContactNumber" value="{{ existingThirdPartyContactNumber }}">
+        <input type="hidden" name="existingThirdPartySafeToCall" value="{{ existingThirdPartySafeToCall }}">
         {{ govukInput({
           label: {
             text: t('forms.clientDetails.thirdParty.name'),
@@ -43,7 +48,7 @@
         }) }}
         {{ govukInput({
           label: {
-            text: t('forms.clientDetails.thirdParty.emailAddress'),
+            text: t('forms.clientDetails.thirdParty.emailAddressH2'),
             classes: "govuk-label--m",
             isPageHeading: false
           },
@@ -52,6 +57,42 @@
           spellcheck: false,
           value: currentThirdPartyEmailAddress,
           errorMessage: thirdPartyEmailAddressErrorMessage
+        }) }}
+        {{ govukInput({
+          label: {
+            text: t('forms.clientDetails.thirdParty.contactNumberH2'),
+            classes: "govuk-label--m",
+            isPageHeading: false
+          },
+          errorMessage: thirdPartyContactNumberErrorMessage,
+          id: "thirdPartyContactNumber",
+          name: "thirdPartyContactNumber",
+          type: "tel",
+          autocomplete: "off",
+          classes: "govuk-input--width-20",
+          value: currentThirdPartyContactNumber
+        }) }}
+        {{ govukRadios({
+          name: "thirdPartySafeToCall",
+          value: currentThirdPartySafeToCall,
+          errorMessage: thirdPartySafeToCallErrorMessage,
+          fieldset: {
+            legend: {
+              text: t('forms.clientDetails.thirdParty.safeToCall'),
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: [
+            {
+              value: "true",
+              text: t('common.yes')
+            },
+            {
+              value: "false",
+              text: t('common.no')
+            }
+          ]
         }) }}
         <div class="govuk-button-group">
           {{ govukButton({

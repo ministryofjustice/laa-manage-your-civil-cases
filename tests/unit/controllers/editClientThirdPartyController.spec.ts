@@ -149,8 +149,25 @@ describe('Edit Client Name Controller', () => {
     it('should handle validation errors for client third party email', async () => {
       // Arrange
       req.body = { 
-        thirdPartyFullName: '', existingThirdPartyFullName: 'John Carpenter', // Make sure name is there
-        thirdPartyEmailAddress: 'invalid-email', existingThirdPartyEmailAddress: '' // Provide existing email for validation
+        thirdPartyFullName: '', existingThirdPartyFullName: 'John Carpenter', // Make sure name is there as it is mandatory
+        thirdPartyEmailAddress: 'invalid-email', existingThirdPartyEmailAddress: '' // Invalid email format
+      }; 
+
+      await runSchema(req as any, validateEditClientThirdParty());
+
+      // Act
+      await postEditClientThirdParty(req as RequestWithMiddleware, res as Response, next);
+
+      // Assert - Should configure form response with errors, not redirect
+      expect(redirectStub.called).to.be.false;
+      expect(renderStub.calledWith('case_details/edit-client-third-party.njk')).to.be.true;
+    });
+
+    it('should handle validation errors for client third party contact number', async () => {
+      // Arrange
+      req.body = { 
+        thirdPartyFullName: '', existingThirdPartyFullName: 'John Carpenter', // Make sure name is there as it is mandatory
+        thirdPartyContactNumber: '007', existingThirdPartyContactNumber: '' // Invalid phone number format
       }; 
 
       await runSchema(req as any, validateEditClientThirdParty());

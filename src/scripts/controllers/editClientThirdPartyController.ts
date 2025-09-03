@@ -14,7 +14,9 @@ export async function getEditClientThirdParty(req: Request, res: Response, next:
     templatePath: 'case_details/edit-client-third-party.njk',
     fieldConfigs: [
       { field: 'thirdPartyFullName', type: 'string', includeExisting: true },
-      { field: 'thirdPartyEmailAddress', type: 'string', includeExisting: true }
+      { field: 'thirdPartyEmailAddress', type: 'string', includeExisting: true },
+      { field: 'thirdPartyContactNumber', type: 'string', includeExisting: true },
+      { field: 'thirdPartySafeToCall', type: 'boolean', includeExisting: true }
     ]
   });
 }
@@ -30,18 +32,24 @@ export async function postEditClientThirdParty(req: Request, res: Response, next
   const formFields = extractFormFields(req.body, [
     'thirdPartyFullName', 'existingThirdPartyFullName',
     'thirdPartyEmailAddress', 'existingThirdPartyEmailAddress',
+    'thirdPartyContactNumber', 'existingThirdPartyContactNumber',
+    'thirdPartySafeToCall', 'existingThirdPartySafeToCall'
   ]);
 
   await handlePostEditForm(req, res, next, {
     templatePath: 'case_details/edit-client-third-party.njk',
     fields: [
       { name: 'thirdPartyFullName', value: formFields.thirdPartyFullName, existingValue: formFields.existingThirdPartyFullName },
-      { name: 'thirdPartyEmailAddress', value: formFields.thirdPartyEmailAddress, existingValue: formFields.existingThirdPartyEmailAddress }
+      { name: 'thirdPartyEmailAddress', value: formFields.thirdPartyEmailAddress, existingValue: formFields.existingThirdPartyEmailAddress },
+      { name: 'thirdPartyContactNumber', value: formFields.thirdPartyContactNumber, existingValue: formFields.existingThirdPartyContactNumber },
+      { name: 'thirdPartySafeToCall', value: formFields.thirdPartySafeToCall, existingValue: formFields.existingThirdPartySafeToCall }
     ],
     apiUpdateData: { 
       thirdParty: { 
         fullName: formFields.thirdPartyFullName,
         emailAddress: formFields.thirdPartyEmailAddress,
+        contactNumber: formFields.thirdPartyContactNumber,
+        safeToCall: formFields.thirdPartySafeToCall,
       }
     }
   });

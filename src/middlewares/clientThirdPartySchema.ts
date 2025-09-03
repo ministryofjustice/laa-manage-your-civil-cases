@@ -1,4 +1,5 @@
 import { checkSchema } from 'express-validator';
+import { isValidPhoneNumber } from 'libphonenumber-js';
 import { createChangeDetectionValidator, TypedValidationError, t } from '#src/scripts/helpers/index.js';
 
 /**
@@ -56,5 +57,43 @@ export const validateEditClientThirdParty = (): ReturnType<typeof checkSchema> =
           summaryMessage: () => t('forms.clientDetails.thirdParty.validationError.notChangedEmail'),
           inlineMessage: '',
         }),
+    },
+    thirdPartyContactNumber: {
+      trim: true,
+      optional: { options: { checkFalsy: true } },
+      custom: {
+        /**
+         * Schema to check if the number inputted is valid UK or International phone number.
+         * @param {string} numberInputted - The number user has inputted
+         * @returns {boolean} Returns true if the phone number is valid, false otherwise
+         */
+        options: (numberInputted: string): boolean => {
+          if (numberInputted.trim() === '') {
+            return true;
+          }
+
+          const valid = isValidPhoneNumber(numberInputted, 'GB') || isValidPhoneNumber(numberInputted, 'IN');
+          return valid;
+        },
+        /**
+         * Custom error message for invalid phone number format
+         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+         */
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: t('forms.clientDetails.thirdParty.validationError.invalidFormatContactNumber'),
+          inlineMessage: t('forms.clientDetails.thirdParty.validationError.invalidFormatContactNumber')
+        }),
+        bail: true,
+        ...createChangeDetectionValidator(
+        [{ current: 'thirdPartyContactNumber', original: 'existingThirdPartyContactNumber' }],
+        {
+          /**
+           * Returns the summary message for unchanged third party contact number.
+           * @returns {string} Localized validation error message
+           */
+          summaryMessage: () => t('forms.clientDetails.thirdParty.validationError.notChangedContactNumber'),
+          inlineMessage: '',
+        }),
+      },
     },
   });
