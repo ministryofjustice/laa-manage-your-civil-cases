@@ -260,6 +260,7 @@
   }) }}
 {% else %}
   {{ govukButton({
+    href: "/cases/" + data.caseReference + "/add-third-party",
     text: t('pages.caseDetails.buttons.addThirdPartyContact'),
     classes: "govuk-button--secondary"
   }) }}

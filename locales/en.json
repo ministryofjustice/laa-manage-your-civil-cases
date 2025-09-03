@@ -147,15 +147,15 @@
         "pageTitle": "Client date of birth – {caseReference} – {serviceName} – GOV.UK",
         "hint": "For example, 27 3 2007",
         "validationError": {
-          "day":{
+          "day": {
             "notEmpty": "The date of birth must include a day",
             "isInt": "Day must be between 1 and 31"
           },
-          "month":{
+          "month": {
             "notEmpty": "The date of birth must include a month",
             "isInt": "Month must be between 1 and 12"
           },
-          "year":{
+          "year": {
             "notEmpty": "The date of birth must include a year",
             "isLength": "Year must include 4 numbers",
             "isInt": "Year must be a valid number"
@@ -173,7 +173,7 @@
         "pageTitle": "Client email address – {caseReference} – {serviceName} – GOV.UK",
         "validationError": {
           "invalidFormat": "Enter an email address in the correct format, like name@example.com",
-          "notChanged" : "Change the client email address, or select 'Cancel'"
+          "notChanged": "Change the client email address, or select 'Cancel'"
         }
       },
       "phoneNumber": {
@@ -184,55 +184,61 @@
         "announceCall": "Can you say the call is from Civil Legal Advice?",
         "notSafeToCall": "The client is not safe to call",
         "doNotAnnounce": "Do not say the call is from Civil Legal Advice",
-        "validationError":{
+        "validationError": {
           "invalidFormat": "Enter the phone number in the correct format",
           "notEmpty": "Enter the client phone number",
           "notChanged": "Change information on the page, or select 'Cancel'"
-          }
-        },
-        "address": {
-          "label": "Address",
-          "title": "Client address (optional)",
-          "pageTitle": "Client address – {caseReference} – {serviceName} – GOV.UK",
-          "postcode": "Postcode",
-          "validationError":{
-            "notChanged": "Change the client address, or select 'Cancel'"
-          }
-        },
-        "language": {
-          "label": "Language"
-        },
-        "reasonableAdjustments": {
-          "label": "Reasonable adjustments"
-        },
-        "thirdParty": {
-          "name": "Name",
-          "address": "Address",
-          "contactNumber": "Contact number",
-          "emailAddress": "Email address",
-          "relationshipToClient": "Relationship to Client",
-          "passphrase": "Passphrase",
-          "notSafeToCall": "The third party is not safe to call",
-          "passphraseNotSetUp": "No, {reason}"
         }
       },
-      "search":{
-        "validationError":{
-          "notEmpty": "Enter some case details"
+      "address": {
+        "label": "Address",
+        "title": "Client address (optional)",
+        "pageTitle": "Client address – {caseReference} – {serviceName} – GOV.UK",
+        "postcode": "Postcode",
+        "validationError": {
+          "notChanged": "Change the client address, or select 'Cancel'"
+        }
+      },
+      "language": {
+        "label": "Language"
+      },
+      "reasonableAdjustments": {
+        "label": "Reasonable adjustments"
+      },
+      "thirdParty": {
+        "pageTitleAdd": "Add a third party contact – {caseReference} – {serviceName} – GOV.UK",
+        "pageH1Add": "Add a third party contact",
+        "name": "Name",
+        "address": "Address",
+        "contactNumber": "Contact number",
+        "emailAddress": "Email address",
+        "relationshipToClient": "Relationship to Client",
+        "passphrase": "Passphrase",
+        "notSafeToCall": "The third party is not safe to call",
+        "passphraseNotSetUp": "No, {reason}",
+        "validationError": {
+          "notEmpty": "Enter the third party name",
+          "notChanged": "Change the client third party name, or select ‘Cancel’"
         }
       }
     },
-    "accessibility": {
-      "visuallyHiddenText": {
-        "changeName": "Change Name",
-        "changeDateOfBirth": "Change Date of birth",
-        "changePhoneNumber": "Change Phone number",
-        "changeEmail": "Change Email",
-        "changeAddress": "Change Address",
-        "changeLanguage": "Change Language",
-        "changeReasonableAdjustments": "Change Reasonable adjustments",
-        "changeThirdPartyContact": "Change Third party contact details",
-        "removeThirdPartyContact": "Remove Third party contact details"
+    "search": {
+      "validationError": {
+        "notEmpty": "Enter some case details"
       }
     }
+  },
+  "accessibility": {
+    "visuallyHiddenText": {
+      "changeName": "Change Name",
+      "changeDateOfBirth": "Change Date of birth",
+      "changePhoneNumber": "Change Phone number",
+      "changeEmail": "Change Email",
+      "changeAddress": "Change Address",
+      "changeLanguage": "Change Language",
+      "changeReasonableAdjustments": "Change Reasonable adjustments",
+      "changeThirdPartyContact": "Change Third party contact details",
+      "removeThirdPartyContact": "Remove Third party contact details"
+    }
   }
+}

@@ -9,7 +9,9 @@ import {
   getEditClientEmailAddress,
   postEditClientEmailAddress,
   getEditClientAddress,
-  postEditClientAddress
+  postEditClientAddress,
+  getEditClientThirdParty,
+  postEditClientThirdParty
 } from '#src/scripts/controllers/index.js';
 
 import { 
@@ -17,7 +19,8 @@ import {
   validateEditClientDateOfBirth,
   validateEditClientPhoneNumber,
   validateEditClientEmailAddress,
-  validateEditClientAddress 
+  validateEditClientAddress,
+  validateEditClientThirdParty
 } from '#src/middlewares/index.js';
 
 const router = express.Router();
@@ -37,5 +40,7 @@ router.post('/:caseReference/client-details/change/email-address', validateEditC
 router.get('/:caseReference/client-details/change/address', getEditClientAddress);
 router.post('/:caseReference/client-details/change/address', validateEditClientAddress(), postEditClientAddress);
 
+router.get('/:caseReference/add-third-party', getEditClientThirdParty);
+router.post('/:caseReference/add-third-party', validateEditClientThirdParty(), postEditClientThirdParty);
 
 export default router;
