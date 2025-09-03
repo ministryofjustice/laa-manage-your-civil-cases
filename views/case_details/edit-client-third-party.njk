@@ -23,11 +23,13 @@
       {% if error %}
         {{ errorSummary(error.errorSummaryList) }}
         {% set thirdPartyFullNameErrorMessage = { text: error.inputErrors.thirdPartyFullName } if error.inputErrors.thirdPartyFullName %}
+        {% set thirdPartyEmailAddressErrorMessage = { text: error.inputErrors.thirdPartyEmailAddress } if error.inputErrors.thirdPartyEmailAddress %}
       {% endif %}
       <h1 class="govuk-heading-l">{{ t('forms.clientDetails.thirdParty.pageH1Add') }}</h1>
       <form method="post" action="/cases/{{ caseReference }}/add-third-party">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
         <input type="hidden" name="existingThirdPartyFullName" value="{{ existingThirdPartyFullName }}">
+        <input type="hidden" name="existingThirdPartyEmailAddress" value="{{ existingThirdPartyEmailAddress }}">
         {{ govukInput({
           label: {
             text: t('forms.clientDetails.thirdParty.name'),
@@ -38,6 +40,18 @@
           name: "thirdPartyFullName",
           value: currentThirdPartyFullName,
           errorMessage: thirdPartyFullNameErrorMessage
+        }) }}
+        {{ govukInput({
+          label: {
+            text: t('forms.clientDetails.thirdParty.emailAddress'),
+            classes: "govuk-label--m",
+            isPageHeading: false
+          },
+          id: "thirdPartyEmailAddress",
+          name: "thirdPartyEmailAddress",
+          spellcheck: false,
+          value: currentThirdPartyEmailAddress,
+          errorMessage: thirdPartyEmailAddressErrorMessage
         }) }}
         <div class="govuk-button-group">
           {{ govukButton({

@@ -15,8 +15,8 @@ export const validateEditClientThirdParty = (): ReturnType<typeof checkSchema> =
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: t('forms.clientDetails.thirdParty.validationError.notEmpty'),
-          inlineMessage: t('forms.clientDetails.thirdParty.validationError.notEmpty')
+          summaryMessage: t('forms.clientDetails.thirdParty.validationError.notEmptyName'),
+          inlineMessage: t('forms.clientDetails.thirdParty.validationError.notEmptyName')
         }),
         bail: true,
       },
@@ -27,7 +27,33 @@ export const validateEditClientThirdParty = (): ReturnType<typeof checkSchema> =
            * Returns the summary message for unchanged third party name.
            * @returns {string} Localized validation error message
            */
-          summaryMessage: () => t('forms.clientDetails.thirdParty.validationError.notChanged'),
+          summaryMessage: () => t('forms.clientDetails.thirdParty.validationError.notChangedName'),
+          inlineMessage: '',
+        }),
+    },
+    thirdPartyEmailAddress: {
+      trim: true,
+      optional: { options: { checkFalsy: true } },
+      normalizeEmail: true,
+      isEmail: {
+        /**
+         * Custom error message for invalid e-mail format
+         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+         */
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: t('forms.clientDetails.thirdParty.validationError.invalidFormatEmail'),
+          inlineMessage: t('forms.clientDetails.thirdParty.validationError.invalidFormatEmail')
+        }),
+        bail: true,
+      },
+      ...createChangeDetectionValidator(
+        [{ current: 'thirdPartyEmailAddress', original: 'existingThirdPartyEmailAddress' }],
+        {
+          /**
+           * Returns the summary message for unchanged third party name.
+           * @returns {string} Localized validation error message
+           */
+          summaryMessage: () => t('forms.clientDetails.thirdParty.validationError.notChangedEmail'),
           inlineMessage: '',
         }),
     },
