@@ -5,6 +5,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 
 {% block pageTitle %}{{ t('forms.clientDetails.thirdParty.pageTitleAdd', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}{% endblock %}
 
@@ -27,6 +28,8 @@
         {% set thirdPartyEmailAddressErrorMessage = { text: error.inputErrors.thirdPartyEmailAddress } if error.inputErrors.thirdPartyEmailAddress %}
         {% set thirdPartyContactNumberErrorMessage = { text: error.inputErrors.thirdPartyContactNumber } if error.inputErrors.thirdPartyContactNumber %}
         {% set thirdPartySafeToCallErrorMessage = { text: error.inputErrors.thirdPartySafeToCall } if error.inputErrors.thirdPartySafeToCall %}
+        {% set thirdPartyAddressErrorMessage = { text: error.inputErrors.thirdPartyAddress } if error.inputErrors.thirdPartyAddress %}
+        {% set thirdPartyPostcodeErrorMessage = { text: error.inputErrors.thirdPartyPostcode } if error.inputErrors.thirdPartyPostcode %}
       {% endif %}
       <h1 class="govuk-heading-l">{{ t('forms.clientDetails.thirdParty.pageH1Add') }}</h1>
       <form method="post" action="/cases/{{ caseReference }}/add-third-party">
@@ -35,11 +38,12 @@
         <input type="hidden" name="existingThirdPartyEmailAddress" value="{{ existingThirdPartyEmailAddress }}">
         <input type="hidden" name="existingThirdPartyContactNumber" value="{{ existingThirdPartyContactNumber }}">
         <input type="hidden" name="existingThirdPartySafeToCall" value="{{ existingThirdPartySafeToCall }}">
+        <input type="hidden" name="existingThirdPartyAddress" value="{{ existingThirdPartyAddress }}">
+        <input type="hidden" name="existingThirdPartyPostcode" value="{{ existingThirdPartyPostcode }}">
         {{ govukInput({
           label: {
             text: t('forms.clientDetails.thirdParty.name'),
-            classes: "govuk-label--m",
-            isPageHeading: false
+            classes: "govuk-label--m"
           },
           id: "thirdPartyFullName",
           name: "thirdPartyFullName",
@@ -49,8 +53,7 @@
         {{ govukInput({
           label: {
             text: t('forms.clientDetails.thirdParty.emailAddressH2'),
-            classes: "govuk-label--m",
-            isPageHeading: false
+            classes: "govuk-label--m"
           },
           id: "thirdPartyEmailAddress",
           name: "thirdPartyEmailAddress",
@@ -61,8 +64,7 @@
         {{ govukInput({
           label: {
             text: t('forms.clientDetails.thirdParty.contactNumberH2'),
-            classes: "govuk-label--m",
-            isPageHeading: false
+            classes: "govuk-label--m"
           },
           errorMessage: thirdPartyContactNumberErrorMessage,
           id: "thirdPartyContactNumber",
@@ -79,7 +81,6 @@
           fieldset: {
             legend: {
               text: t('forms.clientDetails.thirdParty.safeToCall'),
-              isPageHeading: false,
               classes: "govuk-fieldset__legend--m"
             }
           },
@@ -93,6 +94,34 @@
               text: t('common.no')
             }
           ]
+        }) }}
+        {{ govukTextarea({
+          label: {
+            text: t('forms.clientDetails.thirdParty.addressH2'),
+            classes: "govuk-label--m"
+          },
+          hint: {
+            text: t('forms.clientDetails.thirdParty.addressHint')
+          },
+          id: "thirdPartyAddress",
+          name: "thirdPartyAddress",
+          value: currentThirdPartyAddress,
+          errorMessage: thirdPartyAddressErrorMessage,
+          autocomplete: "off"
+        }) }}
+        {{ govukInput({
+          label: {
+            classes: "govuk-label--m"
+          },
+          hint: {
+            text: t('forms.clientDetails.thirdParty.postcodeHint')
+          },
+          id: "thirdPartyPostcode",
+          name: "thirdPartyPostcode",
+          classes: "govuk-input--width-10",
+          value: currentThirdPartyPostcode,
+          errorMessage: thirdPartyPostcodeErrorMessage,
+          autocomplete: "off"
         }) }}
         <div class="govuk-button-group">
           {{ govukButton({

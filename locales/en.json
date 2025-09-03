@@ -214,6 +214,9 @@
         "contactNumber": "Contact number",
         "contactNumberH2": "Phone number (optional)",
         "address": "Address",
+        "addressH2": "Address (optional)",
+        "addressHint": "Enter address",
+        "postcodeHint": "Enter postcode",
         "relationshipToClient": "Relationship to Client",
         "passphrase": "Passphrase",
         "safeToCall": "Is the third party safe to call?",
@@ -225,7 +228,9 @@
           "invalidFormatEmail": "Enter an email address in the correct format, like name@example.com",
           "notChangedEmail": "Change the client email address, or select 'Cancel'",
           "invalidFormatContactNumber": "Enter the phone number in the correct format",
-          "notChangedContactNumber": "Change information on the page, or select 'Cancel'"
+          "notChangedContactNumber": "Change information on the page, or select 'Cancel'",
+          "notChangedAddress": "Change the client address, or select 'Cancel'",
+          "notChangedPostcode": "Change the client postcode, or select 'Cancel'"
         }
       }
     },

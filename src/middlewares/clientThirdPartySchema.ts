@@ -45,7 +45,6 @@ export const validateEditClientThirdParty = (): ReturnType<typeof checkSchema> =
           summaryMessage: t('forms.clientDetails.thirdParty.validationError.invalidFormatEmail'),
           inlineMessage: t('forms.clientDetails.thirdParty.validationError.invalidFormatEmail')
         }),
-        bail: true,
       },
       ...createChangeDetectionValidator(
         [{ current: 'thirdPartyEmailAddress', original: 'existingThirdPartyEmailAddress' }],
@@ -83,7 +82,6 @@ export const validateEditClientThirdParty = (): ReturnType<typeof checkSchema> =
           summaryMessage: t('forms.clientDetails.thirdParty.validationError.invalidFormatContactNumber'),
           inlineMessage: t('forms.clientDetails.thirdParty.validationError.invalidFormatContactNumber')
         }),
-        bail: true,
         ...createChangeDetectionValidator(
         [{ current: 'thirdPartyContactNumber', original: 'existingThirdPartyContactNumber' }],
         {
@@ -95,5 +93,41 @@ export const validateEditClientThirdParty = (): ReturnType<typeof checkSchema> =
           inlineMessage: '',
         }),
       },
+    },
+    thirdPartyAddress: {
+      trim: true,
+      optional: { options: { checkFalsy: true } },
+      ...createChangeDetectionValidator(
+        [{ current: 'thirdPartyAddress', original: 'existingThirdPartyAddress' }],
+        {
+          /**
+           * Returns the summary message for unchanged third party address.
+           * @returns {string} Localized validation error message
+           */
+          summaryMessage: () => t('forms.clientDetails.thirdParty.validationError.notChangedAddress'),
+          inlineMessage: '',
+        }),
+    },
+    thirdPartyPostcode: {
+      trim: true,
+      optional: { options: { checkFalsy: true } },
+      customSanitizer: {
+        /**
+         * Sanitises the postcode value to uppercase.
+         * @param {string} value - The postcode value to sanitise.
+         * @returns {string} The sanitised postcode in uppercase, or the original value if not a string.
+         */
+        options: (value: string) => typeof value === 'string' ? value.toUpperCase() : value
+      },
+      ...createChangeDetectionValidator(
+        [{ current: 'thirdPartyPostcode', original: 'existingThirdPartyPostcode' }],
+        {
+          /**
+           * Returns the summary message for unchanged third party postcode.
+           * @returns {string} Localized validation error message
+           */
+          summaryMessage: () => t('forms.clientDetails.thirdParty.validationError.notChangedPostcode'),
+          inlineMessage: '',
+        }),
     },
   });
