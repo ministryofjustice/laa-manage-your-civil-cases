@@ -154,24 +154,45 @@ describe('Remove Third Party Controller', () => {
 
     const deleteErrorScenarios = [
       {
-        name: 'API returns error with message',
-        response: { status: 'error', data: null, message: 'Failed to delete' },
-        expectedError: 'Failed to delete'
+        name: 'API returns genuine error',
+        response: { status: 'error', data: null, message: 'Database connection failed' },
+        expectedError: 'Database connection failed',
+        shouldRedirect: false
       },
       {
         name: 'API returns error without message',
         response: { status: 'error', data: null },
-        expectedError: 'Failed to remove third party contact'
+        expectedError: 'Failed to remove third party contact',
+        shouldRedirect: false
       }
     ];
 
-    deleteErrorScenarios.forEach(({ name, response, expectedError }) => {
+    deleteErrorScenarios.forEach(({ name, response, expectedError, shouldRedirect }) => {
       it(`should render error page when ${name}`, async () => {
         deleteThirdPartyContactStub.resolves(response);
         await deleteThirdParty(req as Request, res as Response, next);
-        expect(statusStub.calledWith(404)).to.be.true;
-        expect(renderStub.calledWith('main/error.njk', { status: '500', error: expectedError })).to.be.true;
+        if (shouldRedirect) {
+          expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
+        } else {
+          expect(statusStub.calledWith(500)).to.be.true;
+          expect(renderStub.calledWith('main/error.njk', { status: '500', error: expectedError })).to.be.true;
+        }
       });
+    });
+
+    it('should redirect when API returns 404 error (idempotent delete)', async () => {
+      // Arrange
+      deleteThirdPartyContactStub.resolves({
+        status: 'error',
+        data: null,
+        message: 'Third party not found (404)'
+      });
+
+      // Act
+      await deleteThirdParty(req as Request, res as Response, next);
+
+      // Assert
+      expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
     });
 
     it('should delegate exceptions to error middleware', async () => {

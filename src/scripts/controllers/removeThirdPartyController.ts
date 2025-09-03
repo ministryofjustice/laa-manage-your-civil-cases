@@ -4,6 +4,7 @@ import { devLog, devError, createProcessedError, safeString } from '#src/scripts
 
 const BAD_REQUEST = 400;
 const NOT_FOUND = 404;
+const INTERNAL_SERVER_ERROR = 500;
 
 /**
  * Handle GET request for remove third party confirmation page
@@ -86,9 +87,13 @@ export async function deleteThirdParty(req: Request, res: Response, next: NextFu
       devLog(`Third party contact successfully removed for case: ${caseReference}`);
       // Redirect back to client details page
       res.redirect(`/cases/${caseReference}/client-details`);
+    } else if (response.message?.includes('404') === true) {
+      // Third party already removed or doesn't exist - treat as success (idempotent)
+      devLog(`Third party contact already removed or not found for case: ${caseReference}. Treating as success.`);
+      res.redirect(`/cases/${caseReference}/client-details`);
     } else {
       devError(`Failed to remove third party contact for case: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);
-      res.status(NOT_FOUND).render('main/error.njk', {
+      res.status(INTERNAL_SERVER_ERROR).render('main/error.njk', {
         status: '500',
         error: response.message ?? 'Failed to remove third party contact'
       });
