@@ -1,36 +1,21 @@
 {% extends "base.njk" %}
-
-{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "components/confirmationComponent.njk" import confirmationComponent %}
 
 {% block pageTitle %}{{ t('pages.caseDetails.removeThirdParty.pageTitle', { serviceName: config.SERVICE_NAME }) }}
 {% endblock %}
 
-{% set backLinkHref = "/cases/" + caseReference + "/client-details" %}
-
 {% block pageContent %}
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-xl">{{ t('pages.caseDetails.removeThirdParty.heading') }}</h1>
-
-      <p class="govuk-body">{{ t('pages.caseDetails.removeThirdParty.description') }}</p>
-
-      <form method="post" action="/cases/{{ caseReference }}/confirm/remove-third-party">
-        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-
-        <div class="govuk-button-group govuk-!-margin-top-9">
-          {{ govukButton({
-            text: t('pages.caseDetails.removeThirdParty.confirmButton'),
-            classes: "govuk-button--success"
-          }) }}
-
-          {{ govukButton({
-            text: t('pages.caseDetails.removeThirdParty.cancelButton'),
-            classes: "govuk-button--secondary",
-            href: "/cases/" + caseReference + "/client-details"
-          }) }}
-        </div>
-      </form>
-    </div>
-  </div>
+  {{ confirmationComponent({
+    heading: t('pages.caseDetails.removeThirdParty.heading'),
+    description: t('pages.caseDetails.removeThirdParty.description'),
+    confirmAction: {
+      text: t('pages.caseDetails.removeThirdParty.confirmButton'),
+      formAction: "/cases/" + caseReference + "/confirm/remove-third-party"
+    },
+    cancelAction: {
+      text: t('pages.caseDetails.removeThirdParty.cancelButton'),
+      href: "/cases/" + caseReference + "/client-details"
+    },
+    csrfToken: csrfToken
+  }) }}
 {% endblock %}
