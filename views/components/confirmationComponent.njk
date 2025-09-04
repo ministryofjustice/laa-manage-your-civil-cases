@@ -1,0 +1,64 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{#
+  Confirmation Component
+
+  A reusable component for confirmation pages that require user action.
+  Displays a heading, description, and two action buttons (confirm/cancel).
+
+  Parameters:
+  - heading: String - The main heading text
+  - description: String - The description/warning text
+  - confirmAction: Object - Configuration for the confirm button
+    - text: String - Button text
+    - formAction: String - Form action URL
+    - buttonClass: String (optional) - Additional CSS classes for the button (default: "govuk-button--warning")
+  - cancelAction: Object - Configuration for the cancel button
+    - text: String - Button text
+    - href: String - Link URL for cancel action
+    - buttonClass: String (optional) - Additional CSS classes for the button (default: "govuk-button--secondary")
+  - csrfToken: String - CSRF token for form protection
+
+  Example usage:
+  {{ confirmationComponent({
+    heading: "Remove third party?",
+    description: "This will permanently delete all information about the third party.",
+    confirmAction: {
+      text: "Yes, remove",
+      formAction: "/cases/" + caseReference + "/confirm/remove-third-party",
+      buttonClass: "govuk-button--warning"
+    },
+    cancelAction: {
+      text: "No, go back to client details",
+      href: "/cases/" + caseReference + "/client-details"
+    },
+    csrfToken: csrfToken
+  }) }}
+#}
+
+{% macro confirmationComponent(params) %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">{{ params.heading }}</h1>
+
+      <p class="govuk-body">{{ params.description }}</p>
+
+      <form method="post" action="{{ params.confirmAction.formAction }}">
+        <input type="hidden" name="_csrf" value="{{ params.csrfToken }}">
+
+        <div class="govuk-button-group govuk-!-margin-top-9">
+          {{ govukButton({
+            text: params.confirmAction.text,
+            classes: params.confirmAction.buttonClass or "govuk-button--success"
+          }) }}
+
+          {{ govukButton({
+            text: params.cancelAction.text,
+            classes: params.cancelAction.buttonClass or "govuk-button--secondary",
+            href: params.cancelAction.href
+          }) }}
+        </div>
+      </form>
+    </div>
+  </div>
+{% endmacro %}
