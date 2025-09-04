@@ -24,28 +24,21 @@
     <div class="govuk-grid-column-two-thirds">
       {% if error %}
         {{ errorSummary(error.errorSummaryList) }}
-        {% set thirdPartyFullNameErrorMessage = { text: error.inputErrors.thirdPartyFullName } if error.inputErrors.thirdPartyFullName %}
-        {% set thirdPartyEmailAddressErrorMessage = { text: error.inputErrors.thirdPartyEmailAddress } if error.inputErrors.thirdPartyEmailAddress %}
-        {% set thirdPartyContactNumberErrorMessage = { text: error.inputErrors.thirdPartyContactNumber } if error.inputErrors.thirdPartyContactNumber %}
-        {% set thirdPartySafeToCallErrorMessage = { text: error.inputErrors.thirdPartySafeToCall } if error.inputErrors.thirdPartySafeToCall %}
-        {% set thirdPartyAddressErrorMessage = { text: error.inputErrors.thirdPartyAddress } if error.inputErrors.thirdPartyAddress %}
-        {% set thirdPartyPostcodeErrorMessage = { text: error.inputErrors.thirdPartyPostcode } if error.inputErrors.thirdPartyPostcode %}
-        {% set thirdPartyRelationshipToClientErrorMessage = { text: error.inputErrors.thirdPartyRelationshipToClient } if error.inputErrors.thirdPartyRelationshipToClient %}
-        {% set thirdPartyPassphraseSetUpErrorMessage = { text: error.inputErrors.thirdPartyPassphraseSetUp } if error.inputErrors.thirdPartyPassphraseSetUp %}
-        {% set thirdPartyPassphraseErrorMessage = { text: error.inputErrors.thirdPartyPassphrase } if error.inputErrors.thirdPartyPassphrase %}
+          {% set errorMessages = {
+            thirdPartyFullName: { text: error.inputErrors.thirdPartyFullName } if error.inputErrors.thirdPartyFullName,
+            thirdPartyEmailAddress: { text: error.inputErrors.thirdPartyEmailAddress } if error.inputErrors.thirdPartyEmailAddress,
+            thirdPartyContactNumber: { text: error.inputErrors.thirdPartyContactNumber } if error.inputErrors.thirdPartyContactNumber,
+            thirdPartySafeToCall: { text: error.inputErrors.thirdPartySafeToCall } if error.inputErrors.thirdPartySafeToCall,
+            thirdPartyAddress: { text: error.inputErrors.thirdPartyAddress } if error.inputErrors.thirdPartyAddress,
+            thirdPartyPostcode: { text: error.inputErrors.thirdPartyPostcode } if error.inputErrors.thirdPartyPostcode,
+            thirdPartyRelationshipToClient: { text: error.inputErrors.thirdPartyRelationshipToClient } if error.inputErrors.thirdPartyRelationshipToClient,
+            thirdPartyPassphraseSetUp: { text: error.inputErrors.thirdPartyPassphraseSetUp } if error.inputErrors.thirdPartyPassphraseSetUp,
+            thirdPartyPassphrase: { text: error.inputErrors.thirdPartyPassphrase } if error.inputErrors.thirdPartyPassphrase
+          } %}
       {% endif %}
       <h1 class="govuk-heading-l">{{ t('forms.clientDetails.thirdParty.pageH1Add') }}</h1>
       <form method="post" action="/cases/{{ caseReference }}/add-third-party">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-        <input type="hidden" name="existingThirdPartyFullName" value="{{ existingThirdPartyFullName }}">
-        <input type="hidden" name="existingThirdPartyEmailAddress" value="{{ existingThirdPartyEmailAddress }}">
-        <input type="hidden" name="existingThirdPartyContactNumber" value="{{ existingThirdPartyContactNumber }}">
-        <input type="hidden" name="existingThirdPartySafeToCall" value="{{ existingThirdPartySafeToCall }}">
-        <input type="hidden" name="existingThirdPartyAddress" value="{{ existingThirdPartyAddress }}">
-        <input type="hidden" name="existingThirdPartyPostcode" value="{{ existingThirdPartyPostcode }}">
-        <input type="hidden" name="existingThirdPartyRelationshipToClient" value="{{ existingThirdPartyRelationshipToClient }}">
-        <input type="hidden" name="existingThirdPartyPassphraseSetUp" value="{{ existingThirdPartyPassphraseSetUp }}">
-        <input type="hidden" name="existingThirdPartyPassphrase" value="{{ existingThirdPartyPassphrase }}">
         {{ govukInput({
           label: {
             text: t('forms.clientDetails.thirdParty.name'),
@@ -54,7 +47,7 @@
           id: "thirdPartyFullName",
           name: "thirdPartyFullName",
           value: currentThirdPartyFullName,
-          errorMessage: thirdPartyFullNameErrorMessage
+          errorMessage: errorMessages.thirdPartyFullName if error
         }) }}
         {{ govukInput({
           label: {
@@ -65,14 +58,14 @@
           name: "thirdPartyEmailAddress",
           spellcheck: false,
           value: currentThirdPartyEmailAddress,
-          errorMessage: thirdPartyEmailAddressErrorMessage
+          errorMessage: errorMessages.thirdPartyEmailAddress if error
         }) }}
         {{ govukInput({
           label: {
             text: t('forms.clientDetails.thirdParty.contactNumberH2'),
             classes: "govuk-label--m"
           },
-          errorMessage: thirdPartyContactNumberErrorMessage,
+          errorMessage: errorMessages.thirdPartyContactNumber if error,
           id: "thirdPartyContactNumber",
           name: "thirdPartyContactNumber",
           type: "tel",
@@ -83,7 +76,7 @@
         {{ govukRadios({
           name: "thirdPartySafeToCall",
           value: currentThirdPartySafeToCall,
-          errorMessage: thirdPartySafeToCallErrorMessage,
+          errorMessage: errorMessages.thirdPartySafeToCall if error,
           fieldset: {
             legend: {
               text: t('forms.clientDetails.thirdParty.safeToCall'),
@@ -112,7 +105,7 @@
           id: "thirdPartyAddress",
           name: "thirdPartyAddress",
           value: currentThirdPartyAddress,
-          errorMessage: thirdPartyAddressErrorMessage,
+          errorMessage: errorMessages.thirdPartyAddress if error,
           autocomplete: "off"
         }) }}
         {{ govukInput({
@@ -126,13 +119,13 @@
           name: "thirdPartyPostcode",
           classes: "govuk-input--width-10",
           value: currentThirdPartyPostcode,
-          errorMessage: thirdPartyPostcodeErrorMessage,
+          errorMessage: errorMessages.thirdPartyPostcode if error,
           autocomplete: "off"
         }) }}
         {{ govukRadios({
           name: "thirdPartyRelationshipToClient",
           value: currentThirdPartyRelationshipToClient,
-          errorMessage: thirdPartyRelationshipToClientErrorMessage,
+          errorMessage: errorMessages.thirdPartyRelationshipToClient if error,
           fieldset: {
             legend: {
               text: t('forms.clientDetails.thirdParty.relationshipToClient.titleH2'),
@@ -171,13 +164,13 @@
             label: {
               text: t('forms.clientDetails.thirdParty.passphrase.passphraseHint')
             },
-            errorMessage: thirdPartyPassphraseErrorMessage
+            errorMessage: errorMessages.thirdPartyPassphrase if error
           }) }}
         {% endset -%}
         {{ govukRadios({
           name: "thirdPartyPassphraseSetUp",
           value: currentThirdPartyPassphraseSetUp,
-          errorMessage: thirdPartyPassphraseSetUpErrorMessage,
+          errorMessage: errorMessages.thirdPartyPassphraseSetUp if error,
           fieldset: {
             legend: {
               text: t('forms.clientDetails.thirdParty.passphrase.titleH2'),

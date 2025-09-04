@@ -91,8 +91,15 @@ export const validateEditClientThirdParty = (): ReturnType<typeof checkSchema> =
       },
     },
     thirdPartyPassphrase: {
-      
       notEmpty: {
+        /**
+         * Conditional to make sure selection of radio field is "Yes" so rest of validation happens
+         * @param req - The express `req` object
+         * @param req.body - The express `req.body` object
+         * @param req.body.thirdPartyPassphraseSetUp -- The value within `req.body.thirdPartyPassphraseSetUp`
+         * @returns { boolean} returns boolean 
+         */
+        if: (req: { body: { thirdPartyPassphraseSetUp: string; }; }) => req.body.thirdPartyPassphraseSetUp === 'Yes',
         /**
          * Custom error message for empty radio selection for third party relationship to client
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
