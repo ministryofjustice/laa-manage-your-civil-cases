@@ -1,6 +1,6 @@
 import { checkSchema } from 'express-validator';
 import { isValidPhoneNumber } from 'libphonenumber-js';
-import { TypedValidationError, t } from '#src/scripts/helpers/index.js';
+import { TypedValidationError, safeString, t } from '#src/scripts/helpers/index.js';
 
 /**
  * Validation middleware when user edits client's third party form.
@@ -94,19 +94,19 @@ export const validateEditClientThirdParty = (): ReturnType<typeof checkSchema> =
       custom: {
         /**
          * This checks that the piked radio option is 'Yes'
-         * @param {string} value - text
-         * @param {string} root0 - text
-         * @param {string} root0.req - text
+         * @param {string} value - the value in the body
+         * @param {string} root0 - text in req body
+         * @param {string} root0.req - text in req body
          * @returns {boolean} Returns a decision as to whether we should apply validation
          */
         options: (value, { req }) => {
-          const yesRadio = t('common.yes').trim().toLowerCase();
-          const picked = String(req.body?.thirdPartyPassphraseSetUp ?? '').trim().toLowerCase();
-          const NOT_EMPTY = 0;
+          const yesRadio = t('common.yes');
+          const picked = safeString(req.body.thirdPartyPassphraseSetUp);
+          const EMPTY = 0;
 
           const needs = picked === yesRadio;
           if (!needs) return true; 
-          return typeof value === 'string' && value.trim().length > NOT_EMPTY;
+          return typeof value === 'string' && value.length > EMPTY;
         },
       },
       /**
