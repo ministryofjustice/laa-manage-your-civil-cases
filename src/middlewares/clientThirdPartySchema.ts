@@ -94,7 +94,7 @@ export const validateEditClientThirdParty = (): ReturnType<typeof checkSchema> =
       custom: {
         /**
          * This checks that the piked radio option is 'Yes'
-         * @param {string} value - the value in the body
+         * @param {string} value - the value of the input field
          * @param {string} root0 - text in req body
          * @param {string} root0.req - text in req body
          * @returns {boolean} Returns a decision as to whether we should apply validation
