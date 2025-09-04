@@ -91,23 +91,31 @@ export const validateEditClientThirdParty = (): ReturnType<typeof checkSchema> =
       },
     },
     thirdPartyPassphrase: {
-      notEmpty: {
+      custom: {
         /**
-         * Conditional to make sure selection of radio field is "Yes" so rest of validation happens
-         * @param {string} req - The express `req` object
-         * @param {string} req.body - The express `req.body` object
-         * @param {string} req.body.thirdPartyPassphraseSetUp -- The value within `req.body.thirdPartyPassphraseSetUp`
-         * @returns { boolean} returns boolean 
+         * This checks that the piked radio option is 'Yes'
+         * @param {string} value - text
+         * @param {string} root0 - text
+         * @param {string} root0.req - text
+         * @returns {boolean} Returns a decision as to whether we should apply validation
          */
-        if: (req: { body: { thirdPartyPassphraseSetUp: string; }; }) => req.body.thirdPartyPassphraseSetUp === 'Yes',
-        /**
-         * Custom error message for empty radio selection for third party relationship to client
-         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
-         */
-        errorMessage: () => new TypedValidationError({
-          summaryMessage: t('forms.clientDetails.thirdParty.validationError.notEmptyPassphrase'),
-          inlineMessage: t('forms.clientDetails.thirdParty.validationError.notEmptyPassphrase')
-        })
+        options: (value, { req }) => {
+          const yesRadio = t('common.yes').trim().toLowerCase();
+          const picked = String(req.body?.thirdPartyPassphraseSetUp ?? '').trim().toLowerCase();
+          const NOT_EMPTY = 0;
+
+          const needs = picked === yesRadio;
+          if (!needs) return true; 
+          return typeof value === 'string' && value.trim().length > NOT_EMPTY;
+        },
       },
+      /**
+       * Custom error message for passphrase
+       * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+       */
+      errorMessage: () => new TypedValidationError({
+        summaryMessage: t('forms.clientDetails.thirdParty.validationError.notEmptyPassphrase'),
+        inlineMessage: t('forms.clientDetails.thirdParty.validationError.notEmptyPassphrase')
+      }),
     },
   });
