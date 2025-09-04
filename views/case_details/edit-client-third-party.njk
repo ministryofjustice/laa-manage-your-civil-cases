@@ -39,6 +39,15 @@
       <h1 class="govuk-heading-l">{{ t('forms.clientDetails.thirdParty.pageH1Add') }}</h1>
       <form method="post" action="/cases/{{ caseReference }}/add-third-party">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+        <input type="hidden" name="existingThirdPartyFullName" value="{{ existingThirdPartyFullName }}">
+        <input type="hidden" name="existingThirdPartyEmailAddress" value="{{ existingThirdPartyEmailAddress }}">
+        <input type="hidden" name="existingThirdPartyContactNumber" value="{{ existingThirdPartyContactNumber }}">
+        <input type="hidden" name="existingThirdPartySafeToCall" value="{{ existingThirdPartySafeToCall }}">
+        <input type="hidden" name="existingThirdPartyAddress" value="{{ existingThirdPartyAddress }}">
+        <input type="hidden" name="existingThirdPartyPostcode" value="{{ existingThirdPartyPostcode }}">
+        <input type="hidden" name="existingThirdPartyRelationshipToClient" value="{{ existingThirdPartyRelationshipToClient }}">
+        <input type="hidden" name="existingThirdPartyPassphraseSetUp" value="{{ existingThirdPartyPassphraseSetUp }}">
+        <input type="hidden" name="existingThirdPartyPassphrase" value="{{ existingThirdPartyPassphrase }}">
         {{ govukInput({
           label: {
             text: t('forms.clientDetails.thirdParty.name'),
