@@ -98,6 +98,13 @@
         "generateLegalHelpForm": "Generate legal help form",
         "reopenCase": "Reopen case",
         "addThirdPartyContact": "Add third party contact"
+      },
+      "removeThirdParty": {
+        "pageTitle": "Remove third party? – {serviceName} – GOV.UK",
+        "heading": "Remove third party?",
+        "description": "This will permanently delete all information about the third party.",
+        "confirmButton": "Yes, remove",
+        "cancelButton": "No, go back to client details"
       }
     },
     "error": {
