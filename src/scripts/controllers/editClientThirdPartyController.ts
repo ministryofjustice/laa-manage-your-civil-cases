@@ -39,7 +39,9 @@ export async function postEditClientThirdParty(req: Request, res: Response, next
     'thirdPartySafeToCall', 'existingThirdPartySafeToCall',
     'thirdPartyAddress', 'existingThirdPartyAddress',
     'thirdPartyPostcode', 'existingThirdPartyPostcode',
-    'thirdPartyRelationshipToClient', 'existingThirdPartyRelationshipToClient'
+    'thirdPartyRelationshipToClient', 'existingThirdPartyRelationshipToClient',
+    'thirdPartyPassphraseSetUp', 'existingThirdPartyPassphraseSetUp',
+    'thirdPartyPassphrase', 'existingThirdPartyPassphrase'
   ]);
 
   await handlePostEditForm(req, res, next, {
@@ -51,7 +53,9 @@ export async function postEditClientThirdParty(req: Request, res: Response, next
       { name: 'thirdPartySafeToCall', value: formFields.thirdPartySafeToCall, existingValue: formFields.existingThirdPartySafeToCall },
       { name: 'thirdPartyAddress', value: formFields.thirdPartyAddress, existingValue: formFields.existingThirdPartyAddress },
       { name: 'thirdPartyPostcode', value: formFields.thirdPartyPostcode, existingValue: formFields.existingThirdPartyPostcode },
-      { name: 'thirdPartyRelationshipToClient', value: formFields.thirdPartyRelationshipToClient, existingValue: formFields.existingThirdPartyRelationshipToClient }
+      { name: 'thirdPartyRelationshipToClient', value: formFields.thirdPartyRelationshipToClient, existingValue: formFields.existingThirdPartyRelationshipToClient },
+      { name: 'thirdPartyPassphraseSetUp', value: formFields.thirdPartyPassphraseSetUp, existingValue: formFields.existingThirdPartyPassphraseSetUp },
+      { name: 'thirdPartyPassphrase', value: formFields.thirdPartyPassphrase, existingValue: formFields.existingThirdPartyPassphrase }
     ],
     apiUpdateData: {
       thirdParty: {
@@ -63,6 +67,10 @@ export async function postEditClientThirdParty(req: Request, res: Response, next
         postcode: formFields.thirdPartyPostcode,
         relationshipToClient: {
           selected: Array.isArray(formFields.thirdPartyRelationshipToClient) ? formFields.thirdPartyRelationshipToClient : [formFields.thirdPartyRelationshipToClient]
+        },
+        passphraseSetUp: {
+          selected: Array.isArray(formFields.thirdPartyPassphraseSetUp) ? formFields.thirdPartyPassphraseSetUp : [formFields.thirdPartyPassphraseSetUp],
+          passphrase: formFields.thirdPartyPassphrase
         }
       }
     }

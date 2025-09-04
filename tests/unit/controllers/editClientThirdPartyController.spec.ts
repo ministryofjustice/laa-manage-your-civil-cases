@@ -179,5 +179,23 @@ describe('Edit Client Name Controller', () => {
       expect(redirectStub.called).to.be.false;
       expect(renderStub.calledWith('case_details/edit-client-third-party.njk')).to.be.true;
     });
+
+    it('should handle validation errors for client third party radio passphrase set up', async () => {
+      // Arrange
+      req.body = { 
+        thirdPartyFullName: '', existingThirdPartyFullName: 'John Carpenter', // Make sure name is there as it is mandatory
+        thirdPartyPassphraseSetUp: '', existingThirdPartyPassphraseSetUp: '' // Empty
+      }; 
+
+      await runSchema(req as any, validateEditClientThirdParty());
+
+      // Act
+      await postEditClientThirdParty(req as RequestWithMiddleware, res as Response, next);
+
+      // Assert - Should configure form response with errors, not redirect
+      expect(redirectStub.called).to.be.false;
+      expect(renderStub.calledWith('case_details/edit-client-third-party.njk')).to.be.true;
+    });
+
   });
 });

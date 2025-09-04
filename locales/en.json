@@ -226,15 +226,24 @@
           "legalAdvisor": "Legal adviser",
           "other": "Other"
         },
-        "passphrase": "Passphrase",
         "safeToCall": "Is the third party safe to call?",
         "notSafeToCall": "The third party is not safe to call",
-        "passphraseNotSetUp": "No, {reason}",
+        "passphrase": {
+          "title": "Passphrase",
+          "titleH2": "Has the client set up a passphrase?",
+          "passphraseHint": "Enter the passphrase",
+          "noClientIsAChildOrPatient": "No, client is a child or patient",
+          "noClientIsSubjectToPowerOfAttorney": "No, client is subject to power of attorney",
+          "noClientCannotCommunicateOnThePhoneDueToDisability": "No, client cannot communicate on the phone due to disability",
+          "noClientCannotCommunicateOnThePhoneDueToALanguageRequirement": "No, client cannot communicate on the phone due to a language requirement",
+          "noForAnotherReason": "No, for another reason"
+        },
         "validationError": {
           "notEmptyName": "Enter the third party name",
-          "notChangedName": "Change the client third party name, or select ‘Cancel’",
           "invalidFormatEmail": "Enter an email address in the correct format, like name@example.com",
-          "invalidFormatContactNumber": "Enter the phone number in the correct format"
+          "invalidFormatContactNumber": "Enter the phone number in the correct format",
+          "notEmptyRelationship": "Select if the client has set up a passphrase",
+          "notEmptyPassphrase": "Enter the passphrase "
         }
       }
     },

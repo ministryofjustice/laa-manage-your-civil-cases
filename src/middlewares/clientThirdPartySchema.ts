@@ -1,6 +1,6 @@
 import { checkSchema } from 'express-validator';
 import { isValidPhoneNumber } from 'libphonenumber-js';
-import { createChangeDetectionValidator, TypedValidationError, t } from '#src/scripts/helpers/index.js';
+import { TypedValidationError, t } from '#src/scripts/helpers/index.js';
 
 /**
  * Validation middleware when user edits client's third party form.
@@ -18,24 +18,12 @@ export const validateEditClientThirdParty = (): ReturnType<typeof checkSchema> =
         errorMessage: () => new TypedValidationError({
           summaryMessage: t('forms.clientDetails.thirdParty.validationError.notEmptyName'),
           inlineMessage: t('forms.clientDetails.thirdParty.validationError.notEmptyName')
-        }),
-        bail: true,
+        })
       },
-      ...createChangeDetectionValidator(
-        [{ current: 'thirdPartyFullName', original: 'existingFullName' }],
-        {
-          /**
-           * Returns the summary message for unchanged third party name.
-           * @returns {string} Localized validation error message
-           */
-          summaryMessage: () => t('forms.clientDetails.thirdParty.validationError.notChangedName'),
-          inlineMessage: '',
-        }),
     },
     thirdPartyEmailAddress: {
       trim: true,
       optional: { options: { checkFalsy: true } },
-      normalizeEmail: true,
       isEmail: {
         /**
          * Custom error message for invalid e-mail format
@@ -88,6 +76,31 @@ export const validateEditClientThirdParty = (): ReturnType<typeof checkSchema> =
          * @returns {string} The sanitised postcode in uppercase, or the original value if not a string.
          */
         options: (value: string) => typeof value === 'string' ? value.toUpperCase() : value
+      },
+    },
+    thirdPartyPassphraseSetUp: {
+      notEmpty: {
+        /**
+         * Custom error message for empty radio selection for third party relationship to client
+         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+         */
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: t('forms.clientDetails.thirdParty.validationError.notEmptyRelationship'),
+          inlineMessage: t('forms.clientDetails.thirdParty.validationError.notEmptyRelationship')
+        })
+      },
+    },
+    thirdPartyPassphrase: {
+      
+      notEmpty: {
+        /**
+         * Custom error message for empty radio selection for third party relationship to client
+         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+         */
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: t('forms.clientDetails.thirdParty.validationError.notEmptyPassphrase'),
+          inlineMessage: t('forms.clientDetails.thirdParty.validationError.notEmptyPassphrase')
+        })
       },
     },
   });

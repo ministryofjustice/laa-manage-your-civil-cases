@@ -31,6 +31,8 @@
         {% set thirdPartyAddressErrorMessage = { text: error.inputErrors.thirdPartyAddress } if error.inputErrors.thirdPartyAddress %}
         {% set thirdPartyPostcodeErrorMessage = { text: error.inputErrors.thirdPartyPostcode } if error.inputErrors.thirdPartyPostcode %}
         {% set thirdPartyRelationshipToClientErrorMessage = { text: error.inputErrors.thirdPartyRelationshipToClient } if error.inputErrors.thirdPartyRelationshipToClient %}
+        {% set thirdPartyPassphraseSetUpErrorMessage = { text: error.inputErrors.thirdPartyPassphraseSetUp } if error.inputErrors.thirdPartyPassphraseSetUp %}
+        {% set thirdPartyPassphraseErrorMessage = { text: error.inputErrors.thirdPartyPassphrase } if error.inputErrors.thirdPartyPassphrase %}
       {% endif %}
       <h1 class="govuk-heading-l">{{ t('forms.clientDetails.thirdParty.pageH1Add') }}</h1>
       <form method="post" action="/cases/{{ caseReference }}/add-third-party">
@@ -42,6 +44,8 @@
         <input type="hidden" name="existingThirdPartyAddress" value="{{ existingThirdPartyAddress }}">
         <input type="hidden" name="existingThirdPartyPostcode" value="{{ existingThirdPartyPostcode }}">
         <input type="hidden" name="existingThirdPartyRelationshipToClient" value="{{ existingThirdPartyRelationshipToClient }}">
+        <input type="hidden" name="existingThirdPartyPassphraseSetUp" value="{{ existingThirdPartyPassphraseSetUp }}">
+        <input type="hidden" name="existingThirdPartyPassphrase" value="{{ existingThirdPartyPassphrase }}">
         {{ govukInput({
           label: {
             text: t('forms.clientDetails.thirdParty.name'),
@@ -155,6 +159,61 @@
             {
               value: t('forms.clientDetails.thirdParty.relationshipToClient.other'),
               text: t('forms.clientDetails.thirdParty.relationshipToClient.other')
+            }
+          ]
+        }) }}
+        {% set passphraseInput %}
+          {{ govukInput({
+            id: "thirdPartyPassphrase",
+            name: "thirdPartyPassphrase",
+            spellcheck: false,
+            classes: "govuk-!-width-one-half",
+            label: {
+              text: t('forms.clientDetails.thirdParty.passphrase.passphraseHint')
+            },
+            errorMessage: thirdPartyPassphraseErrorMessage
+          }) }}
+        {% endset -%}
+        {{ govukRadios({
+          name: "thirdPartyPassphraseSetUp",
+          value: currentThirdPartyPassphraseSetUp,
+          errorMessage: thirdPartyPassphraseSetUpErrorMessage,
+          fieldset: {
+            legend: {
+              text: t('forms.clientDetails.thirdParty.passphrase.titleH2'),
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          items: [
+            {
+              value: t('common.yes'),
+              text: t('common.yes'),
+              conditional: {
+                html: passphraseInput
+              }
+            },
+            {
+              divider: "or"
+            },
+            {
+              value: t('forms.clientDetails.thirdParty.passphrase.noClientIsAChildOrPatient'),
+              text: t('forms.clientDetails.thirdParty.passphrase.noClientIsAChildOrPatient')
+            },
+            {
+              value: t('forms.clientDetails.thirdParty.passphrase.noClientIsSubjectToPowerOfAttorney'),
+              text: t('forms.clientDetails.thirdParty.passphrase.noClientIsSubjectToPowerOfAttorney')
+            },
+            {
+              value: t('forms.clientDetails.thirdParty.passphrase.noClientCannotCommunicateOnThePhoneDueToDisability'),
+              text: t('forms.clientDetails.thirdParty.passphrase.noClientCannotCommunicateOnThePhoneDueToDisability')
+            },
+            {
+              value: t('forms.clientDetails.thirdParty.passphrase.noClientCannotCommunicateOnThePhoneDueToALanguageRequirement'),
+              text: t('forms.clientDetails.thirdParty.passphrase.noClientCannotCommunicateOnThePhoneDueToALanguageRequirement')
+            },
+            {
+              value: t('forms.clientDetails.thirdParty.passphrase.noForAnotherReason'),
+              text: t('forms.clientDetails.thirdParty.passphrase.noForAnotherReason')
             }
           ]
         }) }}
