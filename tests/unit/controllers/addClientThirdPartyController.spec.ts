@@ -19,9 +19,9 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import type { Request, Response, NextFunction } from 'express';
 import {
-  getEditClientThirdParty,
-  postEditClientThirdParty
-} from '#src/scripts/controllers/editClientThirdPartyController.js';
+  getAddClientThirdParty,
+  postAddClientThirdParty
+} from '#src/scripts/controllers/addClientThirdPartyController.js';
 import { apiService } from '#src/services/apiService.js';
 // Import to get global type declarations for axiosMiddleware
 import '#utils/axiosSetup.js';
@@ -74,14 +74,14 @@ describe('Edit Client Name Controller', () => {
 
     // Stub the API service methods
     apiServiceGetStub = sinon.stub(apiService, 'getClientDetails');
-    apiServiceUpdateStub = sinon.stub(apiService, 'updateClientDetails');
+    apiServiceUpdateStub = sinon.stub(apiService, 'addThirdPartyContact');
   });
 
   afterEach(() => {
     sinon.restore();
   });
 
-  describe('getEditClientThirdParty', () => {
+  describe('getAddClientThirdParty', () => {
     it('should render form for adding client third party data and CSRF protection', async () => {
       // Arrange
       const mockApiResponse = {
@@ -94,11 +94,11 @@ describe('Edit Client Name Controller', () => {
       apiServiceGetStub.resolves(mockApiResponse);
 
       // Act
-      await getEditClientThirdParty(req as RequestWithMiddleware, res as Response, next);
+      await getAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);
 
       // Assert
       expect(apiServiceGetStub.calledOnce).to.be.true;
-      expect(renderStub.calledWith('case_details/edit-client-third-party.njk')).to.be.true;
+      expect(renderStub.calledWith('case_details/third_party_details/add-client-third-party.njk')).to.be.true;
     });
 
     it('should delegate API errors to Express error handling middleware', async () => {
@@ -107,14 +107,14 @@ describe('Edit Client Name Controller', () => {
       apiServiceGetStub.rejects(error);
 
       // Act
-      await getEditClientThirdParty(req as RequestWithMiddleware, res as Response, next);
+      await getAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);
 
       // Assert
       expect(next.calledOnce).to.be.true;
     });
   });
 
-  describe('postEditClientThirdParty', () => {
+  describe('postAddClientThirdParty', () => {
     it('should process successful addition of client third party name update and redirect to case details', async () => {
       // Arrange
       req.body = { thirdPartyFullName: 'John Carpenter' };
@@ -125,7 +125,7 @@ describe('Edit Client Name Controller', () => {
       });
 
       // Act
-      await postEditClientThirdParty(req as RequestWithMiddleware, res as Response, next);
+      await postAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);
 
       // Assert
       expect(apiServiceUpdateStub.calledOnce).to.be.true;
@@ -139,11 +139,11 @@ describe('Edit Client Name Controller', () => {
       await runSchema(req as any, validateEditClientThirdParty());
 
       // Act
-      await postEditClientThirdParty(req as RequestWithMiddleware, res as Response, next);
+      await postAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);
 
       // Assert - Should configure form response with errors, not redirect
       expect(redirectStub.called).to.be.false;
-      expect(renderStub.calledWith('case_details/edit-client-third-party.njk')).to.be.true;
+      expect(renderStub.calledWith('case_details/third_party_details/add-client-third-party.njk')).to.be.true;
     });
 
     it('should handle validation errors for client third party email', async () => {
@@ -156,11 +156,11 @@ describe('Edit Client Name Controller', () => {
       await runSchema(req as any, validateEditClientThirdParty());
 
       // Act
-      await postEditClientThirdParty(req as RequestWithMiddleware, res as Response, next);
+      await postAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);
 
       // Assert - Should configure form response with errors, not redirect
       expect(redirectStub.called).to.be.false;
-      expect(renderStub.calledWith('case_details/edit-client-third-party.njk')).to.be.true;
+      expect(renderStub.calledWith('case_details/third_party_details/add-client-third-party.njk')).to.be.true;
     });
 
     it('should handle validation errors for client third party contact number', async () => {
@@ -173,11 +173,11 @@ describe('Edit Client Name Controller', () => {
       await runSchema(req as any, validateEditClientThirdParty());
 
       // Act
-      await postEditClientThirdParty(req as RequestWithMiddleware, res as Response, next);
+      await postAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);
 
       // Assert - Should configure form response with errors, not redirect
       expect(redirectStub.called).to.be.false;
-      expect(renderStub.calledWith('case_details/edit-client-third-party.njk')).to.be.true;
+      expect(renderStub.calledWith('case_details/third_party_details/add-client-third-party.njk')).to.be.true;
     });
 
     it('should handle validation errors for client third party radio passphrase set up', async () => {
@@ -190,11 +190,11 @@ describe('Edit Client Name Controller', () => {
       await runSchema(req as any, validateEditClientThirdParty());
 
       // Act
-      await postEditClientThirdParty(req as RequestWithMiddleware, res as Response, next);
+      await postAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);
 
       // Assert - Should configure form response with errors, not redirect
       expect(redirectStub.called).to.be.false;
-      expect(renderStub.calledWith('case_details/edit-client-third-party.njk')).to.be.true;
+      expect(renderStub.calledWith('case_details/third_party_details/add-client-third-party.njk')).to.be.true;
     });
 
   });

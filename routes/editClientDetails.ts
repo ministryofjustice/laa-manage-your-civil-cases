@@ -10,11 +10,11 @@ import {
   postEditClientEmailAddress,
   getEditClientAddress,
   postEditClientAddress,
-  getEditClientThirdParty,
-  postEditClientThirdParty
+  getAddClientThirdParty,
+  postAddClientThirdParty
 } from '#src/scripts/controllers/index.js';
 
-import { 
+import {
   validateEditClientName,
   validateEditClientDateOfBirth,
   validateEditClientPhoneNumber,
@@ -40,7 +40,7 @@ router.post('/:caseReference/client-details/change/email-address', validateEditC
 router.get('/:caseReference/client-details/change/address', getEditClientAddress);
 router.post('/:caseReference/client-details/change/address', validateEditClientAddress(), postEditClientAddress);
 
-router.get('/:caseReference/add-third-party', getEditClientThirdParty);
-router.post('/:caseReference/add-third-party', validateEditClientThirdParty(), postEditClientThirdParty);
+router.get('/:caseReference/add/third-party', getAddClientThirdParty);
+router.post('/:caseReference/add/third-party', validateEditClientThirdParty(), postAddClientThirdParty);
 
 export default router;
