@@ -24,3 +24,7 @@ export {
 export {
   validateEditClientAddress
 } from './clientAddressSchema.js';
+
+export {
+  validateEditClientThirdParty
+} from './clientThirdPartySchema.js';

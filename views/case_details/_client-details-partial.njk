@@ -86,7 +86,7 @@
   passphraseContent: passphraseContent
 } %}
 
-<h2 class="govuk-heading-m">{{ t.pages.caseDetails.clientDetails.heading }}</h2>
+<h2 class="govuk-heading-m">{{ t('pages.caseDetails.clientDetails.heading') }}</h2>
 {# Client info summary card #}
 {{ summaryCardComponent({
   data: constructedData,
@@ -248,11 +248,11 @@
         key: "emailAddressThirdParty"
       },
       {
-        label: t('forms.clientDetails.thirdParty.relationshipToClient'),
+        label: t('forms.clientDetails.thirdParty.relationshipToClient.title'),
         key: "relationshipToClientThirdParty"
       },
       {
-        label: t('forms.clientDetails.thirdParty.passphrase'),
+        label: t('forms.clientDetails.thirdParty.passphrase.title'),
         key: "passphraseContent",
         html: true
       }
@@ -260,6 +260,7 @@
   }) }}
 {% else %}
   {{ govukButton({
+    href: "/cases/" + data.caseReference + "/add/third-party",
     text: t('pages.caseDetails.buttons.addThirdPartyContact'),
     classes: "govuk-button--secondary"
   }) }}
