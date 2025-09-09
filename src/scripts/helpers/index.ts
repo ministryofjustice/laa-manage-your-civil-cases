@@ -50,7 +50,9 @@ export {
 // Form controller helpers
 export {
   handleGetEditForm,
-  handlePostEditForm
+  handlePostEditForm,
+  handleThirdPartyValidationErrors,
+  prepareThirdPartyData
 } from './formControllerHelpers.js';
 
 export {
