@@ -152,7 +152,7 @@ export function handleThirdPartyValidationErrors(
   res: Response,
   caseReference: string,
   formFields: Record<string, unknown>,
-  templatePath: string = 'case_details/third_party_details/add-client-third-party.njk'
+  templatePath = 'case_details/third_party_details/add-client-third-party.njk'
 ): boolean {
   const rawValidationResult = validationResult(req);
 

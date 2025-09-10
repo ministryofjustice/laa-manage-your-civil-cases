@@ -1,4 +1,5 @@
 import { checkSchema } from 'express-validator';
+import type { Meta } from 'express-validator';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 import { TypedValidationError, t, safeBodyString, createChangeDetectionValidator } from '#src/scripts/helpers/index.js';
 
@@ -98,9 +99,9 @@ const clientThirdPartyBaseSchema = {
        * @param {object} meta.req - Express request object
        * @returns {boolean} Returns a decision as to whether we should apply validation
        */
-      options: (value: any, { req }: { req: any }) => {
+      options: (value: string, meta: Meta) => {
         const yesRadio = t('common.yes');
-        const picked = safeBodyString(req.body, 'thirdPartyPassphraseSetUp');
+        const picked = safeBodyString(meta.req.body, 'thirdPartyPassphraseSetUp');
         const EMPTY = 0;
 
         const needs = picked === yesRadio;
@@ -131,8 +132,7 @@ export const validateAddClientThirdParty = (): ReturnType<typeof checkSchema> =>
  * Extends the add validation with change detection to ensure modifications have been made.
  * @returns {Error} Validation schema for express-validator
  */
-export const validateEditClientThirdParty = (): ReturnType<typeof checkSchema> => {
-  return checkSchema({
+export const validateEditClientThirdParty = (): ReturnType<typeof checkSchema> => checkSchema({
     // Include all base validation rules
     ...clientThirdPartyBaseSchema,
     
@@ -159,4 +159,3 @@ export const validateEditClientThirdParty = (): ReturnType<typeof checkSchema> =
       }
     ),
   });
-};

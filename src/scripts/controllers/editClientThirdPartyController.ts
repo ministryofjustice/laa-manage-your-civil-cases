@@ -13,6 +13,7 @@ import {
 import { apiService } from '#src/services/apiService.js';
 
 // HTTP Status codes
+const BAD_REQUEST = 400;
 const INTERNAL_SERVER_ERROR = 500;
 
 /**
@@ -50,7 +51,7 @@ export async function postEditClientThirdParty(req: Request, res: Response, next
   const caseReference = safeString(req.params.caseReference);
 
   if (typeof caseReference !== 'string' || caseReference.trim() === '') {
-    res.status(400).render('main/error.njk', {
+    res.status(BAD_REQUEST).render('main/error.njk', {
       status: '400',
       error: 'Invalid case reference'
     });
@@ -79,7 +80,7 @@ export async function postEditClientThirdParty(req: Request, res: Response, next
   ]);
 
   // Check for validation errors
-  if (handleThirdPartyValidationErrors(req, res, caseReference, formFields, 'case_details/third_party_details/edit-client-third-party.njk')) {
+  if (handleThirdPartyValidationErrors(req, res, caseReference, formFields)) {
     return;
   }
 
