@@ -3,7 +3,7 @@ import 'csrf-sync'; // Import to ensure CSRF types are loaded
 import { 
   handleGetEditForm, 
   extractFormFields, 
-  handleThirdPartyValidationErrors, 
+  handleEditThirdPartyValidationErrors, 
   prepareThirdPartyData, 
   devLog, 
   devError, 
@@ -80,7 +80,7 @@ export async function postEditClientThirdParty(req: Request, res: Response, next
   ]);
 
   // Check for validation errors
-  if (handleThirdPartyValidationErrors(req, res, caseReference, formFields)) {
+  if (handleEditThirdPartyValidationErrors(req, res, caseReference, formFields)) {
     return;
   }
 

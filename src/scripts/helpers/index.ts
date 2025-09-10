@@ -51,7 +51,8 @@ export {
 export {
   handleGetEditForm,
   handlePostEditForm,
-  handleThirdPartyValidationErrors,
+  handleAddThirdPartyValidationErrors,
+  handleEditThirdPartyValidationErrors,
   prepareThirdPartyData
 } from './formControllerHelpers.js';
 
