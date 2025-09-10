@@ -26,42 +26,66 @@ const INTERNAL_SERVER_ERROR = 500;
 export async function getEditClientThirdParty(req: Request, res: Response, next: NextFunction): Promise<void> {
   await handleGetEditForm(req, res, next, {
     templatePath: 'case_details/third_party_details/edit-client-third-party.njk',
-    dataExtractor: (apiData: unknown) => {
-      if (!apiData || typeof apiData !== 'object' || !('thirdParty' in apiData)) {
+    /**
+     * Transforms nested third party API data to flat structure for use with standard field extraction
+     * @param {unknown} apiData - API response data containing nested third party object
+     * @returns {Record<string, unknown>} Flattened data structure for standard field extraction
+     */
+    dataExtractor: (apiData: unknown): Record<string, unknown> => {
+      // Early return if data structure is invalid
+      if (typeof apiData !== 'object' || apiData === null || !('thirdParty' in apiData)) {
         return {};
       }
       
-      const thirdParty = (apiData as any).thirdParty;
-      if (!thirdParty || typeof thirdParty !== 'object') {
+
+      const {thirdParty} = (apiData as any);
+      if (typeof thirdParty !== 'object' || thirdParty === null) {
         return {};
       }
 
-      // Extract values from nested thirdParty object and map to form field names
-      const extractedData: Record<string, unknown> = {
-        // Current values for form fields
-        currentThirdPartyFullName: String(thirdParty.fullName || ''),
-        currentThirdPartyEmailAddress: String(thirdParty.emailAddress || ''),
-        currentThirdPartyContactNumber: String(thirdParty.contactNumber || ''),
-        currentThirdPartySafeToCall: String(thirdParty.safeToCall !== undefined ? thirdParty.safeToCall : ''),
-        currentThirdPartyAddress: String(thirdParty.address || ''),
-        currentThirdPartyPostcode: String(thirdParty.postcode || ''),
-        currentThirdPartyRelationshipToClient: String((thirdParty.relationshipToClient?.selected?.[0]) || ''),
-        currentThirdPartyPassphraseSetUp: String((thirdParty.passphraseSetUp?.selected?.[0]) || ''),
-        currentThirdPartyPassphrase: String(thirdParty.passphraseSetUp?.passphrase || ''),
-        
-        // Existing values for change detection (same values)
-        existingThirdPartyFullName: String(thirdParty.fullName || ''),
-        existingThirdPartyEmailAddress: String(thirdParty.emailAddress || ''),
-        existingThirdPartyContactNumber: String(thirdParty.contactNumber || ''),
-        existingThirdPartySafeToCall: String(thirdParty.safeToCall !== undefined ? thirdParty.safeToCall : ''),
-        existingThirdPartyAddress: String(thirdParty.address || ''),
-        existingThirdPartyPostcode: String(thirdParty.postcode || ''),
-        existingThirdPartyRelationshipToClient: String((thirdParty.relationshipToClient?.selected?.[0]) || ''),
-        existingThirdPartyPassphraseSetUp: String((thirdParty.passphraseSetUp?.selected?.[0]) || ''),
-        existingThirdPartyPassphrase: String(thirdParty.passphraseSetUp?.passphrase || '')
+      // Transform nested structure to flat structure, handling type conversions
+      const flatData: Record<string, unknown> = {
+        thirdPartyFullName: String(thirdParty.fullName ?? ''),
+        thirdPartyEmailAddress: String(thirdParty.emailAddress ?? ''),
+        thirdPartyContactNumber: String(thirdParty.contactNumber ?? ''),
+        thirdPartySafeToCall: String(thirdParty.safeToCall ?? ''),
+        thirdPartyAddress: String(thirdParty.address ?? ''),
+        thirdPartyPostcode: String(thirdParty.postcode ?? ''),
+        thirdPartyRelationshipToClient: String(thirdParty.relationshipToClient?.selected?.[0] ?? ''),
+        thirdPartyPassphraseSetUp: String(thirdParty.passphraseSetUp?.selected?.[0] ?? ''),
+        thirdPartyPassphrase: String(thirdParty.passphraseSetUp?.passphrase ?? '')
       };
 
-      return extractedData;
+      // Use standard field extraction on the flattened data
+      const fieldConfigs = [
+        { field: 'thirdPartyFullName', type: 'string' as const, includeExisting: true },
+        { field: 'thirdPartyEmailAddress', type: 'string' as const, includeExisting: true },
+        { field: 'thirdPartyContactNumber', type: 'string' as const, includeExisting: true },
+        { field: 'thirdPartySafeToCall', type: 'string' as const, includeExisting: true },
+        { field: 'thirdPartyAddress', type: 'string' as const, includeExisting: true },
+        { field: 'thirdPartyPostcode', type: 'string' as const, includeExisting: true },
+        { field: 'thirdPartyRelationshipToClient', type: 'string' as const, includeExisting: true },
+        { field: 'thirdPartyPassphraseSetUp', type: 'string' as const, includeExisting: true },
+        { field: 'thirdPartyPassphrase', type: 'string' as const, includeExisting: true }
+      ];
+
+       
+      return fieldConfigs.reduce<Record<string, unknown>>((formData, config) => {
+        const { field, includeExisting = false } = config;
+        const fieldValue = String(flatData[field] ?? '');
+
+        // Set current field value
+        const currentKey = `current${field.charAt(0).toUpperCase()}${field.slice(1)}`;
+        formData[currentKey] = fieldValue;
+
+        // Create existing field if requested (for forms that need change detection)
+        if (includeExisting) {
+          const existingKey = `existing${field.charAt(0).toUpperCase()}${field.slice(1)}`;
+          formData[existingKey] = fieldValue;
+        }
+
+        return formData;
+      }, {});
     }
   });
 }
