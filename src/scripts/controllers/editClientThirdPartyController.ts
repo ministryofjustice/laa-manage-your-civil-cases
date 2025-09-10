@@ -26,17 +26,43 @@ const INTERNAL_SERVER_ERROR = 500;
 export async function getEditClientThirdParty(req: Request, res: Response, next: NextFunction): Promise<void> {
   await handleGetEditForm(req, res, next, {
     templatePath: 'case_details/third_party_details/edit-client-third-party.njk',
-    fieldConfigs: [
-      { field: 'thirdPartyFullName', type: 'string', includeExisting: true },
-      { field: 'thirdPartyEmailAddress', type: 'string', includeExisting: true },
-      { field: 'thirdPartyContactNumber', type: 'string', includeExisting: true },
-      { field: 'thirdPartySafeToCall', type: 'boolean', includeExisting: true },
-      { field: 'thirdPartyAddress', type: 'string', includeExisting: true },
-      { field: 'thirdPartyPostcode', type: 'string', includeExisting: true },
-      { field: 'thirdPartyRelationshipToClient', type: 'string', includeExisting: true },
-      { field: 'thirdPartyPassphraseSetUp', type: 'string', includeExisting: true },
-      { field: 'thirdPartyPassphrase', type: 'string', includeExisting: true }
-    ]
+    dataExtractor: (apiData: unknown) => {
+      if (!apiData || typeof apiData !== 'object' || !('thirdParty' in apiData)) {
+        return {};
+      }
+      
+      const thirdParty = (apiData as any).thirdParty;
+      if (!thirdParty || typeof thirdParty !== 'object') {
+        return {};
+      }
+
+      // Extract values from nested thirdParty object and map to form field names
+      const extractedData: Record<string, unknown> = {
+        // Current values for form fields
+        currentThirdPartyFullName: thirdParty.fullName || '',
+        currentThirdPartyEmailAddress: thirdParty.emailAddress || '',
+        currentThirdPartyContactNumber: thirdParty.contactNumber || '',
+        currentThirdPartySafeToCall: thirdParty.safeToCall || '',
+        currentThirdPartyAddress: thirdParty.address || '',
+        currentThirdPartyPostcode: thirdParty.postcode || '',
+        currentThirdPartyRelationshipToClient: (thirdParty.relationshipToClient?.selected?.[0]) || '',
+        currentThirdPartyPassphraseSetUp: (thirdParty.passphraseSetUp?.selected?.[0]) || '',
+        currentThirdPartyPassphrase: thirdParty.passphraseSetUp?.passphrase || '',
+        
+        // Existing values for change detection (same values)
+        existingThirdPartyFullName: thirdParty.fullName || '',
+        existingThirdPartyEmailAddress: thirdParty.emailAddress || '',
+        existingThirdPartyContactNumber: thirdParty.contactNumber || '',
+        existingThirdPartySafeToCall: thirdParty.safeToCall || '',
+        existingThirdPartyAddress: thirdParty.address || '',
+        existingThirdPartyPostcode: thirdParty.postcode || '',
+        existingThirdPartyRelationshipToClient: (thirdParty.relationshipToClient?.selected?.[0]) || '',
+        existingThirdPartyPassphraseSetUp: (thirdParty.passphraseSetUp?.selected?.[0]) || '',
+        existingThirdPartyPassphrase: thirdParty.passphraseSetUp?.passphrase || ''
+      };
+
+      return extractedData;
+    }
   });
 }
 
