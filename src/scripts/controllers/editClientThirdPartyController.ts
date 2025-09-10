@@ -39,26 +39,26 @@ export async function getEditClientThirdParty(req: Request, res: Response, next:
       // Extract values from nested thirdParty object and map to form field names
       const extractedData: Record<string, unknown> = {
         // Current values for form fields
-        currentThirdPartyFullName: thirdParty.fullName || '',
-        currentThirdPartyEmailAddress: thirdParty.emailAddress || '',
-        currentThirdPartyContactNumber: thirdParty.contactNumber || '',
-        currentThirdPartySafeToCall: thirdParty.safeToCall || '',
-        currentThirdPartyAddress: thirdParty.address || '',
-        currentThirdPartyPostcode: thirdParty.postcode || '',
-        currentThirdPartyRelationshipToClient: (thirdParty.relationshipToClient?.selected?.[0]) || '',
-        currentThirdPartyPassphraseSetUp: (thirdParty.passphraseSetUp?.selected?.[0]) || '',
-        currentThirdPartyPassphrase: thirdParty.passphraseSetUp?.passphrase || '',
+        currentThirdPartyFullName: String(thirdParty.fullName || ''),
+        currentThirdPartyEmailAddress: String(thirdParty.emailAddress || ''),
+        currentThirdPartyContactNumber: String(thirdParty.contactNumber || ''),
+        currentThirdPartySafeToCall: String(thirdParty.safeToCall !== undefined ? thirdParty.safeToCall : ''),
+        currentThirdPartyAddress: String(thirdParty.address || ''),
+        currentThirdPartyPostcode: String(thirdParty.postcode || ''),
+        currentThirdPartyRelationshipToClient: String((thirdParty.relationshipToClient?.selected?.[0]) || ''),
+        currentThirdPartyPassphraseSetUp: String((thirdParty.passphraseSetUp?.selected?.[0]) || ''),
+        currentThirdPartyPassphrase: String(thirdParty.passphraseSetUp?.passphrase || ''),
         
         // Existing values for change detection (same values)
-        existingThirdPartyFullName: thirdParty.fullName || '',
-        existingThirdPartyEmailAddress: thirdParty.emailAddress || '',
-        existingThirdPartyContactNumber: thirdParty.contactNumber || '',
-        existingThirdPartySafeToCall: thirdParty.safeToCall || '',
-        existingThirdPartyAddress: thirdParty.address || '',
-        existingThirdPartyPostcode: thirdParty.postcode || '',
-        existingThirdPartyRelationshipToClient: (thirdParty.relationshipToClient?.selected?.[0]) || '',
-        existingThirdPartyPassphraseSetUp: (thirdParty.passphraseSetUp?.selected?.[0]) || '',
-        existingThirdPartyPassphrase: thirdParty.passphraseSetUp?.passphrase || ''
+        existingThirdPartyFullName: String(thirdParty.fullName || ''),
+        existingThirdPartyEmailAddress: String(thirdParty.emailAddress || ''),
+        existingThirdPartyContactNumber: String(thirdParty.contactNumber || ''),
+        existingThirdPartySafeToCall: String(thirdParty.safeToCall !== undefined ? thirdParty.safeToCall : ''),
+        existingThirdPartyAddress: String(thirdParty.address || ''),
+        existingThirdPartyPostcode: String(thirdParty.postcode || ''),
+        existingThirdPartyRelationshipToClient: String((thirdParty.relationshipToClient?.selected?.[0]) || ''),
+        existingThirdPartyPassphraseSetUp: String((thirdParty.passphraseSetUp?.selected?.[0]) || ''),
+        existingThirdPartyPassphrase: String(thirdParty.passphraseSetUp?.passphrase || '')
       };
 
       return extractedData;
