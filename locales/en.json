@@ -209,9 +209,6 @@
       "language": {
         "label": "Language"
       },
-      "reasonableAdjustments": {
-        "label": "Reasonable adjustments"
-      },
       "thirdParty": {
         "pageTitleAdd": "Add a third party contact – {caseReference} – {serviceName} – GOV.UK",
         "pageH1Add": "Add a third party contact",
