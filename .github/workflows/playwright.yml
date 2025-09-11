@@ -18,9 +18,9 @@ jobs:
           fetch-depth: 0 # Fetch all history for proper change detection
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: "24.6.0" # Match project's Node version
+          node-version: "24.7.0" # Match project's Node version
 
       - name: Enable Corepack
         run: corepack enable
@@ -91,9 +91,9 @@ jobs:
           fetch-depth: 0
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: "24.6.0"
+          node-version: "24.7.0"
 
       - name: Enable Corepack
         run: corepack enable
