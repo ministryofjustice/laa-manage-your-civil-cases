@@ -1,9 +1,9 @@
 import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
 import { apiService } from '#src/services/apiService.js';
-import { safeString, safeOptionalString, hasProperty } from '#src/scripts/helpers/index.js';
+import { safeString, hasProperty } from '#src/scripts/helpers/index.js';
 import { validationResult } from 'express-validator';
-import { formatValidationError, type ValidationErrorData } from '#src/scripts/helpers/ValidationErrorHelpers.js';
+import { formatValidationError, type ValidationErrorData, getSessionString, setSessionValue, deleteSessionKeys } from '#src/scripts/helpers/index.js';
 
 // Constants
 const DEFAULT_SORT_BY = 'lastModified';
@@ -62,11 +62,11 @@ function getSessionParameters(req: Request, isPaginationOrSort: boolean): { keyw
     return { keyword: '', status: 'all' };
   }
 
-  const sessionKeyword = safeOptionalString(req.session.searchKeyword);
-  const sessionStatus = safeOptionalString(req.session.statusSelect);
+  const sessionKeyword = getSessionString(req, 'searchKeyword');
+  const sessionStatus = getSessionString(req, 'statusSelect');
 
-  const keyword = (sessionKeyword !== undefined && sessionKeyword !== '') ? sessionKeyword : '';
-  const status = (sessionStatus !== undefined && sessionStatus !== '') ? sessionStatus : 'all';
+  const keyword = sessionKeyword !== '' ? sessionKeyword : '';
+  const status = sessionStatus !== '' ? sessionStatus : 'all';
 
   return { keyword, status };
 }
@@ -89,8 +89,8 @@ function getSearchParameters(req: Request): { keyword: string; status: string } 
 
   // If explicit search parameters are provided, store them in session
   if (keyword !== '' || status !== 'all') {
-    req.session.searchKeyword = keyword;
-    req.session.statusSelect = status;
+    setSessionValue(req, 'searchKeyword', keyword);
+    setSessionValue(req, 'statusSelect', status);
   }
   // If navigating pages without search params, use session values
   else {
@@ -239,8 +239,7 @@ export async function processSearch(req: Request, res: Response, next: NextFunct
  */
 export function clearSearch(req: Request, res: Response): void {
   // Clear search parameters from session
-  delete req.session.searchKeyword;
-  delete req.session.statusSelect;
+  deleteSessionKeys(req, ['searchKeyword', 'statusSelect']);
 
   // Redirect to empty search
   res.redirect('/search');
