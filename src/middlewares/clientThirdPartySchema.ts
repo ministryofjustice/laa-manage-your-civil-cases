@@ -1,7 +1,7 @@
 import { checkSchema } from 'express-validator';
 import type { Meta } from 'express-validator';
 import { isValidPhoneNumber } from 'libphonenumber-js';
-import { TypedValidationError, t, safeBodyString, createChangeDetectionValidator } from '#src/scripts/helpers/index.js';
+import { TypedValidationError, t, safeBodyString, createSessionChangeDetectionValidator } from '#src/scripts/helpers/index.js';
 
 /**
  * Base schema object for client third party validation.
@@ -129,26 +129,27 @@ export const validateAddClientThirdParty = (): ReturnType<typeof checkSchema> =>
 
 /**
  * Validation middleware when user edits client's third party form.
- * Extends the add validation with change detection to ensure modifications have been made.
+ * Extends the add validation with session-based change detection to ensure modifications have been made.
  * @returns {Error} Validation schema for express-validator
  */
 export const validateEditClientThirdParty = (): ReturnType<typeof checkSchema> => checkSchema({
     // Include all base validation rules
     ...clientThirdPartyBaseSchema,
     
-    // Add change detection at the end (consistent with other edit schemas)
-    notChanged: createChangeDetectionValidator(
+    // Add session-based change detection at the end (consistent with other edit schemas)
+    notChanged: createSessionChangeDetectionValidator(
       [
-        { current: 'thirdPartyFullName', original: 'existingThirdPartyFullName' },
-        { current: 'thirdPartyEmailAddress', original: 'existingThirdPartyEmailAddress' },
-        { current: 'thirdPartyContactNumber', original: 'existingThirdPartyContactNumber' },
-        { current: 'thirdPartySafeToCall', original: 'existingThirdPartySafeToCall' },
-        { current: 'thirdPartyAddress', original: 'existingThirdPartyAddress' },
-        { current: 'thirdPartyPostcode', original: 'existingThirdPartyPostcode' },
-        { current: 'thirdPartyRelationshipToClient', original: 'existingThirdPartyRelationshipToClient' },
-        { current: 'thirdPartyPassphraseSetUp', original: 'existingThirdPartyPassphraseSetUp' },
-        { current: 'thirdPartyPassphrase', original: 'existingThirdPartyPassphrase' }
+        'thirdPartyFullName',
+        'thirdPartyEmailAddress', 
+        'thirdPartyContactNumber',
+        'thirdPartySafeToCall',
+        'thirdPartyAddress',
+        'thirdPartyPostcode',
+        'thirdPartyRelationshipToClient',
+        'thirdPartyPassphraseSetUp',
+        'thirdPartyPassphrase'
       ],
+      'thirdPartyOriginal',
       {
         /**
          * Returns the summary message for unchanged third party details.

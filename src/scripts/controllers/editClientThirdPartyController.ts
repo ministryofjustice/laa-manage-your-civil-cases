@@ -5,7 +5,7 @@ import {
   extractFormFields, 
   handleEditThirdPartyValidationErrors, 
   prepareThirdPartyData, 
-  devLog, 
+  devLog,
   devError, 
   createProcessedError, 
   safeString,
@@ -13,7 +13,9 @@ import {
   hasProperty,
   safeStringFromRecord,
   extractCurrentFields,
-  safeNestedField
+  safeNestedField,
+  storeOriginalFormData,
+  clearSessionData
 } from '#src/scripts/helpers/index.js';
 import { apiService } from '#src/services/apiService.js';
 
@@ -94,20 +96,23 @@ export async function getEditClientThirdParty(req: Request, res: Response, next:
         thirdPartyPassphrase: getPassphraseValue('thirdParty.passphraseSetUp')
       };
 
-      // Define field configurations for current/existing field generation
+      // Store original form data in session for later comparison
+      storeOriginalFormData(req, 'thirdPartyOriginal', flatData);
+
+      // Define field configurations for current field generation (no longer need existing fields)
       const fieldConfigs = [
-        { field: 'thirdPartyFullName', type: 'string' as const, includeExisting: true },
-        { field: 'thirdPartyEmailAddress', type: 'string' as const, includeExisting: true },
-        { field: 'thirdPartyContactNumber', type: 'string' as const, includeExisting: true },
-        { field: 'thirdPartySafeToCall', type: 'string' as const, includeExisting: true },
-        { field: 'thirdPartyAddress', type: 'string' as const, includeExisting: true },
-        { field: 'thirdPartyPostcode', type: 'string' as const, includeExisting: true },
-        { field: 'thirdPartyRelationshipToClient', type: 'string' as const, includeExisting: true },
-        { field: 'thirdPartyPassphraseSetUp', type: 'string' as const, includeExisting: true },
-        { field: 'thirdPartyPassphrase', type: 'string' as const, includeExisting: true }
+        { field: 'thirdPartyFullName', type: 'string' as const },
+        { field: 'thirdPartyEmailAddress', type: 'string' as const },
+        { field: 'thirdPartyContactNumber', type: 'string' as const },
+        { field: 'thirdPartySafeToCall', type: 'string' as const },
+        { field: 'thirdPartyAddress', type: 'string' as const },
+        { field: 'thirdPartyPostcode', type: 'string' as const },
+        { field: 'thirdPartyRelationshipToClient', type: 'string' as const },
+        { field: 'thirdPartyPassphraseSetUp', type: 'string' as const },
+        { field: 'thirdPartyPassphrase', type: 'string' as const }
       ];
 
-      // Use extractCurrentFields helper to generate form data
+      // Use extractCurrentFields helper to generate current form data
       return extractCurrentFields(flatData, fieldConfigs);
     }
   });
@@ -133,23 +138,14 @@ export async function postEditClientThirdParty(req: Request, res: Response, next
 
   const formFields = extractFormFields(req.body, [
     'thirdPartyFullName', 
-    'existingThirdPartyFullName',
     'thirdPartyEmailAddress',
-    'existingThirdPartyEmailAddress',
     'thirdPartyContactNumber',
-    'existingThirdPartyContactNumber',
     'thirdPartySafeToCall',
-    'existingThirdPartySafeToCall',
     'thirdPartyAddress',
-    'existingThirdPartyAddress',
     'thirdPartyPostcode',
-    'existingThirdPartyPostcode',
     'thirdPartyRelationshipToClient',
-    'existingThirdPartyRelationshipToClient',
     'thirdPartyPassphraseSetUp',
-    'existingThirdPartyPassphraseSetUp',
-    'thirdPartyPassphrase',
-    'existingThirdPartyPassphrase'
+    'thirdPartyPassphrase'
   ]);
 
   // Check for validation errors
@@ -168,6 +164,10 @@ export async function postEditClientThirdParty(req: Request, res: Response, next
 
     if (response.status === 'success') {
       devLog(`Third party contact successfully updated for case: ${caseReference}`);
+      
+      // Clear session data after successful update
+      clearSessionData(req, 'thirdPartyOriginal');
+      
       res.redirect(`/cases/${caseReference}/client-details`);
     } else {
       devError(`Failed to update third party contact for case: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);

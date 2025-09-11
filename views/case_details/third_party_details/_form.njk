@@ -24,19 +24,6 @@
 <form method="post" action="{{ formAction }}">
   <input type="hidden" name="_csrf" value="{{ csrfToken }}">
   
-  {# Hidden fields for change detection - passed from edit template #}
-  {% if existingThirdPartyFullName is defined %}
-    <input type="hidden" id="existingThirdPartyFullName" name="existingThirdPartyFullName" value="{{ existingThirdPartyFullName }}">
-    <input type="hidden" id="existingThirdPartyEmailAddress" name="existingThirdPartyEmailAddress" value="{{ existingThirdPartyEmailAddress }}">
-    <input type="hidden" id="existingThirdPartyContactNumber" name="existingThirdPartyContactNumber" value="{{ existingThirdPartyContactNumber }}">
-    <input type="hidden" id="existingThirdPartySafeToCall" name="existingThirdPartySafeToCall" value="{{ existingThirdPartySafeToCall }}">
-    <input type="hidden" id="existingThirdPartyAddress" name="existingThirdPartyAddress" value="{{ existingThirdPartyAddress }}">
-    <input type="hidden" id="existingThirdPartyPostcode" name="existingThirdPartyPostcode" value="{{ existingThirdPartyPostcode }}">
-    <input type="hidden" id="existingThirdPartyRelationshipToClient" name="existingThirdPartyRelationshipToClient" value="{{ existingThirdPartyRelationshipToClient }}">
-    <input type="hidden" id="existingThirdPartyPassphraseSetUp" name="existingThirdPartyPassphraseSetUp" value="{{ existingThirdPartyPassphraseSetUp }}">
-    <input type="hidden" id="existingThirdPartyPassphrase" name="existingThirdPartyPassphrase" value="{{ existingThirdPartyPassphrase }}">
-  {% endif %}
-  
   {{ govukInput({
     label: {
       text: t('forms.clientDetails.thirdParty.name'),

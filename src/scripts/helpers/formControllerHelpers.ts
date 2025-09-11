@@ -224,17 +224,7 @@ abstract class ThirdPartyValidator {
       currentThirdPartyPostcode: formFields.thirdPartyPostcode,
       currentThirdPartyRelationshipToClient: formFields.thirdPartyRelationshipToClient,
       currentThirdPartyPassphraseSetUp: formFields.thirdPartyPassphraseSetUp,
-      currentThirdPartyPassphrase: formFields.thirdPartyPassphrase,
-      // Include existing values for edit forms (will be undefined for add forms)
-      existingThirdPartyFullName: formFields.existingThirdPartyFullName,
-      existingThirdPartyEmailAddress: formFields.existingThirdPartyEmailAddress,
-      existingThirdPartyContactNumber: formFields.existingThirdPartyContactNumber,
-      existingThirdPartySafeToCall: formFields.existingThirdPartySafeToCall,
-      existingThirdPartyAddress: formFields.existingThirdPartyAddress,
-      existingThirdPartyPostcode: formFields.existingThirdPartyPostcode,
-      existingThirdPartyRelationshipToClient: formFields.existingThirdPartyRelationshipToClient,
-      existingThirdPartyPassphraseSetUp: formFields.existingThirdPartyPassphraseSetUp,
-      existingThirdPartyPassphrase: formFields.existingThirdPartyPassphrase
+      currentThirdPartyPassphrase: formFields.thirdPartyPassphrase
     };
 
     res.status(BAD_REQUEST).render(this.templatePath, renderData);

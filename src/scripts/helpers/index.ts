@@ -58,6 +58,14 @@ export {
   prepareThirdPartyData
 } from './formControllerHelpers.js';
 
+// Session helpers
+export {
+  storeSessionData,
+  getSessionData,
+  clearSessionData,
+  storeOriginalFormData
+} from './sessionHelpers.js';
+
 export {
   initializeI18nextSync,
   i18next,
@@ -80,6 +88,7 @@ export {
 
 export {
   createChangeDetectionValidator,
+  createSessionChangeDetectionValidator,
   TypedValidationError,
   formatValidationError,
   handleValidationErrors,

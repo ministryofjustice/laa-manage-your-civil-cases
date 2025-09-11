@@ -56,6 +56,7 @@ describe('Edit Client Third Party Controller', () => {
     req = {
       params: { caseReference: 'TEST123' },
       body: {},
+      session: {} as any, // Mock session object for session-based validation
       axiosMiddleware: {} as any,
       csrfToken: () => 'test-csrf-token'
     } as Partial<RequestWithMiddleware>;
@@ -123,8 +124,12 @@ describe('Edit Client Third Party Controller', () => {
     it('should process successful third party update and redirect to case details', async () => {
       // Arrange
       req.body = { 
-        thirdPartyFullName: 'Jane Smith',
-        existingThirdPartyFullName: 'John Doe'
+        thirdPartyFullName: 'Jane Smith'
+      };
+
+      // Mock session data to simulate that original data was stored during GET request
+      req.session!.thirdPartyOriginal = {
+        thirdPartyFullName: 'John Doe'
       };
 
       apiServiceUpdateStub.resolves({
@@ -143,8 +148,7 @@ describe('Edit Client Third Party Controller', () => {
     it('should handle validation errors and re-render form', async () => {
       // Arrange
       req.body = { 
-        thirdPartyFullName: '', // Empty name should trigger validation
-        existingThirdPartyFullName: 'John Doe'
+        thirdPartyFullName: '' // Empty name should trigger validation
       };
 
       await runSchema(req as any, validateEditClientThirdParty());
@@ -158,12 +162,15 @@ describe('Edit Client Third Party Controller', () => {
     });
 
     it('should handle no changes scenario properly', async () => {
-      // Arrange
-      req.body = { 
+      // Arrange - Set up session with original data  
+      req.session!.thirdPartyOriginal = {
         thirdPartyFullName: 'John Doe',
-        existingThirdPartyFullName: 'John Doe', // Same value = no change
-        thirdPartyEmailAddress: 'john@example.com',
-        existingThirdPartyEmailAddress: 'john@example.com'
+        thirdPartyEmailAddress: 'john@example.com'
+      };
+      
+      req.body = { 
+        thirdPartyFullName: 'John Doe', // Same value = no change
+        thirdPartyEmailAddress: 'john@example.com'
       };
 
       await runSchema(req as any, validateEditClientThirdParty());
@@ -179,8 +186,12 @@ describe('Edit Client Third Party Controller', () => {
     it('should delegate API errors to Express error handling middleware', async () => {
       // Arrange
       req.body = { 
-        thirdPartyFullName: 'Jane Smith',
-        existingThirdPartyFullName: 'John Doe'
+        thirdPartyFullName: 'Jane Smith'
+      };
+
+      // Mock session data to simulate that original data was stored during GET request
+      req.session!.thirdPartyOriginal = {
+        thirdPartyFullName: 'John Doe'
       };
 
       const error = new Error('API Error');
