@@ -5,6 +5,26 @@
  */
 
 /**
+ * Safely extract nested field value using custom path resolution
+ * @param {unknown} obj - Object to traverse
+ * @param {string} path - Dot-separated path (e.g., 'thirdParty.fullName')
+ * @returns {unknown} Field value or undefined if path doesn't exist
+ */
+export function safeNestedField(obj: unknown, path: string): unknown {
+  if (!isRecord(obj)) return undefined;
+  
+  const segments = path.split('.');
+  
+  return segments.reduce<unknown>((current, segment) => {
+    if (!isRecord(current) || !hasProperty(current, segment)) {
+      return undefined;
+    }
+    const { [segment]: value } = current;
+    return value;
+  }, obj);
+}
+
+/**
  * Safely get string value from unknown data
  * @param {unknown} value Value to convert
  * @returns {string} String value or empty string
@@ -114,17 +134,14 @@ export function extractFormFields(body: unknown, keys: string[]): Record<string,
 
 /**
  * Safely extract a field value from API data with optional type checking
+ * Supports both simple field names and nested paths (e.g., 'user.profile.name' or 'items.0.title')
  * @param {unknown} data - API response data
- * @param {string} fieldName - Name of the field to extract
+ * @param {string} fieldName - Name or path of the field to extract
  * @param {'string' | 'boolean' | 'number'} [expectedType] - Expected type of the field (optional)
  * @returns {string} Safe string value or empty string
  */
 export function safeApiField(data: unknown, fieldName: string, expectedType?: 'string' | 'boolean' | 'number'): string {
-  if (!isRecord(data) || !(fieldName in data)) {
-    return '';
-  }
-
-  const { [fieldName]: value } = data;
+  const value: unknown = safeNestedField(data, fieldName);
 
   // If expectedType is specified, check the type
   if (expectedType !== undefined) {
@@ -141,18 +158,63 @@ export function safeApiField(data: unknown, fieldName: string, expectedType?: 's
 }
 
 /**
- * Extract current field values for form rendering from API data
+ * Configuration for field extraction, supporting both flat and nested data structures
+ */
+export interface FieldConfig {
+  /** Field name for flat access (legacy) or final field name */
+  field: string;
+  /** Lodash path for nested access (e.g., 'thirdParty.fullName' or 'user.address.postcode') */
+  path?: string;
+  /** Expected type of the field */
+  type?: 'string' | 'boolean' | 'number';
+  /** Custom name for the current field (defaults to current{Field}) */
+  currentName?: string;
+  /** Whether to keep the original value in addition to the string conversion */
+  keepOriginal?: boolean;
+  /** Whether to include existing field for change detection */
+  includeExisting?: boolean;
+}
+
+/**
+ * Extract field value using either path or field name
  * @param {unknown} data - API response data
- * @param {Array<{field: string, type?: 'string' | 'boolean' | 'number', currentName?: string, keepOriginal?: boolean, includeExisting?: boolean}>} fieldConfigs - Field configurations
+ * @param {FieldConfig} config - Field configuration
+ * @returns {string} Safe string value
+ */
+function getFieldValue(data: unknown, config: FieldConfig): string {
+  const { field, path, type } = config;
+  const fieldPath = path ?? field;
+  return safeApiField(data, fieldPath, type);
+}
+
+/**
+ * Get original value for keepOriginal functionality
+ * @param {unknown} data - API response data
+ * @param {FieldConfig} config - Field configuration
+ * @returns {unknown} Original value or undefined
+ */
+function getOriginalValue(data: unknown, config: FieldConfig): unknown {
+  const { field, path } = config;
+  const fieldPath = path ?? field;
+  return safeNestedField(data, fieldPath);
+}
+
+/**
+ * Extract current field values for form rendering from API data
+ * Supports both flat structures (legacy) and nested structures via lodash paths
+ * @param {unknown} data - API response data
+ * @param {FieldConfig[]} fieldConfigs - Field configurations
  * @returns {Record<string, unknown>} Object with current field values
  */
 export function extractCurrentFields(
   data: unknown,
-  fieldConfigs: Array<{ field: string; type?: 'string' | 'boolean' | 'number'; currentName?: string; keepOriginal?: boolean; includeExisting?: boolean }>
+  fieldConfigs: FieldConfig[]
 ): Record<string, unknown> {
   return fieldConfigs.reduce<Record<string, unknown>>((formData, config) => {
-    const { field, type, currentName, keepOriginal = false, includeExisting = false } = config;
-    const fieldValue = safeApiField(data, field, type);
+    const { field, currentName, keepOriginal = false, includeExisting = false } = config;
+    
+    // Extract field value
+    const fieldValue = getFieldValue(data, config);
 
     // Set current field value
     const currentKey = currentName ?? `current${capitaliseFirst(field)}`;
@@ -165,9 +227,11 @@ export function extractCurrentFields(
     }
 
     // Keep original value if requested (for complex types like boolean)
-    if (keepOriginal && isRecord(data) && hasProperty(data, field)) {
-      const { [field]: originalValue } = data;
-      formData[field] = originalValue;
+    if (keepOriginal) {
+      const originalValue: unknown = getOriginalValue(data, config);
+      if (originalValue !== undefined) {
+        formData[field] = originalValue;
+      }
     }
 
     return formData;

@@ -178,7 +178,7 @@
       actions: {
         items: [
           {
-            href: "#",
+            href: "/cases/" + data.caseReference + "/client-details/edit/third-party",
             text: t('common.change'),
             visuallyHiddenText: t('accessibility.visuallyHiddenText.changeThirdPartyContact')
           },
@@ -222,7 +222,7 @@
   }) }}
 {% else %}
   {{ govukButton({
-    href: "/cases/" + data.caseReference + "/add/third-party",
+    href: "/cases/" + data.caseReference + "/client-details/add/third-party",
     text: t('pages.caseDetails.buttons.addThirdPartyContact'),
     classes: "govuk-button--secondary"
   }) }}

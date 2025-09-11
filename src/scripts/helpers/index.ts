@@ -28,7 +28,9 @@ export {
   safeBodyString,
   extractFormFields,
   safeApiField,
-  extractCurrentFields
+  safeNestedField,
+  extractCurrentFields,
+  type FieldConfig
 } from './dataTransformers.js';
 
 // Date formatting utilities
@@ -51,7 +53,8 @@ export {
 export {
   handleGetEditForm,
   handlePostEditForm,
-  handleThirdPartyValidationErrors,
+  handleAddThirdPartyValidationErrors,
+  handleEditThirdPartyValidationErrors,
   prepareThirdPartyData
 } from './formControllerHelpers.js';
 

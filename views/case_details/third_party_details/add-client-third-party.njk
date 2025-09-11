@@ -1,35 +1,7 @@
-{% extends "base.njk" %}
+{# Set template-specific variables #}
+{% set pageTitleKey = 'forms.clientDetails.thirdParty.pageTitleAdd' %}
+{% set headingKey = 'forms.clientDetails.thirdParty.pageH1Add' %}
+{% set formActionUrl = "/cases/" + caseReference + "/client-details/add/third-party" %}
 
-{% from "govuk/components/input/macro.njk" import govukInput %}
-{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "components/errorSummaryComponent.njk" import errorSummary %}
-{% from "govuk/components/radios/macro.njk" import govukRadios %}
-{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
-
-{% block pageTitle %}{{ t('forms.clientDetails.thirdParty.pageTitleAdd', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
-{% endblock %}
-
-{% set backLinkHref = "/cases/" + caseReference + "/client-details" %}
-
-{% block backLink %}
-  {{ govukBackLink({
-      text: t('common.back'),
-      href: backLinkHref,
-      classes: "govuk-!-margin-bottom-0"
-    }) }}
-{% endblock %}
-
-{% block pageContent %}
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-l">{{ t('forms.clientDetails.thirdParty.pageH1Add') }}</h1>
-
-      {# Set up variables for the form partial #}
-      {% set formAction = "/cases/" + caseReference + "/add/third-party" %}
-
-      {# Include the reusable form partial #}
-      {% include "case_details/third_party_details/_form.njk" %}
-    </div>
-  </div>
-{% endblock %}
+{# Extend the shared base template #}
+{% extends "case_details/third_party_details/_base-third-party.njk" %}
