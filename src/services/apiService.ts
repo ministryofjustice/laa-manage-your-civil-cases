@@ -88,7 +88,6 @@ function transformCaseItem(item: unknown): CaseData {
     announceCall: Boolean(item.announceCall),
     emailAddress: safeOptionalString(item.emailAddress),
     clientIsVulnerable: Boolean(item.clientIsVulnerable),
-    reasonableAdjustments: isRecord(item.reasonableAdjustments) ? item.reasonableAdjustments : undefined,
     language: safeOptionalString(item.language),
     address: safeOptionalString(item.address),
     postcode: safeOptionalString(item.postcode),

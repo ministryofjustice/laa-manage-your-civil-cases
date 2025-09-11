@@ -6,15 +6,6 @@
 
 
 /**
- * Reasonable adjustments structure
- */
-export interface ReasonableAdjustments {
-  selected: string[];
-  available: string[];
-  additionalInfo?: string;
-}
-
-/**
  * Case data structure for display and client-side operations
  */
 export interface CaseData {
@@ -33,7 +24,6 @@ export interface CaseData {
   emailAddress?: string;
   // Client information
   clientIsVulnerable?: boolean;
-  reasonableAdjustments?: object;
   language?: string;
   address?: string;
   postcode?: string;
