@@ -24,15 +24,6 @@
   {% endif %}
 {% endset %}
 
-{% set reasonableAdjustmentsContent %}
-{% if data.reasonableAdjustments and data.reasonableAdjustments.selected and data.reasonableAdjustments.selected.length > 0 %}
-  {{ data.reasonableAdjustments.selected | join('<br>') | safe }}
-  {% if data.reasonableAdjustments.additionalInfo %}
-    <br><br>{{ data.reasonableAdjustments.additionalInfo }}
-  {% endif %}
-{% endif %}
-{% endset %}
-
 {% macro renderAddress(address, postcode) %}
   {% if address %}
     {{ address }}
@@ -72,7 +63,6 @@
   phoneNumber: data.phoneNumber,
   specialNotes: data.specialNotes,
   reasonableAdjustments: data.reasonableAdjustments,
-  computedReasonableAdjustments: reasonableAdjustmentsContent,
   language: data.language,
   address: data.address,
   postcode: data.postcode,
@@ -133,20 +123,6 @@
     }
   },
   rows: [
-    {
-      label: t('forms.clientDetails.reasonableAdjustments.label'),
-      key: "computedReasonableAdjustments",
-      html: true,
-      actions: {
-        items: [
-          {
-            href: "/",
-            text: t('common.change'),
-            visuallyHiddenText: t('accessibility.visuallyHiddenText.changeReasonableAdjustments')
-          }
-        ]
-      }
-    },
     {
       label: t('forms.clientDetails.language.label'),
       key: "language",
