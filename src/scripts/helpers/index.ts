@@ -93,4 +93,12 @@ export {
   TypedValidationError,
   formatValidationError,
   handleValidationErrors,
+  type ValidationErrorData
 } from './ValidationErrorHelpers.js'
+
+export {
+  getSessionValue,
+  getSessionString,
+  setSessionValue,
+  deleteSessionKeys
+} from './sessionStorageHelper.js';
