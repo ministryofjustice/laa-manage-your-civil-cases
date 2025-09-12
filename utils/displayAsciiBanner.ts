@@ -8,14 +8,25 @@ import chalk from 'chalk';
 import type { Config } from '#types/config-types.js';
 
 /**
+ * Type guard to check if figlet is callable
+ * @param {unknown} fn - The function to check
+ * @returns {boolean} True if the function is callable with the expected signature
+ */
+function isFigletFunction(fn: unknown): fn is (text: string, callback: (err: unknown, data?: string) => void) => void {
+    return typeof fn === 'function';
+}
+
+/**
  * Displays an ASCII Art banner with department name in the console.
  * @param {import('#types/config-types.js').Config} config - The application config object
  * @returns {void}
  */
 const displayAsciiBanner = (config: Config): void => {
-    figlet(config.SERVICE_NAME ?? 'Service', (err: Error | null, data?: string) => {
-        if (err !== null) {
-            console.error('❌ Error generating ASCII art:', err);
+    if (isFigletFunction(figlet)) {
+        figlet(config.SERVICE_NAME ?? 'Service', (err: unknown, data?: string) => {
+        if (err !== null && err !== undefined) {
+            const errorMessage = err instanceof Error ? err.message : JSON.stringify(err);
+            console.error('❌ Error generating ASCII art:', errorMessage);
             return;
         }
 
@@ -29,6 +40,7 @@ const displayAsciiBanner = (config: Config): void => {
         console.log(chalk.green('Server is running at:'));
         console.log(chalk.cyan.underline(`http://localhost:${config.app.port}`)); // Clickable link in most terminals
     });
+    }
 };
 
 // Export the function for use in other files
