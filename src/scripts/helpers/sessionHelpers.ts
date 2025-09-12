@@ -41,6 +41,22 @@ export function clearSessionData(req: Request, namespace: string): void {
 }
 
 /**
+ * Clear all session data for form original values
+ * Removes any session keys that contain 'Original' in the name
+ * @param {Request} req Express request with session
+ */
+export function clearAllOriginalFormData(req: Request): void {
+  // Get all session keys and filter for ones containing 'Original'
+  const sessionKeys = Object.keys(req.session);
+  const originalDataKeys = sessionKeys.filter(key => key.includes('Original'));
+  
+  // Clear each original form data key
+  originalDataKeys.forEach(key => {
+    req.session[key] = undefined;
+  });
+}
+
+/**
  * Store form pre-population data in session for later comparison
  * Converts form field values to string format and stores under specified namespace
  * @param {Request} req Express request with session

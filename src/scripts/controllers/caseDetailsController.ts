@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
-import { devLog, devError, createProcessedError, safeString, clearSessionData } from '#src/scripts/helpers/index.js';
+import { devLog, devError, createProcessedError, safeString, clearAllOriginalFormData } from '#src/scripts/helpers/index.js';
 
 const BAD_REQUEST = 400;
 const NOT_FOUND = 404;
@@ -28,8 +28,8 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
     devLog(`Fetching case details for case: ${caseReference}, tab: ${activeTab}`);
 
     // Clear any lingering form session data when users navigate to client details page
-    // This ensures fresh state for any future form edits
-    clearSessionData(req, 'thirdPartyOriginal');
+    // This automatically clears all session keys containing 'Original' (e.g., 'thirdPartyOriginal', 'clientNameOriginal', etc.)
+    clearAllOriginalFormData(req);
 
     // Fetch client details from API
     const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
