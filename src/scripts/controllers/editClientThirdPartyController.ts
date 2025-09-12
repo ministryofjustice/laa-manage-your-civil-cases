@@ -83,12 +83,28 @@ export async function getEditClientThirdParty(req: Request, res: Response, next:
         return safeString(passphraseObj.passphrase);
       };
 
+      /**
+       * Helper function to convert boolean to string for radio buttons
+       * @param {unknown} value - Boolean value from API
+       * @returns {string} String representation for form ('true', 'false', or '')
+       */
+      const booleanToString = (value: unknown): string => {
+        if (typeof value === 'boolean') {
+          return value.toString();
+        }
+        // Handle string boolean values as fallback
+        if (value === 'true' || value === 'false') {
+          return safeString(value);
+        }
+        return '';
+      };
+
       // Transform nested structure to flat structure using safe extractors
       const flatData = {
         thirdPartyFullName: safeStringFromRecord(thirdPartyData, 'fullName') ?? '',
         thirdPartyEmailAddress: safeStringFromRecord(thirdPartyData, 'emailAddress') ?? '',
         thirdPartyContactNumber: safeStringFromRecord(thirdPartyData, 'contactNumber') ?? '',
-        thirdPartySafeToCall: safeStringFromRecord(thirdPartyData, 'safeToCall') ?? '',
+        thirdPartySafeToCall: booleanToString(thirdPartyData.safeToCall),
         thirdPartyAddress: safeStringFromRecord(thirdPartyData, 'address') ?? '',
         thirdPartyPostcode: safeStringFromRecord(thirdPartyData, 'postcode') ?? '',
         thirdPartyRelationshipToClient: getFirstSelectedValue('thirdParty.relationshipToClient'),
