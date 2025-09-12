@@ -100,6 +100,7 @@
 
   {{ govukInput({
     label: {
+      text: t('forms.clientDetails.address.postcode'),
       classes: "govuk-label--m"
     },
     hint: {
@@ -151,6 +152,7 @@
     {{ govukInput({
       id: "thirdPartyPassphrase",
       name: "thirdPartyPassphrase",
+      value: currentThirdPartyPassphrase,
       spellcheck: false,
       classes: "govuk-!-width-one-half",
       label: {

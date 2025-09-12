@@ -139,70 +139,6 @@ export async function handlePostEditForm(
 }
 
 /**
- * Handles validation errors and renders the form with error messages
- * @param {Request} req - Express request object
- * @param {Response} res - Express response object
- * @param {string} caseReference - Case reference number
- * @param {Record<string, unknown>} formFields - Form field values
- * @returns {boolean} - Returns true if there were validation errors, false otherwise
- */
-export function handleThirdPartyValidationErrors(
-  req: Request,
-  res: Response,
-  caseReference: string,
-  formFields: Record<string, unknown>
-): boolean {
-  const rawValidationResult = validationResult(req);
-
-  if (rawValidationResult.isEmpty()) {
-    return false;
-  }
-
-  const rawErrors = rawValidationResult.array();
-
-  const resultingErrors = rawErrors.map((error) => {
-    const fieldName = 'path' in error && typeof error.path === 'string' ? error.path : '';
-    const errorData = formatValidationError(error);
-
-    return {
-      fieldName,
-      inlineMessage: errorData.inlineMessage,
-      summaryMessage: errorData.summaryMessage,
-    };
-  });
-
-  const inputErrors = resultingErrors.reduce((errors: Record<string, string>, { fieldName, inlineMessage }) => {
-    if (inlineMessage.trim() !== '') {
-      errors[fieldName] = inlineMessage;
-    }
-    return errors;
-  }, {});
-
-  const errorSummaryList = resultingErrors.map(({ summaryMessage, fieldName }) => ({
-    text: summaryMessage,
-    href: `#${fieldName}`,
-  }));
-
-  const renderData = {
-    caseReference,
-    error: { inputErrors, errorSummaryList },
-    csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
-    currentThirdPartyFullName: formFields.thirdPartyFullName,
-    currentThirdPartyEmailAddress: formFields.thirdPartyEmailAddress,
-    currentThirdPartyContactNumber: formFields.thirdPartyContactNumber,
-    currentThirdPartySafeToCall: formFields.thirdPartySafeToCall,
-    currentThirdPartyAddress: formFields.thirdPartyAddress,
-    currentThirdPartyPostcode: formFields.thirdPartyPostcode,
-    currentThirdPartyRelationshipToClient: formFields.thirdPartyRelationshipToClient,
-    currentThirdPartyPassphraseSetUp: formFields.thirdPartyPassphraseSetUp,
-    currentThirdPartyPassphrase: formFields.thirdPartyPassphrase
-  };
-
-  res.status(BAD_REQUEST).render('case_details/third_party_details/add-client-third-party.njk', renderData);
-  return true;
-}
-
-/**
  * Prepares third party data for API submission
  * @param {Record<string, unknown>} formFields - Form field values
  * @returns {object} - Formatted third party data for API
@@ -223,4 +159,127 @@ export function prepareThirdPartyData(formFields: Record<string, unknown>): obje
       passphrase: formFields.thirdPartyPassphrase
     }
   };
+}
+
+/**
+ * Abstract base class for handling third party validation errors
+ */
+abstract class ThirdPartyValidator {
+  protected abstract readonly templatePath: string;
+
+  /**
+   * Handles validation errors and renders the appropriate third party form with error messages
+   * @param {Request} req - Express request object
+   * @param {Response} res - Express response object
+   * @param {string} caseReference - Case reference number
+   * @param {Record<string, unknown>} formFields - Form field values
+   * @returns {boolean} - Returns true if there were validation errors, false otherwise
+   */
+  public handleValidationErrors(
+    req: Request,
+    res: Response,
+    caseReference: string,
+    formFields: Record<string, unknown>
+  ): boolean {
+    const rawValidationResult = validationResult(req);
+
+    if (rawValidationResult.isEmpty()) {
+      return false;
+    }
+
+    const rawErrors = rawValidationResult.array();
+
+    const resultingErrors = rawErrors.map((error) => {
+      const fieldName = 'path' in error && typeof error.path === 'string' ? error.path : '';
+      const errorData = formatValidationError(error);
+
+      return {
+        fieldName,
+        inlineMessage: errorData.inlineMessage,
+        summaryMessage: errorData.summaryMessage,
+      };
+    });
+
+    const inputErrors = resultingErrors.reduce((errors: Record<string, string>, { fieldName, inlineMessage }) => {
+      if (inlineMessage.trim() !== '') {
+        errors[fieldName] = inlineMessage;
+      }
+      return errors;
+    }, {});
+
+    const errorSummaryList = resultingErrors.map(({ summaryMessage, fieldName }) => ({
+      text: summaryMessage,
+      href: `#${fieldName}`,
+    }));
+
+    const renderData = {
+      caseReference,
+      error: { inputErrors, errorSummaryList },
+      csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
+      currentThirdPartyFullName: formFields.thirdPartyFullName,
+      currentThirdPartyEmailAddress: formFields.thirdPartyEmailAddress,
+      currentThirdPartyContactNumber: formFields.thirdPartyContactNumber,
+      currentThirdPartySafeToCall: formFields.thirdPartySafeToCall,
+      currentThirdPartyAddress: formFields.thirdPartyAddress,
+      currentThirdPartyPostcode: formFields.thirdPartyPostcode,
+      currentThirdPartyRelationshipToClient: formFields.thirdPartyRelationshipToClient,
+      currentThirdPartyPassphraseSetUp: formFields.thirdPartyPassphraseSetUp,
+      currentThirdPartyPassphrase: formFields.thirdPartyPassphrase
+    };
+
+    res.status(BAD_REQUEST).render(this.templatePath, renderData);
+    return true;
+  }
+}
+
+/**
+ * Validator for ADD third party forms
+ */
+class AddThirdPartyValidator extends ThirdPartyValidator {
+  protected readonly templatePath = 'case_details/third_party_details/add-client-third-party.njk';
+}
+
+/**
+ * Validator for EDIT third party forms
+ */
+class EditThirdPartyValidator extends ThirdPartyValidator {
+  protected readonly templatePath = 'case_details/third_party_details/edit-client-third-party.njk';
+}
+
+// Singleton instances
+const addThirdPartyValidator = new AddThirdPartyValidator();
+const editThirdPartyValidator = new EditThirdPartyValidator();
+
+/**
+ * Handles validation errors and renders the ADD third party form with error messages
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {string} caseReference - Case reference number
+ * @param {Record<string, unknown>} formFields - Form field values
+ * @returns {boolean} - Returns true if there were validation errors, false otherwise
+ */
+export function handleAddThirdPartyValidationErrors(
+  req: Request,
+  res: Response,
+  caseReference: string,
+  formFields: Record<string, unknown>
+): boolean {
+  return addThirdPartyValidator.handleValidationErrors(req, res, caseReference, formFields);
+}
+
+/**
+ * Handles validation errors and renders the EDIT third party form with error messages
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {string} caseReference - Case reference number
+ * @param {Record<string, unknown>} formFields - Form field values
+ * @returns {boolean} - Returns true if there were validation errors, false otherwise
+ */
+export function handleEditThirdPartyValidationErrors(
+  req: Request,
+  res: Response,
+  caseReference: string,
+  formFields: Record<string, unknown>
+): boolean {
+  return editThirdPartyValidator.handleValidationErrors(req, res, caseReference, formFields);
 }

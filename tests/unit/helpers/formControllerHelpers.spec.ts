@@ -13,7 +13,7 @@ import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import type { Request, Response, NextFunction } from 'express';
-import { handlePostEditForm } from '#src/scripts/helpers/formControllerHelpers.js';
+import { handlePostEditForm, handleAddThirdPartyValidationErrors, handleEditThirdPartyValidationErrors } from '#src/scripts/helpers/formControllerHelpers.js';
 import { apiService } from '#src/services/apiService.js';
 
 describe('Form Controller Helpers', () => {
@@ -75,6 +75,62 @@ describe('Form Controller Helpers', () => {
       // Assert
       expect(redirectStub.calledOnce).to.be.true;
       expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
+    });
+  });
+
+  describe('Third Party Validation Functions', () => {
+    let renderStub: sinon.SinonStub;
+    let statusStub: sinon.SinonStub;
+
+    beforeEach(() => {
+      renderStub = sinon.stub();
+      statusStub = sinon.stub().returns({ render: renderStub });
+      res.status = statusStub;
+      res.render = renderStub;
+    });
+
+    it('should export handleAddThirdPartyValidationErrors function', () => {
+      // This is a basic test to ensure the function exists and can be called
+      // More detailed validation testing would typically be done at integration level
+      expect(handleAddThirdPartyValidationErrors).to.be.a('function');
+    });
+
+    it('should export handleEditThirdPartyValidationErrors function', () => {
+      // This is a basic test to ensure the function exists and can be called
+      // More detailed validation testing would typically be done at integration level
+      expect(handleEditThirdPartyValidationErrors).to.be.a('function');
+    });
+
+    it('should accept the expected parameters for add third party validation', () => {
+      // Arrange
+      const caseReference = 'TEST123';
+      const formFields = { thirdPartyFullName: 'John Doe' };
+
+      // Act & Assert - Function should not throw when called with valid parameters
+      expect(() => {
+        handleAddThirdPartyValidationErrors(
+          req as Request,
+          res as Response,
+          caseReference,
+          formFields
+        );
+      }).to.not.throw();
+    });
+
+    it('should accept the expected parameters for edit third party validation', () => {
+      // Arrange
+      const caseReference = 'TEST123';
+      const formFields = { thirdPartyFullName: 'John Doe' };
+
+      // Act & Assert - Function should not throw when called with valid parameters
+      expect(() => {
+        handleEditThirdPartyValidationErrors(
+          req as Request,
+          res as Response,
+          caseReference,
+          formFields
+        );
+      }).to.not.throw();
     });
   });
 });

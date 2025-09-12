@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
-import { handleGetEditForm, extractFormFields,handleThirdPartyValidationErrors, prepareThirdPartyData, devLog, devError, createProcessedError, safeString } from '#src/scripts/helpers/index.js';
+import { handleGetEditForm, extractFormFields, handleAddThirdPartyValidationErrors, prepareThirdPartyData, devLog, devError, createProcessedError, safeString } from '#src/scripts/helpers/index.js';
 import { apiService } from '#src/services/apiService.js';
 
 // HTTP Status codes
@@ -60,7 +60,7 @@ export async function postAddClientThirdParty(req: Request, res: Response, next:
   ]);
 
   // Check for validation errors
-  if (handleThirdPartyValidationErrors(req, res, caseReference, formFields)) {
+  if (handleAddThirdPartyValidationErrors(req, res, caseReference, formFields)) {
     return;
   }
 

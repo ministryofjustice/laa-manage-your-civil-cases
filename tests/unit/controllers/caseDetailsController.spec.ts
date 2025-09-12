@@ -33,6 +33,7 @@ describe('Case Details Controller', () => {
   beforeEach(() => {
     req = {
       params: { caseReference: 'TEST123' },
+      session: {} as any, // Mock session object for session cleanup functionality
       axiosMiddleware: {} as any
     };
     
