@@ -4,12 +4,18 @@
  * This server is used during Playwright E2E tests to intercept API calls
  * using Mock Service Worker (MSW) and serve mock responses from local fixtures.
  * 
- * Based on the MSW + Playwright spike implementation.
+ * Creates a minimal Express server with MSW, avoiding complex dependencies.
  */
 
+import express from 'express';
 import { setupServer } from 'msw/node';
 import { handlers } from '../tests/e2e/mocks/handlers/index.js';
-import createApp from './app.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Get current directory for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 console.log('🎭 Starting test server with MSW integration...');
 
@@ -23,17 +29,51 @@ mswServer.listen({
 
 console.log('✅ MSW server initialized with', handlers.length, 'handlers');
 
+// Create minimal Express app for testing
+const app = express();
+
+// Basic middleware for serving static files and parsing requests
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Serve static assets
+app.use('/assets', express.static(path.join(__dirname, '../../public/assets')));
+app.use('/css', express.static(path.join(__dirname, '../../public/css')));
+app.use('/js', express.static(path.join(__dirname, '../../public/js')));
+
+// Basic route for health check
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', msw: 'enabled' });
+});
+
+// Simple test page route
+app.get('/', (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>MSW Test Server</title>
+        <meta charset="utf-8">
+      </head>
+      <body>
+        <h1>Manage your civil cases</h1>
+        <p>MSW Test Server is running</p>
+        <p>MSW handlers: ${handlers.length}</p>
+      </body>
+    </html>
+  `);
+});
+
 // Log environment configuration for debugging
 console.log('🔍 Environment Configuration:');
 console.log('  - NODE_ENV:', process.env.NODE_ENV);
 console.log('  - PORT:', process.env.PORT);
 console.log('  - API_URL:', process.env.API_URL);
 console.log('  - API_PREFIX:', process.env.API_PREFIX);
-console.log('  - USE_MOCK_API:', process.env.USE_MOCK_API);
+console.log('  - USE_MSW:', process.env.USE_MSW);
 
 // Start Express with MSW active
-const app = createApp();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 
 const server = app.listen(port, () => {
   console.log(`🚀 Express test server listening on port ${port}`);
