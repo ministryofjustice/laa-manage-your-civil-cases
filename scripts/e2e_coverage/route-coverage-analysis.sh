@@ -74,12 +74,46 @@ echo -e "${GREEN}✓ Express routes extracted to express-routes.txt${NC}"
 # Step 3: Extract tested routes from Playwright log
 echo -e "${YELLOW}🧪 Extracting tested routes from Playwright log...${NC}"
 if [[ "$SKIP_TESTS" == "true" ]]; then
-    echo -e "${YELLOW}⚠️  No tests were run, creating empty tested-routes.txt${NC}"
-    touch tested-routes.txt
+    if [[ -f "playwright-debug.log" && -s "playwright-debug.log" ]]; then
+        echo -e "${YELLOW}📋 Using existing playwright-debug.log...${NC}"
+        # Extract navigation routes (GET requests)
+        "$(dirname "$0")/extract-urls.sh" playwright-debug.log | grep "^GET " > tested-routes-nav.txt
+        
+        # Extract server routes (both GET and POST requests from Express logs)
+        grep "\[WebServer\]" playwright-debug.log | grep -E "(GET|POST|PUT|DELETE|PATCH)" | \
+            sed 's/\x1b\[[0-9;]*m//g' | \
+            awk '{print $2, $3}' | \
+            sort | uniq > tested-routes-server.txt
+        
+        # Combine both sources
+        cat tested-routes-nav.txt tested-routes-server.txt | sort | uniq > tested-routes.txt
+        
+        echo -e "${GREEN}✓ Tested routes extracted from existing log${NC}"
+        
+        # Clean up temporary files
+        rm -f tested-routes-nav.txt tested-routes-server.txt
+    else
+        echo -e "${YELLOW}⚠️  No tests were run and no existing log found, creating empty tested-routes.txt${NC}"
+        touch tested-routes.txt
+    fi
 else
     if [[ -f "playwright-debug.log" && -s "playwright-debug.log" ]]; then
-        "$(dirname "$0")/extract-urls.sh" playwright-debug.log | grep "^GET " | sort > tested-routes.txt
-        echo -e "${GREEN}✓ Tested routes extracted to tested-routes.txt${NC}"
+        # Extract navigation routes (GET requests)
+        "$(dirname "$0")/extract-urls.sh" playwright-debug.log | grep "^GET " > tested-routes-nav.txt
+        
+        # Extract server routes (both GET and POST requests from Express logs)
+        grep "\[WebServer\]" playwright-debug.log | grep -E "(GET|POST|PUT|DELETE|PATCH)" | \
+            sed 's/\x1b\[[0-9;]*m//g' | \
+            awk '{print $2, $3}' | \
+            sort | uniq > tested-routes-server.txt
+        
+        # Combine both sources
+        cat tested-routes-nav.txt tested-routes-server.txt | sort | uniq > tested-routes.txt
+        
+        echo -e "${GREEN}✓ Tested routes extracted from navigation and server logs${NC}"
+        
+        # Clean up temporary files
+        rm -f tested-routes-nav.txt tested-routes-server.txt
     else
         echo -e "${YELLOW}⚠️  No Playwright log found or empty, creating empty tested-routes.txt${NC}"
         touch tested-routes.txt
@@ -94,8 +128,8 @@ cat express-routes.txt | sort > express-routes-sorted.txt
 
 # Normalize tested routes to use parameter patterns (convert concrete values to :param format)
 cat tested-routes.txt | \
-    sed 's|/cases/[^/]*/|/:caseReference/|g' | \
-    sort > tested-routes-normalized.txt
+    sed 's|/cases/[^/]*/|/cases/:caseReference/|g' | \
+    sort | uniq > tested-routes-normalized.txt
 
 # Initialize counters
 total_routes=0
@@ -135,27 +169,105 @@ if [ $total_routes -gt 0 ]; then
 fi
 
 echo ""
-echo -e "${BLUE}🧪 TESTED ROUTES (normalized)${NC}"
-echo "============================="
-while IFS= read -r route; do
+echo -e "${BLUE}📋 ALL ROUTES (organized by endpoint)${NC}"
+echo "===================================="
+
+# Function to display routes by category
+display_routes_for_pattern() {
+    local pattern=$1
+    local title=$2
+    local found_any=false
+    
+    cat express-routes-sorted.txt | grep "$pattern" | while IFS= read -r route; do
+        if [[ -n "$route" && "$route" =~ ^(GET|POST|PUT|DELETE|PATCH) ]]; then
+            if [[ "$found_any" == "false" ]]; then
+                echo -e "${BLUE}$title${NC}"
+                found_any=true
+            fi
+            # Check if this exact route is in the normalized tested routes
+            if grep -Fxq "$route" tested-routes-normalized.txt; then
+                echo -e "${GREEN}  ✓ $route${NC}"
+            else
+                echo -e "${RED}  ✗ $route${NC}"
+            fi
+        fi
+    done
+}
+
+# Display routes grouped by functionality
+echo -e "${YELLOW}System Routes:${NC}"
+cat express-routes-sorted.txt | grep -E "(GET /|GET /health|GET /status)" | while IFS= read -r route; do
     if [[ -n "$route" ]]; then
-        echo -e "${GREEN}$route${NC}"
+        if grep -Fxq "$route" tested-routes-normalized.txt; then
+            echo -e "${GREEN}  ✓ $route${NC}"
+        else
+            echo -e "${RED}  ✗ $route${NC}"
+        fi
     fi
-done < tested-routes-normalized.txt
+done
+
+echo ""
+echo -e "${YELLOW}Case Listing Routes:${NC}"
+cat express-routes-sorted.txt | grep "GET /cases/" | grep -v ":caseReference" | while IFS= read -r route; do
+    if [[ -n "$route" ]]; then
+        if grep -Fxq "$route" tested-routes-normalized.txt; then
+            echo -e "${GREEN}  ✓ $route${NC}"
+        else
+            echo -e "${RED}  ✗ $route${NC}"
+        fi
+    fi
+done
+
+echo ""
+echo -e "${YELLOW}Case Detail Routes (GET):${NC}"
+cat express-routes-sorted.txt | grep "GET.*:caseReference" | while IFS= read -r route; do
+    if [[ -n "$route" ]]; then
+        if grep -Fxq "$route" tested-routes-normalized.txt; then
+            echo -e "${GREEN}  ✓ $route${NC}"
+        else
+            echo -e "${RED}  ✗ $route${NC}"
+        fi
+    fi
+done
+
+echo ""
+echo -e "${YELLOW}Case Detail Routes (POST):${NC}"
+cat express-routes-sorted.txt | grep "POST.*:caseReference" | while IFS= read -r route; do
+    if [[ -n "$route" ]]; then
+        if grep -Fxq "$route" tested-routes-normalized.txt; then
+            echo -e "${GREEN}  ✓ $route${NC}"
+        else
+            echo -e "${RED}  ✗ $route${NC}"
+        fi
+    fi
+done
+
+echo ""
+echo -e "${YELLOW}Search Routes:${NC}"
+cat express-routes-sorted.txt | grep "/search" | while IFS= read -r route; do
+    if [[ -n "$route" ]]; then
+        if grep -Fxq "$route" tested-routes-normalized.txt; then
+            echo -e "${GREEN}  ✓ $route${NC}"
+        else
+            echo -e "${RED}  ✗ $route${NC}"
+        fi
+    fi
+done
 
 if [ $uncovered_routes -gt 0 ]; then
     echo ""
-    echo -e "${RED}⚠️  ROUTES WITHOUT E2E TESTS${NC}"
-    echo "============================"
+    echo -e "${YELLOW}💡 Next Steps:${NC}"
+    echo "• ✓ = Route covered by E2E tests"
+    echo "• ✗ = Route needs E2E test coverage"
+    echo "• Consider if some routes are internal/admin only and don't need E2E tests"
+    echo "• Update existing tests to cover more route variations"
+    
+    echo ""
+    echo -e "${RED}🎯 PRIORITY: Routes needing E2E tests${NC}"
+    echo "======================================="
     for route in "${uncovered_list[@]}"; do
         echo -e "${RED}• $route${NC}"
     done
-    
-    echo ""
-    echo -e "${YELLOW}💡 Suggestions:${NC}"
-    echo "• Create E2E tests for the routes listed in red above"
-    echo "• Consider if some routes are internal/admin only and don't need E2E tests"
-    echo "• Update existing tests to cover more route variations"
 fi
 
 echo ""
