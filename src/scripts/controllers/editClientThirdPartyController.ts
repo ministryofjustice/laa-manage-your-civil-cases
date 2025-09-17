@@ -15,7 +15,8 @@ import {
   extractCurrentFields,
   safeNestedField,
   storeOriginalFormData,
-  clearSessionData
+  clearSessionData,
+  booleanToString
 } from '#src/scripts/helpers/index.js';
 import { apiService } from '#src/services/apiService.js';
 
@@ -81,22 +82,6 @@ export async function getEditClientThirdParty(req: Request, res: Response, next:
           return '';
         }
         return safeString(passphraseObj.passphrase);
-      };
-
-      /**
-       * Helper function to convert boolean to string for radio buttons
-       * @param {unknown} value - Boolean value from API
-       * @returns {string} String representation for form ('true', 'false', or '')
-       */
-      const booleanToString = (value: unknown): string => {
-        if (typeof value === 'boolean') {
-          return value.toString();
-        }
-        // Handle string boolean values as fallback
-        if (value === 'true' || value === 'false') {
-          return safeString(value);
-        }
-        return '';
       };
 
       // Transform nested structure to flat structure using safe extractors

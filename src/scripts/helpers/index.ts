@@ -21,6 +21,7 @@ export {
 export {
   safeString,
   safeOptionalString,
+  booleanToString,
   isRecord,
   safeStringFromRecord,
   hasProperty,
