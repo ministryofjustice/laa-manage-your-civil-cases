@@ -194,16 +194,18 @@ export function createSessionChangeDetectionValidator(
         }
 
         // Check if any field has changed compared to session data
-        return fieldNames.some((fieldName) => {
+        const hasChanges = fieldNames.some((fieldName) => {
           const currentRaw = hasProperty(req.body, fieldName) ? req.body[fieldName] : '';
-          const currentValue = safeString(currentRaw).trim();
+          const currentValue = safeString(currentRaw).trim().replace(/\r\n/g, '\n');
           
           // Safely get original value from session data
           const originalRaw = hasProperty(originalDataRaw, fieldName) ? originalDataRaw[fieldName] : '';
-          const originalValue = safeString(originalRaw).trim();
+          const originalValue = safeString(originalRaw).trim().replace(/\r\n/g, '\n');
           
           return currentValue !== originalValue;
         });
+        
+        return hasChanges;
       },
       /**
        * Custom error message for when no changes are made
