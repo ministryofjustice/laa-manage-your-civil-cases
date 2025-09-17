@@ -194,43 +194,14 @@ export function createSessionChangeDetectionValidator(
         }
 
         // Check if any field has changed compared to session data
-        return fieldNames.some((fieldName): boolean => {
-          /**
-           * Get a normalised string value for comparison. 
-           * Arrays and delimited strings ("," or "|") are trimmed, sorted, and "|" joined.
-           * @param {unknown} obj - The source object to read from
-           * @param {string} key - The field name to extract
-           * @returns {string} Normalised strings to check each other against
-           */
-          const getValue = (obj: unknown, key: string): string => {
-            if (!hasProperty(obj, key)) return '';
-
-            const { [key]: rawValue } = obj;
-
-            /**
-             * Normalise an array-like value to a stable '|' joined string.
-             * @param {unknown} array - The array to normalise
-             * @returns {string} Returns a string joined by '|'
-             */
-            const normaliseArray = (array: readonly unknown[]): string =>
-              array
-                .map(String)
-                .map((string: string) => string.trim())
-                .filter(Boolean)
-                .sort()
-                .join('|');
-
-            if (Array.isArray(rawValue)) {
-              return normaliseArray(rawValue);
-            }
-            if (typeof rawValue === 'string' && rawValue.includes(',')) {
-              return normaliseArray(rawValue.split(','));
-            }
-            return String(rawValue).trim();
-          };
-
-          const currentValue = getValue(req.body, fieldName);
-          const originalValue = getValue(originalDataRaw, fieldName);
+        return fieldNames.some((fieldName) => {
+          const currentRaw = hasProperty(req.body, fieldName) ? req.body[fieldName] : '';
+          const currentValue = safeString(currentRaw).trim();
+          
+          // Safely get original value from session data
+          const originalRaw = hasProperty(originalDataRaw, fieldName) ? originalDataRaw[fieldName] : '';
+          const originalValue = safeString(originalRaw).trim();
+          
           return currentValue !== originalValue;
         });
       },

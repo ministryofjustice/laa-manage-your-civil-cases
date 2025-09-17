@@ -20,6 +20,7 @@
     "build:ts": "tsc",
     "test": "yarn test:unit && yarn test:e2e",
     "test:unit": "./node_modules/.bin/mocha",
+    "test:server": "node public/src/test-server.js",
     "test:e2e": "yarn playwright test --config=playwright.config.ts",
     "test:accessibility": "yarn playwright test --grep @accessibility",
     "coverage": "c8 yarn test:unit --check-coverage"
@@ -97,6 +98,7 @@
     "livereload": "^0.10.2",
     "middleware-axios": "^3.0.0",
     "mocha": "^11.7.2",
+    "msw": "^2.11.2",
     "nodemon": "^3.1.9",
     "playwright-core": "^1.55.1",
     "prettier": "^3.6.2",

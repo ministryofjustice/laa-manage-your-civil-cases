@@ -2,6 +2,7 @@ import { test, expect } from './fixtures/index.js';
 import { t, getClientDetailsUrlByStatus } from './helpers/index.js';
 
 const visitUrl = getClientDetailsUrlByStatus('default') + '/change/phone-number';
+const clientDetailsUrl = getClientDetailsUrlByStatus('default');
 
 test('viewing change phone-number form, to see the expected elements', async ({ page, i18nSetup }) => {
   const phoneInput = page.locator('#phoneNumber');
@@ -113,6 +114,27 @@ test('safeToCall & phoneNumber & announceCall not changed and correct validation
   } else {
     throw new Error(`Expected either "not changed" or "required field" error, but got: ${errorText}`);
   }
+});
+
+test('save button should redirect to client details when valid data submitted', async ({ page, i18nSetup }) => {
+  const phoneInput = page.locator('#phoneNumber');
+  const safeToCallRadios = page.locator('[name="safeToCall"]');
+  const announceCallRadios = page.locator('[name="announceCall"]');
+  const saveButton = page.getByRole('button', { name: t('common.save') });
+
+  // Navigate to the change phone number form
+  await page.goto(visitUrl);
+
+  // Fill in valid phone number details
+  await phoneInput.fill('07700900123');
+  await safeToCallRadios.first().check(); // Select "Yes" for safe to call
+  await announceCallRadios.first().check(); // Select "Yes" for announce call
+
+  // Submit the form
+  await saveButton.click();
+
+  // Should redirect to client details page
+  await expect(page).toHaveURL(clientDetailsUrl);
 });
 
 test('phone number edit page should be accessible', {
