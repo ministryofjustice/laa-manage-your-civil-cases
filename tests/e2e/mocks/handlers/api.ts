@@ -270,4 +270,42 @@ export const apiHandlers = [
       message: 'Third party contact deleted successfully'
     });
   }),
+
+  // Intercept search cases (GET /latest/mock/cases/search)
+  http.get(`${API_BASE_URL}${API_PREFIX}/cases/search`, ({ request }) => {
+    const url = new URL(request.url);
+    const keyword = url.searchParams.get('keyword') || '';
+    const status = url.searchParams.get('status') || '';
+    const page = parseInt(url.searchParams.get('page') || '1', 10);
+    const limit = parseInt(url.searchParams.get('limit') || '20', 10);
+    
+    console.log(`🔍 MSW intercepted: GET ${API_PREFIX}/cases/search (keyword: "${keyword}", status: "${status}", page ${page}, limit ${limit})`);
+    
+    // Filter cases based on search criteria
+    let filteredCases = cases;
+    
+    // Filter by keyword (search in case reference and name)
+    if (keyword.trim()) {
+      filteredCases = filteredCases.filter(c => 
+        c.caseReference.toLowerCase().includes(keyword.toLowerCase()) ||
+        c.fullName.toLowerCase().includes(keyword.toLowerCase())
+      );
+    }
+    
+    // Filter by status if provided
+    if (status.trim() && status !== 'all') {
+      filteredCases = filterCasesByStatus(status);
+    }
+    
+    const result = paginateResults(filteredCases, page, limit);
+    
+    return HttpResponse.json(result.data, {
+      headers: {
+        'x-total-count': result.pagination.total.toString(),
+        'x-page': result.pagination.page.toString(),
+        'x-per-page': result.pagination.limit.toString(),
+        'content-type': 'application/json'
+      }
+    });
+  }),
 ];
