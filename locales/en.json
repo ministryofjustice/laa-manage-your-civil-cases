@@ -241,7 +241,6 @@
         },
         "safeToCall": "Is the third party safe to call?",
         "safeToCallHeading": "Is the third party safe to call? (optional)",
-        "notSafeToCall": "The third party is not safe to call",
         "passphrase": {
           "title": "Passphrase",
           "titleH2": "Has the client set up a passphrase?",
