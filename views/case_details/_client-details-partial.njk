@@ -25,14 +25,18 @@
 {% endset %}
 
 {% macro renderAddress(address, postcode) %}
-  {% if address %}
-    {{ address }}
-    {% if postcode %}
+  {% if address or postcode %}
+    {% if address %}
+      {{ address }}
+      {% if postcode %}
         <br>
+      {% endif %}
     {% endif %}
-  {% endif %}
-  {% if postcode %}
-    {{ postcode }}
+    {% if postcode %}
+      {{ postcode }}
+    {% endif %}
+  {% else %}
+    {{ t('pages.caseDetails.notProvided') }}
   {% endif %}
 {% endmacro %}
 

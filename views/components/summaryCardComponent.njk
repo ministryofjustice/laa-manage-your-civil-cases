@@ -102,8 +102,7 @@
     {% endif %}
 
     {# Use processed value or fallback to "No data" #}
-    {% set finalValue = trimmedValue if trimmedValue else
-        '<span class="govuk-visually-hidden">No data</span>' %}
+    {% set finalValue = trimmedValue if trimmedValue else t('pages.caseDetails.notProvided') %}
 
     {# Check if finalValue contains HTML or if html flag is set #}
     {% set isHtml = row.html === true or (finalValue and ('<' in finalValue)) %}
