@@ -104,7 +104,23 @@ export const apiHandlers = [
       return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
     }
     
-    return HttpResponse.json(caseItem);
+    // Add mock third party data for testing remove functionality
+    const caseWithThirdParty = {
+      ...caseItem,
+      thirdParty: {
+        thirdPartyFullName: 'Mock Third Party',
+        thirdPartyEmailAddress: 'mock@example.com',
+        thirdPartyContactNumber: '07700900123',
+        thirdPartySafeToCall: true,
+        thirdPartyAddress: '123 Mock Street\nLondon',
+        thirdPartyPostcode: 'SW1A 1AA',
+        thirdPartyRelationshipToClient: 'Family member or friend',
+        thirdPartyPassphraseSetUp: 'Yes',
+        thirdPartyPassphrase: 'mock-passphrase'
+      }
+    };
+    
+    return HttpResponse.json(caseWithThirdParty);
   }),
 
   // Intercept cases by status (GET /latest/mock/cases/{status})
