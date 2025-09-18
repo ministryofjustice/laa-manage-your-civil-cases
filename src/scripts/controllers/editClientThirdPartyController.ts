@@ -36,7 +36,7 @@ const FIRST_ARRAY_INDEX = 0;
  */
 export async function getEditClientThirdParty(req: Request, res: Response, next: NextFunction): Promise<void> {
   await handleGetEditForm(req, res, next, {
-    templatePath: 'case_details/third_party_details/edit-client-third-party.njk',
+    templatePath: 'case_details/third_party_details/change-client-third-party.njk',
     /**
      * Transforms nested third party API data to flat structure for standard field extraction
      * Uses domain-specific helpers for readability while leveraging safeNestedField for robustness

@@ -23,11 +23,12 @@
 
 <form method="post" action="{{ formAction }}">
   <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-  
+
+  <h2 class="govuk-heading-m">{{ t('pages.caseDetails.clientDetails.contactDetails') }}</h2>
   {{ govukInput({
     label: {
       text: t('forms.clientDetails.thirdParty.name'),
-      classes: "govuk-label--m"
+      classes: "govuk-text--m"
     },
     id: "thirdPartyFullName",
     name: "thirdPartyFullName",
@@ -37,20 +38,8 @@
 
   {{ govukInput({
     label: {
-      text: t('forms.clientDetails.thirdParty.emailAddressH2'),
-      classes: "govuk-label--m"
-    },
-    id: "thirdPartyEmailAddress",
-    name: "thirdPartyEmailAddress",
-    spellcheck: false,
-    value: currentThirdPartyEmailAddress,
-    errorMessage: errorMessages.thirdPartyEmailAddress if error
-  }) }}
-
-  {{ govukInput({
-    label: {
-      text: t('forms.clientDetails.thirdParty.contactNumberH2'),
-      classes: "govuk-label--m"
+      text: t('forms.clientDetails.thirdParty.contactNumberHeading'),
+      classes: "govuk-text--m"
     },
     errorMessage: errorMessages.thirdPartyContactNumber if error,
     id: "thirdPartyContactNumber",
@@ -67,8 +56,8 @@
     errorMessage: errorMessages.thirdPartySafeToCall if error,
     fieldset: {
       legend: {
-        text: t('forms.clientDetails.thirdParty.safeToCall'),
-        classes: "govuk-fieldset__legend--m"
+        text: t('forms.clientDetails.thirdParty.safeToCallHeading'),
+        classes: "govuk-text--m"
       }
     },
     items: [
@@ -83,13 +72,22 @@
     ]
   }) }}
 
+  {{ govukInput({
+    label: {
+      text: t('forms.clientDetails.thirdParty.emailAddressHeading'),
+      classes: "govuk-text--m"
+    },
+    id: "thirdPartyEmailAddress",
+    name: "thirdPartyEmailAddress",
+    spellcheck: false,
+    value: currentThirdPartyEmailAddress,
+    errorMessage: errorMessages.thirdPartyEmailAddress if error
+  }) }}
+
   {{ govukTextarea({
     label: {
-      text: t('forms.clientDetails.thirdParty.addressH2'),
-      classes: "govuk-label--m"
-    },
-    hint: {
-      text: t('forms.clientDetails.thirdParty.addressHint')
+      text: t('forms.clientDetails.thirdParty.addressHeading'),
+      classes: "govuk-text--m"
     },
     id: "thirdPartyAddress",
     name: "thirdPartyAddress",
@@ -101,10 +99,7 @@
   {{ govukInput({
     label: {
       text: t('forms.clientDetails.address.postcode'),
-      classes: "govuk-label--m"
-    },
-    hint: {
-      text: t('forms.clientDetails.thirdParty.postcodeHint')
+      classes: "govuk-text--m"
     },
     id: "thirdPartyPostcode",
     name: "thirdPartyPostcode",

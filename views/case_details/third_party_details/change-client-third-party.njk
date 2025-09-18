@@ -1,0 +1,7 @@
+{# Set template-specific variables #}
+{% set pageTitleKey = 'forms.clientDetails.thirdParty.pageTitleChange' %}
+{% set headingKey = 'forms.clientDetails.thirdParty.pageH1Change' %}
+{% set formActionUrl = "/cases/" + caseReference + "/client-details/change/third-party" %}
+
+{# Extend the shared base template #}
+{% extends "case_details/third_party_details/_base-third-party.njk" %}

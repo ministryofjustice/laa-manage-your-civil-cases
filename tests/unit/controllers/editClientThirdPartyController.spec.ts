@@ -104,7 +104,7 @@ describe('Edit Client Third Party Controller', () => {
 
       // Assert
       expect(apiServiceGetStub.calledOnce).to.be.true;
-      expect(renderStub.calledWith('case_details/third_party_details/edit-client-third-party.njk')).to.be.true;
+      expect(renderStub.calledWith('case_details/third_party_details/change-client-third-party.njk')).to.be.true;
     });
 
     it('should delegate API errors to Express error handling middleware', async () => {
@@ -158,7 +158,7 @@ describe('Edit Client Third Party Controller', () => {
 
       // Assert - Should configure form response with errors, not redirect
       expect(redirectStub.called).to.be.false;
-      expect(renderStub.calledWith('case_details/third_party_details/edit-client-third-party.njk')).to.be.true;
+      expect(renderStub.calledWith('case_details/third_party_details/change-client-third-party.njk')).to.be.true;
     });
 
     it('should handle no changes scenario properly', async () => {
@@ -180,7 +180,7 @@ describe('Edit Client Third Party Controller', () => {
 
       // Assert - Should render form with "no changes" error, not redirect
       expect(redirectStub.called).to.be.false;
-      expect(renderStub.calledWith('case_details/third_party_details/edit-client-third-party.njk')).to.be.true;
+      expect(renderStub.calledWith('case_details/third_party_details/change-client-third-party.njk')).to.be.true;
     });
 
     it('should delegate API errors to Express error handling middleware', async () => {
