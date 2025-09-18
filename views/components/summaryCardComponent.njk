@@ -75,6 +75,7 @@
   {# Build the rows array for govukSummaryList #}
   {% set summaryRows = [] %}
   {% set hasAnyData = false %}
+  {% set isSupportNeedsSummaryCard = options.card and options.card.id == "client-support-needs" %} 
 
   {% for row in options.rows %}
     {# Extract value from data object using the key #}
@@ -103,23 +104,20 @@
     {# Use processed value or fallback to "No data" #}
     {% set finalValue = trimmedValue if trimmedValue else t('pages.caseDetails.notProvided') %}
 
-
     {# Check if finalValue contains HTML or if html flag is set #}
     {% set isHtml = row.html === true or (finalValue and ('<' in finalValue)) %}
 
     {# Decide when to skip row in `Client support needs` summary card component #}
     {% set skipRow = false %}
-    {% if options.card and options.card.id == "client-support-needs" %}
-      {% set lowerFinalValue = (finalValue | lower) %}
-      {% if not trimmedValue or lowerFinalValue == "no" %}
+    {% if isSupportNeedsSummaryCard %}
+      {% set lowerTrimmed = (trimmedValue | lower) %}
+      {% if not trimmedValue or lowerTrimmed == "no" %}
         {% set skipRow = true %}
       {% endif %}
     {% endif %}
 
     {# If we are not skipping the row, mark data present and build row #}
     {% if not skipRow %}
-      {% set hasAnyData = true %}
-      {% set finalValue = trimmedValue %}
       {% if row.actions and row.actions.items %}
         {% set summaryRow = {
           key: {
