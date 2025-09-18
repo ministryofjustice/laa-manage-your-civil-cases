@@ -12,7 +12,10 @@
       }) }}
     {% endif %}
   {% else %}
-    {{ t('forms.clientDetails.phoneNumber.notSafeToCall') }}
+    {{ govukWarningText({
+      text: t('forms.clientDetails.phoneNumber.notSafeToCallWarning'),
+      iconFallbackText: t.common.warning
+    }) }}
   {% endif %}
 {% endset %}
 
@@ -20,7 +23,10 @@
   {% if data.thirdParty.safeToCall %}
     {{ data.thirdParty.contactNumber }}
   {% else %}
-    {{ t('forms.clientDetails.thirdParty.notSafeToCall') }}
+    {{ govukWarningText({
+      text: t('forms.clientDetails.phoneNumber.notSafeToCallWarning'),
+      iconFallbackText: t.common.warning
+    }) }}
   {% endif %}
 {% endset %}
 
