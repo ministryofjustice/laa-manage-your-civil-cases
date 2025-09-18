@@ -61,6 +61,22 @@ export function safeOptionalString(value: unknown): string | undefined {
 }
 
 /**
+ * Helper function to convert boolean to string for radio buttons
+ * @param {unknown} value - Boolean value from API
+ * @returns {string} String representation for form ('true', 'false', or '')
+ */
+export function booleanToString(value: unknown): string {
+  if (typeof value === 'boolean') {
+    return value.toString();
+  }
+  // Handle string boolean values as fallback
+  if (value === 'true' || value === 'false') {
+    return safeString(value);
+  }
+  return '';
+}
+
+/**
  * Type guard to check if value is a record object
  * @param {unknown} value Value to check
  * @returns {boolean} True if value is a record object

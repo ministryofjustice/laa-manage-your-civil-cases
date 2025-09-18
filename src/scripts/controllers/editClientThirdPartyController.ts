@@ -15,7 +15,8 @@ import {
   extractCurrentFields,
   safeNestedField,
   storeOriginalFormData,
-  clearSessionData
+  clearSessionData,
+  booleanToString
 } from '#src/scripts/helpers/index.js';
 import { apiService } from '#src/services/apiService.js';
 
@@ -88,7 +89,7 @@ export async function getEditClientThirdParty(req: Request, res: Response, next:
         thirdPartyFullName: safeStringFromRecord(thirdPartyData, 'fullName') ?? '',
         thirdPartyEmailAddress: safeStringFromRecord(thirdPartyData, 'emailAddress') ?? '',
         thirdPartyContactNumber: safeStringFromRecord(thirdPartyData, 'contactNumber') ?? '',
-        thirdPartySafeToCall: safeStringFromRecord(thirdPartyData, 'safeToCall') ?? '',
+        thirdPartySafeToCall: booleanToString(thirdPartyData.safeToCall),
         thirdPartyAddress: safeStringFromRecord(thirdPartyData, 'address') ?? '',
         thirdPartyPostcode: safeStringFromRecord(thirdPartyData, 'postcode') ?? '',
         thirdPartyRelationshipToClient: getFirstSelectedValue('thirdParty.relationshipToClient'),
