@@ -78,8 +78,7 @@
 
   {% for row in options.rows %}
     {# Extract value from data object using the key #}
-    {% set rawValue = options.data[row.key] if options.data and row.key else
-      null %}
+    {% set rawValue = options.data[row.key] if options.data and row.key else null %}
 
     {# Apply filter if specified #}
     {% set processedValue = rawValue %}
@@ -102,37 +101,48 @@
     {% endif %}
 
     {# Use processed value or fallback to "No data" #}
-    {% set finalValue = trimmedValue if trimmedValue else
-        '<span class="govuk-visually-hidden">No data</span>' %}
+    {% set finalValue = trimmedValue if trimmedValue else '<span class="govuk-visually-hidden">No data</span>' %}
 
     {# Check if finalValue contains HTML or if html flag is set #}
     {% set isHtml = row.html === true or (finalValue and ('<' in finalValue)) %}
 
-    {# Build the row object conditionally to avoid duplication #}
-    {% if row.actions and row.actions.items %}
-      {% set summaryRow = {
-        key: {
-          text: row.label
-        },
-        value: {
-          text: finalValue if not isHtml,
-          html: finalValue if isHtml
-        },
-        actions: row.actions
-      } %}
-    {% else %}
-      {% set summaryRow = {
-        key: {
-          text: row.label
-        },
-        value: {
-          text: finalValue if not isHtml,
-          html: finalValue if isHtml
-        }
-      } %}
+    {# Decide when to skip row in `Client support needs` summary card component #}
+    {% set skipRow = false %}
+    {% if options.card and options.card.id == "client-support-needs" %}
+      {% set lowerFinalValue = (finalValue | lower) %}
+      {% if not trimmedValue or lowerFinalValue == "no" %}
+        {% set skipRow = true %}
+      {% endif %}
     {% endif %}
 
-    {% set summaryRows = (summaryRows.push(summaryRow), summaryRows) %}
+    {# If we are not skipping the row, mark data present and build row #}
+    {% if not skipRow %}
+      {% set hasAnyData = true %}
+      {% set finalValue = trimmedValue %}
+      {% if row.actions and row.actions.items %}
+        {% set summaryRow = {
+          key: {
+            text: row.label
+          },
+          value: {
+            text: finalValue if not isHtml,
+            html: finalValue if isHtml
+          },
+          actions: row.actions
+        } %}
+      {% else %}
+        {% set summaryRow = {
+          key: {
+            text: row.label
+          },
+          value: {
+            text: finalValue if not isHtml,
+            html: finalValue if isHtml
+          }
+        } %}
+      {% endif %}
+      {% set summaryRows = (summaryRows.push(summaryRow), summaryRows) %}
+    {% endif %}
   {% endfor %}
 
   {# Only render the card if there's actual data to show #}

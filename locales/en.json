@@ -87,7 +87,8 @@
         "heading": "Client details",
         "aboutClient": "About the client",
         "contactDetails": "Contact details",
-        "thirdPartyContact": "Third party contact"
+        "thirdPartyContact": "Third party contact",
+        "clientSupportNeeds": "Client support needs"
       },
       "buttons": {
         "acceptCase": "Accept case",
@@ -97,7 +98,8 @@
         "leaveFeedback": "Leave feedback",
         "generateLegalHelpForm": "Generate legal help form",
         "reopenCase": "Reopen case",
-        "addThirdPartyContact": "Add third party contact"
+        "addThirdPartyContact": "Add third party contact",
+        "addClientSupportNeed": "Add client support need"
       },
       "removeThirdParty": {
         "pageTitle": "Remove third party? – {serviceName} – GOV.UK",
@@ -209,6 +211,13 @@
       "language": {
         "label": "Language"
       },
+      "clientSupportNeeds": {
+        "britishSignLanguage": "British Sign Language (BSL)",
+        "textRelay": "Relay UK (text relay)",
+        "callbackPreference": "Callback preference",
+        "language": "Language – needs interpreter",
+        "otherSupport": "Other support"
+      },
       "thirdParty": {
         "pageTitleAdd": "Add a third party contact – {caseReference} – {serviceName} – GOV.UK",
         "pageH1Add": "Add a third party contact",
@@ -269,7 +278,9 @@
       "changeLanguage": "Change Language",
       "changeReasonableAdjustments": "Change Reasonable adjustments",
       "changeThirdPartyContact": "Change Third party contact details",
-      "removeThirdPartyContact": "Remove Third party contact details"
+      "removeThirdPartyContact": "Remove Third party contact details",
+      "changeSupportNeeds": "Change Client support needs",
+      "removeSupportNeeds": "Remove Client support needs"
     }
   }
 }
