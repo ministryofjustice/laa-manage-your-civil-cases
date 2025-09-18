@@ -87,7 +87,8 @@
         "heading": "Client details",
         "aboutClient": "About the client",
         "contactDetails": "Contact details",
-        "thirdPartyContact": "Third party contact"
+        "thirdPartyContact": "Third party contact",
+        "clientSupportNeeds": "Client support needs"
       },
       "buttons": {
         "acceptCase": "Accept case",
@@ -97,7 +98,8 @@
         "leaveFeedback": "Leave feedback",
         "generateLegalHelpForm": "Generate legal help form",
         "reopenCase": "Reopen case",
-        "addThirdPartyContact": "Add third party contact"
+        "addThirdPartyContact": "Add third party contact",
+        "addClientSupportNeed": "Add client support need"
       },
       "removeThirdParty": {
         "pageTitle": "Remove third party? – {serviceName} – GOV.UK",
@@ -189,7 +191,7 @@
         "pageTitle": "Client phone number – {caseReference} – {serviceName} – GOV.UK",
         "safeToCall": "Is it safe to call this number?",
         "announceCall": "Can you say the call is from Civil Legal Advice?",
-        "notSafeToCall": "The client is not safe to call",
+        "notSafeToCallWarning": "Not safe to call",
         "doNotAnnounce": "Do not say the call is from Civil Legal Advice",
         "validationError": {
           "invalidFormat": "Enter the phone number in the correct format",
@@ -208,6 +210,13 @@
       },
       "language": {
         "label": "Language"
+      },
+      "clientSupportNeeds": {
+        "britishSignLanguage": "British Sign Language (BSL)",
+        "textRelay": "Relay UK (text relay)",
+        "callbackPreference": "Callback preference",
+        "language": "Language – needs interpreter",
+        "otherSupport": "Other support"
       },
       "thirdParty": {
         "pageTitleAdd": "Add a third party contact – {caseReference} – {serviceName} – GOV.UK",
@@ -233,7 +242,6 @@
           "other": "Other"
         },
         "safeToCall": "Is the third party safe to call?",
-        "notSafeToCall": "The third party is not safe to call",
         "passphrase": {
           "title": "Passphrase",
           "titleH2": "Has the client set up a passphrase?",
@@ -270,7 +278,9 @@
       "changeLanguage": "Change Language",
       "changeReasonableAdjustments": "Change Reasonable adjustments",
       "changeThirdPartyContact": "Change Third party contact details",
-      "removeThirdPartyContact": "Remove Third party contact details"
+      "removeThirdPartyContact": "Remove Third party contact details",
+      "changeSupportNeeds": "Change Client support needs",
+      "removeSupportNeeds": "Remove Client support needs"
     }
   }
 }

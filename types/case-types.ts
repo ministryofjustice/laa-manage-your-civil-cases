@@ -24,7 +24,6 @@ export interface CaseData {
   emailAddress?: string;
   // Client information
   clientIsVulnerable?: boolean;
-  language?: string;
   address?: string;
   postcode?: string;
   specialNotes?: string;
