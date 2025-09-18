@@ -173,4 +173,85 @@ export const apiHandlers = [
       }
     });
   }),
+
+  // Intercept client details updates (PUT /latest/mock/cases/{caseReference})
+  http.put(`${API_BASE_URL}${API_PREFIX}/cases/:caseReference`, async ({ params, request }) => {
+    const { caseReference } = params;
+    const updateData = await request.json() as Record<string, any>;
+    
+    console.log(`🎯 MSW intercepted: PUT ${API_PREFIX}/cases/${caseReference}`, updateData);
+    
+    const caseItem = cases.find(c => c.caseReference === caseReference);
+    
+    if (!caseItem) {
+      return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
+    }
+    
+    // Return the updated case data (in real implementation this would update the mock data)
+    const updatedCase = { ...caseItem, ...updateData };
+    
+    return HttpResponse.json(updatedCase);
+  }),
+
+  // Intercept add third party contact (POST /latest/mock/cases/{caseReference}/third-party)
+  http.post(`${API_BASE_URL}${API_PREFIX}/cases/:caseReference/third-party`, async ({ params, request }) => {
+    const { caseReference } = params;
+    const thirdPartyData = await request.json() as Record<string, any>;
+    
+    console.log(`🎯 MSW intercepted: POST ${API_PREFIX}/cases/${caseReference}/third-party`, thirdPartyData);
+    
+    const caseItem = cases.find(c => c.caseReference === caseReference);
+    
+    if (!caseItem) {
+      return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
+    }
+    
+    // Return success response for adding third party contact
+    return HttpResponse.json({ 
+      success: true, 
+      message: 'Third party contact added successfully',
+      thirdPartyId: `tp-${Date.now()}` // Mock ID
+    }, { status: 201 });
+  }),
+
+  // Intercept update third party contact (PUT /latest/mock/cases/{caseReference}/third-party)
+  http.put(`${API_BASE_URL}${API_PREFIX}/cases/:caseReference/third-party`, async ({ params, request }) => {
+    const { caseReference } = params;
+    const thirdPartyData = await request.json() as Record<string, any>;
+    
+    console.log(`🎯 MSW intercepted: PUT ${API_PREFIX}/cases/${caseReference}/third-party`, thirdPartyData);
+    
+    const caseItem = cases.find(c => c.caseReference === caseReference);
+    
+    if (!caseItem) {
+      return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
+    }
+    
+    // Return success response for updating third party contact
+    return HttpResponse.json({ 
+      success: true, 
+      message: 'Third party contact updated successfully'
+    });
+  }),
+
+  // Intercept delete third party contact (DELETE /latest/mock/cases/{caseReference}/third-party)
+  http.delete(`${API_BASE_URL}${API_PREFIX}/cases/:caseReference/third-party`, ({ params, request }) => {
+    const { caseReference } = params;
+    const url = new URL(request.url);
+    const thirdPartyId = url.searchParams.get('id');
+    
+    console.log(`🎯 MSW intercepted: DELETE ${API_PREFIX}/cases/${caseReference}/third-party?id=${thirdPartyId}`);
+    
+    const caseItem = cases.find(c => c.caseReference === caseReference);
+    
+    if (!caseItem) {
+      return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
+    }
+    
+    // Return success response for deleting third party contact
+    return HttpResponse.json({ 
+      success: true, 
+      message: 'Third party contact deleted successfully'
+    });
+  }),
 ];
