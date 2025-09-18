@@ -110,12 +110,7 @@ export function createPaginatedResponse(
  * @param context - Additional context information
  */
 export function logRequest(request: Request, context: string = ''): void {
-  console.log(`🔍 MSW Request ${context}:`, {
-    method: request.method,
-    url: request.url,
-    headers: Object.fromEntries(request.headers.entries()),
-    timestamp: new Date().toISOString()
-  });
+  // Debug logging disabled
 }
 
 /**

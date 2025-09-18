@@ -33,7 +33,6 @@ export const serverConfig = {
  */
 export function startMSWServer(): void {
   server.listen(serverConfig);
-  console.log('✅ MSW server started with', handlers.length, 'handlers');
 }
 
 /**
@@ -42,7 +41,6 @@ export function startMSWServer(): void {
  */
 export function stopMSWServer(): void {
   server.close();
-  console.log('✅ MSW server stopped');
 }
 
 /**
@@ -82,7 +80,6 @@ export function validateTestEnvironment(): void {
  * Debug helper to log MSW configuration
  */
 export function logMSWConfiguration(): void {
-  console.log('🔍 MSW Configuration:');
   console.log('  - Handlers loaded:', handlers.length);
   console.log('  - Server config:', serverConfig);
   console.log('  - NODE_ENV:', process.env.NODE_ENV);

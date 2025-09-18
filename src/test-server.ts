@@ -17,7 +17,6 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-console.log('🎭 Starting test server with MSW integration...');
 
 // Initialize MSW before Express startup
 const mswServer = setupServer(...handlers);
@@ -27,7 +26,6 @@ mswServer.listen({
   onUnhandledRequest: 'warn'
 });
 
-console.log('✅ MSW server initialized with', handlers.length, 'handlers');
 
 // Create minimal Express app for testing
 const app = express();
@@ -65,7 +63,6 @@ app.get('/', (req, res) => {
 });
 
 // Log environment configuration for debugging
-console.log('🔍 Environment Configuration:');
 console.log('  - NODE_ENV:', process.env.NODE_ENV);
 console.log('  - PORT:', process.env.PORT);
 console.log('  - API_URL:', process.env.API_URL);
@@ -77,8 +74,6 @@ const port = process.env.PORT || 3000;
 
 const server = app.listen(port, () => {
   console.log(`🚀 Express test server listening on port ${port}`);
-  console.log(`📡 MSW intercepting API calls to: ${process.env.API_URL || 'http://localhost:3001'}${process.env.API_PREFIX || '/latest/mock'}`);
-  console.log('🎯 Ready for Playwright tests!');
 });
 
 // Graceful shutdown
@@ -89,7 +84,6 @@ const gracefulShutdown = (signal: string) => {
     console.log('✅ Express server closed');
     
     mswServer.close();
-    console.log('✅ MSW server closed');
     
     process.exit(0);
   });

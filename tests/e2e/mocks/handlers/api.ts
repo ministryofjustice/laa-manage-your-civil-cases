@@ -77,7 +77,6 @@ function paginateResults(data: MockCase[], page: number = 1, limit: number = 20)
 export const apiHandlers = [
   // Intercept authentication token requests
   http.post(`${API_BASE_URL}/latest/token`, () => {
-    console.log(`🎯 MSW intercepted: POST /latest/token`);
     
     return HttpResponse.json({
       access_token: 'mock-jwt-token',
@@ -96,7 +95,6 @@ export const apiHandlers = [
       return; // Let other handlers process this
     }
     
-    console.log(`🎯 MSW intercepted: GET ${API_PREFIX}/cases/${caseReference}`);
     
     const caseItem = cases.find(c => c.caseReference === caseReference);
     
@@ -137,7 +135,6 @@ export const apiHandlers = [
     const page = parseInt(url.searchParams.get('page') || '1', 10);
     const limit = parseInt(url.searchParams.get('limit') || '20', 10);
     
-    console.log(`🎯 MSW intercepted: GET ${API_PREFIX}/cases/${caseType} (page ${page}, limit ${limit})`);
     
     const filteredCases = filterCasesByStatus(caseType as string);
     const result = paginateResults(filteredCases, page, limit);
@@ -161,8 +158,6 @@ export const apiHandlers = [
     const page = parseInt(url.searchParams.get('page') || '1', 10);
     const limit = parseInt(url.searchParams.get('limit') || '20', 10);
     
-    console.log(`🔍 MSW SEARCH HANDLER CALLED: ${request.method} ${request.url}`);
-    console.log(`🔍 MSW SEARCH PARAMS: keyword="${keyword}", status="${status}", page=${page}, limit=${limit}`);
     
     let filteredCases = cases;
     
@@ -173,7 +168,6 @@ export const apiHandlers = [
         caseItem.fullName.toLowerCase().includes(keyword.toLowerCase()) ||
         caseItem.caseReference.toLowerCase().includes(keyword.toLowerCase())
       );
-      console.log(`🔍 MSW SEARCH FILTER: ${beforeFilter} cases -> ${filteredCases.length} cases after keyword filter`);
     }
     
     // Filter by status if provided
@@ -195,13 +189,10 @@ export const apiHandlers = [
         const validStatuses = statusMap[status] || [];
         return validStatuses.includes(caseItem.caseStatus);
       });
-      console.log(`🔍 MSW SEARCH STATUS: ${beforeStatusFilter} cases -> ${filteredCases.length} cases after status filter`);
     }
     
     const result = paginateResults(filteredCases, page, limit);
     
-    console.log(`🔍 MSW SEARCH RESPONSE: returning ${result.data.length} cases (total: ${result.pagination.total})`);
-    console.log(`🔍 MSW SEARCH RESPONSE DATA:`, result.data.map(c => ({ caseReference: c.caseReference, fullName: c.fullName })));
     
     return HttpResponse.json(result.data, {
       headers: {
@@ -218,7 +209,6 @@ export const apiHandlers = [
     const { caseReference } = params;
     const updateData = await request.json() as Record<string, any>;
     
-    console.log(`🎯 MSW intercepted: PUT ${API_PREFIX}/cases/${caseReference}`, updateData);
     
     const caseItem = cases.find(c => c.caseReference === caseReference);
     
@@ -237,7 +227,6 @@ export const apiHandlers = [
     const { caseReference } = params;
     const thirdPartyData = await request.json() as Record<string, any>;
     
-    console.log(`🎯 MSW intercepted: POST ${API_PREFIX}/cases/${caseReference}/third-party`, thirdPartyData);
     
     const caseItem = cases.find(c => c.caseReference === caseReference);
     
@@ -262,7 +251,6 @@ export const apiHandlers = [
     const { caseReference } = params;
     const thirdPartyData = await request.json() as Record<string, any>;
     
-    console.log(`🎯 MSW intercepted: PUT ${API_PREFIX}/cases/${caseReference}/third-party`, thirdPartyData);
     
     const caseItem = cases.find(c => c.caseReference === caseReference);
     
@@ -287,7 +275,6 @@ export const apiHandlers = [
     const url = new URL(request.url);
     const thirdPartyId = url.searchParams.get('id');
     
-    console.log(`🎯 MSW intercepted: DELETE ${API_PREFIX}/cases/${caseReference}/third-party?id=${thirdPartyId}`);
     
     const caseItem = cases.find(c => c.caseReference === caseReference);
     

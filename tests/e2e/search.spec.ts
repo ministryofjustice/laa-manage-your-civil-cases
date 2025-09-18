@@ -70,36 +70,27 @@ test('if clear button clicked page should refresh', async ({ page, i18nSetup }) 
 });
 
 test('search with valid keyword should display results', async ({ page, i18nSetup }) => {
-  console.log('🧪 TEST START: search with valid keyword should display results');
   
   // Navigate to search page
-  console.log('🧪 TEST: Navigating to /search');
   await page.goto('/search');
   
   // Wait for page to load
-  console.log('🧪 TEST: Waiting for page load');
   await page.waitForLoadState('networkidle');
   
   // Check if page loaded correctly
   const title = await page.title();
-  console.log(`🧪 TEST: Page title is "${title}"`);
   
   // Enter search keyword
-  console.log('🧪 TEST: Looking for search input field');
   const searchInput = page.locator('#searchKeyword');
   await expect(searchInput).toBeVisible();
-  console.log('🧪 TEST: Search input found, filling with "John"');
   await searchInput.fill('John');
   
   // Verify the input value was set
   const inputValue = await searchInput.inputValue();
-  console.log(`🧪 TEST: Search input value is "${inputValue}"`);
   
   // Click the search button
-  console.log('🧪 TEST: Looking for search button');
   const searchButton = page.locator('button[type="submit"]');
   await expect(searchButton).toBeVisible();
-  console.log('🧪 TEST: Search button found, clicking...');
   
   // Listen for any network requests during the search
   page.on('request', request => {
@@ -112,14 +103,12 @@ test('search with valid keyword should display results', async ({ page, i18nSetu
   
   await searchButton.click();
   
-  console.log('🧪 TEST: Search button clicked, waiting for response...');
   
   // Wait for navigation or response
   await page.waitForLoadState('networkidle');
   
   // Check current URL
   const currentUrl = page.url();
-  console.log(`🧪 TEST: Current URL after search: ${currentUrl}`);
   
   // Check for any console errors
   const logs = [];
@@ -129,12 +118,9 @@ test('search with valid keyword should display results', async ({ page, i18nSetu
   });
   
   // Verify the page loaded successfully by checking for main content
-  console.log('🧪 TEST: Looking for main content area');
   const mainContent = page.locator('main');
   await expect(mainContent).toBeVisible();
-  console.log('🧪 TEST: Main content found');
   
-  console.log('🧪 TEST COMPLETE: search with valid keyword should display results');
 });test('search clear functionality via GET route', async ({ page, i18nSetup }) => {
   // Navigate to the search clear route directly
   await page.goto('/search/clear');

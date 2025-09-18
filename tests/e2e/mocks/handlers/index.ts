@@ -14,7 +14,6 @@ import { apiHandlers } from './api.js';
 
 // Add debug handler to log all intercepted requests
 const debugHandler = http.all('*', ({ request }) => {
-  console.log(`🎯 MSW INTERCEPTED: ${request.method} ${request.url}`);
   // Return undefined to pass through to actual handlers
   return;
 });
