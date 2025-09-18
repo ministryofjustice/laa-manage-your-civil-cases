@@ -12,7 +12,10 @@
       }) }}
     {% endif %}
   {% else %}
-    {{ t('forms.clientDetails.phoneNumber.notSafeToCall') }}
+    {{ govukWarningText({
+      text: t('forms.clientDetails.phoneNumber.notSafeToCallWarning'),
+      iconFallbackText: t.common.warning
+    }) }}
   {% endif %}
 {% endset %}
 
@@ -20,19 +23,26 @@
   {% if data.thirdParty.safeToCall %}
     {{ data.thirdParty.contactNumber }}
   {% else %}
-    {{ t('forms.clientDetails.thirdParty.notSafeToCall') }}
+    {{ govukWarningText({
+      text: t('forms.clientDetails.phoneNumber.notSafeToCallWarning'),
+      iconFallbackText: t.common.warning
+    }) }}
   {% endif %}
 {% endset %}
 
 {% macro renderAddress(address, postcode) %}
-  {% if address %}
-    {{ address }}
-    {% if postcode %}
+  {% if address or postcode %}
+    {% if address %}
+      {{ address }}
+      {% if postcode %}
         <br>
+      {% endif %}
     {% endif %}
-  {% endif %}
-  {% if postcode %}
-    {{ postcode }}
+    {% if postcode %}
+      {{ postcode }}
+    {% endif %}
+  {% else %}
+    {{ t('pages.caseDetails.notProvided') }}
   {% endif %}
 {% endmacro %}
 
@@ -62,11 +72,15 @@
   email: data.emailAddress,
   phoneNumber: data.phoneNumber,
   specialNotes: data.specialNotes,
-  language: data.language,
   address: data.address,
   postcode: data.postcode,
   computedPhoneNumber: phoneNumberContent,
   computedAddress: addressWithPostcode,
+  bslWebcam: data.clientSupportNeeds.bslWebcam,
+  textRelay: data.clientSupportNeeds.textRelay,
+  callbackPreference: data.clientSupportNeeds.callbackPreference,
+  languageSupportNeeds: data.clientSupportNeeds.languageSupportNeeds,
+  notes: data.clientSupportNeeds.notes,
   fullNameThirdParty: data.thirdParty.fullName,
   computedAddressThirdParty: addressWithPostcodeThirdParty,
   computedPhoneNumberThirdParty: phoneNumberContentThirdParty,
@@ -166,6 +180,64 @@
   ]
 }) }}
 
+{% if data.clientSupportNeeds %}
+  {# Client support needs summary card #}
+  {{ summaryCardComponent({
+    data: constructedData,
+    card: {
+      id: "client-support-needs",
+      title: {
+        text: t('pages.caseDetails.clientDetails.clientSupportNeeds')
+      },
+      actions: {
+        items: [
+          {
+            href: "/cases/" + data.caseReference + "/client-details/edit/support-need",
+            text: t('common.change'),
+            visuallyHiddenText: t('accessibility.visuallyHiddenText.changeSupportNeeds')
+          },
+          {
+            href: "/cases/" + data.caseReference + "/confirm/remove-support-need/",
+            text: t('common.remove'),
+            visuallyHiddenText: t('accessibility.visuallyHiddenText.removeSupportNeeds')
+          }
+        ]
+      }
+    },
+    rows: [
+      {
+        label: t('forms.clientDetails.clientSupportNeeds.britishSignLanguage'),
+        key: "bslWebcam"
+      },
+      {
+        label: t('forms.clientDetails.clientSupportNeeds.textRelay'),
+        key: "textRelay"
+      },
+      {
+        label: t('forms.clientDetails.clientSupportNeeds.callbackPreference'),
+        key: "callbackPreference"
+      },
+      {
+        label: t('forms.clientDetails.clientSupportNeeds.language'),
+        key: "languageSupportNeeds"
+      },
+      {
+        label: t('forms.clientDetails.clientSupportNeeds.otherSupport'),
+        key: "notes"
+      }
+    ]
+  }) }}
+{% else %}
+  <div class="govuk-width-container govuk-!-margin-top-8 govuk-!-margin-bottom-5">
+    {{ govukButton({
+      href: "/cases/" + data.caseReference + "/client-details/add/support-need",
+      text: t('pages.caseDetails.buttons.addClientSupportNeed'),
+      classes: "govuk-button--secondary"
+    }) }}
+  </div>
+{% endif %}
+
+
 {% if data.thirdParty %}
   <h2 class="govuk-heading-m">{{ t('pages.caseDetails.clientDetails.thirdPartyContact') }}</h2>
   {# Third party info summary card #}
@@ -221,9 +293,11 @@
     ]
   }) }}
 {% else %}
-  {{ govukButton({
-    href: "/cases/" + data.caseReference + "/client-details/add/third-party",
-    text: t('pages.caseDetails.buttons.addThirdPartyContact'),
-    classes: "govuk-button--secondary"
-  }) }}
+  <div class="govuk-width-container">
+    {{ govukButton({
+      href: "/cases/" + data.caseReference + "/client-details/add/third-party",
+      text: t('pages.caseDetails.buttons.addThirdPartyContact'),
+      classes: "govuk-button--secondary"
+    }) }}
+  </div>
 {% endif %}
