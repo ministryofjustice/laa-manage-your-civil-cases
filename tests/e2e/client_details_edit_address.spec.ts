@@ -2,6 +2,7 @@ import { test, expect } from './fixtures/index.js';
 import { t, getClientDetailsUrlByStatus } from './helpers/index.js';
 
 const visitUrl = getClientDetailsUrlByStatus('default') + '/change/address';
+const clientDetailsUrl = getClientDetailsUrlByStatus('default');
 
 test('viewing change address form, to see the expected elements', async ({ page, i18nSetup }) => {
   const addressInput = page.locator('#address');
@@ -42,6 +43,25 @@ test('unchanged fields trigger change detection error (AC5)', async ({ page, i18
   const postcodeErrorMessage = page.locator('#postcode-error');
   await expect(addressErrorMessage).not.toBeVisible();
   await expect(postcodeErrorMessage).not.toBeVisible();
+});
+
+test('save button should redirect to client details when valid data submitted', async ({ page, i18nSetup }) => {
+  const addressInput = page.locator('#address');
+  const postcodeInput = page.locator('#postcode');
+  const saveButton = page.getByRole('button', { name: t('common.save') });
+
+  // Navigate to the change address form
+  await page.goto(visitUrl);
+
+  // Fill in valid address details (ensure they're different from any existing data)
+  await addressInput.fill('123 New Street\nLondon');
+  await postcodeInput.fill('SW1A 1AA');
+
+  // Submit the form
+  await saveButton.click();
+
+  // Should redirect to client details page
+  await expect(page).toHaveURL(clientDetailsUrl);
 });
 
 test('address edit page should be accessible', {
