@@ -189,7 +189,7 @@
         "pageTitle": "Client phone number – {caseReference} – {serviceName} – GOV.UK",
         "safeToCall": "Is it safe to call this number?",
         "announceCall": "Can you say the call is from Civil Legal Advice?",
-        "notSafeToCall": "The client is not safe to call",
+        "notSafeToCallWarning": "Not safe to call",
         "doNotAnnounce": "Do not say the call is from Civil Legal Advice",
         "validationError": {
           "invalidFormat": "Enter the phone number in the correct format",
@@ -233,7 +233,6 @@
           "other": "Other"
         },
         "safeToCall": "Is the third party safe to call?",
-        "notSafeToCall": "The third party is not safe to call",
         "passphrase": {
           "title": "Passphrase",
           "titleH2": "Has the client set up a passphrase?",
