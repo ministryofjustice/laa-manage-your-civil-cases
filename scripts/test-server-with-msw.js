@@ -22,6 +22,7 @@ console.log('✅ MSW server initialized with', handlers.length, 'handlers');
 
 // Set environment variables for the Express app
 process.env.NODE_ENV = 'test';
+process.env.PORT = '3001';  // Ensure server runs on port 3001 for Playwright
 process.env.USE_MSW = 'true';
 process.env.API_URL = 'https://laa-civil-case-api-uat.cloud-platform.service.justice.gov.uk';
 process.env.API_PREFIX = '/latest/mock';
