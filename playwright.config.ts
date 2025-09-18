@@ -22,7 +22,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:3001',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: process.env.CI === 'true' ? 'on' : 'on-first-retry',
@@ -37,13 +37,15 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'yarn test:server',
-  //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: process.env.CI !== 'true',
-  //   env: {
-  //     NODE_ENV: 'test',
-  //     USE_MSW: 'true'
-  //   }
-  // },
+  webServer: {
+    command: 'yarn tsx scripts/test-server-with-msw.js',
+    url: 'http://127.0.0.1:3001',
+    reuseExistingServer: process.env.CI !== 'true',
+    env: {
+      NODE_ENV: 'test',
+      PORT: '3001',
+      API_URL: 'https://laa-civil-case-api-uat.cloud-platform.service.justice.gov.uk',
+      API_PREFIX: '/latest/mock'
+    }
+  },
 });
