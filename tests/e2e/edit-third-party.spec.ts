@@ -1,14 +1,14 @@
 import { test, expect } from './fixtures/index.js';
 import { t, getClientDetailsUrlByStatus } from './helpers/index.js';
 
-const visitUrl = getClientDetailsUrlByStatus('default') + '/client-details/edit/third-party';
+const visitUrl = getClientDetailsUrlByStatus('default') + '/edit/third-party';
 const clientDetailsUrl = getClientDetailsUrlByStatus('default');
 
 test('viewing edit third party form should display expected elements', async ({ page, i18nSetup }) => {
-  const nameInput = page.locator('#thirdPartyName');
-  const relationshipInput = page.locator('#relationship');
-  const phoneInput = page.locator('#phoneNumber');
-  const emailInput = page.locator('#emailAddress');
+  const nameInput = page.locator('#thirdPartyFullName');
+  const relationshipRadios = page.locator('[name="thirdPartyRelationshipToClient"]');
+  const phoneInput = page.locator('#thirdPartyContactNumber');
+  const emailInput = page.locator('#thirdPartyEmailAddress');
   const saveButton = page.getByRole('button', { name: t('common.save') });
   const cancelLink = page.getByRole('link', { name: t('common.cancel') });
 
@@ -16,9 +16,9 @@ test('viewing edit third party form should display expected elements', async ({ 
   await page.goto(visitUrl);
 
   // Expect to see the main elements
-  await expect(page.locator('h1')).toContainText(t('forms.thirdParty.edit.title'));
+  await expect(page.locator('h1')).toContainText('Edit third party contact');
   await expect(nameInput).toBeVisible();
-  await expect(relationshipInput).toBeVisible();
+  await expect(relationshipRadios.first()).toBeVisible();
   await expect(phoneInput).toBeVisible();
   await expect(emailInput).toBeVisible();
   await expect(saveButton).toBeVisible();
@@ -42,10 +42,10 @@ test('cancel link should navigate back to client details', async ({ page, i18nSe
 });
 
 test('save button should redirect to client details when valid data submitted', async ({ page, i18nSetup }) => {
-  const nameInput = page.locator('#thirdPartyName');
-  const relationshipInput = page.locator('#relationship');
-  const phoneInput = page.locator('#phoneNumber');
-  const emailInput = page.locator('#emailAddress');
+  const nameInput = page.locator('#thirdPartyFullName');
+  const relationshipRadios = page.locator('[name="thirdPartyRelationshipToClient"]');
+  const phoneInput = page.locator('#thirdPartyContactNumber');
+  const emailInput = page.locator('#thirdPartyEmailAddress');
   const saveButton = page.getByRole('button', { name: t('common.save') });
 
   // Navigate to the edit third party form
@@ -53,7 +53,7 @@ test('save button should redirect to client details when valid data submitted', 
 
   // Update third party details
   await nameInput.fill('Jane Smith');
-  await relationshipInput.fill('Sister');
+  await relationshipRadios.first().check(); // Select first relationship option
   await phoneInput.fill('07700900456');
   await emailInput.fill('jane.smith@example.com');
 
@@ -65,7 +65,7 @@ test('save button should redirect to client details when valid data submitted', 
 });
 
 test('edit third party form displays validation errors correctly', async ({ page, i18nSetup }) => {
-  const nameInput = page.locator('#thirdPartyName');
+  const nameInput = page.locator('#thirdPartyFullName');
   const saveButton = page.getByRole('button', { name: t('common.save') });
 
   // Navigate to the edit third party form
