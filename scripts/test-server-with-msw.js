@@ -8,17 +8,32 @@
 import { setupServer } from 'msw/node';
 import { handlers } from '../tests/e2e/mocks/handlers/index.js';
 
-console.log('🎭 Starting Express app with MSW integration...');
+// Disable rate limiting for E2E tests to prevent 429 errors during parallel test execution
+process.env.SKIP_RATE_LIMIT = 'true';
+
+// Force all output to be visible
+process.stdout.write('🎭 [' + new Date().toISOString() + '] Starting Express app with MSW integration...\n');
 
 // Initialize MSW before importing the app
 const mswServer = setupServer(...handlers);
 
-// Enable request interception
+// Enable request interception with enhanced debugging
 mswServer.listen({ 
-  onUnhandledRequest: 'warn'
+  onUnhandledRequest: (req, print) => {
+    const timestamp = new Date().toISOString();
+    process.stdout.write(`🚨 [${timestamp}] UNHANDLED REQUEST: ${req.method} ${req.url}\n`);
+    process.stdout.write(`🚨 [${timestamp}] Headers: ${JSON.stringify(req.headers.raw())}\n`);
+    process.stdout.write(`🚨 [${timestamp}] Origin: ${req.headers.get('origin')}\n`);
+    process.stdout.write(`🚨 [${timestamp}] User-Agent: ${req.headers.get('user-agent')}\n`);
+    print.warning();
+  }
 });
 
-console.log('✅ MSW server initialized with', handlers.length, 'handlers');
+process.stdout.write('✅ [' + new Date().toISOString() + '] MSW server initialized with ' + handlers.length + ' handlers\n');
+process.stdout.write('🔍 [' + new Date().toISOString() + '] MSW handlers loaded:\n');
+handlers.forEach((handler, index) => {
+  process.stdout.write(`  ${index + 1}. ${handler.info.method} ${handler.info.path}\n`);
+});
 
 // Set environment variables for the Express app
 process.env.NODE_ENV = 'test';
@@ -31,9 +46,20 @@ process.env.API_PREFIX = '/latest/mock';
 // The app should be built before running this script
 import('../public/app.js')
   .then(() => {
-    console.log('🚀 Express application started with MSW enabled');
-    console.log('📡 MSW intercepting API calls to:', process.env.API_URL + process.env.API_PREFIX);
-    console.log('🎯 Ready for Playwright tests!');
+    const timestamp = new Date().toISOString();
+    process.stdout.write(`🚀 [${timestamp}] Express application started with MSW enabled\n`);
+    process.stdout.write(`📡 [${timestamp}] MSW intercepting API calls to: ${process.env.API_URL}${process.env.API_PREFIX}\n`);
+    process.stdout.write(`🎯 [${timestamp}] Ready for Playwright tests!\n`);
+    
+    // Test MSW is working by making a test request
+    setTimeout(async () => {
+      try {
+        const response = await fetch(process.env.API_URL + process.env.API_PREFIX + '/test');
+        console.log('🧪 MSW Test Response Status:', response.status);
+      } catch (error) {
+        console.log('🧪 MSW Test Request Failed (Expected):', error.message);
+      }
+    }, 1000);
   })
   .catch((error) => {
     console.error('💥 Failed to start Express application:', error);

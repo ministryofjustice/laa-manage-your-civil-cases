@@ -25,11 +25,13 @@ declare module 'express-session' {
  * @returns {{ sortOrder: string; sort: string; pageStr: string; limitStr: string; isPaginationOrSort: boolean }} Parameters object
  */
 function getPaginationParameters(req: Request): { sortOrder: string; sort: string; pageStr: string; limitStr: string; isPaginationOrSort: boolean } {
+  console.log('🔍 HELPER: getPaginationParameters called');
   const sortOrder = safeString(req.query.sortOrder);
   const sort = safeString(req.query.sort);
   const pageStr = safeString(req.query.page);
   const limitStr = safeString(req.query.limit);
   const isPaginationOrSort = pageStr !== '' || sortOrder !== '' || sort !== '';
+  console.log('🔍 HELPER: getPaginationParameters result:', { sortOrder, sort, pageStr, limitStr, isPaginationOrSort });
 
   return { sortOrder, sort, pageStr, limitStr, isPaginationOrSort };
 }
@@ -40,6 +42,7 @@ function getPaginationParameters(req: Request): { sortOrder: string; sort: strin
  * @returns {{ keyword: string; status: string }} Raw parameters from body or query
  */
 function extractRawSearchParameters(req: Request): { keyword: string; status: string } {
+  console.log('🔍 HELPER: extractRawSearchParameters called');
   const bodyKeyword = hasProperty(req.body, 'searchKeyword') ? safeString(req.body.searchKeyword) : '';
   const queryKeyword = safeString(req.query.searchKeyword);
   const bodyStatus = hasProperty(req.body, 'statusSelect') ? safeString(req.body.statusSelect) : '';
@@ -47,6 +50,7 @@ function extractRawSearchParameters(req: Request): { keyword: string; status: st
 
   const keyword = bodyKeyword !== '' ? bodyKeyword : queryKeyword;
   const status = bodyStatus !== '' ? bodyStatus : queryStatus;
+  console.log('🔍 HELPER: extractRawSearchParameters result:', { keyword, status, bodyKeyword, queryKeyword, bodyStatus, queryStatus });
 
   return { keyword, status };
 }
@@ -58,7 +62,9 @@ function extractRawSearchParameters(req: Request): { keyword: string; status: st
  * @returns {{ keyword: string; status: string }} Parameters from session
  */
 function getSessionParameters(req: Request, isPaginationOrSort: boolean): { keyword: string; status: string } {
+  console.log('🔍 HELPER: getSessionParameters called with isPaginationOrSort:', isPaginationOrSort);
   if (!isPaginationOrSort) {
+    console.log('🔍 HELPER: getSessionParameters returning defaults (not pagination/sort)');
     return { keyword: '', status: 'all' };
   }
 
@@ -67,6 +73,7 @@ function getSessionParameters(req: Request, isPaginationOrSort: boolean): { keyw
 
   const keyword = (sessionKeyword !== undefined && sessionKeyword !== '') ? sessionKeyword : '';
   const status = (sessionStatus !== undefined && sessionStatus !== '') ? sessionStatus : 'all';
+  console.log('🔍 HELPER: getSessionParameters result:', { keyword, status, sessionKeyword, sessionStatus });
 
   return { keyword, status };
 }
@@ -77,27 +84,33 @@ function getSessionParameters(req: Request, isPaginationOrSort: boolean): { keyw
  * @returns {{ keyword: string; status: string }} Object with keyword and status
  */
 function getSearchParameters(req: Request): { keyword: string; status: string } {
+  console.log('🔍 HELPER: getSearchParameters called');
   let { keyword, status } = extractRawSearchParameters(req);
   const { isPaginationOrSort } = getPaginationParameters(req);
+  console.log('🔍 HELPER: getSearchParameters initial values:', { keyword, status, isPaginationOrSort });
 
   // Default status to 'all' if no statusSelect parameter exists
   const hasBodyStatus = hasProperty(req.body, 'statusSelect');
   const hasQueryStatus = req.query.statusSelect !== undefined;
   if (status === '' && !hasBodyStatus && !hasQueryStatus) {
     status = 'all';
+    console.log('🔍 HELPER: getSearchParameters defaulted status to "all"');
   }
 
   // If explicit search parameters are provided, store them in session
   if (keyword !== '' || status !== 'all') {
+    console.log('🔍 HELPER: getSearchParameters storing in session:', { keyword, status });
     req.session.searchKeyword = keyword;
     req.session.statusSelect = status;
   }
   // If navigating pages without search params, use session values
   else {
+    console.log('🔍 HELPER: getSearchParameters using session values');
     const sessionParams = getSessionParameters(req, isPaginationOrSort);
     ({ keyword, status } = sessionParams);
   }
 
+  console.log('🔍 HELPER: getSearchParameters final result:', { keyword, status });
   return { keyword, status };
 }
 
@@ -107,12 +120,14 @@ function getSearchParameters(req: Request): { keyword: string; status: string } 
  * @param {Response} res - Express response object
  */
 function renderEmptyForm(req: Request, res: Response): void {
+  console.log('🔍 HELPER: renderEmptyForm called');
   res.render('search/index.njk', {
     searchKeyword: '',
     statusSelect: 'all',
     searchPerformed: false,
     request: req
   });
+  console.log('🔍 HELPER: renderEmptyForm completed');
 }
 
 /**
@@ -133,6 +148,7 @@ function renderSearchResults(req: Request, res: Response, params: {
   sortOrder: string;
   apiResponse: { data?: unknown; pagination?: unknown };
 }): void {
+  console.log('🔍 HELPER: renderSearchResults called with params:', params);
   const { keyword, status, sortOrder, apiResponse } = params;
 
   res.render('search/index.njk', {
@@ -145,6 +161,7 @@ function renderSearchResults(req: Request, res: Response, params: {
     sortOrder,
     request: req
   });
+  console.log('🔍 HELPER: renderSearchResults completed');
 }
 
 /**
@@ -156,9 +173,17 @@ function renderSearchResults(req: Request, res: Response, params: {
  */
 export async function processSearch(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
+    console.log('🔍 SEARCH CONTROLLER: processSearch called');
+    console.log('🔍 SEARCH CONTROLLER: req.method =', req.method);
+    console.log('🔍 SEARCH CONTROLLER: req.body =', req.body);
+    console.log('🔍 SEARCH CONTROLLER: req.query =', req.query);
+    
     // Handle validation errors first
     const validationErrors = validationResult(req);
+    console.log('🔍 SEARCH CONTROLLER: validation errors =', validationErrors.isEmpty() ? 'none' : validationErrors.array());
+    
     if (!validationErrors.isEmpty()) {
+      console.log('🔍 SEARCH CONTROLLER: returning validation error response');
       const formattedErrors = validationErrors.formatWith(formatValidationError);
       const errorArray = formattedErrors.array();
 
@@ -195,9 +220,11 @@ export async function processSearch(req: Request, res: Response, next: NextFunct
 
     // Get search parameters from query or session
     const { keyword, status } = getSearchParameters(req);
+    console.log('🔍 SEARCH CONTROLLER: extracted parameters - keyword:', keyword, 'status:', status);
 
     // Extract pagination and sort parameters
     const { sortOrder, sort, pageStr, limitStr, isPaginationOrSort } = getPaginationParameters(req);
+    console.log('🔍 SEARCH CONTROLLER: pagination params - sortOrder:', sortOrder, 'isPaginationOrSort:', isPaginationOrSort);
 
     // Parse pagination values with defaults
     const page = pageStr !== '' ? parseInt(pageStr, 10) : DEFAULT_PAGE;
@@ -205,14 +232,17 @@ export async function processSearch(req: Request, res: Response, next: NextFunct
 
     // Show empty form if no search or navigation activity
     if (keyword === '' && status === 'all' && !isPaginationOrSort) {
+      console.log('🔍 SEARCH CONTROLLER: rendering empty form (no search criteria)');
       renderEmptyForm(req, res);
       return;
     }
 
     // Determine final sort order (prefer sortOrder over sort)
     const finalSortOrder = sortOrder !== '' ? sortOrder : sort;
+    console.log('🔍 SEARCH CONTROLLER: about to call API with keyword:', keyword, 'status:', status, 'finalSortOrder:', finalSortOrder);
 
     // Call API and render results
+    console.log('🔍 SEARCH CONTROLLER: calling apiService.searchCases...');
     const response = await apiService.searchCases(req.axiosMiddleware, {
       keyword,
       status,
@@ -220,6 +250,7 @@ export async function processSearch(req: Request, res: Response, next: NextFunct
       page,
       limit
     });
+    console.log('🔍 SEARCH CONTROLLER: API response received:', response);
 
     renderSearchResults(req, res, {
       keyword,
@@ -227,7 +258,9 @@ export async function processSearch(req: Request, res: Response, next: NextFunct
       sortOrder: finalSortOrder,
       apiResponse: response
     });
+    console.log('🔍 SEARCH CONTROLLER: search results rendered');
   } catch (error) {
+    console.error('🔍 SEARCH CONTROLLER: ERROR:', error);
     next(error);
   }
 }
@@ -238,10 +271,13 @@ export async function processSearch(req: Request, res: Response, next: NextFunct
  * @param {Response} res - Express response object
  */
 export function clearSearch(req: Request, res: Response): void {
+  console.log('🔍 CONTROLLER: clearSearch called');
   // Clear search parameters from session
   delete req.session.searchKeyword;
   delete req.session.statusSelect;
 
   // Redirect to empty search
+  console.log('🔍 CONTROLLER: clearSearch redirecting to /search');
   res.redirect('/search');
+  console.log('🔍 CONTROLLER: clearSearch completed');
 }

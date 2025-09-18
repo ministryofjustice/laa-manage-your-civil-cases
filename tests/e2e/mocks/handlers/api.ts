@@ -161,24 +161,47 @@ export const apiHandlers = [
     const page = parseInt(url.searchParams.get('page') || '1', 10);
     const limit = parseInt(url.searchParams.get('limit') || '20', 10);
     
-    console.log(`🎯 MSW intercepted: GET ${API_PREFIX}/cases/search (keyword: ${keyword}, status: ${status})`);
+    console.log(`🔍 MSW SEARCH HANDLER CALLED: ${request.method} ${request.url}`);
+    console.log(`🔍 MSW SEARCH PARAMS: keyword="${keyword}", status="${status}", page=${page}, limit=${limit}`);
     
     let filteredCases = cases;
     
     // Filter by keyword if provided
     if (keyword) {
+      const beforeFilter = filteredCases.length;
       filteredCases = filteredCases.filter(caseItem => 
         caseItem.fullName.toLowerCase().includes(keyword.toLowerCase()) ||
         caseItem.caseReference.toLowerCase().includes(keyword.toLowerCase())
       );
+      console.log(`🔍 MSW SEARCH FILTER: ${beforeFilter} cases -> ${filteredCases.length} cases after keyword filter`);
     }
     
     // Filter by status if provided
     if (status) {
-      filteredCases = filterCasesByStatus(status);
+      const beforeStatusFilter = filteredCases.length;
+      filteredCases = filteredCases.filter(caseItem => {
+        const statusMap: Record<string, string[]> = {
+          'new': ['New'],
+          'accepted': ['Accepted'],
+          'opened': ['Open', 'Opened'],
+          'closed': ['Closed', 'Completed']
+        };
+        
+        // If status is 'all', include all cases
+        if (status === 'all') {
+          return true;
+        }
+        
+        const validStatuses = statusMap[status] || [];
+        return validStatuses.includes(caseItem.caseStatus);
+      });
+      console.log(`🔍 MSW SEARCH STATUS: ${beforeStatusFilter} cases -> ${filteredCases.length} cases after status filter`);
     }
     
     const result = paginateResults(filteredCases, page, limit);
+    
+    console.log(`🔍 MSW SEARCH RESPONSE: returning ${result.data.length} cases (total: ${result.pagination.total})`);
+    console.log(`🔍 MSW SEARCH RESPONSE DATA:`, result.data.map(c => ({ caseReference: c.caseReference, fullName: c.fullName })));
     
     return HttpResponse.json(result.data, {
       headers: {
@@ -222,12 +245,16 @@ export const apiHandlers = [
       return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
     }
     
-    // Return success response for adding third party contact
-    return HttpResponse.json({ 
-      success: true, 
-      message: 'Third party contact added successfully',
-      thirdPartyId: `tp-${Date.now()}` // Mock ID
-    }, { status: 201 });
+    // Return the updated case with new third party data (what apiService expects)
+    const updatedCase = {
+      ...caseItem,
+      thirdParty: {
+        ...thirdPartyData,
+        thirdPartyId: `tp-${Date.now()}` // Mock ID
+      }
+    };
+    
+    return HttpResponse.json(updatedCase, { status: 201 });
   }),
 
   // Intercept update third party contact (PUT /latest/mock/cases/{caseReference}/third-party)
@@ -243,11 +270,15 @@ export const apiHandlers = [
       return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
     }
     
-    // Return success response for updating third party contact
-    return HttpResponse.json({ 
-      success: true, 
-      message: 'Third party contact updated successfully'
-    });
+    // Return the updated case with modified third party data (what apiService expects)
+    const updatedCase = {
+      ...caseItem,
+      thirdParty: {
+        ...thirdPartyData
+      }
+    };
+    
+    return HttpResponse.json(updatedCase);
   }),
 
   // Intercept delete third party contact (DELETE /latest/mock/cases/{caseReference}/third-party)
@@ -264,48 +295,13 @@ export const apiHandlers = [
       return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
     }
     
-    // Return success response for deleting third party contact
-    return HttpResponse.json({ 
-      success: true, 
-      message: 'Third party contact deleted successfully'
-    });
+    // Return the updated case without third party data (what apiService expects)
+    const updatedCase = {
+      ...caseItem,
+      thirdParty: null // Remove third party data
+    };
+    
+    return HttpResponse.json(updatedCase);
   }),
 
-  // Intercept search cases (GET /latest/mock/cases/search)
-  http.get(`${API_BASE_URL}${API_PREFIX}/cases/search`, ({ request }) => {
-    const url = new URL(request.url);
-    const keyword = url.searchParams.get('keyword') || '';
-    const status = url.searchParams.get('status') || '';
-    const page = parseInt(url.searchParams.get('page') || '1', 10);
-    const limit = parseInt(url.searchParams.get('limit') || '20', 10);
-    
-    console.log(`🔍 MSW intercepted: GET ${API_PREFIX}/cases/search (keyword: "${keyword}", status: "${status}", page ${page}, limit ${limit})`);
-    
-    // Filter cases based on search criteria
-    let filteredCases = cases;
-    
-    // Filter by keyword (search in case reference and name)
-    if (keyword.trim()) {
-      filteredCases = filteredCases.filter(c => 
-        c.caseReference.toLowerCase().includes(keyword.toLowerCase()) ||
-        c.fullName.toLowerCase().includes(keyword.toLowerCase())
-      );
-    }
-    
-    // Filter by status if provided
-    if (status.trim() && status !== 'all') {
-      filteredCases = filterCasesByStatus(status);
-    }
-    
-    const result = paginateResults(filteredCases, page, limit);
-    
-    return HttpResponse.json(result.data, {
-      headers: {
-        'x-total-count': result.pagination.total.toString(),
-        'x-page': result.pagination.page.toString(),
-        'x-per-page': result.pagination.limit.toString(),
-        'content-type': 'application/json'
-      }
-    });
-  }),
 ];

@@ -18,7 +18,12 @@ export const server = setupServer(...handlers);
  * MSW server configuration options
  */
 export const serverConfig = {
-  onUnhandledRequest: 'warn' as const,
+  onUnhandledRequest: (req: any) => {
+    console.error(`🚨 UNHANDLED REQUEST: ${req.method} ${req.url}`);
+    console.error('🚨 This request was not intercepted by MSW!');
+    console.error('🚨 Headers:', req.headers);
+    return 'warn';
+  },
   // Remove onUnhandledError as it's not supported in MSW v2
 };
 

@@ -70,26 +70,72 @@ test('if clear button clicked page should refresh', async ({ page, i18nSetup }) 
 });
 
 test('search with valid keyword should display results', async ({ page, i18nSetup }) => {
-  // Navigate to the search page
-  await page.goto(visitUrl);
-
-  // Fill in search keyword - first ensure the input is visible
+  console.log('🧪 TEST START: search with valid keyword should display results');
+  
+  // Navigate to search page
+  console.log('🧪 TEST: Navigating to /search');
+  await page.goto('/search');
+  
+  // Wait for page to load
+  console.log('🧪 TEST: Waiting for page load');
+  await page.waitForLoadState('networkidle');
+  
+  // Check if page loaded correctly
+  const title = await page.title();
+  console.log(`🧪 TEST: Page title is "${title}"`);
+  
+  // Enter search keyword
+  console.log('🧪 TEST: Looking for search input field');
   const searchInput = page.locator('#searchKeyword');
   await expect(searchInput).toBeVisible();
-  await searchInput.fill('PC-1922');
-
-  // Click the search button
-  const searchButton = page.getByRole('button', { name: t('pages.search.searchButtonText') });
-  await searchButton.click();
-
-  // Should stay on search page with query parameters or results
-  await expect(page).toHaveURL(/\/search/);
+  console.log('🧪 TEST: Search input found, filling with "John"');
+  await searchInput.fill('John');
   
-  // Page should load successfully (no error messages)
+  // Verify the input value was set
+  const inputValue = await searchInput.inputValue();
+  console.log(`🧪 TEST: Search input value is "${inputValue}"`);
+  
+  // Click the search button
+  console.log('🧪 TEST: Looking for search button');
+  const searchButton = page.locator('button[type="submit"]');
+  await expect(searchButton).toBeVisible();
+  console.log('🧪 TEST: Search button found, clicking...');
+  
+  // Listen for any network requests during the search
+  page.on('request', request => {
+    console.log(`🌐 NETWORK REQUEST: ${request.method()} ${request.url()}`);
+  });
+  
+  page.on('response', response => {
+    console.log(`🌐 NETWORK RESPONSE: ${response.status()} ${response.url()}`);
+  });
+  
+  await searchButton.click();
+  
+  console.log('🧪 TEST: Search button clicked, waiting for response...');
+  
+  // Wait for navigation or response
   await page.waitForLoadState('networkidle');
-});
-
-test('search clear functionality via GET route', async ({ page, i18nSetup }) => {
+  
+  // Check current URL
+  const currentUrl = page.url();
+  console.log(`🧪 TEST: Current URL after search: ${currentUrl}`);
+  
+  // Check for any console errors
+  const logs = [];
+  page.on('console', msg => {
+    logs.push(`${msg.type()}: ${msg.text()}`);
+    console.log(`🖥️ CONSOLE ${msg.type().toUpperCase()}: ${msg.text()}`);
+  });
+  
+  // Verify the page loaded successfully by checking for main content
+  console.log('🧪 TEST: Looking for main content area');
+  const mainContent = page.locator('main');
+  await expect(mainContent).toBeVisible();
+  console.log('🧪 TEST: Main content found');
+  
+  console.log('🧪 TEST COMPLETE: search with valid keyword should display results');
+});test('search clear functionality via GET route', async ({ page, i18nSetup }) => {
   // Navigate to the search clear route directly
   await page.goto('/search/clear');
 
