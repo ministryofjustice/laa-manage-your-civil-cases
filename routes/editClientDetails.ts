@@ -46,7 +46,7 @@ router.post('/:caseReference/client-details/change/address', validateEditClientA
 router.get('/:caseReference/client-details/add/third-party', getAddClientThirdParty);
 router.post('/:caseReference/client-details/add/third-party', validateAddClientThirdParty(), postAddClientThirdParty);
 
-router.get('/:caseReference/client-details/edit/third-party', getEditClientThirdParty);
-router.post('/:caseReference/client-details/edit/third-party', validateEditClientThirdParty(), postEditClientThirdParty);
+router.get('/:caseReference/client-details/change/third-party', getEditClientThirdParty);
+router.post('/:caseReference/client-details/change/third-party', validateEditClientThirdParty(), postEditClientThirdParty);
 
 export default router;

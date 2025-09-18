@@ -243,7 +243,7 @@ class AddThirdPartyValidator extends ThirdPartyValidator {
  * Validator for EDIT third party forms
  */
 class EditThirdPartyValidator extends ThirdPartyValidator {
-  protected readonly templatePath = 'case_details/third_party_details/edit-client-third-party.njk';
+  protected readonly templatePath = 'case_details/third_party_details/change-client-third-party.njk';
 }
 
 // Singleton instances
