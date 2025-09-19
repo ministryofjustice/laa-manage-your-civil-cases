@@ -49,4 +49,7 @@ router.post('/:caseReference/client-details/add/third-party', validateAddClientT
 router.get('/:caseReference/client-details/change/third-party', getEditClientThirdParty);
 router.post('/:caseReference/client-details/change/third-party', validateEditClientThirdParty(), postEditClientThirdParty);
 
+router.get('/:caseReference/client-details/add/support-need', getAddClientThirdParty);
+router.post('/:caseReference/client-details/add/support-need', validateAddClientThirdParty(), postAddClientThirdParty);
+
 export default router;
