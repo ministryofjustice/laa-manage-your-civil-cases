@@ -89,7 +89,6 @@
   passphraseContent: passphraseContent
 } %}
 
-<h2 class="govuk-heading-m">{{ t('pages.caseDetails.clientDetails.heading') }}</h2>
 {# Client info summary card #}
 {{ summaryCardComponent({
   data: constructedData,
@@ -239,7 +238,6 @@
 
 
 {% if data.thirdParty %}
-  <h2 class="govuk-heading-m">{{ t('pages.caseDetails.clientDetails.thirdPartyContact') }}</h2>
   {# Third party info summary card #}
   {{ summaryCardComponent({
     data: constructedData,
@@ -268,18 +266,18 @@
         key: "fullNameThirdParty"
       },
       {
-        label: t('forms.clientDetails.thirdParty.address'),
-        key: "computedAddressThirdParty",
-        html: true
-      },
-      {
-        label: t('forms.clientDetails.thirdParty.contactNumber'),
+        label: t('forms.clientDetails.thirdParty.phoneNumber'),
         key: "computedPhoneNumberThirdParty",
         html: true
       },
       {
         label: t('forms.clientDetails.thirdParty.emailAddress'),
         key: "emailAddressThirdParty"
+      },
+      {
+        label: t('forms.clientDetails.thirdParty.address'),
+        key: "computedAddressThirdParty",
+        html: true
       },
       {
         label: t('forms.clientDetails.thirdParty.relationshipToClient.title'),

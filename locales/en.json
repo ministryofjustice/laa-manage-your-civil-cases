@@ -142,7 +142,7 @@
   "forms": {
     "clientDetails": {
       "name": {
-        "label": "Full name",
+        "label": "Name",
         "title": "Client name",
         "pageTitle": "Client name – {caseReference} – {serviceName} – GOV.UK",
         "validationError": {
@@ -177,7 +177,7 @@
         }
       },
       "email": {
-        "label": "Email",
+        "label": "Email address",
         "title": "Client email address (optional)",
         "pageTitle": "Client email address – {caseReference} – {serviceName} – GOV.UK",
         "validationError": {
@@ -226,8 +226,8 @@
         "name": "Name",
         "emailAddress": "Email address",
         "emailAddressHeading": "Email address (optional)",
-        "contactNumber": "Contact number",
-        "contactNumberHeading": "Phone number (optional)",
+        "phoneNumber": "Phone number",
+        "phoneNumberHeading": "Phone number (optional)",
         "address": "Address",
         "addressHeading": "Address (optional)",
         "relationshipToClient": {
