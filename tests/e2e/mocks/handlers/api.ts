@@ -6,9 +6,9 @@
  */
 
 import { http, HttpResponse } from 'msw';
-import { readFileSync } from 'fs';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
 
 // Get the current file's directory
 const __filename = fileURLToPath(import.meta.url);
@@ -43,6 +43,7 @@ const cases = mockData as MockCase[];
 
 /**
  * Filter cases by status type
+ * @param status
  */
 function filterCasesByStatus(status: string): MockCase[] {
   const statusMap: Record<string, string[]> = {
@@ -58,8 +59,11 @@ function filterCasesByStatus(status: string): MockCase[] {
 
 /**
  * Paginate results
+ * @param data
+ * @param page
+ * @param limit
  */
-function paginateResults(data: MockCase[], page: number = 1, limit: number = 20) {
+function paginateResults(data: MockCase[], page = 1, limit = 20) {
   const startIndex = (page - 1) * limit;
   const endIndex = startIndex + limit;
   
@@ -76,14 +80,11 @@ function paginateResults(data: MockCase[], page: number = 1, limit: number = 20)
 
 export const apiHandlers = [
   // Intercept authentication token requests
-  http.post(`${API_BASE_URL}/latest/token`, () => {
-    
-    return HttpResponse.json({
+  http.post(`${API_BASE_URL}/latest/token`, () => HttpResponse.json({
       access_token: 'mock-jwt-token',
       token_type: 'Bearer',
       expires_in: 3600
-    });
-  }),
+    })),
 
   // Intercept individual case details (GET /latest/mock/cases/{caseReference})
   // Put this BEFORE the status handler to match specific case references first

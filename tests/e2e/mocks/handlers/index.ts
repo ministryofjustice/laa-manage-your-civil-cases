@@ -15,7 +15,7 @@ import { apiHandlers } from './api.js';
 // Add debug handler to log all intercepted requests
 const debugHandler = http.all('*', ({ request }) => {
   // Return undefined to pass through to actual handlers
-  return;
+  
 });
 
 /**
@@ -27,11 +27,9 @@ export const handlers = [
   ...apiHandlers,
   
   // Health check endpoint for testing
-  http.get('/health', () => {
-    return HttpResponse.json({ 
+  http.get('/health', () => HttpResponse.json({ 
       status: 'ok', 
       timestamp: new Date().toISOString(),
       msw: 'active'
-    });
-  })
+    }))
 ];

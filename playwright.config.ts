@@ -3,6 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 const TRY_ZER0 = 0;
 const TRY_TWICE = 2;
 const WORKERS = 5;
+const TIMEOUT_MS = 60000;
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -43,7 +44,7 @@ export default defineConfig({
     reuseExistingServer: process.env.CI !== 'true',
     stdout: 'pipe',
     stderr: 'pipe',
-    timeout: 60000,
+    timeout: TIMEOUT_MS,
     env: {
       NODE_ENV: 'test',
       PORT: '3001',

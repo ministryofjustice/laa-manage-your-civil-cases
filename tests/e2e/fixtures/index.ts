@@ -53,6 +53,12 @@ export const test = base.extend<TestFixtures>({
   },
 
   // Page objects fixture
+  /**
+   *
+   * @param root0
+   * @param root0.page
+   * @param use
+   */
   pages: async ({ page }, use) => {
     await use(new PageFactory(page));
   }

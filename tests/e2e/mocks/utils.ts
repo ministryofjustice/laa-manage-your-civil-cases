@@ -86,8 +86,8 @@ export function createMockClientDetails(
  */
 export function createPaginatedResponse(
   data: any[], 
-  page: number = 1, 
-  limit: number = 20, 
+  page = 1, 
+  limit = 20, 
   total: number = data.length
 ) {
   const totalPages = Math.ceil(total / limit);
@@ -109,7 +109,7 @@ export function createPaginatedResponse(
  * @param request - Request object from MSW handler
  * @param context - Additional context information
  */
-export function logRequest(request: Request, context: string = ''): void {
+export function logRequest(request: Request, context = ''): void {
   // Debug logging disabled
 }
 

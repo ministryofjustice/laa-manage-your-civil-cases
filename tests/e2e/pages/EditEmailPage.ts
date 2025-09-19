@@ -1,10 +1,17 @@
-import { Page, Locator, expect } from '@playwright/test';
+import { type Page, type Locator, expect } from '@playwright/test';
 import { BaseEditFormPage } from './BaseEditFormPage.js';
 import { t, getClientDetailsUrlByStatus } from '../helpers/index.js';
 
+/**
+ * Page object for the edit email address form
+ */
 export class EditEmailPage extends BaseEditFormPage {
   private readonly emailInput: Locator;
 
+  /**
+   * Creates a new edit email page object
+   * @param {Page} page - The Playwright page instance
+   */
   constructor(page: Page) {
     const formUrl = getClientDetailsUrlByStatus('default') + '/change/email-address';
     const clientDetailsUrl = getClientDetailsUrlByStatus('default');
@@ -13,28 +20,31 @@ export class EditEmailPage extends BaseEditFormPage {
   }
 
   /**
-   * Implementation of abstract method from BaseEditFormPage
+   * Gets the expected heading text for this form
+   * @returns {string} The expected heading text
    */
   getExpectedHeading(): string {
     return t('forms.clientDetails.email.title');
   }
 
   /**
-   * Fill in the email address
+   * Fills in the email address field
+   * @param {string} email - The email address to enter
    */
   async fillEmailAddress(email: string): Promise<void> {
     await this.emailInput.fill(email);
   }
 
   /**
-   * Get the email input field
+   * Gets the email input field
+   * @returns {Locator} The email input locator
    */
   getEmailInput(): Locator {
     return this.emailInput;
   }
 
   /**
-   * Assert that the main email elements are visible
+   * Asserts that the main email elements are visible
    */
   async assertMainElementsVisible(): Promise<void> {
     await expect(this.heading).toContainText(t('forms.clientDetails.email.title'));
@@ -43,7 +53,8 @@ export class EditEmailPage extends BaseEditFormPage {
   }
 
   /**
-   * Submit form with invalid email and assert validation errors appear
+   * Submits form with invalid email and asserts validation errors appear
+   * @param {string} invalidEmail - The invalid email to test with
    */
   async assertInvalidEmailValidation(invalidEmail: string): Promise<void> {
     await this.fillEmailAddress(invalidEmail);

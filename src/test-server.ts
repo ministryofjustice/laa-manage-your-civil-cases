@@ -10,8 +10,8 @@
 import express from 'express';
 import { setupServer } from 'msw/node';
 import { handlers } from '../tests/e2e/mocks/handlers/index.js';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 // Get current directory for ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -77,6 +77,10 @@ const server = app.listen(port, () => {
 });
 
 // Graceful shutdown
+/**
+ *
+ * @param signal
+ */
 const gracefulShutdown = (signal: string) => {
   console.log(`\n🛑 Received ${signal}, shutting down gracefully...`);
   
@@ -89,8 +93,8 @@ const gracefulShutdown = (signal: string) => {
   });
 };
 
-process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
-process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+process.on('SIGTERM', () => { gracefulShutdown('SIGTERM'); });
+process.on('SIGINT', () => { gracefulShutdown('SIGINT'); });
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (error) => {
