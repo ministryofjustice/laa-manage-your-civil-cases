@@ -226,8 +226,8 @@
         "name": "Name",
         "emailAddress": "Email address",
         "emailAddressHeading": "Email address (optional)",
-        "contactNumber": "Phone number",
-        "contactNumberHeading": "Phone number (optional)",
+        "phoneNumber": "Phone number",
+        "phoneNumberHeading": "Phone number (optional)",
         "address": "Address",
         "addressHeading": "Address (optional)",
         "relationshipToClient": {
