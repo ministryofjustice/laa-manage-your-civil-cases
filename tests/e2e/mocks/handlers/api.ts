@@ -43,7 +43,8 @@ const cases = mockData as MockCase[];
 
 /**
  * Filter cases by status type
- * @param status
+ * @param {string} status - The status to filter by
+ * @returns {MockCase[]} Array of filtered cases
  */
 function filterCasesByStatus(status: string): MockCase[] {
   const statusMap: Record<string, string[]> = {
@@ -59,9 +60,10 @@ function filterCasesByStatus(status: string): MockCase[] {
 
 /**
  * Paginate results
- * @param data
- * @param page
- * @param limit
+ * @param {MockCase[]} data - Array of cases to paginate
+ * @param {number} page - Page number (default: 1)
+ * @param {number} limit - Items per page (default: 20)
+ * @returns {object} Object containing paginated data and pagination metadata
  */
 function paginateResults(data: MockCase[], page = 1, limit = 20) {
   const startIndex = (page - 1) * limit;

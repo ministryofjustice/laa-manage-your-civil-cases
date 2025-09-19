@@ -14,6 +14,13 @@ interface TestFixtures {
 
 export const test = base.extend<TestFixtures>({
   // This fixture runs once per test file to initialize i18n
+  /**
+   * Fixture that initializes i18next for each test
+   * @param {object} param0 - Fixture parameters
+   * @param {import('@playwright/test').Page} param0.page - The Playwright page instance (unused but required)
+   * @param {Function} use - The fixture use function
+   * @returns {Promise<void>} Promise that resolves when i18n is initialized
+   */
   i18nSetup: [async ({ page: _page }, use) => {
     try {
       initI18nSync();
@@ -28,8 +35,8 @@ export const test = base.extend<TestFixtures>({
   // Thin accessibility testing fixture
   /**
    * Fixture that provides accessibility testing functionality using axe-core
-   * @param {object} root0 - Playwright test fixtures object
-   * @param {import('@playwright/test').Page} root0.page - Playwright page object for the current test
+   * @param {object} param0 - Playwright test fixtures object
+   * @param {import('@playwright/test').Page} param0.page - Playwright page object for the current test
    * @param {Function} use - Playwright fixture use function to provide the checkAccessibility function
    * @returns {Promise<void>} Promise that resolves when the fixture is ready
    */
@@ -54,10 +61,11 @@ export const test = base.extend<TestFixtures>({
 
   // Page objects fixture
   /**
-   *
-   * @param root0
-   * @param root0.page
-   * @param use
+   * Provides a PageFactory instance for creating page objects
+   * @param {object} param0 - Fixture parameters
+   * @param {import('@playwright/test').Page} param0.page - The Playwright page instance
+   * @param {Function} use - The fixture use function
+   * @returns {Promise<void>} Promise that resolves when the fixture is setup
    */
   pages: async ({ page }, use) => {
     await use(new PageFactory(page));

@@ -78,8 +78,9 @@ const server = app.listen(port, () => {
 
 // Graceful shutdown
 /**
- *
- * @param signal
+ * Handles graceful shutdown of the server when receiving termination signals
+ * @param {string} signal - The termination signal received (SIGTERM, SIGINT, etc.)
+ * @returns {void}
  */
 const gracefulShutdown = (signal: string) => {
   console.log(`\n🛑 Received ${signal}, shutting down gracefully...`);
