@@ -1,6 +1,9 @@
 import { Page } from '@playwright/test';
 import { getClientDetailsUrlByStatus } from '../helpers/index.js';
 import { EditNamePage } from './EditNamePage.js';
+import { EditPhoneNumberPage } from './EditPhoneNumberPage.js';
+import { EditDateOfBirthPage } from './EditDateOfBirthPage.js';
+import { EditEmailPage } from './EditEmailPage.js';
 
 export class PageFactory {
   private page: Page;
@@ -19,7 +22,15 @@ export class PageFactory {
     );
   }
 
-  // Future page objects can be added here:
-  // get editPhoneNumber(): EditPhoneNumberPage { ... }
-  // get editDateOfBirth(): EditDateOfBirthPage { ... }
+  get editPhoneNumber(): EditPhoneNumberPage {
+    return new EditPhoneNumberPage(this.page);
+  }
+
+  get editDateOfBirth(): EditDateOfBirthPage {
+    return new EditDateOfBirthPage(this.page);
+  }
+
+  get editEmail(): EditEmailPage {
+    return new EditEmailPage(this.page);
+  }
 }

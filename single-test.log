@@ -1,0 +1,213 @@
+[1A[2K[2m[WebServer] [22m[dotenv@17.2.2] injecting env (19) from .env -- tip: ⚙️  override existing env vars with { override: true }
+
+[1A[2K[2m[WebServer] [22m🚫 Rate limiting disabled for test environment
+
+[1A[2K[2m[WebServer] [22m[33mListening on port 3001...[39m
+
+[1A[2K[2m[WebServer] [22m[34m[1m  __  __                                                              _       _ _                           [22m[39m
+[2m[WebServer] [22m[34m[1m |  \/  | __ _ _ __   __ _  __ _  ___   _   _  ___  _   _ _ __    ___(_)_   _(_) |   ___ __ _ ___  ___  ___ [22m[39m
+[2m[WebServer] [22m[34m[1m | |\/| |/ _` | '_ \ / _` |/ _` |/ _ \ | | | |/ _ \| | | | '__|  / __| \ \ / / | |  / __/ _` / __|/ _ \/ __|[22m[39m
+[2m[WebServer] [22m[34m[1m | |  | | (_| | | | | (_| | (_| |  __/ | |_| | (_) | |_| | |    | (__| |\ V /| | | | (_| (_| \__ \  __/\__ \[22m[39m
+[2m[WebServer] [22m[34m[1m |_|  |_|\__,_|_| |_|\__,_|\__, |\___|  \__, |\___/ \__,_|_|     \___|_| \_/ |_|_|  \___\__,_|___/\___||___/[22m[39m
+[2m[WebServer] [22m[34m[1m                           |___/        |___/                                                               [22m[39m
+
+[1A[2K[2m[WebServer] [22m[32mServer is running at:[39m
+[2m[WebServer] [22m[36m[4mhttp://localhost:3001[24m[39m
+
+[1A[2K[2m[WebServer] [22m[0mGET / [36m302[0m 0.965 ms - 32[0m
+
+[1A[2K[2m[WebServer] [22m[0mGET /cases/new [32m200[0m 74.810 ms - 172944[0m
+
+
+Running 2 tests using 2 workers
+
+[1A[2K[1/2] [chromium] › tests/e2e/new_client_detials.spec.ts:22:1 › new client details page should be accessible @accessibility
+[1A[2K[2/2] [chromium] › tests/e2e/new_client_detials.spec.ts:4:1 › client details selected from new cases tab has correct page elements
+[1A[2K[chromium] › tests/e2e/new_client_detials.spec.ts:22:1 › new client details page should be accessible @accessibility
+  [38;5;45;1mpw:api [0m=> browserType.launch started [38;5;45m+0ms[0m
+
+[1A[2K[chromium] › tests/e2e/new_client_detials.spec.ts:4:1 › client details selected from new cases tab has correct page elements
+  [38;5;45;1mpw:api [0m=> browserType.launch started [38;5;45m+0ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m<= browserType.launch succeeded [38;5;45m+131ms[0m
+
+[1A[2K[chromium] › tests/e2e/new_client_detials.spec.ts:22:1 › new client details page should be accessible @accessibility
+  [38;5;45;1mpw:api [0m<= browserType.launch succeeded [38;5;45m+132ms[0m
+
+[1A[2K[chromium] › tests/e2e/new_client_detials.spec.ts:4:1 › client details selected from new cases tab has correct page elements
+  [38;5;45;1mpw:api [0m=> browser.newContext started [38;5;45m+2ms[0m
+
+[1A[2K[chromium] › tests/e2e/new_client_detials.spec.ts:22:1 › new client details page should be accessible @accessibility
+  [38;5;45;1mpw:api [0m=> browser.newContext started [38;5;45m+3ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m<= browser.newContext succeeded [38;5;45m+8ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m=> browserContext.newPage started [38;5;45m+1ms[0m
+
+[1A[2K[chromium] › tests/e2e/new_client_detials.spec.ts:4:1 › client details selected from new cases tab has correct page elements
+  [38;5;45;1mpw:api [0m<= browser.newContext succeeded [38;5;45m+4ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m=> browserContext.newPage started [38;5;45m+3ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m<= browserContext.newPage succeeded [38;5;45m+110ms[0m
+
+[1A[2K[chromium] › tests/e2e/new_client_detials.spec.ts:22:1 › new client details page should be accessible @accessibility
+  [38;5;45;1mpw:api [0m<= browserContext.newPage succeeded [38;5;45m+107ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m=> page.goto started [38;5;45m+2ms[0m
+
+[1A[2K[chromium] › tests/e2e/new_client_detials.spec.ts:4:1 › client details selected from new cases tab has correct page elements
+✅ i18next initialized for worker
+
+[1A[2K[chromium] › tests/e2e/new_client_detials.spec.ts:22:1 › new client details page should be accessible @accessibility
+  [38;5;45;1mpw:api [0mnavigating to "http://localhost:3001/cases/PC-1922-1879/client-details", waiting until "load" [38;5;45m+0ms[0m
+
+[1A[2K[chromium] › tests/e2e/new_client_detials.spec.ts:4:1 › client details selected from new cases tab has correct page elements
+  [38;5;45;1mpw:api [0m=> page.goto started [38;5;45m+3ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0mnavigating to "http://localhost:3001/cases/PC-1922-1879/client-details", waiting until "load" [38;5;45m+1ms[0m
+
+[1A[2K[2m[WebServer] [22m[0mGET /cases/PC-1922-1879/client-details [32m200[0m 19.441 ms - -[0m
+
+[1A[2K[2m[WebServer] [22m[0mGET /cases/PC-1922-1879/client-details [32m200[0m 3.712 ms - -[0m
+
+[1A[2K[chromium] › tests/e2e/new_client_detials.spec.ts:22:1 › new client details page should be accessible @accessibility
+  [38;5;45;1mpw:api [0m  "commit" event fired [38;5;45m+62ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m  navigated to "http://localhost:3001/cases/PC-1922-1879/client-details" [38;5;45m+1ms[0m
+
+[1A[2K[chromium] › tests/e2e/new_client_detials.spec.ts:4:1 › client details selected from new cases tab has correct page elements
+  [38;5;45;1mpw:api [0m  "commit" event fired [38;5;45m+60ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m  navigated to "http://localhost:3001/cases/PC-1922-1879/client-details" [38;5;45m+2ms[0m
+
+[1A[2K[chromium] › tests/e2e/new_client_detials.spec.ts:22:1 › new client details page should be accessible @accessibility
+  [38;5;45;1mpw:api [0m  "domcontentloaded" event fired [38;5;45m+17ms[0m
+
+[1A[2K[chromium] › tests/e2e/new_client_detials.spec.ts:4:1 › client details selected from new cases tab has correct page elements
+  [38;5;45;1mpw:api [0m  "domcontentloaded" event fired [38;5;45m+16ms[0m
+
+[1A[2K[chromium] › tests/e2e/new_client_detials.spec.ts:22:1 › new client details page should be accessible @accessibility
+  [38;5;45;1mpw:api [0m  "load" event fired [38;5;45m+11ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m<= page.goto succeeded [38;5;45m+1ms[0m
+
+[1A[2K[chromium] › tests/e2e/new_client_detials.spec.ts:4:1 › client details selected from new cases tab has correct page elements
+  [38;5;45;1mpw:api [0m  "load" event fired [38;5;45m+12ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m<= page.goto succeeded [38;5;45m+0ms[0m
+
+[1A[2K[chromium] › tests/e2e/new_client_detials.spec.ts:22:1 › new client details page should be accessible @accessibility
+  [38;5;45;1mpw:api [0m=> page.evaluate started [38;5;45m+2ms[0m
+
+[1A[2K[chromium] › tests/e2e/new_client_detials.spec.ts:4:1 › client details selected from new cases tab has correct page elements
+  [38;5;45;1mpw:api [0m=> expect.toBeVisible started [38;5;45m+5ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0mExpect "toBeVisible" with timeout 5000ms [38;5;45m+1ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0mwaiting for getByText('New', { exact: true }) [38;5;45m+0ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m  locator resolved to <strong class="govuk-tag govuk-tag--yellow govuk-!-margin-bottom-2">↵  New↵</strong> [38;5;45m+14ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m<= expect.toBeVisible succeeded [38;5;45m+1ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m=> expect.toBeVisible started [38;5;45m+1ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0mExpect "toBeVisible" with timeout 5000ms [38;5;45m+0ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0mwaiting for getByRole('button', { name: 'Accept case' }) [38;5;45m+0ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m  locator resolved to <button type="submit" class="govuk-button" data-govuk-button-init="" data-module="govuk-button">↵  Accept case↵</button> [38;5;45m+2ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m<= expect.toBeVisible succeeded [38;5;45m+0ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m=> expect.toBeVisible started [38;5;45m+1ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0mExpect "toBeVisible" with timeout 5000ms [38;5;45m+0ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0mwaiting for getByRole('button', { name: 'Reject case' }) [38;5;45m+0ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m  locator resolved to <button type="submit" data-govuk-button-init="" data-module="govuk-button" class="govuk-button govuk-button--secondary">↵  Reject case↵</button> [38;5;45m+1ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m<= expect.toBeVisible succeeded [38;5;45m+0ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m=> expect.toBeVisible started [38;5;45m+1ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0mExpect "toBeVisible" with timeout 5000ms [38;5;45m+0ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0mwaiting for getByRole('button', { name: 'Split case' }) [38;5;45m+0ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m  locator resolved to <button type="submit" data-govuk-button-init="" data-module="govuk-button" class="govuk-button govuk-button--secondary">↵  Split case↵</button> [38;5;45m+1ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m<= expect.toBeVisible succeeded [38;5;45m+0ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m=> expect.toBeVisible started [38;5;45m+1ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0mExpect "toBeVisible" with timeout 5000ms [38;5;45m+0ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0mwaiting for getByRole('button', { name: 'Leave feedback' }) [38;5;45m+0ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m  locator resolved to <button type="submit" data-govuk-button-init="" data-module="govuk-button" class="govuk-button govuk-button--secondary">↵  Leave feedback↵</button> [38;5;45m+1ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m<= expect.toBeVisible succeeded [38;5;45m+0ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m=> browserContext.close started [38;5;45m+3ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m<= browserContext.close succeeded [38;5;45m+2ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m=> browser.close started [38;5;45m+6ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m<= browser.close succeeded [38;5;45m+16ms[0m
+
+[1A[2K[chromium] › tests/e2e/new_client_detials.spec.ts:22:1 › new client details page should be accessible @accessibility
+  [38;5;45;1mpw:api [0m<= page.evaluate succeeded [38;5;45m+74ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m=> page.evaluate started [38;5;45m+1ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m<= page.evaluate succeeded [38;5;45m+1ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m=> frame.evaluate started [38;5;45m+0ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m<= frame.evaluate succeeded [38;5;45m+4ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m=> frame.evaluate started [38;5;45m+1ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m<= frame.evaluate succeeded [38;5;45m+106ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m=> browserContext.newPage started [38;5;45m+2ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m<= browserContext.newPage succeeded [38;5;45m+32ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m=> page.evaluate started [38;5;45m+0ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m<= page.evaluate succeeded [38;5;45m+69ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m=> page.evaluate started [38;5;45m+1ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m<= page.evaluate succeeded [38;5;45m+0ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m=> page.evaluate started [38;5;45m+1ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m<= page.evaluate succeeded [38;5;45m+0ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m=> page.evaluate started [38;5;45m+1ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m<= page.evaluate succeeded [38;5;45m+5ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m=> page.evaluate started [38;5;45m+1ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m<= page.evaluate succeeded [38;5;45m+29ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m=> page.close started [38;5;45m+2ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m<= page.close succeeded [38;5;45m+2ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m=> browserContext.close started [38;5;45m+3ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m<= browserContext.close succeeded [38;5;45m+2ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m=> browser.close started [38;5;45m+4ms[0m
+
+[1A[2K  [38;5;45;1mpw:api [0m<= browser.close succeeded [38;5;45m+24ms[0m
+
+[1A[2K  2 passed (2.3s)
