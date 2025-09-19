@@ -92,15 +92,6 @@ test('search with valid keyword should display results', async ({ page, i18nSetu
   const searchButton = page.locator('button[type="submit"]');
   await expect(searchButton).toBeVisible();
   
-  // Listen for any network requests during the search
-  page.on('request', request => {
-    console.log(`🌐 NETWORK REQUEST: ${request.method()} ${request.url()}`);
-  });
-  
-  page.on('response', response => {
-    console.log(`🌐 NETWORK RESPONSE: ${response.status()} ${response.url()}`);
-  });
-  
   await searchButton.click();
   
   
@@ -114,7 +105,6 @@ test('search with valid keyword should display results', async ({ page, i18nSetu
   const logs = [];
   page.on('console', msg => {
     logs.push(`${msg.type()}: ${msg.text()}`);
-    console.log(`🖥️ CONSOLE ${msg.type().toUpperCase()}: ${msg.text()}`);
   });
   
   // Verify the page loaded successfully by checking for main content

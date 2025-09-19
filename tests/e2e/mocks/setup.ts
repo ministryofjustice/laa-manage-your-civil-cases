@@ -18,13 +18,7 @@ export const server = setupServer(...handlers);
  * MSW server configuration options
  */
 export const serverConfig = {
-  onUnhandledRequest: (req: any) => {
-    console.error(`🚨 UNHANDLED REQUEST: ${req.method} ${req.url}`);
-    console.error('🚨 This request was not intercepted by MSW!');
-    console.error('🚨 Headers:', req.headers);
-    return 'warn';
-  },
-  // Remove onUnhandledError as it's not supported in MSW v2
+  onUnhandledRequest: 'warn' as const,
 };
 
 /**
@@ -70,17 +64,4 @@ export function validateTestEnvironment(): void {
   if (missingVars.length > 0) {
     throw new Error(`Missing required environment variables: ${missingVars.join(', ')}`);
   }
-  
-  if (process.env.NODE_ENV !== 'test') {
-    console.warn('⚠️  NODE_ENV is not set to "test". MSW may not work as expected.');
-  }
-}
-
-/**
- * Debug helper to log MSW configuration
- */
-export function logMSWConfiguration(): void {
-  console.log('  - Handlers loaded:', handlers.length);
-  console.log('  - Server config:', serverConfig);
-  console.log('  - NODE_ENV:', process.env.NODE_ENV);
 }

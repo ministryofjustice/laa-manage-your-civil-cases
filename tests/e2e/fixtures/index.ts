@@ -44,16 +44,6 @@ export const test = base.extend<TestFixtures>({
       const { violations } = accessibilityScanResults;
       const noViolations = 0;
       const hasViolations = violations.length > noViolations;
-      if (hasViolations) {
-        console.log(`Accessibility violations found on ${page.url()}:`, 
-          violations.map(v => ({
-            id: v.id,
-            impact: v.impact,
-            description: v.description,
-            nodes: v.nodes.length
-          }))
-        );
-      }
       
       expect(violations).toEqual([]);
     };

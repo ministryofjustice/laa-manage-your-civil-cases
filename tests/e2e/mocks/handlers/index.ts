@@ -35,5 +35,3 @@ export const handlers = [
     });
   })
 ];
-
-console.log('📦 MSW handlers loaded:', handlers.length);

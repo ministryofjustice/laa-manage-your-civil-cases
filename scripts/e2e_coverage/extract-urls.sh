@@ -17,6 +17,7 @@ echo "=================================="
 grep -o 'navigating to "[^"]*"' "$LOG_FILE" | \
     sed 's/^.*navigating to "//' | \
     sed 's/"$//' | \
+    sed 's|http://localhost:3001||' | \
     sed 's|http://localhost:3000||' | \
     sort | \
     uniq
@@ -47,6 +48,7 @@ echo "----------------------------------------------------"
 grep -o 'navigating to "[^"]*"' "$LOG_FILE" | \
     sed 's/^.*navigating to "//' | \
     sed 's/"$//' | \
+    sed 's|http://localhost:3001||' | \
     sed 's|http://localhost:3000||' | \
     sort | \
     uniq | \
