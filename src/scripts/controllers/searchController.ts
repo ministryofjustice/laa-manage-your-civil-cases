@@ -62,11 +62,8 @@ function getSessionParameters(req: Request, isPaginationOrSort: boolean): { keyw
     return { keyword: '', status: '' };
   }
 
-  const sessionKeyword = req.session && req.session.searchKeyword ? String(req.session.searchKeyword) : '';
-  const sessionStatus = req.session && req.session.searchStatus ? String(req.session.searchStatus) : '';
-
-  const keyword = sessionKeyword;
-  const status = sessionStatus;
+  const keyword = safeString(req.session?.searchKeyword);
+  const status = safeString(req.session?.searchStatus);
 
   return { keyword, status };
 }
