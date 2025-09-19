@@ -13,3 +13,4 @@ export * from './editClientAddressController.js';
 export * from './addClientThirdPartyController.js';
 export * from './editClientThirdPartyController.js';
 export * from './removeThirdPartyController.js';
+export * from './removeClientSupportNeeds.js';

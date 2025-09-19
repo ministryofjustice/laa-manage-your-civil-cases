@@ -107,6 +107,11 @@
         "description": "This will permanently delete all information about the third party.",
         "confirmButton": "Yes, remove",
         "cancelButton": "No, go back to client details"
+      },
+      "removeClientSupportNeeds": {
+        "pageTitle": "Remove client support needs? – {serviceName} – GOV.UK",
+        "heading": "Remove client support needs?",
+        "description": "This will permanently delete all information about the clients's support needs."
       }
     },
     "error": {
