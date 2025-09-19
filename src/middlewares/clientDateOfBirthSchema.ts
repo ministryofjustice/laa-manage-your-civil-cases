@@ -1,6 +1,6 @@
 
 import { checkSchema, type Meta } from 'express-validator';
-import validator from 'validator';
+import { isDate, isBefore } from 'validator';
 import { hasProperty, isRecord, createChangeDetectionValidator, TypedValidationError, dateStringFromThreeFields, t } from '#src/scripts/helpers/index.js';
 
 // Constants for validation boundaries
@@ -154,7 +154,7 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
           // Use validator.js isDate() with dateStringFromThreeFields helper
           const dateString = dateStringFromThreeFields(day, month, year);
 
-          return validator.isDate(dateString);
+          return isDate(dateString);
         },
         /**
          * Custom error message for invalid date combinations
@@ -194,7 +194,7 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
           const tomorrow = new Date();
           tomorrow.setDate(tomorrow.getDate() + DATE_OFFSET);
           const [tomorrowString] = tomorrow.toISOString().split('T'); // YYYY-MM-DD format
-          return validator.isBefore(dateString, tomorrowString);
+          return isBefore(dateString, tomorrowString);
         },
         /**
          * Error message for dates not in the past
