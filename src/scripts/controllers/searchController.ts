@@ -153,10 +153,8 @@ function renderSearchResults(req: Request, res: Response, params: {
  */
 export async function processSearch(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
-    
     // Handle validation errors first
     const validationErrors = validationResult(req);
-    
     if (!validationErrors.isEmpty()) {
       const formattedErrors = validationErrors.formatWith(formatValidationError);
       const errorArray = formattedErrors.array();
@@ -227,7 +225,6 @@ export async function processSearch(req: Request, res: Response, next: NextFunct
       apiResponse: response
     });
   } catch (error) {
-    console.error('🔍 SEARCH CONTROLLER: ERROR:', error);
     next(error);
   }
 }
