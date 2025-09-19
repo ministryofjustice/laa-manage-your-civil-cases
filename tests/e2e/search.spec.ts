@@ -54,6 +54,12 @@ test('if no keyword is entered error message shows', async ({ page, i18nSetup })
 
   // At minimum, ensure we stay on a search-related page
   await expect(page).toHaveURL(/\/search/);
+
+  // Check that the validation error message is displayed in the error summary
+  await expect(page.getByRole('link', { name: t('forms.search.validationError.notEmpty') })).toBeVisible();
+  
+  // Also check that the inline error message is displayed on the input field
+  await expect(page.locator('#searchKeyword-error')).toContainText(t('forms.search.validationError.notEmpty'));
 });
 
 
