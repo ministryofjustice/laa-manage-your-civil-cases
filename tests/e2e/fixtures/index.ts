@@ -1,13 +1,15 @@
 import { test as base, expect } from '@playwright/test';
 import { AxeBuilder } from '@axe-core/playwright';
 import { initI18nSync } from '../helpers/i18n.js';
+import { PageFactory } from '../pages/PageFactory.js';
 
 /**
- * Custom test fixture with i18n setup and accessibility testing
+ * Custom test fixture with i18n setup, accessibility testing, and page objects
  */
 interface TestFixtures {
   i18nSetup: undefined;
   checkAccessibility: () => Promise<void>;
+  pages: PageFactory;
 }
 
 export const test = base.extend<TestFixtures>({
@@ -48,6 +50,11 @@ export const test = base.extend<TestFixtures>({
       expect(violations).toEqual([]);
     };
     await use(checkAccessibility);
+  },
+
+  // Page objects fixture
+  pages: async ({ page }, use) => {
+    await use(new PageFactory(page));
   }
 });
 
