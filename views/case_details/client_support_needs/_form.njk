@@ -1,4 +1,4 @@
-{# Third Party Details Form Partial #}
+{# Client Support Needs Form Partial #}
 {# This partial expects the following variables to be set in the parent template: #}
 {# - caseReference: The case reference #}
 {# - csrfToken: CSRF token #}
@@ -9,194 +9,60 @@
 {% if error %}
   {{ errorSummary(error.errorSummaryList) }}
   {% set errorMessages = {
-    thirdPartyFullName: { text: error.inputErrors.thirdPartyFullName } if error.inputErrors.thirdPartyFullName,
-    thirdPartyEmailAddress: { text: error.inputErrors.thirdPartyEmailAddress } if error.inputErrors.thirdPartyEmailAddress,
-    thirdPartyContactNumber: { text: error.inputErrors.thirdPartyContactNumber } if error.inputErrors.thirdPartyContactNumber,
-    thirdPartySafeToCall: { text: error.inputErrors.thirdPartySafeToCall } if error.inputErrors.thirdPartySafeToCall,
-    thirdPartyAddress: { text: error.inputErrors.thirdPartyAddress } if error.inputErrors.thirdPartyAddress,
-    thirdPartyPostcode: { text: error.inputErrors.thirdPartyPostcode } if error.inputErrors.thirdPartyPostcode,
-    thirdPartyRelationshipToClient: { text: error.inputErrors.thirdPartyRelationshipToClient } if error.inputErrors.thirdPartyRelationshipToClient,
-    thirdPartyPassphraseSetUp: { text: error.inputErrors.thirdPartyPassphraseSetUp } if error.inputErrors.thirdPartyPassphraseSetUp,
-    thirdPartyPassphrase: { text: error.inputErrors.thirdPartyPassphrase } if error.inputErrors.thirdPartyPassphrase
+    notes: {text: error.inputErrors.notes } if error.inputErrors.note
   } %}
 {% endif %}
 
 <form method="post" action="{{ formAction }}">
   <input type="hidden" name="_csrf" value="{{ csrfToken }}">
 
-  <h2 class="govuk-heading-m">{{ t('pages.caseDetails.clientDetails.contactDetails') }}</h2>
-  {{ govukInput({
-    label: {
-      text: t('forms.clientDetails.thirdParty.name'),
-      classes: "govuk-text--m"
-    },
-    id: "thirdPartyFullName",
-    name: "thirdPartyFullName",
-    value: currentThirdPartyFullName,
-    errorMessage: errorMessages.thirdPartyFullName if error
-  }) }}
-
-  {{ govukInput({
-    label: {
-      text: t('forms.clientDetails.thirdParty.phoneNumberHeading'),
-      classes: "govuk-text--m"
-    },
-    errorMessage: errorMessages.thirdPartyContactNumber if error,
-    id: "thirdPartyContactNumber",
-    name: "thirdPartyContactNumber",
-    type: "tel",
-    autocomplete: "off",
-    classes: "govuk-input--width-20",
-    value: currentThirdPartyContactNumber
-  }) }}
-
-  {{ govukRadios({
-    name: "thirdPartySafeToCall",
-    value: currentThirdPartySafeToCall,
-    errorMessage: errorMessages.thirdPartySafeToCall if error,
-    fieldset: {
-      legend: {
-        text: t('forms.clientDetails.thirdParty.safeToCallHeading'),
-        classes: "govuk-text--m"
-      }
-    },
-    items: [
-      {
-        value: "true",
-        text: t('common.yes')
-      },
-      {
-        value: "false",
-        text: t('common.no')
-      }
-    ]
-  }) }}
-
-  {{ govukInput({
-    label: {
-      text: t('forms.clientDetails.thirdParty.emailAddressHeading'),
-      classes: "govuk-text--m"
-    },
-    id: "thirdPartyEmailAddress",
-    name: "thirdPartyEmailAddress",
-    spellcheck: false,
-    value: currentThirdPartyEmailAddress,
-    errorMessage: errorMessages.thirdPartyEmailAddress if error
-  }) }}
-
-  {{ govukTextarea({
-    label: {
-      text: t('forms.clientDetails.thirdParty.addressHeading'),
-      classes: "govuk-text--m"
-    },
-    id: "thirdPartyAddress",
-    name: "thirdPartyAddress",
-    value: currentThirdPartyAddress,
-    errorMessage: errorMessages.thirdPartyAddress if error,
-    autocomplete: "off"
-  }) }}
-
-  {{ govukInput({
-    label: {
-      text: t('forms.clientDetails.address.postcode'),
-      classes: "govuk-text--m"
-    },
-    id: "thirdPartyPostcode",
-    name: "thirdPartyPostcode",
-    classes: "govuk-input--width-10",
-    value: currentThirdPartyPostcode,
-    errorMessage: errorMessages.thirdPartyPostcode if error,
-    autocomplete: "off"
-  }) }}
-
-  {{ govukRadios({
-    name: "thirdPartyRelationshipToClient",
-    value: currentThirdPartyRelationshipToClient,
-    errorMessage: errorMessages.thirdPartyRelationshipToClient if error,
-    fieldset: {
-      legend: {
-        text: t('forms.clientDetails.thirdParty.relationshipToClient.titleH2'),
-        classes: "govuk-fieldset__legend--m"
-      }
-    },
-    items: [
-      {
-        value: t('forms.clientDetails.thirdParty.relationshipToClient.parentOrGuardian'),
-        text: t('forms.clientDetails.thirdParty.relationshipToClient.parentOrGuardian')
-      },
-      {
-        value: t('forms.clientDetails.thirdParty.relationshipToClient.familyMemberOfFriend'),
-        text: t('forms.clientDetails.thirdParty.relationshipToClient.familyMemberOfFriend')
-      },
-      {
-        value: t('forms.clientDetails.thirdParty.relationshipToClient.professional'),
-        text: t('forms.clientDetails.thirdParty.relationshipToClient.professional')
-      },
-      {
-        value: t('forms.clientDetails.thirdParty.relationshipToClient.legalAdvisor'),
-        text: t('forms.clientDetails.thirdParty.relationshipToClient.legalAdvisor')
-      },
-      {
-        value: t('forms.clientDetails.thirdParty.relationshipToClient.other'),
-        text: t('forms.clientDetails.thirdParty.relationshipToClient.other')
-      }
-    ]
-  }) }}
-
-  {% set passphraseInput %}
-    {{ govukInput({
-      id: "thirdPartyPassphrase",
-      name: "thirdPartyPassphrase",
-      value: currentThirdPartyPassphrase,
-      spellcheck: false,
-      classes: "govuk-!-width-one-half",
-      label: {
-        text: t('forms.clientDetails.thirdParty.passphrase.passphraseHint')
-      },
-      errorMessage: errorMessages.thirdPartyPassphrase if error
-    }) }}
+  {% set language %}
+    {% include "./_form-language.njk" %}
   {% endset -%}
 
-  {{ govukRadios({
-    name: "thirdPartyPassphraseSetUp",
-    value: currentThirdPartyPassphraseSetUp,
-    errorMessage: errorMessages.thirdPartyPassphraseSetUp if error,
-    fieldset: {
-      legend: {
-        text: t('forms.clientDetails.thirdParty.passphrase.titleH2'),
-        classes: "govuk-fieldset__legend--m"
-      }
+  {% set notes %}
+  {{ govukTextarea({
+    label: {
+      text: t('forms.clientDetails.clientSupportNeeds.notesTextAreaHint')
+    },
+    id: "notes",
+    name: "notes",
+    errorMessage: errorMessages.notes if error,
+    autocomplete: "off"
+  }) }}
+  {% endset -%}
+
+  {{ govukCheckboxes({
+    name: "contact",
+    hint: {
+      text: t('forms.clientDetails.clientSupportNeeds.checkBoxHint')
     },
     items: [
       {
-        value: t('common.yes'),
-        text: t('common.yes'),
+        value: "bslWebcam",
+        text: t('forms.clientDetails.clientSupportNeeds.britishSignLanguage')
+      },
+      {
+        value: "textRelay",
+        text: t('forms.clientDetails.clientSupportNeeds.textRelay')
+      },
+      {
+        value: "callbackPreference",
+        text: t('forms.clientDetails.clientSupportNeeds.callbackPreference')
+      },
+      {
+        value: "languageSelection",
+        text: t('forms.clientDetails.clientSupportNeeds.language'),
         conditional: {
-          html: passphraseInput
+          html: language
         }
       },
       {
-        divider: "or"
-      },
-      {
-        value: t('forms.clientDetails.thirdParty.passphrase.noClientIsAChildOrPatient'),
-        text: t('forms.clientDetails.thirdParty.passphrase.noClientIsAChildOrPatient')
-      },
-      {
-        value: t('forms.clientDetails.thirdParty.passphrase.noClientIsSubjectToPowerOfAttorney'),
-        text: t('forms.clientDetails.thirdParty.passphrase.noClientIsSubjectToPowerOfAttorney')
-      },
-      {
-        value: t('forms.clientDetails.thirdParty.passphrase.noClientCannotCommunicateOnThePhoneDueToDisability'),
-        text: t('forms.clientDetails.thirdParty.passphrase.noClientCannotCommunicateOnThePhoneDueToDisability')
-      },
-      {
-        value: t('forms.clientDetails.thirdParty.passphrase.noClientCannotCommunicateOnThePhoneDueToALanguageRequirement'),
-        text: t('forms.clientDetails.thirdParty.passphrase.noClientCannotCommunicateOnThePhoneDueToALanguageRequirement')
-      },
-      {
-        value: t('forms.clientDetails.thirdParty.passphrase.noForAnotherReason'),
-        text: t('forms.clientDetails.thirdParty.passphrase.noForAnotherReason')
+        value: "otherSupport",
+        text: t('forms.clientDetails.clientSupportNeeds.otherSupport'),
+        conditional: {
+          html: notes
+        }
       }
     ]
   }) }}

@@ -17,3 +17,11 @@ declare module '@ministryofjustice/frontend' {
 	 */
 	export function initAll(): void;
 }
+
+declare module '@x-govuk/govuk-prototype-components' {
+	/**
+	 * Initializes all X-GOV.UK Prototype components on the page.
+	 * @returns {void}
+	 */
+	export function initAll(): void;
+}

@@ -13,7 +13,9 @@ import {
   getAddClientThirdParty,
   postAddClientThirdParty,
   getEditClientThirdParty,
-  postEditClientThirdParty
+  postEditClientThirdParty,
+  getAddClientSupportNeeds,
+  postAddClientSupportNeeds
 } from '#src/scripts/controllers/index.js';
 
 import {
@@ -49,7 +51,7 @@ router.post('/:caseReference/client-details/add/third-party', validateAddClientT
 router.get('/:caseReference/client-details/change/third-party', getEditClientThirdParty);
 router.post('/:caseReference/client-details/change/third-party', validateEditClientThirdParty(), postEditClientThirdParty);
 
-router.get('/:caseReference/client-details/add/support-need', getAddClientThirdParty);
-router.post('/:caseReference/client-details/add/support-need', validateAddClientThirdParty(), postAddClientThirdParty);
+router.get('/:caseReference/client-details/add/support-need', getAddClientSupportNeeds);
+router.post('/:caseReference/client-details/add/support-need', validateAddClientThirdParty(), postAddClientSupportNeeds);
 
 export default router;

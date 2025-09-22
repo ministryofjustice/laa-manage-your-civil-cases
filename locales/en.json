@@ -220,7 +220,10 @@
         "textRelay": "Relay UK (text relay)",
         "callbackPreference": "Callback preference",
         "language": "Language – needs interpreter",
-        "otherSupport": "Other support"
+        "otherSupport": "Other support",
+        "checkBoxHint": "Select all that apply",
+        "notesTextAreaHint": "Enter client support need",
+        "languageHint": "Start typing to select the language"
       },
       "thirdParty": {
         "pageTitleAdd": "Add a third party contact – {caseReference} – {serviceName} – GOV.UK",

@@ -1293,6 +1293,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@x-govuk/govuk-prototype-components@npm:^5.0.2":
+  version: 5.0.2
+  resolution: "@x-govuk/govuk-prototype-components@npm:5.0.2"
+  dependencies:
+    accessible-autocomplete: "npm:^3.0.0"
+    eventslibjs: "npm:^1.2.0"
+  peerDependencies:
+    govuk-frontend: ^5.11.0
+  checksum: 10c0/9785893d40f394581b85678659da45566c2310d719b63f4eed36c0721a14972cf1629e43326ff732add0b3aa70bdaac3dd9ebc1a7319b9ce78493c739c373bd4
+  languageName: node
+  linkType: hard
+
 "a-sync-waterfall@npm:^1.0.0":
   version: 1.0.1
   resolution: "a-sync-waterfall@npm:1.0.1"
@@ -1314,6 +1326,18 @@ __metadata:
     mime-types: "npm:^3.0.0"
     negotiator: "npm:^1.0.0"
   checksum: 10c0/98374742097e140891546076215f90c32644feacf652db48412329de4c2a529178a81aa500fbb13dd3e6cbf6e68d829037b123ac037fc9a08bcec4b87b358eef
+  languageName: node
+  linkType: hard
+
+"accessible-autocomplete@npm:^3.0.0":
+  version: 3.0.1
+  resolution: "accessible-autocomplete@npm:3.0.1"
+  peerDependencies:
+    preact: ^8.0.0
+  peerDependenciesMeta:
+    preact:
+      optional: true
+  checksum: 10c0/a90d76f29940cd7c5cb0795f2062d32f8f4904bae3acfc89eab717c56f2b18ce3fd07a4035ec5e30643119cdfe56be3a4bc260eb80e39eeb4009ea5dc09b163c
   languageName: node
   linkType: hard
 
@@ -2935,6 +2959,13 @@ __metadata:
   version: 5.0.1
   resolution: "eventemitter3@npm:5.0.1"
   checksum: 10c0/4ba5c00c506e6c786b4d6262cfbce90ddc14c10d4667e5c83ae993c9de88aa856033994dd2b35b83e8dc1170e224e66a319fa80adc4c32adcd2379bbc75da814
+  languageName: node
+  linkType: hard
+
+"eventslibjs@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "eventslibjs@npm:1.2.0"
+  checksum: 10c0/516cf3017444905f3a5bb876ae1dc469f51cb667546d9e13bbb8a96eb5fe7cab8c89fdc4295bea96e0ad72081ce99146d8628be42dc0a5efb894a910cce43371
   languageName: node
   linkType: hard
 
@@ -4680,6 +4711,7 @@ __metadata:
     "@types/validator": "npm:^13.15.3"
     "@typescript-eslint/eslint-plugin": "npm:^8.43.0"
     "@typescript-eslint/parser": "npm:^8.43.0"
+    "@x-govuk/govuk-prototype-components": "npm:^5.0.2"
     axe-core: "npm:^4.10.3"
     axios: "npm:1.12.2"
     body-parser: "npm:^2.2.0"
