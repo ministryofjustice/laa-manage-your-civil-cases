@@ -31,6 +31,7 @@ export {
   safeApiField,
   safeNestedField,
   extractCurrentFields,
+  normaliseSelectedCheckbox,
   type FieldConfig
 } from './dataTransformers.js';
 
@@ -56,7 +57,9 @@ export {
   handlePostEditForm,
   handleAddThirdPartyValidationErrors,
   handleEditThirdPartyValidationErrors,
-  prepareThirdPartyData
+  prepareThirdPartyData,
+  handleAddClientSupportNeedsErrors,
+  prepareClientSupportNeedsData
 } from './formControllerHelpers.js';
 
 // Session helpers

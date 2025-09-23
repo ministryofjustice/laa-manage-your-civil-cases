@@ -1,6 +1,8 @@
 {{ xGovukAutocomplete({
-  id: "language",
-  name: "language",
+  id: "languageSupportNeeds",
+  name: "languageSupportNeeds",
+  value: currentLanguageSupportNeeds,
+  errorMessage: errorMessages.languageSupportNeeds if error,
   label: {
     text: t('forms.clientDetails.clientSupportNeeds.languageHint')
   },

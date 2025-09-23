@@ -253,3 +253,15 @@ export function extractCurrentFields(
     return formData;
   }, {});
 }
+
+/**
+ * Normalises the input into an array of strings
+ * Accepts a string, an array of strings, or anything else (ignored)
+ * @param {unknown} value - The value of to normalise
+ * @returns {string[]} - Returns an array of strings
+ */
+export function normaliseSelectedCheckbox(value: unknown): string[] {
+  if (Array.isArray(value)) return value.filter((x): x is string => typeof x === 'string');
+  if (typeof value === 'string' && value.trim() !== '') return [value];
+  return [];
+}
