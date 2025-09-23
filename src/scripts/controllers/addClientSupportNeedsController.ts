@@ -18,7 +18,7 @@ export async function getAddClientSupportNeeds(req: Request, res: Response, next
   await handleGetEditForm(req, res, next, {
     templatePath: 'case_details/client_support_needs/add-client-support-needs.njk',
     fieldConfigs: [
-      { field: 'clientSupportNeeds', type: 'string' }, // Needs to the an array of strings, not the 1 string
+      { field: 'clientSupportNeeds', type: 'array' }, // Needs to the an array of strings, not the 1 string
       { field: 'languageSupportNeeds', type: 'string' },
       { field: 'notes', type: 'string' }
     ]
@@ -60,8 +60,10 @@ export async function postAddClientSupportNeeds(req: Request, res: Response, nex
     // Prepare the third party data for the API
     const clientSupportNeeds = prepareClientSupportNeedsData(formFields);
 
+    devLog(`Prepared client support needs data: ${JSON.stringify(clientSupportNeeds)}`);
+
     // Call the API to add client support needs
-    const response = await apiService.addThirdPartyContact(req.axiosMiddleware, caseReference, clientSupportNeeds);
+    const response = await apiService.updateClientDetails(req.axiosMiddleware, caseReference, { clientSupportNeeds });
 
     if (response.status === 'success') {
       devLog(`Client support needs successfully added for case: ${caseReference}`);
