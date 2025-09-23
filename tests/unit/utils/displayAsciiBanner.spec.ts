@@ -30,46 +30,37 @@ describe('displayAsciiBanner', () => {
     consoleLogStub = sinon.stub(console, 'log');
     consoleErrorStub = sinon.stub(console, 'error');
     consoleClearStub = sinon.stub(console, 'clear');
-    figletStub = sinon.stub(figlet, 'text');
+    figletStub = sinon.stub(figlet, 'textSync');
   });
 
   afterEach(() => {
     sinon.restore();
   });
 
-  it('should log ASCII banner correctly', (done) => {
-    figletStub.callsArgWith(1, null, 'Manage Your Ascii Art');
+  it('should log ASCII banner correctly', () => {
+    figletStub.returns('Manage Your Ascii Art');
 
     displayAsciiBanner(successfulMockConfig);
 
-    setImmediate(() => {
-      assert(consoleClearStub.calledOnce, 'console.clear should be called');
-      assert(consoleLogStub.calledWithMatch('Manage Your Ascii Art'), 'ASCII output should be logged');
-      assert(consoleLogStub.calledWithMatch('http://localhost:1234'), 'Server link should be logged');
-      done();
-    });
+    assert(consoleClearStub.calledOnce, 'console.clear should be called');
+    assert(consoleLogStub.calledWithMatch('Manage Your Ascii Art'), 'ASCII output should be logged');
+    assert(consoleLogStub.calledWithMatch('http://localhost:1234'), 'Server link should be logged');
   });
 
-  it('should handle missing SERVICE_NAME gracefully', (done) => {
-    figletStub.callsArgWith(1, null, '');
+  it('should handle missing SERVICE_NAME gracefully', () => {
+    figletStub.returns('');
 
     displayAsciiBanner(undefinedMockConfig);
 
-    setImmediate(() => {
-      assert(consoleErrorStub.calledWithMatch('❌ No ASCII art data generated'), 'Error should be logged');
-      assert(consoleLogStub.notCalled, 'console.log should not be called if no ASCII art is generated');
-      done();
-    });
+    assert(consoleErrorStub.calledWithMatch('❌ No ASCII art data generated'), 'Error should be logged');
+    assert(consoleLogStub.notCalled, 'console.log should not be called if no ASCII art is generated');
   });
 
-  it('should handle figlet error', (done) => {
-    figletStub.callsArgWith(1, new Error('Figlet failure'), undefined);
+  it('should handle figlet error', () => {
+    figletStub.throws(new Error('Figlet failure'));
 
     displayAsciiBanner(nullMockConfig);
 
-    setImmediate(() => {
-      assert(consoleErrorStub.calledWithMatch('❌ Error generating ASCII art:'), 'Error should be logged on figlet failure');
-      done();
-    });
+    assert(consoleErrorStub.calledWithMatch('❌ Error generating ASCII art:'), 'Error should be logged on figlet failure');
   });
 });
