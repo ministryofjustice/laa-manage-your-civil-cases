@@ -61,7 +61,7 @@ export async function postAddClientSupportNeeds(req: Request, res: Response, nex
     const clientSupportNeeds = prepareClientSupportNeedsData(formFields);
 
     // Call the API to add client support needs
-    const response = await apiService.addThirdPartyContact(req.axiosMiddleware, caseReference, clientSupportNeeds);
+    const response = await apiService.addClientSupportNeeds(req.axiosMiddleware, caseReference, clientSupportNeeds);
 
     if (response.status === 'success') {
       devLog(`Client support needs successfully added for case: ${caseReference}`);
