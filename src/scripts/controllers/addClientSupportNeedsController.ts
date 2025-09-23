@@ -8,7 +8,7 @@ const BAD_REQUEST = 400;
 const INTERNAL_SERVER_ERROR = 500;
 
 /**
- * Renders the add client third party form for a given case reference.
+ * Renders the add client support needs for a given case reference.
  * @param {Request} req - Express request object
  * @param {Response} res - Express response object
  * @param {NextFunction} next - Express next middleware function
@@ -18,7 +18,7 @@ export async function getAddClientSupportNeeds(req: Request, res: Response, next
   await handleGetEditForm(req, res, next, {
     templatePath: 'case_details/client_support_needs/add-client-support-needs.njk',
     fieldConfigs: [
-      { field: 'clientSupportNeeds', type: 'string' }, // Needs to the an array of strings, not the 1 string
+      { field: 'clientSupportNeeds', type: 'array' },
       { field: 'languageSupportNeeds', type: 'string' },
       { field: 'notes', type: 'string' }
     ]
@@ -44,7 +44,7 @@ export async function postAddClientSupportNeeds(req: Request, res: Response, nex
   }
 
   const formFields = extractFormFields(req.body, [
-    'clientSupportNeeds', // this is an array of strings, not sure `extractFormFields` will handle this.
+    'clientSupportNeeds',
     'languageSupportNeeds',
     'notes'
   ]);
@@ -55,9 +55,9 @@ export async function postAddClientSupportNeeds(req: Request, res: Response, nex
   }
 
   try {
-    devLog(`Adding third party contact for case: ${caseReference}`);
+    devLog(`Adding client support needs for case: ${caseReference}`);
 
-    // Prepare the third party data for the API
+    // Prepare the client support needs data for the API
     const clientSupportNeeds = prepareClientSupportNeedsData(formFields);
 
     // Call the API to add client support needs
