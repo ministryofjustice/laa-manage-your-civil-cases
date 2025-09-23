@@ -228,7 +228,13 @@
         "otherSupport": "Other support",
         "checkBoxHint": "Select all that apply",
         "notesTextAreaHint": "Enter client support need",
-        "languageHint": "Start typing to select the language"
+        "languageHint": "Start typing to select the language",
+        "validationError": {
+          "notEmpty": "Select a client support need or select 'Cancel'",
+          "notEmptyLanguage": "Select a language",
+          "notEmptyNotes": "Enter the client support need",
+          "notChanged": "Change the client support needs or select 'Cancel'"
+        }
       },
       "thirdParty": {
         "pageTitleAdd": "Add a third party contact – {caseReference} – {serviceName} – GOV.UK",

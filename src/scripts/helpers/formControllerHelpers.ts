@@ -397,7 +397,7 @@ abstract class ClientSupportNeedsValidator {
  * Validator for ADD client support needs forms
  */
 class AddClientSupportNeedsValidator extends ClientSupportNeedsValidator {
-  protected readonly templatePath = 'case_details/client_support_needs/change-client-support-needs.njk';
+  protected readonly templatePath = 'case_details/client_support_needs/add-client-support-needs.njk';
 }
 
 // Singleton instances

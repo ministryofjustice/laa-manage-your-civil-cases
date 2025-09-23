@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
 import { handleGetEditForm, extractFormFields, handleAddClientSupportNeedsErrors, prepareClientSupportNeedsData, devLog, devError, createProcessedError, safeString } from '#src/scripts/helpers/index.js';
 import { apiService } from '#src/services/apiService.js';
+import languages from '#views/case_details/client_support_needs/languages.json' with { type: 'json' };
 
 // HTTP Status codes
 const BAD_REQUEST = 400;
@@ -15,6 +16,7 @@ const INTERNAL_SERVER_ERROR = 500;
  * @returns {Promise<void>}
  */
 export async function getAddClientSupportNeeds(req: Request, res: Response, next: NextFunction): Promise<void> {
+  res.locals.languageItems = languages;
   await handleGetEditForm(req, res, next, {
     templatePath: 'case_details/client_support_needs/add-client-support-needs.njk',
     fieldConfigs: [
@@ -33,6 +35,7 @@ export async function getAddClientSupportNeeds(req: Request, res: Response, next
  * @returns {Promise<void>}
  */
 export async function postAddClientSupportNeeds(req: Request, res: Response, next: NextFunction): Promise<void> {
+  res.locals.languageItems = languages; 
   const caseReference = safeString(req.params.caseReference);
 
   if (typeof caseReference !== 'string' || caseReference.trim() === '') {

@@ -18,7 +18,17 @@
   <input type="hidden" name="_csrf" value="{{ csrfToken }}">
 
   {% set languageSupportNeeds %}
-    {% include "./_form-language.njk" %}
+    {{ xGovukAutocomplete({
+      id: "languageSupportNeeds",
+      name: "languageSupportNeeds",
+      value: currentLanguageSupportNeeds,
+      errorMessage: errorMessages.languageSupportNeeds if error,
+      label: {
+        text: t('forms.clientDetails.clientSupportNeeds.languageHint')
+      },
+      formGroup: { classes: "govuk-!-width-one-half" },
+      items: languageItems
+    }) }}
   {% endset -%}
 
   {% set notes %}
@@ -36,7 +46,7 @@
 
   {{ govukCheckboxes({
     name: "clientSupportNeeds",
-    value: currentClientSupportNeeds,
+    values: currentClientSupportNeeds,
     hint: {
       text: t('forms.clientDetails.clientSupportNeeds.checkBoxHint')
     },

@@ -29,3 +29,7 @@ export {
   validateAddClientThirdParty,
   validateEditClientThirdParty
 } from './clientThirdPartySchema.js';
+
+export {
+  validateAddClientSupportNeeds
+} from './clientSupportNeedsSchema.js';

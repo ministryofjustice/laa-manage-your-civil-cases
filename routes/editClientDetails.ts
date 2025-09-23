@@ -25,7 +25,8 @@ import {
   validateEditClientEmailAddress,
   validateEditClientAddress,
   validateAddClientThirdParty,
-  validateEditClientThirdParty
+  validateEditClientThirdParty,
+  validateAddClientSupportNeeds
 } from '#src/middlewares/index.js';
 
 const router = express.Router();
@@ -52,6 +53,6 @@ router.get('/:caseReference/client-details/change/third-party', getEditClientThi
 router.post('/:caseReference/client-details/change/third-party', validateEditClientThirdParty(), postEditClientThirdParty);
 
 router.get('/:caseReference/client-details/add/support-need', getAddClientSupportNeeds);
-router.post('/:caseReference/client-details/add/support-need', postAddClientSupportNeeds);
+router.post('/:caseReference/client-details/add/support-need', validateAddClientSupportNeeds(), postAddClientSupportNeeds);
 
 export default router;
