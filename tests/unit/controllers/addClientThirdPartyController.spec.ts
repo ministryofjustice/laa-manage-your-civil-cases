@@ -25,7 +25,7 @@ import {
 import { apiService } from '#src/services/apiService.js';
 // Import to get global type declarations for axiosMiddleware
 import '#utils/axiosSetup.js';
-import { validateEditClientThirdParty } from '#src/middlewares/clientThirdPartySchema.js';
+import { validateAddClientThirdParty } from '#src/middlewares/clientThirdPartySchema.js';
 import { ValidationChain } from '#node_modules/express-validator/lib/index.js';
 
 // Define the RequestWithMiddleware interface for testing
@@ -134,9 +134,9 @@ describe('Edit Client Name Controller', () => {
 
     it('should handle validation errors for client third party name', async () => {
       // Arrange
-      req.body = { thirdPartyFullName: '', existingThirdPartyFullName: 'John Carpenter' }; // Empty name should trigger validation
+      req.body = { thirdPartyFullName: '' }; // Empty name should trigger validation
 
-      await runSchema(req as any, validateEditClientThirdParty());
+      await runSchema(req as any, validateAddClientThirdParty());
 
       // Act
       await postAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);
@@ -149,11 +149,11 @@ describe('Edit Client Name Controller', () => {
     it('should handle validation errors for client third party email', async () => {
       // Arrange
       req.body = { 
-        thirdPartyFullName: '', existingThirdPartyFullName: 'John Carpenter', // Make sure name is there as it is mandatory
-        thirdPartyEmailAddress: 'invalid-email', existingThirdPartyEmailAddress: '' // Invalid email format
+        thirdPartyFullName: 'John Carpenter', // Make sure name is there as it is mandatory
+        thirdPartyEmailAddress: 'invalid-email' // Invalid email format
       }; 
 
-      await runSchema(req as any, validateEditClientThirdParty());
+      await runSchema(req as any, validateAddClientThirdParty());
 
       // Act
       await postAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);
@@ -166,11 +166,11 @@ describe('Edit Client Name Controller', () => {
     it('should handle validation errors for client third party contact number', async () => {
       // Arrange
       req.body = { 
-        thirdPartyFullName: '', existingThirdPartyFullName: 'John Carpenter', // Make sure name is there as it is mandatory
-        thirdPartyContactNumber: '007', existingThirdPartyContactNumber: '' // Invalid phone number format
+        thirdPartyFullName: 'John Carpenter', // Make sure name is there as it is mandatory
+        thirdPartyContactNumber: '007' // Invalid phone number format
       }; 
 
-      await runSchema(req as any, validateEditClientThirdParty());
+      await runSchema(req as any, validateAddClientThirdParty());
 
       // Act
       await postAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);
@@ -183,11 +183,11 @@ describe('Edit Client Name Controller', () => {
     it('should handle validation errors for client third party radio passphrase set up', async () => {
       // Arrange
       req.body = { 
-        thirdPartyFullName: '', existingThirdPartyFullName: 'John Carpenter', // Make sure name is there as it is mandatory
-        thirdPartyPassphraseSetUp: '', existingThirdPartyPassphraseSetUp: '' // Empty
+        thirdPartyFullName: 'John Carpenter', // Make sure name is there as it is mandatory
+        thirdPartyPassphraseSetUp: '' // Empty
       }; 
 
-      await runSchema(req as any, validateEditClientThirdParty());
+      await runSchema(req as any, validateAddClientThirdParty());
 
       // Act
       await postAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);

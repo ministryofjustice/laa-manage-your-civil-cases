@@ -11,7 +11,9 @@ import {
   getEditClientAddress,
   postEditClientAddress,
   getAddClientThirdParty,
-  postAddClientThirdParty
+  postAddClientThirdParty,
+  getEditClientThirdParty,
+  postEditClientThirdParty
 } from '#src/scripts/controllers/index.js';
 
 import {
@@ -20,6 +22,7 @@ import {
   validateEditClientPhoneNumber,
   validateEditClientEmailAddress,
   validateEditClientAddress,
+  validateAddClientThirdParty,
   validateEditClientThirdParty
 } from '#src/middlewares/index.js';
 
@@ -40,7 +43,10 @@ router.post('/:caseReference/client-details/change/email-address', validateEditC
 router.get('/:caseReference/client-details/change/address', getEditClientAddress);
 router.post('/:caseReference/client-details/change/address', validateEditClientAddress(), postEditClientAddress);
 
-router.get('/:caseReference/add/third-party', getAddClientThirdParty);
-router.post('/:caseReference/add/third-party', validateEditClientThirdParty(), postAddClientThirdParty);
+router.get('/:caseReference/client-details/add/third-party', getAddClientThirdParty);
+router.post('/:caseReference/client-details/add/third-party', validateAddClientThirdParty(), postAddClientThirdParty);
+
+router.get('/:caseReference/client-details/change/third-party', getEditClientThirdParty);
+router.post('/:caseReference/client-details/change/third-party', validateEditClientThirdParty(), postEditClientThirdParty);
 
 export default router;

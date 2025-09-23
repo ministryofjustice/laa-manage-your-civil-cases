@@ -18,7 +18,7 @@ Express.js is a fast, unopinionated, minimalist web framework for Node.js.
     - [Install dependencies and run application for development](#install-dependencies-and-run-application-for-development)
     - [Install dependencies and run application for production](#install-dependencies-and-run-application-for-production)
       - [Node Version Manager](#node-version-manager)
-    - [Running locally with docker](#running-locally-with-docker)
+      - [Running locally with docker](#running-locally-with-docker)
   - [Routing](#routing)
   - [Testing](#testing)
     - [Running All Tests](#running-all-tests)
@@ -62,7 +62,7 @@ Express.js is a fast, unopinionated, minimalist web framework for Node.js.
 
 ## Prerequisites
 
-- node stable version [24.6.0](https://nodejs.org/en/blog/release/v24.6.0/)
+- node stable version [24.7.0](https://nodejs.org/en/blog/release/v24.7.0/)
 - [Yarn 4.9.2](https://yarnpkg.com/) package manager (see installation instructions below)
 - TypeScript 5.8.3
 

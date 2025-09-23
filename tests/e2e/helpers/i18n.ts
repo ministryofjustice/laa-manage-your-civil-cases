@@ -48,11 +48,11 @@ export function initI18nSync(): typeof i18next {
       return i18next;
     } catch (fileError) {
       console.error('Failed to read or parse locale file:', fileError);
-      throw new Error('Locale file could not be loaded');
+      throw new Error('Locale file could not be loaded', { cause: fileError });
     }
   } catch (initError) {
     console.error('Failed to initialize i18next:', initError);
-    throw new Error('i18next initialization failed');
+    throw new Error('i18next initialization failed', { cause: initError });
   }
 }
 

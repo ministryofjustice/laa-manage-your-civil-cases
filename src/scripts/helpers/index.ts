@@ -21,6 +21,7 @@ export {
 export {
   safeString,
   safeOptionalString,
+  booleanToString,
   isRecord,
   safeStringFromRecord,
   hasProperty,
@@ -28,7 +29,9 @@ export {
   safeBodyString,
   extractFormFields,
   safeApiField,
-  extractCurrentFields
+  safeNestedField,
+  extractCurrentFields,
+  type FieldConfig
 } from './dataTransformers.js';
 
 // Date formatting utilities
@@ -51,9 +54,19 @@ export {
 export {
   handleGetEditForm,
   handlePostEditForm,
-  handleThirdPartyValidationErrors,
+  handleAddThirdPartyValidationErrors,
+  handleEditThirdPartyValidationErrors,
   prepareThirdPartyData
 } from './formControllerHelpers.js';
+
+// Session helpers
+export {
+  storeSessionData,
+  getSessionData,
+  clearSessionData,
+  clearAllOriginalFormData,
+  storeOriginalFormData
+} from './sessionHelpers.js';
 
 export {
   initializeI18nextSync,
@@ -77,6 +90,7 @@ export {
 
 export {
   createChangeDetectionValidator,
+  createSessionChangeDetectionValidator,
   TypedValidationError,
   formatValidationError,
   handleValidationErrors,

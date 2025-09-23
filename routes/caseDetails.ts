@@ -1,7 +1,7 @@
 import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
 import { handleCaseDetailsTab } from '#src/scripts/controllers/caseDetailsController.js';
-import { getRemoveThirdPartyConfirmation, deleteThirdParty } from '#src/scripts/controllers/index.js';
+import { getRemoveThirdPartyConfirmation, deleteThirdParty, getRemoveSupportNeedsConfirmation, deleteClientSupportNeeds } from '#src/scripts/controllers/index.js';
 
 // Create a new router for case details routes
 const router = express.Router();
@@ -34,6 +34,16 @@ router.get('/:caseReference/confirm/remove-third-party', async function (req: Re
 /* DELETE third party contact. */
 router.post('/:caseReference/confirm/remove-third-party', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
   await deleteThirdParty(req, res, next);
+});
+
+/* GET confirmation page for removing client support needs. */
+router.get('/:caseReference/confirm/remove-support-need', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
+  await getRemoveSupportNeedsConfirmation(req, res, next);
+});
+
+/* DELETE client support needs. */
+router.post('/:caseReference/confirm/remove-support-need', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
+  await deleteClientSupportNeeds(req, res, next);
 });
 
 export default router;

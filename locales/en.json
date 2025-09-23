@@ -87,7 +87,8 @@
         "heading": "Client details",
         "aboutClient": "About the client",
         "contactDetails": "Contact details",
-        "thirdPartyContact": "Third party contact"
+        "thirdPartyContact": "Third party contact",
+        "clientSupportNeeds": "Client support needs"
       },
       "buttons": {
         "acceptCase": "Accept case",
@@ -97,7 +98,8 @@
         "leaveFeedback": "Leave feedback",
         "generateLegalHelpForm": "Generate legal help form",
         "reopenCase": "Reopen case",
-        "addThirdPartyContact": "Add third party contact"
+        "addThirdPartyContact": "Add third party contact",
+        "addClientSupportNeed": "Add client support need"
       },
       "removeThirdParty": {
         "pageTitle": "Remove third party? – {serviceName} – GOV.UK",
@@ -105,6 +107,11 @@
         "description": "This will permanently delete all information about the third party.",
         "confirmButton": "Yes, remove",
         "cancelButton": "No, go back to client details"
+      },
+      "removeClientSupportNeeds": {
+        "pageTitle": "Remove client support needs? – {serviceName} – GOV.UK",
+        "heading": "Remove client support needs?",
+        "description": "This will permanently delete all information about the clients's support needs."
       }
     },
     "error": {
@@ -140,7 +147,7 @@
   "forms": {
     "clientDetails": {
       "name": {
-        "label": "Full name",
+        "label": "Name",
         "title": "Client name",
         "pageTitle": "Client name – {caseReference} – {serviceName} – GOV.UK",
         "validationError": {
@@ -175,7 +182,7 @@
         }
       },
       "email": {
-        "label": "Email",
+        "label": "Email address",
         "title": "Client email address (optional)",
         "pageTitle": "Client email address – {caseReference} – {serviceName} – GOV.UK",
         "validationError": {
@@ -189,7 +196,7 @@
         "pageTitle": "Client phone number – {caseReference} – {serviceName} – GOV.UK",
         "safeToCall": "Is it safe to call this number?",
         "announceCall": "Can you say the call is from Civil Legal Advice?",
-        "notSafeToCall": "The client is not safe to call",
+        "notSafeToCallWarning": "Not safe to call",
         "doNotAnnounce": "Do not say the call is from Civil Legal Advice",
         "validationError": {
           "invalidFormat": "Enter the phone number in the correct format",
@@ -209,29 +216,36 @@
       "language": {
         "label": "Language"
       },
+      "clientSupportNeeds": {
+        "britishSignLanguage": "British Sign Language (BSL)",
+        "textRelay": "Relay UK (text relay)",
+        "callbackPreference": "Callback preference",
+        "language": "Language – needs interpreter",
+        "otherSupport": "Other support"
+      },
       "thirdParty": {
         "pageTitleAdd": "Add a third party contact – {caseReference} – {serviceName} – GOV.UK",
         "pageH1Add": "Add a third party contact",
+        "pageTitleChange": "Change details about a third party – {caseReference} – {serviceName} – GOV.UK",
+        "pageH1Change": "Change details about a third party",
         "name": "Name",
         "emailAddress": "Email address",
-        "emailAddressH2": "Email address (optional)",
-        "contactNumber": "Contact number",
-        "contactNumberH2": "Phone number (optional)",
+        "emailAddressHeading": "Email address (optional)",
+        "phoneNumber": "Phone number",
+        "phoneNumberHeading": "Phone number (optional)",
         "address": "Address",
-        "addressH2": "Address (optional)",
-        "addressHint": "Enter address",
-        "postcodeHint": "Enter postcode",
+        "addressHeading": "Address (optional)",
         "relationshipToClient": {
           "title": "Relationship to client",
           "titleH2": "Relationship to client (optional)",
-          "parentOrGuardian": "Parent or Guardian",
+          "parentOrGuardian": "Parent or guardian",
           "familyMemberOfFriend": "Family member of friend",
           "professional": "Professional",
           "legalAdvisor": "Legal adviser",
           "other": "Other"
         },
         "safeToCall": "Is the third party safe to call?",
-        "notSafeToCall": "The third party is not safe to call",
+        "safeToCallHeading": "Is the third party safe to call? (optional)",
         "passphrase": {
           "title": "Passphrase",
           "titleH2": "Has the client set up a passphrase?",
@@ -247,7 +261,8 @@
           "invalidFormatEmail": "Enter an email address in the correct format, like name@example.com",
           "invalidFormatContactNumber": "Enter the phone number in the correct format",
           "notEmptyRelationship": "Select if the client has set up a passphrase",
-          "notEmptyPassphrase": "Enter the passphrase "
+          "notEmptyPassphrase": "Enter the passphrase ",
+          "notChanged": "Change third party details, or select 'Cancel'"
         }
       }
     },
@@ -267,7 +282,9 @@
       "changeLanguage": "Change Language",
       "changeReasonableAdjustments": "Change Reasonable adjustments",
       "changeThirdPartyContact": "Change Third party contact details",
-      "removeThirdPartyContact": "Remove Third party contact details"
+      "removeThirdPartyContact": "Remove Third party contact details",
+      "changeSupportNeeds": "Change Client support needs",
+      "removeSupportNeeds": "Remove Client support needs"
     }
   }
 }

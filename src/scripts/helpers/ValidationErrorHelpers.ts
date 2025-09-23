@@ -141,6 +141,108 @@ export function createChangeDetectionValidator(
 }
 
 /**
+ * Creates a session-based change detection validator that compares current form fields against session data
+ * @param {string[]} fieldNames - Array of field names to compare against session data
+ * @param {string} sessionNamespace - Session namespace where original data is stored
+ * @param {object} errorMessage - Error message to show when no changes detected
+ * @param {string} errorMessage.summaryMessage - Summary error message
+ * @param {string} errorMessage.inlineMessage - Inline error message
+ * @returns {object} Express-validator custom validator configuration
+ */
+export function createSessionChangeDetectionValidator(
+  fieldNames: string[],
+  sessionNamespace: string,
+  errorMessage: { summaryMessage: string | (() => string); inlineMessage: string | (() => string) }
+): {
+  in: Location[];
+  custom: {
+    options: (_value: string, meta: Meta) => boolean;
+    errorMessage: () => TypedValidationError;
+  };
+} {
+  return {
+    in: ['body'] as Location[],
+    custom: {
+      /**
+       * Schema to check if any of the specified field values have changed from session data.
+       * @param {string} _value - Placeholder value (unused)
+       * @param {Meta} meta - `express-validator` context containing request object
+       * @returns {boolean} True if any field has changed
+       */
+      options: (_value: string, meta: Meta): boolean => {
+        const { req } = meta;
+        if (!isRecord(req.body)) {
+          return true;
+        }
+
+        // Type-safe session access - check if session exists
+        if (!hasProperty(req, 'session') || !isRecord(req.session)) {
+          return true;
+        }
+
+        const { session } = req;
+        
+        if (!hasProperty(session, sessionNamespace)) {
+          // If no session data, allow submission (edge case handling)
+          return true;
+        }
+
+        const { [sessionNamespace]: originalDataRaw } = session;
+        
+        if (!isRecord(originalDataRaw)) {
+          return true;
+        }
+
+        // Check if any field has changed compared to session data
+        return fieldNames.some((fieldName) => {
+          const currentRaw = hasProperty(req.body, fieldName) ? req.body[fieldName] : '';
+          const currentValue = safeString(currentRaw).trim();
+          
+          // Safely get original value from session data
+          const originalRaw = hasProperty(originalDataRaw, fieldName) ? originalDataRaw[fieldName] : '';
+          const originalValue = safeString(originalRaw).trim();
+          
+          return currentValue !== originalValue;
+        });
+      },
+      /**
+       * Custom error message for when no changes are made
+       * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+       */
+      errorMessage: () => {
+        /**
+         * Resolve possibly lazy string value.
+         * @param {string | (() => string)} val - Value or thunk
+         * @returns {string} Resolved string
+         */
+        const resolve = (val: string | (() => string)): string => typeof val === 'function' ? val() : val;
+        let summaryMessage = resolve(errorMessage.summaryMessage);
+        let inlineMessage = resolve(errorMessage.inlineMessage);
+
+        /**
+         * Translate message if it appears to be a dotted key and translation exists.
+         * @param {string} msg - Original or key-like message
+         * @returns {string} Possibly translated message
+         */
+        const translateIfKey = (msg: string): string => {
+          if (!i18next.isInitialized) return msg;
+          if (!msg.includes('.')) return msg;
+          const translated = i18next.t(msg);
+          return translated !== '' && translated !== msg ? translated : msg;
+        };
+
+        summaryMessage = translateIfKey(summaryMessage);
+        if (inlineMessage !== '') {
+          inlineMessage = translateIfKey(inlineMessage);
+        }
+
+        return new TypedValidationError({ summaryMessage, inlineMessage });
+      }
+    }
+  };
+}
+
+/**
  * Handles validation errors by rendering the form with error messages
  * @param {Result<ValidationErrorData>} validationErrors - Validation errors from express-validator
  * @param {Request} req - Express request object

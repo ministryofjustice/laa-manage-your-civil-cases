@@ -1,0 +1,21 @@
+{% extends "base.njk" %}
+{% from "components/confirmationComponent.njk" import confirmationComponent %}
+
+{% block pageTitle %}{{ t('pages.caseDetails.removeClientSupportNeeds.pageTitle', { serviceName: config.SERVICE_NAME }) }}
+{% endblock %}
+
+{% block pageContent %}
+  {{ confirmationComponent({
+    heading: t('pages.caseDetails.removeClientSupportNeeds.heading'),
+    description: t('pages.caseDetails.removeClientSupportNeeds.description'),
+    confirmAction: {
+      text: t('pages.caseDetails.removeThirdParty.confirmButton'),
+      formAction: "/cases/" + caseReference + "/confirm/remove-support-need"
+    },
+    cancelAction: {
+      text: t('pages.caseDetails.removeThirdParty.cancelButton'),
+      href: "/cases/" + caseReference + "/client-details"
+    },
+    csrfToken: csrfToken
+  }) }}
+{% endblock %}

@@ -88,7 +88,6 @@ function transformCaseItem(item: unknown): CaseData {
     announceCall: Boolean(item.announceCall),
     emailAddress: safeOptionalString(item.emailAddress),
     clientIsVulnerable: Boolean(item.clientIsVulnerable),
-    language: safeOptionalString(item.language),
     address: safeOptionalString(item.address),
     postcode: safeOptionalString(item.postcode),
     specialNotes: safeOptionalString(item.specialNotes)
@@ -319,6 +318,37 @@ class ApiService {
   }
 
   /**
+   * Update third party contact for a case
+   * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+   * @param {string} caseReference - Case reference number
+   * @param {object} thirdPartyData - Third party data to update
+   * @returns {Promise<ClientDetailsApiResponse>} API response with updated client details
+   */
+  static async updateThirdPartyContact(
+    axiosMiddleware: AxiosInstanceWrapper,
+    caseReference: string,
+    thirdPartyData: object
+  ): Promise<ClientDetailsApiResponse> {
+    try {
+      devLog(`API: PUT ${API_PREFIX}/cases/${caseReference}/third-party`);
+      const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
+      const response = await configuredAxios.put(`${API_PREFIX}/cases/${caseReference}/third-party`, thirdPartyData);
+      devLog(`API: Update third party response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+      return {
+        data: transformClientDetailsItem(response.data),
+        status: 'success'
+      };
+    } catch (error) {
+      const errorMessage = extractAndLogError(error, 'API error');
+      return {
+        data: null,
+        status: 'error',
+        message: errorMessage
+      };
+    }
+  }
+
+  /**
    * Delete third party contact for a case
    * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
    * @param {string} caseReference - Case reference number
@@ -333,6 +363,35 @@ class ApiService {
       const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
       const response = await configuredAxios.delete(`${API_PREFIX}/cases/${caseReference}/third-party`);
       devLog(`API: Delete third party response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+      return {
+        data: transformClientDetailsItem(response.data),
+        status: 'success'
+      };
+    } catch (error) {
+      const errorMessage = extractAndLogError(error, 'API error');
+      return {
+        data: null,
+        status: 'error',
+        message: errorMessage
+      };
+    }
+  }
+
+  /**
+   * Delete client support needs contact for a case
+   * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+   * @param {string} caseReference - Case reference number
+   * @returns {Promise<ClientDetailsApiResponse>} API response confirming deletion
+   */
+  static async deleteClientSupportNeeds(
+    axiosMiddleware: AxiosInstanceWrapper,
+    caseReference: string
+  ): Promise<ClientDetailsApiResponse> {
+    try {
+      devLog(`API: DELETE ${API_PREFIX}/cases/${caseReference}/client-support-needs`);
+      const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
+      const response = await configuredAxios.delete(`${API_PREFIX}/cases/${caseReference}/client-support-needs`);
+      devLog(`API: Delete client support needs response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
       return {
         data: transformClientDetailsItem(response.data),
         status: 'success'
