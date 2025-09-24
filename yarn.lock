@@ -2929,9 +2929,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsdoc@npm:^60.1.1":
-  version: 60.1.1
-  resolution: "eslint-plugin-jsdoc@npm:60.1.1"
+"eslint-plugin-jsdoc@npm:^60.2.0":
+  version: 60.2.0
+  resolution: "eslint-plugin-jsdoc@npm:60.2.0"
   dependencies:
     "@es-joy/jsdoccomment": "npm:~0.58.0"
     are-docs-informative: "npm:^0.0.2"
@@ -2946,7 +2946,7 @@ __metadata:
     spdx-expression-parse: "npm:^4.0.0"
   peerDependencies:
     eslint: ^7.0.0 || ^8.0.0 || ^9.0.0
-  checksum: 10c0/0761bcfc8c04fd21adacac9fd8c2151401f0ebc97fc628a521361134019eeeb2a2edda1c49b63d8f074d5453676dc8130b425d85782039c837fb7a4baae2d39a
+  checksum: 10c0/5d8c84ae6eacc35fc71a4bbc9946a37ff4db10b4de32962e441e1994308eafdd1b343c8436efcdcd73e6bd774b1791ac835fd8b1709e669c4e707e1f0ee18653
   languageName: node
   linkType: hard
 
@@ -4890,7 +4890,7 @@ __metadata:
     eslint: "npm:^9.36.0"
     eslint-config-love: "npm:^125.0.0"
     eslint-config-prettier: "npm:^10.1.8"
-    eslint-plugin-jsdoc: "npm:^60.1.1"
+    eslint-plugin-jsdoc: "npm:^60.2.0"
     express: "npm:^5.1.0"
     express-rate-limit: "npm:^8.1.0"
     express-session: "npm:^1.18.2"
