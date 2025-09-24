@@ -217,10 +217,14 @@
         "label": "Language"
       },
       "clientSupportNeeds": {
-        "pageTitleAdd": "Add a client support need – {caseReference} – {serviceName} – GOV.UK",
-        "pageH1Add": "Add a client support need",
-        "pageTitleChange": "Change client support needs – {caseReference} – {serviceName} – GOV.UK",
-        "pageH1Change": "Change client support needs",
+        "addPage": {
+          "pageTitleAdd": "Add a client support need – {caseReference} – {serviceName} – GOV.UK",
+          "pageH1Add": "Add a client support need"
+        },
+        "changePage": {
+          "pageTitleChange": "Change client support needs – {caseReference} – {serviceName} – GOV.UK",
+          "pageH1Change": "Change client support needs"
+        },
         "britishSignLanguage": "British Sign Language (BSL)",
         "textRelay": "Relay UK (text relay)",
         "callbackPreference": "Callback preference",
@@ -237,10 +241,14 @@
         }
       },
       "thirdParty": {
-        "pageTitleAdd": "Add a third party contact – {caseReference} – {serviceName} – GOV.UK",
-        "pageH1Add": "Add a third party contact",
-        "pageTitleChange": "Change details about a third party – {caseReference} – {serviceName} – GOV.UK",
-        "pageH1Change": "Change details about a third party",
+        "addPage": {
+          "pageTitleAdd": "Add a third party contact – {caseReference} – {serviceName} – GOV.UK",
+          "pageH1Add": "Add a third party contact"
+        },
+        "changePage": {
+          "pageTitleChange": "Change details about a third party – {caseReference} – {serviceName} – GOV.UK",
+          "pageH1Change": "Change details about a third party"
+        },
         "name": "Name",
         "emailAddress": "Email address",
         "emailAddressHeading": "Email address (optional)",
