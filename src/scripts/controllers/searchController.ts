@@ -4,20 +4,13 @@ import { apiService } from '#src/services/apiService.js';
 import { safeString, safeOptionalString, hasProperty } from '#src/scripts/helpers/index.js';
 import { validationResult } from 'express-validator';
 import { formatValidationError, type ValidationErrorData } from '#src/scripts/helpers/ValidationErrorHelpers.js';
+import { storeSessionData, getSessionData, clearSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 
 // Constants
 const DEFAULT_SORT_BY = 'lastModified';
 const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = 20;
 const BAD_REQUEST = 400;
-
-// Extend the Express session type to include our search parameters
-declare module 'express-session' {
-  interface SessionData {
-    searchKeyword?: string;
-    statusSelect?: string;
-  }
-}
 
 /**
  * Helper function to extract pagination and sort parameters
@@ -62,8 +55,13 @@ function getSessionParameters(req: Request, isPaginationOrSort: boolean): { keyw
     return { keyword: '', status: 'all' };
   }
 
-  const sessionKeyword = safeOptionalString(req.session.searchKeyword);
-  const sessionStatus = safeOptionalString(req.session.statusSelect);
+  const sessionData = getSessionData(req, 'search');
+  if (sessionData === null) {
+    return { keyword: '', status: 'all' };
+  }
+
+  const sessionKeyword = safeOptionalString(sessionData.searchKeyword);
+  const sessionStatus = safeOptionalString(sessionData.statusSelect);
 
   const keyword = (sessionKeyword !== undefined && sessionKeyword !== '') ? sessionKeyword : '';
   const status = (sessionStatus !== undefined && sessionStatus !== '') ? sessionStatus : 'all';
@@ -89,8 +87,7 @@ function getSearchParameters(req: Request): { keyword: string; status: string } 
 
   // If explicit search parameters are provided, store them in session
   if (keyword !== '' || status !== 'all') {
-    req.session.searchKeyword = keyword;
-    req.session.statusSelect = status;
+    storeSessionData(req, 'search', { searchKeyword: keyword, statusSelect: status });
   }
   // If navigating pages without search params, use session values
   else {
@@ -239,8 +236,7 @@ export async function processSearch(req: Request, res: Response, next: NextFunct
  */
 export function clearSearch(req: Request, res: Response): void {
   // Clear search parameters from session
-  delete req.session.searchKeyword;
-  delete req.session.statusSelect;
+  clearSessionData(req, 'search');
 
   // Redirect to empty search
   res.redirect('/search');

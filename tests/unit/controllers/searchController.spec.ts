@@ -31,10 +31,7 @@ describe('Search Controller', () => {
   beforeEach(() => {
     req = {
       query: {},
-      session: {
-        searchKeyword: undefined,
-        statusSelect: undefined
-      } as any,
+      session: {} as any,
       axiosMiddleware: {} as any
     };
     res = {
@@ -255,16 +252,12 @@ describe('Search Controller', () => {
         };
 
         req.query = { searchKeyword: 'test', statusSelect: 'new' };
-        req.session = {
-          searchKeyword: undefined,
-          statusSelect: undefined
-        } as any;
+        req.session = {} as any;
         apiServiceStub.resolves(mockApiResponse);
 
         await processSearch(req as Request, res as Response, next);
 
-        expect(req.session!.searchKeyword).to.equal('test');
-        expect(req.session!.statusSelect).to.equal('new');
+        expect(req.session!['search']).to.deep.equal({ searchKeyword: 'test', statusSelect: 'new' });
       });
 
       it('should use session parameters when only pagination parameters are provided', async () => {
@@ -275,8 +268,7 @@ describe('Search Controller', () => {
 
         req.query = { page: '2' };  // Only pagination, no search params
         req.session = {
-          searchKeyword: 'stored-keyword',
-          statusSelect: 'opened'
+          search: { searchKeyword: 'stored-keyword', statusSelect: 'opened' }
         } as any;
         apiServiceStub.resolves(mockApiResponse);
 
@@ -299,7 +291,7 @@ describe('Search Controller', () => {
 
         req.query = { page: '2' };
         req.session = {
-          searchKeyword: 'stored-keyword'
+          search: { searchKeyword: 'stored-keyword' }
           // No statusSelect in session
         } as any;
         apiServiceStub.resolves(mockApiResponse);
@@ -318,16 +310,12 @@ describe('Search Controller', () => {
         };
 
         req.query = { searchKeyword: '', statusSelect: 'all' };
-        req.session = {
-          searchKeyword: undefined,
-          statusSelect: undefined
-        } as any;
+        req.session = {} as any;
         apiServiceStub.resolves(mockApiResponse);
 
         await processSearch(req as Request, res as Response, next);
 
-        expect(req.session!.searchKeyword).to.be.undefined;
-        expect(req.session!.statusSelect).to.be.undefined;
+        expect(req.session!['search']).to.be.undefined;
       });
     });
 
@@ -366,22 +354,17 @@ describe('Search Controller', () => {
   describe('clearSearch', () => {
     it('should clear search parameters from session and redirect', () => {
       req.session = {
-        searchKeyword: 'test',
-        statusSelect: 'new'
+        search: { searchKeyword: 'test', statusSelect: 'new' }
       } as any;
 
       clearSearch(req as Request, res as Response);
 
-      expect(req.session!.searchKeyword).to.be.undefined;
-      expect(req.session!.statusSelect).to.be.undefined;
+      expect(req.session!['search']).to.be.undefined;
       expect((res.redirect as sinon.SinonStub).calledWith('/search')).to.be.true;
     });
 
     it('should handle empty session gracefully', () => {
-      req.session = {
-        searchKeyword: undefined,
-        statusSelect: undefined
-      } as any;
+      req.session = {} as any;
 
       clearSearch(req as Request, res as Response);
 
