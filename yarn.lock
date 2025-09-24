@@ -540,13 +540,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ministryofjustice/frontend@npm:^5.1.5":
-  version: 5.1.5
-  resolution: "@ministryofjustice/frontend@npm:5.1.5"
+"@ministryofjustice/frontend@npm:^5.2.0":
+  version: 5.2.0
+  resolution: "@ministryofjustice/frontend@npm:5.2.0"
   peerDependencies:
     govuk-frontend: ^5.8.0
     moment: 2.30.1
-  checksum: 10c0/a4ce52a1c82580975e81450a8241c035b39644fae5eb5b7652aae5e005bf9899b49bc147c240b20a5e12fb0e1f96f6014366c9ed6d39acac329eafe42a9dfaa7
+  checksum: 10c0/73dfeb01ea36612c116f1dd28661156969656db7a391b445c311823283d15626afc4e6f985b5d6719ef034b519fdb1a0955e9207ab04174ef354432cd6050f18
   languageName: node
   linkType: hard
 
@@ -766,14 +766,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:^1.54.2":
-  version: 1.55.0
-  resolution: "@playwright/test@npm:1.55.0"
+"@playwright/test@npm:^1.55.1":
+  version: 1.55.1
+  resolution: "@playwright/test@npm:1.55.1"
   dependencies:
-    playwright: "npm:1.55.0"
+    playwright: "npm:1.55.1"
   bin:
     playwright: cli.js
-  checksum: 10c0/e68b59cd8271f1b57c0649fc0562ab2d5f6bba8c3653dd7bd52ca1338dc380fde34588d0254e3cd3f0f2b20af04a80dfb080419ceb7475990bb2fc4d8c474984
+  checksum: 10c0/23fa213844bc594b03c0a907ef69da7e26a6c3295ee602b1567d26a473d30253468b832698779b02a304b71ae14aa0875645c526678227cc0675324dbf77e118
   languageName: node
   linkType: hard
 
@@ -2929,9 +2929,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsdoc@npm:^60.1.1":
-  version: 60.1.1
-  resolution: "eslint-plugin-jsdoc@npm:60.1.1"
+"eslint-plugin-jsdoc@npm:^60.2.0":
+  version: 60.2.0
+  resolution: "eslint-plugin-jsdoc@npm:60.2.0"
   dependencies:
     "@es-joy/jsdoccomment": "npm:~0.58.0"
     are-docs-informative: "npm:^0.0.2"
@@ -2946,7 +2946,7 @@ __metadata:
     spdx-expression-parse: "npm:^4.0.0"
   peerDependencies:
     eslint: ^7.0.0 || ^8.0.0 || ^9.0.0
-  checksum: 10c0/0761bcfc8c04fd21adacac9fd8c2151401f0ebc97fc628a521361134019eeeb2a2edda1c49b63d8f074d5453676dc8130b425d85782039c837fb7a4baae2d39a
+  checksum: 10c0/5d8c84ae6eacc35fc71a4bbc9946a37ff4db10b4de32962e441e1994308eafdd1b343c8436efcdcd73e6bd774b1791ac835fd8b1709e669c4e707e1f0ee18653
   languageName: node
   linkType: hard
 
@@ -3685,10 +3685,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"govuk-frontend@npm:^5.11.2":
-  version: 5.11.2
-  resolution: "govuk-frontend@npm:5.11.2"
-  checksum: 10c0/54993df0537ddde1e14a5219bc88ce0ba71f79157ba685b58234843cda8f95b8432f8de4047273670e402479cc3a3654056438d260879f5a433d8d1747922a03
+"govuk-frontend@npm:^5.12.0":
+  version: 5.12.0
+  resolution: "govuk-frontend@npm:5.12.0"
+  checksum: 10c0/52091b9ebeebbff81f8bdc6762a89fe26a047835abf7a9c9e9cde5c71256969f68b9df8cba24b6d3b45d60eb4f19d96b31ae5cd33ee20e95b33fe10f141e62c1
   languageName: node
   linkType: hard
 
@@ -4422,10 +4422,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"libphonenumber-js@npm:^1.12.18":
-  version: 1.12.18
-  resolution: "libphonenumber-js@npm:1.12.18"
-  checksum: 10c0/f52de47c938aa48a01a05ae6c60e12be95ce548bb3df6a8e7e02f5ef62a27f978f2edc977ecc4458bddeb6a3712dffd77a1492c3fc7de3e1f4eda5facf20deeb
+"libphonenumber-js@npm:^1.12.22":
+  version: 1.12.22
+  resolution: "libphonenumber-js@npm:1.12.22"
+  checksum: 10c0/e7b126f11cec4b68c909b2907cbdf53324e718cddf916a5e9ccb47de3d82678d26af03da7e95e4525425ee11747d540e608f80a92b4d54f9150d71cc820ee5ef
   languageName: node
   linkType: hard
 
@@ -4534,14 +4534,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lru-cache@npm:^11.0.0":
-  version: 11.1.0
-  resolution: "lru-cache@npm:11.1.0"
-  checksum: 10c0/85c312f7113f65fae6a62de7985348649937eb34fb3d212811acbf6704dc322a421788aca253b62838f1f07049a84cc513d88f494e373d3756514ad263670a64
-  languageName: node
-  linkType: hard
-
-"lru-cache@npm:^11.1.0, lru-cache@npm:^11.2.1":
+"lru-cache@npm:^11.0.0, lru-cache@npm:^11.1.0, lru-cache@npm:^11.2.1":
   version: 11.2.1
   resolution: "lru-cache@npm:11.2.1"
   checksum: 10c0/6f0e6b27f368d5e464e7813bd5b0af8f9a81a3a7ce2f40509841fdef07998b2588869f3e70edfbdb3bf705857f7bb21cca58fb01e1a1dc2440a83fcedcb7e8d8
@@ -4848,8 +4841,8 @@ __metadata:
   dependencies:
     "@axe-core/playwright": "npm:^4.10.2"
     "@eslint/js": "npm:^9.36.0"
-    "@ministryofjustice/frontend": "npm:^5.1.5"
-    "@playwright/test": "npm:^1.54.2"
+    "@ministryofjustice/frontend": "npm:^5.2.0"
+    "@playwright/test": "npm:^1.55.1"
     "@types/chai": "npm:^5.2.2"
     "@types/compression": "npm:^1.7.5"
     "@types/connect-livereload": "npm:^0.6.3"
@@ -4890,7 +4883,7 @@ __metadata:
     eslint: "npm:^9.36.0"
     eslint-config-love: "npm:^125.0.0"
     eslint-config-prettier: "npm:^10.1.8"
-    eslint-plugin-jsdoc: "npm:^60.1.1"
+    eslint-plugin-jsdoc: "npm:^60.2.0"
     express: "npm:^5.1.0"
     express-rate-limit: "npm:^8.1.0"
     express-session: "npm:^1.18.2"
@@ -4898,13 +4891,13 @@ __metadata:
     figlet: "npm:^1.9.3"
     fs-extra: "npm:^11.3.2"
     globals: "npm:^16.4.0"
-    govuk-frontend: "npm:^5.11.2"
+    govuk-frontend: "npm:^5.12.0"
     helmet: "npm:^8.1.0"
     http-errors: "npm:~2.0.0"
     husky: "npm:^9.1.7"
     i18next: "npm:^25.5.2"
     jsdom: "npm:^27.0.0"
-    libphonenumber-js: "npm:^1.12.18"
+    libphonenumber-js: "npm:^1.12.22"
     lint-staged: "npm:^16.2.0"
     livereload: "npm:^0.10.2"
     middleware-axios: "npm:^3.0.0"
@@ -4913,11 +4906,11 @@ __metadata:
     morgan: "npm:~1.10.1"
     nodemon: "npm:^3.1.9"
     nunjucks: "npm:^3.2.4"
-    playwright-core: "npm:^1.55.0"
+    playwright-core: "npm:^1.55.1"
     prettier: "npm:^3.6.2"
     rimraf: "npm:^6.0.1"
-    sass: "npm:^1.93.1"
-    sass-embedded: "npm:^1.93.1"
+    sass: "npm:^1.93.2"
+    sass-embedded: "npm:^1.93.2"
     sinon: "npm:^21.0.0"
     supertest: "npm:^7.1.4"
     ts-node: "npm:^10.9.2"
@@ -5378,27 +5371,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright-core@npm:1.55.0, playwright-core@npm:^1.55.0":
-  version: 1.55.0
-  resolution: "playwright-core@npm:1.55.0"
+"playwright-core@npm:1.55.1, playwright-core@npm:^1.55.1":
+  version: 1.55.1
+  resolution: "playwright-core@npm:1.55.1"
   bin:
     playwright-core: cli.js
-  checksum: 10c0/c39d6aa30e7a4e73965942ca5e13405ae05c9cb49f755a35f04248c864c0b24cf662d9767f1797b3ec48d1cf4e54774dce4a19c16534bd5cfd2aa3da81c9dc3a
+  checksum: 10c0/39837a8c1232ec27486eac8c3fcacc0b090acc64310f7f9004b06715370fc426f944e3610fe8c29f17cd3d68280ed72c75f660c02aa5b5cf0eb34bab0031308f
   languageName: node
   linkType: hard
 
-"playwright@npm:1.55.0":
-  version: 1.55.0
-  resolution: "playwright@npm:1.55.0"
+"playwright@npm:1.55.1":
+  version: 1.55.1
+  resolution: "playwright@npm:1.55.1"
   dependencies:
     fsevents: "npm:2.3.2"
-    playwright-core: "npm:1.55.0"
+    playwright-core: "npm:1.55.1"
   dependenciesMeta:
     fsevents:
       optional: true
   bin:
     playwright: cli.js
-  checksum: 10c0/51605b7e57a5650e57972c5fdfc09d7a9934cca1cbee5beacca716fa801e25cb5bb7c1663de90c22b300fde884e5545a2b13a0505a93270b660687791c478304
+  checksum: 10c0/b84a97b0d764403df512f5bbb10c7343974e151a28202cc06f90883a13e8a45f4491a0597f0ae5fb03a026746cbc0d200f0f32195bfaa381aee5ca5770626771
   languageName: node
   linkType: hard
 
@@ -5776,163 +5769,163 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass-embedded-all-unknown@npm:1.93.1":
-  version: 1.93.1
-  resolution: "sass-embedded-all-unknown@npm:1.93.1"
+"sass-embedded-all-unknown@npm:1.93.2":
+  version: 1.93.2
+  resolution: "sass-embedded-all-unknown@npm:1.93.2"
   dependencies:
-    sass: "npm:1.93.1"
+    sass: "npm:1.93.2"
   conditions: (!cpu=arm | !cpu=arm64 | !cpu=riscv64 | !cpu=x64)
   languageName: node
   linkType: hard
 
-"sass-embedded-android-arm64@npm:1.93.1":
-  version: 1.93.1
-  resolution: "sass-embedded-android-arm64@npm:1.93.1"
+"sass-embedded-android-arm64@npm:1.93.2":
+  version: 1.93.2
+  resolution: "sass-embedded-android-arm64@npm:1.93.2"
   conditions: os=android & cpu=arm64
   languageName: node
   linkType: hard
 
-"sass-embedded-android-arm@npm:1.93.1":
-  version: 1.93.1
-  resolution: "sass-embedded-android-arm@npm:1.93.1"
+"sass-embedded-android-arm@npm:1.93.2":
+  version: 1.93.2
+  resolution: "sass-embedded-android-arm@npm:1.93.2"
   conditions: os=android & cpu=arm
   languageName: node
   linkType: hard
 
-"sass-embedded-android-riscv64@npm:1.93.1":
-  version: 1.93.1
-  resolution: "sass-embedded-android-riscv64@npm:1.93.1"
+"sass-embedded-android-riscv64@npm:1.93.2":
+  version: 1.93.2
+  resolution: "sass-embedded-android-riscv64@npm:1.93.2"
   conditions: os=android & cpu=riscv64
   languageName: node
   linkType: hard
 
-"sass-embedded-android-x64@npm:1.93.1":
-  version: 1.93.1
-  resolution: "sass-embedded-android-x64@npm:1.93.1"
+"sass-embedded-android-x64@npm:1.93.2":
+  version: 1.93.2
+  resolution: "sass-embedded-android-x64@npm:1.93.2"
   conditions: os=android & cpu=x64
   languageName: node
   linkType: hard
 
-"sass-embedded-darwin-arm64@npm:1.93.1":
-  version: 1.93.1
-  resolution: "sass-embedded-darwin-arm64@npm:1.93.1"
+"sass-embedded-darwin-arm64@npm:1.93.2":
+  version: 1.93.2
+  resolution: "sass-embedded-darwin-arm64@npm:1.93.2"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"sass-embedded-darwin-x64@npm:1.93.1":
-  version: 1.93.1
-  resolution: "sass-embedded-darwin-x64@npm:1.93.1"
+"sass-embedded-darwin-x64@npm:1.93.2":
+  version: 1.93.2
+  resolution: "sass-embedded-darwin-x64@npm:1.93.2"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-arm64@npm:1.93.1":
-  version: 1.93.1
-  resolution: "sass-embedded-linux-arm64@npm:1.93.1"
+"sass-embedded-linux-arm64@npm:1.93.2":
+  version: 1.93.2
+  resolution: "sass-embedded-linux-arm64@npm:1.93.2"
   conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-arm@npm:1.93.1":
-  version: 1.93.1
-  resolution: "sass-embedded-linux-arm@npm:1.93.1"
+"sass-embedded-linux-arm@npm:1.93.2":
+  version: 1.93.2
+  resolution: "sass-embedded-linux-arm@npm:1.93.2"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-musl-arm64@npm:1.93.1":
-  version: 1.93.1
-  resolution: "sass-embedded-linux-musl-arm64@npm:1.93.1"
+"sass-embedded-linux-musl-arm64@npm:1.93.2":
+  version: 1.93.2
+  resolution: "sass-embedded-linux-musl-arm64@npm:1.93.2"
   conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-musl-arm@npm:1.93.1":
-  version: 1.93.1
-  resolution: "sass-embedded-linux-musl-arm@npm:1.93.1"
+"sass-embedded-linux-musl-arm@npm:1.93.2":
+  version: 1.93.2
+  resolution: "sass-embedded-linux-musl-arm@npm:1.93.2"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-musl-riscv64@npm:1.93.1":
-  version: 1.93.1
-  resolution: "sass-embedded-linux-musl-riscv64@npm:1.93.1"
+"sass-embedded-linux-musl-riscv64@npm:1.93.2":
+  version: 1.93.2
+  resolution: "sass-embedded-linux-musl-riscv64@npm:1.93.2"
   conditions: os=linux & cpu=riscv64
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-musl-x64@npm:1.93.1":
-  version: 1.93.1
-  resolution: "sass-embedded-linux-musl-x64@npm:1.93.1"
+"sass-embedded-linux-musl-x64@npm:1.93.2":
+  version: 1.93.2
+  resolution: "sass-embedded-linux-musl-x64@npm:1.93.2"
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-riscv64@npm:1.93.1":
-  version: 1.93.1
-  resolution: "sass-embedded-linux-riscv64@npm:1.93.1"
+"sass-embedded-linux-riscv64@npm:1.93.2":
+  version: 1.93.2
+  resolution: "sass-embedded-linux-riscv64@npm:1.93.2"
   conditions: os=linux & cpu=riscv64
   languageName: node
   linkType: hard
 
-"sass-embedded-linux-x64@npm:1.93.1":
-  version: 1.93.1
-  resolution: "sass-embedded-linux-x64@npm:1.93.1"
+"sass-embedded-linux-x64@npm:1.93.2":
+  version: 1.93.2
+  resolution: "sass-embedded-linux-x64@npm:1.93.2"
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
-"sass-embedded-unknown-all@npm:1.93.1":
-  version: 1.93.1
-  resolution: "sass-embedded-unknown-all@npm:1.93.1"
+"sass-embedded-unknown-all@npm:1.93.2":
+  version: 1.93.2
+  resolution: "sass-embedded-unknown-all@npm:1.93.2"
   dependencies:
-    sass: "npm:1.93.1"
+    sass: "npm:1.93.2"
   conditions: (!os=android | !os=darwin | !os=linux | !os=win32)
   languageName: node
   linkType: hard
 
-"sass-embedded-win32-arm64@npm:1.93.1":
-  version: 1.93.1
-  resolution: "sass-embedded-win32-arm64@npm:1.93.1"
+"sass-embedded-win32-arm64@npm:1.93.2":
+  version: 1.93.2
+  resolution: "sass-embedded-win32-arm64@npm:1.93.2"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"sass-embedded-win32-x64@npm:1.93.1":
-  version: 1.93.1
-  resolution: "sass-embedded-win32-x64@npm:1.93.1"
+"sass-embedded-win32-x64@npm:1.93.2":
+  version: 1.93.2
+  resolution: "sass-embedded-win32-x64@npm:1.93.2"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"sass-embedded@npm:^1.93.1":
-  version: 1.93.1
-  resolution: "sass-embedded@npm:1.93.1"
+"sass-embedded@npm:^1.93.2":
+  version: 1.93.2
+  resolution: "sass-embedded@npm:1.93.2"
   dependencies:
     "@bufbuild/protobuf": "npm:^2.5.0"
     buffer-builder: "npm:^0.2.0"
     colorjs.io: "npm:^0.5.0"
     immutable: "npm:^5.0.2"
     rxjs: "npm:^7.4.0"
-    sass-embedded-all-unknown: "npm:1.93.1"
-    sass-embedded-android-arm: "npm:1.93.1"
-    sass-embedded-android-arm64: "npm:1.93.1"
-    sass-embedded-android-riscv64: "npm:1.93.1"
-    sass-embedded-android-x64: "npm:1.93.1"
-    sass-embedded-darwin-arm64: "npm:1.93.1"
-    sass-embedded-darwin-x64: "npm:1.93.1"
-    sass-embedded-linux-arm: "npm:1.93.1"
-    sass-embedded-linux-arm64: "npm:1.93.1"
-    sass-embedded-linux-musl-arm: "npm:1.93.1"
-    sass-embedded-linux-musl-arm64: "npm:1.93.1"
-    sass-embedded-linux-musl-riscv64: "npm:1.93.1"
-    sass-embedded-linux-musl-x64: "npm:1.93.1"
-    sass-embedded-linux-riscv64: "npm:1.93.1"
-    sass-embedded-linux-x64: "npm:1.93.1"
-    sass-embedded-unknown-all: "npm:1.93.1"
-    sass-embedded-win32-arm64: "npm:1.93.1"
-    sass-embedded-win32-x64: "npm:1.93.1"
+    sass-embedded-all-unknown: "npm:1.93.2"
+    sass-embedded-android-arm: "npm:1.93.2"
+    sass-embedded-android-arm64: "npm:1.93.2"
+    sass-embedded-android-riscv64: "npm:1.93.2"
+    sass-embedded-android-x64: "npm:1.93.2"
+    sass-embedded-darwin-arm64: "npm:1.93.2"
+    sass-embedded-darwin-x64: "npm:1.93.2"
+    sass-embedded-linux-arm: "npm:1.93.2"
+    sass-embedded-linux-arm64: "npm:1.93.2"
+    sass-embedded-linux-musl-arm: "npm:1.93.2"
+    sass-embedded-linux-musl-arm64: "npm:1.93.2"
+    sass-embedded-linux-musl-riscv64: "npm:1.93.2"
+    sass-embedded-linux-musl-x64: "npm:1.93.2"
+    sass-embedded-linux-riscv64: "npm:1.93.2"
+    sass-embedded-linux-x64: "npm:1.93.2"
+    sass-embedded-unknown-all: "npm:1.93.2"
+    sass-embedded-win32-arm64: "npm:1.93.2"
+    sass-embedded-win32-x64: "npm:1.93.2"
     supports-color: "npm:^8.1.1"
     sync-child-process: "npm:^1.0.2"
     varint: "npm:^6.0.0"
@@ -5975,11 +5968,28 @@ __metadata:
       optional: true
   bin:
     sass: dist/bin/sass.js
-  checksum: 10c0/62c5806e93d00b8be96774234ab08baae11427b94d8c8a5f71df774f4dd6e9c7c2c461085b7cb2cf4c1a4db6ffaef6fcaee8b60135245576d0c5f3bd697b257c
+  checksum: 10c0/de0a00b40258fc9d6f067f5566a3bb7089cd56a42431e3d1b525dde3e5e85dcb2ff7350943c3f43f6ad6d1276bcc4570fb8fbc801e9af8a11f3dd67f1ced3e7d
   languageName: node
   linkType: hard
 
-"sass@npm:1.93.1, sass@npm:^1.71.1, sass@npm:^1.93.1":
+"sass@npm:1.93.2, sass@npm:^1.93.2":
+  version: 1.93.2
+  resolution: "sass@npm:1.93.2"
+  dependencies:
+    "@parcel/watcher": "npm:^2.4.1"
+    chokidar: "npm:^4.0.0"
+    immutable: "npm:^5.0.2"
+    source-map-js: "npm:>=0.6.2 <2.0.0"
+  dependenciesMeta:
+    "@parcel/watcher":
+      optional: true
+  bin:
+    sass: sass.js
+  checksum: 10c0/5a19f12dbe8c142e40c1e0473d1e624898242b1c21010301e169b528be8c580df6356329c798522b525eb11eda4b04b9b77422badc55c47889600f8477201d2b
+  languageName: node
+  linkType: hard
+
+"sass@npm:^1.71.1":
   version: 1.93.1
   resolution: "sass@npm:1.93.1"
   dependencies:
