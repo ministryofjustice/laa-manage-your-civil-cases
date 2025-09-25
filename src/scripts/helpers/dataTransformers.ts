@@ -4,6 +4,7 @@
  * Utility functions for safely transforming and validating data from JSON fixtures
  */
 
+import type { FieldConfig } from '#types/form-controller-types.js';
 /**
  * Safely extract nested field value using custom path resolution
  * @param {unknown} obj - Object to traverse
@@ -131,21 +132,40 @@ export function capitaliseFirst(str: string): string {
  * @param {string} key - Key to extract
  * @returns {string} Trimmed string value or empty string if not found
  */
-export function safeBodyString(body: unknown, key: string): string {
-  return hasProperty(body, key) ? safeString(body[key]).trim() : '';
+export function safeBodyString(body: unknown, key: string): unknown {
+  return hasProperty(body, key) ? body[key] : '';
 }
 
 /**
  * Extract multiple form field values from request body
  * @param {unknown} body - Request body object
  * @param {string[]} keys - Array of keys to extract
- * @returns {Record<string, string>} Object with extracted and trimmed string values
+ * @returns {Record<string, unknown>} Object with extracted and trimmed string values
  */
-export function extractFormFields(body: unknown, keys: string[]): Record<string, string> {
-  return keys.reduce<Record<string, string>>((acc, key) => {
+export function extractFormFields(body: unknown, keys: string[]): Record<string, unknown> {
+  return keys.reduce<Record<string, unknown>>((acc, key) => {
     acc[key] = safeBodyString(body, key);
     return acc;
   }, {});
+}
+
+/**
+ * Check if the value matches the expected type
+ * @param {unknown} value - Value to check
+ * @param {'string' | 'boolean' | 'number' | 'array'} expectedType - Expected type
+ * @returns {boolean} True if type matches
+ */
+function isTypeValid(value: unknown, expectedType: 'string' | 'boolean' | 'number' | 'array'): boolean {
+  switch (expectedType) {
+    case 'string':
+      return typeof value === 'string';
+    case 'boolean':
+      return typeof value === 'boolean';
+    case 'number':
+      return typeof value === 'number';
+    case 'array':
+      return Array.isArray(value);
+  }
 }
 
 /**
@@ -153,42 +173,17 @@ export function extractFormFields(body: unknown, keys: string[]): Record<string,
  * Supports both simple field names and nested paths (e.g., 'user.profile.name' or 'items.0.title')
  * @param {unknown} data - API response data
  * @param {string} fieldName - Name or path of the field to extract
- * @param {'string' | 'boolean' | 'number'} [expectedType] - Expected type of the field (optional)
+ * @param {'string' | 'boolean' | 'number' | 'array'} [expectedType] - Expected type of the field (optional)
  * @returns {string} Safe string value or empty string
  */
-export function safeApiField(data: unknown, fieldName: string, expectedType?: 'string' | 'boolean' | 'number'): string {
+export function safeApiField(data: unknown, fieldName: string, expectedType?: 'string' | 'boolean' | 'number' | 'array'): unknown {
   const value: unknown = safeNestedField(data, fieldName);
 
   // If expectedType is specified, check the type
-  if (expectedType !== undefined) {
-    if (
-      (expectedType === 'string' && typeof value !== 'string') ||
-      (expectedType === 'boolean' && typeof value !== 'boolean') ||
-      (expectedType === 'number' && typeof value !== 'number')
-    ) {
-      return '';
-    }
+  if (expectedType !== undefined && !isTypeValid(value, expectedType)) {
+    return expectedType === 'array' ? [] : '';
   }
-
-  return safeString(value);
-}
-
-/**
- * Configuration for field extraction, supporting both flat and nested data structures
- */
-export interface FieldConfig {
-  /** Field name for flat access (legacy) or final field name */
-  field: string;
-  /** Lodash path for nested access (e.g., 'thirdParty.fullName' or 'user.address.postcode') */
-  path?: string;
-  /** Expected type of the field */
-  type?: 'string' | 'boolean' | 'number';
-  /** Custom name for the current field (defaults to current{Field}) */
-  currentName?: string;
-  /** Whether to keep the original value in addition to the string conversion */
-  keepOriginal?: boolean;
-  /** Whether to include existing field for change detection */
-  includeExisting?: boolean;
+  return value;
 }
 
 /**
@@ -197,7 +192,7 @@ export interface FieldConfig {
  * @param {FieldConfig} config - Field configuration
  * @returns {string} Safe string value
  */
-function getFieldValue(data: unknown, config: FieldConfig): string {
+function getFieldValue(data: unknown, config: FieldConfig): unknown {
   const { field, path, type } = config;
   const fieldPath = path ?? field;
   return safeApiField(data, fieldPath, type);
@@ -252,4 +247,16 @@ export function extractCurrentFields(
 
     return formData;
   }, {});
+}
+
+/**
+ * Normalises the input into an array of strings
+ * Accepts a string, an array of strings, or anything else (ignored)
+ * @param {unknown} value - The value of to normalise
+ * @returns {string[]} - Returns an array of strings
+ */
+export function normaliseSelectedCheckbox(value: unknown): string[] {
+  if (Array.isArray(value)) return value.filter((x): x is string => typeof x === 'string');
+  if (typeof value === 'string' && value.trim() !== '') return [value];
+  return [];
 }

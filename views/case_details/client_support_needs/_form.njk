@@ -1,0 +1,89 @@
+{# Client Support Needs Form Partial #}
+{# This partial expects the following variables to be set in the parent template: #}
+{# - caseReference: The case reference #}
+{# - csrfToken: CSRF token #}
+{# - formAction: The form action URL #}
+{# - error: Error object (optional) #}
+{# - current* variables: Current form values #}
+
+{% if error %}
+  {{ errorSummary(error.errorSummaryList) }}
+  {% set errorMessages = {
+    languageSupportNeeds: {text: error.inputErrors.languageSupportNeeds } if error.inputErrors.languageSupportNeeds,
+    notes: {text: error.inputErrors.notes } if error.inputErrors.notes
+  } %}
+{% endif %}
+
+<form method="post" action="{{ formAction }}">
+  <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+  {% set languageSupportNeeds %}
+    {{ xGovukAutocomplete({
+      id: "languageSupportNeeds",
+      name: "languageSupportNeeds",
+      value: currentLanguageSupportNeeds,
+      errorMessage: errorMessages.languageSupportNeeds if error,
+      label: {
+        text: t('forms.clientDetails.clientSupportNeeds.languageHint')
+      },
+      formGroup: { classes: "govuk-!-width-one-half" },
+      items: languageItems
+    }) }}
+  {% endset -%}
+
+  {% set notes %}
+    {{ govukTextarea({
+      label: {
+        text: t('forms.clientDetails.clientSupportNeeds.notesTextAreaHint')
+      },
+      id: "notes",
+      name: "notes",
+      value: currentNotes,
+      errorMessage: errorMessages.notes if error,
+      autocomplete: "off"
+    }) }}
+  {% endset -%}
+
+  {{ govukCheckboxes({
+    name: "clientSupportNeeds",
+    values: currentClientSupportNeeds,
+    hint: {
+      text: t('forms.clientDetails.clientSupportNeeds.checkBoxHint')
+    },
+    items: [
+      {
+        value: "bslWebcam",
+        text: t('forms.clientDetails.clientSupportNeeds.britishSignLanguage')
+      },
+      {
+        value: "textRelay",
+        text: t('forms.clientDetails.clientSupportNeeds.textRelay')
+      },
+      {
+        value: "callbackPreference",
+        text: t('forms.clientDetails.clientSupportNeeds.callbackPreference')
+      },
+      {
+        value: "languageSelection",
+        text: t('forms.clientDetails.clientSupportNeeds.language'),
+        conditional: {
+          html: languageSupportNeeds
+        }
+      },
+      {
+        value: "otherSupport",
+        text: t('forms.clientDetails.clientSupportNeeds.otherSupport'),
+        conditional: {
+          html: notes
+        }
+      }
+    ]
+  }) }}
+
+  <div class="govuk-button-group">
+    {{ govukButton({
+      text: t('common.save')
+    }) }}
+    <a class="govuk-link" href="{{ backLinkHref }}">{{ t('common.cancel') }}</a>
+  </div>
+</form>

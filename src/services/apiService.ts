@@ -378,6 +378,37 @@ class ApiService {
   }
 
   /**
+   * Add client support needs for a case
+   * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+   * @param {string} caseReference - Case reference number
+   * @param {object} clientSupportNeeds - Client support needs to add
+   * @returns {Promise<ClientDetailsApiResponse>} API response with updated client details
+   */
+  static async addClientSupportNeeds(
+    axiosMiddleware: AxiosInstanceWrapper,
+    caseReference: string,
+    clientSupportNeeds: object
+  ): Promise<ClientDetailsApiResponse> {
+    try {
+      devLog(`API: POST ${API_PREFIX}/cases/${caseReference}/client-support-needs`);
+      const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
+      const response = await configuredAxios.post(`${API_PREFIX}/cases/${caseReference}/client-support-needs`, clientSupportNeeds);
+      devLog(`API: Add client support needs response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+      return {
+        data: transformClientDetailsItem(response.data),
+        status: 'success'
+      };
+    } catch (error) {
+      const errorMessage = extractAndLogError(error, 'API error');
+      return {
+        data: null,
+        status: 'error',
+        message: errorMessage
+      };
+    }
+  }
+  
+  /**
    * Delete client support needs contact for a case
    * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
    * @param {string} caseReference - Case reference number
@@ -405,6 +436,7 @@ class ApiService {
       };
     }
   }
+
 
   /**
    * Extract pagination metadata from response headers

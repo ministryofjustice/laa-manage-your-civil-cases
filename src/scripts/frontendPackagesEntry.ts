@@ -4,6 +4,9 @@ import { initAll as initGOVUK } from "govuk-frontend";
 // Import MOJ Frontend
 import { initAll as initMOJ } from "@ministryofjustice/frontend";
 
+// Import X-GOV.UK Prototype Frontend
+import { initAll as initXGOVUK } from "@x-govuk/govuk-prototype-components";
+
 /**
  * Initializes both GOV.UK Frontend and MOJ Frontend packages.
  * Only runs in browser environment and includes error handling.
@@ -15,6 +18,7 @@ const initializeFrontendPackages = (): void => {
         try {
             initGOVUK();
             initMOJ();
+            initXGOVUK();
             // Only log in development/debug mode
             if (process.env.NODE_ENV !== 'production') {
                 console.log('Frontend packages loaded and initialized');

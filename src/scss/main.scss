@@ -1,5 +1,6 @@
 @use "govuk-frontend/dist/govuk/index";
 @use "@ministryofjustice/frontend/moj/all";
+@use "@x-govuk/govuk-prototype-components/src/x-govuk/components/autocomplete";
 
 // Custom components
 @use "components/tab-navigation";

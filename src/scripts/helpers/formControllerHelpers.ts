@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
 import { apiService } from '#src/services/apiService.js';
-import { safeString, capitaliseFirst, extractCurrentFields } from '#src/scripts/helpers/index.js';
+import { safeString, capitaliseFirst, extractCurrentFields , normaliseSelectedCheckbox} from '#src/scripts/helpers/index.js';
 import { validationResult } from 'express-validator';
 import { formatValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 import type {
@@ -282,4 +282,140 @@ export function handleEditThirdPartyValidationErrors(
   formFields: Record<string, unknown>
 ): boolean {
   return editThirdPartyValidator.handleValidationErrors(req, res, caseReference, formFields);
+}
+
+/**
+ * Prepares client support needs data for API submission
+ * @param {Record<string, unknown>} formFields - Form field values
+ * @returns {object} - Formatted client support needs data for API
+ */
+export function prepareClientSupportNeedsData(formFields: Record<string, unknown>): {
+  bslWebcam: 'Yes' | 'No';
+  textRelay: 'Yes' | 'No';
+  callbackPreference: 'Yes' | 'No';
+  languageSelection: 'Yes' | 'No';
+  languageSupportNeeds: string;
+  otherSupport: 'Yes' | 'No';
+  notes: string;
+} {
+  const {
+    clientSupportNeeds,
+    languageSupportNeeds,
+    notes
+  } = formFields;
+
+  const selected = normaliseSelectedCheckbox(clientSupportNeeds);
+  const selectedSet = new Set(selected);
+
+  let language = '';
+  if (selectedSet.has('languageSelection') && typeof languageSupportNeeds === 'string') {
+    language = languageSupportNeeds;
+  }
+
+  let notesString = '';
+  if (selectedSet.has('otherSupport') && typeof notes === 'string') {
+    notesString = notes;
+  }
+
+  return {
+    bslWebcam: selectedSet.has('bslWebcam') ? 'Yes' : 'No',
+    textRelay: selectedSet.has('textRelay') ? 'Yes' : 'No',
+    callbackPreference: selectedSet.has('callbackPreference') ? 'Yes' : 'No',
+    languageSelection: selectedSet.has('languageSelection') ? 'Yes' : 'No',
+    languageSupportNeeds: language,
+    otherSupport: selectedSet.has('otherSupport') ? 'Yes' : 'No',
+    notes: notesString
+  };
+}
+
+/**
+ * Abstract base class for handling client support needs validation errors
+ */
+abstract class ClientSupportNeedsValidator {
+  protected abstract readonly templatePath: string;
+
+  /**
+   * Handles validation errors and renders the appropriate client support needs form with error messages
+   * @param {Request} req - Express request object
+   * @param {Response} res - Express response object
+   * @param {string} caseReference - Case reference number
+   * @param {Record<string, unknown>} formFields - Form field values
+   * @returns {boolean} - Returns true if there were validation errors, false otherwise
+   */
+  public handleValidationErrors(
+    req: Request,
+    res: Response,
+    caseReference: string,
+    formFields: Record<string, unknown>
+  ): boolean {
+    const rawValidationResult = validationResult(req);
+
+    if (rawValidationResult.isEmpty()) {
+      return false;
+    }
+
+    const rawErrors = rawValidationResult.array();
+
+    const resultingErrors = rawErrors.map((error) => {
+      const fieldName = 'path' in error && typeof error.path === 'string' ? error.path : '';
+      const errorData = formatValidationError(error);
+
+      return {
+        fieldName,
+        inlineMessage: errorData.inlineMessage,
+        summaryMessage: errorData.summaryMessage,
+      };
+    });
+
+    const inputErrors = resultingErrors.reduce((errors: Record<string, string>, { fieldName, inlineMessage }) => {
+      if (inlineMessage.trim() !== '') {
+        errors[fieldName] = inlineMessage;
+      }
+      return errors;
+    }, {});
+
+    const errorSummaryList = resultingErrors.map(({ summaryMessage, fieldName }) => ({
+      text: summaryMessage,
+      href: `#${fieldName}`,
+    }));
+
+    const renderData = {
+      caseReference,
+      error: { inputErrors, errorSummaryList },
+      csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
+      currentClientSupportNeeds: formFields.clientSupportNeeds,
+      currentLanguageSupportNeeds: formFields.languageSupportNeeds,
+      currentNotes: formFields.notes
+    };
+
+    res.status(BAD_REQUEST).render(this.templatePath, renderData);
+    return true;
+  }
+}
+
+/**
+ * Validator for ADD client support needs forms
+ */
+class AddClientSupportNeedsValidator extends ClientSupportNeedsValidator {
+  protected readonly templatePath = 'case_details/client_support_needs/add-client-support-needs.njk';
+}
+
+// Singleton instances
+const addClientSupportNeedsValidator = new AddClientSupportNeedsValidator();
+
+/**
+ * Handles validation errors and renders the ADD client support needs form with error messages
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {string} caseReference - Case reference number
+ * @param {Record<string, unknown>} formFields - Form field values
+ * @returns {boolean} - Returns true if there were validation errors, false otherwise
+ */
+export function handleAddClientSupportNeedsErrors(
+  req: Request,
+  res: Response,
+  caseReference: string,
+  formFields: Record<string, unknown>
+): boolean {
+  return addClientSupportNeedsValidator.handleValidationErrors(req, res, caseReference, formFields);
 }

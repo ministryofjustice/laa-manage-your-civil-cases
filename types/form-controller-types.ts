@@ -5,8 +5,8 @@ import type { ErrorSummary } from './form-validation.js';
  */
 export interface FormField {
   name: string;
-  value: string;
-  existingValue: string;
+  value: unknown;
+  existingValue: unknown;
 }
 
 /**
@@ -27,7 +27,8 @@ export interface RenderData {
  */
 export interface FieldConfig {
   field: string;
-  type?: 'string' | 'boolean' | 'number';
+  path?: string;
+  type?: 'string' | 'boolean' | 'number' | 'array';
   currentName?: string;
   keepOriginal?: boolean;
   includeExisting?: boolean;

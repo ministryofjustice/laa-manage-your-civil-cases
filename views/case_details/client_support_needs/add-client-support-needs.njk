@@ -1,0 +1,7 @@
+{# Set template-specific variables #}
+{% set pageTitleKey = 'forms.clientDetails.clientSupportNeeds.addPage.pageTitleAdd' %}
+{% set headingKey = 'forms.clientDetails.clientSupportNeeds.addPage.pageH1Add' %}
+{% set formActionUrl = "/cases/" + caseReference + "/client-details/add/support-need" %}
+
+{# Extend the shared base template #}
+{% extends "case_details/client_support_needs/_base-client-support-needs.njk" %}

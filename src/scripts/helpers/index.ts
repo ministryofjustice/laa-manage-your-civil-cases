@@ -31,7 +31,7 @@ export {
   safeApiField,
   safeNestedField,
   extractCurrentFields,
-  type FieldConfig
+  normaliseSelectedCheckbox
 } from './dataTransformers.js';
 
 // Date formatting utilities
@@ -56,7 +56,9 @@ export {
   handlePostEditForm,
   handleAddThirdPartyValidationErrors,
   handleEditThirdPartyValidationErrors,
-  prepareThirdPartyData
+  prepareThirdPartyData,
+  handleAddClientSupportNeedsErrors,
+  prepareClientSupportNeedsData
 } from './formControllerHelpers.js';
 
 // Session helpers

@@ -110,9 +110,13 @@ export function extractAndConvertDateFields(req: Request, fieldNames: [string, s
 
   const { [dayField]: day, [monthField]: month, [yearField]: year } = formFields;
 
+  const dayStr = safeString(day);
+  const monthStr = safeString(month);
+  const yearStr = safeString(year);
+
   // Return date string only if all fields are non-empty
-  return (day !== '' && month !== '' && year !== '')
-    ? dateStringFromThreeFields(day, month, year)
+  return (dayStr !== '' && monthStr !== '' && yearStr !== '')
+    ? dateStringFromThreeFields(dayStr, monthStr, yearStr)
     : '';
 }
 
