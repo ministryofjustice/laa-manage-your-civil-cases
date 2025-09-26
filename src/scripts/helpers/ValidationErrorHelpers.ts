@@ -103,6 +103,11 @@ export function createChangeDetectionValidator(
           // Normalize boolean/checkbox values for comparison
           // Checkboxes: unchecked = "" or missing, checked = "on" or "true" 
           // Stored values: "false" or "true" strings
+          /**
+           * Normalize boolean/checkbox values for consistent comparison between form data and stored values
+           * @param {string} value - The input value to normalize
+           * @returns {string} Normalized value as "true" or "false" string
+           */
           const normalizeBooleanValue = (value: string): string => {
             const stringValue = safeString(value).trim().toLowerCase();
             // Treat empty string, "false", and "off" as falsy (unchecked)
