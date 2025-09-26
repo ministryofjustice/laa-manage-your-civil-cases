@@ -61,7 +61,7 @@ test('phoneNumber is not valid and correct validation errors display', async ({ 
   // Navigate to the change form
   await page.goto(visitUrl);
 
-  // Submit form with blank phoneNumber
+  // Submit form with invalid phoneNumber
   await page.locator('#phoneNumber').fill('ggg');
 
   // Find and click the save button
