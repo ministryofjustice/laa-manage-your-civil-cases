@@ -90,18 +90,41 @@ export function createChangeDetectionValidator(
        */
       options: (_value: string, meta: Meta): boolean => {
         const { req } = meta;
+        
         if (!isRecord(req.body)) {
           return true;
         }
 
         // Check if any field has changed using type-safe property access
-        return fieldMappings.some(({ current, original }) => {
+        const hasChanges = fieldMappings.some(({ current, original }) => {
           const currentRaw = hasProperty(req.body, current) ? req.body[current] : '';
           const originalRaw = hasProperty(req.body, original) ? req.body[original] : '';
-          const currentValue = safeString(currentRaw).trim();
-          const originalValue = safeString(originalRaw).trim();
-          return currentValue !== originalValue;
+          
+          // Normalize boolean/checkbox values for comparison
+          // Checkboxes: unchecked = "" or missing, checked = "on" or "true" 
+          // Stored values: "false" or "true" strings
+          const normalizeBooleanValue = (value: string): string => {
+            const stringValue = safeString(value).trim().toLowerCase();
+            // Treat empty string, "false", and "off" as falsy (unchecked)
+            if (stringValue === '' || stringValue === 'false' || stringValue === 'off') {
+              return 'false';
+            }
+            // Treat "on", "true", "1" as truthy (checked)
+            if (stringValue === 'on' || stringValue === 'true' || stringValue === '1') {
+              return 'true';
+            }
+            // For non-boolean fields, return the trimmed value as-is
+            return stringValue;
+          };
+          
+          const currentValue = normalizeBooleanValue(safeString(currentRaw));
+          const originalValue = normalizeBooleanValue(safeString(originalRaw));
+          const hasChanged = currentValue !== originalValue;
+          
+          return hasChanged;
         });
+        
+        return hasChanges;
       },
       /**
        * Custom error message for when no changes are made
