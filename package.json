@@ -21,8 +21,11 @@
     "test": "yarn test:unit && yarn test:e2e",
     "test:unit": "./node_modules/.bin/mocha",
     "test:server": "node public/src/test-server.js",
-    "test:e2e": "yarn playwright test --config=playwright.config.ts",
-    "test:accessibility": "yarn playwright test --grep @accessibility",
+    "test:e2e": "yarn playwright test --config=playwright/playwright.config.ts",
+    "test:e2e:headed": "yarn playwright test --config=playwright/playwright.config.ts --headed",
+    "test:e2e:debug": "yarn playwright test --config=playwright/playwright.config.ts --debug",
+    "test:accessibility": "yarn playwright test --config=playwright/playwright.config.ts --grep @accessibility",
+    "test:specific": "yarn playwright test --config=playwright/playwright.config.ts --grep",
     "coverage": "c8 yarn test:unit --check-coverage"
   },
   "engines": {
