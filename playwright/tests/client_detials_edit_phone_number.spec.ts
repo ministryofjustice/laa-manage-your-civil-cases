@@ -106,9 +106,35 @@ test('safeToCall & phoneNumber & announceCall not changed and correct validation
   const existingSafeToCall = page.locator('[name="existingSafeToCall"]');
   const existingAnnounceCall = page.locator('[name="existingAnnounceCall"]');
   
-  console.log('Existing phone number:', await existingPhoneNumber.inputValue().catch(() => 'NOT FOUND'));
-  console.log('Existing safe to call:', await existingSafeToCall.inputValue().catch(() => 'NOT FOUND'));
-  console.log('Existing announce call:', await existingAnnounceCall.inputValue().catch(() => 'NOT FOUND'));
+  console.log('Existing phone number field exists:', await existingPhoneNumber.count() > 0);
+  console.log('Existing safe to call field exists:', await existingSafeToCall.count() > 0);
+  console.log('Existing announce call field exists:', await existingAnnounceCall.count() > 0);
+  
+  if (await existingPhoneNumber.count() > 0) {
+    console.log('Existing phone number value:', await existingPhoneNumber.inputValue());
+  }
+  if (await existingSafeToCall.count() > 0) {
+    console.log('Existing safe to call value:', await existingSafeToCall.inputValue());
+  }
+  if (await existingAnnounceCall.count() > 0) {
+    console.log('Existing announce call value:', await existingAnnounceCall.inputValue());
+  }
+
+  // Check the actual form HTML to debug the structure
+  const formContent = await page.locator('form').innerHTML();
+  const hasExistingPhoneField = formContent.includes('existingPhoneNumber');
+  const hasExistingSafeToCallField = formContent.includes('existingSafeToCall');
+  const hasExistingAnnounceCallField = formContent.includes('existingAnnounceCall');
+  
+  console.log('Form contains existingPhoneNumber field:', hasExistingPhoneField);
+  console.log('Form contains existingSafeToCall field:', hasExistingSafeToCallField);
+  console.log('Form contains existingAnnounceCall field:', hasExistingAnnounceCallField);
+
+  // Extract just the hidden input fields for debugging
+  const hiddenInputs = await page.locator('input[type="hidden"]').evaluateAll(inputs => 
+    inputs.map(input => ({ name: input.getAttribute('name'), value: input.getAttribute('value') }))
+  );
+  console.log('All hidden input fields:', JSON.stringify(hiddenInputs, null, 2));
 
   // Find and click the save button without making any changes
   await expect(saveButton).toBeVisible();
