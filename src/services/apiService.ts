@@ -409,7 +409,38 @@ class ApiService {
   }
   
   /**
-   * Delete client support needs contact for a case
+   * Update client support needs for a case
+   * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+   * @param {string} caseReference - Case reference number
+   * @param {object} clientSupportNeeds - Client support needs to update
+   * @returns {Promise<ClientDetailsApiResponse>} API response with updated client details
+   */
+  static async updateClientSupportNeeds(
+    axiosMiddleware: AxiosInstanceWrapper,
+    caseReference: string,
+    clientSupportNeeds: object
+  ): Promise<ClientDetailsApiResponse> {
+    try {
+      devLog(`API: PUT ${API_PREFIX}/cases/${caseReference}/client-support-needs`);
+      const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
+      const response = await configuredAxios.put(`${API_PREFIX}/cases/${caseReference}/client-support-needs`, clientSupportNeeds);
+      devLog(`API: Update client support needs response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+      return {
+        data: transformClientDetailsItem(response.data),
+        status: 'success'
+      };
+    } catch (error) {
+      const errorMessage = extractAndLogError(error, 'API error');
+      return {
+        data: null,
+        status: 'error',
+        message: errorMessage
+      };
+    }
+  }
+
+  /**
+   * Delete client support needs for a case
    * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
    * @param {string} caseReference - Case reference number
    * @returns {Promise<ClientDetailsApiResponse>} API response confirming deletion

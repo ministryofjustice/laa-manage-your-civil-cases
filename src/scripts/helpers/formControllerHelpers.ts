@@ -400,8 +400,16 @@ class AddClientSupportNeedsValidator extends ClientSupportNeedsValidator {
   protected readonly templatePath = 'case_details/client_support_needs/add-client-support-needs.njk';
 }
 
+/**
+ * Validator for EDIT client support needs forms
+ */
+class EditClientSupportNeedsValidator extends ClientSupportNeedsValidator {
+  protected readonly templatePath = 'case_details/client_support_needs/change-client-support-needs.njk';
+}
+
 // Singleton instances
 const addClientSupportNeedsValidator = new AddClientSupportNeedsValidator();
+const editClientSupportNeedsValidator = new EditClientSupportNeedsValidator();
 
 /**
  * Handles validation errors and renders the ADD client support needs form with error messages
@@ -418,4 +426,21 @@ export function handleAddClientSupportNeedsErrors(
   formFields: Record<string, unknown>
 ): boolean {
   return addClientSupportNeedsValidator.handleValidationErrors(req, res, caseReference, formFields);
+}
+
+/**
+ * Handles validation errors and renders the EDIT client support needs form with error messages
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {string} caseReference - Case reference number
+ * @param {Record<string, unknown>} formFields - Form field values
+ * @returns {boolean} - Returns true if there were validation errors, false otherwise
+ */
+export function handleEditClientSupportNeedsErrors(
+  req: Request,
+  res: Response,
+  caseReference: string,
+  formFields: Record<string, unknown>
+): boolean {
+  return editClientSupportNeedsValidator.handleValidationErrors(req, res, caseReference, formFields);
 }

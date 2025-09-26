@@ -58,7 +58,8 @@ export {
   handleEditThirdPartyValidationErrors,
   prepareThirdPartyData,
   handleAddClientSupportNeedsErrors,
-  prepareClientSupportNeedsData
+  prepareClientSupportNeedsData,
+  handleEditClientSupportNeedsErrors
 } from './formControllerHelpers.js';
 
 // Session helpers
