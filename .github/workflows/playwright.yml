@@ -48,7 +48,7 @@ jobs:
           key: ${{ runner.os }}-playwright-chromium-${{ hashFiles('**/yarn.lock') }}
 
       - name: Run Playwright tests
-        run: yarn playwright test --grep-invert @accessibility
+        run: yarn playwright test --config=playwright/playwright.config.ts --grep-invert @accessibility
         env:
           CI: true
           PLAYWRIGHT_TRACING: "on" # Enable tracing for all tests
@@ -128,7 +128,7 @@ jobs:
           key: ${{ runner.os }}-playwright-chromium-${{ hashFiles('**/yarn.lock') }}
 
       - name: Run Accessibility Tests
-        run: yarn playwright test --grep @accessibility
+        run: yarn playwright test --config=playwright/playwright.config.ts --grep @accessibility
         env:
           CI: true
           SESSION_SECRET: "accessibility-test-secret"
