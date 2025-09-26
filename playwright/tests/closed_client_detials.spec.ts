@@ -1,5 +1,5 @@
-import { test, expect } from './fixtures/index.js';
-import { t, getClientDetailsUrlByStatus } from './helpers/index.js';
+import { test, expect } from '../fixtures/index.js';
+import { t, getClientDetailsUrlByStatus } from '../utils/index.js';
 
 test('client details selected from closed cases tab has correct page elements', async ({ page, i18nSetup }) => {
   // Navigate to the client details

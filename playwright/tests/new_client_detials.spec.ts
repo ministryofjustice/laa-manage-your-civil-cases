@@ -1,5 +1,5 @@
-import { test, expect } from './fixtures/index.js';
-import { t, getClientDetailsUrlByStatus } from './helpers/index.js';
+import { test, expect } from '../fixtures/index.js';
+import { t, getClientDetailsUrlByStatus } from '../utils/index.js';
 
 test('client details selected from new cases tab has correct page elements', async ({ page, i18nSetup }) => {
   // Navigate to the client details
@@ -12,14 +12,11 @@ test('client details selected from new cases tab has correct page elements', asy
   const leave_feedback_button = page.getByRole('button', { name: t('pages.caseDetails.buttons.leaveFeedback') })
 
   // expect to see the following elements
-  /* TODO: These expectations are not running and need to wait till MSW implementation.
-  *       Also need to change .toBeVisible to .toBeVisible() with parentheses.
-  */
-  await expect(new_tag).toBeVisible;
-  await expect(accept_case_button).toBeVisible;
-  await expect(reject_case_button).toBeVisible;
-  await expect(split_case_button).toBeVisible;
-  await expect(leave_feedback_button).toBeVisible;
+  await expect(new_tag).toBeVisible();
+  await expect(accept_case_button).toBeVisible();
+  await expect(reject_case_button).toBeVisible();
+  await expect(split_case_button).toBeVisible();
+  await expect(leave_feedback_button).toBeVisible();
 });
 
 test('new client details page should be accessible', {

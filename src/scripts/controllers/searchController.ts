@@ -52,7 +52,7 @@ function extractRawSearchParameters(req: Request): { keyword: string; status: st
  */
 function getSessionParameters(req: Request, isPaginationOrSort: boolean): { keyword: string; status: string } {
   if (!isPaginationOrSort) {
-    return { keyword: '', status: 'all' };
+    return { keyword: '', status: '' };
   }
 
   const sessionData = getSessionData(req, 'search');
@@ -93,6 +93,10 @@ function getSearchParameters(req: Request): { keyword: string; status: string } 
   else {
     const sessionParams = getSessionParameters(req, isPaginationOrSort);
     ({ keyword, status } = sessionParams);
+    // Default status to 'all' if session doesn't have it
+    if (status === '') {
+      status = 'all';
+    }
   }
 
   return { keyword, status };
