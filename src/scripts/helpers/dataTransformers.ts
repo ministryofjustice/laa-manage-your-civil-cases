@@ -260,3 +260,16 @@ export function normaliseSelectedCheckbox(value: unknown): string[] {
   if (typeof value === 'string' && value.trim() !== '') return [value];
   return [];
 }
+
+/**
+ * Normalise truthy "Yes"/"No"/boolean/strings
+ * @param {unknown} value - Value of 
+ * @returns {boolean} - true or false if it meets comparison
+ */
+export const isYes = (value: unknown): boolean => {
+  const selection = safeString(value).trim().toLowerCase();
+  if (selection === 'yes' || selection === 'true') return true;
+  if (selection === 'no' || selection === 'false') return false;
+  // fall back: treat non-empty as truthy
+  return Boolean(selection);
+};

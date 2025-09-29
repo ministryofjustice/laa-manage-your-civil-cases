@@ -92,7 +92,6 @@ export const validateAddClientSupportNeeds = (): ReturnType<typeof checkSchema> 
 export const validateEditClientSupportNeeds = (): ReturnType<typeof checkSchema> => checkSchema({
     // Include all base validation rules
     ...clientSupportNeedsBaseSchema,
-    
     // Add session-based change detection at the end (consistent with other edit schemas)
     notChanged: createSessionChangeDetectionValidator(
       [
