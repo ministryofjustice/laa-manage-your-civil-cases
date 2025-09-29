@@ -14,7 +14,8 @@ import {
   storeOriginalFormData,
   clearSessionData,
   prepareClientSupportNeedsData,
-  handleEditClientSupportNeedsErrors
+  handleEditClientSupportNeedsErrors,
+  isYes
 } from '#src/scripts/helpers/index.js';
 import { apiService } from '#src/services/apiService.js';
 import languages from '#views/case_details/client_support_needs/languages.json' with { type: 'json' };
@@ -44,20 +45,6 @@ export async function getEditClientSupportNeeds (req: Request, res: Response, ne
       if (!isRecord(apiData) || !hasProperty(apiData, 'clientSupportNeeds')) {
         return {};
       }
-
-      /**
-       * Normalise truthy "Yes"/"No"/boolean/strings
-       * @param {unknown} value - Value of 
-       * @returns {boolean} - true or false if it meets comparison
-       */
-      const isYes = (value: unknown): boolean => {
-        const selection = safeString(value).trim().toLowerCase();
-        if (selection === 'yes' || selection === 'true') return true;
-        if (selection === 'no' || selection === 'false') return false;
-        // fall back: treat non-empty as truthy
-        return Boolean(selection);
-      };
-
       // Build the array of *selected* checkbox values for the template
       const bslWebcam = safeNestedField(apiData, 'clientSupportNeeds.bslWebcam');
       const textRelay = safeNestedField(apiData, 'clientSupportNeeds.textRelay');

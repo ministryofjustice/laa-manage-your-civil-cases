@@ -31,7 +31,8 @@ export {
   safeApiField,
   safeNestedField,
   extractCurrentFields,
-  normaliseSelectedCheckbox
+  normaliseSelectedCheckbox,
+  isYes
 } from './dataTransformers.js';
 
 // Date formatting utilities
