@@ -81,7 +81,28 @@
     "address": "870 King Street, Sheffield",
     "postcode": "G1 2LQ",
     "laaReference": "8196672",
-    "thirdParty": null,
+    "thirdParty": {
+      "fullName": "Sarah Johnson",
+      "emailAddress": "sarah@johnson.com",
+      "contactNumber": "0787123456",
+      "safeToCall": true,
+      "address": "45 Main Street, Sheffield",
+      "postcode": "S1 2AB",
+      "relationshipToClient": {
+        "selected": ["Friend or Family"]
+      },
+      "passphraseSetUp": {
+        "selected": ["Yes"],
+        "passphrase": "TestPass123"
+      }
+    },
+    "clientSupportNeeds": {
+      "bslWebcam": "No",
+      "textRelay": "Yes",
+      "callbackPreference": "Yes",
+      "languageSupportNeeds": "German",
+      "notes": "Client requires German language support and text relay assistance."
+    },
     "lastModified": "2025-07-06T19:00:00-05:00"
   },
   {
