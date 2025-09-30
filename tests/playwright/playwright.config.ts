@@ -45,7 +45,7 @@ export default defineConfig({
     stdout: 'pipe',
     stderr: 'pipe',
     timeout: TIMEOUT_MS,
-    cwd: '..', // Run from project root since config is in playwright/ subdirectory
+    cwd: '../..', // Run from project root since config is now in tests/playwright/ subdirectory
     env: {
       NODE_ENV: 'test',
       PORT: '3001',

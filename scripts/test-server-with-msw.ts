@@ -6,7 +6,7 @@
  */
 
 import { setupServer } from 'msw/node';
-import { handlers } from '../playwright/factories/handlers/index.js';
+import { handlers } from '../tests/playwright/factories/handlers/index.js';
 
 // Disable rate limiting for E2E tests to prevent 429 errors during parallel test execution
 process.env.SKIP_RATE_LIMIT = 'true';

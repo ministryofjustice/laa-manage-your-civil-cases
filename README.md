@@ -223,7 +223,7 @@ yarn test:unit
 ### E2E Testing with Playwright
 This project uses [Playwright](https://playwright.dev/) for end-to-end testing. Playwright provides reliable end-to-end testing for modern web apps.
 
-- E2E tests run from the `playwright/tests/` directory
+- E2E tests run from the `tests/playwright/tests/` directory
 - Run E2E tests with `yarn test:e2e`
 
 #### Running Tests Locally
@@ -247,22 +247,22 @@ yarn test:specific "search functionality"
 yarn test:accessibility
 
 # Run specific test file (full command)
-yarn playwright test --config=playwright/playwright.config.ts playwright/tests/specific-test.spec.ts
+yarn playwright test --config=tests/playwright/playwright.config.ts tests/playwright/tests/specific-test.spec.ts
 
 # Run in UI mode with Playwright Test Explorer
-yarn playwright test --config=playwright/playwright.config.ts --ui
+yarn playwright test --config=tests/playwright/playwright.config.ts --ui
 ```
 
-> **Note:** As of the Playwright reorganization, tests have moved from `tests/e2e/` to `playwright/tests/`. 
+> **Note:** As of the Playwright reorganization, tests have moved from `tests/e2e/` to `tests/playwright/tests/`. 
 > Old commands like `npx playwright test tests/e2e/...` should be replaced with the yarn scripts above.
 > Use `yarn test:e2e`, `yarn test:accessibility`, etc. for better consistency and configuration management.
 
 #### Configuration
 
-The project uses Chromium for testing to ensure consistency with our production environment. The configuration can be found in `playwright/playwright.config.ts`.
+The project uses Chromium for testing to ensure consistency with our production environment. The configuration can be found in `tests/playwright/playwright.config.ts`.
 
 Key configuration points:
-- Tests are located in `playwright/tests/` directory
+- Tests are located in `tests/playwright/tests/` directory
 - Only Chromium browser is used for testing
 - Test retries are enabled in CI environments (2 retries)
 - Traces are automatically captured on test failures for debugging
@@ -333,7 +333,7 @@ yarn test:accessibility
 yarn test:e2e
 
 # Run accessibility tests in UI mode for debugging
-yarn playwright test --config=playwright/playwright.config.ts --grep @accessibility
+yarn playwright test --config=tests/playwright/playwright.config.ts --grep @accessibility
 ```
 
 #### CI Integration
@@ -376,7 +376,7 @@ When accessibility tests fail in CI:
 To add accessibility testing to a new page:
 
 ```typescript
-// In your test file: playwright/tests/your-page.spec.ts
+// In your test file: tests/playwright/tests/your-page.spec.ts
 import { test, expect } from '../fixtures/index.js';
 
 test('page name should be accessible', async ({ page, checkAccessibility }) => {
