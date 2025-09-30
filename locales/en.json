@@ -260,7 +260,7 @@
           "title": "Relationship to client",
           "titleH2": "Relationship to client (optional)",
           "parentOrGuardian": "Parent or guardian",
-          "familyMemberOfFriend": "Family member of friend",
+          "familyMemberOrFriend": "Family member or friend",
           "professional": "Professional",
           "legalAdvisor": "Legal adviser",
           "other": "Other"
