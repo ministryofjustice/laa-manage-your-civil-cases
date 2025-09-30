@@ -14,7 +14,7 @@ import { dirname, join } from 'node:path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Load mock data
+// Load official mock data from laa-civil-case-api
 const mockDataPath = join(__dirname, '../../fixtures/mock-data.json');
 const mockData = JSON.parse(readFileSync(mockDataPath, 'utf-8'));
 
@@ -22,20 +22,47 @@ const mockData = JSON.parse(readFileSync(mockDataPath, 'utf-8'));
 const API_BASE_URL = 'https://laa-civil-case-api-uat.cloud-platform.service.justice.gov.uk';
 const API_PREFIX = '/latest/mock';
 
-// Types based on our mock data structure
+// Types based on official laa-civil-case-api mock data structure
 interface MockCase {
-  caseReference: string;
   fullName: string;
+  caseReference: string;
+  refCode: string;
+  dateReceived: string;
+  lastModified?: string;
+  dateClosed?: string;
+  caseStatus: string;
+  dateOfBirth: string;
+  clientIsVulnerable: boolean;
+  language: string;
   phoneNumber: string;
   safeToCall: boolean;
   announceCall: boolean;
-  dateOfBirth: string;
   emailAddress: string;
   address: string;
   postcode: string;
-  caseStatus: string;
-  dateReceived: string;
-  refCode: string;
+  laaReference: string;
+  thirdParty?: {
+    fullName: string;
+    emailAddress: string;
+    contactNumber: string;
+    safeToCall: boolean;
+    address: string;
+    postcode: string;
+    relationshipToClient: {
+      selected: string[];
+    };
+    passphraseSetUp: {
+      selected: string[];
+      passphrase?: string;
+    };
+  } | null;
+  clientSupportNeeds?: {
+    bslWebcam?: string;
+    textRelay?: string;
+    callbackPreference?: string;
+    languageSupportNeeds?: string;
+    notes?: string;
+  };
 }
 
 // Cast the imported JSON to our known structure
@@ -50,8 +77,8 @@ function filterCasesByStatus(status: string): MockCase[] {
   const statusMap: Record<string, string[]> = {
     'new': ['New'],
     'accepted': ['Accepted'],
-    'opened': ['Open', 'Opened'],
-    'closed': ['Closed', 'Completed']
+    'opened': ['Opened'],
+    'closed': ['Closed']
   };
 
   const validStatuses = statusMap[status] || [];
@@ -98,50 +125,14 @@ export const apiHandlers = [
       return; // Let other handlers process this
     }
     
-    
     const caseItem = cases.find(c => c.caseReference === caseReference);
     
     if (!caseItem) {
       return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
     }
     
-    // Add mock third party data for testing remove functionality
-    const caseWithThirdParty = {
-      ...caseItem,
-      thirdParty: {
-        fullName: 'Mock Third Party',
-        emailAddress: 'mock@example.com',
-        contactNumber: '07700900123',
-        safeToCall: true,
-        address: '123 Mock Street\nLondon',
-        postcode: 'SW1A 1AA',
-        relationshipToClient: {
-          selected: ['Family member of friend'],
-          available: [
-            'Parent or Guardian',
-            'Family member of friend',
-            'Professional',
-            'Legal adviser',
-            'Other'
-          ]
-        },
-        passphraseSetUp: {
-          selected: ['Yes'],
-          available: ['Yes', 'No'],
-          passphrase: 'mock-passphrase'
-        }
-      },
-      clientSupportNeeds: {
-        hearingImpairment: true,
-        visualImpairment: false,
-        mobilityImpairment: true,
-        languageInterpreter: false,
-        signLanguageInterpreter: true,
-        additionalSupport: 'Wheelchair access required'
-      }
-    };
-    
-    return HttpResponse.json(caseWithThirdParty);
+    // Return the official case data with existing thirdParty and clientSupportNeeds
+    return HttpResponse.json(caseItem);
   }),
 
   // Intercept cases by status (GET /latest/mock/cases/{status})
@@ -195,13 +186,12 @@ export const apiHandlers = [
     
     // Filter by status if provided
     if (status) {
-      const beforeStatusFilter = filteredCases.length;
       filteredCases = filteredCases.filter(caseItem => {
         const statusMap: Record<string, string[]> = {
           'new': ['New'],
           'accepted': ['Accepted'],
-          'opened': ['Open', 'Opened'],
-          'closed': ['Closed', 'Completed']
+          'opened': ['Opened'],
+          'closed': ['Closed']
         };
         
         // If status is 'all', include all cases
