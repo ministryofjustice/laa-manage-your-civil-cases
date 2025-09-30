@@ -102,12 +102,12 @@ export default [
       'node_modules/*',
       'public/*',
       'tests/**/*.spec.ts', // Unit test specs (if any remain in tests/)
-      'playwright/**/*.spec.ts', // E2E test specs in new Playwright structure
-      'playwright/fixtures/*', // Test fixtures
-      'playwright/factories/*', // Test factories and mock handlers
-      'playwright/pages/*', // Page object models
-      'playwright/utils/*', // Test utilities and helpers
-      'playwright/playwright.config.ts', // Playwright configuration file
+      'tests/playwright/**/*.spec.ts', // E2E test specs in new Playwright structure
+      'tests/playwright/fixtures/*', // Test fixtures
+      'tests/playwright/factories/*', // Test factories and mock handlers
+      'tests/playwright/pages/*', // Page object models
+      'tests/playwright/utils/*', // Test utilities and helpers
+      'tests/playwright/playwright.config.ts', // Playwright configuration file
       'tests/helpers/*', // Test helper utilities (if any remain)
       'docs/source/javascripts/application.js', // Parsing error this file was not found by the project service. Consider either including it in the `tsconfig.json` or including it in `allowDefaultProject`
       'docs/source/javascripts/govuk_frontend.js', // Documentation JavaScript file, not part of main TypeScript project
