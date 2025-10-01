@@ -46,6 +46,8 @@ export default [
       'quotes': 'off', // Prettier is handling this
       'semi': 'off', // Prettier is handling this
       'no-console': 'off', // Stops complaining about putting messages in the console
+      'no-param-reassign': ['error', { props: false }],
+      'no-negated-condition': 'off',
       'jsdoc/check-alignment': 'error',
       'jsdoc/check-param-names': 'error',
       'jsdoc/check-tag-names': 'error',
