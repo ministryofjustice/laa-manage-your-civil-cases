@@ -55,6 +55,7 @@ describe('Edit Client Third Party Controller', () => {
   beforeEach(() => {
     req = {
       params: { caseReference: 'TEST123' },
+      path: '/cases/TEST123/client-details/change/third-party', // Add missing path property
       body: {},
       session: {} as any, // Mock session object for session-based validation
       axiosMiddleware: {} as any,
@@ -90,9 +91,27 @@ describe('Edit Client Third Party Controller', () => {
         data: {
           caseReference: 'TEST123',
           thirdParty: {
-            thirdPartyFullName: 'John Doe',
-            thirdPartyEmailAddress: 'john@example.com',
-            thirdPartyContactNumber: '07123456789'
+            fullName: 'John Doe',
+            emailAddress: 'john@example.com',
+            contactNumber: '07123456789',
+            safeToCall: true,
+            address: '123 Test Street\nLondon',
+            postcode: 'SW1A 1AA',
+            relationshipToClient: {
+              selected: ['Family member of friend'],
+              available: [
+                'Parent or Guardian',
+                'Family member of friend',
+                'Professional',
+                'Legal adviser',
+                'Other'
+              ]
+            },
+            passphraseSetUp: {
+              selected: ['Yes'],
+              available: ['Yes', 'No'],
+              passphrase: 'test-passphrase'
+            }
           }
         }
       };

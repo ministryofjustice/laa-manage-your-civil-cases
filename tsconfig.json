@@ -25,6 +25,7 @@
 		"middleware/**/*",
 		"utils/**/*.ts",
 		"routes/**/*",
+		"scripts/**/*.ts",
 		"index.ts",
 		"esbuild.ts",
 		"start-server.ts",

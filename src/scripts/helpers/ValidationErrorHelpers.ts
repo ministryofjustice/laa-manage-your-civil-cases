@@ -90,18 +90,46 @@ export function createChangeDetectionValidator(
        */
       options: (_value: string, meta: Meta): boolean => {
         const { req } = meta;
+        
         if (!isRecord(req.body)) {
           return true;
         }
 
         // Check if any field has changed using type-safe property access
-        return fieldMappings.some(({ current, original }) => {
+        const hasChanges = fieldMappings.some(({ current, original }) => {
           const currentRaw = hasProperty(req.body, current) ? req.body[current] : '';
           const originalRaw = hasProperty(req.body, original) ? req.body[original] : '';
-          const currentValue = safeString(currentRaw).trim();
-          const originalValue = safeString(originalRaw).trim();
-          return currentValue !== originalValue;
+          
+          // Normalize boolean/checkbox values for comparison
+          // Checkboxes: unchecked = "" or missing, checked = "on" or "true" 
+          // Stored values: "false" or "true" strings
+          /**
+           * Normalize boolean/checkbox values for consistent comparison between form data and stored values
+           * @param {string} value - The input value to normalize
+           * @returns {string} Normalized value as "true" or "false" string
+           */
+          const normalizeBooleanValue = (value: string): string => {
+            const stringValue = safeString(value).trim().toLowerCase();
+            // Treat empty string, "false", and "off" as falsy (unchecked)
+            if (stringValue === '' || stringValue === 'false' || stringValue === 'off') {
+              return 'false';
+            }
+            // Treat "on", "true", "1" as truthy (checked)
+            if (stringValue === 'on' || stringValue === 'true' || stringValue === '1') {
+              return 'true';
+            }
+            // For non-boolean fields, return the trimmed value as-is
+            return stringValue;
+          };
+          
+          const currentValue = normalizeBooleanValue(safeString(currentRaw));
+          const originalValue = normalizeBooleanValue(safeString(originalRaw));
+          const hasChanged = currentValue !== originalValue;
+          
+          return hasChanged;
         });
+        
+        return hasChanges;
       },
       /**
        * Custom error message for when no changes are made
@@ -194,43 +222,14 @@ export function createSessionChangeDetectionValidator(
         }
 
         // Check if any field has changed compared to session data
-        return fieldNames.some((fieldName): boolean => {
-          /**
-           * Get a normalised string value for comparison. 
-           * Arrays and delimited strings ("," or "|") are trimmed, sorted, and "|" joined.
-           * @param {unknown} obj - The source object to read from
-           * @param {string} key - The field name to extract
-           * @returns {string} Normalised strings to check each other against
-           */
-          const getValue = (obj: unknown, key: string): string => {
-            if (!hasProperty(obj, key)) return '';
-
-            const { [key]: rawValue } = obj;
-
-            /**
-             * Normalise an array-like value to a stable '|' joined string.
-             * @param {unknown} array - The array to normalise
-             * @returns {string} Returns a string joined by '|'
-             */
-            const normaliseArray = (array: readonly unknown[]): string =>
-              array
-                .map(String)
-                .map((string: string) => string.trim())
-                .filter(Boolean)
-                .sort()
-                .join('|');
-
-            if (Array.isArray(rawValue)) {
-              return normaliseArray(rawValue);
-            }
-            if (typeof rawValue === 'string' && rawValue.includes(',')) {
-              return normaliseArray(rawValue.split(','));
-            }
-            return String(rawValue).trim();
-          };
-
-          const currentValue = getValue(req.body, fieldName);
-          const originalValue = getValue(originalDataRaw, fieldName);
+        return fieldNames.some((fieldName) => {
+          const currentRaw = hasProperty(req.body, fieldName) ? req.body[fieldName] : '';
+          const currentValue = safeString(currentRaw).trim();
+          
+          // Safely get original value from session data
+          const originalRaw = hasProperty(originalDataRaw, fieldName) ? originalDataRaw[fieldName] : '';
+          const originalValue = safeString(originalRaw).trim();
+          
           return currentValue !== originalValue;
         });
       },

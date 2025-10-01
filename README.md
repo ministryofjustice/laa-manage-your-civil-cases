@@ -190,6 +190,19 @@ yarn test
 
 This command will first run the unit tests with Mocha and then run the end-to-end tests with Playwright.
 
+### Quick Test Commands Reference
+
+| Command | Description |
+|---------|-------------|
+| `yarn test` | Run all tests (unit + e2e) |
+| `yarn test:unit` | Run only unit tests |
+| `yarn test:e2e` | Run all E2E tests |
+| `yarn test:e2e:headed` | Run E2E tests with visible browser |
+| `yarn test:e2e:debug` | Run E2E tests in debug mode |
+| `yarn test:accessibility` | Run only accessibility tests |
+| `yarn test:specific "pattern"` | Run tests matching a pattern |
+| `yarn coverage` | Run unit tests with coverage report |
+
 ### Unit/Integration Testing frameworks
 - We use [Mocha](https://mochajs.org/) as our unit testing framework. It is a widely-used JavaScript testing framework that works well with TypeScript projects and integrates with CI pipelines.
 - We also use [chai](https://www.chaijs.com/) to help with our test assertions, in mocha.
@@ -210,7 +223,7 @@ yarn test:unit
 ### E2E Testing with Playwright
 This project uses [Playwright](https://playwright.dev/) for end-to-end testing. Playwright provides reliable end-to-end testing for modern web apps.
 
-- E2E tests run from the `tests/e2e/` directory
+- E2E tests run from the `tests/playwright/tests/` directory
 - Run E2E tests with `yarn test:e2e`
 
 #### Running Tests Locally
@@ -218,22 +231,38 @@ This project uses [Playwright](https://playwright.dev/) for end-to-end testing. 
 To run the E2E tests locally:
 
 ```shell
-# Run all tests
+# Run all E2E tests
 yarn test:e2e
 
-# Run specific test file
-yarn playwright test tests/e2e/specific-test.spec.ts
+# Run all tests in headed mode (visible browser)
+yarn test:e2e:headed
+
+# Run in debug mode (step through tests)
+yarn test:e2e:debug
+
+# Run tests matching a pattern
+yarn test:specific "search functionality"
+
+# Run accessibility tests only
+yarn test:accessibility
+
+# Run specific test file (full command)
+yarn playwright test --config=tests/playwright/playwright.config.ts tests/playwright/tests/specific-test.spec.ts
 
 # Run in UI mode with Playwright Test Explorer
-yarn playwright test --ui
+yarn playwright test --config=tests/playwright/playwright.config.ts --ui
 ```
+
+> **Note:** As of the Playwright reorganization, tests have moved from `tests/e2e/` to `tests/playwright/tests/`. 
+> Old commands like `npx playwright test tests/e2e/...` should be replaced with the yarn scripts above.
+> Use `yarn test:e2e`, `yarn test:accessibility`, etc. for better consistency and configuration management.
 
 #### Configuration
 
-The project uses Chromium for testing to ensure consistency with our production environment. The configuration can be found in `playwright.config.ts`.
+The project uses Chromium for testing to ensure consistency with our production environment. The configuration can be found in `tests/playwright/playwright.config.ts`.
 
 Key configuration points:
-- Tests are located in `tests/e2e/` directory
+- Tests are located in `tests/playwright/tests/` directory
 - Only Chromium browser is used for testing
 - Test retries are enabled in CI environments (2 retries)
 - Traces are automatically captured on test failures for debugging
@@ -269,13 +298,16 @@ This provides a timeline view of the test execution with screenshots, DOM snapsh
 The `scripts/e2e_coverage/route-coverage-analysis.sh` script analyses which Express routes have corresponding E2E tests, helping ensure comprehensive test coverage.
 
 ```shell
-# Run the route coverage analysis
+# Run the route coverage analysis (with tests)
 ./scripts/e2e_coverage/route-coverage-analysis.sh
+
+# Run analysis without running tests (faster, shows only routes)
+./scripts/e2e_coverage/route-coverage-analysis.sh --skip-tests
 ```
 
 The script:
 - Extracts all registered Express routes from the application
-- Runs E2E tests with debug logging to capture visited routes
+- Runs E2E tests with debug logging to capture visited routes (unless --skip-tests is used)
 - Compares the two lists and reports coverage percentage
 - Shows which routes are missing E2E tests
 
@@ -295,13 +327,13 @@ This project includes automated accessibility testing using [axe-core](https://g
 
 ```shell
 # Run only accessibility tests
-yarn test:e2e --grep "should be accessible"
+yarn test:accessibility
 
 # Run all tests (functional + accessibility)
 yarn test:e2e
 
 # Run accessibility tests in UI mode for debugging
-yarn playwright test --grep "should be accessible"
+yarn playwright test --config=tests/playwright/playwright.config.ts --grep @accessibility
 ```
 
 #### CI Integration
@@ -344,13 +376,16 @@ When accessibility tests fail in CI:
 To add accessibility testing to a new page:
 
 ```typescript
+// In your test file: tests/playwright/tests/your-page.spec.ts
+import { test, expect } from '../fixtures/index.js';
+
 test('page name should be accessible', async ({ page, checkAccessibility }) => {
   await page.goto('/your-page-url');
   await checkAccessibility();
 });
 ```
 
-The `checkAccessibility` fixture is available in all test files and will automatically scan the current page for WCAG violations.
+The `checkAccessibility` fixture is available in all test files and will automatically scan the current page for WCAG 2.2 Level A violations.
 
 ### Code coverage - unit tests
 We use the library [c8](https://github.com/bcoe/c8) which output unit test coverage reports using Node.js' built in coverage.
