@@ -9,6 +9,12 @@ import type { Config } from '#types/config-types.js';
  * @param {Config} config - The configuration object containing rate limiting settings.
  */
 export const rateLimitSetUp = (app: Application, config: Config): void => {
+  // Skip rate limiting in test environment to prevent 429 errors during E2E test suites
+  if (process.env.NODE_ENV === 'test' || process.env.SKIP_RATE_LIMIT === 'true') {
+    console.log('🚫 Rate limiting disabled for test environment');
+    return;
+  }
+
   /**
    * Rate limiter for general routes.
    * Limits each IP to a configurable number of requests per time window.

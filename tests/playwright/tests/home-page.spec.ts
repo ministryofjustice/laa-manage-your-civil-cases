@@ -1,5 +1,5 @@
-import { test, expect } from './fixtures/index.js';
-import { t } from './helpers/index.js';
+import { test, expect } from '../fixtures/index.js';
+import { t } from '../utils/index.js';
 
 test('homepage should have the correct title & warning text', async ({ page, i18nSetup }) => {
   // Navigate to the homepage

@@ -46,6 +46,8 @@ export default [
       'quotes': 'off', // Prettier is handling this
       'semi': 'off', // Prettier is handling this
       'no-console': 'off', // Stops complaining about putting messages in the console
+      'no-param-reassign': ['error', { props: false }], // Allow modifying properties of function parameters (common in Express middleware and reducers)
+      'no-negated-condition': 'off', // Allow negated conditions as they can improve readability in certain contexts
       'jsdoc/check-alignment': 'error',
       'jsdoc/check-param-names': 'error',
       'jsdoc/check-tag-names': 'error',
@@ -101,8 +103,14 @@ export default [
     ignores: [
       'node_modules/*',
       'public/*',
-      'tests/**/*.spec.ts',
-      'tests/helpers/*', // Test helper utilities
+      'tests/**/*.spec.ts', // Unit test specs (if any remain in tests/)
+      'tests/playwright/**/*.spec.ts', // E2E test specs in new Playwright structure
+      'tests/playwright/fixtures/*', // Test fixtures
+      'tests/playwright/factories/*', // Test factories and mock handlers
+      'tests/playwright/pages/*', // Page object models
+      'tests/playwright/utils/*', // Test utilities and helpers
+      'tests/playwright/playwright.config.ts', // Playwright configuration file
+      'tests/helpers/*', // Test helper utilities (if any remain)
       'docs/source/javascripts/application.js', // Parsing error this file was not found by the project service. Consider either including it in the `tsconfig.json` or including it in `allowDefaultProject`
       'docs/source/javascripts/govuk_frontend.js', // Documentation JavaScript file, not part of main TypeScript project
       'eslint.config.js', // Parsing error this file was not found by the project service. Consider either including it in the `tsconfig.json` or including it in `allowDefaultProject`,

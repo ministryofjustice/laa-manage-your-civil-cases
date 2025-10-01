@@ -7,8 +7,7 @@ import { createChangeDetectionValidator, TypedValidationError, t } from '#src/sc
  * Ensures the phone number is present and valid (UK or International),and checks whether either phone number or "safe to call" status has changed
  * @returns {Error} Validation schema for express-validator
  */
-export const validateEditClientPhoneNumber = (): ReturnType<typeof checkSchema> =>
-  checkSchema({
+export const validateEditClientPhoneNumber = (): ReturnType<typeof checkSchema> => checkSchema({
     phoneNumber: {
       in: ['body'],
       trim: true,

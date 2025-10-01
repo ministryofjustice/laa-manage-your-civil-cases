@@ -42,7 +42,7 @@ export interface RequestBodyWithDates {
 /**
  * Type guard to check if request body has date fields structure
  * @param {unknown} body - Request body to check
- * @returns {body is RequestBodyWithDates} True if body has required date fields
+ * @returns {boolean} True if body has required date fields
  */
 export function isRequestBodyWithDates(body: unknown): body is RequestBodyWithDates {
   return typeof body === 'object' && body !== null;
