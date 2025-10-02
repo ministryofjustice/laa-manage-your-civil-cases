@@ -1,5 +1,5 @@
 # Legal Aid Agency - Manage Your Civil Cases (MCC)
-## This repository is built on the MoJ Express Frontend Skeleton
+## This repository has created the LAA Express TypeScript Template
 [![Standards Icon]][Standards Link]
 
 ![govuk-frontend 5.10.2](https://img.shields.io/badge/govuk--frontend%20version-5.10.2-005EA5?logo=gov.uk&style=flat)
@@ -8,7 +8,7 @@ Express.js is a fast, unopinionated, minimalist web framework for Node.js.
 
 ## Contents
 - [Legal Aid Agency - Manage Your Civil Cases (MCC)](#legal-aid-agency---manage-your-civil-cases-mcc)
-  - [This repository is built on the MoJ Express Frontend Skeleton](#this-repository-is-built-on-the-moj-express-frontend-skeleton)
+  - [This repository has created the LAA Express TypeScript Template](#this-repository-has-created-the-laa-express-typescript-template)
   - [Contents](#contents)
   - [Prerequisites](#prerequisites)
     - [Installing Yarn](#installing-yarn)
