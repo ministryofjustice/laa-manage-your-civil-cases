@@ -15,7 +15,7 @@ node_modules/
 .DS_Store
 .vscode/
 
-# MOJ Express Skeleton
+# LAA Manage your Civil Cases
 public/
 .env
 
