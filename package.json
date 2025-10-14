@@ -29,10 +29,10 @@
     "coverage": "c8 yarn test:unit --check-coverage"
   },
   "engines": {
-    "node": "24.9.0"
+    "node": "24.10.0"
   },
   "dependencies": {
-    "@ministryofjustice/frontend": "^5.2.0",
+    "@ministryofjustice/frontend": "^6.0.0",
     "@x-govuk/govuk-prototype-components": "^5.0.2",
     "axios": "1.12.2",
     "body-parser": "^2.2.0",
@@ -69,7 +69,7 @@
     "@types/express-session": "^1.18.1",
     "@types/figlet": "^1.7.0",
     "@types/fs-extra": "^11.0.4",
-    "@types/jsdom": "^21.1.7",
+    "@types/jsdom": "^27.0.0",
     "@types/livereload": "^0.9.5",
     "@types/mocha": "^10.0.10",
     "@types/morgan": "^1.9.9",
@@ -93,7 +93,7 @@
     "eslint": "^9.36.0",
     "eslint-config-love": "^130.0.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-jsdoc": "^60.6.0",
+    "eslint-plugin-jsdoc": "^61.1.1",
     "globals": "^16.4.0",
     "husky": "^9.1.7",
     "jsdom": "^27.0.0",
