@@ -32,7 +32,7 @@
     "node": "24.9.0"
   },
   "dependencies": {
-    "@ministryofjustice/frontend": "^5.2.0",
+    "@ministryofjustice/frontend": "^6.0.0",
     "@x-govuk/govuk-prototype-components": "^5.0.2",
     "axios": "1.12.2",
     "body-parser": "^2.2.0",
