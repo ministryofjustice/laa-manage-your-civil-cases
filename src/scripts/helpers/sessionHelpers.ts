@@ -1,9 +1,22 @@
 import type { Request } from 'express';
+import type { AuthCredentials, UserInfo } from '#types/auth-types.js';
+import type { AuthService } from '#src/services/authService.js';
+
+// Session token storage interface
+export interface SessionTokenStorage {
+  accessToken: string;
+  username: string;
+  loginTime: number;
+}
 
 // Extend the Express session interface to support dynamic namespaces
 declare module 'express-session' {
   interface SessionData extends Record<string, Record<string, string> | string | undefined> {
     // This allows both specific properties and dynamic namespace access
+    authCredentials?: AuthCredentials;
+    authTokens?: SessionTokenStorage;
+    authService?: AuthService;
+    user?: UserInfo;
   }
 }
 

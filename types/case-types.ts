@@ -27,6 +27,7 @@ export interface CaseData {
   address?: string;
   postcode?: string;
   specialNotes?: string;
+  outcomeDescription?: string;
 }
 
 /**

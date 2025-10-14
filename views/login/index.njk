@@ -1,0 +1,59 @@
+{% extends "base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/password-input/macro.njk" import govukPasswordInput %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% block pageContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% if error %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: [
+            {
+              text: error,
+              href: "#username"
+            }
+          ]
+        }) }}
+      {% endif %}
+
+      <h1 class="govuk-heading-xl">Sign in</h1>
+      <p class="govuk-body">Enter your credentials to access the service.</p>
+
+      <form action="/login" method="POST" class="govuk-form">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+        {{ govukInput({
+          id: "username",
+          name: "username",
+          type: "text",
+          classes: "govuk-!-width-one-half",
+          label: {
+            text: "Username",
+            classes: "govuk-label--m"
+          },
+          errorMessage: {
+            text: error
+          } if error else undefined
+        }) }}
+
+        {{ govukPasswordInput({
+          id: "password",
+          name: "password",
+          classes: "govuk-!-width-one-half",
+          label: {
+            text: "Password",
+            classes: "govuk-label--m"
+          }
+        }) }}
+
+        {{ govukButton({
+          text: "Sign in",
+          type: "submit"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

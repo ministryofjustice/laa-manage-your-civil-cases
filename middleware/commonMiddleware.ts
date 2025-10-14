@@ -1,4 +1,4 @@
-import type { Application } from 'express';
+import type { Application, Request, Response, NextFunction } from 'express';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
@@ -25,4 +25,18 @@ export const setupMiddlewares = (app: Application): void => {
 
   // Parses URL-encoded bodies
   app.use(express.urlencoded({ extended: false }));
+};
+
+/**
+ * Middleware to set authentication status in response locals
+ * This makes isAuthenticated available to all templates
+ *
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next function
+ */
+export const setAuthStatus = (req: Request, res: Response, next: NextFunction): void => {
+  res.locals.isAuthenticated = req.session.authTokens !== undefined;
+  res.locals.userEmail = req.session.user?.email ?? null;
+  next();
 };
