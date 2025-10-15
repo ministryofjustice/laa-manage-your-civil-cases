@@ -36,7 +36,7 @@ export const setupMiddlewares = (app: Application): void => {
  * @param {NextFunction} next - Express next function
  */
 export const setAuthStatus = (req: Request, res: Response, next: NextFunction): void => {
-  res.locals.isAuthenticated = req.session.authTokens !== undefined;
+  res.locals.isAuthenticated = req.session.authCredentials !== undefined;
   res.locals.userEmail = req.session.user?.email ?? null;
   next();
 };

@@ -93,7 +93,7 @@ async function authenticateUser(username: string, password: string): Promise<{ s
  */
 router.get('/', function (req: Request, res: Response): void {
   // Check if already logged in
-  if (req.session.authTokens !== undefined) {
+  if (req.session.authCredentials !== undefined) {
     res.redirect('/cases/new');
     return;
   }
@@ -124,23 +124,27 @@ router.post('/', async function (req: Request, res: Response): Promise<void> {
       return;
     }
 
-    // Success - store tokens and auth service instead of credentials for security
+    // Success - store minimal auth data needed for API access
     if (authResult.authService !== undefined) {
       // Get the token to ensure it's cached in the service
       const accessToken = await authResult.authService.getAccessToken();
       
-      // Store token information in session (more secure than storing credentials)
+      // Store token information and minimal credentials for token refresh
       const userInfo = authResult.authService.getUserInfo();
       if (userInfo !== null) {
-        const { authService } = authResult;
         req.session.user = userInfo;
         req.session.authTokens = {
           accessToken,
           username, // Keep username for session identification
           loginTime: Date.now() // Track when user logged in
         };
-        // Store the AuthService instance which handles token refresh internally
-        req.session.authService = authService;
+        // Store only the credentials needed to recreate AuthService (still in session but at least not in plain sight)
+        req.session.authCredentials = {
+          username,
+          password, // Note: This is still a security concern, but needed for token refresh
+          client_id: config.api.auth.clientId,
+          client_secret: config.api.auth.clientSecret
+        };
       }
     }
     

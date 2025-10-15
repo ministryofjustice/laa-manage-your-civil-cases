@@ -72,6 +72,14 @@ export {
   storeOriginalFormData
 } from './sessionHelpers.js';
 
+// Session storage helpers
+export {
+  getSessionValue,
+  setSessionValue,
+  getSessionString,
+  deleteSessionKeys
+} from './sessionStorageHelper.js';
+
 export {
   initializeI18nextSync,
   i18next,
