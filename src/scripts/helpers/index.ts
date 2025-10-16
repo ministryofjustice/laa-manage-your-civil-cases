@@ -69,7 +69,11 @@ export {
   getSessionData,
   clearSessionData,
   clearAllOriginalFormData,
-  storeOriginalFormData
+  storeOriginalFormData,
+  getSessionValue,
+  setSessionValue,
+  getSessionString,
+  deleteSessionKeys
 } from './sessionHelpers.js';
 
 export {

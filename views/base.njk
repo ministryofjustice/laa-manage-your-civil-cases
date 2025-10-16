@@ -57,38 +57,45 @@
           <image src="/assets/images/moj-logotype-crest-2024.png" xlink:href="" class="moj-header__logotype-crest-fallback-image" width="40" height="40"></image>
         </svg>
         <a class="moj-header__link moj-header__link--organisation-name" href="{{config.DEPARTMENT_URL}}">{{config.DEPARTMENT_NAME}}</a>
+        {% if not isAuthenticated %}
+          <a class="moj-header__link moj-header__link--service-name" href="/">{{config.SERVICE_NAME}}</a>
+        {% endif %}
       </div>
-      <div class="moj-header__content">
-        <nav class="moj-header__navigation" aria-label="Account navigation">
-          <ul class="moj-header__navigation-list">
-            <li class="moj-header__navigation-item">
-              roronoa.zoro@law.com
-            </li>
-            <li class="moj-header__navigation-item">
-              <a class="moj-header__navigation-link govuk-!-font-weight-bold" href="#">{{t('common.signOut')}}</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
+      {% if isAuthenticated %}
+        <div class="moj-header__content">
+          <nav class="moj-header__navigation" aria-label="Account navigation">
+            <ul class="moj-header__navigation-list">
+              <li class="moj-header__navigation-item">
+                {{ userEmail }}
+              </li>
+              <li class="moj-header__navigation-item">
+                <a class="moj-header__navigation-link govuk-!-font-weight-bold" href="/logout">{{t('common.signOut')}}</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      {% endif %}
     </div>
   </header>
 
-  {{ govukServiceNavigation({
-  serviceName: config.SERVICE_NAME,
-  serviceUrl: "/cases/new",
-  navigation: [
-    {
-      href: "/cases/new",
-      text: t('navigation.mainNav.yourCases'),
-      active: not request or not request.originalUrl or not request.originalUrl.startsWith('/search')
-    },
-    {
-      href: "/search",
-      text: t('navigation.mainNav.search'),
-      active: request and request.originalUrl and request.originalUrl.startsWith('/search')
-    }
-    ]
-  }) }}
+  {% if isAuthenticated %}
+    {{ govukServiceNavigation({
+    serviceName: config.SERVICE_NAME,
+    serviceUrl: "/cases/new",
+    navigation: [
+      {
+        href: "/cases/new",
+        text: t('navigation.mainNav.yourCases'),
+        active: not request or not request.originalUrl or not request.originalUrl.startsWith('/search')
+      },
+      {
+        href: "/search",
+        text: t('navigation.mainNav.search'),
+        active: request and request.originalUrl and request.originalUrl.startsWith('/search')
+      }
+      ]
+    }) }}
+  {% endif %}
 {% endblock %}
 
 {% block beforeContent %}

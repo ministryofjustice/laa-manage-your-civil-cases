@@ -4,34 +4,43 @@ import yourCasesRouter from './yourCases.js';
 import caseDetailsRouter from './caseDetails.js';
 import editClientDetailsRouter from './editClientDetails.js';
 import searchRouter from './search.js';
+import loginRouter from './login.js';
+import { requireAuth } from '#middleware/index.js';
 import { devError, extractErrorMessage } from '#src/scripts/helpers/index.js';
 
 // Create a new router
 const router = express.Router();
 const SUCCESSFUL_REQUEST = 200;
 
-/* GET home page - redirect to cases. */
-router.get('/', function (req: Request, res: Response): void {
+/* GET home page (no auth required) - redirect to cases once authorised. */
+router.get('/', requireAuth, function (req: Request, res: Response): void {
   res.redirect('/cases/new');
 });
 
-// Mount the cases routes
-router.use('/cases', yourCasesRouter);
+// Mount the login routes (no auth required)
+router.use('/login', loginRouter);
 
-// Mount the case details routes
-router.use('/cases', caseDetailsRouter);
+// Logout route at root level (no auth required)
+router.get('/logout', loginRouter);
 
-// Mount the edit client details routes
-router.use('/cases', editClientDetailsRouter);
+// Mount the cases routes (auth required)
+router.use('/cases', requireAuth, yourCasesRouter);
 
-// Mount the search routes
-router.use('/search', searchRouter);
+// Mount the case details routes (auth required)
+router.use('/cases', requireAuth, caseDetailsRouter);
 
-// liveness and readiness probes for Helm deployments
+// Mount the edit client details routes (auth required)
+router.use('/cases', requireAuth, editClientDetailsRouter);
+
+// Mount the search routes (auth required)
+router.use('/search', requireAuth, searchRouter);
+
+/* GET liveness and readiness probes for Helm deployments */
 router.get('/status', function (req: Request, res: Response): void {
   res.status(SUCCESSFUL_REQUEST).send('OK');
 });
 
+/* GET health checks for monitoring */
 router.get('/health', function (req: Request, res: Response): void {
   res.status(SUCCESSFUL_REQUEST).send('Healthy');
 });
