@@ -17,6 +17,26 @@ export interface AuthCredentials {
 }
 
 /**
+ * User information from authentication API
+ */
+export interface UserInfo {
+  username: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  provider: {
+    name: string;
+    id: number;
+  };
+  is_manager: boolean;
+  chs_organisation: string | null;
+  chs_user: string | null;
+  last_login: string;
+  created: string;
+  user_type: string;
+}
+
+/**
  * Token storage with expiration tracking
  */
 export interface TokenStorage {
@@ -24,6 +44,7 @@ export interface TokenStorage {
   tokenType: string;
   expiresAt: number; // Unix timestamp
   refreshToken?: string;
+  user?: UserInfo; // User information from token response
 }
 
 /**
@@ -34,6 +55,8 @@ export interface ValidatedTokenResponse {
   token_type: string;
   expires_in?: number;
   refresh_token?: string;
+  user?: UserInfo; // User information from login response
+  scope?: string;
 }
 
 /**
