@@ -86,6 +86,7 @@ function extractPaginationFromBody(data: unknown, page: number, limit: number): 
 
 /**
  * Transform raw case item to display format
+ * Handles both mock API format and CLA API format
  * @param {unknown} item Raw case item
  * @returns {CaseData} Transformed case item
  */
@@ -95,23 +96,22 @@ function transformCaseItem(item: unknown): CaseData {
   }
 
   return {
-    fullName: safeString(item.full_name),
-    caseReference: safeString(item.reference),
-    refCode: safeString(item.outcome_code),
-    dateReceived: formatDate(safeString(item.modified)),
-    caseStatus: safeString(item.requires_action_by),
-    dateOfBirth: formatDate(safeString(item.date_of_birth)),
-    lastModified: formatDate(safeOptionalString(item.modified) ?? ''),
-    dateClosed: formatDate(safeOptionalString(item.provider_closed) ?? ''),
-    phoneNumber: safeOptionalString(item.phoneNumber),
-    safeToCall: Boolean(item.safeToCall),
-    announceCall: Boolean(item.announceCall),
-    emailAddress: safeOptionalString(item.emailAddress),
-    clientIsVulnerable: Boolean(item.clientIsVulnerable),
+    fullName: safeString(item.fullName || item.full_name),
+    caseReference: safeString(item.caseReference || item.reference),
+    refCode: safeString(item.refCode || item.reference), // CLA API might not have refCode
+    dateReceived: formatDate(safeString(item.dateReceived || item.modified || item.created)),
+    caseStatus: safeString(item.caseStatus || item.status || 'Unknown'),
+    dateOfBirth: formatDate(safeString(item.dateOfBirth || item.date_of_birth)),
+    lastModified: formatDate(safeOptionalString(item.lastModified || item.modified) ?? ''),
+    dateClosed: formatDate(safeOptionalString(item.dateClosed || item.date_closed) ?? ''),
+    phoneNumber: safeOptionalString(item.phoneNumber || item.phone_number),
+    safeToCall: Boolean(item.safeToCall || item.safe_to_call),
+    announceCall: Boolean(item.announceCall || item.announce_call),
+    emailAddress: safeOptionalString(item.emailAddress || item.email_address),
+    clientIsVulnerable: Boolean(item.clientIsVulnerable || item.client_is_vulnerable),
     address: safeOptionalString(item.address),
     postcode: safeOptionalString(item.postcode),
-    specialNotes: safeOptionalString(item.specialNotes),
-    outcomeDescription: safeOptionalString(item.outcome_description)
+    specialNotes: safeOptionalString(item.specialNotes || item.special_notes)
   };
 }
 
@@ -259,44 +259,44 @@ class ApiService {
     const sortOrder = params.sortOrder !== undefined && params.sortOrder.trim() !== '' ? params.sortOrder : 'desc';
 
     try {
-      // Build API params - only include status if it has a value
-      const apiParams: { keyword: string; sortOrder: string; page: number; limit: number; status?: string } = {
-        keyword,
-        sortOrder,
-        page,
-        limit
-      };
+      // Build CLA API params - map internal params to CLA API format
+      const apiParams: Record<string, string> = {};
 
-      if (status !== undefined && status.trim() !== '') {
-        apiParams.status = status;
+      if (keyword && keyword.trim() !== '') {
+        apiParams.search = keyword.trim();  // CLA uses 'search' param
       }
 
-      devLog(`API: GET ${API_PREFIX}/cases/search with params: ${JSON.stringify(apiParams, null, JSON_INDENT)}`);
+      if (status && status.trim() !== '' && status !== 'all') {
+        apiParams.only = status.trim();     // CLA uses 'only' for status filter
+      }
+
+      devLog(`API: GET ${API_PREFIX}/case/ with params: ${JSON.stringify(apiParams, null, JSON_INDENT)}`);
 
       const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
 
-      // Call API endpoint
-      const response = await configuredAxios.get(`${API_PREFIX}/cases/search`, {
-        params: apiParams
+      // Call CLA API endpoint with timeout
+      const response = await configuredAxios.get(`${API_PREFIX}/case/`, {
+        params: apiParams,
+        timeout: 10000  // 10 second timeout as per requirements
       });
 
-      // Handle API response format with results array
-      const responseData: unknown = response.data;
-      const results = extractResults(responseData);
+      // Extract results from CLA API response format
+      const rawResults = Array.isArray(response.data.results) ? response.data.results : [];
+      const totalCount = typeof response.data.count === 'number' ? response.data.count : rawResults.length;
 
-      // Transform the response data
-      const transformedData = results.map(transformCaseItem);
+      // Transform raw case data to display format
+      const transformedData = rawResults.map(transformCaseItem);
 
-      // Extract pagination from response body (new API format) or fall back to headers
-      const paginationParams: CaseApiParams = { caseType: 'new', page, limit };
-      const paginationMeta = extractPaginationFromBody(responseData, page, limit)
-        ?? ApiService.extractPaginationMeta(response.headers, paginationParams);
-
-      devLog(`API: Returning ${transformedData.length} search results (total: ${paginationMeta.total})`);
+      devLog(`API: Returning ${transformedData.length} search results (total: ${totalCount})`);
 
       return {
         data: transformedData,
-        pagination: paginationMeta,
+        pagination: {
+          total: totalCount,
+          page,
+          limit,
+          totalPages: undefined  // CLA API doesn't provide total pages
+        },
         status: 'success'
       };
 
@@ -523,6 +523,44 @@ class ApiService {
       limit: limitFromHeader !== null ? parseInt(limitFromHeader, 10) : limit,
       totalPages: totalPagesFromHeader !== null ? parseInt(totalPagesFromHeader, 10) : undefined
     };
+  }  /**
+   * Apply client-side date sorting to case data
+   * @param {CaseData[]} items - Array of case data to sort
+   * @param {string} sortOrder - Sort direction ('asc' or 'desc')
+   * @returns {CaseData[]} Sorted array of case data
+   */
+  private static applyDateSorting(items: CaseData[], sortOrder: string): CaseData[] {
+    devLog(`Sorting ${items.length} items with order: ${sortOrder}`);
+    const sorted = items.sort((a, b) => {
+      const dateA = ApiService.parseDateOnly(a.lastModified || a.dateReceived);
+      const dateB = ApiService.parseDateOnly(b.lastModified || b.dateReceived);
+
+      devLog(`Comparing ${a.caseReference} (${a.lastModified}) vs ${b.caseReference} (${b.lastModified})`);
+
+      if (!dateA && !dateB) return 0;
+      if (!dateA) return sortOrder === 'desc' ? -1 : 1;
+      if (!dateB) return sortOrder === 'desc' ? 1 : -1;
+
+      const comparison = dateA.getTime() - dateB.getTime();
+      const result = sortOrder === 'desc' ? -comparison : comparison;
+      devLog(`Raw comparison: ${comparison}, adjusted for ${sortOrder}: ${result}`);
+      return result;
+    });
+    devLog(`Sorted result: ${sorted.map(item => item.caseReference).join(', ')}`);
+    return sorted;
+  }  /**
+   * Parse date string in YYYY-MM-DD format strictly
+   * @param {string} dateStr - Date string to parse
+   * @returns {Date | null} Parsed date or null if invalid
+   */
+  private static parseDateOnly(dateStr: string): Date | null {
+    if (!dateStr) return null;
+    // Parse YYYY-MM-DD format strictly
+    const match = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!match) return null;
+
+    const [, year, month, day] = match;
+    return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
   }
 
   /**
