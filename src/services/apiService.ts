@@ -581,16 +581,16 @@ class ApiService {
   private static applyDateSorting(items: CaseData[], sortOrder: string): CaseData[] {
     devLog(`Sorting ${items.length} items with order: ${sortOrder}`);
     const sorted = items.sort((a, b) => {
-      const dateA = ApiService.parseDateOnly(a.lastModified ?? a.dateReceived);
-      const dateB = ApiService.parseDateOnly(b.lastModified ?? b.dateReceived);
+      const leftSortDate = ApiService.parseDateOnly(a.lastModified ?? a.dateReceived);
+      const rightSortDate = ApiService.parseDateOnly(b.lastModified ?? b.dateReceived);
 
       devLog(`Comparing ${a.caseReference} (${a.lastModified}) vs ${b.caseReference} (${b.lastModified})`);
 
-      if (dateA === null && dateB === null) return NO_SORT_DIFFERENCE;
-      if (dateA === null) return sortOrder === 'desc' ? SORT_ORDER_DESC : SORT_ORDER_ASC;
-      if (dateB === null) return sortOrder === 'desc' ? SORT_ORDER_ASC : SORT_ORDER_DESC;
+      if (leftSortDate === null && rightSortDate === null) return NO_SORT_DIFFERENCE;
+      if (leftSortDate === null) return sortOrder === 'desc' ? SORT_ORDER_DESC : SORT_ORDER_ASC;
+      if (rightSortDate === null) return sortOrder === 'desc' ? SORT_ORDER_ASC : SORT_ORDER_DESC;
 
-      const comparison = dateA.getTime() - dateB.getTime();
+      const comparison = leftSortDate.getTime() - rightSortDate.getTime();
       const result = sortOrder === 'desc' ? -comparison : comparison;
       devLog(`Raw comparison: ${comparison}, adjusted for ${sortOrder}: ${result}`);
       return result;
