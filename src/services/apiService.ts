@@ -31,7 +31,7 @@ const DEFAULT_PAGE = 1;
 const DEFAULT_LIMIT = parseInt(process.env.PAGINATION_LIMIT ?? '20', 10); // Configurable via env
 const JSON_INDENT = 2;
 const EMPTY_TOTAL = 0;
-const API_PREFIX = process.env.API_PREFIX ?? '/latest/mock'; // API endpoint prefix - configurable via env
+const API_PREFIX = process.env.API_PREFIX ?? '/cla_provider/api/v1'; // API endpoint prefix - configurable via env
 
 /**
  * Transform raw client details item to display format
@@ -76,11 +76,11 @@ function extractPaginationFromBody(data: unknown, requestedPage: number, limit: 
   if (isRecord(data) && typeof data.count === 'number') {
     // Calculate current page from next/previous URLs or fall back to requested page
     let currentPage = requestedPage;
-    
+
     const PAGE_REGEX = /[?&]page=(\d+)/;
     const NEXT_PAGE_OFFSET = 1;
     const PREV_PAGE_OFFSET = 1;
-    
+
     // Try to extract current page from next URL (page=X means current page is X-1)
     if (typeof data.next === 'string') {
       const nextMatch = PAGE_REGEX.exec(data.next);
@@ -95,7 +95,7 @@ function extractPaginationFromBody(data: unknown, requestedPage: number, limit: 
         currentPage = parseInt(prevMatch[NEXT_PAGE_OFFSET], 10) + PREV_PAGE_OFFSET;
       }
     }
-    
+
     return {
       total: data.count,
       page: currentPage,
@@ -150,7 +150,7 @@ class ApiService {
   /**
    * Get cases from API server using axios middleware
    * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
-   * @param {CaseApiParams} params API parameters
+   * @param {CaseApiParams} params - API parameters
    * @returns {Promise<ApiResponse<CaseData>>} API response with case data and pagination
    */
   static async getCases(axiosMiddleware: AxiosInstanceWrapper, params: CaseApiParams): Promise<ApiResponse<CaseData>> {
@@ -175,23 +175,42 @@ class ApiService {
       });
       devLog(`API: Cases response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
 
-      // Handle new API response format with results array
+      // Handle CLA API response format with type safety
       const responseData: unknown = response.data;
-      const results = extractResults(responseData);
+      let rawResults: unknown[] = [];
+      let totalCount = 0;
+
+      if (isRecord(responseData)) {
+        const { results, count } = responseData;
+        if (Array.isArray(results)) {
+          rawResults = results as unknown[];
+        }
+        if (typeof count === 'number') {
+          totalCount = count;
+        } else {
+          const { length } = rawResults;
+          totalCount = length;
+        }
+      }
 
       // Transform the response data
-      const transformedData = results.map(transformCaseItem);
+      const transformedData = rawResults.map(transformCaseItem);
 
-      // Extract pagination from response body (new API format) or fall back to headers
-      const paginationMeta = extractPaginationFromBody(responseData, page, limit)
-        ?? ApiService.extractPaginationMeta(response.headers, params);
+      // Extract pagination from response body
+      const paginationMeta = {
+        total: totalCount,
+        page,
+        limit,
+        totalPages: Math.ceil(totalCount / limit)
+      };
 
       devLog(`API: Returning ${transformedData.length} ${caseType} cases (total: ${paginationMeta.total})`);
+
 
       return {
         data: transformedData,
         pagination: paginationMeta,
-        status: 'success'
+        status: 'success' as const
       };
 
     } catch (error) {
@@ -281,7 +300,7 @@ class ApiService {
    * @param {string} [params.sortOrder] - Sort direction (asc or desc)
    * @returns {Promise<ApiResponse<CaseData>>} API response with case data and pagination
    */
-  static async searchCases(
+static async searchCases(
     axiosMiddleware: AxiosInstanceWrapper,
     params: SearchApiParams
   ): Promise<ApiResponse<CaseData>> {
@@ -464,7 +483,7 @@ class ApiService {
       };
     }
   }
-  
+
   /**
    * Update client support needs for a case
    * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
