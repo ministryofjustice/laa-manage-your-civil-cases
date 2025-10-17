@@ -300,8 +300,8 @@
     },
     "login": {
       "validationError": {
-        "usernameEmpty": "Enter some case details",
-        "passwordEmpty": "Enter some case details"
+        "usernameEmpty": "Username is required",
+        "passwordEmpty": "Password is required"
       }
     }
   },

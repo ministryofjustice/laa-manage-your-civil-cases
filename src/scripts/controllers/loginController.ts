@@ -1,52 +1,51 @@
 import type { Request, Response, NextFunction } from 'express';
 import { devLog, devError } from '#src/scripts/helpers/index.js';
-import { safeBodyString, hasProperty, safeString } from '#src/scripts/helpers/dataTransformers.js';
 import type { AuthCredentials } from '#types/auth-types.js';
 import { createAuthServiceWithCredentials, type AuthService } from '#src/services/authService.js';
 import '#src/scripts/helpers/sessionHelpers.js';
 import config from '#config.js';
+import { validationResult, matchedData } from 'express-validator';
+import { formatValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
+
+// HTTP Status codes
+const BAD_REQUEST = 400;
+const NOT_EMPTY = 0;
 
 /**
  * Render login page with error
  * @param {Response} res Express response object
- * @param {string | null} error Error message to display or null
+ * @param {object} [error] - Error container to render.
+ * @param {<string,string>} [error.inputErrors] - Field with inline error text.
+ * @param {{text:string, href?:string}[]} [error.errorSummaryList] - GOV.UK error summary items.
+ * @param {string} [error.authMessage] - Auth message (e.g. Authentication service unavailable. Please try again later.).
+ * @param {object} [values] - Initial form values.
+ * @param {string} [values.username] - Pre-populated username.
  */
-function renderLoginPage(res: Response, error: string | null): void {
-  res.render('login/index.njk', {
+function renderLoginPage(res: Response, error?: { inputErrors?: Record<string, string>; errorSummaryList?: Array<{ text: string; href?: string }>; authMessage?: string;}, values?: { username?: string }): void {
+  const summaryBase = error?.errorSummaryList ?? [];
+  const auth = typeof error?.authMessage === 'string' ? error.authMessage.trim() : '';
+  const summary = auth !== '' ? [{ text: auth }, ...summaryBase] : summaryBase;
+
+  const inputErrors = error?.inputErrors ?? {};
+
+  const viewModel: Record<string, unknown> = {
     title: 'Login',
-    error
-  });
-}
-
-/**
- * Validate and extract credentials from request body
- * @param {unknown} body Request body to validate
- * @returns {{ valid: false; error: string } | { valid: true; username: string; password: string }} Validation result
- */
-function extractCredentials(body: unknown): { valid: false; error: string } | { valid: true; username: string; password: string } {
-  // Use existing helper to check if body is a valid object
-  if (!hasProperty(body, 'username') || !hasProperty(body, 'password')) {
-    return { valid: false, error: 'Invalid request data' };
-  }
-
-  // Use existing helper to safely extract and convert to string
-  const username = safeString(safeBodyString(body, 'username')).trim();
-  const password = safeString(safeBodyString(body, 'password')).trim();
-
-  if (username === '') {
-    return { valid: false, error: 'Username is required' };
-  }
-
-  if (password === '') {
-    return { valid: false, error: 'Password is required' };
-  }
-
-  return {
-    valid: true,
-    username,
-    password
+    values
   };
+
+  // Decide whether to include the `error` block at all
+  const hasSummary = summary.length > NOT_EMPTY;
+  const hasInputErrors = Object.keys(inputErrors).length > NOT_EMPTY;
+
+  if (hasSummary || hasInputErrors) {
+    viewModel.error = {
+      ...(hasInputErrors ? { inputErrors } : {}),
+      errorSummaryList: summary
+    };
+  }
+  res.render('login/index.njk', viewModel);
 }
+
 
 /**
  * Attempt authentication with provided credentials
@@ -102,27 +101,65 @@ export async function processLogin(req: Request, res: Response, _next: NextFunct
 
   // GET login page
   if (req.method === 'GET') {
-    renderLoginPage(res, null);
+    renderLoginPage(res);
     return;
   }
 
   // POST
   if (req.method === 'POST') {
     try {
-      // Extract and validate credentials
-      const credentialsResult = extractCredentials(req.body);
-      if (!credentialsResult.valid) {
-        renderLoginPage(res, credentialsResult.error);
+      // Handle validation errors first
+      const validationErrors = validationResult(req);
+      if (!validationErrors.isEmpty()) {
+        const rawErrors = validationErrors.array({ onlyFirstError: false });
+
+        const errors = rawErrors.map((error) => {
+          const field = 'path' in error && typeof error.path === 'string' ? error.path : '';
+          const { inlineMessage = '', summaryMessage } = formatValidationError(error);
+          return { field, inlineMessage, summaryMessage };
+        });
+
+        const inputErrors = errors.reduce<Record<string, string>>((acc, { field, inlineMessage }) => {
+          const inline = inlineMessage.trim();
+          acc[field] = inline;
+          return acc;
+        }, {});
+
+        // Map fields to their input IDs for summary links
+        const fieldIdMap: Record<string, string> = {
+          username: 'username',
+          password: 'password',
+        };
+
+        // Build the GOV.UK error summary list with field-specific anchors
+        const errorSummaryList = errors.map(({ field, summaryMessage }) => ({
+          text: summaryMessage,
+          href: `#${fieldIdMap[field] ?? field}`,
+        }));
+
+        const formValues = matchedData<AuthCredentials>(req, { locations: ['body'], onlyValidData: false });
+
+        res.status(BAD_REQUEST).render('login/index.njk', {
+          error: {
+            inputErrors,
+            errorSummaryList
+          },
+          values: {
+            username: formValues.username
+          },
+          request: req
+        });
         return;
       }
 
-      const { username, password } = credentialsResult;
+      const { username, password } = matchedData<AuthCredentials>(req);
 
       // Attempt authentication
       const authResult = await authenticateUser(username, password);
 
       if (!authResult.success) {
-        renderLoginPage(res, authResult.error ?? 'Authentication failed');
+        renderLoginPage(res, { authMessage: authResult.error }, { username });
+        devLog(`rendering login with error: ${authResult.error}`);
         return;
       }
 
@@ -136,13 +173,13 @@ export async function processLogin(req: Request, res: Response, _next: NextFunct
         req.session.regenerate((regenErr) => {
           if (regenErr != null) {
             devError(`Session regenerate failed: ${regenErr instanceof Error ? regenErr.message : String(regenErr)}`);
-            renderLoginPage(res, 'An error occurred during login. Please try again.');
+            renderLoginPage(res, { authMessage: 'An error occurred during login. Please try again.' }, { username });
             return;
           }
 
           req.session.authTokens = {
             accessToken,
-            username, // Keep username for e-mail in header
+            username,
             loginTime: Date.now()
           };
 
@@ -161,7 +198,7 @@ export async function processLogin(req: Request, res: Response, _next: NextFunct
           req.session.save((saveErr) => {
             if (saveErr != null) {
               devError(`Session save failed: ${saveErr instanceof Error ? saveErr.message : String(saveErr)}`);
-              renderLoginPage(res, 'An error occurred during login. Please try again.');
+              renderLoginPage(res, { authMessage: 'An error occurred during login. Please try again.' }, { username });
               return;
             }
 
@@ -169,13 +206,13 @@ export async function processLogin(req: Request, res: Response, _next: NextFunct
             res.redirect('/cases/new');
           });
         });
-        
+
         return;
       }
-      renderLoginPage(res, 'Authentication failed');
+      renderLoginPage(res, { authMessage: authResult.error ?? 'Authentication failed' }, { username });
     } catch (error) {
       devError(`Login error: ${error instanceof Error ? error.message : String(error)}`);
-      renderLoginPage(res, 'An error occurred during login. Please try again.');
+      renderLoginPage( res,{ authMessage: 'An error occurred during login. Please try again.' });
     }
   }
 };

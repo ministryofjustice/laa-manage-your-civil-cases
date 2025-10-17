@@ -2,31 +2,23 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/password-input/macro.njk" import govukPasswordInput %}
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "components/errorSummaryComponent.njk" import errorSummary %}
 
 {% block pageContent %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       {% if error %}
-        {{ govukErrorSummary({
-          titleText: "There is a problem",
-          errorList: [
-            {
-              text: error,
-              href: "#username"
-            },
-            {
-              text: error,
-              href: "#password"
-            }
-          ]
-        }) }}
+        {{ errorSummary(error.errorSummaryList) }}
+        {% set usernameErrorMessage = { text: error.inputErrors.username } if error.inputErrors.username %}
+        {% set passwordErrorMessage = { text: error.inputErrors.password } if error.inputErrors.password %}
       {% endif %}
 
       <h1 class="govuk-heading-xl">{{ t('pages.login.heading') }}</h1>
 
       <form action="/login" method="POST" class="govuk-form">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+        {% set usernameValue = (values and values.username) or '' %}
 
         {{ govukInput({
           id: "username",
@@ -37,9 +29,8 @@
             text: t('pages.login.username'),
             classes: "govuk-body"
           },
-          errorMessage: {
-            text: error
-          } if error else undefined
+          value: usernameValue,
+          errorMessage: usernameErrorMessage
         }) }}
 
         {{ govukPasswordInput({
@@ -50,9 +41,7 @@
             text: t('pages.login.password'),
             classes: "govuk-body"
           },
-          errorMessage: {
-            text: error
-          } if error else undefined
+          errorMessage: passwordErrorMessage
         }) }}
 
         {{ govukButton({
