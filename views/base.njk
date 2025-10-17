@@ -57,22 +57,26 @@
           <image src="/assets/images/moj-logotype-crest-2024.png" xlink:href="" class="moj-header__logotype-crest-fallback-image" width="40" height="40"></image>
         </svg>
         <a class="moj-header__link moj-header__link--organisation-name" href="{{config.DEPARTMENT_URL}}">{{config.DEPARTMENT_NAME}}</a>
+        <a class="moj-header__link moj-header__link--service-name" href="#">{{config.SERVICE_NAME}}</a>
       </div>
+      {% if isAuthenticated %}
       <div class="moj-header__content">
         <nav class="moj-header__navigation" aria-label="Account navigation">
           <ul class="moj-header__navigation-list">
             <li class="moj-header__navigation-item">
-              roronoa.zoro@law.com
+              {{ userEmail }}
             </li>
             <li class="moj-header__navigation-item">
-              <a class="moj-header__navigation-link govuk-!-font-weight-bold" href="#">{{t('common.signOut')}}</a>
+              <a class="moj-header__navigation-link govuk-!-font-weight-bold" href="/logout">{{t('common.signOut')}}</a>
             </li>
           </ul>
         </nav>
       </div>
+      {% endif %}
     </div>
   </header>
 
+  {% if isAuthenticated %}
   {{ govukServiceNavigation({
   serviceName: config.SERVICE_NAME,
   serviceUrl: "/cases/new",
@@ -89,6 +93,7 @@
     }
     ]
   }) }}
+  {% endif %}
 {% endblock %}
 
 {% block beforeContent %}

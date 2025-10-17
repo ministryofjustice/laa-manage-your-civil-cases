@@ -3,7 +3,7 @@ import express from 'express';
 import chalk from 'chalk';
 import morgan from 'morgan';
 import compression from 'compression';
-import { setupCsrf, setupMiddlewares, setupConfig, setupLocaleMiddleware } from '#middleware/index.js';
+import { setupCsrf, setupMiddlewares, setupConfig, setupLocaleMiddleware, setAuthStatus } from '#middleware/index.js';
 import session from 'express-session';
 import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware, displayAsciiBanner } from '#utils/index.js';
 import { initializeI18nextSync } from '#src/scripts/helpers/index.js';
@@ -27,8 +27,6 @@ const createApp = (): express.Application => {
 
 	// Set up common middleware for handling cookies, body parsing, etc.
 	setupMiddlewares(app);
-
-	app.use(axiosMiddleware);
 
 	// Response compression setup
 	app.use(compression({
@@ -57,6 +55,12 @@ const createApp = (): express.Application => {
 	// Set up cookie security for sessions
 	app.set('trust proxy', TRUST_FIRST_PROXY);
 	app.use(session(config.session));
+
+	// Set up authentication status for templates
+	app.use(setAuthStatus);
+
+	// Set up axios middleware AFTER session middleware so req.session is available
+	app.use(axiosMiddleware);
 
 	// Set up Cross-Site Request Forgery (CSRF) protection
 	setupCsrf(app);
