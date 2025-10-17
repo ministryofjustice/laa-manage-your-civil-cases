@@ -30,6 +30,6 @@ export function requireAuth(req: Request, res: Response, next: NextFunction): vo
  */
 export const setAuthStatus = (req: Request, res: Response, next: NextFunction): void => {
   res.locals.isAuthenticated = req.session.authCredentials !== undefined;
-  res.locals.userEmail = req.session.user?.email ?? req.session.authTokens?.username ?? req.session.authCredentials?.username ?? null;
+  res.locals.userEmail = req.session.user?.email ?? null;
   next();
 };

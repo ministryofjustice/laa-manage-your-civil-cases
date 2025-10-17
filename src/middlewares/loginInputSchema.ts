@@ -8,31 +8,29 @@ import { TypedValidationError, t } from '#src/scripts/helpers/index.js';
 export const validateLoginDetails = (): ReturnType<typeof checkSchema> =>
   checkSchema({
     username: {
-      in: ['body'],
       trim: true,
       notEmpty: {
         /**
-         * Custom error message for empty search keyword
+         * Custom error message for empty username
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: t('forms.search.validationError.notEmpty'),
-          inlineMessage: t('forms.search.validationError.notEmpty')
+          summaryMessage: t('forms.login.validationError.usernameEmpty'),
+          inlineMessage: t('forms.login.validationError.usernameEmpty')
         })
-      }
+      },
     },
     password: {
-      in: ['body'],
       trim: true,
       notEmpty: {
         /**
-         * Custom error message for empty search keyword
+         * Custom error message for empty password
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: () => new TypedValidationError({
-          summaryMessage: t('forms.search.validationError.notEmpty'),
-          inlineMessage: t('forms.search.validationError.notEmpty')
+          summaryMessage: t('forms.login.validationError.passwordEmpty'),
+          inlineMessage: t('forms.login.validationError.passwordEmpty')
         })
-      }
+      },
     }
   });

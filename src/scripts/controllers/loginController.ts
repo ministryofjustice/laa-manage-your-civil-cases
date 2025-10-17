@@ -80,7 +80,7 @@ async function authenticateUser(username: string, password: string): Promise<{ s
     devError(`Login failed for user ${username}: ${error instanceof Error ? error.message : String(error)}`);
     return {
       success: false,
-      error: 'Invalid username or password'
+      error: 'Email or password is incorrect'
     };
   }
 }
