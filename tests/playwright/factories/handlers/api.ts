@@ -164,56 +164,41 @@ export const apiHandlers = [
     });
   }),
 
-  // Intercept case search (GET /latest/mock/cases/search)
-  http.get(`${API_BASE_URL}${API_PREFIX}/cases/search`, ({ request }) => {
+  // Intercept case search (GET /cla_provider/api/v1/case/)
+  http.get(`${API_BASE_URL}${API_PREFIX}/case/`, ({ request }) => {
     const url = new URL(request.url);
-    const keyword = url.searchParams.get('keyword') || '';
-    const status = url.searchParams.get('status') || '';
-    const page = parseInt(url.searchParams.get('page') || '1', 10);
-    const limit = parseInt(url.searchParams.get('limit') || '20', 10);
-    
+    const search = url.searchParams.get('search') || '';
+    const only = url.searchParams.get('only') || '';
     
     let filteredCases = cases;
     
-    // Filter by keyword if provided
-    if (keyword) {
-      const beforeFilter = filteredCases.length;
+    // Filter by search keyword if provided
+    if (search) {
+      const searchLower = search.toLowerCase();
       filteredCases = filteredCases.filter(caseItem => 
-        caseItem.fullName.toLowerCase().includes(keyword.toLowerCase()) ||
-        caseItem.caseReference.toLowerCase().includes(keyword.toLowerCase())
+        caseItem.fullName.toLowerCase().includes(searchLower) ||
+        caseItem.caseReference.toLowerCase().includes(searchLower)
       );
     }
     
     // Filter by status if provided
-    if (status) {
-      filteredCases = filteredCases.filter(caseItem => {
-        const statusMap: Record<string, string[]> = {
-          'new': ['New'],
-          'accepted': ['Accepted'],
-          'opened': ['Opened'],
-          'closed': ['Closed']
-        };
-        
-        // If status is 'all', include all cases
-        if (status === 'all') {
-          return true;
-        }
-        
-        const validStatuses = statusMap[status] || [];
-        return validStatuses.includes(caseItem.caseStatus);
-      });
+    if (only) {
+      const statusMap: Record<string, string[]> = {
+        'new': ['New'],
+        'accepted': ['Accepted'],
+        'opened': ['Opened'],
+        'closed': ['Closed']
+      };
+      const validStatuses = statusMap[only] || [];
+      filteredCases = filteredCases.filter(caseItem => 
+        validStatuses.includes(caseItem.caseStatus)
+      );
     }
     
-    const result = paginateResults(filteredCases, page, limit);
-    
-    
-    return HttpResponse.json(result.data, {
-      headers: {
-        'x-total-count': result.pagination.total.toString(),
-        'x-page': result.pagination.page.toString(),
-        'x-per-page': result.pagination.limit.toString(),
-        'x-total-pages': result.pagination.totalPages.toString(),
-      }
+    // Return CLA API format with results array and count
+    return HttpResponse.json({
+      results: filteredCases,
+      count: filteredCases.length
     });
   }),
 
