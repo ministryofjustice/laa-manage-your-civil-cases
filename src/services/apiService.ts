@@ -3,17 +3,6 @@
  *
  * This service provides an interface for interacting with API servers using
  * the project's axios middleware for consistency.
- *
- * Usage examples:
- * ```typescript
- * // Get cases with sorting and pagination
- * const { data, pagination } = await ApiService.getCases(req.axiosMiddleware, {
- *   caseType: 'new',
- *   sortOrder: 'desc',
- *   page: 1,
- *   limit: 20
- * });
- * ```
  */
 
 import type { CaseData } from '#types/case-types.js';
@@ -24,7 +13,8 @@ import type {
   SearchApiParams,
   ClientDetailsResponse,
   ClientDetailsApiResponse,
-  PaginationMeta
+  PaginationMeta,
+  ClaSearchApiResponse
 } from '#types/api-types.js';
 import {
   safeString,
@@ -43,6 +33,11 @@ const DEFAULT_LIMIT = parseInt(process.env.PAGINATION_LIMIT ?? '20', 10); // Con
 const JSON_INDENT = 2;
 const EMPTY_TOTAL = 0;
 const API_PREFIX = process.env.API_PREFIX ?? '/latest/mock'; // API endpoint prefix - configurable via env
+const SEARCH_TIMEOUT_MS = 10000; // 10 second timeout for search API calls
+const SORT_ORDER_DESC = -1;
+const SORT_ORDER_ASC = 1;
+const NO_SORT_DIFFERENCE = 0;
+const MONTH_OFFSET = 1; // Offset for JavaScript Date month (0-based)
 
 /**
  * Transform raw client details item to display format
@@ -57,16 +52,17 @@ function transformClientDetailsItem(item: unknown): ClientDetailsResponse {
   return {
     // Allow for additional fields from the API first
     ...item,
-    // Then override specific fields
-    caseReference: safeString(item.caseReference),
-    fullName: safeString(item.fullName),
-    dateOfBirth: formatDate(safeString(item.dateOfBirth))
+    // Then override specific fields with field name mapping
+    caseReference: safeString(item.reference),
+    fullName: safeString(item.full_name),
+    dateOfBirth: formatDate(safeString(item.date_of_birth))
   };
 }
 
 /**
- * Transform raw case item to display format
- * @param {unknown} item Raw case item
+/**
+ * Transform raw case item from CLA API to display format
+ * @param {unknown} item Raw case item from CLA API
  * @returns {CaseData} Transformed case item
  */
 function transformCaseItem(item: unknown): CaseData {
@@ -75,22 +71,22 @@ function transformCaseItem(item: unknown): CaseData {
   }
 
   return {
-    fullName: safeString(item.fullName),
-    caseReference: safeString(item.caseReference),
-    refCode: safeString(item.refCode),
-    dateReceived: formatDate(safeString(item.dateReceived)),
-    caseStatus: safeString(item.caseStatus),
-    dateOfBirth: formatDate(safeString(item.dateOfBirth)),
-    lastModified: formatDate(safeOptionalString(item.lastModified) ?? ''),
-    dateClosed: formatDate(safeOptionalString(item.dateClosed) ?? ''),
-    phoneNumber: safeOptionalString(item.phoneNumber),
-    safeToCall: Boolean(item.safeToCall),
-    announceCall: Boolean(item.announceCall),
-    emailAddress: safeOptionalString(item.emailAddress),
-    clientIsVulnerable: Boolean(item.clientIsVulnerable),
+    fullName: safeString(item.full_name),
+    caseReference: safeString(item.reference),
+    refCode: safeString(item.reference),
+    dateReceived: formatDate(safeString(item.created)),
+    caseStatus: safeString(item.status),
+    dateOfBirth: formatDate(safeString(item.date_of_birth)),
+    lastModified: formatDate(safeOptionalString(item.modified) ?? ''),
+    dateClosed: formatDate(safeOptionalString(item.date_closed) ?? ''),
+    phoneNumber: safeOptionalString(item.phone_number),
+    safeToCall: Boolean(item.safe_to_call),
+    announceCall: Boolean(item.announce_call),
+    emailAddress: safeOptionalString(item.email_address),
+    clientIsVulnerable: Boolean(item.client_is_vulnerable),
     address: safeOptionalString(item.address),
     postcode: safeOptionalString(item.postcode),
-    specialNotes: safeOptionalString(item.specialNotes)
+    specialNotes: safeOptionalString(item.special_notes)
   };
 }
 
@@ -106,30 +102,35 @@ class ApiService {
    * @returns {Promise<ApiResponse<CaseData>>} API response with case data and pagination
    */
   static async getCases(axiosMiddleware: AxiosInstanceWrapper, params: CaseApiParams): Promise<ApiResponse<CaseData>> {
-    const { caseType, sortBy = 'dateReceived', sortOrder = 'asc' } = params;
+    const { caseType } = params;
     const page = params.page ?? DEFAULT_PAGE;
     const limit = params.limit ?? DEFAULT_LIMIT;
 
     try {
-      devLog(`API: GET ${API_PREFIX}/cases/${caseType}?sortBy=${sortBy}&sortOrder=${sortOrder}&page=${page}&limit=${limit}`);
+      devLog(`API: GET ${API_PREFIX}/case?only=${caseType}&page=${page}&limit=${limit}`);
 
       const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
 
-      // Call API endpoint
-      const response = await configuredAxios.get(`${API_PREFIX}/cases/${caseType}`, {
-        params: { sortBy, sortOrder, page, limit }
+      // Call API endpoint - using 'only' parameter for case state (i.e. new, opened, closed etc)
+      const response = await configuredAxios.get(`${API_PREFIX}/case`, {
+        params: {only: caseType}
       });
+      devLog(`API: Cases response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
 
-      // Transform the response data if needed
-      const transformedData = Array.isArray(response.data)
-        ? response.data.map(transformCaseItem)
-        : [];
+      // Handle CLA API response format
+      const rawResults = Array.isArray(response.data.results) ? response.data.results : [];
+      const totalCount = typeof response.data.count === 'number' ? response.data.count : rawResults.length;
 
-      // Debug: Log response headers to help troubleshoot pagination issues
-      devLog(`API: Response headers: ${JSON.stringify(response.headers, null, JSON_INDENT)}`);
+      // Transform the response data
+      const transformedData = rawResults.map(transformCaseItem);
 
-      // Extract pagination metadata from response headers
-      const paginationMeta = ApiService.extractPaginationMeta(response.headers, params);
+      // Extract pagination from response body
+      const paginationMeta = {
+        total: totalCount,
+        page,
+        limit,
+        totalPages: Math.ceil(totalCount / limit)
+      };
 
       devLog(`API: Returning ${transformedData.length} ${caseType} cases (total: ${paginationMeta.total})`);
 
@@ -230,61 +231,133 @@ class ApiService {
     axiosMiddleware: AxiosInstanceWrapper,
     params: SearchApiParams
   ): Promise<ApiResponse<CaseData>> {
-    const { keyword, status } = params;
-    const page = params.page ?? DEFAULT_PAGE;
-    const limit = params.limit ?? DEFAULT_LIMIT;
-    // Set sortOrder to 'desc' if not provided or empty
-    const sortOrder = params.sortOrder !== undefined && params.sortOrder.trim() !== '' ? params.sortOrder : 'desc';
+    const searchParams = ApiService.prepareSearchParams(params);
 
     try {
-      // Build API params - only include status if it has a value
-      const apiParams: { keyword: string; sortOrder: string; page: number; limit: number; status?: string } = {
-        keyword,
-        sortOrder,
-        page,
-        limit
-      };
-
-      if (status !== undefined && status.trim() !== '') {
-        apiParams.status = status;
-      }
-
-      devLog(`API: GET ${API_PREFIX}/cases/search with params: ${JSON.stringify(apiParams, null, JSON_INDENT)}`);
-
       const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
+      const response = await ApiService.makeSearchApiCall(configuredAxios, searchParams.apiParams);
 
-      // Call API endpoint
-      const response = await configuredAxios.get(`${API_PREFIX}/cases/search`, {
-        params: apiParams
-      });
-
-      // Transform the response data
-      const transformedData = Array.isArray(response.data)
-        ? response.data.map(transformCaseItem)
-        : [];
-
-      // Extract pagination metadata from response headers (use 'new' as dummy value since it's not used for search)
-      const paginationParams: CaseApiParams = { caseType: 'new', page, limit };
-      const paginationMeta = ApiService.extractPaginationMeta(response.headers, paginationParams);
-
-      devLog(`API: Returning ${transformedData.length} search results (total: ${paginationMeta.total})`);
-
-      return {
-        data: transformedData,
-        pagination: paginationMeta,
-        status: 'success'
-      };
+      return ApiService.processSearchResponse(response, searchParams.page, searchParams.limit);
 
     } catch (error) {
-      const errorMessage = extractAndLogError(error, 'API search error');
-
-      // Instead of returning error response, throw the error to be handled by global handler
-      const searchError = new Error(errorMessage);
-      searchError.cause = error;
-      throw searchError;
+      ApiService.handleSearchError(error);
     }
   }
 
+  /**
+   * Prepare search parameters for CLA API
+   * @param {SearchApiParams} params - Raw search parameters
+   * @returns {object} Processed search parameters
+   */
+  private static prepareSearchParams(params: SearchApiParams): {
+    apiParams: Record<string, string>;
+    page: number;
+    limit: number;
+    sortOrder: string;
+  } {
+    const { keyword, status } = params;
+    const page = params.page ?? DEFAULT_PAGE;
+    const limit = params.limit ?? DEFAULT_LIMIT;
+    const sortOrder = ApiService.determineSortOrder(params.sortOrder);
+
+    const apiParams = ApiService.buildApiParams(keyword, status);
+
+    devLog(`API: GET ${API_PREFIX}/case/ with params: ${JSON.stringify(apiParams, null, JSON_INDENT)}`);
+
+    return { apiParams, page, limit, sortOrder };
+  }
+
+  /**
+   * Determine the sort order for search parameters
+   * @param {string | undefined} sortOrderParam - Raw sort order parameter
+   * @returns {string} Determined sort order
+   */
+  private static determineSortOrder(sortOrderParam: string | undefined): string {
+    return sortOrderParam !== undefined && sortOrderParam.trim() !== '' ? sortOrderParam : 'desc';
+  }
+
+  /**
+   * Build API parameters for CLA search
+   * @param {string | undefined} keyword - Search keyword
+   * @param {string | undefined} status - Status filter
+   * @returns {Record<string, string>} API parameters
+   */
+  private static buildApiParams(keyword: string | undefined, status: string | undefined): Record<string, string> {
+    const apiParams: Record<string, string> = {};
+
+    if (keyword !== undefined && keyword.trim() !== '') {
+      apiParams.search = keyword.trim();  // CLA uses 'search' param
+    }
+
+    if (status !== undefined && status.trim() !== '' && status !== 'all') {
+      apiParams.only = status.trim();     // CLA uses 'only' for status filter
+    }
+
+    return apiParams;
+  }
+
+  /**
+   * Make the search API call to CLA
+   * @param {AxiosInstanceWrapper} configuredAxios - Configured axios instance
+   * @param {Record<string, string>} apiParams - API parameters
+   * @returns {Promise<{ data: ClaSearchApiResponse }>} API response
+   */
+  private static async makeSearchApiCall(
+    configuredAxios: AxiosInstanceWrapper,
+    apiParams: Record<string, string>
+  ): Promise<{ data: ClaSearchApiResponse }> {
+    return await configuredAxios.get(`${API_PREFIX}/case/`, {
+      params: apiParams,
+      timeout: SEARCH_TIMEOUT_MS  // 10 second timeout as per requirements
+    });
+  }
+
+  /**
+   * Process the search API response
+   * @param {{ data: ClaSearchApiResponse }} response - API response
+   * @param {ClaSearchApiResponse} response.data - The CLA API response data
+   * @param {number} page - Page number
+   * @param {number} limit - Results per page
+   * @returns {ApiResponse<CaseData>} Processed response
+   */
+  private static processSearchResponse(
+    response: { data: ClaSearchApiResponse },
+    page: number,
+    limit: number
+  ): ApiResponse<CaseData> {
+    // Extract results from CLA API response format
+    const rawResults = Array.isArray(response.data.results) ? response.data.results : [];
+    const totalCount = typeof response.data.count === 'number' ? response.data.count : rawResults.length;
+
+    // Transform raw case data to display format
+    const transformedData = rawResults.map(transformCaseItem);
+
+    devLog(`API: Returning ${transformedData.length} search results (total: ${totalCount})`);
+
+    return {
+      data: transformedData,
+      pagination: {
+        total: totalCount,
+        page,
+        limit,
+        totalPages: undefined  // CLA API doesn't provide total pages
+      },
+      status: 'success'
+    };
+  }
+
+  /**
+   * Handle search API errors
+   * @param {unknown} error - Error from API call
+   */
+  private static handleSearchError(error: unknown): never {
+    const errorMessage = extractAndLogError(error, 'API search error');
+
+    // Instead of returning error response, throw the error to be handled by global handler
+    const searchError = new Error(errorMessage);
+    searchError.cause = error;
+    throw searchError;
+  }
 
   /**
    * Add third party contact for a case
@@ -468,7 +541,6 @@ class ApiService {
     }
   }
 
-
   /**
    * Extract pagination metadata from response headers
    * @param {unknown} headers - Response headers from axios
@@ -500,6 +572,44 @@ class ApiService {
       limit: limitFromHeader !== null ? parseInt(limitFromHeader, 10) : limit,
       totalPages: totalPagesFromHeader !== null ? parseInt(totalPagesFromHeader, 10) : undefined
     };
+  }  /**
+      * Apply client-side date sorting to case data
+      * @param {CaseData[]} items - Array of case data to sort
+      * @param {string} sortOrder - Sort direction ('asc' or 'desc')
+      * @returns {CaseData[]} Sorted array of case data
+      */
+  private static applyDateSorting(items: CaseData[], sortOrder: string): CaseData[] {
+    devLog(`Sorting ${items.length} items with order: ${sortOrder}`);
+    const sorted = items.sort((a, b) => {
+      const leftSortDate = ApiService.parseDateOnly(a.lastModified ?? a.dateReceived);
+      const rightSortDate = ApiService.parseDateOnly(b.lastModified ?? b.dateReceived);
+
+      devLog(`Comparing ${a.caseReference} (${a.lastModified}) vs ${b.caseReference} (${b.lastModified})`);
+
+      if (leftSortDate === null && rightSortDate === null) return NO_SORT_DIFFERENCE;
+      if (leftSortDate === null) return sortOrder === 'desc' ? SORT_ORDER_DESC : SORT_ORDER_ASC;
+      if (rightSortDate === null) return sortOrder === 'desc' ? SORT_ORDER_ASC : SORT_ORDER_DESC;
+
+      const comparison = leftSortDate.getTime() - rightSortDate.getTime();
+      const result = sortOrder === 'desc' ? -comparison : comparison;
+      devLog(`Raw comparison: ${comparison}, adjusted for ${sortOrder}: ${result}`);
+      return result;
+    });
+    devLog(`Sorted result: ${sorted.map(item => item.caseReference).join(', ')}`);
+    return sorted;
+  }  /**
+      * Parse date string in YYYY-MM-DD format strictly
+      * @param {string} dateStr - Date string to parse
+      * @returns {Date | null} Parsed date or null if invalid
+      */
+  private static parseDateOnly(dateStr: string): Date | null {
+    if (dateStr === '') return null;
+    // Parse YYYY-MM-DD format strictly
+    const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateStr);
+    if (match === null) return null;
+
+    const [, year, month, day] = match;
+    return new Date(parseInt(year, 10), parseInt(month, 10) - MONTH_OFFSET, parseInt(day, 10));
   }
 
   /**

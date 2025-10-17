@@ -92,3 +92,11 @@ export interface ApiSuccessResponse<T = unknown> extends BaseApiResponse {
   status: 'success';
   data: T;
 }
+
+/**
+ * CLA API search response interface
+ */
+export interface ClaSearchApiResponse {
+  results: unknown[];
+  count: number;
+}
