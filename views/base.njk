@@ -58,7 +58,7 @@
         </svg>
         <a class="moj-header__link moj-header__link--organisation-name" href="{{config.DEPARTMENT_URL}}">{{config.DEPARTMENT_NAME}}</a>
         {% if not isAuthenticated %}
-          <a class="moj-header__link moj-header__link--service-name" href="{{config.DEPARTMENT_URL}}">{{config.SERVICE_NAME}}</a>
+          <a class="moj-header__link moj-header__link--service-name" href="/">{{config.SERVICE_NAME}}</a>
         {% endif %}
       </div>
       {% if isAuthenticated %}

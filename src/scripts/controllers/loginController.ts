@@ -3,7 +3,7 @@ import { devLog, devError } from '#src/scripts/helpers/index.js';
 import { safeBodyString, hasProperty, safeString } from '#src/scripts/helpers/dataTransformers.js';
 import type { AuthCredentials } from '#types/auth-types.js';
 import { createAuthServiceWithCredentials, type AuthService } from '#src/services/authService.js';
-
+import '#src/scripts/helpers/sessionHelpers.js';
 import config from '#config.js';
 
 /**
@@ -41,10 +41,10 @@ function extractCredentials(body: unknown): { valid: false; error: string } | { 
     return { valid: false, error: 'Password is required' };
   }
 
-  return { 
-    valid: true, 
-    username, 
-    password 
+  return {
+    valid: true,
+    username,
+    password
   };
 }
 
@@ -66,9 +66,9 @@ async function authenticateUser(username: string, password: string): Promise<{ s
 
   if (authService === null) {
     devError('Failed to create auth service');
-    return { 
-      success: false, 
-      error: 'Authentication service unavailable. Please try again later.' 
+    return {
+      success: false,
+      error: 'Authentication service unavailable. Please try again later.'
     };
   }
 
@@ -78,9 +78,9 @@ async function authenticateUser(username: string, password: string): Promise<{ s
     return { success: true, authService };
   } catch (error) {
     devError(`Login failed for user ${username}: ${error instanceof Error ? error.message : String(error)}`);
-    return { 
-      success: false, 
-      error: 'Invalid username or password' 
+    return {
+      success: false,
+      error: 'Invalid username or password'
     };
   }
 }
@@ -90,7 +90,7 @@ async function authenticateUser(username: string, password: string): Promise<{ s
  * POST: validate, authenticate, set session, redirect (or re-render with error)
  * @param {Request} req - Express request object
  * @param {Response} res - Express response object
- * @param {NextFunction} next - Express next middleware function
+ * @param {NextFunction} _next - Express next middleware function
  * @returns {Promise<void>} Promise that resolves when the request is processed
  */
 export async function processLogin(req: Request, res: Response, _next: NextFunction): Promise<void> {
@@ -100,56 +100,85 @@ export async function processLogin(req: Request, res: Response, _next: NextFunct
     return;
   }
 
+  // GET login page
   if (req.method === 'GET') {
     renderLoginPage(res, null);
     return;
   }
 
   // POST
-  try {
-    const credentialsResult = extractCredentials(req.body);
-    if (!credentialsResult.valid) {
-      renderLoginPage(res, credentialsResult.error);
-      return;
-    }
-
-    const { username, password } = credentialsResult;
-    const authResult = await authenticateUser(username, password);
-
-    if (!authResult.success) {
-      renderLoginPage(res, authResult.error ?? 'Authentication failed');
-      return;
-    }
-
-    if (authResult.authService !== undefined) {
-      const accessToken = await authResult.authService.getAccessToken();
-      const userInfo = authResult.authService.getUserInfo();
-
-      if (userInfo !== null) {
-        req.session.user = userInfo;
-        req.session.authTokens = {
-          accessToken,
-          username,
-          loginTime: Date.now()
-        };
-
-        // Store only the credentials needed to recreate AuthService (still in session but at least not in plain sight)
-        req.session.authCredentials = {
-          username,
-          password, // Note: This is still a security concern, but needed for token refresh
-          client_id: config.api.auth.clientId,
-          client_secret: config.api.auth.clientSecret
-        };
+  if (req.method === 'POST') {
+    try {
+      // Extract and validate credentials
+      const credentialsResult = extractCredentials(req.body);
+      if (!credentialsResult.valid) {
+        renderLoginPage(res, credentialsResult.error);
+        return;
       }
-    }
 
-    devLog(`User ${req.body?.username ?? 'unknown'} logged in successfully`);
-    res.redirect('/cases/new');
-  } catch (error) {
-    devError(`Login error: ${error instanceof Error ? error.message : String(error)}`);
-    renderLoginPage(res, 'An error occurred during login. Please try again.');
+      const { username, password } = credentialsResult;
+
+      // Attempt authentication
+      const authResult = await authenticateUser(username, password);
+
+      if (!authResult.success) {
+        renderLoginPage(res, authResult.error ?? 'Authentication failed');
+        return;
+      }
+
+      if (authResult.authService !== undefined) {
+        // Get the token to ensure it's cached in the service
+        const accessToken = await authResult.authService.getAccessToken();
+
+        // Store token information and minimal credentials for token refresh
+        const userInfo = authResult.authService.getUserInfo();
+
+        req.session.regenerate((regenErr) => {
+          if (regenErr != null) {
+            devError(`Session regenerate failed: ${regenErr instanceof Error ? regenErr.message : String(regenErr)}`);
+            renderLoginPage(res, 'An error occurred during login. Please try again.');
+            return;
+          }
+
+          req.session.authTokens = {
+            accessToken,
+            username, // Keep username for e-mail in header
+            loginTime: Date.now()
+          };
+
+          // Store only the credentials needed to recreate AuthService (still in session but at least not in plain sight)
+          req.session.authCredentials = {
+            username,
+            password, // Note: This is still a security concern, but needed for token refresh
+            client_id: config.api.auth.clientId,
+            client_secret: config.api.auth.clientSecret
+          };
+
+          if (userInfo !== null) {
+            req.session.user = userInfo;
+          }
+
+          req.session.save((saveErr) => {
+            if (saveErr != null) {
+              devError(`Session save failed: ${saveErr instanceof Error ? saveErr.message : String(saveErr)}`);
+              renderLoginPage(res, 'An error occurred during login. Please try again.');
+              return;
+            }
+
+            devLog(`User ${username} logged in successfully`);
+            res.redirect('/cases/new');
+          });
+        });
+        
+        return;
+      }
+      renderLoginPage(res, 'Authentication failed');
+    } catch (error) {
+      devError(`Login error: ${error instanceof Error ? error.message : String(error)}`);
+      renderLoginPage(res, 'An error occurred during login. Please try again.');
+    }
   }
-}
+};
 
 /**
  * Clears session and redirect to login page
@@ -164,4 +193,3 @@ export function processLogout(req: Request, res: Response): void {
     res.redirect('/login');
   });
 }
-
