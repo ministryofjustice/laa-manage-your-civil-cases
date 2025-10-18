@@ -1,0 +1,55 @@
+{% extends "base.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/password-input/macro.njk" import govukPasswordInput %}
+{% from "components/errorSummaryComponent.njk" import errorSummary %}
+
+{% block pageContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% if error %}
+        {{ errorSummary(error.errorSummaryList) }}
+        {% set usernameErrorMessage = { text: error.inputErrors.username } if error.inputErrors.username %}
+        {% set passwordErrorMessage = { text: error.inputErrors.password } if error.inputErrors.password %}
+      {% endif %}
+
+      <h1 class="govuk-heading-xl">{{ t('pages.login.heading') }}</h1>
+
+      <form action="/login" method="POST" class="govuk-form">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+        {% set usernameValue = (values and values.username) or '' %}
+
+        {{ govukInput({
+          id: "username",
+          name: "username",
+          type: "text",
+          classes: "govuk-!-width-one-third",
+          label: {
+            text: t('pages.login.username'),
+            classes: "govuk-body"
+          },
+          value: usernameValue,
+          errorMessage: usernameErrorMessage
+        }) }}
+
+        {{ govukPasswordInput({
+          id: "password",
+          name: "password",
+          classes: "govuk-!-width-one-third",
+          label: {
+            text: t('pages.login.password'),
+            classes: "govuk-body"
+          },
+          errorMessage: passwordErrorMessage
+        }) }}
+
+        {{ govukButton({
+          text: t('pages.login.signInButton'),
+          type: "submit",
+          classes: "govuk-!-font-weight-bold"
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -9,7 +9,8 @@ import { devLog, devError } from '#src/scripts/helpers/index.js';
 import type {
   AuthCredentials,
   TokenStorage,
-  ValidatedTokenResponse
+  ValidatedTokenResponse,
+  UserInfo
 } from '#types/auth-types.js';
 import config from '#config.js';
 
@@ -57,7 +58,7 @@ export class AuthService {
    */
   constructor(credentials: AuthCredentials, baseUrl: string) {
     this.credentials = credentials;
-    this.tokenEndpoint = `${baseUrl}/latest/token`;
+    this.tokenEndpoint = `${baseUrl}/oauth2/access_token`;
   }
 
   /**
@@ -80,6 +81,7 @@ export class AuthService {
 
     try {
       const token = await this.authPromise;
+      devLog(`Access token acquired successfully: ${token}`);
       return token;
     } finally {
       this.authPromise = null;
@@ -102,6 +104,12 @@ export class AuthService {
   private async acquireToken(): Promise<string> {
     try {
       devLog('Acquiring new JWT token from API');
+      devLog(`Token endpoint: ${this.tokenEndpoint}`);
+
+      const requestBody = new URLSearchParams({
+        grant_type: 'password',
+        ...this.credentials
+      });
 
       const response = await fetch(this.tokenEndpoint, {
         method: 'POST',
@@ -109,14 +117,15 @@ export class AuthService {
           'accept': 'application/json',
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: new URLSearchParams({
-          grant_type: 'password',
-          scope: '',
-          ...this.credentials
-        })
+        body: requestBody
       });
 
+      devLog(`Response status: ${response.status} ${response.statusText}`);
+
       if (!response.ok) {
+        const errorText = await response.text();
+        devError(`Token acquisition failed: ${response.status} ${response.statusText}`);
+        devError(`Response body: ${errorText}`);
         throw new Error(`Token acquisition failed: ${response.status} ${response.statusText}`);
       }
 
@@ -132,10 +141,14 @@ export class AuthService {
         accessToken: responseData.access_token,
         tokenType: responseData.token_type,
         expiresAt: Date.now() + (expiresIn * MILLISECONDS_PER_SECOND),
-        refreshToken: responseData.refresh_token
+        refreshToken: responseData.refresh_token,
+        user: responseData.user // Store user information from response
       };
 
       devLog(`JWT token acquired successfully. Expires in ${expiresIn} seconds`);
+      if (responseData.user !== undefined) {
+        devLog(`User authenticated: ${responseData.user.email} (${responseData.user.username})`);
+      }
       return responseData.access_token;
 
     } catch (error) {
@@ -155,6 +168,14 @@ export class AuthService {
   }
 
   /**
+   * Get user information from stored token
+   * @returns {UserInfo | null} User information or null if not available
+   */
+  getUserInfo(): UserInfo | null {
+    return this.tokenStorage?.user ?? null;
+  }
+
+  /**
    * Clear stored tokens (for logout)
    */
   clearTokens(): void {
@@ -165,27 +186,13 @@ export class AuthService {
 }
 
 /**
- * Get credentials from environment variables
- * @returns {AuthCredentials} Credentials object
+ * Create AuthService instance with provided credentials (for session-based auth)
+ * @param {AuthCredentials} credentials Authentication credentials from login
+ * @returns {AuthService | null} AuthService instance or null if credentials/baseUrl missing
  */
-function getCredentialsFromEnv(): AuthCredentials {
-  return {
-    username: config.api.auth.username,
-    password: config.api.auth.password,
-    client_id: config.api.auth.clientId,
-    client_secret: config.api.auth.clientSecret
-  };
-}
-
-/**
- * Create AuthService instance from config
- * @returns {AuthService | null} AuthService instance or null if credentials missing
- */
-export function createAuthService(): AuthService | null {
-  const credentials = getCredentialsFromEnv();
-
+export function createAuthServiceWithCredentials(credentials: AuthCredentials): AuthService | null {
   if (!hasValidCredentials(credentials)) {
-    devError('Missing API credentials for JWT authentication');
+    devError('Invalid credentials provided for JWT authentication');
     return null;
   }
 
@@ -197,4 +204,41 @@ export function createAuthService(): AuthService | null {
   }
 
   return new AuthService(credentials, baseUrl);
+}
+
+/**
+ * Attempt authentication with provided credentials
+ * @param {string} username Username to authenticate
+ * @param {string} password Password to authenticate
+ * @returns {Promise<{ success: boolean; error?: string; authService?: AuthService }>} Authentication result with authService if successful
+ */
+export async function authenticateUser(username: string, password: string): Promise<{ success: boolean; error?: string; authService?: AuthService }> {
+  const credentials: AuthCredentials = {
+    username,
+    password,
+    client_id: config.api.auth.clientId,
+    client_secret: config.api.auth.clientSecret
+  };
+
+  const authService = createAuthServiceWithCredentials(credentials);
+
+  if (authService === null) {
+    devError('Failed to create auth service');
+    return {
+      success: false,
+      error: 'Authentication service unavailable. Please try again later.'
+    };
+  }
+
+  try {
+    await authService.getAccessToken();
+    devLog(`User ${username} authenticated successfully`);
+    return { success: true, authService };
+  } catch (error) {
+    devError(`Login failed for user ${username}: ${error instanceof Error ? error.message : String(error)}`);
+    return {
+      success: false,
+      error: 'Email or password is incorrect'
+    };
+  }
 }
