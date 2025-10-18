@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { devLog, devError } from '#src/scripts/helpers/index.js';
 import type { AuthCredentials } from '#types/auth-types.js';
-import { createAuthServiceWithCredentials, type AuthService } from '#src/services/authService.js';
+import { authenticateUser } from '#src/services/authService.js';
 import '#src/scripts/helpers/sessionHelpers.js';
 import config from '#config.js';
 import { validationResult, matchedData } from 'express-validator';
@@ -11,77 +11,57 @@ import { formatValidationError } from '#src/scripts/helpers/ValidationErrorHelpe
 const BAD_REQUEST = 400;
 const NOT_EMPTY = 0;
 
+interface LoginErrorDetails {
+  inputErrors?: Record<string, string>;
+  errorSummaryList?: Array<{ text: string; href?: string }>;
+  authMessage?: string;
+}
+
+/**
+ * Helper builds the error block for the viewModel or returns undefined if no errors
+ * @param {LoginErrorDetails | undefined} error - Error details from authentication/validation.
+ * @returns {{ inputErrors?: Record<string, string>; errorSummaryList: Array<{ text: string; href?: string }> } | undefined} - Returns error block or undefined
+ */
+function buildLoginErrorBlock(error?: LoginErrorDetails): { inputErrors?: Record<string, string>; errorSummaryList: Array<{ text: string; href?: string }> } | undefined {
+  if (error === undefined) {
+    return undefined;
+  }
+
+  const summaryBase = error.errorSummaryList ?? [];
+  const auth = typeof error.authMessage === 'string' ? error.authMessage.trim() : '';
+  const summary = auth !== '' ? [{ text: auth }, ...summaryBase] : summaryBase;
+
+  const inputErrors = error.inputErrors ?? {};
+  const hasSummary = summary.length > NOT_EMPTY;
+  const hasInputErrors = Object.keys(inputErrors).length > NOT_EMPTY;
+
+  if (!hasSummary && !hasInputErrors) return undefined;
+
+  return {
+    ...(hasInputErrors ? { inputErrors } : {}),
+    errorSummaryList: summary
+  };
+}
+
 /**
  * Render login page with error
  * @param {Response} res Express response object
  * @param {object} [error] - Error container to render.
- * @param {<string,string>} [error.inputErrors] - Field with inline error text.
- * @param {{text:string, href?:string}[]} [error.errorSummaryList] - GOV.UK error summary items.
- * @param {string} [error.authMessage] - Auth message (e.g. Authentication service unavailable. Please try again later.).
  * @param {object} [values] - Initial form values.
  * @param {string} [values.username] - Pre-populated username.
  */
-function renderLoginPage(res: Response, error?: { inputErrors?: Record<string, string>; errorSummaryList?: Array<{ text: string; href?: string }>; authMessage?: string;}, values?: { username?: string }): void {
-  const summaryBase = error?.errorSummaryList ?? [];
-  const auth = typeof error?.authMessage === 'string' ? error.authMessage.trim() : '';
-  const summary = auth !== '' ? [{ text: auth }, ...summaryBase] : summaryBase;
-
-  const inputErrors = error?.inputErrors ?? {};
-
+function renderLoginPage(res: Response, error?: LoginErrorDetails, values?: { username?: string } ): void {
   const viewModel: Record<string, unknown> = {
     title: 'Login',
     values
   };
 
-  // Decide whether to include the `error` block at all
-  const hasSummary = summary.length > NOT_EMPTY;
-  const hasInputErrors = Object.keys(inputErrors).length > NOT_EMPTY;
-
-  if (hasSummary || hasInputErrors) {
-    viewModel.error = {
-      ...(hasInputErrors ? { inputErrors } : {}),
-      errorSummaryList: summary
-    };
+  const errorBlock = buildLoginErrorBlock(error);
+  if (errorBlock != null) {
+    viewModel.error = errorBlock;
   }
+
   res.render('login/index.njk', viewModel);
-}
-
-
-/**
- * Attempt authentication with provided credentials
- * @param {string} username Username to authenticate
- * @param {string} password Password to authenticate
- * @returns {Promise<{ success: boolean; error?: string; authService?: AuthService }>} Authentication result with authService if successful
- */
-async function authenticateUser(username: string, password: string): Promise<{ success: boolean; error?: string; authService?: AuthService }> {
-  const credentials: AuthCredentials = {
-    username,
-    password,
-    client_id: config.api.auth.clientId,
-    client_secret: config.api.auth.clientSecret
-  };
-
-  const authService = createAuthServiceWithCredentials(credentials);
-
-  if (authService === null) {
-    devError('Failed to create auth service');
-    return {
-      success: false,
-      error: 'Authentication service unavailable. Please try again later.'
-    };
-  }
-
-  try {
-    await authService.getAccessToken();
-    devLog(`User ${username} authenticated successfully`);
-    return { success: true, authService };
-  } catch (error) {
-    devError(`Login failed for user ${username}: ${error instanceof Error ? error.message : String(error)}`);
-    return {
-      success: false,
-      error: 'Email or password is incorrect'
-    };
-  }
 }
 
 /**
@@ -152,17 +132,18 @@ export async function processLogin(req: Request, res: Response, _next: NextFunct
         return;
       }
 
-      const { username, password } = matchedData<AuthCredentials>(req);
-
       // Attempt authentication
+      const { username, password } = matchedData<AuthCredentials>(req);
       const authResult = await authenticateUser(username, password);
 
+      // Unsuccessful authentication
       if (!authResult.success) {
         renderLoginPage(res, { authMessage: authResult.error }, { username });
         devLog(`rendering login with error: ${authResult.error}`);
         return;
       }
 
+      // Successful authentication
       if (authResult.authService !== undefined) {
         // Get the token to ensure it's cached in the service
         const accessToken = await authResult.authService.getAccessToken();

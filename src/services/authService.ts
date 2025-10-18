@@ -205,3 +205,40 @@ export function createAuthServiceWithCredentials(credentials: AuthCredentials): 
 
   return new AuthService(credentials, baseUrl);
 }
+
+/**
+ * Attempt authentication with provided credentials
+ * @param {string} username Username to authenticate
+ * @param {string} password Password to authenticate
+ * @returns {Promise<{ success: boolean; error?: string; authService?: AuthService }>} Authentication result with authService if successful
+ */
+export async function authenticateUser(username: string, password: string): Promise<{ success: boolean; error?: string; authService?: AuthService }> {
+  const credentials: AuthCredentials = {
+    username,
+    password,
+    client_id: config.api.auth.clientId,
+    client_secret: config.api.auth.clientSecret
+  };
+
+  const authService = createAuthServiceWithCredentials(credentials);
+
+  if (authService === null) {
+    devError('Failed to create auth service');
+    return {
+      success: false,
+      error: 'Authentication service unavailable. Please try again later.'
+    };
+  }
+
+  try {
+    await authService.getAccessToken();
+    devLog(`User ${username} authenticated successfully`);
+    return { success: true, authService };
+  } catch (error) {
+    devError(`Login failed for user ${username}: ${error instanceof Error ? error.message : String(error)}`);
+    return {
+      success: false,
+      error: 'Email or password is incorrect'
+    };
+  }
+}
