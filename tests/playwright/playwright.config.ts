@@ -49,8 +49,8 @@ export default defineConfig({
     env: {
       NODE_ENV: 'test',
       PORT: '3001',
-      API_URL: 'https://laa-civil-case-api-uat.cloud-platform.service.justice.gov.uk',
-      API_PREFIX: '/latest/mock'
+      API_URL: 'https://laa-cla-backend-uat.apps.live-1.cloud-platform.service.justice.gov.uk',
+      API_PREFIX: '/cla_provider/api/v1'
     }
   },
 });
