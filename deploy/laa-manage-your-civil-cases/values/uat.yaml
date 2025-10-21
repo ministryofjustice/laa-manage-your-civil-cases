@@ -93,7 +93,7 @@ env:
   RATE_WINDOW_MS: 900000
   NODE_ENV: "uat"
   API_URL: "https://laa-cla-backend-uat.apps.live-1.cloud-platform.service.justice.gov.uk"
-  API_PREFIX: '/cla_provider/api/v1'
+  API_PREFIX: "/cla_provider/api/v1"
 
 autoscaling:
   enabled: false
