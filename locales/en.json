@@ -35,8 +35,7 @@
   },
   "components": {
     "phaseBanner": {
-      "feedbackText": "This is a new service. Help us improve it and ",
-      "feedbackLinkTextHTML": "<a class='govuk-link' href='#'>give your feedback by email</a>."
+      "feedbackText": "This is a new service. Help us improve it and "
     },
     "table": {
       "noData": "No data",
