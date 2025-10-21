@@ -534,15 +534,11 @@ class ApiService {
     // Override base URL and add API-specific headers
     const { axiosInstance } = axiosMiddleware;
     const { defaults } = axiosInstance;
-    const { api: { baseUrl, timeout } } = config;
+    const { api: { baseUrl } } = config;
 
     // Safely configure axios defaults
     if (typeof baseUrl === 'string') {
       defaults.baseURL = baseUrl;
-    }
-
-    if (typeof timeout === 'number') {
-      defaults.timeout = timeout;
     }
 
     defaults.headers.common['Content-Type'] = 'application/json';
