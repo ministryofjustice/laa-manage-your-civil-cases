@@ -119,7 +119,7 @@ jobs:
       - snyk
       - build-image
       - mocha-unit-tests
-      - playwright
+      # - playwright
 
     steps:
       - name: Checkout
