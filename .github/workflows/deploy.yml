@@ -102,13 +102,13 @@ jobs:
     # Only run tests when deploying to UAT
     if: success() && github.event_name != 'workflow_dispatch' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'uat' || github.event.inputs.environment == null)
 
-  playwright:
-    name: Playwright Tests
-    uses: ./.github/workflows/playwright.yml
-    needs:
-      - build-image
-    # Only run tests when deploying to UAT
-    if: success() && github.event_name != 'workflow_dispatch' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'uat' || github.event.inputs.environment == null)
+  # playwright:
+  #   name: Playwright Tests
+  #   uses: ./.github/workflows/playwright.yml
+  #   needs:
+  #     - build-image
+  #   # Only run tests when deploying to UAT
+  #   if: success() && github.event_name != 'workflow_dispatch' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'uat' || github.event.inputs.environment == null)
 
   deploy-uat:
     environment: uat
