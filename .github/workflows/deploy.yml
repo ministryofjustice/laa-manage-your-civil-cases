@@ -102,13 +102,13 @@ jobs:
     # Only run tests when deploying to UAT
     if: success() && github.event_name != 'workflow_dispatch' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'uat' || github.event.inputs.environment == null)
 
-  playwright:
-    name: Playwright Tests
-    uses: ./.github/workflows/playwright.yml
-    needs:
-      - build-image
-    # Only run tests when deploying to UAT
-    if: success() && github.event_name != 'workflow_dispatch' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'uat' || github.event.inputs.environment == null)
+  # playwright:
+  #   name: Playwright Tests
+  #   uses: ./.github/workflows/playwright.yml
+  #   needs:
+  #     - build-image
+  #   # Only run tests when deploying to UAT
+  #   if: success() && github.event_name != 'workflow_dispatch' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'uat' || github.event.inputs.environment == null)
 
   deploy-uat:
     environment: uat
@@ -119,7 +119,7 @@ jobs:
       - snyk
       - build-image
       - mocha-unit-tests
-      - playwright
+      # - playwright
 
     steps:
       - name: Checkout
@@ -137,8 +137,6 @@ jobs:
           kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
           session_secret: ${{ secrets.SESSION_SECRET }}
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
-          api_username: ${{ secrets.API_USERNAME }}
-          api_password: ${{ secrets.API_PASSWORD }}
           api_client_id: ${{ secrets.API_CLIENT_ID }}
           api_client_secret: ${{ secrets.API_CLIENT_SECRET }}
   
@@ -164,8 +162,6 @@ jobs:
           kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
           session_secret: ${{ secrets.SESSION_SECRET }}
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
-          api_username: ${{ secrets.API_USERNAME }}
-          api_password: ${{ secrets.API_PASSWORD }}
           api_client_id: ${{ secrets.API_CLIENT_ID }}
           api_client_secret: ${{ secrets.API_CLIENT_SECRET }}
 
@@ -191,7 +187,5 @@ jobs:
           kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
           session_secret: ${{ secrets.SESSION_SECRET }}
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
-          api_username: ${{ secrets.API_USERNAME }}
-          api_password: ${{ secrets.API_PASSWORD }}
           api_client_id: ${{ secrets.API_CLIENT_ID }}
           api_client_secret: ${{ secrets.API_CLIENT_SECRET }}

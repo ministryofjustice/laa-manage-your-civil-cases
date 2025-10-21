@@ -2,14 +2,12 @@ import { create } from 'middleware-axios';
 import type { Request, Response, NextFunction } from 'express';
 import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
 import type { InternalAxiosRequestConfig } from 'axios';
-import { createAuthService } from '#src/services/authService.js';
+import { createAuthServiceWithCredentials } from '#src/services/authService.js';
 import { devLog, devError } from '#src/scripts/helpers/index.js';
+import '#src/scripts/helpers/sessionHelpers.js';
 
 const DEFAULT_TIMEOUT = 5000;
 const HTTP_UNAUTHORIZED = 401;
-
-// Singleton AuthService instance to persist tokens across requests
-let authServiceInstance: ReturnType<typeof createAuthService> | undefined = undefined;
 
 // Extend Express Request to include our axiosMiddleware
 declare global {
@@ -18,22 +16,6 @@ declare global {
       axiosMiddleware: AxiosInstanceWrapper;
     }
   }
-}
-
-// NOTE: This module exports axiosMiddleware
-
-/**
- * Get or create singleton AuthService instance
- * @returns {ReturnType<typeof createAuthService>} AuthService instance or null
- */
-function getAuthService(): ReturnType<typeof createAuthService> {
-  if (authServiceInstance === undefined) {
-    authServiceInstance = createAuthService();
-    if (authServiceInstance !== null) {
-      devLog('Created singleton AuthService instance for token caching');
-    }
-  }
-  return authServiceInstance;
 }
 
 /**
@@ -77,8 +59,23 @@ export const axiosMiddleware = (req: Request, res: Response, next: NextFunction)
     },
   });
 
-  // Add JWT authentication interceptor for API calls
-  const authService = getAuthService();
+  // Get AuthService from session credentials (recreate from stored credentials)
+  let authService = null;
+
+  // Check if user is authenticated via session
+  if (req.session.authCredentials !== undefined) {
+    // Recreate AuthService from session credentials
+    authService = createAuthServiceWithCredentials(req.session.authCredentials);
+    if (authService !== null) {
+      devLog('Using session-based authentication for API requests');
+    } else {
+      devError('Failed to create AuthService from session credentials');
+    }
+  } else {
+    devLog('No session credentials found - user must login to access API');
+  }
+
+  // Add JWT authentication interceptor for API calls if user is authenticated
   if (authService !== null) {
     // Request interceptor for JWT auth
     axiosWrapper.axiosInstance.interceptors.request.use(
@@ -102,6 +99,15 @@ export const axiosMiddleware = (req: Request, res: Response, next: NextFunction)
         if (isAxiosErrorWithResponse(error) && error.response.status === HTTP_UNAUTHORIZED) {
           devError('API returned 401 Unauthorized - clearing cached tokens');
           authService.clearTokens();
+
+          // If using session auth, clear session credentials and redirect to login
+          if (req.session.authCredentials !== undefined) {
+            req.session.destroy((destroyErr) => {
+              if (destroyErr !== null && destroyErr !== undefined) {
+                devError(`Error destroying session: ${destroyErr instanceof Error ? destroyErr.message : String(destroyErr)}`);
+              }
+            });
+          }
         }
         return await Promise.reject(toError(error));
       }

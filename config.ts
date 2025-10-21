@@ -51,11 +51,7 @@ const config: Config = {
   // API Configuration for JWT authentication
   api: {
     baseUrl: process.env.API_URL ?? '',
-    timeout: Number(process.env.API_TIMEOUT ?? '5000'), // 5 seconds default
-    retries: Number(process.env.API_RETRIES ?? '3'),
     auth: {
-      username: process.env.API_USERNAME ?? '',
-      password: process.env.API_PASSWORD ?? '',
       clientId: process.env.API_CLIENT_ID ?? '',
       clientSecret: process.env.API_CLIENT_SECRET ?? ''
     }

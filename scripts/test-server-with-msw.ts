@@ -16,8 +16,8 @@ const mswServer = setupServer(...handlers);
 
 // Constants for configuration
 const TEST_PORT = '3001';
-const API_URL = 'https://laa-civil-case-api-uat.cloud-platform.service.justice.gov.uk';
-const API_PREFIX = '/latest/mock';
+const API_URL = 'https://laa-cla-backend-uat.apps.live-1.cloud-platform.service.justice.gov.uk';
+const API_PREFIX = '/cla_provider/api/v1';
 const MSW_TEST_DELAY = 1000;
 const SUCCESS_EXIT_CODE = 0;
 const ERROR_EXIT_CODE = 1;

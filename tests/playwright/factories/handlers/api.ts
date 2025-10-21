@@ -19,8 +19,8 @@ const mockDataPath = join(__dirname, '../../fixtures/mock-data.json');
 const mockData = JSON.parse(readFileSync(mockDataPath, 'utf-8'));
 
 // Base API URL that the application calls
-const API_BASE_URL = 'https://laa-civil-case-api-uat.cloud-platform.service.justice.gov.uk';
-const API_PREFIX = '/latest/mock';
+const API_BASE_URL = 'https://laa-cla-backend-uat.apps.live-1.cloud-platform.service.justice.gov.uk';
+const API_PREFIX = '/cla_provider/api/v1';
 
 // Types based on official laa-civil-case-api mock data structure
 interface MockCase {

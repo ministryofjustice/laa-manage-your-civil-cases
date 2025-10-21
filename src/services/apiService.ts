@@ -3,17 +3,6 @@
  *
  * This service provides an interface for interacting with API servers using
  * the project's axios middleware for consistency.
- *
- * Usage examples:
- * ```typescript
- * // Get cases with sorting and pagination
- * const { data, pagination } = await ApiService.getCases(req.axiosMiddleware, {
- *   caseType: 'new',
- *   sortOrder: 'desc',
- *   page: 1,
- *   limit: 20
- * });
- * ```
  */
 
 import type { CaseData } from '#types/case-types.js';
@@ -57,11 +46,42 @@ function transformClientDetailsItem(item: unknown): ClientDetailsResponse {
   return {
     // Allow for additional fields from the API first
     ...item,
-    // Then override specific fields
-    caseReference: safeString(item.caseReference),
-    fullName: safeString(item.fullName),
-    dateOfBirth: formatDate(safeString(item.dateOfBirth))
+    // Then override specific fields with field name mapping
+    caseReference: safeString(item.reference),
+    fullName: safeString(item.full_name),
+    dateOfBirth: formatDate(safeString(item.date_of_birth))
   };
+}
+
+/**
+ * Extract results array from API response
+ * @param {unknown} data API response data
+ * @returns {unknown[]} Results array
+ */
+function extractResults(data: unknown): unknown[] {
+  if (isRecord(data) && Array.isArray(data.results)) {
+    return data.results;
+  }
+  return Array.isArray(data) ? data : [];
+}
+
+/**
+ * Extract pagination metadata from response body
+ * @param {unknown} data API response data
+ * @param {number} page Current page
+ * @param {number} limit Items per page
+ * @returns {PaginationMeta | null} Pagination metadata or null if not found
+ */
+function extractPaginationFromBody(data: unknown, page: number, limit: number): PaginationMeta | null {
+  if (isRecord(data) && typeof data.count === 'number') {
+    return {
+      total: data.count,
+      page,
+      limit,
+      totalPages: Math.ceil(data.count / limit)
+    };
+  }
+  return null;
 }
 
 /**
@@ -75,14 +95,14 @@ function transformCaseItem(item: unknown): CaseData {
   }
 
   return {
-    fullName: safeString(item.fullName),
-    caseReference: safeString(item.caseReference),
-    refCode: safeString(item.refCode),
-    dateReceived: formatDate(safeString(item.dateReceived)),
-    caseStatus: safeString(item.caseStatus),
-    dateOfBirth: formatDate(safeString(item.dateOfBirth)),
-    lastModified: formatDate(safeOptionalString(item.lastModified) ?? ''),
-    dateClosed: formatDate(safeOptionalString(item.dateClosed) ?? ''),
+    fullName: safeString(item.full_name),
+    caseReference: safeString(item.reference),
+    refCode: safeString(item.outcome_code),
+    dateReceived: formatDate(safeString(item.modified)),
+    caseStatus: safeString(item.requires_action_by),
+    dateOfBirth: formatDate(safeString(item.date_of_birth)),
+    lastModified: formatDate(safeOptionalString(item.modified) ?? ''),
+    dateClosed: formatDate(safeOptionalString(item.provider_closed) ?? ''),
     phoneNumber: safeOptionalString(item.phoneNumber),
     safeToCall: Boolean(item.safeToCall),
     announceCall: Boolean(item.announceCall),
@@ -90,7 +110,8 @@ function transformCaseItem(item: unknown): CaseData {
     clientIsVulnerable: Boolean(item.clientIsVulnerable),
     address: safeOptionalString(item.address),
     postcode: safeOptionalString(item.postcode),
-    specialNotes: safeOptionalString(item.specialNotes)
+    specialNotes: safeOptionalString(item.specialNotes),
+    outcomeDescription: safeOptionalString(item.outcome_description)
   };
 }
 
@@ -106,30 +127,31 @@ class ApiService {
    * @returns {Promise<ApiResponse<CaseData>>} API response with case data and pagination
    */
   static async getCases(axiosMiddleware: AxiosInstanceWrapper, params: CaseApiParams): Promise<ApiResponse<CaseData>> {
-    const { caseType, sortBy = 'dateReceived', sortOrder = 'asc' } = params;
+    const { caseType } = params;
     const page = params.page ?? DEFAULT_PAGE;
     const limit = params.limit ?? DEFAULT_LIMIT;
 
     try {
-      devLog(`API: GET ${API_PREFIX}/cases/${caseType}?sortBy=${sortBy}&sortOrder=${sortOrder}&page=${page}&limit=${limit}`);
+      devLog(`API: GET ${API_PREFIX}/case?only=${caseType}&page=${page}&limit=${limit}`);
 
       const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
 
-      // Call API endpoint
-      const response = await configuredAxios.get(`${API_PREFIX}/cases/${caseType}`, {
-        params: { sortBy, sortOrder, page, limit }
+      // Call API endpoint - using 'only' parameter for case state (i.e. new, opened, closed etc)
+      const response = await configuredAxios.get(`${API_PREFIX}/case`, {
+        params: {only: caseType}
       });
+      devLog(`API: Cases response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
 
-      // Transform the response data if needed
-      const transformedData = Array.isArray(response.data)
-        ? response.data.map(transformCaseItem)
-        : [];
+      // Handle new API response format with results array
+      const responseData: unknown = response.data;
+      const results = extractResults(responseData);
 
-      // Debug: Log response headers to help troubleshoot pagination issues
-      devLog(`API: Response headers: ${JSON.stringify(response.headers, null, JSON_INDENT)}`);
+      // Transform the response data
+      const transformedData = results.map(transformCaseItem);
 
-      // Extract pagination metadata from response headers
-      const paginationMeta = ApiService.extractPaginationMeta(response.headers, params);
+      // Extract pagination from response body (new API format) or fall back to headers
+      const paginationMeta = extractPaginationFromBody(responseData, page, limit)
+        ?? ApiService.extractPaginationMeta(response.headers, params);
 
       devLog(`API: Returning ${transformedData.length} ${caseType} cases (total: ${paginationMeta.total})`);
 
@@ -258,14 +280,17 @@ class ApiService {
         params: apiParams
       });
 
-      // Transform the response data
-      const transformedData = Array.isArray(response.data)
-        ? response.data.map(transformCaseItem)
-        : [];
+      // Handle API response format with results array
+      const responseData: unknown = response.data;
+      const results = extractResults(responseData);
 
-      // Extract pagination metadata from response headers (use 'new' as dummy value since it's not used for search)
+      // Transform the response data
+      const transformedData = results.map(transformCaseItem);
+
+      // Extract pagination from response body (new API format) or fall back to headers
       const paginationParams: CaseApiParams = { caseType: 'new', page, limit };
-      const paginationMeta = ApiService.extractPaginationMeta(response.headers, paginationParams);
+      const paginationMeta = extractPaginationFromBody(responseData, page, limit)
+        ?? ApiService.extractPaginationMeta(response.headers, paginationParams);
 
       devLog(`API: Returning ${transformedData.length} search results (total: ${paginationMeta.total})`);
 
@@ -284,7 +309,6 @@ class ApiService {
       throw searchError;
     }
   }
-
 
   /**
    * Add third party contact for a case
@@ -468,7 +492,6 @@ class ApiService {
     }
   }
 
-
   /**
    * Extract pagination metadata from response headers
    * @param {unknown} headers - Response headers from axios
@@ -511,15 +534,11 @@ class ApiService {
     // Override base URL and add API-specific headers
     const { axiosInstance } = axiosMiddleware;
     const { defaults } = axiosInstance;
-    const { api: { baseUrl, timeout } } = config;
+    const { api: { baseUrl } } = config;
 
     // Safely configure axios defaults
     if (typeof baseUrl === 'string') {
       defaults.baseURL = baseUrl;
-    }
-
-    if (typeof timeout === 'number') {
-      defaults.timeout = timeout;
     }
 
     defaults.headers.common['Content-Type'] = 'application/json';

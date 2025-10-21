@@ -26,6 +26,12 @@ inputs:
         description: "Session secret"
     slack_webhook_url:
         description: "Slack webhook url"
+    api_client_id:
+      description: "OAuth client id"
+      required: true
+    api_client_secret:
+      description: "OAuth client secret"
+      required: true
 
 runs:
   using: "composite"
@@ -60,8 +66,6 @@ runs:
         GITHUB_REF_NAME: ${{ github.ref_name }}
         K8S_NAMESPACE: ${{ inputs.kube-namespace }}
         SESSION_SECRET: ${{ inputs.session_secret }}
-        API_USERNAME: ${{ inputs.api_username }}
-        API_PASSWORD: ${{ inputs.api_password }}
         API_CLIENT_ID: ${{ inputs.api_client_id }}
         API_CLIENT_SECRET: ${{ inputs.api_client_secret }}
 

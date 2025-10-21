@@ -1,7 +1,7 @@
 import { test, expect } from '../fixtures/index.js';
 import { t } from '../utils/index.js';
 
-test('homepage should have the correct title & warning text', async ({ page, i18nSetup }) => {
+test('homepage login screen should have the correct title & warning text', async ({ page, i18nSetup }) => {
   // Navigate to the homepage
   await page.goto('/');
 
@@ -9,17 +9,17 @@ test('homepage should have the correct title & warning text', async ({ page, i18
   await expect(page).toHaveTitle(/.*Manage your civil cases.*/);
 });
 
-test('homepage should display LAA header', async ({ page, i18nSetup }) => {
+test('homepage login screen should display LAA header', async ({ page, i18nSetup }) => {
   // Navigate to the homepage
   await page.goto('/');
 
   const header = page.getByRole('banner');
-  const signOutLink = header.getByRole('link', { name: t('common.signOut') });
+  const sign_in_button = page.getByRole('button', { name: t('pages.login.signInButton') });
 
   // Check for the header with LAA branding
   await expect(header).toBeVisible();
-  // Check sign out link in header
-  await expect(signOutLink).toBeVisible();
+  // Check sign in button
+  await expect(sign_in_button).toBeVisible();
 });
 
 test('homepage should display phase banner with hello content', async ({ page, i18nSetup }) => {
