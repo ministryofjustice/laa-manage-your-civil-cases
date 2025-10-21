@@ -126,6 +126,7 @@ export class AuthService {
         const errorText = await response.text();
         devError(`Token acquisition failed: ${response.status} ${response.statusText}`);
         devError(`Response body: ${errorText}`);
+        console.log("REMOVE ME: error text:", errorText);
         throw new Error(`Token acquisition failed: ${response.status} ${response.statusText}`);
       }
 
@@ -235,7 +236,6 @@ export async function authenticateUser(username: string, password: string): Prom
     devLog(`User ${username} authenticated successfully`);
     return { success: true, authService };
   } catch (error) {
-    console.log("The error message", JSON.stringify(error));
     console.log("base URL:", process.env.API_URL);
     console.log("prefix:", process.env.API_PREFIX);
     devError(`Login failed for user ${username}: ${error instanceof Error ? error.message : String(error)}`);
