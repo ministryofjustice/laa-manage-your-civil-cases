@@ -220,9 +220,6 @@ export async function authenticateUser(username: string, password: string): Prom
     client_secret: config.api.auth.clientSecret
   };
 
-
-  console.log("MY Auth credentials:" + JSON.stringify(credentials));
-
   const authService = createAuthServiceWithCredentials(credentials);
 
   if (authService === null) {
