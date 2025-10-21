@@ -220,8 +220,6 @@ export async function authenticateUser(username: string, password: string): Prom
     client_secret: config.api.auth.clientSecret
   };
 
-  console.log("MY AUTH CREDENTIALS - REMOVE ME:" + JSON.stringify(credentials));
-
   const authService = createAuthServiceWithCredentials(credentials);
 
   if (authService === null) {
@@ -237,6 +235,9 @@ export async function authenticateUser(username: string, password: string): Prom
     devLog(`User ${username} authenticated successfully`);
     return { success: true, authService };
   } catch (error) {
+    console.log("The error message", JSON.stringify(error));
+    console.log("base URL:", process.env.API_URL);
+    console.log("prefix:", process.env.API_PREFIX);
     devError(`Login failed for user ${username}: ${error instanceof Error ? error.message : String(error)}`);
     return {
       success: false,
