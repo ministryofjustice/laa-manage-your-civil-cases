@@ -203,7 +203,6 @@ export function createAuthServiceWithCredentials(credentials: AuthCredentials): 
     return null;
   }
 
-  console.log(credentials);
   return new AuthService(credentials, baseUrl);
 }
 
@@ -221,11 +220,13 @@ export async function authenticateUser(username: string, password: string): Prom
     client_secret: config.api.auth.clientSecret
   };
 
+
+  console.log("MY Auth credentials:" + JSON.stringify(credentials));
+
   const authService = createAuthServiceWithCredentials(credentials);
 
   if (authService === null) {
     devError('Failed to create auth service');
-    console.log()
     return {
       success: false,
       error: 'Authentication service unavailable. Please try again later.'
