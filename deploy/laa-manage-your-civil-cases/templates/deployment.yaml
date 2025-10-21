@@ -83,6 +83,10 @@ spec:
               value: "{{ .Values.env.API_PREFIX }}"
             - name: NODE_ENV
               value: "{{ .Values.env.NODE_ENV }}"
+            - name: API_CLIENT_ID
+              value: "{{ .Values.env.API_CLIENT_ID }}"
+            - name: API_CLIENT_SECRET
+              value: "{{ .Values.env.API_CLIENT_SECRET }}"
       {{- with .Values.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
