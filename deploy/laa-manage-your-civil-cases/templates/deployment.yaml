@@ -81,10 +81,6 @@ spec:
               value: "{{ .Values.env.API_URL }}"
             - name: API_PREFIX
               value: "{{ .Values.env.API_PREFIX }}"
-            - name: API_TIMEOUT
-              value: "{{ .Values.env.API_TIMEOUT }}"
-            - name: API_RETRIES
-              value: "{{ .Values.env.API_RETRIES }}"
             - name: NODE_ENV
               value: "{{ .Values.env.NODE_ENV }}"
       {{- with .Values.volumes }}

@@ -57,10 +57,8 @@ env:
   RATE_LIMIT_MAX: 100
   RATE_WINDOW_MS: 900000
   NODE_ENV: "production"
-  API_URL: "http://laa-civil-case-api.laa-civil-case-api-uat"
-  API_PREFIX: "/latest/mock"
-  API_TIMEOUT: 5000
-  API_RETRIES: 3
+  API_URL: "https://laa-cla-backend-uat.apps.live-1.cloud-platform.service.justice.gov.uk"
+  API_PREFIX: '/cla_provider/api/v1'
 
 ingress:
   enabled: true
