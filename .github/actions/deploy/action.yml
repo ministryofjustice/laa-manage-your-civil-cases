@@ -26,6 +26,12 @@ inputs:
         description: "Session secret"
     slack_webhook_url:
         description: "Slack webhook url"
+    api_client_id:
+      description: "OAuth client id"
+      required: true
+    api_client_secret:
+      description: "OAuth client secret"
+      required: true
 
 runs:
   using: "composite"
