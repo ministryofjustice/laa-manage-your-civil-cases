@@ -20,8 +20,6 @@ deploy_branch() {
                 --set ingress.annotations."external-dns\.alpha\.kubernetes\.io/set-identifier"="$IDENTIFIER" \
                 --set ingress.hosts[0].host="$RELEASE_HOST" \
                 --set env.SESSION_SECRET="$SESSION_SECRET" \
-                --set env.API_USERNAME="$API_USERNAME" \
-                --set env.API_PASSWORD="$API_PASSWORD" \
                 --set env.API_CLIENT_ID="$API_CLIENT_ID" \
                 --set env.API_CLIENT_SECRET="$API_CLIENT_SECRET"
 }
@@ -34,8 +32,6 @@ deploy_main() {
                           --set image.repository="$REGISTRY/$REPOSITORY" \
                           --set image.tag="$IMAGE_TAG" \
                           --set env.SESSION_SECRET="$SESSION_SECRET" \
-                          --set env.API_USERNAME="$API_USERNAME" \
-                          --set env.API_PASSWORD="$API_PASSWORD" \
                           --set env.API_CLIENT_ID="$API_CLIENT_ID" \
                           --set env.API_CLIENT_SECRET="$API_CLIENT_SECRET"
 }
