@@ -34,10 +34,6 @@ const JSON_INDENT = 2;
 const EMPTY_TOTAL = 0;
 const API_PREFIX = process.env.API_PREFIX ?? '/cla_provider/api/v1'; // API endpoint prefix - configurable via env
 const SEARCH_TIMEOUT_MS = 10000; // 10 second timeout for search API calls
-const SORT_ORDER_DESC = -1;
-const SORT_ORDER_ASC = 1;
-const NO_SORT_DIFFERENCE = 0;
-const MONTH_OFFSET = 1; // Offset for JavaScript Date month (0-based)
 const FIRST_ITEM_INDEX = 0; // Index for accessing the first item in an array
 
 /**
@@ -625,48 +621,6 @@ class ApiService {
       limit: limitFromHeader !== null ? parseInt(limitFromHeader, 10) : limit,
       totalPages: totalPagesFromHeader !== null ? parseInt(totalPagesFromHeader, 10) : undefined
     };
-  }
-
-  /**
-   * Apply client-side date sorting to case data
-   * @param {CaseData[]} items - Array of case data to sort
-   * @param {string} sortOrder - Sort direction ('asc' or 'desc')
-   * @returns {CaseData[]} Sorted array of case data
-   */
-  private static applyDateSorting(items: CaseData[], sortOrder: string): CaseData[] {
-    devLog(`Sorting ${items.length} items with order: ${sortOrder}`);
-    const sorted = items.sort((a, b) => {
-      const leftSortDate = ApiService.parseDateOnly(a.lastModified ?? a.dateReceived);
-      const rightSortDate = ApiService.parseDateOnly(b.lastModified ?? b.dateReceived);
-
-      devLog(`Comparing ${a.caseReference} (${a.lastModified}) vs ${b.caseReference} (${b.lastModified})`);
-
-      if (leftSortDate === null && rightSortDate === null) return NO_SORT_DIFFERENCE;
-      if (leftSortDate === null) return sortOrder === 'desc' ? SORT_ORDER_DESC : SORT_ORDER_ASC;
-      if (rightSortDate === null) return sortOrder === 'desc' ? SORT_ORDER_ASC : SORT_ORDER_DESC;
-
-      const comparison = leftSortDate.getTime() - rightSortDate.getTime();
-      const result = sortOrder === 'desc' ? -comparison : comparison;
-      devLog(`Raw comparison: ${comparison}, adjusted for ${sortOrder}: ${result}`);
-      return result;
-    });
-    devLog(`Sorted result: ${sorted.map(item => item.caseReference).join(', ')}`);
-    return sorted;
-  }
-
-  /**
-   * Parse date string in YYYY-MM-DD format strictly
-   * @param {string} dateStr - Date string to parse
-   * @returns {Date | null} Parsed date or null if invalid
-   */
-  private static parseDateOnly(dateStr: string): Date | null {
-    if (dateStr === '') return null;
-    // Parse YYYY-MM-DD format strictly
-    const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateStr);
-    if (match === null) return null;
-
-    const [, year, month, day] = match;
-    return new Date(parseInt(year, 10), parseInt(month, 10) - MONTH_OFFSET, parseInt(day, 10));
   }
 
   /**
