@@ -75,7 +75,15 @@
       {% set nextSortOrder = 'desc' if (options.sortBy == column.key and options.sortOrder == 'asc') 
         else 
           'asc' %}
-      {% set sortUrl = options.basePath + '?sort=' + nextSortOrder %}
+
+      {# Build ordering parameter based on sort direction #}
+      {% if nextSortOrder == 'desc' %}
+        {% set orderingParam = '-' + column.key %}
+      {% else %}
+        {% set orderingParam = column.key %}
+      {% endif %}
+
+      {% set sortUrl = options.basePath + '?ordering=' + orderingParam %}
 
       {# Create sortable header with link #}
       {% set headerHtml %}

@@ -13,13 +13,13 @@
       id: "opened-cases-table",
       data: data,
       columns: [
-        { key: "fullName", text: t('components.table.columns.name'), link: "/cases/{{caseReference}}/client-details" },
-        { key: "caseReference", text: t('components.table.columns.caseId') },
-        { key: "dateOfBirth", text: t('components.table.columns.dateOfBirth') },
-        { key: "refCode", text: t('components.table.columns.details') },
-        { key: "lastModified", text: t('components.table.columns.dateModified'), sortable: true, classes: "govuk-table__header--numeric" , cellClasses: "govuk-table__cell--numeric" }
+        { key: "full_name", text: t('components.table.columns.name'), link: "/cases/{{reference}}/client-details" },
+        { key: "reference", text: t('components.table.columns.caseId') },
+        { key: "date_of_birth", text: t('components.table.columns.dateOfBirth') },
+        { key: "outcome_description", text: t('components.table.columns.details') },
+        { key: "modified", text: t('components.table.columns.dateModified'), sortable: true, classes: "govuk-table__header--numeric" , cellClasses: "govuk-table__cell--numeric" }
       ],
-      sortBy: "lastModified",
+      sortBy: sortBy or "modified",
       sortOrder: sortOrder or "desc",
       basePath: "/cases/opened"
     }) }}
@@ -28,6 +28,7 @@
   {% if pagination %}
     {{ paginationComponent({
       pagination: pagination,
+      sortBy: sortBy or "modified",
       sortOrder: sortOrder or "desc",
       basePath: "/cases/opened"
     }) }}
