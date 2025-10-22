@@ -10,6 +10,7 @@
  */
 export interface CaseData {
   fullName: string;
+  laaReference: string;
   caseReference: string;
   refCode: string;
   dateReceived: string;
