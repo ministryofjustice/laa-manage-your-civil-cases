@@ -35,7 +35,8 @@
   },
   "components": {
     "phaseBanner": {
-      "feedbackText": "This is a new service. Help us improve it and "
+      "feedbackText": "This is a new service. Help us improve it and ",
+      "feedbackLinkTextHTML": "give your feedback by email"
     },
     "table": {
       "noData": "No data",
