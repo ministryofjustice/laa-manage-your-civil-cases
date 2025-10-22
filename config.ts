@@ -16,11 +16,9 @@ if (process.env.SESSION_SECRET == null || process.env.SESSION_SECRET === '' ||
 // Get environment variables
 const config: Config = {
   CONTACT_EMAIL: process.env.CONTACT_EMAIL,
-  CONTACT_PHONE: process.env.CONTACT_PHONE,
   DEPARTMENT_NAME: process.env.DEPARTMENT_NAME,
   DEPARTMENT_URL: process.env.DEPARTMENT_URL,
   RATELIMIT_HEADERS_ENABLED: process.env.RATELIMIT_HEADERS_ENABLED,
-  RATELIMIT_STORAGE_URI: process.env.RATELIMIT_STORAGE_URI,
   RATE_LIMIT_MAX: Number(process.env.RATE_LIMIT_MAX ?? DEFAULT_RATE_LIMIT_MAX),
   // Default rate window: 15 minutes in milliseconds
   RATE_WINDOW_MS: Number(process.env.RATE_WINDOW_MS ?? String(DEFAULT_RATE_WINDOW_MS_MINUTE * MILLISECONDS_IN_A_MINUTE)),
