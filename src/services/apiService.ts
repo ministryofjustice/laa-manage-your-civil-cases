@@ -66,17 +66,39 @@ function extractResults(data: unknown): unknown[] {
 }
 
 /**
- * Extract pagination metadata from response body
+ * Extract pagination metadata from API response body (new format)
  * @param {unknown} data API response data
- * @param {number} page Current page
+ * @param {number} requestedPage Current page from request
  * @param {number} limit Items per page
  * @returns {PaginationMeta | null} Pagination metadata or null if not found
  */
-function extractPaginationFromBody(data: unknown, page: number, limit: number): PaginationMeta | null {
+function extractPaginationFromBody(data: unknown, requestedPage: number, limit: number): PaginationMeta | null {
   if (isRecord(data) && typeof data.count === 'number') {
+    // Calculate current page from next/previous URLs or fall back to requested page
+    let currentPage = requestedPage;
+    
+    const PAGE_REGEX = /[?&]page=(\d+)/;
+    const NEXT_PAGE_OFFSET = 1;
+    const PREV_PAGE_OFFSET = 1;
+    
+    // Try to extract current page from next URL (page=X means current page is X-1)
+    if (typeof data.next === 'string') {
+      const nextMatch = PAGE_REGEX.exec(data.next);
+      if (nextMatch !== null) {
+        currentPage = parseInt(nextMatch[NEXT_PAGE_OFFSET], 10) - NEXT_PAGE_OFFSET;
+      }
+    }
+    // Try to extract current page from previous URL (page=X means current page is X+1)
+    else if (typeof data.previous === 'string') {
+      const prevMatch = PAGE_REGEX.exec(data.previous);
+      if (prevMatch !== null) {
+        currentPage = parseInt(prevMatch[NEXT_PAGE_OFFSET], 10) + PREV_PAGE_OFFSET;
+      }
+    }
+    
     return {
       total: data.count,
-      page,
+      page: currentPage,
       limit,
       totalPages: Math.ceil(data.count / limit)
     };
@@ -95,14 +117,14 @@ function transformCaseItem(item: unknown): CaseData {
   }
 
   return {
-    fullName: safeString(item.full_name),
-    caseReference: safeString(item.reference),
-    refCode: safeString(item.outcome_code),
-    dateReceived: formatDate(safeString(item.modified)),
-    caseStatus: safeString(item.requires_action_by),
-    dateOfBirth: formatDate(safeString(item.date_of_birth)),
-    lastModified: formatDate(safeOptionalString(item.modified) ?? ''),
-    dateClosed: formatDate(safeOptionalString(item.provider_closed) ?? ''),
+    full_name: safeString(item.full_name),
+    reference: safeString(item.reference),
+    outcome_code: safeString(item.outcome_code),
+    provider_assigned_at: formatDate(safeString(item.provider_assigned_at)),
+    case_status: safeString(item.status),
+    date_of_birth: formatDate(safeString(item.date_of_birth)),
+    modified: formatDate(safeOptionalString(item.modified) ?? ''),
+    provider_closed: formatDate(safeOptionalString(item.provider_closed) ?? ''),
     phoneNumber: safeOptionalString(item.phoneNumber),
     safeToCall: Boolean(item.safeToCall),
     announceCall: Boolean(item.announceCall),
@@ -111,7 +133,12 @@ function transformCaseItem(item: unknown): CaseData {
     address: safeOptionalString(item.address),
     postcode: safeOptionalString(item.postcode),
     specialNotes: safeOptionalString(item.specialNotes),
-    outcomeDescription: safeOptionalString(item.outcome_description)
+    outcome_description: safeOptionalString(item.outcome_description),
+    // New fields from updated API response
+    laaReference: typeof item.laa_reference === 'number' ? item.laa_reference : undefined,
+    provider_viewed: formatDate(safeOptionalString(item.provider_viewed) ?? ''),
+    provider_accepted: formatDate(safeOptionalString(item.provider_accepted) ?? ''),
+    is_urgent: Boolean(item.is_urgent)
   };
 }
 
@@ -127,18 +154,24 @@ class ApiService {
    * @returns {Promise<ApiResponse<CaseData>>} API response with case data and pagination
    */
   static async getCases(axiosMiddleware: AxiosInstanceWrapper, params: CaseApiParams): Promise<ApiResponse<CaseData>> {
-    const { caseType } = params;
+    const { caseType, sortBy, sortOrder } = params;
     const page = params.page ?? DEFAULT_PAGE;
     const limit = params.limit ?? DEFAULT_LIMIT;
 
     try {
-      devLog(`API: GET ${API_PREFIX}/case?only=${caseType}&page=${page}&limit=${limit}`);
+      // Build ordering parameter for backend API
+      let ordering = sortBy ?? 'dateReceived';
+      if (sortOrder === 'desc') {
+        ordering = `-${ordering}`;
+      }
+
+      devLog(`API: GET ${API_PREFIX}/case?only=${caseType}&ordering=${ordering}&page=${page}&page_size=${limit}`);
 
       const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
 
-      // Call API endpoint - using 'only' parameter for case state (i.e. new, opened, closed etc)
+      // Call API endpoint - using 'only' parameter for case state and 'ordering' for sorting
       const response = await configuredAxios.get(`${API_PREFIX}/case`, {
-        params: {only: caseType}
+        params: { only: caseType, ordering, page, page_size: limit }
       });
       devLog(`API: Cases response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
 
@@ -260,11 +293,11 @@ class ApiService {
 
     try {
       // Build API params - only include status if it has a value
-      const apiParams: { keyword: string; sortOrder: string; page: number; limit: number; status?: string } = {
+      const apiParams: { keyword: string; sortOrder: string; page: number; page_size: number; status?: string } = {
         keyword,
         sortOrder,
         page,
-        limit
+        page_size: limit
       };
 
       if (status !== undefined && status.trim() !== '') {
