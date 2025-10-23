@@ -32,7 +32,7 @@ export async function getRemoveThirdPartyConfirmation(req: Request, res: Respons
 
     if (response.status === 'success' && response.data !== null) {
       // Check if third party data exists
-      if (response.data.thirdParty === null || response.data.thirdParty === undefined) {
+      if (response.data.thirdParty === null) {
         devError(`No third party data found for case: ${caseReference}`);
         res.status(NOT_FOUND).render('main/error.njk', {
           status: '404',

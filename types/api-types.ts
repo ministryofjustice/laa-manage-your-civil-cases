@@ -49,13 +49,59 @@ export interface SearchApiParams {
 }
 
 /**
+ * Client support needs (transformed from adaptation_details)
+ */
+export interface ClientSupportNeeds {
+  bslWebcam: string;
+  textRelay: string;
+  callbackPreference: string;
+  languageSupportNeeds: string;
+  notes: string;
+}
+
+/**
+ * Third party contact (transformed from thirdparty_details)
+ */
+export interface ThirdPartyContact {
+  fullName: string;
+  contactNumber: string;
+  safeToCall: boolean;
+  emailAddress: string;
+  address: string;
+  postcode: string;
+  relationshipToClient: string;
+  passphraseSetUp: {
+    selected: string[];
+    passphrase?: string;
+  };
+}
+
+/**
  * Client details API response interface
  */
 export interface ClientDetailsResponse {
+  //About the client
   caseReference: string;
   fullName: string;
   dateOfBirth: string;
-  [key: string]: unknown; // Allow for additional fields
+  caseStatus: string;
+  
+  //Contact details
+  phoneNumber: string;
+  safeToCall: boolean;
+  announceCall: boolean;
+  emailAddress: string;
+  address: string;
+  postcode: string;
+  
+  //Client support needs (null if not present)
+  clientSupportNeeds: ClientSupportNeeds | null;
+  
+  //Third party contact (null if not present)
+  thirdParty: ThirdPartyContact | null;
+  
+  // Allow additional fields for debugging
+  [key: string]: unknown;
 }
 
 /**

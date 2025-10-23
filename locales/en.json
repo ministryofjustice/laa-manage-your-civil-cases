@@ -17,6 +17,15 @@
       "opened": "Opened",
       "accepted": "Accepted",
       "closed": "Closed"
+    },
+    "values": {
+      "thirdPartyRelationship": {
+        "PARENT_GUARDIAN": "Parent or guardian",
+        "FAMILY_FRIEND": "Family member or friend",
+        "PROFESSIONAL": "Professional",
+        "LEGAL_ADVISOR": "Legal adviser",
+        "OTHER": "Other"
+      }
     }
   },
   "navigation": {

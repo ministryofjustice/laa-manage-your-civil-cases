@@ -2,7 +2,7 @@ import nunjucks from 'nunjucks';
 import path from 'node:path';
 import type { Application } from 'express';
 import { getLatestBuildFile } from './buildHelper.js';
-import { formatDate, nunjucksT } from '#src/scripts/helpers/index.js';
+import { formatDate, nunjucksT, capitaliseFirstLetter } from '#src/scripts/helpers/index.js';
 
 /**
  * Sets up Nunjucks as the template engine for the given Express application.
@@ -50,6 +50,7 @@ export const nunjucksSetup = (app: Application): void => {
 
   // Add custom filters
   nunjucksEnv.addFilter('formatDate', formatDate);
+  nunjucksEnv.addFilter('capitaliseFirstLetter', capitaliseFirstLetter);
 
   // Add global variables
   nunjucksEnv.addGlobal('t', nunjucksT);

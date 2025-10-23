@@ -273,3 +273,174 @@ export const isYes = (value: unknown): boolean => {
   // fall back: treat non-empty as truthy
   return Boolean(selection);
 };
+
+/**
+ * Capitalises the first character of the provided string and lowercases the rest.
+ * If the input is an empty string, the function returns an empty string.
+ * @param {string} str - The string to transform.
+ * @returns {string} The transformed string with the first character in upper case and the remainder in lower case.
+ */
+export const capitaliseFirstLetter = (str: string): string => {
+  const EMPTY_STRING_LENGTH = 0;
+  const FIRST_CHAR_INDEX = 0;
+  const REST_OF_STRING_START = 1;
+  
+  if (str.length === EMPTY_STRING_LENGTH) return '';
+  return str.charAt(FIRST_CHAR_INDEX).toUpperCase() + str.slice(REST_OF_STRING_START).toLowerCase();
+};
+
+/**
+ * Extract phone number with mobile priority fallback to home phone
+ * This is defensive - we expect phone number to be in mobile_phone but
+ * we're not assuming that historical data will always comply.
+ * @param {unknown} personalDetails - Object containing mobile_phone and home_phone fields
+ * @returns {string} The mobile phone if available, otherwise home phone, otherwise empty string
+ */
+export const extractPhoneNumber = (personalDetails: unknown): string => {
+  if (!isRecord(personalDetails)) return '';
+  
+  const mobilePhone = safeOptionalString(personalDetails.mobile_phone);
+  const homePhone = safeOptionalString(personalDetails.home_phone);
+  
+  return (mobilePhone ?? homePhone) ?? '';
+};
+
+/**
+ * Extract safe to call boolean from personal details
+ * Empty string or 'SAFE' value means it's safe to call (verified from API behavior)
+ * @param {unknown} personalDetails - Object containing safe_to_contact field
+ * @returns {boolean} True if safe to call, false otherwise
+ */
+export const isSafeToCall = (personalDetails: unknown): boolean => {
+  if (!isRecord(personalDetails)) return false;
+  
+  const safeToContactValue = safeOptionalString(personalDetails.safe_to_contact);
+  return safeToContactValue === '' || safeToContactValue === 'SAFE';
+};
+
+/**
+ * Transform contact details from personal_details
+ * @param {unknown} personalDetails - Personal details from API
+ * @returns {object} Transformed contact details
+ */
+export const transformContactDetails = (personalDetails: unknown): {
+  phoneNumber: string;
+  safeToCall: boolean;
+  announceCall: boolean;
+  emailAddress: string;
+  address: string;
+  postcode: string;
+} => {
+  if (!isRecord(personalDetails)) {
+    throw new Error('Invalid API response: missing personal_details');
+  }
+
+  const phoneNumber = extractPhoneNumber(personalDetails);
+  const safeToCall = isSafeToCall(personalDetails);
+  const announceCall = Boolean(personalDetails.announce_call);
+  const emailAddress = safeOptionalString(personalDetails.email) ?? '';
+  const address = safeOptionalString(personalDetails.street) ?? '';
+  let postcode = safeOptionalString(personalDetails.postcode) ?? '';
+  postcode = postcode.toUpperCase();
+
+  return {
+    phoneNumber,
+    safeToCall,
+    announceCall,
+    emailAddress,
+    address,
+    postcode
+  };
+};
+
+/**
+ * Transform client support needs from adaptation_details
+ * @param {unknown} adaptationDetails - Adaptation details from API
+ * @returns {object | null} Transformed support needs or null if not present
+ */
+export const transformClientSupportNeeds = (adaptationDetails: unknown): {
+  bslWebcam: string;
+  textRelay: string;
+  callbackPreference: string;
+  languageSupportNeeds: string;
+  notes: string;
+} | null => {
+  if (!isRecord(adaptationDetails)) {
+    return null;
+  }
+
+  return {
+    bslWebcam: adaptationDetails.bsl_webcam === true ? 'Yes' : 'No',
+    textRelay: adaptationDetails.text_relay === true ? 'Yes' : 'No',
+    callbackPreference: adaptationDetails.callback_preference === true ? 'Yes' : 'No',
+    languageSupportNeeds: safeOptionalString(adaptationDetails.language) ?? '',
+    notes: safeOptionalString(adaptationDetails.notes) ?? ''
+  };
+};
+
+/**
+ * Extract passphrase setup data from third party details
+ * @param {unknown} thirdpartyDetails - Third party details from API
+ * @returns {object} Passphrase setup object with selected and passphrase fields
+ */
+const extractPassphraseSetup = (thirdpartyDetails: Record<string, unknown>): {
+  selected: string[];
+  passphrase: string;
+} => {
+  const hasPassphrase = typeof thirdpartyDetails.pass_phrase === 'string' && thirdpartyDetails.pass_phrase.trim() !== '';
+  const passphraseValue = safeOptionalString(thirdpartyDetails.pass_phrase) ?? '';
+
+  return {
+    selected: hasPassphrase ? ['Yes'] : ['No'],
+    passphrase: passphraseValue
+  };
+};
+
+/**
+ * Transform third party contact from thirdparty_details
+ * @param {unknown} thirdpartyDetails - Third party details from API
+ * @returns {object | null} Transformed third party or null if not present
+ */
+export const transformThirdParty = (thirdpartyDetails: unknown): {
+  fullName: string;
+  contactNumber: string;
+  safeToCall: boolean;
+  emailAddress: string;
+  address: string;
+  postcode: string;
+  relationshipToClient: string;
+  passphraseSetUp: {
+    selected: string[];
+    passphrase: string;
+  };
+} | null => {
+  if (!isRecord(thirdpartyDetails)) {
+    return null;
+  }
+
+  const { personal_details: tpPersonal } = thirdpartyDetails;
+
+  if (!isRecord(tpPersonal)) {
+    return null;
+  }
+
+  const tpContactNumber = extractPhoneNumber(tpPersonal);
+  const tpSafeToCall = isSafeToCall(tpPersonal);
+  const relationshipToClient = safeOptionalString(thirdpartyDetails.personal_relationship) ?? '';
+
+  let tpPostcode = safeOptionalString(tpPersonal.postcode) ?? '';
+  tpPostcode = tpPostcode.toUpperCase();
+
+  const passphraseSetUp = extractPassphraseSetup(thirdpartyDetails);
+
+  return {
+    fullName: safeOptionalString(tpPersonal.full_name) ?? '',
+    contactNumber: tpContactNumber,
+    safeToCall: tpSafeToCall,
+    emailAddress: safeOptionalString(tpPersonal.email) ?? '',
+    address: safeOptionalString(tpPersonal.street) ?? '',
+    postcode: tpPostcode,
+    relationshipToClient,
+    passphraseSetUp
+  };
+};

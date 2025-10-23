@@ -32,7 +32,7 @@ export async function getRemoveSupportNeedsConfirmation(req: Request, res: Respo
 
     if (response.status === 'success' && response.data !== null) {
       // Check if client support needs exists
-      if (response.data.clientSupportNeeds === null || response.data.clientSupportNeeds === undefined) {
+      if (response.data.clientSupportNeeds === null) {
         devError(`No client support needs data found for case: ${caseReference}`);
         res.status(NOT_FOUND).render('main/error.njk', {
           status: '404',
