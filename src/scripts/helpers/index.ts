@@ -32,7 +32,13 @@ export {
   safeNestedField,
   extractCurrentFields,
   normaliseSelectedCheckbox,
-  isYes
+  isYes,
+  capitaliseFirstLetter,
+  extractPhoneNumber,
+  isSafeToCall,
+  transformContactDetails,
+  transformClientSupportNeeds,
+  transformThirdParty
 } from './dataTransformers.js';
 
 // Date formatting utilities

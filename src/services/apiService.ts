@@ -13,7 +13,6 @@ import type {
   SearchApiParams,
   ClientDetailsResponse,
   ClientDetailsApiResponse,
-  PaginationMeta,
   ClaSearchApiResponse
 } from '#types/api-types.js';
 import {
@@ -23,7 +22,9 @@ import {
   devLog,
   formatDate,
   extractAndLogError,
-  safeStringFromRecord
+  transformContactDetails,
+  transformClientSupportNeeds,
+  transformThirdParty
 } from '#src/scripts/helpers/index.js';
 import config from '../../config.js';
 
@@ -43,29 +44,30 @@ const FIRST_ITEM_INDEX = 0; // Index for accessing the first item in an array
  */
 function determineCaseStatus(item: Record<string, unknown>): string {
   const requiresActionBy = safeString(item.requires_action_by);
-  
+
   // Map CLA API status codes to readable status
   if (requiresActionBy.includes('provider_review') || requiresActionBy.includes('provider')) {
     return 'New';
   }
-  
+
   if (requiresActionBy.includes('operator')) {
     return 'Opened';
   }
-  
+
   if (item.provider_accepted !== null && item.provider_accepted !== undefined) {
     return 'Accepted';
   }
-  
+
   if (item.provider_closed !== null && item.provider_closed !== undefined) {
     return 'Closed';
   }
-  
+
   return '';
 }
 
 /**
  * Transform raw client details item to display format
+ * Maps nested API structures (personal_details, adaptation_details, thirdparty_details)
  * @param {unknown} item Raw client details item
  * @returns {ClientDetailsResponse} Transformed client details item
  */
@@ -74,13 +76,33 @@ function transformClientDetailsItem(item: unknown): ClientDetailsResponse {
     throw new Error('Invalid client details item: expected object');
   }
 
+  // Extract basic client information
+  const caseReference = safeString(item.reference);
+  const laaReference = safeString(item.laa_reference);
+  const fullName = safeString(item.full_name);
+  const dateOfBirth = formatDate(safeString(item.date_of_birth));
+  const caseStatus = safeString(item.state);
+  const dateReceived = formatDate(safeString(item.provider_assigned_at))
+
+  // Transform contact details
+  const contactDetails = transformContactDetails(item.personal_details);
+
+  // Transform client support needs
+  const clientSupportNeeds = transformClientSupportNeeds(item.adaptation_details);
+
+  // Transform third party contact
+  const thirdParty = transformThirdParty(item.thirdparty_details);
+
   return {
-    // Allow for additional fields from the API first
-    ...item,
-    // Then override specific fields with field name mapping
-    caseReference: safeString(item.reference),
-    fullName: safeString(item.full_name),
-    dateOfBirth: formatDate(safeString(item.date_of_birth))
+    dateReceived,
+    laaReference,
+    caseReference,
+    fullName,
+    dateOfBirth,
+    caseStatus,
+    ...contactDetails,
+    clientSupportNeeds,
+    thirdParty
   };
 }
 
@@ -97,20 +119,20 @@ function transformCaseItem(item: unknown): CaseData {
   return {
     fullName: safeString(item.full_name),
     caseReference: safeString(item.reference),
+    laaReference: safeString(item.laa_reference),
     refCode: safeString(item.reference),
-    dateReceived: formatDate(safeString(item.created)),
+    dateReceived: formatDate(safeString(item.date_received)),
     caseStatus: determineCaseStatus(item),
     dateOfBirth: formatDate(safeString(item.date_of_birth)),
     lastModified: formatDate(safeOptionalString(item.modified) ?? ''),
-    dateClosed: formatDate(safeOptionalString(item.date_closed) ?? ''),
+    dateClosed: formatDate(safeOptionalString(item.provider_closed) ?? ''),
     phoneNumber: safeOptionalString(item.phone_number),
     safeToCall: Boolean(item.safe_to_call),
     announceCall: Boolean(item.announce_call),
     emailAddress: safeOptionalString(item.email_address),
     clientIsVulnerable: Boolean(item.client_is_vulnerable),
     address: safeOptionalString(item.address),
-    postcode: safeOptionalString(item.postcode),
-    specialNotes: safeOptionalString(item.special_notes)
+    postcode: safeOptionalString(item.postcode)
   };
 }
 
@@ -137,7 +159,7 @@ class ApiService {
 
       // Call API endpoint - using 'only' parameter for case state (i.e. new, opened, closed etc)
       const response = await configuredAxios.get(`${API_PREFIX}/case`, {
-        params: {only: caseType}
+        params: { only: caseType }
       });
       devLog(`API: Cases response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
 
@@ -172,7 +194,6 @@ class ApiService {
 
       devLog(`API: Returning ${transformedData.length} ${caseType} cases (total: ${paginationMeta.total})`);
 
-      
       return {
         data: transformedData,
         pagination: paginationMeta,
@@ -199,12 +220,12 @@ class ApiService {
    */
   static async getClientDetails(axiosMiddleware: AxiosInstanceWrapper, caseReference: string): Promise<ClientDetailsApiResponse> {
     try {
-      devLog(`API: GET ${API_PREFIX}/cases/${caseReference}`);
+      devLog(`API: GET ${API_PREFIX}/case/${caseReference}/detailed`);
 
       const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
 
       // Call API endpoint
-      const response = await configuredAxios.get(`${API_PREFIX}/cases/${caseReference}`);
+      const response = await configuredAxios.get(`${API_PREFIX}/case/${caseReference}/detailed`);
 
       devLog(`API: Client details response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
 
@@ -529,7 +550,7 @@ class ApiService {
       };
     }
   }
-  
+
   /**
    * Update client support needs for a case
    * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
@@ -588,39 +609,6 @@ class ApiService {
         message: errorMessage
       };
     }
-  }
-
-  /**
-   * Extract pagination metadata from response headers
-   * @param {unknown} headers - Response headers from axios
-   * @param {CaseApiParams} params - API parameters for fallback values
-   * @returns {PaginationMeta} Pagination metadata
-   */
-  private static extractPaginationMeta(headers: unknown, params: CaseApiParams): PaginationMeta {
-    const page = params.page ?? DEFAULT_PAGE;
-    const limit = params.limit ?? DEFAULT_LIMIT;
-
-    // Extract values from headers using the improved utility
-    const totalFromHeader = safeStringFromRecord(headers, 'x-total-count');
-    const pageFromHeader = safeStringFromRecord(headers, 'x-page');
-    const limitFromHeader = safeStringFromRecord(headers, 'x-per-page');
-    const totalPagesFromHeader = safeStringFromRecord(headers, 'x-total-pages');
-
-    let total = totalFromHeader !== null ? parseInt(totalFromHeader, 10) : null;
-
-    // If we have totalPages but no total, calculate it
-    if (total === null && totalPagesFromHeader !== null) {
-      const totalPages = parseInt(totalPagesFromHeader, 10);
-      total = totalPages * limit;
-      devLog(`API: Calculated total from X-Total-Pages: ${totalPages} pages × ${limit} = ${total} items`);
-    }
-
-    return {
-      total,
-      page: pageFromHeader !== null ? parseInt(pageFromHeader, 10) : page,
-      limit: limitFromHeader !== null ? parseInt(limitFromHeader, 10) : limit,
-      totalPages: totalPagesFromHeader !== null ? parseInt(totalPagesFromHeader, 10) : undefined
-    };
   }
 
   /**

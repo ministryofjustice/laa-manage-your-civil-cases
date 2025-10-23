@@ -58,8 +58,8 @@
 {% endset %}
 
 {% set relationshipToClient %}
-  {% if data.thirdParty.relationshipToClient.selected %}
-    {{ data.thirdParty.relationshipToClient.selected | join(', ') }}
+  {% if data.thirdParty.relationshipToClient %}
+    {{ t('common.values.thirdPartyRelationship.' + data.thirdParty.relationshipToClient) }}
   {% else %}
     ""
   {% endif %}
@@ -79,7 +79,7 @@
   bslWebcam: data.clientSupportNeeds.bslWebcam,
   textRelay: data.clientSupportNeeds.textRelay,
   callbackPreference: data.clientSupportNeeds.callbackPreference,
-  languageSupportNeeds: data.clientSupportNeeds.languageSupportNeeds,
+  languageSupportNeeds: data.clientSupportNeeds.languageSupportNeeds | capitaliseFirstLetter,
   notes: data.clientSupportNeeds.notes,
   fullNameThirdParty: data.thirdParty.fullName,
   computedAddressThirdParty: addressWithPostcodeThirdParty,
