@@ -38,34 +38,6 @@ const SEARCH_TIMEOUT_MS = 10000; // 10 second timeout for search API calls
 const FIRST_ITEM_INDEX = 0; // Index for accessing the first item in an array
 
 /**
- * Determine case status from CLA API fields
- * @param {Record<string, unknown>} item - Case item from API
- * @returns {string} Readable case status
- */
-function determineCaseStatus(item: Record<string, unknown>): string {
-  const requiresActionBy = safeString(item.requires_action_by);
-
-  // Map CLA API status codes to readable status
-  if (requiresActionBy.includes('provider_review') || requiresActionBy.includes('provider')) {
-    return 'New';
-  }
-
-  if (requiresActionBy.includes('operator')) {
-    return 'Opened';
-  }
-
-  if (item.provider_accepted !== null && item.provider_accepted !== undefined) {
-    return 'Accepted';
-  }
-
-  if (item.provider_closed !== null && item.provider_closed !== undefined) {
-    return 'Closed';
-  }
-
-  return '';
-}
-
-/**
  * Transform raw client details item to display format
  * Maps nested API structures (personal_details, adaptation_details, thirdparty_details)
  * @param {unknown} item Raw client details item
@@ -122,7 +94,7 @@ function transformCaseItem(item: unknown): CaseData {
     laaReference: safeString(item.laa_reference),
     refCode: safeString(item.reference),
     dateReceived: formatDate(safeString(item.date_received)),
-    caseStatus: determineCaseStatus(item),
+    caseStatus: safeString(item.caseStatus),
     dateOfBirth: formatDate(safeString(item.date_of_birth)),
     lastModified: formatDate(safeOptionalString(item.modified) ?? ''),
     dateClosed: formatDate(safeOptionalString(item.provider_closed) ?? ''),
@@ -148,18 +120,24 @@ class ApiService {
    * @returns {Promise<ApiResponse<CaseData>>} API response with case data and pagination
    */
   static async getCases(axiosMiddleware: AxiosInstanceWrapper, params: CaseApiParams): Promise<ApiResponse<CaseData>> {
-    const { caseType } = params;
+    const { caseType, sortBy, sortOrder } = params;
     const page = params.page ?? DEFAULT_PAGE;
     const limit = params.limit ?? DEFAULT_LIMIT;
 
     try {
-      devLog(`API: GET ${API_PREFIX}/case?only=${caseType}&page=${page}&limit=${limit}`);
+      // Build ordering parameter for backend API
+      let ordering = sortBy ?? 'dateReceived';
+      if (sortOrder === 'desc') {
+        ordering = `-${ordering}`;
+      }
+
+      devLog(`API: GET ${API_PREFIX}/case?only=${caseType}&ordering=${ordering}&page=${page}&page_size=${limit}`);
 
       const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
 
-      // Call API endpoint - using 'only' parameter for case state (i.e. new, opened, closed etc)
+      // Call API endpoint - using 'only' parameter for case state and 'ordering' for sorting
       const response = await configuredAxios.get(`${API_PREFIX}/case`, {
-        params: { only: caseType }
+        params: { only: caseType, ordering, page, page_size: limit }
       });
       devLog(`API: Cases response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
 
@@ -297,7 +275,7 @@ class ApiService {
       const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
       const response = await ApiService.makeSearchApiCall(configuredAxios, searchParams.apiParams);
 
-      return ApiService.processSearchResponse(response, searchParams.page, searchParams.limit);
+      return ApiService.processSearchResponse(response, searchParams.page, searchParams.pageSize);
 
     } catch (error) {
       ApiService.handleSearchError(error);
@@ -312,19 +290,19 @@ class ApiService {
   private static prepareSearchParams(params: SearchApiParams): {
     apiParams: Record<string, string>;
     page: number;
-    limit: number;
+    pageSize: number;
     sortOrder: string;
   } {
     const { keyword, status } = params;
     const page = params.page ?? DEFAULT_PAGE;
-    const limit = params.limit ?? DEFAULT_LIMIT;
+    const pageSize = params.pageSize ?? DEFAULT_LIMIT;
     const sortOrder = ApiService.determineSortOrder(params.sortOrder);
 
     const apiParams = ApiService.buildApiParams(keyword, status);
 
     devLog(`API: GET ${API_PREFIX}/case/ with params: ${JSON.stringify(apiParams, null, JSON_INDENT)}`);
 
-    return { apiParams, page, limit, sortOrder };
+    return { apiParams, page, pageSize, sortOrder };
   }
 
   /**

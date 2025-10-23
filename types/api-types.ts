@@ -44,7 +44,7 @@ export interface SearchApiParams {
   keyword: string;
   status?: string;
   page?: number;
-  limit?: number;
+  pageSize?: number;
   sortOrder?: string;
 }
 

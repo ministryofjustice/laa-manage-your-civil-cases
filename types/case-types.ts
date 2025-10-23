@@ -32,20 +32,6 @@ export interface CaseData {
 }
 
 /**
- * Raw case data structure from fixtures (before transformation)
- */
-export interface CaseDataRaw {
-  fullName: string;
-  caseReference: string;
-  refCode: string;
-  dateReceived: string;
-  caseStatus: string;
-  dateOfBirth: string;
-  lastModified?: string;
-  dateClosed?: string;
-}
-
-/**
  * Options for loading case data
  */
 export interface CaseLoadOptions {
