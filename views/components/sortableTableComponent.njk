@@ -33,14 +33,14 @@
         cellClasses: "govuk-table__cell--numeric"
       },
       {
-        key: "dateReceived",
+        key: "provider_assigned_at",
         text: "Date Received",
         sortable: true,
         classes: "govuk-table__header--numeric",
         cellClasses: "govuk-table__cell--numeric"
       }
     ],
-    sortBy: "dateReceived",
+    sortBy: "provider_assigned_at",
     sortOrder: "asc",
     basePath: "/cases/new"
   }) }}
@@ -75,7 +75,22 @@
       {% set nextSortOrder = 'desc' if (options.sortBy == column.key and options.sortOrder == 'asc') 
         else 
           'asc' %}
-      {% set sortUrl = options.basePath + '?sort=' + nextSortOrder %}
+      {# Build ordering parameter based on sort direction #}
+      {% if nextSortOrder == 'desc' %}
+        {% set orderingParam = '-' + column.key %}
+      {% else %}
+        {% set orderingParam = column.key %}
+      {% endif %}
+
+      {% set sortUrl = options.basePath + '?ordering=' + orderingParam %}
+
+      {# Preserve search parameters if they exist #}
+      {% if options.searchKeyword %}
+        {% set sortUrl = sortUrl + '&searchKeyword=' + (options.searchKeyword | urlencode) %}
+      {% endif %}
+      {% if options.statusSelect %}
+        {% set sortUrl = sortUrl + '&statusSelect=' + (options.statusSelect | urlencode) %}
+      {% endif %}
 
       {# Create sortable header with link #}
       {% set headerHtml %}

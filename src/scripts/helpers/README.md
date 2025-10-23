@@ -169,7 +169,7 @@ const displayDate = formatDate('2023-01-06T00:00:00.000Z');
 // Returns: "06 Jan 2023"
 
 // Use in Nunjucks templates via filter
-// {{ dateReceived | formatDate }}
+// {{ provider_assigned_at | formatDate }}
 ```
 
 #### Format

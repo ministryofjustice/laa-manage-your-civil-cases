@@ -7,9 +7,9 @@ import { formatValidationError, type ValidationErrorData } from '#src/scripts/he
 import { storeSessionData, getSessionData, clearSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 
 // Constants
-const DEFAULT_SORT_BY = 'lastModified';
+const DEFAULT_SORT_BY = 'modified';
 const DEFAULT_PAGE = 1;
-const DEFAULT_LIMIT = 20;
+const DEFAULT_LIMIT = 4;
 const BAD_REQUEST = 400;
 
 /**
@@ -17,14 +17,28 @@ const BAD_REQUEST = 400;
  * @param {Request} req - Express request object
  * @returns {{ sortOrder: string; sort: string; pageStr: string; limitStr: string; isPaginationOrSort: boolean }} Parameters object
  */
-function getPaginationParameters(req: Request): { sortOrder: string; sort: string; pageStr: string; limitStr: string; isPaginationOrSort: boolean } {
-  const sortOrder = safeString(req.query.sortOrder);
-  const sort = safeString(req.query.sort);
+function getPaginationParameters(req: Request): { sortOrder: string; sortBy: string; pageStr: string; limitStr: string; isPaginationOrSort: boolean; } {
+  let sortOrder = safeString(req.query.sortOrder);
+  let sortBy = safeString(req.query.sort);
   const pageStr = safeString(req.query.page);
   const limitStr = safeString(req.query.limit);
-  const isPaginationOrSort = pageStr !== '' || sortOrder !== '' || sort !== '';
 
-  return { sortOrder, sort, pageStr, limitStr, isPaginationOrSort };
+  // Parse ordering parameter (e.g., 'modified' for asc, '-modified' for desc)
+  const ordering = safeString(req.query.ordering);
+  if (ordering !== '') {
+    if (ordering.startsWith('-')) {
+      const PREFIX_LENGTH = 1;
+      sortBy = ordering.substring(PREFIX_LENGTH);
+      sortOrder = 'desc';
+    } else {
+      sortBy = ordering;
+      sortOrder = 'asc';
+    }
+  }
+
+  const isPaginationOrSort = pageStr !== '' || limitStr !== '' || sortBy !== '' || sortOrder !== '' || ordering !== '';
+
+  return { sortOrder, sortBy, pageStr, limitStr, isPaginationOrSort };
 }
 
 /**
@@ -124,6 +138,7 @@ function renderEmptyForm(req: Request, res: Response): void {
  * @param {string} params.keyword - Search keyword
  * @param {string} params.status - Status filter
  * @param {string} params.sortOrder - Sort order
+ * @param {string} params.sortBy - Sort by field
  * @param {object} params.apiResponse - API response data
  * @param {unknown} params.apiResponse.data - Search results data
  * @param {unknown} params.apiResponse.pagination - Pagination information
@@ -132,9 +147,10 @@ function renderSearchResults(req: Request, res: Response, params: {
   keyword: string;
   status: string;
   sortOrder: string;
+  sortBy: string;
   apiResponse: { data?: unknown; pagination?: unknown };
 }): void {
-  const { keyword, status, sortOrder, apiResponse } = params;
+  const { keyword, status, sortOrder, apiResponse, sortBy } = params;
 
   res.render('search/index.njk', {
     searchKeyword: keyword,
@@ -142,10 +158,51 @@ function renderSearchResults(req: Request, res: Response, params: {
     searchResults: apiResponse.data,
     pagination: apiResponse.pagination,
     searchPerformed: true,
-    sortBy: DEFAULT_SORT_BY,
+    sortBy,
     sortOrder,
     request: req
   });
+}
+
+/**
+ * Validation and error handling for the Search form, which renders the error view if any exist
+ * @param {Request} req - The Express request object containing form data and validation results
+ * @param {Response} res - The Express response object used to render the error view
+ * @returns {boolean} Returns `true` if validation errors were found with error response for the view, otherwise `false`
+ */
+function handleValidationErrors(req: Request, res: Response): boolean {
+  const validationErrors = validationResult(req);
+  if (!validationErrors.isEmpty()) {
+    const formattedErrors = validationErrors.formatWith(formatValidationError);
+    const errorArray = formattedErrors.array();
+
+    const inputErrors = errorArray.reduce<Record<string, string>>((acc, validationErrorData: ValidationErrorData) => {
+      const fieldName = 'searchKeyword';
+      const { inlineMessage } = validationErrorData;
+      if (inlineMessage.trim() !== '') {
+        acc[fieldName] = inlineMessage;
+      }
+      return acc;
+    }, {});
+
+    const errorSummaryList = errorArray.map((validationErrorData: ValidationErrorData) => ({
+      text: validationErrorData.summaryMessage,
+      href: '#searchKeyword',
+    }));
+
+    const { keyword, status } = getSearchParameters(req);
+
+    res.status(BAD_REQUEST).render('search/index.njk', {
+      searchKeyword: keyword,
+      statusSelect: status,
+      searchPerformed: false,
+      error: { inputErrors, errorSummaryList },
+      csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
+      request: req
+    });
+    return true;
+  }
+  return false;
 }
 
 /**
@@ -158,51 +215,13 @@ function renderSearchResults(req: Request, res: Response, params: {
 export async function processSearch(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
     // Handle validation errors first
-    const validationErrors = validationResult(req);
-    if (!validationErrors.isEmpty()) {
-      const formattedErrors = validationErrors.formatWith(formatValidationError);
-      const errorArray = formattedErrors.array();
-
-      const inputErrors = errorArray.reduce<Record<string, string>>((acc, validationErrorData: ValidationErrorData) => {
-        const fieldName = 'searchKeyword'; // For search we only have one field
-        const { inlineMessage } = validationErrorData;
-        if (inlineMessage.trim() !== '') {
-          acc[fieldName] = inlineMessage;
-        }
-        return acc;
-      }, {});
-
-      const errorSummaryList = errorArray.map((validationErrorData: ValidationErrorData) => ({
-        text: validationErrorData.summaryMessage,
-        href: '#searchKeyword',
-      }));
-
-      // Get current form values to preserve user input
-      const { keyword, status } = getSearchParameters(req);
-
-      res.status(BAD_REQUEST).render('search/index.njk', {
-        searchKeyword: keyword,
-        statusSelect: status,
-        searchPerformed: false,
-        error: {
-          inputErrors,
-          errorSummaryList
-        },
-        csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
-        request: req
-      });
-      return;
-    }
+    if (handleValidationErrors(req, res)) return;
 
     // Get search parameters from query or session
     const { keyword, status } = getSearchParameters(req);
 
     // Extract pagination and sort parameters
-    const { sortOrder, sort, pageStr, limitStr, isPaginationOrSort } = getPaginationParameters(req);
-
-    // Parse pagination values with defaults
-    const page = pageStr !== '' ? parseInt(pageStr, 10) : DEFAULT_PAGE;
-    const limit = limitStr !== '' ? parseInt(limitStr, 10) : DEFAULT_LIMIT;
+    const { sortOrder, sortBy, pageStr, limitStr, isPaginationOrSort } = getPaginationParameters(req);
 
     // Show empty form if no search or navigation activity
     if (keyword === '' && status === 'all' && !isPaginationOrSort) {
@@ -210,21 +229,28 @@ export async function processSearch(req: Request, res: Response, next: NextFunct
       return;
     }
 
+    // Parse pagination values with defaults
+    const page = pageStr !== '' ? parseInt(pageStr, 10) : DEFAULT_PAGE;
+    const pageSize = limitStr !== '' ? parseInt(limitStr, 10) : DEFAULT_LIMIT;
+
     // Determine final sort order (prefer sortOrder over sort)
-    const finalSortOrder = sortOrder !== '' ? sortOrder : sort;
+    const finalSortBy = sortBy !== '' ? sortBy : DEFAULT_SORT_BY;
+    const finalSortOrder = sortOrder !== '' ? sortOrder : 'desc';
 
     // Call API and render results
     const response = await apiService.searchCases(req.axiosMiddleware, {
       keyword,
       status,
+      sortBy: finalSortBy,
       sortOrder: finalSortOrder,
       page,
-      limit
+      pageSize
     });
 
     renderSearchResults(req, res, {
       keyword,
       status,
+      sortBy: finalSortBy,
       sortOrder: finalSortOrder,
       apiResponse: response
     });

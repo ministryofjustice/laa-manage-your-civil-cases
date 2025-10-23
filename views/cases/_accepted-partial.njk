@@ -17,9 +17,9 @@
         { key: "caseReference", text: t('components.table.columns.caseId') },
         { key: "dateOfBirth", text: t('components.table.columns.dateOfBirth') },
         { key: "refCode", text: t('components.table.columns.details') },
-        { key: "lastModified", text: t('components.table.columns.dateModified'), sortable: true, classes: "govuk-table__header--numeric" , cellClasses: "govuk-table__cell--numeric" }
+        { key: "modified", text: t('components.table.columns.dateModified'), sortable: true, classes: "govuk-table__header--numeric" , cellClasses: "govuk-table__cell--numeric" }
       ],
-      sortBy: "lastModified",
+      sortBy: sortBy or "modified",
       sortOrder: sortOrder or "desc",
       basePath: "/cases/accepted"
     }) }}
@@ -28,6 +28,7 @@
   {% if pagination %}
     {{ paginationComponent({
       pagination: pagination,
+      sortBy: sortBy or "modified",
       sortOrder: sortOrder or "desc",
       basePath: "/cases/accepted"
     }) }}
