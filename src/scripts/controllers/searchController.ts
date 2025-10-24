@@ -9,7 +9,7 @@ import { storeSessionData, getSessionData, clearSessionData } from '#src/scripts
 // Constants
 const DEFAULT_SORT_BY = 'lastModified';
 const DEFAULT_PAGE = 1;
-const DEFAULT_LIMIT = 20;
+const DEFAULT_LIMIT = 4;
 const BAD_REQUEST = 400;
 
 /**
@@ -202,7 +202,7 @@ export async function processSearch(req: Request, res: Response, next: NextFunct
 
     // Parse pagination values with defaults
     const page = pageStr !== '' ? parseInt(pageStr, 10) : DEFAULT_PAGE;
-    const limit = limitStr !== '' ? parseInt(limitStr, 10) : DEFAULT_LIMIT;
+    const pageSize = limitStr !== '' ? parseInt(limitStr, 10) : DEFAULT_LIMIT;
 
     // Show empty form if no search or navigation activity
     if (keyword === '' && status === 'all' && !isPaginationOrSort) {
@@ -219,7 +219,7 @@ export async function processSearch(req: Request, res: Response, next: NextFunct
       status,
       sortOrder: finalSortOrder,
       page,
-      limit
+      pageSize
     });
 
     renderSearchResults(req, res, {

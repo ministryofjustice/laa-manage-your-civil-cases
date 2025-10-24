@@ -24,7 +24,7 @@
   classes: statusConfig[currentStatus].classes
 }) }}
 
-<h2 class="govuk-heading-m govuk-!-margin-bottom-1">{{ t('pages.caseDetails.dateReceived') }} <span class="govuk-body-l">{{ client.dateReceived | formatDate }}</span></h2>
+<h2 class="govuk-heading-m govuk-!-margin-bottom-1">{{ t('pages.caseDetails.dateReceived') }} <span class="govuk-body-l">{{ client.provider_assigned_at | formatDate }}</span></h2>
 <h2 class="govuk-heading-m govuk-!-margin-bottom-7">{{ t('pages.caseDetails.laaReference') }} <span class="govuk-body-l">{{ client.laaReference or t('pages.caseDetails.notProvided') }}</span></h2>
 
 <div class="govuk-button-group">

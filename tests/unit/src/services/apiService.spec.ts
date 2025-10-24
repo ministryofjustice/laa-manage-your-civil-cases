@@ -79,7 +79,7 @@ describe('ApiService', () => {
         keyword: 'John',
         status: 'all',
         page: 1,
-        limit: 10,
+        pageSize: 10,
         sortOrder: 'desc'
       };
 
@@ -108,7 +108,7 @@ describe('ApiService', () => {
         keyword: 'nonexistent',
         status: 'all',
         page: 1,
-        limit: 10,
+        pageSize: 10,
         sortOrder: 'desc'
       };
 
@@ -127,7 +127,7 @@ describe('ApiService', () => {
         keyword: 'test',
         status: 'all',
         page: 1,
-        limit: 10,
+        pageSize: 10,
         sortOrder: 'desc'
       };
 
@@ -154,7 +154,7 @@ describe('ApiService', () => {
         keyword: 'john smith',
         status: 'accepted',
         page: 2,
-        limit: 15,
+        pageSize: 15,
         sortOrder: 'asc'
       };
 

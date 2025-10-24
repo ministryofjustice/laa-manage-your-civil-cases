@@ -17,9 +17,9 @@
         { key: "caseReference", text: t('components.table.columns.caseId') },
         { key: "dateOfBirth", text: t('components.table.columns.dateOfBirth') },
         { key: "refCode", text: t('components.table.columns.details') },
-        { key: "dateClosed", text: t('components.table.columns.dateClosed'), sortable: true, classes: "govuk-table__header--numeric" , cellClasses: "govuk-table__cell--numeric" }
+        { key: "provider_closed", text: t('components.table.columns.dateClosed'), sortable: true, classes: "govuk-table__header--numeric" , cellClasses: "govuk-table__cell--numeric" }
       ],
-      sortBy: "dateClosed",
+      sortBy: sortBy or "provider_closed",
       sortOrder: sortOrder or "desc",
       basePath: "/cases/closed"
     }) }}
@@ -28,6 +28,7 @@
   {% if pagination %}
     {{ paginationComponent({
       pagination: pagination,
+      sortBy: sortBy or "provider_closed",
       sortOrder: sortOrder or "desc",
       basePath: "/cases/closed"
     }) }}
