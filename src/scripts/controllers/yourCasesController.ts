@@ -36,7 +36,7 @@ function parsePageNumber(pageParam: unknown): number {
 async function loadCasesData(
   req: Request,
   caseType: string,
-  sortParams: { sortBy: string; sortOrder: 'asc' | 'desc' } = { sortBy: 'provider_assigned_at', sortOrder: 'desc' },
+  sortParams: { sortBy: string; sortOrder: 'asc' | 'desc' },
   page = DEFAULT_PAGE
 ): Promise<{ data: CaseData[], pagination: { total: number, page: number, limit: number, totalPages?: number } }> {
   // Validate case type
@@ -94,10 +94,19 @@ async function loadCasesData(
 export function createCaseRouteHandler(caseType: string) {
   return async function (req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
+      const defaultSortMap: Record<string, { sortBy: string; sortOrder: 'asc' | 'desc' }> = {
+        new: { sortBy: 'provider_assigned_at', sortOrder: 'desc' },
+        accepted: { sortBy: 'modified', sortOrder: 'desc' },
+        opened: { sortBy: 'modified', sortOrder: 'desc' },
+        closed: { sortBy: 'provider_closed', sortOrder: 'desc' }
+      };
+
+      const defaultSort = defaultSortMap[caseType] ?? { sortBy: 'provider_assigned_at', sortOrder: 'desc' };
+
       // Parse ordering parameter (e.g., 'provider_assigned_at' for asc, '-provider_assigned_at' for desc)
       const ordering = typeof req.query.ordering === 'string' ? req.query.ordering : '';
-      let sortBy = 'provider_assigned_at';
-      let sortOrder: 'asc' | 'desc' = 'desc';
+      let {sortBy} = defaultSort;
+      let sortOrder: 'asc' | 'desc' = defaultSort.sortOrder;
 
       if (ordering !== '') {
         if (ordering.startsWith('-')) {
