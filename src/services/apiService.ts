@@ -37,7 +37,6 @@ const JSON_INDENT = 2;
 const EMPTY_TOTAL = 0;
 const API_PREFIX = process.env.API_PREFIX ?? '/cla_provider/api/v1'; // API endpoint prefix - configurable via env
 const SEARCH_TIMEOUT_MS = 10000; // 10 second timeout for search API calls
-const FIRST_ITEM_INDEX = 0; // Index for accessing the first item in an array
 
 /**
  * Transform raw client details item to display format
@@ -308,142 +307,61 @@ class ApiService {
     axiosMiddleware: AxiosInstanceWrapper,
     params: SearchApiParams
   ): Promise<ApiResponse<CaseData>> {
-    const searchParams = ApiService.prepareSearchParams(params);
-
-    try {
-      const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
-      const response = await ApiService.makeSearchApiCall(configuredAxios, searchParams.apiParams);
-
-      return ApiService.processSearchResponse(response, searchParams.page, searchParams.pageSize);
-
-    } catch (error) {
-      ApiService.handleSearchError(error);
-    }
-  }
-
-  /**
-   * Prepare search parameters for CLA API
-   * @param {SearchApiParams} params - Raw search parameters
-   * @returns {object} Processed search parameters
-   */
-  private static prepareSearchParams(params: SearchApiParams): {
-    apiParams: Record<string, string>;
-    page: number;
-    pageSize: number;
-    sortOrder: string;
-  } {
     const { keyword, status } = params;
     const page = params.page ?? DEFAULT_PAGE;
-    const pageSize = params.pageSize ?? DEFAULT_LIMIT;
-    const sortOrder = ApiService.determineSortOrder(params.sortOrder);
+    const limit = params.pageSize ?? DEFAULT_LIMIT;
+    const sortOrder = params.sortOrder !== undefined && params.sortOrder.trim() !== '' ? params.sortOrder : 'desc';
 
-    const apiParams = ApiService.buildApiParams(keyword, status);
+    try {
+      // Build API params - CLA uses `search` and `only` fields instead of `keyword` and `status`
+      const apiParams: Record<string, string | number> = { page, limit, sortOrder };
 
-    devLog(`API: GET ${API_PREFIX}/case/ with params: ${JSON.stringify(apiParams, null, JSON_INDENT)}`);
+      if (keyword !== undefined && keyword.trim() !== '') {
+        apiParams.search = keyword.trim();
+      }
 
-    return { apiParams, page, pageSize, sortOrder };
-  }
+      if (status !== undefined && status.trim() !== '') {
+        apiParams.only = status;
+      }
 
-  /**
-   * Determine the sort order for search parameters
-   * @param {string | undefined} sortOrderParam - Raw sort order parameter
-   * @returns {string} Determined sort order
-   */
-  private static determineSortOrder(sortOrderParam: string | undefined): string {
-    return sortOrderParam !== undefined && sortOrderParam.trim() !== '' ? sortOrderParam : 'desc';
-  }
+      devLog(`API: GET ${API_PREFIX}/case/ with params: ${JSON.stringify(apiParams, null, JSON_INDENT)}`);
 
-  /**
-   * Build API parameters for CLA search
-   * @param {string | undefined} keyword - Search keyword
-   * @param {string | undefined} status - Status filter
-   * @returns {Record<string, string>} API parameters
-   */
-  private static buildApiParams(keyword: string | undefined, status: string | undefined): Record<string, string> {
-    const apiParams: Record<string, string> = {};
+      const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
 
-    if (keyword !== undefined && keyword.trim() !== '') {
-      apiParams.search = keyword.trim();  // CLA uses 'search' param
+      // Call API endpoint
+      const response = await configuredAxios.get(`${API_PREFIX}/case/`, {
+        params: apiParams,
+        timeout: SEARCH_TIMEOUT_MS,
+      });
+
+      // Handle API response format with results array
+      const responseData: ClaSearchApiResponse = response.data;
+      const results = extractResults(responseData);
+
+      // Transform the response data
+      const transformedData = results.map(transformCaseItem);
+
+      // Extract pagination from response body (new API format) or fall back to headers
+      const paginationParams: CaseApiParams = { caseType: 'new', page, limit };
+      const paginationMeta = extractPaginationFromBody(responseData, page, limit)
+        ?? ApiService.extractPaginationMeta(response.headers, paginationParams);
+
+      devLog(`API: Returning ${transformedData.length} search results (total: ${paginationMeta.total})`);
+
+      return {
+        data: transformedData,
+        pagination: paginationMeta,
+        status: 'success'
+      };
+
+    } catch (error) {
+      const errorMessage = extractAndLogError(error, 'API search error');
+
+      // Instead of returning error response, throw the error to be handled by global handler
+      const searchError = new Error(errorMessage);
+      searchError.cause = error;
+      throw searchError;
     }
-
-    if (status !== undefined && status.trim() !== '' && status !== 'all') {
-      apiParams.only = status.trim();     // CLA uses 'only' for status filter
-    }
-
-    return apiParams;
-  }
-
-  /**
-   * Make the search API call to CLA
-   * @param {AxiosInstanceWrapper} configuredAxios - Configured axios instance
-   * @param {Record<string, string>} apiParams - API parameters
-   * @returns {Promise<{ data: ClaSearchApiResponse }>} API response
-   */
-  private static async makeSearchApiCall(
-    configuredAxios: AxiosInstanceWrapper,
-    apiParams: Record<string, string>
-  ): Promise<{ data: ClaSearchApiResponse }> {
-    return await configuredAxios.get(`${API_PREFIX}/case/`, {
-      params: apiParams,
-      timeout: SEARCH_TIMEOUT_MS  // 10 second timeout as per requirements
-    });
-  }
-
-  /**
-   * Process the search API response
-   * @param {{ data: ClaSearchApiResponse }} response - API response
-   * @param {ClaSearchApiResponse} response.data - The CLA API response data
-   * @param {number} page - Page number
-   * @param {number} limit - Results per page
-   * @returns {ApiResponse<CaseData>} Processed response
-   */
-  private static processSearchResponse(
-    response: { data: ClaSearchApiResponse },
-    page: number,
-    limit: number
-  ): ApiResponse<CaseData> {
-    // Extract results from CLA API response format
-    const rawResults = Array.isArray(response.data.results) ? response.data.results : [];
-    const totalCount = typeof response.data.count === 'number' ? response.data.count : rawResults.length;
-
-    // Debug: Log the first result to see the actual API structure
-    if (rawResults.length > FIRST_ITEM_INDEX) {
-      devLog(`API: First raw result structure: ${JSON.stringify(rawResults[FIRST_ITEM_INDEX], null, JSON_INDENT)}`);
-    }
-
-    // Transform raw case data to display format
-    const transformedData = rawResults.map(transformCaseItem);
-
-    // Debug: Log the first transformed result
-    if (transformedData.length > FIRST_ITEM_INDEX) {
-      devLog(`API: First transformed result: ${JSON.stringify(transformedData[FIRST_ITEM_INDEX], null, JSON_INDENT)}`);
-    }
-
-    devLog(`API: Returning ${transformedData.length} search results (total: ${totalCount})`);
-
-    return {
-      data: transformedData,
-      pagination: {
-        total: totalCount,
-        page,
-        limit,
-        totalPages: undefined  // CLA API doesn't provide total pages
-      },
-      status: 'success'
-    };
-  }
-
-  /**
-   * Handle search API errors
-   * @param {unknown} error - Error from API call
-   */
-  private static handleSearchError(error: unknown): never {
-    const errorMessage = extractAndLogError(error, 'API search error');
-
-    // Instead of returning error response, throw the error to be handled by global handler
-    const searchError = new Error(errorMessage);
-    searchError.cause = error;
-    throw searchError;
   }
 
   /**

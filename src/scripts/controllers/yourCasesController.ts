@@ -94,6 +94,7 @@ async function loadCasesData(
 export function createCaseRouteHandler(caseType: string) {
   return async function (req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
+      // The default `sortBy` should correspond to the `caseType`
       const defaultSortMap: Record<string, { sortBy: string; sortOrder: 'asc' | 'desc' }> = {
         new: { sortBy: 'provider_assigned_at', sortOrder: 'desc' },
         accepted: { sortBy: 'modified', sortOrder: 'desc' },
