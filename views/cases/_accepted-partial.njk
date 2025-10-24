@@ -28,7 +28,7 @@
   {% if pagination %}
     {{ paginationComponent({
       pagination: pagination,
-      sortBy: sortBy or "modified",
+      sortBy: sortBy or "lastModified",
       sortOrder: sortOrder or "desc",
       basePath: "/cases/accepted"
     }) }}
