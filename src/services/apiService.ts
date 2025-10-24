@@ -13,7 +13,8 @@ import type {
   SearchApiParams,
   ClientDetailsResponse,
   ClientDetailsApiResponse,
-  ClaSearchApiResponse
+  ClaSearchApiResponse,
+  PaginationMeta
 } from '#types/api-types.js';
 import {
   safeString,
@@ -24,7 +25,8 @@ import {
   extractAndLogError,
   transformContactDetails,
   transformClientSupportNeeds,
-  transformThirdParty
+  transformThirdParty,
+  safeStringFromRecord
 } from '#src/scripts/helpers/index.js';
 import config from '../../config.js';
 
@@ -109,6 +111,59 @@ function transformCaseItem(item: unknown): CaseData {
 }
 
 /**
+ * Extract results array from API response
+ * @param {unknown} data API response data
+ * @returns {unknown[]} Results array
+ */
+function extractResults(data: unknown): unknown[] {
+  if (isRecord(data) && Array.isArray(data.results)) {
+    return data.results;
+  }
+  return Array.isArray(data) ? data : [];
+}
+
+/**
+ * Extract pagination metadata from API response body (new format)
+ * @param {unknown} data API response data
+ * @param {number} requestedPage Current page from request
+ * @param {number} limit Items per page
+ * @returns {PaginationMeta | null} Pagination metadata or null if not found
+ */
+function extractPaginationFromBody(data: unknown, requestedPage: number, limit: number): PaginationMeta | null {
+  if (isRecord(data) && typeof data.count === 'number') {
+    // Calculate current page from next/previous URLs or fall back to requested page
+    let currentPage = requestedPage;
+
+    const PAGE_REGEX = /[?&]page=(\d+)/;
+    const NEXT_PAGE_OFFSET = 1;
+    const PREV_PAGE_OFFSET = 1;
+
+    // Try to extract current page from next URL (page=X means current page is X-1)
+    if (typeof data.next === 'string') {
+      const nextMatch = PAGE_REGEX.exec(data.next);
+      if (nextMatch !== null) {
+        currentPage = parseInt(nextMatch[NEXT_PAGE_OFFSET], 10) - NEXT_PAGE_OFFSET;
+      }
+    }
+    // Try to extract current page from previous URL (page=X means current page is X+1)
+    else if (typeof data.previous === 'string') {
+      const prevMatch = PAGE_REGEX.exec(data.previous);
+      if (prevMatch !== null) {
+        currentPage = parseInt(prevMatch[NEXT_PAGE_OFFSET], 10) + PREV_PAGE_OFFSET;
+      }
+    }
+
+    return {
+      total: data.count,
+      page: currentPage,
+      limit,
+      totalPages: Math.ceil(data.count / limit)
+    };
+  }
+  return null;
+}
+
+/**
  * API Service
  * Uses axios middleware from Express request for API calls
  */
@@ -143,39 +198,21 @@ class ApiService {
 
       // Handle CLA API response format with type safety
       const responseData: unknown = response.data;
-      let rawResults: unknown[] = [];
-      let totalCount = 0;
-
-      if (isRecord(responseData)) {
-        const { results, count } = responseData;
-        if (Array.isArray(results)) {
-          rawResults = results as unknown[];
-        }
-        if (typeof count === 'number') {
-          totalCount = count;
-        } else {
-          const { length } = rawResults;
-          totalCount = length;
-        }
-      }
-
+      const results = extractResults(responseData);
+  
       // Transform the response data
-      const transformedData = rawResults.map(transformCaseItem);
+      const transformedData = results.map(transformCaseItem);
 
-      // Extract pagination from response body
-      const paginationMeta = {
-        total: totalCount,
-        page,
-        limit,
-        totalPages: Math.ceil(totalCount / limit)
-      };
+      // Extract pagination from response body (new API format) or fall back to headers
+      const paginationMeta = extractPaginationFromBody(responseData, page, limit)
+        ?? ApiService.extractPaginationMeta(response.headers, params);
 
       devLog(`API: Returning ${transformedData.length} ${caseType} cases (total: ${paginationMeta.total})`);
 
       return {
         data: transformedData,
         pagination: paginationMeta,
-        status: 'success' as const
+        status: 'success'
       };
 
     } catch (error) {
@@ -587,6 +624,35 @@ class ApiService {
         message: errorMessage
       };
     }
+  }
+
+  /**
+   * Extract pagination metadata from response headers
+   * @param {unknown} headers - Response headers from axios
+   * @param {CaseApiParams} params - API parameters for fallback values
+   * @returns {PaginationMeta} Pagination metadata
+   */
+  private static extractPaginationMeta(headers: unknown, params: CaseApiParams): PaginationMeta {
+    const page = params.page ?? DEFAULT_PAGE;
+    const limit = params.limit ?? DEFAULT_LIMIT;
+    // Extract values from headers using the improved utility
+    const totalFromHeader = safeStringFromRecord(headers, 'x-total-count');
+    const pageFromHeader = safeStringFromRecord(headers, 'x-page');
+    const limitFromHeader = safeStringFromRecord(headers, 'x-per-page');
+    const totalPagesFromHeader = safeStringFromRecord(headers, 'x-total-pages');
+    let total = totalFromHeader !== null ? parseInt(totalFromHeader, 10) : null;
+    // If we have totalPages but no total, calculate it
+    if (total === null && totalPagesFromHeader !== null) {
+      const totalPages = parseInt(totalPagesFromHeader, 10);
+      total = totalPages * limit;
+      devLog(`API: Calculated total from X-Total-Pages: ${totalPages} pages × ${limit} = ${total} items`);
+    }
+    return {
+      total,
+      page: pageFromHeader !== null ? parseInt(pageFromHeader, 10) : page,
+      limit: limitFromHeader !== null ? parseInt(limitFromHeader, 10) : limit,
+      totalPages: totalPagesFromHeader !== null ? parseInt(totalPagesFromHeader, 10) : undefined
+    };
   }
 
   /**
