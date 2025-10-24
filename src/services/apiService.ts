@@ -56,6 +56,8 @@ function transformClientDetailsItem(item: unknown): ClientDetailsResponse {
   const fullName = safeString(item.full_name);
   const dateOfBirth = formatDate(safeString(item.date_of_birth));
   const caseStatus = safeString(item.state);
+
+  // eslint-disable-next-line @typescript-eslint/naming-convention -- `provider_assigned_at` matches API response field
   const provider_assigned_at = formatDate(safeString(item.provider_assigned_at))
 
   // Transform contact details
