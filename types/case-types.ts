@@ -13,11 +13,11 @@ export interface CaseData {
   laaReference: string;
   caseReference: string;
   refCode: string;
-  dateReceived: string;
+  provider_assigned_at: string;
   caseStatus: string;
   dateOfBirth: string;
-  lastModified?: string;
-  dateClosed?: string;
+  modified?: string;
+  provider_closed?: string;
   // Client contact details
   phoneNumber?: string;
   safeToCall?: boolean;

@@ -109,7 +109,7 @@ describe('Search Controller', () => {
           searchResults: mockApiResponse.data,
           pagination: mockApiResponse.pagination,
           searchPerformed: true,
-          sortBy: 'lastModified',
+          sortBy: 'modified',
           sortOrder: '',
           request: req
         }))).to.be.true;
@@ -141,7 +141,7 @@ describe('Search Controller', () => {
           searchResults: mockApiResponse.data,
           pagination: mockApiResponse.pagination,
           searchPerformed: true,
-          sortBy: 'lastModified',
+          sortBy: 'modified',
           sortOrder: '',
           request: req
         }))).to.be.true;

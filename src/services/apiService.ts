@@ -56,7 +56,7 @@ function transformClientDetailsItem(item: unknown): ClientDetailsResponse {
   const fullName = safeString(item.full_name);
   const dateOfBirth = formatDate(safeString(item.date_of_birth));
   const caseStatus = safeString(item.state);
-  const dateReceived = formatDate(safeString(item.provider_assigned_at))
+  const provider_assigned_at = formatDate(safeString(item.provider_assigned_at))
 
   // Transform contact details
   const contactDetails = transformContactDetails(item.personal_details);
@@ -68,7 +68,7 @@ function transformClientDetailsItem(item: unknown): ClientDetailsResponse {
   const thirdParty = transformThirdParty(item.thirdparty_details);
 
   return {
-    dateReceived,
+    provider_assigned_at,
     laaReference,
     caseReference,
     fullName,
@@ -95,11 +95,11 @@ function transformCaseItem(item: unknown): CaseData {
     caseReference: safeString(item.reference),
     laaReference: safeString(item.laa_reference),
     refCode: safeString(item.reference),
-    dateReceived: formatDate(safeString(item.date_received)),
+    provider_assigned_at: formatDate(safeString(item.provider_assigned_at)),
     caseStatus: safeString(item.caseStatus),
     dateOfBirth: formatDate(safeString(item.date_of_birth)),
-    lastModified: formatDate(safeOptionalString(item.modified) ?? ''),
-    dateClosed: formatDate(safeOptionalString(item.provider_closed) ?? ''),
+    modified: formatDate(safeOptionalString(item.modified) ?? ''),
+    provider_closed: formatDate(safeOptionalString(item.provider_closed) ?? ''),
     phoneNumber: safeOptionalString(item.phone_number),
     safeToCall: Boolean(item.safe_to_call),
     announceCall: Boolean(item.announce_call),
@@ -181,7 +181,7 @@ class ApiService {
 
     try {
       // Build ordering parameter for backend API
-      let ordering = sortBy ?? 'dateReceived';
+      let ordering = sortBy ?? 'provider_assigned_at';
       if (sortOrder === 'desc') {
         ordering = `-${ordering}`;
       }

@@ -36,7 +36,7 @@ function parsePageNumber(pageParam: unknown): number {
 async function loadCasesData(
   req: Request,
   caseType: string,
-  sortParams: { sortBy: string; sortOrder: 'asc' | 'desc' } = { sortBy: 'dateReceived', sortOrder: 'desc' },
+  sortParams: { sortBy: string; sortOrder: 'asc' | 'desc' } = { sortBy: 'provider_assigned_at', sortOrder: 'desc' },
   page = DEFAULT_PAGE
 ): Promise<{ data: CaseData[], pagination: { total: number, page: number, limit: number, totalPages?: number } }> {
   // Validate case type
