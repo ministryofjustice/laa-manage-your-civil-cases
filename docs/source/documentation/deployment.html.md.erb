@@ -1,0 +1,30 @@
+---
+title: Deployment
+last_reviewed_on: 2025-10-28
+review_in: 6 weeks
+---
+
+# Deployment
+
+This application is deployed using GitHub Actions and the Cloud Platform.
+
+## Deployment Process
+
+The deployment process is automated through GitHub Actions workflows and uses Helm charts for Kubernetes deployment to the MOJ Cloud Platform.
+
+## Environment Configuration
+
+The application can be deployed to multiple environments:
+- Development
+- Staging
+- Production
+
+Each environment has its own configuration managed through Helm values files.
+
+## Helm Deployment
+
+The application uses Helm charts located in the `helm_deploy/` directory for Kubernetes deployment configuration.
+
+## Further Information
+
+For detailed deployment procedures and Cloud Platform integration, refer to the [Cloud Platform User Guide](https://user-guide.cloud-platform.service.justice.gov.uk/).
