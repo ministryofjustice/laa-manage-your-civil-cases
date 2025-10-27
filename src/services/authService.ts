@@ -120,7 +120,7 @@ export class AuthService {
         body: requestBody
       });
 
-      devLog(`Response status: ${response.status} ${response.statusText}`);
+      console.log(`Response status: ${response.status} ${response.statusText}`);
 
       if (!response.ok) {
         const errorText = await response.text();
