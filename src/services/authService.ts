@@ -104,7 +104,7 @@ export class AuthService {
   private async acquireToken(): Promise<string> {
     try {
       devLog('Acquiring new JWT token from API');
-      devLog(`Token endpoint: ${this.tokenEndpoint}`);
+      console.log(`Token endpoint: ${this.tokenEndpoint}`);
 
       const requestBody = new URLSearchParams({
         grant_type: 'password',
