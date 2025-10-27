@@ -120,12 +120,12 @@ export class AuthService {
         body: requestBody
       });
 
-      console.log(`Response status: ${response.status} ${response.statusText}`);
+      devLog(`Response status: ${response.status} ${response.statusText}`);
 
       if (!response.ok) {
         const errorText = await response.text();
-        devError(`Token acquisition failed: ${response.status} ${response.statusText}`);
-        devError(`Response body: ${errorText}`);
+        console.log(`Token acquisition failed: ${response.status} ${response.statusText}`);
+        console.log(`Response body: ${errorText}`);
         throw new Error(`Token acquisition failed: ${response.status} ${response.statusText}`);
       }
 
