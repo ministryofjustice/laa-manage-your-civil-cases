@@ -444,3 +444,26 @@ export const transformThirdParty = (thirdpartyDetails: unknown): {
     passphraseSetUp
   };
 };
+
+/**
+ * Build ordering parameter based on `ordering` query string
+ * @param {string} ordering - Query string for ordering (e.g., 'modified' or '-modified').
+ * @param {string} sortBy - Default field to sort by.
+ * @param {string} sortOrder - Default sort order ('asc' or 'desc').
+ * @returns {{ sortBy: string; sortOrder: string }} Object containing the sort field and sort order.
+ */
+export function buildOrderingParamFields(ordering: string, sortBy: string, sortOrder: string): { sortBy: string; sortOrder: string } {
+  let sortByParam = sortBy;
+  let sortOrderParam = sortOrder;
+  if (ordering !== '') {
+    if (ordering.startsWith('-')) {
+      const PREFIX_LENGTH = 1;
+      sortByParam = ordering.substring(PREFIX_LENGTH);
+      sortOrderParam = 'desc';
+    } else {
+      sortByParam = ordering;
+      sortOrderParam = 'asc';
+    }
+  }
+  return { sortBy: sortByParam, sortOrder: sortOrderParam };
+}

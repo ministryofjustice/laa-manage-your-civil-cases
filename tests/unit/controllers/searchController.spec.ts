@@ -27,6 +27,7 @@ describe('Search Controller', () => {
   let res: Partial<Response>;
   let next: sinon.SinonStub;
   let apiServiceStub: sinon.SinonStub;
+  const PAGE_SIZE = 4;
 
   beforeEach(() => {
     req = {
@@ -86,7 +87,7 @@ describe('Search Controller', () => {
             { caseReference: 'TEST123', fullName: 'John Doe' },
             { caseReference: 'TEST456', fullName: 'Jane Smith' }
           ],
-          pagination: { total: 2, page: 1, limit: 20 }
+          pagination: { total: 2, page: 1, limit: PAGE_SIZE }
         };
 
         req.query = { searchKeyword: 'test', statusSelect: 'all' };
@@ -98,9 +99,10 @@ describe('Search Controller', () => {
         expect(apiServiceStub.calledWith(req.axiosMiddleware, {
           keyword: 'test',
           status: 'all',
-          sortOrder: '',
+          sortBy: 'modified',
+          sortOrder: 'desc',
           page: 1,
-          limit: 20
+          pageSize: PAGE_SIZE
         })).to.be.true;
 
         expect((res.render as sinon.SinonStub).calledWith('search/index.njk', sinon.match({
@@ -109,8 +111,8 @@ describe('Search Controller', () => {
           searchResults: mockApiResponse.data,
           pagination: mockApiResponse.pagination,
           searchPerformed: true,
-          sortBy: 'lastModified',
-          sortOrder: '',
+          sortBy: 'modified',
+          sortOrder: 'desc',
           request: req
         }))).to.be.true;
       });
@@ -118,7 +120,7 @@ describe('Search Controller', () => {
       it('should execute search and render results when status filter is provided', async () => {
         const mockApiResponse = {
           data: [{ caseReference: 'TEST123', fullName: 'John Doe' }],
-          pagination: { total: 1, page: 1, limit: 20 }
+          pagination: { total: 1, page: 1, limit: PAGE_SIZE }
         };
 
         req.query = { searchKeyword: '', statusSelect: 'new' };
@@ -130,9 +132,10 @@ describe('Search Controller', () => {
         expect(apiServiceStub.calledWith(req.axiosMiddleware, {
           keyword: '',
           status: 'new',
-          sortOrder: '',
+          sortBy: 'modified',
+          sortOrder: 'desc',
           page: 1,
-          limit: 20
+          pageSize: PAGE_SIZE
         })).to.be.true;
 
         expect((res.render as sinon.SinonStub).calledWith('search/index.njk', sinon.match({
@@ -141,8 +144,8 @@ describe('Search Controller', () => {
           searchResults: mockApiResponse.data,
           pagination: mockApiResponse.pagination,
           searchPerformed: true,
-          sortBy: 'lastModified',
-          sortOrder: '',
+          sortBy: 'modified',
+          sortOrder: 'desc',
           request: req
         }))).to.be.true;
       });
@@ -150,7 +153,7 @@ describe('Search Controller', () => {
       it('should execute search with both keyword and status filter', async () => {
         const mockApiResponse = {
           data: [{ caseReference: 'TEST123', fullName: 'John Doe' }],
-          pagination: { total: 1, page: 1, limit: 20 }
+          pagination: { total: 1, page: 1, limit: PAGE_SIZE }
         };
 
         req.query = { searchKeyword: 'john', statusSelect: 'opened' };
@@ -161,10 +164,22 @@ describe('Search Controller', () => {
         expect(apiServiceStub.calledWith(req.axiosMiddleware, {
           keyword: 'john',
           status: 'opened',
-          sortOrder: '',
+          sortBy: 'modified',
+          sortOrder: 'desc',
           page: 1,
-          limit: 20
+          pageSize: PAGE_SIZE
         })).to.be.true;
+
+        expect((res.render as sinon.SinonStub).calledWith('search/index.njk', sinon.match({
+          searchKeyword: 'john',
+          statusSelect: 'opened',
+          searchResults: mockApiResponse.data,
+          pagination: mockApiResponse.pagination,
+          searchPerformed: true,
+          sortBy: 'modified',
+          sortOrder: 'desc',
+          request: req
+        }))).to.be.true;
       });
     });
 
@@ -172,14 +187,16 @@ describe('Search Controller', () => {
       it('should handle pagination parameters correctly', async () => {
         const mockApiResponse = {
           data: [{ caseReference: 'TEST123' }],
-          pagination: { total: 50, page: 3, limit: 10 }
+          pagination: { total: 50, page: 3, limit: PAGE_SIZE }
         };
 
         req.query = {
           searchKeyword: 'test',
           statusSelect: 'all',
+          sortBy: 'modified',
+          sortOrder: 'desc',
           page: '3',
-          limit: '10'
+          pageSize: '4'
         };
         apiServiceStub.resolves(mockApiResponse);
 
@@ -188,22 +205,24 @@ describe('Search Controller', () => {
         expect(apiServiceStub.calledWith(req.axiosMiddleware, {
           keyword: 'test',
           status: 'all',
-          sortOrder: '',
+          sortBy: 'modified',
+          sortOrder: 'desc',
           page: 3,
-          limit: 10
+          pageSize: PAGE_SIZE
         })).to.be.true;
       });
 
       it('should handle sort parameters correctly', async () => {
         const mockApiResponse = {
           data: [{ caseReference: 'TEST123' }],
-          pagination: { total: 1, page: 1, limit: 20 }
+          pagination: { total: 1, page: 1, limit: PAGE_SIZE }
         };
 
         req.query = {
           searchKeyword: 'test',
           statusSelect: 'all',
-          sortOrder: 'asc'
+          sortBy: 'modified',
+          sortOrder: 'asc',
         };
         apiServiceStub.resolves(mockApiResponse);
 
@@ -212,9 +231,10 @@ describe('Search Controller', () => {
         expect(apiServiceStub.calledWith(req.axiosMiddleware, {
           keyword: 'test',
           status: 'all',
+          sortBy: 'modified',
           sortOrder: 'asc',
           page: 1,
-          limit: 20
+          pageSize: PAGE_SIZE
         })).to.be.true;
 
         expect((res.render as sinon.SinonStub).calledWith('search/index.njk', sinon.match({
@@ -225,7 +245,7 @@ describe('Search Controller', () => {
       it('should prefer sortOrder over sort parameter', async () => {
         const mockApiResponse = {
           data: [{ caseReference: 'TEST123' }],
-          pagination: { total: 1, page: 1, limit: 20 }
+          pagination: { total: 1, page: 1, limit: PAGE_SIZE }
         };
 
         req.query = {
@@ -248,7 +268,7 @@ describe('Search Controller', () => {
       it('should store search parameters in session when provided', async () => {
         const mockApiResponse = {
           data: [{ caseReference: 'TEST123' }],
-          pagination: { total: 1, page: 1, limit: 20 }
+          pagination: { total: 1, page: 1, limit: PAGE_SIZE }
         };
 
         req.query = { searchKeyword: 'test', statusSelect: 'new' };
@@ -263,7 +283,7 @@ describe('Search Controller', () => {
       it('should use session parameters when only pagination parameters are provided', async () => {
         const mockApiResponse = {
           data: [{ caseReference: 'TEST123' }],
-          pagination: { total: 1, page: 2, limit: 20 }
+          pagination: { total: 1, page: 2, limit: PAGE_SIZE }
         };
 
         req.query = { page: '2' };  // Only pagination, no search params
@@ -277,16 +297,27 @@ describe('Search Controller', () => {
         expect(apiServiceStub.calledWith(req.axiosMiddleware, {
           keyword: 'stored-keyword',
           status: 'opened',
-          sortOrder: '',
+          sortBy: 'modified',
+          sortOrder: 'desc',
           page: 2,
-          limit: 20
+          pageSize: PAGE_SIZE
         })).to.be.true;
+        
+        expect((res.render as sinon.SinonStub).calledWith('search/index.njk', sinon.match({
+          searchKeyword: 'stored-keyword',
+          statusSelect: 'opened',
+          pagination: mockApiResponse.pagination,
+          searchPerformed: true,
+          sortBy: 'modified',
+          sortOrder: 'desc',
+          request: req
+        }))).to.be.true;
       });
 
       it('should default status to "all" when no session status exists', async () => {
         const mockApiResponse = {
           data: [{ caseReference: 'TEST123' }],
-          pagination: { total: 1, page: 2, limit: 20 }
+          pagination: { total: 1, page: 2, limit: PAGE_SIZE }
         };
 
         req.query = { page: '2' };
@@ -306,7 +337,7 @@ describe('Search Controller', () => {
       it('should not store "all" status in session when it is the default', async () => {
         const mockApiResponse = {
           data: [{ caseReference: 'TEST123' }],
-          pagination: { total: 1, page: 1, limit: 20 }
+          pagination: { total: 1, page: 1, limit: PAGE_SIZE }
         };
 
         req.query = { searchKeyword: '', statusSelect: 'all' };
@@ -323,7 +354,7 @@ describe('Search Controller', () => {
       it('should default status to "all" when no statusSelect parameter exists', async () => {
         const mockApiResponse = {
           data: [{ caseReference: 'TEST123' }],
-          pagination: { total: 1, page: 1, limit: 20 }
+          pagination: { total: 1, page: 1, limit: PAGE_SIZE }
         };
 
         req.query = { searchKeyword: 'test' };  // No statusSelect parameter

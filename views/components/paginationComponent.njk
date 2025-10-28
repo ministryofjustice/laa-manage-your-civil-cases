@@ -18,11 +18,10 @@
     pagination: {
       total: 100,
       page: 2,
-      limit: 20,
-      sortBy: "dateReceived",
-      sortOrder: "asc"
+      limit: 20
     },
-    sortOrder: sortOrder or "asc",
+    sortBy: "provider_assigned_at",
+    sortOrder: "asc",
     basePath: "/cases/new"
   }) }}
 
@@ -31,16 +30,16 @@
     - total: Total number of items
     - page: Current page number (1-based)
     - limit: Items per page
-    - sortBy: Current sort field (for reference)
-    - sortOrder: Sort order from API response (for reference)
-  - sortOrder: REQUIRED - Current sort order from the page context (e.g., sortOrder or "asc")
+  - sortBy: REQUIRED - Current sort field (e.g., "provider_assigned_at", "modified")
+  - sortOrder: REQUIRED - Current sort order ("asc" or "desc")
     This ensures pagination links preserve the current sort state when navigating between pages
   - basePath: REQUIRED - Base URL path for pagination links (e.g., "/cases/new")
   - classes: Additional CSS classes for the pagination container (optional)
   - maxVisiblePages: Maximum number of page links to show (default: 5)
 
-  Note: The sortOrder parameter must be passed from the page context to ensure pagination
-  links maintain the current sort order when users navigate between pages.
+  Note: The sortBy and sortOrder parameters must be passed from the page context to ensure 
+  pagination links maintain the current sort state when users navigate between pages.
+  These will be converted to the ordering parameter format (e.g., "field" or "-field").
 #}
 
 {%- from "govuk/components/pagination/macro.njk" import govukPagination -%}
@@ -56,14 +55,26 @@
     {% set totalPages = ((totalItems + limitItems - 1) / limitItems) | int %}
     {% set maxVisiblePages = options.maxVisiblePages or 5 %}
 
-    {# Helper function to build URL with page parameter and current sort order #}
-    {% macro buildPageUrl(pageNumber, basePath, sortOrder) %}
+    {# Helper function to build URL with page parameter and current sort parameters #}
+    {% macro buildPageUrl(pageNumber, basePath, sortBy, sortOrder) %}
       {% set url = basePath + "?page=" + (pageNumber | string) %}
-      {% if sortOrder %}
-        {% set url = url + "&sort=" + sortOrder %}
+      {% if sortBy and sortOrder %}
+        {% if sortOrder == 'desc' %}
+          {% set url = url + "&ordering=-" + sortBy %}
+        {% else %}
+          {% set url = url + "&ordering=" + sortBy %}
+        {% endif %}
       {% endif %}
       {{- url -}}
     {% endmacro %}
+
+    {# Preserve search parameters if they exist #}
+    {% if searchKeyword %}
+      {% set url = url + "&searchKeyword=" + (searchKeyword | urlencode) %}
+    {% endif %}
+    {% if statusSelect %}
+      {% set url = url + "&statusSelect=" + (statusSelect | urlencode) %}
+    {% endif %}
 
     {# Calculate visible page range #}
     {% set halfVisible = (maxVisiblePages / 2) | int %}
@@ -86,7 +97,7 @@
 
     {# Add first page and ellipsis if needed #}
     {% if startPage > 1 %}
-      {% set paginationItems = (paginationItems.push({number: 1, href: buildPageUrl(1, options.basePath, options.sortOrder)}), paginationItems) %}
+      {% set paginationItems = (paginationItems.push({number: 1, href: buildPageUrl(1, options.basePath, options.sortBy, options.sortOrder)}), paginationItems) %}
 
       {% if startPage > 2 %}
         {% set paginationItems = (paginationItems.push({ellipsis: true}), paginationItems) %}
@@ -96,9 +107,9 @@
     {# Add visible page range #}
     {% for pageNum in range(startPage, endPage + 1) %}
       {% if pageNum == currentPage %}
-        {% set paginationItems = (paginationItems.push({number: pageNum, current: true, href: buildPageUrl(pageNum, options.basePath, options.sortOrder)}), paginationItems) %}
+        {% set paginationItems = (paginationItems.push({number: pageNum, current: true, href: buildPageUrl(pageNum, options.basePath, options.sortBy, options.sortOrder)}), paginationItems) %}
       {% else %}
-        {% set paginationItems = (paginationItems.push({number: pageNum, href: buildPageUrl(pageNum, options.basePath, options.sortOrder)}), paginationItems) %}
+        {% set paginationItems = (paginationItems.push({number: pageNum, href: buildPageUrl(pageNum, options.basePath, options.sortBy, options.sortOrder)}), paginationItems) %}
       {% endif %}
     {% endfor %}
 
@@ -108,7 +119,7 @@
         {% set paginationItems = (paginationItems.push({ellipsis: true}), paginationItems) %}
       {% endif %}
 
-      {% set paginationItems = (paginationItems.push({number: totalPages, href: buildPageUrl(totalPages, options.basePath, options.sortOrder)}), paginationItems) %}
+      {% set paginationItems = (paginationItems.push({number: totalPages, href: buildPageUrl(totalPages, options.basePath, options.sortBy, options.sortOrder)}), paginationItems) %}
     {% endif %}
 
     {# Build previous/next links #}
@@ -117,13 +128,13 @@
 
     {% if currentPage > 1 %}
       {% set previousLink = {
-        href: buildPageUrl(currentPage - 1, options.basePath, options.sortOrder)
+        href: buildPageUrl(currentPage - 1, options.basePath, options.sortBy, options.sortOrder)
       } %}
     {% endif %}
 
     {% if currentPage < totalPages %}
       {% set nextLink = {
-        href: buildPageUrl(currentPage + 1, options.basePath, options.sortOrder)
+        href: buildPageUrl(currentPage + 1, options.basePath, options.sortBy, options.sortOrder)
       } %}
     {% endif %}
 
