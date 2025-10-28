@@ -38,7 +38,8 @@ export {
   isSafeToCall,
   transformContactDetails,
   transformClientSupportNeeds,
-  transformThirdParty
+  transformThirdParty,
+  buildOrderingParamFields
 } from './dataTransformers.js';
 
 // Date formatting utilities

@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
 import type { CaseData } from '#types/case-types.js';
-import { devLog, devError, createProcessedError } from '#src/scripts/helpers/index.js';
+import { devLog, devError, createProcessedError, buildOrderingParamFields } from '#src/scripts/helpers/index.js';
 
 // Constants
 const DEFAULT_PAGE = 1;
@@ -36,7 +36,7 @@ function parsePageNumber(pageParam: unknown): number {
 async function loadCasesData(
   req: Request,
   caseType: string,
-  sortParams: { sortBy: string; sortOrder: 'asc' | 'desc' },
+  sortParams: { sortBy: string; sortOrder: string },
   page = DEFAULT_PAGE
 ): Promise<{ data: CaseData[], pagination: { total: number, page: number, limit: number, totalPages?: number } }> {
   // Validate case type
@@ -95,7 +95,7 @@ export function createCaseRouteHandler(caseType: string) {
   return async function (req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       // The default `sortBy` should correspond to the `caseType`
-      const defaultSortMap: Record<string, { sortBy: string; sortOrder: 'asc' | 'desc' }> = {
+      const defaultSortMap: Record<string, { sortBy: string; sortOrder: string }> = {
         new: { sortBy: 'provider_assigned_at', sortOrder: 'desc' },
         accepted: { sortBy: 'modified', sortOrder: 'desc' },
         opened: { sortBy: 'modified', sortOrder: 'desc' },
@@ -107,18 +107,11 @@ export function createCaseRouteHandler(caseType: string) {
       // Parse ordering parameter (e.g., 'provider_assigned_at' for asc, '-provider_assigned_at' for desc)
       const ordering = typeof req.query.ordering === 'string' ? req.query.ordering : '';
       let {sortBy} = defaultSort;
-      let sortOrder: 'asc' | 'desc' = defaultSort.sortOrder;
+      let {sortOrder} = defaultSort;
+      
+      // Parse ordering parameter (e.g., 'modified' for asc, '-modified' for desc)
+      ({ sortBy, sortOrder } = buildOrderingParamFields(ordering, sortBy, sortOrder));
 
-      if (ordering !== '') {
-        if (ordering.startsWith('-')) {
-          const PREFIX_LENGTH = 1;
-          sortBy = ordering.substring(PREFIX_LENGTH);
-          sortOrder = 'desc';
-        } else {
-          sortBy = ordering;
-          sortOrder = 'asc';
-        }
-      }
       const page = parsePageNumber(req.query.page);
       const result = await loadCasesData(req, caseType, { sortBy, sortOrder }, page);
 

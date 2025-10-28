@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
 import { apiService } from '#src/services/apiService.js';
-import { safeString, safeOptionalString, hasProperty } from '#src/scripts/helpers/index.js';
+import { safeString, safeOptionalString, hasProperty, buildOrderingParamFields } from '#src/scripts/helpers/index.js';
 import { validationResult } from 'express-validator';
 import { formatValidationError, type ValidationErrorData } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 import { storeSessionData, getSessionData, clearSessionData } from '#src/scripts/helpers/sessionHelpers.js';
@@ -25,17 +25,8 @@ function getPaginationParameters(req: Request): { sortOrder: string; sortBy: str
 
   // Parse ordering parameter (e.g., 'modified' for asc, '-modified' for desc)
   const ordering = safeString(req.query.ordering);
-  if (ordering !== '') {
-    if (ordering.startsWith('-')) {
-      const PREFIX_LENGTH = 1;
-      sortBy = ordering.substring(PREFIX_LENGTH);
-      sortOrder = 'desc';
-    } else {
-      sortBy = ordering;
-      sortOrder = 'asc';
-    }
-  }
-
+  ({ sortBy, sortOrder } = buildOrderingParamFields(ordering, sortBy, sortOrder));
+  
   const isPaginationOrSort = pageStr !== '' || limitStr !== '' || sortBy !== '' || sortOrder !== '' || ordering !== '';
 
   return { sortOrder, sortBy, pageStr, limitStr, isPaginationOrSort };

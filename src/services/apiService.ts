@@ -121,31 +121,29 @@ function transformCaseItemForSearch(item: unknown): CaseData {
     throw new Error('Invalid case item: expected object');
   }
 
+  // TODO add state to the Search endpoint response, so we can remove `determineCaseStatus` and maybe even `transformCaseItemForSearch`
   /**
    * Determine case status from CLA API fields for the Search endpoint
    * @param {Record<string, unknown>} item - Case item from API
    * @returns {string} Readable case status
    */
   function determineCaseStatus(item: Record<string, unknown>): string {
-    const requiresActionBy = safeString(item.requires_action_by);
+    const viewed = Boolean(item.provider_viewed);
+    const accepted = Boolean(item.provider_accepted);
+    const closed = Boolean(item.provider_closed);
 
-    // Map CLA API status codes to readable status
-    if (requiresActionBy.includes('provider_review') || requiresActionBy.includes('provider')) {
+    if (!viewed && !accepted && !closed) {
       return 'New';
     }
-
-    if (requiresActionBy.includes('operator')) {
+    if (viewed && !accepted && !closed) {
       return 'Opened';
     }
-
-    if (item.provider_accepted !== null && item.provider_accepted !== undefined) {
+    if (accepted && !closed) {
       return 'Accepted';
     }
-
-    if (item.provider_closed !== null && item.provider_closed !== undefined) {
+    if (closed) {
       return 'Closed';
     }
-
     return '';
   }
 
