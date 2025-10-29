@@ -135,8 +135,7 @@ export async function logout(page: Page): Promise<void> {
  * });
  */
 export async function setupAuth(page: Page): Promise<void> {
-  const authenticated = await isAuthenticated(page);
-  if (!authenticated) {
-    await login(page);
-  }
+  // Always perform login - simple and reliable
+  // Each test gets a fresh context, so we need to login every time
+  await login(page);
 }
