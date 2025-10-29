@@ -109,18 +109,23 @@
             { key: "phoneNumber", text: t('components.table.columns.phoneNumber') },
             { key: "dateOfBirth", text: t('components.table.columns.dateOfBirth') },
             { key: "caseStatus", text: t('components.table.columns.status') },
-            { key: "lastModified", text: t('components.table.columns.lastModified'), sortable: true, classes: "govuk-table__header--numeric", cellClasses: "govuk-table__cell--numeric" }
+            { key: "modified", text: t('components.table.columns.lastModified'), sortable: true, classes: "govuk-table__header--numeric", cellClasses: "govuk-table__cell--numeric" }
           ],
-          sortBy: sortBy or "lastModified",
+          sortBy: sortBy or "modified",
           sortOrder: sortOrder or "desc",
-          basePath: "/search"
+          basePath: "/search",
+          searchKeyword: searchKeyword,
+          statusSelect: statusSelect
         }) }}
 
         {% if pagination %}
           {{ paginationComponent({
             pagination: pagination,
+            sortBy: sortBy or "modified",
             sortOrder: sortOrder or "desc",
-            basePath: "/search"
+            basePath: "/search",
+            searchKeyword: searchKeyword,
+            statusSelect: statusSelect
           }) }}
         {% endif %}
       {% else %}

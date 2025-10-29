@@ -13,11 +13,11 @@ export interface CaseData {
   laaReference: string;
   caseReference: string;
   refCode: string;
-  dateReceived: string;
+  provider_assigned_at: string;
   caseStatus: string;
   dateOfBirth: string;
-  lastModified?: string;
-  dateClosed?: string;
+  modified?: string;
+  provider_closed?: string;
   // Client contact details
   phoneNumber?: string;
   safeToCall?: boolean;
@@ -29,20 +29,6 @@ export interface CaseData {
   postcode?: string;
   specialNotes?: string;
   outcomeDescription?: string;
-}
-
-/**
- * Raw case data structure from fixtures (before transformation)
- */
-export interface CaseDataRaw {
-  fullName: string;
-  caseReference: string;
-  refCode: string;
-  dateReceived: string;
-  caseStatus: string;
-  dateOfBirth: string;
-  lastModified?: string;
-  dateClosed?: string;
 }
 
 /**

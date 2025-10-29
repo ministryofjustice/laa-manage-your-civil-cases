@@ -79,7 +79,7 @@ describe('ApiService', () => {
         keyword: 'John',
         status: 'all',
         page: 1,
-        limit: 10,
+        pageSize: 10,
         sortOrder: 'desc'
       };
 
@@ -108,7 +108,7 @@ describe('ApiService', () => {
         keyword: 'nonexistent',
         status: 'all',
         page: 1,
-        limit: 10,
+        pageSize: 10,
         sortOrder: 'desc'
       };
 
@@ -127,7 +127,7 @@ describe('ApiService', () => {
         keyword: 'test',
         status: 'all',
         page: 1,
-        limit: 10,
+        pageSize: 10,
         sortOrder: 'desc'
       };
 
@@ -153,9 +153,9 @@ describe('ApiService', () => {
       const searchParams: SearchApiParams = {
         keyword: 'john smith',
         status: 'accepted',
+        sortOrder: 'asc',
         page: 2,
-        limit: 15,
-        sortOrder: 'asc'
+        pageSize: 15,
       };
 
       await apiService.searchCases(axiosMiddlewareStub, searchParams);
@@ -166,7 +166,10 @@ describe('ApiService', () => {
       expect(call.args[0]).to.equal('/cla_provider/api/v1/case/');
       expect(call.args[1].params).to.deep.equal({
         search: 'john smith',
-        only: 'accepted'
+        only: 'accepted',
+        page: 2,
+        page_size: 15,
+        ordering: 'modified'
       });
     });
   });

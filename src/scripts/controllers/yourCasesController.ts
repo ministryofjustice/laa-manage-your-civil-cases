@@ -1,11 +1,11 @@
 import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
 import type { CaseData } from '#types/case-types.js';
-import { devLog, devError, createProcessedError } from '#src/scripts/helpers/index.js';
+import { devLog, devError, createProcessedError, buildOrderingParamFields } from '#src/scripts/helpers/index.js';
 
 // Constants
 const DEFAULT_PAGE = 1;
-const DEFAULT_LIMIT = 20;
+const DEFAULT_LIMIT = 4;
 const EMPTY_TOTAL = 0;
 
 /**
@@ -26,7 +26,9 @@ function parsePageNumber(pageParam: unknown): number {
  * Load cases data using the API service with axios middleware
  * @param {Request} req Express request object (contains axios middleware)
  * @param {string} caseType Type of case (new, accepted, opened, closed)
- * @param {string} sortOrder Sort order (asc/desc)
+ * @param {object} sortParams Sort parameters object
+ * @param {string} sortParams.sortBy Sort field
+ * @param {'asc' | 'desc'} sortParams.sortOrder Sort order (asc/desc)
  * @param {number} page Page number for pagination
  * @returns {Promise<{data: CaseData[], pagination: {total: number, page: number, limit: number, totalPages?: number}}>} Case data with pagination metadata
  * @throws {Error} Throws error to be handled by global error handler
@@ -34,7 +36,7 @@ function parsePageNumber(pageParam: unknown): number {
 async function loadCasesData(
   req: Request,
   caseType: string,
-  sortOrder = 'desc',
+  sortParams: { sortBy: string; sortOrder: string },
   page = DEFAULT_PAGE
 ): Promise<{ data: CaseData[], pagination: { total: number, page: number, limit: number, totalPages?: number } }> {
   // Validate case type
@@ -55,15 +57,16 @@ async function loadCasesData(
   }
 
   // Validate sort order
-  const validSortOrder: 'asc' | 'desc' = sortOrder === 'asc' ? 'asc' : 'desc';
+  const validSortOrder: 'asc' | 'desc' = sortParams.sortOrder === 'asc' ? 'asc' : 'desc';
   const validPage = Math.max(DEFAULT_PAGE, page);
 
   // Use API service with axios middleware
   const response = await apiService.getCases(req.axiosMiddleware, {
     caseType,
     sortOrder: validSortOrder,
-    sortBy: 'dateReceived',
-    page: validPage
+    sortBy: sortParams.sortBy,
+    page: validPage,
+    limit: DEFAULT_LIMIT
   });
 
   if (response.status === 'error') {
@@ -91,13 +94,31 @@ async function loadCasesData(
 export function createCaseRouteHandler(caseType: string) {
   return async function (req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const sortOrder = req.query.sort === 'asc' ? 'asc' : 'desc';
+      // The default `sortBy` should correspond to the `caseType`
+      const defaultSortMap: Record<string, { sortBy: string; sortOrder: string }> = {
+        new: { sortBy: 'provider_assigned_at', sortOrder: 'desc' },
+        accepted: { sortBy: 'modified', sortOrder: 'desc' },
+        opened: { sortBy: 'modified', sortOrder: 'desc' },
+        closed: { sortBy: 'provider_closed', sortOrder: 'desc' }
+      };
+
+      const defaultSort = defaultSortMap[caseType] ?? { sortBy: 'provider_assigned_at', sortOrder: 'desc' };
+
+      // Parse ordering parameter (e.g., 'provider_assigned_at' for asc, '-provider_assigned_at' for desc)
+      const ordering = typeof req.query.ordering === 'string' ? req.query.ordering : '';
+      let {sortBy} = defaultSort;
+      let {sortOrder} = defaultSort;
+      
+      // Parse ordering parameter (e.g., 'modified' for asc, '-modified' for desc)
+      ({ sortBy, sortOrder } = buildOrderingParamFields(ordering, sortBy, sortOrder));
+
       const page = parsePageNumber(req.query.page);
-      const result = await loadCasesData(req, caseType, sortOrder, page);
+      const result = await loadCasesData(req, caseType, { sortBy, sortOrder }, page);
 
       res.render('cases/index', {
         activeTab: caseType,
         data: result.data,
+        sortBy,
         sortOrder,
         pagination: result.pagination
       });
