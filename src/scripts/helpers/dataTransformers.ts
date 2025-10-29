@@ -5,6 +5,7 @@
  */
 
 import type { FieldConfig } from '#types/form-controller-types.js';
+import { formatDate } from './dateFormatter.js';
 /**
  * Safely extract nested field value using custom path resolution
  * @param {unknown} obj - Object to traverse
@@ -324,6 +325,8 @@ export const isSafeToCall = (personalDetails: unknown): boolean => {
  * @returns {object} Transformed contact details
  */
 export const transformContactDetails = (personalDetails: unknown): {
+  fullName: string;
+  dateOfBirth: string;
   phoneNumber: string;
   safeToCall: boolean;
   announceCall: boolean;
@@ -335,6 +338,8 @@ export const transformContactDetails = (personalDetails: unknown): {
     throw new Error('Invalid API response: missing personal_details');
   }
 
+  const fullName = safeString(personalDetails.full_name);
+  const dateOfBirth = formatDate(safeString(personalDetails.date_of_birth));
   const phoneNumber = extractPhoneNumber(personalDetails);
   const safeToCall = isSafeToCall(personalDetails);
   const announceCall = Boolean(personalDetails.announce_call);
@@ -344,6 +349,8 @@ export const transformContactDetails = (personalDetails: unknown): {
   postcode = postcode.toUpperCase();
 
   return {
+    fullName,
+    dateOfBirth,
     phoneNumber,
     safeToCall,
     announceCall,
