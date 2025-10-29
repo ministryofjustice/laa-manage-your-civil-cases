@@ -18,6 +18,7 @@ export interface SessionConfig {
   name: string;
   resave: boolean;
   saveUninitialized: boolean;
+  encryptionKey: string;
 }
 
 export interface PathsConfig {

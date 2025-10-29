@@ -136,6 +136,7 @@ jobs:
           kube-cluster: ${{ secrets.KUBE_CLUSTER }}
           kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
           session_secret: ${{ secrets.SESSION_SECRET }}
+          session_encryption_key: ${{ secrets.SESSION_ENCRYPTION_KEY }}
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
           api_client_id: ${{ secrets.API_CLIENT_ID }}
           api_client_secret: ${{ secrets.API_CLIENT_SECRET }}
@@ -161,6 +162,7 @@ jobs:
           kube-cluster: ${{ secrets.KUBE_CLUSTER }}
           kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
           session_secret: ${{ secrets.SESSION_SECRET }}
+          session_encryption_key: ${{ secrets.SESSION_ENCRYPTION_KEY }}
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
           api_client_id: ${{ secrets.API_CLIENT_ID }}
           api_client_secret: ${{ secrets.API_CLIENT_SECRET }}
@@ -186,6 +188,7 @@ jobs:
           kube-cluster: ${{ secrets.KUBE_CLUSTER }}
           kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
           session_secret: ${{ secrets.SESSION_SECRET }}
+          session_encryption_key: ${{ secrets.SESSION_ENCRYPTION_KEY }}
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
           api_client_id: ${{ secrets.API_CLIENT_ID }}
           api_client_secret: ${{ secrets.API_CLIENT_SECRET }}
