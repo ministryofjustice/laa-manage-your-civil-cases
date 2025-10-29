@@ -5,7 +5,7 @@ FROM node:25.0.0-alpine
 WORKDIR /app
 
 # Install corepack globally via Yarn as base image doesn't have it, 
-# Then enable Corepack and prepare Yarn version
+# then enable Corepack and prepare Yarn version
 RUN yarn global add corepack && \
     corepack enable && corepack prepare yarn@4.9.2 --activate
 
