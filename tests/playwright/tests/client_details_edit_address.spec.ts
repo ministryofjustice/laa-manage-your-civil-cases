@@ -1,8 +1,12 @@
 import { test, expect } from '../fixtures/index.js';
-import { t, getClientDetailsUrlByStatus } from '../utils/index.js';
+import { t, getClientDetailsUrlByStatus, setupAuth } from '../utils/index.js';
 
 const visitUrl = getClientDetailsUrlByStatus('default') + '/change/address';
 const clientDetailsUrl = getClientDetailsUrlByStatus('default');
+
+test.beforeEach(async ({ page }) => {
+  await setupAuth(page);
+});
 
 test('viewing change address form, to see the expected elements', async ({ page, i18nSetup }) => {
   const addressInput = page.locator('#address');

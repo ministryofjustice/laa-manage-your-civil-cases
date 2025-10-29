@@ -18,6 +18,7 @@ router.get('/:caseReference/scope', async function (req: Request, res: Response,
 
 /* GET financial eligibility details for a specific case. */
 router.get('/:caseReference/financial-eligibility', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
+  console.error(`[DEBUG ROUTE] Hit financial-eligibility route for ${req.params.caseReference}`);
   await handleCaseDetailsTab(req, res, next, 'financial_eligibility');
 });
 

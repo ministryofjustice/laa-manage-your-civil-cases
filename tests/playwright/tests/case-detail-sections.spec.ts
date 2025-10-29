@@ -1,11 +1,23 @@
 import { test, expect } from '../fixtures/index.js';
-import { t } from '../utils/index.js';
+import { t, setupAuth } from '../utils/index.js';
+
+// Login before each test since case detail pages require authentication
+test.beforeEach(async ({ page }) => {
+  await setupAuth(page);
+});
 
 const caseReference = 'PC-1922-1879'; // Default test case reference
 
 test('financial eligibility page should display correctly', async ({ page, i18nSetup }) => {
   // Navigate to the financial eligibility page
   await page.goto(`/cases/${caseReference}/financial-eligibility`);
+  
+  // DEBUG: Check what page we actually got
+  const pageTitle = await page.title();
+  const pageH1 = await page.locator('h1').first().textContent();
+  console.log(`[TEST DEBUG] Page title: ${pageTitle}`);
+  console.log(`[TEST DEBUG] Page H1: ${pageH1}`);
+  console.log(`[TEST DEBUG] Current URL: ${page.url()}`);
   
   // Check for page heading (target the main heading with id)
   await expect(page.locator('#page-heading')).toContainText('Jack Young');
