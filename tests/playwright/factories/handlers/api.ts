@@ -101,7 +101,15 @@ function transformToApiFormat(caseItem: MockCase): object {
       callback_preference: caseItem.clientSupportNeeds.callbackPreference === 'Yes',
       language: caseItem.clientSupportNeeds.languageSupportNeeds || null,
       notes: caseItem.clientSupportNeeds.notes || null
-    } : null,
+    } : {
+      // Provide empty structure when no client support needs
+      bsl_webcam: false,
+      minicom: false,
+      text_relay: false,
+      callback_preference: false,
+      language: null,
+      notes: null
+    },
     // Third party details nested object
     thirdparty_details: caseItem.thirdParty ? {
       personal_details: {
