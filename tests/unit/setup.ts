@@ -4,6 +4,6 @@
  */
 
 // Set required environment variables for tests
-process.env.SESSION_SECRET = process.env.SESSION_SECRET || 'test-session-secret-for-mocha-tests-only';
-process.env.SESSION_NAME = process.env.SESSION_NAME || 'test.session';
-process.env.SESSION_ENCRYPTION_KEY = process.env.SESSION_ENCRYPTION_KEY || '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef';
+process.env.SESSION_SECRET ??= 'test-session-secret-for-mocha-tests-only';
+process.env.SESSION_NAME ??= 'test.session';
+process.env.SESSION_ENCRYPTION_KEY ??= '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef';
