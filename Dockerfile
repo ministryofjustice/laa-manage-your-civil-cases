@@ -1,11 +1,13 @@
 # Use the official Node.js image as the base image
-FROM node:24.10.0-alpine
+FROM node:25.0.0-alpine
 
 # Set the working directory inside the container
 WORKDIR /app
 
-# Enable Corepack and prepare Yarn version
-RUN corepack enable && corepack prepare yarn@4.9.2 --activate
+# Install corepack globally via Yarn as base image doesn't have it, 
+# Then enable Corepack and prepare Yarn version
+RUN yarn global add corepack && \
+    corepack enable && corepack prepare yarn@4.9.2 --activate
 
 # Copy package.json and yarn.lock to the working directory
 COPY package*.json yarn.lock .yarnrc.yml ./
