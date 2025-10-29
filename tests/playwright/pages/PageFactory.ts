@@ -4,6 +4,7 @@ import { EditNamePage } from './EditNamePage.js';
 import { EditPhoneNumberPage } from './EditPhoneNumberPage.js';
 import { EditDateOfBirthPage } from './EditDateOfBirthPage.js';
 import { EditEmailPage } from './EditEmailPage.js';
+import { LoginPage } from './LoginPage.js';
 
 /**
  * Factory class for creating page objects for client detail edit forms
@@ -56,5 +57,13 @@ export class PageFactory {
    */
   get editEmail(): EditEmailPage {
     return new EditEmailPage(this.page);
+  }
+
+  /**
+   * Gets an instance of the login page
+   * @returns {LoginPage} The login page object
+   */
+  get login(): LoginPage {
+    return new LoginPage(this.page);
   }
 }

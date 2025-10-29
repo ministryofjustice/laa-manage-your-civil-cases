@@ -1,6 +1,11 @@
 import { test, expect } from '../fixtures/index.js';
+import { setupAuth } from '../utils/index.js';
 
 test.describe('Edit Client Name', () => {
+  test.beforeEach(async ({ page }) => {
+    await setupAuth(page);
+  });
+
   test('viewing change name form should display expected elements', async ({ pages, i18nSetup }) => {
     const editNamePage = pages.editName;
     await editNamePage.navigate();

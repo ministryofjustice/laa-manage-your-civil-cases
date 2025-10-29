@@ -1,10 +1,14 @@
 import { test, expect } from '../fixtures/index.js';
-import { t, getClientDetailsUrlByStatus } from '../utils/index.js';
+import { t, getClientDetailsUrlByStatus, setupAuth } from '../utils/index.js';
 
 // Remove client support needs is a case route, not a client-details route, so we need to build the URL differently
 const caseReference = 'PC-1922-1879'; // Default test case reference
 const visitUrl = `/cases/${caseReference}/confirm/remove-support-need`;
 const clientDetailsUrl = getClientDetailsUrlByStatus('default');
+
+test.beforeEach(async ({ page }) => {
+  await setupAuth(page);
+});
 
 test('viewing remove client support needs confirmation should display expected elements', async ({ page, i18nSetup }) => {
   const confirmButton = page.getByRole('button', { name: 'Yes, remove' });

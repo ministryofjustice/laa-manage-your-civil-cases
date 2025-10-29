@@ -1,5 +1,10 @@
 import { test, expect } from '../fixtures/index.js';
-import { t, getClientDetailsUrlByStatus } from '../utils/index.js';
+import { t, getClientDetailsUrlByStatus, setupAuth } from '../utils/index.js';
+
+// Login before each test since client details pages require authentication
+test.beforeEach(async ({ page }) => {
+  await setupAuth(page);
+});
 
 test('client details selected from opened cases tab has correct page elements', async ({ page, i18nSetup }) => {
   // Navigate to the client details

@@ -1,5 +1,10 @@
 import { test, expect } from '../fixtures/index.js';
-import { t } from '../utils/index.js';
+import { t, setupAuth } from '../utils/index.js';
+
+// Login before each test since case detail pages require authentication
+test.beforeEach(async ({ page }) => {
+  await setupAuth(page);
+});
 
 const caseReference = 'PC-1922-1879'; // Default test case reference
 
@@ -8,7 +13,7 @@ test('financial eligibility page should display correctly', async ({ page, i18nS
   await page.goto(`/cases/${caseReference}/financial-eligibility`);
   
   // Check for page heading (target the main heading with id)
-  await expect(page.locator('#page-heading')).toContainText('Jack Young');
+  await expect(page.locator('#page-heading')).toContainText('Jack Youngs');
   
   // Check for back link to client details (be more specific)
   const backLink = page.locator('.govuk-back-link');
@@ -24,7 +29,7 @@ test('notes and history page should display correctly', async ({ page, i18nSetup
   await page.goto(`/cases/${caseReference}/notes-and-history`);
   
   // Check for page heading (target the main heading with id)
-  await expect(page.locator('#page-heading')).toContainText('Jack Young');
+  await expect(page.locator('#page-heading')).toContainText('Jack Youngs');
   
   // Check for back link to client details (be more specific)
   const backLink = page.locator('.govuk-back-link');
@@ -40,7 +45,7 @@ test('scope page should display correctly', async ({ page, i18nSetup }) => {
   await page.goto(`/cases/${caseReference}/scope`);
   
   // Check for page heading (target the main heading with id)
-  await expect(page.locator('#page-heading')).toContainText('Jack Young');
+  await expect(page.locator('#page-heading')).toContainText('Jack Youngs');
   
   // Check for back link to client details (be more specific)
   const backLink = page.locator('.govuk-back-link');

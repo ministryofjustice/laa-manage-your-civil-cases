@@ -1,6 +1,10 @@
 import { test, expect } from '../fixtures/index.js';
-import { t, getClientDetailsUrlByStatus } from '../utils/index.js';
+import { t, getClientDetailsUrlByStatus, setupAuth } from '../utils/index.js';
 import { EditEmailPage } from '../pages/EditEmailPage.js';
+
+test.beforeEach(async ({ page }) => {
+  await setupAuth(page);
+});
 
 test('viewing change email-address form, to see the expected elements', async ({ page, i18nSetup }) => {
   const editEmailPage = new EditEmailPage(page);
