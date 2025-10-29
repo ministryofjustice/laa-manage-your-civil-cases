@@ -135,44 +135,24 @@ export const apiHandlers = [
     return HttpResponse.json(caseItem);
   }),
 
-  // Intercept cases by status (GET /latest/mock/cases/{status})
-  // Put this AFTER the individual case handler
-  http.get(`${API_BASE_URL}${API_PREFIX}/cases/:caseType`, ({ params, request }) => {
-    const { caseType } = params;
-    
-    // Skip if this looks like a case reference
-    if (/^PC-\d{4}-\d{4}$/.test(caseType as string)) {
-      return; // Let case details handler process this
-    }
-    
+  // Intercept cases by status or search (GET /latest/mock/case)
+  // This handler now matches the new API endpoint format with query parameters
+  http.get(`${API_BASE_URL}${API_PREFIX}/case`, ({ request }) => {
     const url = new URL(request.url);
-    const page = parseInt(url.searchParams.get('page') || '1', 10);
-    const limit = parseInt(url.searchParams.get('limit') || '20', 10);
-    
-    
-    const filteredCases = filterCasesByStatus(caseType as string);
-    const result = paginateResults(filteredCases, page, limit);
-    
-    // Return the data array with the correct headers that apiService.extractPaginationMeta expects
-    return HttpResponse.json(result.data, {
-      headers: {
-        'x-total-count': result.pagination.total.toString(),
-        'x-page': result.pagination.page.toString(),
-        'x-per-page': result.pagination.limit.toString(),  // Note: x-per-page, not x-limit
-        'x-total-pages': result.pagination.totalPages.toString(),
-      }
-    });
-  }),
-
-  // Intercept case search (GET /cla_provider/api/v1/case/)
-  http.get(`${API_BASE_URL}${API_PREFIX}/case/`, ({ request }) => {
-    const url = new URL(request.url);
-    const search = url.searchParams.get('search') || '';
     const only = url.searchParams.get('only') || '';
+    const search = url.searchParams.get('search') || '';
+    const page = parseInt(url.searchParams.get('page') || '1', 10);
+    const page_size = parseInt(url.searchParams.get('page_size') || '20', 10);
+    const ordering = url.searchParams.get('ordering') || '';
     
     let filteredCases = cases;
     
-    // Filter by search keyword if provided
+    // Filter by status if 'only' parameter provided (e.g., only=new, only=accepted)
+    if (only) {
+      filteredCases = filterCasesByStatus(only);
+    }
+    
+    // Filter by search keyword if provided (for search functionality)
     if (search) {
       const searchLower = search.toLowerCase();
       filteredCases = filteredCases.filter(caseItem => 
@@ -181,24 +161,35 @@ export const apiHandlers = [
       );
     }
     
-    // Filter by status if provided
-    if (only) {
-      const statusMap: Record<string, string[]> = {
-        'new': ['New'],
-        'accepted': ['Accepted'],
-        'opened': ['Opened'],
-        'closed': ['Closed']
-      };
-      const validStatuses = statusMap[only] || [];
-      filteredCases = filteredCases.filter(caseItem => 
-        validStatuses.includes(caseItem.caseStatus)
-      );
+    // Apply sorting if ordering parameter provided
+    if (ordering) {
+      const isDescending = ordering.startsWith('-');
+      const sortField = isDescending ? ordering.substring(1) : ordering;
+      
+      filteredCases = [...filteredCases].sort((a, b) => {
+        const aVal = (a as any)[sortField];
+        const bVal = (b as any)[sortField];
+        
+        if (aVal < bVal) return isDescending ? 1 : -1;
+        if (aVal > bVal) return isDescending ? -1 : 1;
+        return 0;
+      });
     }
     
-    // Return CLA API format with results array and count
+    // Paginate results
+    const result = paginateResults(filteredCases, page, page_size);
+    
+    // Return CLA API format with results array, count, and pagination metadata in body
     return HttpResponse.json({
-      results: filteredCases,
-      count: filteredCases.length
+      results: result.data,
+      count: result.pagination.total,
+      // Include pagination metadata in response body (new API format)
+      pagination: {
+        page: result.pagination.page,
+        page_size: result.pagination.limit,
+        total: result.pagination.total,
+        total_pages: result.pagination.totalPages
+      }
     });
   }),
 

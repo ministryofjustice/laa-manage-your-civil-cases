@@ -1,5 +1,10 @@
 import { test, expect } from '../fixtures/index.js';
-import { t } from '../utils/index.js';
+import { t, setupAuth } from '../utils/index.js';
+
+// Login before each test since search page requires authentication
+test.beforeEach(async ({ page }) => {
+  await setupAuth(page);
+});
 
 const visitUrl = '/search';
 test('search page should have rendered correctly', async ({ page, i18nSetup }) => {
