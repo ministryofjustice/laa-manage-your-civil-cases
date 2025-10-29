@@ -300,14 +300,24 @@ class ApiService {
       // Call API endpoint
       const response = await configuredAxios.get(`${API_PREFIX}/case/${caseReference}/detailed`);
 
+      console.error(`[DEBUG API] Raw response status: ${response.status}`);
+      console.error(`[DEBUG API] Raw response data type: ${typeof response.data}`);
+      console.error(`[DEBUG API] Raw response data keys: ${Object.keys(response.data ?? {}).join(', ')}`);
+
       devLog(`API: Client details response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
 
+      const transformedData = transformClientDetailsItem(response.data);
+      console.error(`[DEBUG API] Transformed data keys: ${Object.keys(transformedData ?? {}).join(', ')}`);
+
       return {
-        data: transformClientDetailsItem(response.data),
+        data: transformedData,
         status: 'success'
       };
 
     } catch (error) {
+      console.error(`[DEBUG API] Caught error: ${error}`);
+      console.error(`[DEBUG API] Error type: ${typeof error}`);
+      console.error(`[DEBUG API] Error stack: ${error instanceof Error ? error.stack : 'no stack'}`);
       const errorMessage = extractAndLogError(error, 'API error');
 
       return {

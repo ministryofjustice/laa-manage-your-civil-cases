@@ -69,6 +69,60 @@ interface MockCase {
 const cases = mockData as MockCase[];
 
 /**
+ * Transform mock case data to CLA API format (snake_case with nested objects)
+ * @param {MockCase} caseItem - Mock case data
+ * @returns {object} Case data in CLA API format
+ */
+function transformToApiFormat(caseItem: MockCase): object {
+  return {
+    reference: caseItem.caseReference,
+    laa_reference: caseItem.laaReference,
+    full_name: caseItem.fullName,
+    date_of_birth: caseItem.dateOfBirth,
+    state: caseItem.caseStatus,
+    provider_assigned_at: caseItem.dateReceived,
+    modified: caseItem.lastModified || caseItem.dateReceived,
+    provider_closed: caseItem.dateClosed || null,
+    // Personal details nested object
+    personal_details: {
+      home_phone: caseItem.phoneNumber,
+      mobile_phone: caseItem.phoneNumber,
+      safe_to_contact: caseItem.safeToCall,
+      contact_for_research: caseItem.announceCall,
+      email: caseItem.emailAddress,
+      street: caseItem.address,
+      postcode: caseItem.postcode
+    },
+    // Adaptation details nested object
+    adaptation_details: caseItem.clientSupportNeeds ? {
+      bsl_webcam: caseItem.clientSupportNeeds.bslWebcam === 'Yes',
+      minicom: caseItem.clientSupportNeeds.textRelay === 'Yes',
+      text_relay: caseItem.clientSupportNeeds.textRelay === 'Yes',
+      callback_preference: caseItem.clientSupportNeeds.callbackPreference === 'Yes',
+      language: caseItem.clientSupportNeeds.languageSupportNeeds || null,
+      notes: caseItem.clientSupportNeeds.notes || null
+    } : null,
+    // Third party details nested object
+    thirdparty_details: caseItem.thirdParty ? {
+      personal_details: {
+        full_name: caseItem.thirdParty.fullName,
+        email: caseItem.thirdParty.emailAddress,
+        mobile_phone: caseItem.thirdParty.contactNumber,
+        safe_to_contact: caseItem.thirdParty.safeToCall,
+        street: caseItem.thirdParty.address,
+        postcode: caseItem.thirdParty.postcode
+      },
+      personal_relationship: caseItem.thirdParty.relationshipToClient?.selected?.[0] || null,
+      personal_relationship_note: null,
+      spoke_to: true,
+      no_contact_reason: null,
+      organisation_name: null,
+      reason: caseItem.thirdParty.relationshipToClient?.selected?.[0] || null
+    } : null
+  };
+}
+
+/**
  * Filter cases by status type
  * @param {string} status - The status to filter by
  * @returns {MockCase[]} Array of filtered cases
@@ -109,11 +163,31 @@ function paginateResults(data: MockCase[], page = 1, limit = 20) {
 
 export const apiHandlers = [
   // Intercept authentication token requests
-  http.post(`${API_BASE_URL}/latest/token`, () => HttpResponse.json({
+  http.post(`${API_BASE_URL}/oauth2/access_token`, () => HttpResponse.json({
       access_token: 'mock-jwt-token',
       token_type: 'Bearer',
       expires_in: 3600
     })),
+
+  // Intercept individual case details (GET /latest/mock/case/{caseReference}/detailed)
+  // This is what the app actually calls for client details pages
+  http.get(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/detailed`, ({ params }) => {
+    const { caseReference } = params;
+    
+    console.log(`[MSW] Intercepting GET /case/${caseReference}/detailed`);
+    
+    const caseItem = cases.find(c => c.caseReference === caseReference);
+    
+    if (!caseItem) {
+      console.log(`[MSW] Case ${caseReference} not found in mock data`);
+      return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
+    }
+    
+    console.log(`[MSW] Returning case data for ${caseReference}`);
+    
+    // Transform mock data to match the real CLA API response format
+    return HttpResponse.json(transformToApiFormat(caseItem));
+  }),
 
   // Intercept individual case details (GET /latest/mock/cases/{caseReference})
   // Put this BEFORE the status handler to match specific case references first
@@ -205,10 +279,8 @@ export const apiHandlers = [
       return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
     }
     
-    // Return the updated case data (in real implementation this would update the mock data)
-    const updatedCase = { ...caseItem, ...updateData };
-    
-    return HttpResponse.json(updatedCase);
+    // Return the case in API format (in real implementation this would update the mock data)
+    return HttpResponse.json(transformToApiFormat(caseItem));
   }),
 
   // Intercept add third party contact (POST /latest/mock/cases/{caseReference}/third-party)
@@ -223,16 +295,8 @@ export const apiHandlers = [
       return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
     }
     
-    // Return the updated case with new third party data (what apiService expects)
-    const updatedCase = {
-      ...caseItem,
-      thirdParty: {
-        ...thirdPartyData,
-        thirdPartyId: `tp-${Date.now()}` // Mock ID
-      }
-    };
-    
-    return HttpResponse.json(updatedCase, { status: 201 });
+    // Return the case in API format (what apiService expects)
+    return HttpResponse.json(transformToApiFormat(caseItem), { status: 201 });
   }),
 
   // Intercept update third party contact (PUT /latest/mock/cases/{caseReference}/third-party)
@@ -247,15 +311,8 @@ export const apiHandlers = [
       return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
     }
     
-    // Return the updated case with modified third party data (what apiService expects)
-    const updatedCase = {
-      ...caseItem,
-      thirdParty: {
-        ...thirdPartyData
-      }
-    };
-    
-    return HttpResponse.json(updatedCase);
+    // Return the case in API format (what apiService expects)
+    return HttpResponse.json(transformToApiFormat(caseItem));
   }),
 
   // Intercept delete third party contact (DELETE /latest/mock/cases/{caseReference}/third-party)
@@ -271,13 +328,11 @@ export const apiHandlers = [
       return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
     }
     
-    // Return the updated case without third party data (what apiService expects)
-    const updatedCase = {
-      ...caseItem,
-      thirdParty: null // Remove third party data
-    };
+    // Create a modified version without third party for the response
+    const caseWithoutThirdParty = { ...caseItem, thirdParty: null };
     
-    return HttpResponse.json(updatedCase);
+    // Return the case in API format without third party data
+    return HttpResponse.json(transformToApiFormat(caseWithoutThirdParty));
   }),
 
   // Intercept delete client support needs (DELETE /latest/mock/cases/{caseReference}/client-support-needs)
@@ -291,13 +346,11 @@ export const apiHandlers = [
       return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
     }
     
-    // Return the updated case without client support needs data (what apiService expects)
-    const updatedCase = {
-      ...caseItem,
-      clientSupportNeeds: null // Remove client support needs data
-    };
+    // Create a modified version without client support needs for the response
+    const caseWithoutSupportNeeds = { ...caseItem, clientSupportNeeds: undefined };
     
-    return HttpResponse.json(updatedCase);
+    // Return the case in API format without client support needs data
+    return HttpResponse.json(transformToApiFormat(caseWithoutSupportNeeds));
   }),
 
 ];

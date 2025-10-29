@@ -12,6 +12,13 @@ test('financial eligibility page should display correctly', async ({ page, i18nS
   // Navigate to the financial eligibility page
   await page.goto(`/cases/${caseReference}/financial-eligibility`);
   
+  // DEBUG: Check what page we actually got
+  const pageTitle = await page.title();
+  const pageH1 = await page.locator('h1').first().textContent();
+  console.log(`[TEST DEBUG] Page title: ${pageTitle}`);
+  console.log(`[TEST DEBUG] Page H1: ${pageH1}`);
+  console.log(`[TEST DEBUG] Current URL: ${page.url()}`);
+  
   // Check for page heading (target the main heading with id)
   await expect(page.locator('#page-heading')).toContainText('Jack Young');
   

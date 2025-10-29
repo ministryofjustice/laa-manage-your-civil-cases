@@ -34,13 +34,19 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
     // Fetch client details from API
     const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
 
+    console.error(`[DEBUG CONTROLLER] API response status: ${response.status}`);
+    console.error(`[DEBUG CONTROLLER] API response has data: ${response.data !== null}`);
+    console.error(`[DEBUG CONTROLLER] API response message: ${response.message ?? 'no message'}`);
+
     if (response.status === 'success' && response.data !== null) {
+      console.error(`[DEBUG CONTROLLER] Success - rendering page for ${caseReference}`);
       res.render('case_details/index.njk', {
         activeTab,
         client: response.data,
         caseReference: response.data.caseReference
       });
     } else {
+      console.error(`[DEBUG CONTROLLER] Failure - rendering 404 for ${caseReference}`);
       devError(`Client details not found for case: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);
       res.status(NOT_FOUND).render('main/error.njk', {
         status: '404',

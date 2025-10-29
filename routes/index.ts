@@ -49,6 +49,7 @@ router.get('/health', function (req: Request, res: Response): void {
 router.use(function (req: Request, res: Response): void {
   const { originalUrl, method } = req;
 
+  console.error(`[DEBUG 404] Caught 404 for: ${method} ${originalUrl}`);
   devError(`404 - Page not found: ${method} ${originalUrl}`);
 
   // Provide more context-aware error messages
