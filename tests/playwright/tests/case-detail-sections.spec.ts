@@ -1,5 +1,10 @@
 import { test, expect } from '../fixtures/index.js';
-import { t } from '../utils/index.js';
+import { t, setupAuth } from '../utils/index.js';
+
+// Login before each test since case detail pages require authentication
+test.beforeEach(async ({ page }) => {
+  await setupAuth(page);
+});
 
 const caseReference = 'PC-1922-1879'; // Default test case reference
 
