@@ -88,7 +88,7 @@ function transformToApiFormat(caseItem: MockCase): object {
       home_phone: caseItem.phoneNumber,
       mobile_phone: caseItem.phoneNumber,
       safe_to_contact: caseItem.safeToCall,
-      contact_for_research: caseItem.announceCall,
+      announce_call: caseItem.announceCall,
       email: caseItem.emailAddress,
       street: caseItem.address,
       postcode: caseItem.postcode
@@ -117,7 +117,8 @@ function transformToApiFormat(caseItem: MockCase): object {
       spoke_to: true,
       no_contact_reason: null,
       organisation_name: null,
-      reason: caseItem.thirdParty.relationshipToClient?.selected?.[0] || null
+      reason: caseItem.thirdParty.relationshipToClient?.selected?.[0] || null,
+      pass_phrase: caseItem.thirdParty.passphraseSetUp?.passphrase || null
     } : null
   };
 }
