@@ -10,6 +10,7 @@ const MIN_MONTH = 1;
 const MAX_MONTH = 12;
 const YEAR_LENGTH = 4;
 const DATE_OFFSET = 1;
+const DATE_IN_DISTANT_PAST = 1901
 
 interface ClientDateOfBirthBody {
   'dateOfBirth-day': string;
@@ -125,6 +126,7 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
          * Validates that the year is a valid integer
          * @returns {TypedValidationError} Error for invalid year
          */
+        options: { min: DATE_IN_DISTANT_PAST },
         errorMessage: () => new TypedValidationError({
           summaryMessage: t('forms.clientDetails.dateOfBirth.validationError.year.isInt'),
           inlineMessage: t('forms.clientDetails.dateOfBirth.validationError.year.isInt'),
