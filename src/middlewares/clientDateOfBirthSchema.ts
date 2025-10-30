@@ -10,7 +10,7 @@ const MIN_MONTH = 1;
 const MAX_MONTH = 12;
 const YEAR_LENGTH = 4;
 const DATE_OFFSET = 1;
-const DATE_IN_DISTANT_PAST = 1900
+const DATE_IN_DISTANT_PAST = 1901
 
 interface ClientDateOfBirthBody {
   'dateOfBirth-day': string;
