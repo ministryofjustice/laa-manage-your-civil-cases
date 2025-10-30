@@ -122,11 +122,11 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
         bail: true, // Stop further year validation if format is wrong
       },
       isInt: {
+        options: { min: DATE_IN_DISTANT_PAST },
         /**
-         * Validates that the year is a valid integer
+         * Validates that the year is a valid integer and not before 1901
          * @returns {TypedValidationError} Error for invalid year
          */
-        options: { min: DATE_IN_DISTANT_PAST },
         errorMessage: () => new TypedValidationError({
           summaryMessage: t('forms.clientDetails.dateOfBirth.validationError.year.isInt'),
           inlineMessage: t('forms.clientDetails.dateOfBirth.validationError.year.isInt'),
