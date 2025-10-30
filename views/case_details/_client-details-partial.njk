@@ -179,7 +179,7 @@
   ]
 }) }}
 
-{% if data.clientSupportNeeds %}
+{% if not data.clientSupportNeeds.no_adaptations_required %}
   {# Client support needs summary card #}
   {{ summaryCardComponent({
     data: constructedData,
