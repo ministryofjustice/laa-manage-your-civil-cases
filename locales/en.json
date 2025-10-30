@@ -187,7 +187,7 @@
           "year": {
             "notEmpty": "The date of birth must include a year",
             "isLength": "Year must include 4 numbers",
-            "isInt": "Year must be a valid number, after 1900"
+            "isInt": "Year must be a valid number, after 1859"
           },
           "validDate": "Enter a date in the correct format",
           "dateInPast": "The date of birth must be in the past",
