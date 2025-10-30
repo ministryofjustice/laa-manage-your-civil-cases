@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import { validationResult, type Result } from 'express-validator';
-import { safeString, handleGetEditForm, isRecord, handlePostEditForm, extractAndConvertDateFields } from '#src/scripts/helpers/index.js';
+import { safeString, handleGetEditForm, isRecord, handlePostEditForm, extractAndConvertDateFields, extractFormFields } from '#src/scripts/helpers/index.js';
 import {
   formatValidationError,
   type ValidationErrorData
@@ -74,13 +74,24 @@ export async function postEditClientDateOfBirth(req: Request, res: Response, nex
       'dateOfBirth-year'
     ]);
 
+    const formFields = extractFormFields(req.body, [
+      'dateOfBirth-day', 
+      'dateOfBirth-month', 
+      'dateOfBirth-year'
+    ]);
+
     await handlePostEditForm(req, res, next, {
       templatePath: 'case_details/edit-date-of-birth.njk',
       fields: [
         { name: 'dateOfBirth', value: dateOfBirth, existingValue: '' }
       ],
-      apiUpdateData: { dateOfBirth }
-    });
+      apiUpdateData: {
+        dob: {
+          month: formFields['dateOfBirth-month'],
+          day: formFields['dateOfBirth-day'],
+          year: formFields['dateOfBirth-year']
+        }
+      }    });
 
   } catch (error) {
     next(error);

@@ -49,11 +49,9 @@ function transformClientDetailsItem(item: unknown): ClientDetailsResponse {
     throw new Error('Invalid client details item: expected object');
   }
 
-  // Extract basic client information
+  // Extract top-level client information
   const caseReference = safeString(item.reference);
   const laaReference = safeString(item.laa_reference);
-  const fullName = safeString(item.full_name);
-  const dateOfBirth = formatDate(safeString(item.date_of_birth));
   const caseStatus = safeString(item.state);
 
   // eslint-disable-next-line @typescript-eslint/naming-convention -- `provider_assigned_at` matches API response field
@@ -69,12 +67,10 @@ function transformClientDetailsItem(item: unknown): ClientDetailsResponse {
   const thirdParty = transformThirdParty(item.thirdparty_details);
 
   return {
-    provider_assigned_at,
-    laaReference,
     caseReference,
-    fullName,
-    dateOfBirth,
+    laaReference,
     caseStatus,
+    provider_assigned_at,
     ...contactDetails,
     clientSupportNeeds,
     thirdParty
@@ -331,9 +327,9 @@ class ApiService {
     updateData: Partial<ClientDetailsResponse>
   ): Promise<ClientDetailsApiResponse> {
     try {
-      devLog(`API: PUT ${API_PREFIX}/cases/${caseReference}`);
+      devLog(`API: PATCH ${API_PREFIX}/case/${caseReference}/personal_details/`);
       const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
-      const response = await configuredAxios.put(`${API_PREFIX}/cases/${caseReference}`, updateData);
+      const response = await configuredAxios.patch(`${API_PREFIX}/case/${caseReference}/personal_details/`, updateData);
       devLog(`API: Update client details response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
       return {
         data: transformClientDetailsItem(response.data),
