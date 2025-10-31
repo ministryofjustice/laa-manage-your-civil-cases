@@ -49,7 +49,7 @@
         }) }}
         {{ govukRadios({
           name: "safeToCall",
-          value: 'true' if (currentSafeToCall == true or currentSafeToCall == 'true' or currentSafeToCall == 'SAFE') else 'false',
+          value: 'true' if (currentSafeToCall == true) else 'false',
           errorMessage: safeToCallErrorMessage,
           fieldset: {
             legend: {
@@ -71,7 +71,7 @@
         }) }}
         {{ govukRadios({
           name: "announceCall",
-          value: 'true' if (currentAnnounceCall == true or currentAnnounceCall == 'true') else 'false',
+          value: 'true' if (currentAnnounceCall == true) else 'false',
           errorMessage: announceCallErrorMessage,
           fieldset: {
             legend: {
