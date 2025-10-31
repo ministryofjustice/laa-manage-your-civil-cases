@@ -552,12 +552,15 @@ class ApiService {
     clientSupportNeeds: object
   ): Promise<ClientDetailsApiResponse> {
     try {
-      devLog(`API: PUT ${API_PREFIX}/cases/${caseReference}/client-support-needs`);
+      devLog(`API: PATCH ${API_PREFIX}/case/${caseReference}/adaptation_details/`);
       const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
-      const response = await configuredAxios.put(`${API_PREFIX}/cases/${caseReference}/client-support-needs`, clientSupportNeeds);
+      const response = await configuredAxios.patch(`${API_PREFIX}/case/${caseReference}/adaptation_details/`, clientSupportNeeds);
       devLog(`API: Update client support needs response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+      
+      // Re-fetch the full case so the `transformClientDetailsItem` has all the data it expects
+      const reFetchedFullData = await configuredAxios.get(`${API_PREFIX}/case/${caseReference}/detailed`);
       return {
-        data: transformClientDetailsItem(response.data),
+        data: transformClientDetailsItem(reFetchedFullData.data),
         status: 'success'
       };
     } catch (error) {

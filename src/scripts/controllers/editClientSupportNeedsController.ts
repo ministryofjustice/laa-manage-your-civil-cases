@@ -15,7 +15,8 @@ import {
   clearSessionData,
   prepareClientSupportNeedsData,
   handleEditClientSupportNeedsErrors,
-  isYes
+  isYes,
+  capitaliseFirstLetter
 } from '#src/scripts/helpers/index.js';
 import { apiService } from '#src/services/apiService.js';
 import languages from '#views/case_details/client_support_needs/languages.json' with { type: 'json' };
@@ -49,7 +50,7 @@ export async function getEditClientSupportNeeds (req: Request, res: Response, ne
       const bslWebcam = safeNestedField(apiData, 'clientSupportNeeds.bslWebcam');
       const textRelay = safeNestedField(apiData, 'clientSupportNeeds.textRelay');
       const callbackPreference = safeNestedField(apiData, 'clientSupportNeeds.callbackPreference');
-      const language = safeString(safeNestedField(apiData, 'clientSupportNeeds.languageSupportNeeds'));
+      const language = capitaliseFirstLetter(safeString(safeNestedField(apiData, 'clientSupportNeeds.languageSupportNeeds')));
       const notes = safeString(safeNestedField(apiData, 'clientSupportNeeds.notes'));
       const selectedCheckboxes: string[] = [];
       if (isYes(bslWebcam)) selectedCheckboxes.push('bslWebcam');

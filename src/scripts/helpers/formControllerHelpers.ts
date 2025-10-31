@@ -290,13 +290,12 @@ export function handleEditThirdPartyValidationErrors(
  * @returns {object} - Formatted client support needs data for API
  */
 export function prepareClientSupportNeedsData(formFields: Record<string, unknown>): {
-  bslWebcam: 'Yes' | 'No';
-  textRelay: 'Yes' | 'No';
-  callbackPreference: 'Yes' | 'No';
-  languageSelection: 'Yes' | 'No';
-  languageSupportNeeds: string;
-  otherSupport: 'Yes' | 'No';
+  bsl_webcam: boolean;
+  text_relay: boolean;
+  language: string | null;
   notes: string;
+  callback_preference: boolean;
+  no_adaptations_required: boolean;
 } {
   const {
     clientSupportNeeds,
@@ -307,9 +306,9 @@ export function prepareClientSupportNeedsData(formFields: Record<string, unknown
   const selected = normaliseSelectedCheckbox(clientSupportNeeds);
   const selectedSet = new Set(selected);
 
-  let language = '';
+  let language = null;
   if (selectedSet.has('languageSelection') && typeof languageSupportNeeds === 'string') {
-    language = languageSupportNeeds;
+    language = languageSupportNeeds.toUpperCase();
   }
 
   let notesString = '';
@@ -317,14 +316,18 @@ export function prepareClientSupportNeedsData(formFields: Record<string, unknown
     notesString = notes;
   }
 
+  let noAdaptationsRequiredValue = true;
+  if (selectedSet.has('bslWebcam') || selectedSet.has('textRelay') || selectedSet.has('callbackPreference') || selectedSet.has('languageSelection') || selectedSet.has('otherSupport')) {
+    noAdaptationsRequiredValue = false;
+  }
+
   return {
-    bslWebcam: selectedSet.has('bslWebcam') ? 'Yes' : 'No',
-    textRelay: selectedSet.has('textRelay') ? 'Yes' : 'No',
-    callbackPreference: selectedSet.has('callbackPreference') ? 'Yes' : 'No',
-    languageSelection: selectedSet.has('languageSelection') ? 'Yes' : 'No',
-    languageSupportNeeds: language,
-    otherSupport: selectedSet.has('otherSupport') ? 'Yes' : 'No',
-    notes: notesString
+    bsl_webcam: selectedSet.has('bslWebcam'),
+    text_relay: selectedSet.has('textRelay'),
+    language,
+    notes: notesString,
+    callback_preference: selectedSet.has('callbackPreference'),
+    no_adaptations_required: noAdaptationsRequiredValue
   };
 }
 

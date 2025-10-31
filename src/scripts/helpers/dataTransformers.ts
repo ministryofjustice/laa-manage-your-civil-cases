@@ -113,7 +113,7 @@ export function hasProperty(obj: unknown, key: string): obj is Record<string, un
 }
 
 /**
- * Capitalize the first letter of a string
+ * Capitalise the first letter of a string
  * @param {string} str - String to capitalize
  * @returns {string} String with first letter capitalized
  */
@@ -126,6 +126,21 @@ export function capitaliseFirst(str: string): string {
   }
   return str.charAt(FIRST_CHAR_INDEX).toUpperCase() + str.slice(REST_CHARS_START);
 }
+
+/**
+ * Capitalises the first character of the provided string and lowercases the rest.
+ * If the input is an empty string, the function returns an empty string.
+ * @param {string} str - The string to transform.
+ * @returns {string} The transformed string with the first character in upper case and the remainder in lower case.
+ */
+export const capitaliseFirstLetter = (str: string): string => {
+  const EMPTY_STRING_LENGTH = 0;
+  const FIRST_CHAR_INDEX = 0;
+  const REST_OF_STRING_START = 1;
+  
+  if (str.length === EMPTY_STRING_LENGTH) return '';
+  return str.charAt(FIRST_CHAR_INDEX).toUpperCase() + str.slice(REST_OF_STRING_START).toLowerCase();
+};
 
 /**
  * Safely extract and trim a string value from request body
@@ -276,21 +291,6 @@ export const isYes = (value: unknown): boolean => {
 };
 
 /**
- * Capitalises the first character of the provided string and lowercases the rest.
- * If the input is an empty string, the function returns an empty string.
- * @param {string} str - The string to transform.
- * @returns {string} The transformed string with the first character in upper case and the remainder in lower case.
- */
-export const capitaliseFirstLetter = (str: string): string => {
-  const EMPTY_STRING_LENGTH = 0;
-  const FIRST_CHAR_INDEX = 0;
-  const REST_OF_STRING_START = 1;
-  
-  if (str.length === EMPTY_STRING_LENGTH) return '';
-  return str.charAt(FIRST_CHAR_INDEX).toUpperCase() + str.slice(REST_OF_STRING_START).toLowerCase();
-};
-
-/**
  * Extract phone number with mobile priority fallback to home phone
  * This is defensive - we expect phone number to be in mobile_phone but
  * we're not assuming that historical data will always comply.
@@ -371,6 +371,7 @@ export const transformClientSupportNeeds = (adaptationDetails: unknown): {
   callbackPreference: string;
   languageSupportNeeds: string;
   notes: string;
+  no_adaptations_required: boolean;
 } | null => {
   if (!isRecord(adaptationDetails)) {
     return null;
@@ -381,7 +382,8 @@ export const transformClientSupportNeeds = (adaptationDetails: unknown): {
     textRelay: adaptationDetails.text_relay === true ? 'Yes' : 'No',
     callbackPreference: adaptationDetails.callback_preference === true ? 'Yes' : 'No',
     languageSupportNeeds: safeOptionalString(adaptationDetails.language) ?? '',
-    notes: safeOptionalString(adaptationDetails.notes) ?? ''
+    notes: safeOptionalString(adaptationDetails.notes) ?? '',
+    no_adaptations_required: adaptationDetails.no_adaptations_required === true
   };
 };
 
