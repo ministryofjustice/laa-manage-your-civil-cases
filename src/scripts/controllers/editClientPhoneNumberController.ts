@@ -34,6 +34,9 @@ export async function postEditClientPhoneNumber(req: Request, res: Response, nex
     'announceCall', 'existingAnnounceCall'
   ]);
 
+  const safeToContact = formFields.safeToCall === 'true' ? 'SAFE' : 'DONT_CALL';
+  const announceCall = formFields.announceCall === 'true';
+  
   await handlePostEditForm(req, res, next, {
     templatePath: 'case_details/edit-client-phone-number.njk',
     fields: [
@@ -42,9 +45,10 @@ export async function postEditClientPhoneNumber(req: Request, res: Response, nex
       { name: 'announceCall', value: formFields.announceCall, existingValue: formFields.existingAnnounceCall }
     ],
     apiUpdateData: {
-      safeToCall: formFields.safeToCall,
-      phoneNumber: formFields.phoneNumber,
-      announceCall: formFields.announceCall
+      mobile_phone: formFields.phoneNumber,
+      home_phone: "",
+      safe_to_contact: safeToContact, 
+      announce_call: announceCall
     }
   });
 }

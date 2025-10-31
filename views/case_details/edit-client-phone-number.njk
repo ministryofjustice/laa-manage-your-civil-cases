@@ -26,6 +26,7 @@
         {{ errorSummary(error.errorSummaryList) }}
         {% set safeToCallErrorMessage = { text: error.inputErrors.safeToCall } if error.inputErrors.safeToCall %}
         {% set phoneNumberErrorMessage = { text: error.inputErrors.phoneNumber } if error.inputErrors.phoneNumber %}
+        {% set announceCallErrorMessage = { text: error.inputErrors.announceCall } if error.inputErrors.announceCall %}
       {% endif %}
       <form method="post" action="/cases/{{ caseReference }}/client-details/change/phone-number">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
@@ -48,7 +49,7 @@
         }) }}
         {{ govukRadios({
           name: "safeToCall",
-          value: currentSafeToCall,
+          value: 'true' if (currentSafeToCall == true or currentSafeToCall == 'true' or currentSafeToCall == 'SAFE') else 'false',
           errorMessage: safeToCallErrorMessage,
           fieldset: {
             legend: {
@@ -70,7 +71,7 @@
         }) }}
         {{ govukRadios({
           name: "announceCall",
-          value: currentAnnounceCall,
+          value: 'true' if (currentAnnounceCall == true or currentAnnounceCall == 'true') else 'false',
           errorMessage: announceCallErrorMessage,
           fieldset: {
             legend: {
