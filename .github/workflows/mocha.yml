@@ -26,6 +26,7 @@ jobs:
           # Add session-related environment variables for unit tests
           SESSION_SECRET: "mocha-test-secret" # Use a simple test secret for Mocha unit tests
           SESSION_NAME: "sessionId"
+          SESSION_ENCRYPTION_KEY: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef" # Test encryption key (64 hex chars)
 
       - name: Upload coverage artifact
         if: always()
