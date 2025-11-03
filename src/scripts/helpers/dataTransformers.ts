@@ -388,24 +388,6 @@ export const transformClientSupportNeeds = (adaptationDetails: unknown): {
 };
 
 /**
- * Extract passphrase setup data from third party details
- * @param {unknown} thirdpartyDetails - Third party details from API
- * @returns {object} Passphrase setup object with selected and passphrase fields
- */
-const extractPassphraseSetup = (thirdpartyDetails: Record<string, unknown>): {
-  selected: string[];
-  passphrase: string;
-} => {
-  const hasPassphrase = typeof thirdpartyDetails.pass_phrase === 'string' && thirdpartyDetails.pass_phrase.trim() !== '';
-  const passphraseValue = safeOptionalString(thirdpartyDetails.pass_phrase) ?? '';
-
-  return {
-    selected: hasPassphrase ? ['Yes'] : ['No'],
-    passphrase: passphraseValue
-  };
-};
-
-/**
  * Transform third party contact from thirdparty_details
  * @param {unknown} thirdpartyDetails - Third party details from API
  * @returns {object | null} Transformed third party or null if not present
@@ -418,10 +400,8 @@ export const transformThirdParty = (thirdpartyDetails: unknown): {
   address: string;
   postcode: string;
   relationshipToClient: string;
-  passphraseSetUp: {
-    selected: string[];
-    passphrase: string;
-  };
+  noContactReason: string;
+  passphrase: string;
 } | null => {
   if (!isRecord(thirdpartyDetails)) {
     return null;
@@ -435,12 +415,9 @@ export const transformThirdParty = (thirdpartyDetails: unknown): {
 
   const tpContactNumber = extractPhoneNumber(tpPersonal);
   const tpSafeToCall = isSafeToCall(tpPersonal);
-  const relationshipToClient = safeOptionalString(thirdpartyDetails.personal_relationship) ?? '';
 
   let tpPostcode = safeOptionalString(tpPersonal.postcode) ?? '';
   tpPostcode = tpPostcode.toUpperCase();
-
-  const passphraseSetUp = extractPassphraseSetup(thirdpartyDetails);
 
   return {
     fullName: safeOptionalString(tpPersonal.full_name) ?? '',
@@ -449,8 +426,9 @@ export const transformThirdParty = (thirdpartyDetails: unknown): {
     emailAddress: safeOptionalString(tpPersonal.email) ?? '',
     address: safeOptionalString(tpPersonal.street) ?? '',
     postcode: tpPostcode,
-    relationshipToClient,
-    passphraseSetUp
+    relationshipToClient: safeOptionalString(thirdpartyDetails.personal_relationship) ?? '',
+    noContactReason: safeOptionalString(thirdpartyDetails.no_contact_reason) ?? '',
+    passphrase: safeOptionalString(thirdpartyDetails.pass_phrase) ?? ''
   };
 };
 

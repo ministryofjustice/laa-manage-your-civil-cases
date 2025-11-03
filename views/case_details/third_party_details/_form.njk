@@ -109,8 +109,6 @@
     autocomplete: "off"
   }) }}
 
-{# The values for relationship have been added to the common section of the l18n config. This should use that as well, however we need to figure out what form we need to send the data back to CLA in. #}
-
   {{ govukRadios({
     name: "thirdPartyRelationshipToClient",
     value: currentThirdPartyRelationshipToClient,
@@ -161,7 +159,7 @@
 
   {{ govukRadios({
     name: "thirdPartyPassphraseSetUp",
-    value: currentThirdPartyPassphraseSetUp,
+    value: 'Yes' if (currentThirdPartyPassphrase != '') else currentThirdPartyPassphraseSetUp,
     errorMessage: errorMessages.thirdPartyPassphraseSetUp if error,
     fieldset: {
       legend: {

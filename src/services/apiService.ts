@@ -466,10 +466,8 @@ class ApiService {
       const response = await configuredAxios.patch(`${API_PREFIX}/case/${caseReference}/thirdparty_details/`, thirdPartyData);
       devLog(`API: Update third party response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
 
-      // Re-fetch the full case so the `transformClientDetailsItem` has all the data it expects
-      const reFetchedFullData = await configuredAxios.get(`${API_PREFIX}/case/${caseReference}/detailed`);
       return {
-        data: transformClientDetailsItem(reFetchedFullData.data),
+        data: transformClientDetailsItem(response.data),
         status: 'success'
       };
     } catch (error) {

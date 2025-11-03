@@ -53,37 +53,7 @@ export async function getEditClientThirdParty(req: Request, res: Response, next:
       if (!isRecord(thirdPartyData)) {
         return {};
       }
-
-      /**
-       * Helper function to safely get array first element from nested structures
-       * @param {string} path - Dot notation path to the object containing 'selected' array
-       * @returns {string} First selected value or empty string
-       */
-      const getFirstSelectedValue = (path: string): string => {
-        const obj = safeNestedField(apiData, path);
-        if (!isRecord(obj) || !hasProperty(obj, 'selected')) {
-          return '';
-        }
-        const { selected } = obj;
-        if (Array.isArray(selected) && selected.length > FIRST_ARRAY_INDEX) {
-          return safeString(selected[FIRST_ARRAY_INDEX]);
-        }
-        return '';
-      };
-
-      /**
-       * Helper function to safely get nested passphrase value
-       * @param {string} path - Dot notation path to the passphrase object
-       * @returns {string} Passphrase value or empty string
-       */
-      const getPassphraseValue = (path: string): string => {
-        const passphraseObj = safeNestedField(apiData, path);
-        if (!isRecord(passphraseObj) || !hasProperty(passphraseObj, 'passphrase')) {
-          return '';
-        }
-        return safeString(passphraseObj.passphrase);
-      };
-
+      
       // Transform nested structure to flat structure using safe extractors
       const flatData = {
         thirdPartyFullName: safeStringFromRecord(thirdPartyData, 'fullName') ?? '',
@@ -92,9 +62,9 @@ export async function getEditClientThirdParty(req: Request, res: Response, next:
         thirdPartySafeToCall: booleanToString(thirdPartyData.safeToCall),
         thirdPartyAddress: safeStringFromRecord(thirdPartyData, 'address') ?? '',
         thirdPartyPostcode: safeStringFromRecord(thirdPartyData, 'postcode') ?? '',
-        thirdPartyRelationshipToClient: getFirstSelectedValue('thirdParty.relationshipToClient'),
-        thirdPartyPassphraseSetUp: getFirstSelectedValue('thirdParty.passphraseSetUp'),
-        thirdPartyPassphrase: getPassphraseValue('thirdParty.passphraseSetUp')
+        thirdPartyRelationshipToClient: safeStringFromRecord(thirdPartyData, 'relationshipToClient') ?? '',
+        thirdPartyPassphraseSetUp: safeStringFromRecord(thirdPartyData, 'noContactReason') ?? '',
+        thirdPartyPassphrase: safeStringFromRecord(thirdPartyData, 'passphrase') ?? '',
       };
 
       // Store original form data in session for later comparison

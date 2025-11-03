@@ -145,21 +145,22 @@ export async function handlePostEditForm(
  */
 export function prepareThirdPartyData(formFields: Record<string, unknown>): object {
   const {
-    thirdPartyPassphraseSetUp,
     thirdPartyFullName,
     thirdPartyPostcode,
     thirdPartyAddress,
     thirdPartyContactNumber,
     thirdPartyEmailAddress,
     thirdPartySafeToCall,
+    thirdPartyPassphraseSetUp,
     thirdPartyPassphrase,
     thirdPartyRelationshipToClient: personalRelationship
   } = formFields;
 
   const safeToContact = thirdPartySafeToCall === 'true' ? 'SAFE' : 'DONT_CALL';
 
-  // Filter out 'Yes' from passphrase setup & set passphrase to empty string
-  const reason = typeof thirdPartyPassphraseSetUp === 'string' && thirdPartyPassphraseSetUp !== 'Yes' ? thirdPartyPassphraseSetUp : undefined;
+  const reason = typeof thirdPartyPassphraseSetUp === 'string' && thirdPartyPassphraseSetUp !== 'Yes' ? thirdPartyPassphraseSetUp : '';
+
+  const passphraseConditional = thirdPartyPassphraseSetUp === 'Yes' ? thirdPartyPassphrase: '';
 
   return {
     personal_details: {
@@ -170,7 +171,7 @@ export function prepareThirdPartyData(formFields: Record<string, unknown>): obje
       email: thirdPartyEmailAddress,
       safe_to_contact: safeToContact
     },
-    pass_phrase: thirdPartyPassphrase,
+    pass_phrase: passphraseConditional,
     reason,
     personal_relationship: personalRelationship,
     no_contact_reason: reason
