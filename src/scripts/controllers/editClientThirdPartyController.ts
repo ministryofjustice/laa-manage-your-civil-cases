@@ -13,7 +13,6 @@ import {
   hasProperty,
   safeStringFromRecord,
   extractCurrentFields,
-  safeNestedField,
   storeOriginalFormData,
   clearSessionData,
   booleanToString
@@ -24,8 +23,42 @@ import { apiService } from '#src/services/apiService.js';
 const BAD_REQUEST = 400;
 const INTERNAL_SERVER_ERROR = 500;
 
-// Constants to avoid magic numbers
-const FIRST_ARRAY_INDEX = 0;
+/**
+ * Extracts and formats third-party client data from a record object
+ * @param {Record<string, unknown>} thirdPartyData - The raw third-party data object
+ * @returns {Record<string, unknown>} A formatted object containing third-party client details
+ */
+function extractThirdPartyData(thirdPartyData: Record<string, unknown>): Record<string, unknown> {
+  return {
+    thirdPartyFullName: safeStringFromRecord(thirdPartyData, 'fullName') ?? '',
+    thirdPartyEmailAddress: safeStringFromRecord(thirdPartyData, 'emailAddress') ?? '',
+    thirdPartyContactNumber: safeStringFromRecord(thirdPartyData, 'contactNumber') ?? '',
+    thirdPartySafeToCall: booleanToString(thirdPartyData.safeToCall),
+    thirdPartyAddress: safeStringFromRecord(thirdPartyData, 'address') ?? '',
+    thirdPartyPostcode: safeStringFromRecord(thirdPartyData, 'postcode') ?? '',
+    thirdPartyRelationshipToClient: safeStringFromRecord(thirdPartyData, 'relationshipToClient') ?? '',
+    thirdPartyPassphraseSetUp: safeStringFromRecord(thirdPartyData, 'noContactReason') ?? '',
+    thirdPartyPassphrase: safeStringFromRecord(thirdPartyData, 'passphrase') ?? '',
+  };
+}
+
+/**
+ * Returns configuration for third-party client fields used in the form
+ * @returns {Array<{ field: string; type: 'string' }>} An array of field configuration objects
+ */
+function getFieldConfigs(): Array<{ field: string; type: 'string' }> {
+  return [
+    { field: 'thirdPartyFullName', type: 'string' },
+    { field: 'thirdPartyEmailAddress', type: 'string' },
+    { field: 'thirdPartyContactNumber', type: 'string' },
+    { field: 'thirdPartySafeToCall', type: 'string' },
+    { field: 'thirdPartyAddress', type: 'string' },
+    { field: 'thirdPartyPostcode', type: 'string' },
+    { field: 'thirdPartyRelationshipToClient', type: 'string' },
+    { field: 'thirdPartyPassphraseSetUp', type: 'string' },
+    { field: 'thirdPartyPassphrase', type: 'string' }
+  ];
+}
 
 /**
  * Renders the edit client third party form for a given case reference.
@@ -55,36 +88,18 @@ export async function getEditClientThirdParty(req: Request, res: Response, next:
       }
       
       // Transform nested structure to flat structure using safe extractors
-      const flatData = {
-        thirdPartyFullName: safeStringFromRecord(thirdPartyData, 'fullName') ?? '',
-        thirdPartyEmailAddress: safeStringFromRecord(thirdPartyData, 'emailAddress') ?? '',
-        thirdPartyContactNumber: safeStringFromRecord(thirdPartyData, 'contactNumber') ?? '',
-        thirdPartySafeToCall: booleanToString(thirdPartyData.safeToCall),
-        thirdPartyAddress: safeStringFromRecord(thirdPartyData, 'address') ?? '',
-        thirdPartyPostcode: safeStringFromRecord(thirdPartyData, 'postcode') ?? '',
-        thirdPartyRelationshipToClient: safeStringFromRecord(thirdPartyData, 'relationshipToClient') ?? '',
-        thirdPartyPassphraseSetUp: safeStringFromRecord(thirdPartyData, 'noContactReason') ?? '',
-        thirdPartyPassphrase: safeStringFromRecord(thirdPartyData, 'passphrase') ?? '',
-      };
+      const flatData = extractThirdPartyData(thirdPartyData);
+
+      // Set thirdPartyPassphraseSetUp to `Yes` so that conditional reveal can show on form
+      if (flatData.thirdPartyPassphrase !== '') {
+        flatData.thirdPartyPassphraseSetUp = 'Yes';
+      }
 
       // Store original form data in session for later comparison
       storeOriginalFormData(req, 'thirdPartyOriginal', flatData);
 
-      // Define field configurations for current field generation (no longer need existing fields)
-      const fieldConfigs = [
-        { field: 'thirdPartyFullName', type: 'string' as const },
-        { field: 'thirdPartyEmailAddress', type: 'string' as const },
-        { field: 'thirdPartyContactNumber', type: 'string' as const },
-        { field: 'thirdPartySafeToCall', type: 'string' as const },
-        { field: 'thirdPartyAddress', type: 'string' as const },
-        { field: 'thirdPartyPostcode', type: 'string' as const },
-        { field: 'thirdPartyRelationshipToClient', type: 'string' as const },
-        { field: 'thirdPartyPassphraseSetUp', type: 'string' as const },
-        { field: 'thirdPartyPassphrase', type: 'string' as const }
-      ];
-
       // Use extractCurrentFields helper to generate current form data
-      return extractCurrentFields(flatData, fieldConfigs);
+      return extractCurrentFields(flatData, getFieldConfigs());
     }
   });
 }

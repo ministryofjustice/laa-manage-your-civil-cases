@@ -159,7 +159,7 @@
 
   {{ govukRadios({
     name: "thirdPartyPassphraseSetUp",
-    value: 'Yes' if (currentThirdPartyPassphrase != '') else currentThirdPartyPassphraseSetUp,
+    value: currentThirdPartyPassphraseSetUp,
     errorMessage: errorMessages.thirdPartyPassphraseSetUp if error,
     fieldset: {
       legend: {
