@@ -6,6 +6,48 @@
 
 import type { FieldConfig } from '#types/form-controller-types.js';
 import { formatDate } from './dateFormatter.js';
+
+/**
+ * Decode HTML entities in a string
+ * Handles common HTML entities that might be returned from the CLA API
+ * @param {string} str - String with HTML entities
+ * @returns {string} Decoded string
+ */
+function decodeHTMLEntities(str: string): string {
+  // Map of common HTML entities
+  const entities: Record<string, string> = {
+    '&amp;': '&',
+    '&lt;': '<',
+    '&gt;': '>',
+    '&quot;': '"',
+    '&#39;': "'",
+    '&apos;': "'",
+    '&#x27;': "'",
+    '&nbsp;': ' ',
+  };
+
+  // Replace named and numeric entities
+  return str.replace(/&[a-z0-9]+;|&#[0-9]+;|&#x[0-9a-f]+;/gi, (match) => {
+    // Check if it's in our map
+    if (match in entities) {
+      return entities[match];
+    }
+    
+    // Handle numeric entities like &#39;
+    if (match.startsWith('&#x')) {
+      const code = parseInt(match.slice(3, -1), 16);
+      return String.fromCharCode(code);
+    }
+    if (match.startsWith('&#')) {
+      const code = parseInt(match.slice(2, -1), 10);
+      return String.fromCharCode(code);
+    }
+    
+    // Return as-is if we can't decode it
+    return match;
+  });
+}
+
 /**
  * Safely extract nested field value using custom path resolution
  * @param {unknown} obj - Object to traverse
@@ -28,6 +70,7 @@ export function safeNestedField(obj: unknown, path: string): unknown {
 
 /**
  * Safely get string value from unknown data
+ * Decodes HTML entities that may be present in API responses
  * @param {unknown} value Value to convert
  * @returns {string} String value or empty string
  */
@@ -36,7 +79,7 @@ export function safeString(value: unknown): string {
     return '';
   }
   if (typeof value === 'string') {
-    return value;
+    return decodeHTMLEntities(value);
   }
   if (typeof value === 'number' || typeof value === 'boolean') {
     return String(value);
@@ -46,6 +89,7 @@ export function safeString(value: unknown): string {
 
 /**
  * Safely get optional string value from unknown data
+ * Decodes HTML entities that may be present in API responses
  * @param {unknown} value Value to convert
  * @returns {string | undefined} String value or undefined
  */
@@ -54,7 +98,7 @@ export function safeOptionalString(value: unknown): string | undefined {
     return undefined;
   }
   if (typeof value === 'string') {
-    return value;
+    return decodeHTMLEntities(value);
   }
   if (typeof value === 'number' || typeof value === 'boolean') {
     return String(value);
