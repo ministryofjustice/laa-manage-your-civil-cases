@@ -86,12 +86,7 @@ export function safeString(value: unknown): string {
     return '';
   }
   if (typeof value === 'string') {
-    const decoded = decodeHTMLEntities(value);
-    // Debug logging to see what's happening
-    if (value !== decoded && value.includes('&#')) {
-      console.log(`[HTML Entity Decoding] "${value}" -> "${decoded}"`);
-    }
-    return decoded;
+    return decodeHTMLEntities(value);
   }
   if (typeof value === 'number' || typeof value === 'boolean') {
     return String(value);
