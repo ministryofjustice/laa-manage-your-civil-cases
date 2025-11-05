@@ -391,8 +391,18 @@ class ApiService {
       const responseData: ClaSearchApiResponse = response.data;
       const results = extractResults(responseData);
 
+      // DEBUG: Log first result to see raw API data
+      if (results.length > 0 && isRecord(results[0])) {
+        devLog(`API: First raw result full_name: ${JSON.stringify(results[0].full_name)}`);
+      }
+
       // Transform the response data
       const transformedData = results.map(transformCaseItemForSearch);
+
+      // DEBUG: Log first transformed result
+      if (transformedData.length > 0) {
+        devLog(`API: First transformed fullName: ${JSON.stringify(transformedData[0].fullName)}`);
+      }
 
       // Extract pagination from response body (new API format) or fall back to headers
       const paginationParams: CaseApiParams = { caseType: 'new', page, limit };
