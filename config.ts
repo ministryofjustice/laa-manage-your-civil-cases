@@ -9,8 +9,9 @@ const DEFAULT_PORT = 3000;
 
 // Validate required session env vars
 if (process.env.SESSION_SECRET == null || process.env.SESSION_SECRET === '' ||
-  process.env.SESSION_NAME == null || process.env.SESSION_NAME === '') {
-  throw new Error('SESSION_SECRET and SESSION_NAME must be defined in environment variables.');
+  process.env.SESSION_NAME == null || process.env.SESSION_NAME === '' ||
+  process.env.SESSION_ENCRYPTION_KEY == null || process.env.SESSION_ENCRYPTION_KEY === '') {
+  throw new Error('SESSION_SECRET, SESSION_NAME, and SESSION_ENCRYPTION_KEY must be defined in environment variables.');
 }
 
 // Get environment variables
@@ -28,6 +29,7 @@ const config: Config = {
   session: {
     secret: process.env.SESSION_SECRET,
     name: process.env.SESSION_NAME,
+    encryptionKey: process.env.SESSION_ENCRYPTION_KEY,
     resave: false,
     saveUninitialized: false
   },
