@@ -461,10 +461,11 @@ class ApiService {
     thirdPartyData: object
   ): Promise<ClientDetailsApiResponse> {
     try {
-      devLog(`API: PUT ${API_PREFIX}/cases/${caseReference}/third-party`);
+      devLog(`API: PATCH ${API_PREFIX}/case/${caseReference}/thirdparty_details/`);
       const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
-      const response = await configuredAxios.put(`${API_PREFIX}/cases/${caseReference}/third-party`, thirdPartyData);
+      const response = await configuredAxios.patch(`${API_PREFIX}/case/${caseReference}/thirdparty_details/`, thirdPartyData);
       devLog(`API: Update third party response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+
       return {
         data: transformClientDetailsItem(response.data),
         status: 'success'

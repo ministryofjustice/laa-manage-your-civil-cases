@@ -50,16 +50,16 @@
 {% set addressWithPostcodeThirdParty = renderAddress(data.thirdParty.address, data.thirdParty.postcode) %}
 
 {% set passphraseContent %}
-  {% if data.thirdParty.passphraseSetUp.selected[0] === "Yes" %}
-    {{ data.thirdParty.passphraseSetUp.passphrase }}
+  {% if data.thirdParty.passphrase %}
+    {{ data.thirdParty.passphrase }}
   {% else %}
-    {{ data.thirdParty.passphraseSetUp.selected[0] }}
+    {{ t('common.thirdPartyReason.text.' + data.thirdParty.noContactReason) }}
   {% endif %}
 {% endset %}
 
 {% set relationshipToClient %}
   {% if data.thirdParty.relationshipToClient %}
-    {{ t('common.values.thirdPartyRelationship.' + data.thirdParty.relationshipToClient) }}
+    {{ t('common.thirdPartyRelationship.text.' + data.thirdParty.relationshipToClient) }}
   {% else %}
     ""
   {% endif %}

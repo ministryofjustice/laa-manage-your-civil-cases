@@ -78,15 +78,27 @@ const clientThirdPartyBaseSchema = {
       options: (value: string) => typeof value === 'string' ? value.toUpperCase() : value
     },
   },
-  thirdPartyPassphraseSetUp: {
+  thirdPartyRelationshipToClient: {
     notEmpty: {
       /**
        * Custom error message for empty radio selection for third party relationship to client
        * @returns {TypedValidationError} Returns TypedValidationError with structured error data
        */
       errorMessage: () => new TypedValidationError({
-        summaryMessage: t('forms.clientDetails.thirdParty.validationError.notEmptyRelationship'),
-        inlineMessage: t('forms.clientDetails.thirdParty.validationError.notEmptyRelationship')
+        summaryMessage: t('forms.clientDetails.thirdParty.validationError.notEmptyRelationshipToClient'),
+        inlineMessage: t('forms.clientDetails.thirdParty.validationError.notEmptyRelationshipToClient')
+      })
+    },
+  },
+  thirdPartyPassphraseSetUp: {
+    notEmpty: {
+      /**
+       * Custom error message for empty radio selection for third party passphrase set up
+       * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+       */
+      errorMessage: () => new TypedValidationError({
+        summaryMessage: t('forms.clientDetails.thirdParty.validationError.notEmptyPassphraseSetUp'),
+        inlineMessage: t('forms.clientDetails.thirdParty.validationError.notEmptyPassphraseSetUp')
       })
     },
   },

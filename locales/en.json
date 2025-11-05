@@ -18,13 +18,36 @@
       "accepted": "Accepted",
       "closed": "Closed"
     },
-    "values": {
-      "thirdPartyRelationship": {
+    "thirdPartyRelationship": {
+      "text": {
         "PARENT_GUARDIAN": "Parent or guardian",
         "FAMILY_FRIEND": "Family member or friend",
         "PROFESSIONAL": "Professional",
         "LEGAL_ADVISOR": "Legal adviser",
         "OTHER": "Other"
+      },
+      "value": {
+        "PARENT_GUARDIAN": "PARENT_GUARDIAN",
+        "FAMILY_FRIEND": "FAMILY_FRIEND",
+        "PROFESSIONAL": "PROFESSIONAL",
+        "LEGAL_ADVISOR": "LEGAL_ADVISOR",
+        "OTHER": "OTHER"
+      }
+    },
+    "thirdPartyReason": {
+      "text": {
+        "CHILD_PATIENT": "No, client is a child or patient",
+        "POWER_ATTORNEY": "No, client is subject to power of attorney",
+        "NO_TELEPHONE_DISABILITY": "No, client cannot communicate on the phone due to disability",
+        "NO_TELEPHONE_LANGUAGE": "No, client cannot communicate on the phone due to a language requirement",
+        "OTHER": "No, for another reason"
+      },
+      "value": {
+        "CHILD_PATIENT": "CHILD_PATIENT",
+        "POWER_ATTORNEY": "POWER_ATTORNEY",
+        "NO_TELEPHONE_DISABILITY": "NO_TELEPHONE_DISABILITY",
+        "NO_TELEPHONE_LANGUAGE": "NO_TELEPHONE_LANGUAGE",
+        "OTHER": "OTHER"
       }
     }
   },
@@ -272,31 +295,21 @@
         "address": "Address",
         "addressHeading": "Address (optional)",
         "relationshipToClient": {
-          "title": "Relationship to client",
-          "titleH2": "Relationship to client (optional)",
-          "parentOrGuardian": "Parent or guardian",
-          "familyMemberOrFriend": "Family member or friend",
-          "professional": "Professional",
-          "legalAdvisor": "Legal adviser",
-          "other": "Other"
+          "title": "Relationship to client"
         },
         "safeToCall": "Is the third party safe to call?",
         "safeToCallHeading": "Is the third party safe to call? (optional)",
         "passphrase": {
           "title": "Passphrase",
           "titleH2": "Has the client set up a passphrase?",
-          "passphraseHint": "Enter the passphrase",
-          "noClientIsAChildOrPatient": "No, client is a child or patient",
-          "noClientIsSubjectToPowerOfAttorney": "No, client is subject to power of attorney",
-          "noClientCannotCommunicateOnThePhoneDueToDisability": "No, client cannot communicate on the phone due to disability",
-          "noClientCannotCommunicateOnThePhoneDueToALanguageRequirement": "No, client cannot communicate on the phone due to a language requirement",
-          "noForAnotherReason": "No, for another reason"
+          "passphraseHint": "Enter the passphrase"
         },
         "validationError": {
           "notEmptyName": "Enter the third party name",
           "invalidFormatEmail": "Enter an email address in the correct format, like name@example.com",
           "invalidFormatContactNumber": "Enter the phone number in the correct format",
-          "notEmptyRelationship": "Select if the client has set up a passphrase",
+          "notEmptyRelationshipToClient": "Select the relationship to client",
+          "notEmptyPassphraseSetUp": "Select if the client has set up a passphrase",
           "notEmptyPassphrase": "Enter the passphrase ",
           "notChanged": "Change third party details, or select 'Cancel'"
         }
