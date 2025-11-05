@@ -14,6 +14,13 @@ import { formatDate } from './dateFormatter.js';
  * @returns {string} Decoded string
  */
 function decodeHTMLEntities(str: string): string {
+  // Constants for entity parsing
+  const HEX_ENTITY_START = 3; // Length of '&#x' prefix
+  const DECIMAL_ENTITY_START = 2; // Length of '&#' prefix
+  const ENTITY_END_OFFSET = -1; // Offset to remove trailing ';'
+  const HEX_RADIX = 16;
+  const DECIMAL_RADIX = 10;
+
   // Map of common HTML entities
   const entities: Record<string, string> = {
     '&amp;': '&',
@@ -35,11 +42,11 @@ function decodeHTMLEntities(str: string): string {
     
     // Handle numeric entities like &#39;
     if (match.startsWith('&#x')) {
-      const code = parseInt(match.slice(3, -1), 16);
+      const code = parseInt(match.slice(HEX_ENTITY_START, ENTITY_END_OFFSET), HEX_RADIX);
       return String.fromCharCode(code);
     }
     if (match.startsWith('&#')) {
-      const code = parseInt(match.slice(2, -1), 10);
+      const code = parseInt(match.slice(DECIMAL_ENTITY_START, ENTITY_END_OFFSET), DECIMAL_RADIX);
       return String.fromCharCode(code);
     }
     
