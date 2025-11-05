@@ -144,20 +144,37 @@ export async function handlePostEditForm(
  * @returns {object} - Formatted third party data for API
  */
 export function prepareThirdPartyData(formFields: Record<string, unknown>): object {
+  const {
+    thirdPartyFullName,
+    thirdPartyPostcode,
+    thirdPartyAddress,
+    thirdPartyContactNumber,
+    thirdPartyEmailAddress,
+    thirdPartySafeToCall,
+    thirdPartyPassphraseSetUp,
+    thirdPartyPassphrase,
+    thirdPartyRelationshipToClient: personalRelationship
+  } = formFields;
+
+  const safeToContact = thirdPartySafeToCall === 'true' ? 'SAFE' : 'DONT_CALL';
+
+  const reason = typeof thirdPartyPassphraseSetUp === 'string' && thirdPartyPassphraseSetUp !== 'Yes' ? thirdPartyPassphraseSetUp : '';
+
+  const passphraseConditional = thirdPartyPassphraseSetUp === 'Yes' ? thirdPartyPassphrase: '';
+
   return {
-    fullName: formFields.thirdPartyFullName,
-    emailAddress: formFields.thirdPartyEmailAddress,
-    contactNumber: formFields.thirdPartyContactNumber,
-    safeToCall: formFields.thirdPartySafeToCall !== '' ? formFields.thirdPartySafeToCall : true,
-    address: formFields.thirdPartyAddress,
-    postcode: formFields.thirdPartyPostcode,
-    relationshipToClient: {
-      selected: Array.isArray(formFields.thirdPartyRelationshipToClient) ? formFields.thirdPartyRelationshipToClient : [formFields.thirdPartyRelationshipToClient]
+    personal_details: {
+      full_name: thirdPartyFullName,
+      postcode: thirdPartyPostcode,
+      street: thirdPartyAddress,
+      mobile_phone: thirdPartyContactNumber,
+      email: thirdPartyEmailAddress,
+      safe_to_contact: safeToContact
     },
-    passphraseSetUp: {
-      selected: Array.isArray(formFields.thirdPartyPassphraseSetUp) ? formFields.thirdPartyPassphraseSetUp : [formFields.thirdPartyPassphraseSetUp],
-      passphrase: formFields.thirdPartyPassphrase
-    }
+    pass_phrase: passphraseConditional,
+    reason,
+    personal_relationship: personalRelationship,
+    no_contact_reason: reason
   };
 }
 

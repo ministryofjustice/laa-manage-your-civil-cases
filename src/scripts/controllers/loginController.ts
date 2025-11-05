@@ -6,6 +6,7 @@ import '#src/scripts/helpers/sessionHelpers.js';
 import config from '#config.js';
 import { validationResult, matchedData } from 'express-validator';
 import { formatValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
+import { encrypt } from '#src/utils/encryption.js';
 
 // HTTP Status codes
 const BAD_REQUEST = 400;
@@ -172,12 +173,12 @@ export async function processLogin(req: Request, res: Response, _next: NextFunct
           loginTime: Date.now()
         };
 
-        // Store only the credentials needed to recreate AuthService (still in session but at least not in plain sight)
+        // Store credentials with encrypted sensitive fields
         req.session.authCredentials = {
           username,
-          password, // Note: This is still a security concern, but needed for token refresh
+          password: encrypt(password), // Encrypted password
           client_id: config.api.auth.clientId,
-          client_secret: config.api.auth.clientSecret
+          client_secret: encrypt(config.api.auth.clientSecret) // Encrypted client secret
         };
 
         if (userInfo !== null) {

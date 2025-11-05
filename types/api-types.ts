@@ -71,10 +71,8 @@ export interface ThirdPartyContact {
   address: string;
   postcode: string;
   relationshipToClient: string;
-  passphraseSetUp: {
-    selected: string[];
-    passphrase?: string;
-  };
+  noContactReason: string;
+  passphrase: string;
 }
 
 /**
