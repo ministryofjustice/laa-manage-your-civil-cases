@@ -1,8 +1,12 @@
 import { test, expect } from '../fixtures/index.js';
-import { getClientDetailsUrlByStatus } from '../utils/index.js';
+import { getClientDetailsUrlByStatus, setupAuth } from '../utils/index.js';
 import { ThirdPartyFormPage } from '../pages/ThirdPartyFormPage.js';
 
 const clientDetailsUrl = getClientDetailsUrlByStatus('default');
+
+test.beforeEach(async ({ page }) => {
+  await setupAuth(page);
+});
 
 test('viewing add third party form should display expected elements', async ({ page, i18nSetup }) => {
   const thirdPartyPage = ThirdPartyFormPage.forAdd(page, clientDetailsUrl);

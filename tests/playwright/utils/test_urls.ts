@@ -13,6 +13,7 @@ interface TestCase {
 
 /**
  * Test case data with different statuses
+ * These reference existing cases in tests/playwright/fixtures/mock-data.json
  */
 const TEST_CASES: Record<string, TestCase> = {
   DEFAULT_CASE: {
@@ -28,11 +29,11 @@ const TEST_CASES: Record<string, TestCase> = {
     status: 'open'
   },
   ACCEPTED_CASE: {
-    reference: 'PC-7735-3284',
+    reference: 'PC-3184-5962', // Ember Hamilton - Accepted status
     status: 'accepted'
   },
   CLOSED_CASE: {
-    reference: 'PC-4344-8239',
+    reference: 'PC-4575-7150', // Noah Brown - Closed status
     status: 'closed'
   }
 } as const;

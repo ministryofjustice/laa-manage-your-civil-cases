@@ -1,8 +1,12 @@
 import { test, expect } from '../fixtures/index.js';
-import { t, getClientDetailsUrlByStatus } from '../utils/index.js';
+import { t, getClientDetailsUrlByStatus, setupAuth } from '../utils/index.js';
 import { EditDateOfBirthPage } from '../pages/EditDateOfBirthPage.js';
 
 const clientDetailsUrl = getClientDetailsUrlByStatus('default');
+
+test.beforeEach(async ({ page }) => {
+  await setupAuth(page);
+});
 
 test('viewing edit date of birth form should display expected elements', async ({ page, i18nSetup }) => {
   const editDateOfBirthPage = new EditDateOfBirthPage(page);

@@ -1,8 +1,12 @@
 import { test, expect } from '../fixtures/index.js';
-import { t, getClientDetailsUrlByStatus } from '../utils/index.js';
+import { t, getClientDetailsUrlByStatus, setupAuth } from '../utils/index.js';
 
 const visitUrl = getClientDetailsUrlByStatus('default') + '/change/phone-number';
 const clientDetailsUrl = getClientDetailsUrlByStatus('default');
+
+test.beforeEach(async ({ page }) => {
+  await setupAuth(page);
+});
 
 test('viewing change phone-number form, to see the expected elements', async ({ page, i18nSetup }) => {
   const phoneInput = page.locator('#phoneNumber');
