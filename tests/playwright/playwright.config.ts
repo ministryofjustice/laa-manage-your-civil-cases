@@ -52,7 +52,8 @@ export default defineConfig({
       // Add encryption key for testing (matches test key in unit tests)
       SESSION_ENCRYPTION_KEY: '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef',
       API_URL: 'https://laa-cla-backend-uat.apps.live-1.cloud-platform.service.justice.gov.uk',
-      API_PREFIX: '/cla_provider/api/v1'
+      API_PREFIX: '/cla_provider/api/v1',
+      NODE_OPTIONS: '--no-webstorage'
     }
   },
 });
