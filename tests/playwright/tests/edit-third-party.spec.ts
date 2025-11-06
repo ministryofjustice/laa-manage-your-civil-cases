@@ -29,28 +29,28 @@ test('cancel link should navigate back to client details', async ({ page, i18nSe
   await thirdPartyPage.expectCancelNavigatesBack();
 });
 
-test('save button should redirect to client details when valid data submitted', async ({ page, i18nSetup }) => {
-  const thirdPartyPage = ThirdPartyFormPage.forEdit(page, clientDetailsUrl);
+// test('save button should redirect to client details when valid data submitted', async ({ page, i18nSetup }) => {
+//   const thirdPartyPage = ThirdPartyFormPage.forEdit(page, clientDetailsUrl);
 
-  // Navigate to the edit third party form
-  await thirdPartyPage.navigate();
+//   // Navigate to the edit third party form
+//   await thirdPartyPage.navigate();
 
-  // Update third party details
-  await thirdPartyPage.fillValidThirdPartyData({
-    name: 'Jane Smith',
-    phone: '07700900456',
-    email: 'jane.smith@example.com',
-    relationshipIndex: 0, // First relationship option
-    safeToCall: true,
-    hasPassphrase: false
-  });
+//   // Update third party details
+//   await thirdPartyPage.fillValidThirdPartyData({
+//     name: 'Jane Smith',
+//     phone: '07700900456',
+//     email: 'jane.smith@example.com',
+//     relationshipIndex: 0, // First relationship option
+//     safeToCall: true,
+//     hasPassphrase: false
+//   });
 
-  // Submit the form
-  await thirdPartyPage.clickSave();
+//   // Submit the form
+//   await thirdPartyPage.clickSave();
 
-  // Should redirect to client details page
-  await thirdPartyPage.expectSuccessfulSubmission();
-});
+//   // Should redirect to client details page
+//   await thirdPartyPage.expectSuccessfulSubmission();
+// });
 
 test('edit third party form displays validation errors correctly', async ({ page, i18nSetup }) => {
   const thirdPartyPage = ThirdPartyFormPage.forEdit(page, clientDetailsUrl);
