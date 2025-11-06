@@ -303,8 +303,8 @@ export const apiHandlers = [
     return HttpResponse.json(transformToApiFormat(caseItem), { status: 201 });
   }),
 
-  // Intercept update third party contact (PUT /cla_provider/api/v1/cases/{caseReference}/third-party)
-  http.put(`${API_BASE_URL}${API_PREFIX}/cases/:caseReference/third-party`, async ({ params, request }) => {
+  // Intercept update third party contact (PATCH /cla_provider/api/v1/case/{caseReference}/thirdparty_details/)
+  http.patch(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details/`, async ({ params, request }) => {
     const { caseReference } = params;
     const thirdPartyData = await request.json() as Record<string, any>;
     
