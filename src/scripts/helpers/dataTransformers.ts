@@ -4,55 +4,21 @@
  * Utility functions for safely transforming and validating data from JSON fixtures
  */
 
+import { JSDOM } from 'jsdom';
 import type { FieldConfig } from '#types/form-controller-types.js';
 import { formatDate } from './dateFormatter.js';
 
 /**
- * Decode HTML entities in a string
- * Handles common HTML entities that might be returned from the CLA API
+ * Decode HTML entities in a string using native DOM parser
+ * Handles all HTML entities that might be returned from the CLA API
  * @param {string} str - String with HTML entities
  * @returns {string} Decoded string
  */
 function decodeHTMLEntities(str: string): string {
-  // Constants for entity parsing
-  const HEX_ENTITY_START = 3; // Length of '&#x' prefix
-  const DECIMAL_ENTITY_START = 2; // Length of '&#' prefix
-  const ENTITY_END_OFFSET = -1; // Offset to remove trailing ';'
-  const HEX_RADIX = 16;
-  const DECIMAL_RADIX = 10;
-
-  // Map of common HTML entities
-  const entities: Record<string, string> = {
-    '&amp;': '&',
-    '&lt;': '<',
-    '&gt;': '>',
-    '&quot;': '"',
-    '&#39;': "'",
-    '&apos;': "'",
-    '&#x27;': "'",
-    '&nbsp;': ' ',
-  };
-
-  // Replace named and numeric entities
-  return str.replace(/&[a-z0-9]+;|&#[0-9]+;|&#x[0-9a-f]+;/gi, (match) => {
-    // Check if it's in our map
-    if (match in entities) {
-      return entities[match];
-    }
-    
-    // Handle numeric entities like &#39;
-    if (match.startsWith('&#x')) {
-      const code = parseInt(match.slice(HEX_ENTITY_START, ENTITY_END_OFFSET), HEX_RADIX);
-      return String.fromCharCode(code);
-    }
-    if (match.startsWith('&#')) {
-      const code = parseInt(match.slice(DECIMAL_ENTITY_START, ENTITY_END_OFFSET), DECIMAL_RADIX);
-      return String.fromCharCode(code);
-    }
-    
-    // Return as-is if we can't decode it
-    return match;
-  });
+  const { document } = new JSDOM('').window;
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = str;
+  return textarea.value;
 }
 
 /**
