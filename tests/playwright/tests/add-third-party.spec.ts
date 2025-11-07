@@ -37,7 +37,7 @@ test('save button should redirect to client details when valid data submitted', 
     name: 'John Smith',
     phone: '07700900123',
     email: 'john.smith@example.com',
-    relationshipIndex: 0, // First relationship option
+    relationshipValue: 'PARENT_GUARDIAN',
     safeToCall: true,
     hasPassphrase: false
   });
