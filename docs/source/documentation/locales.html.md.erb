@@ -1,0 +1,130 @@
+# Locales and Internationalization
+
+This application uses a centralized internationalization system powered by **i18next** for managing all translatable text. The system provides type-safe, globally accessible locale data across the entire application.
+
+## Architecture
+
+All translatable text is stored in JSON files in the `locales/` directory. The system includes:
+
+- **i18n Loader** (`src/scripts/helpers/i18nLoader.ts`) - Robust i18next-based loader with namespace support, interpolation, and graceful fallbacks
+- **Express Middleware** (`middleware/setupLocale.ts`) - Injects locale functions into `res.locals` and `req.locale`
+- **Nunjucks Integration** (`utils/nunjucksSetup.ts`) - Makes locale functions globally available in templates via `t()`
+
+## Usage in TypeScript Controllers
+
+```typescript
+import { t } from '#src/scripts/helpers/index.js';
+
+// Use t() for all translations with namespace support
+const backButton = t('common.back');
+const pageTitle = t('pages.caseDetails.title');
+
+// Interpolation support
+const welcomeMessage = t('messages.welcome', { name: 'John' });
+const errorMessage = t('errors.http.default', { status: '404' });
+
+// In Express controllers via req.locale
+export function myController(req: Request, res: Response): void {
+  const errorMsg = req.locale.t('errors.general.caseNotFound');
+}
+```
+
+## Usage in Nunjucks Templates
+
+Locale functions are **globally available** through the `t` function:
+
+```nunjucks
+{# Standard translation calls #}
+<h1>{{ t('pages.home.title') }}</h1>
+<button>{{ t('common.save') }}</button>
+
+{# Interpolation with variables #}
+<p>{{ t('messages.welcome', { name: user.name }) }}</p>
+
+{# GOV.UK component integration #}
+{{ govukInput({
+  label: { text: t('forms.clientDetails.name.label') },
+  hint: { text: t('forms.clientDetails.name.hint') }
+}) }}
+```
+
+## Locale File Structure
+
+The locale files follow a nested namespace structure organized by functional areas:
+
+```json
+{
+  "common": {
+    "back": "Back",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "pages": {
+    "home": {
+      "title": "Manage your civil cases"
+    }
+  },
+  "forms": {
+    "clientDetails": {
+      "name": {
+        "label": "Client name",
+        "hint": "Enter the full legal name"
+      }
+    }
+  },
+  "errors": {
+    "validation": {
+      "required": "This field is required"
+    }
+  }
+}
+```
+
+## Key Features
+
+- ✅ **i18next Integration** - Built on industry-standard i18next library
+- ✅ **Global Availability** - Functions available in all templates and controllers
+- ✅ **Type Safety** - Full TypeScript interface definitions
+- ✅ **Interpolation** - Dynamic content using `{variable}` syntax
+- ✅ **Performance Optimized** - Synchronous initialization with in-memory caching
+- ✅ **Graceful Fallbacks** - Missing keys return the key path for debugging
+
+## Best Practices
+
+1. Use descriptive namespace paths: `forms.clientDetails.name.label`
+2. Leverage interpolation for dynamic content: `t('welcome', { name })`
+3. Group related translations in logical namespace hierarchies
+4. Follow consistent naming patterns with suffixes like `label`, `hint`, `error`, `title`
+5. Test interpolation variables to ensure proper substitution
+
+## Troubleshooting
+
+### Common Issues
+
+```typescript
+// ❌ Wrong: Missing namespace or incorrect key
+const text = t('back'); // Should be t('common.back')
+
+// ✅ Correct: Full namespace path
+const text = t('common.back');
+
+// ❌ Wrong: Incorrect interpolation syntax
+const msg = t('welcome', { user: 'John' }); // Variable name doesn't match
+
+// ✅ Correct: Match the variable names in locale file
+const msg = t('messages.welcome', { name: 'John' });
+```
+
+### Validation and Testing
+
+```typescript
+// Check if translations work as expected
+console.log(t('common.back')); // Should output: "Back"
+
+// Test interpolation
+console.log(t('messages.welcome', { name: 'Test' })); // Should output: "Welcome, Test!"
+```
+
+## Additional Resources
+
+For comprehensive documentation including system architecture details, performance considerations, and migration guides, see [locales/README.md](https://github.com/ministryofjustice/laa-manage-your-civil-cases/blob/main/locales/README.md).
