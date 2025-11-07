@@ -15,10 +15,13 @@ import { formatDate } from './dateFormatter.js';
  * @returns {string} Decoded string
  */
 function decodeHTMLEntities(str: string): string {
-  const { document } = new JSDOM('').window;
+  const dom = new JSDOM('');
+  const { window } = dom;
+  const { document } = window;
   const textarea = document.createElement('textarea');
   textarea.innerHTML = str;
-  return textarea.value;
+  const { value } = textarea;
+  return value;
 }
 
 /**
