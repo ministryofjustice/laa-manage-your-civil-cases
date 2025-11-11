@@ -1,7 +1,8 @@
 # Scripts Helpers
 
 This directory contains reusable utility functions and helpers for the application. All helpers are designed to be type-safe, well-tested, and f2. **Use TypeScript path aliases**
-   ```typescript
+
+```typescript
    // ✅ Use alias with index
    import { safeString } from '#src/scripts/helpers/index.js';
    
@@ -9,14 +10,15 @@ This directory contains reusable utility functions and helpers for the applicati
    import { safeString } from '../../helpers/dataTransformers.js';
    ```
 
-3. **Prefer specific imports**
-   ```typescript
-   // ✅ Import only what you need
-   import { devLog, devError } from '#src/scripts/helpers/index.js';
-   
-   // ❌ Avoid namespace imports
-   import * as helpers from '#src/scripts/helpers/index.js';
-   ```patterns.
+**Prefer specific imports**
+
+```typescript
+// ✅ Import only what you need
+import { devLog, devError } from '#src/scripts/helpers/index.js';
+
+// ❌ Avoid namespace imports
+import * as helpers from '#src/scripts/helpers/index.js';
+```patterns.
 
 ## Centralized Imports
 
