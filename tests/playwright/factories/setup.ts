@@ -1,7 +1,7 @@
 /**
  * MSW Setup Configuration
  * 
- * Centralized configuration for MSW server setup and management.
+ * Centralised configuration for MSW server setup and management.
  * Provides utilities for test setup, teardown, and handler management.
  */
 

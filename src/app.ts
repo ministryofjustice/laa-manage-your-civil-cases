@@ -65,7 +65,7 @@ const createApp = (): express.Application => {
 	// Set up Cross-Site Request Forgery (CSRF) protection
 	setupCsrf(app);
 
-	// Set up locale middleware for internationalization
+	// Set up locale middleware for internationalisation
 	app.use(setupLocaleMiddleware);
 
 	// Set up Nunjucks as the template engine

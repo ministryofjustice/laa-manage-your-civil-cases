@@ -1,3 +1,10 @@
+---
+title: Scripts Helpers
+last_reviewed_on: 2025-11-12
+review_in: 6 weeks
+---
+
+
 # Scripts Helpers
 
 This directory contains reusable utility functions and helpers for the application. All helpers are designed to be type-safe, well-tested, and f2. **Use TypeScript path aliases**
@@ -20,7 +27,7 @@ import { devLog, devError } from '#src/scripts/helpers/index.js';
 import * as helpers from '#src/scripts/helpers/index.js';
 ```patterns.
 
-## Centralized Imports
+## Centralised Imports
 
 All helpers are available through a central index file, allowing for clean imports:
 
@@ -65,7 +72,6 @@ import { formatDate } from '#src/scripts/helpers/dateFormatter.js';
     - [📁 File Organization](#-file-organization)
     - [🚀 Adding New Helpers](#-adding-new-helpers)
       - [Template for New Helper](#template-for-new-helper)
-    - [🔗 Related Documentation](#-related-documentation)
   - [Quick Reference](#quick-reference)
 
 ## Available Helpers
@@ -336,7 +342,8 @@ function displayError(error: unknown) {
 
 ### 🎯 Best Practices
 
-1. **Use the centralized index import**
+1. **Use the centralised index import**
+
    ```typescript
    // ✅ Correct - Import from index
    import { devLog, safeString, formatDate } from '#src/scripts/helpers/index.js';
@@ -347,6 +354,7 @@ function displayError(error: unknown) {
    ```
 
 2. **Use TypeScript path aliases**
+
    ```typescript
    // ✅ Use alias
    import { safeString } from '#src/scripts/helpers/index.js';
@@ -356,6 +364,7 @@ function displayError(error: unknown) {
    ```
 
 3. **Prefer specific imports**
+
    ```typescript
    // ✅ Import only what you need
    import { devLog, devError } from '#src/scripts/helpers/index.js';
@@ -485,12 +494,6 @@ export function helperFunction(param: Type): ReturnType {
   // Implementation
 }
 ```
-
-### 🔗 Related Documentation
-
-- [Project Type Definitions](../../../types/README.md)
-- [Testing Guidelines](../../../tests/README.md)
-- [Code Style Guide](../../../docs/code-style.md)
 
 ---
 
