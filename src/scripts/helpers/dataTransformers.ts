@@ -427,7 +427,7 @@ export const transformThirdParty = (thirdpartyDetails: unknown): {
     address: safeOptionalString(tpPersonal.street) ?? '',
     postcode: tpPostcode,
     relationshipToClient: safeOptionalString(thirdpartyDetails.personal_relationship) ?? '',
-    noContactReason: safeOptionalString(thirdpartyDetails.no_contact_reason) ?? '',
+    noContactReason: safeOptionalString(thirdpartyDetails.reason) ?? '',
     passphrase: safeOptionalString(thirdpartyDetails.pass_phrase) ?? ''
   };
 };

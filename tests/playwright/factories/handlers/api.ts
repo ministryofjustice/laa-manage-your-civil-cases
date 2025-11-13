@@ -68,6 +68,8 @@ interface MockCase {
 // Cast the imported JSON to our known structure
 const cases = mockData as MockCase[];
 
+const mapSafe = (booleanValueTrue?: boolean) => (booleanValueTrue ? 'SAFE' : 'DONT_CALL');
+
 /**
  * Transform mock case data to CLA API format (snake_case with nested objects)
  * @param {MockCase} caseItem - Mock case data
@@ -89,7 +91,7 @@ function transformToApiFormat(caseItem: MockCase): object {
       date_of_birth: caseItem.dateOfBirth,
       home_phone: caseItem.phoneNumber,
       mobile_phone: caseItem.phoneNumber,
-      safe_to_contact: caseItem.safeToCall,
+      safe_to_contact: mapSafe(caseItem.safeToCall),
       announce_call: caseItem.announceCall,
       email: caseItem.emailAddress,
       street: caseItem.address,
@@ -118,16 +120,16 @@ function transformToApiFormat(caseItem: MockCase): object {
         full_name: caseItem.thirdParty.fullName,
         email: caseItem.thirdParty.emailAddress,
         mobile_phone: caseItem.thirdParty.contactNumber,
-        safe_to_contact: caseItem.thirdParty.safeToCall,
+        safe_to_contact: mapSafe(caseItem.thirdParty.safeToCall),
         street: caseItem.thirdParty.address,
         postcode: caseItem.thirdParty.postcode
       },
-      personal_relationship: caseItem.thirdParty.relationshipToClient?.selected?.[0] || null,
+      personal_relationship: caseItem.thirdParty.relationshipToClient?.selected?.[0] || 'PARENT_GUARDIAN',
       personal_relationship_note: null,
       spoke_to: true,
-      no_contact_reason: null,
+      no_contact_reason: caseItem.thirdParty.passphraseSetUp?.selected?.[0] || 'OTHER',
       organisation_name: null,
-      reason: caseItem.thirdParty.relationshipToClient?.selected?.[0] || null,
+      reason: caseItem.thirdParty.passphraseSetUp?.selected?.[0] || 'OTHER',
       pass_phrase: caseItem.thirdParty.passphraseSetUp?.passphrase || null
     } : null
   };
@@ -288,8 +290,8 @@ export const apiHandlers = [
     return HttpResponse.json(transformToApiFormat(caseItem));
   }),
 
-  // Intercept add third party contact (POST /cla_provider/api/v1/cases/{caseReference}/third-party)
-  http.post(`${API_BASE_URL}${API_PREFIX}/cases/:caseReference/third-party`, async ({ params, request }) => {
+  // Intercept add third party contact (POST /cla_provider/api/v1/case/{caseReference}/thirdparty_details)
+  http.post(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details`, async ({ params, request }) => {
     const { caseReference } = params;
     const thirdPartyData = await request.json() as Record<string, any>;
     
@@ -303,8 +305,8 @@ export const apiHandlers = [
     return HttpResponse.json(transformToApiFormat(caseItem), { status: 201 });
   }),
 
-  // Intercept update third party contact (PUT /cla_provider/api/v1/cases/{caseReference}/third-party)
-  http.put(`${API_BASE_URL}${API_PREFIX}/cases/:caseReference/third-party`, async ({ params, request }) => {
+  // Intercept update third party contact (PATCH /cla_provider/api/v1/case/{caseReference}/thirdparty_details)
+  http.patch(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details`, async ({ params, request }) => {
     const { caseReference } = params;
     const thirdPartyData = await request.json() as Record<string, any>;
     

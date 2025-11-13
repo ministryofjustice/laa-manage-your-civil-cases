@@ -1,6 +1,6 @@
 /**
  * @file Locale middleware for Express applications
- * Provides internationalization (i18n) support by injecting locale data into templates
+ * Provides internationalisation (i18n) support by injecting locale data into templates
  */
 
 import type { Request, Response, NextFunction } from 'express';

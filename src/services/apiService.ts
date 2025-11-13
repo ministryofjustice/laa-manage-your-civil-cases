@@ -430,10 +430,11 @@ class ApiService {
     thirdPartyData: object
   ): Promise<ClientDetailsApiResponse> {
     try {
-      devLog(`API: POST ${API_PREFIX}/cases/${caseReference}/third-party`);
+      devLog(`API: POST ${API_PREFIX}/case/${caseReference}/thirdparty_details/`);
       const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
-      const response = await configuredAxios.post(`${API_PREFIX}/cases/${caseReference}/third-party`, thirdPartyData);
+      const response = await configuredAxios.post(`${API_PREFIX}/case/${caseReference}/thirdparty_details/`, thirdPartyData);
       devLog(`API: Add third party response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+
       return {
         data: transformClientDetailsItem(response.data),
         status: 'success'

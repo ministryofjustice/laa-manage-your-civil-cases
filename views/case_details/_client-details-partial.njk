@@ -20,14 +20,18 @@
 {% endset %}
 
 {% set phoneNumberContentThirdParty %}
-  {% if data.thirdParty.safeToCall %}
-    {{ data.thirdParty.contactNumber }}
+  {% if data.thirdParty.contactNumber %}
+    {% if data.thirdParty.safeToCall %}
+      {{ data.thirdParty.contactNumber }}
+    {% else %}
+      {{ govukWarningText({
+        text: t('forms.clientDetails.phoneNumber.notSafeToCallWarning'),
+        iconFallbackText: t.common.warning
+      }) }}
+    {% endif %}
   {% else %}
-    {{ govukWarningText({
-      text: t('forms.clientDetails.phoneNumber.notSafeToCallWarning'),
-      iconFallbackText: t.common.warning
-    }) }}
-  {% endif %}
+    {{ t('pages.caseDetails.notProvided') }}
+  {% endif%}
 {% endset %}
 
 {% macro renderAddress(address, postcode) %}

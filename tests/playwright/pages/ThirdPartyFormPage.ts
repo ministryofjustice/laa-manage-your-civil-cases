@@ -111,9 +111,10 @@ export class ThirdPartyFormPage extends BaseEditFormPage {
     name: string;
     phone: string;
     email: string;
-    relationshipIndex?: number;
+    relationshipValue?: 'PARENT_GUARDIAN' | 'FAMILY_FRIEND' | 'PROFESSIONAL' | 'LEGAL_ADVISOR' | 'OTHER';
     safeToCall?: boolean;
     hasPassphrase?: boolean;
+    passphraseReason?: 'CHILD_PATIENT' | 'POWER_ATTORNEY' | 'NO_TELEPHONE_DISABILITY' | 'NO_TELEPHONE_LANGUAGE' | 'OTHER';
     address?: string;
     postcode?: string;
     passphrase?: string;
@@ -124,16 +125,23 @@ export class ThirdPartyFormPage extends BaseEditFormPage {
     await this.emailInput.fill(data.email);
 
     // Select relationship (default to first option)
-    const relationshipIndex = data.relationshipIndex ?? 0;
-    await this.relationshipRadios.nth(relationshipIndex).check();
+    const relationship = data.relationshipValue ?? 'PARENT_GUARDIAN';
+    await this.page.locator(`input[name="thirdPartyRelationshipToClient"][value="${relationship}"]`).check();
 
-    // Set safe to call (default to true/Yes)
-    const safeToCallIndex = data.safeToCall !== false ? 0 : 1; // 0 = Yes, 1 = No
-    await this.safeToCallRadios.nth(safeToCallIndex).check();
+    // Safe to call (values in template are "Yes"/"No")
+    const safeValue = data.safeToCall !== false ? 'true' : 'false';
+    await this.page.locator(`input[name="thirdPartySafeToCall"][value="${safeValue}"]`).check();
 
-    // Set passphrase setup (default to false/No)
-    const passphraseIndex = data.hasPassphrase === true ? 0 : 1; // 0 = Yes, 1 = No
-    await this.passphraseRadios.nth(passphraseIndex).check();
+    // Passphrase setup
+    if (data.hasPassphrase) {
+      await this.page.locator(`input[name="thirdPartyPassphraseSetUp"][value="Yes"]`).check();
+      if (data.passphrase) {
+        await this.passphraseInput.fill(data.passphrase);
+      }
+    } else {
+      const passphraseReason = data.passphraseReason ?? 'OTHER';
+      await this.page.locator(`input[name="thirdPartyPassphraseSetUp"][value="${passphraseReason}"]`).check();
+    }
 
     // Fill optional fields if provided
     if (data.address) {
