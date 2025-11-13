@@ -13,8 +13,8 @@ export function createThirdPartyHandlers(
   cases: MockCase[]
 ) {
   return [
-    // PATCH /case/:caseReference/thirdparty_details/
-    http.patch(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details/`, async ({ params, request }) => {
+    // PATCH /case/:caseReference/thirdparty_details
+    http.patch(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details`, async ({ params, request }) => {
       const { caseReference } = params;
       const updateData = await request.json() as Record<string, any>;
       
@@ -52,8 +52,8 @@ export function createThirdPartyHandlers(
       return HttpResponse.json(transformToApiFormat(caseItem));
     }),
 
-    // POST /cases/:caseReference/third-party
-    http.post(`${API_BASE_URL}${API_PREFIX}/cases/:caseReference/third-party`, async ({ params, request }) => {
+    // POST /case/:caseReference/thirdparty_details
+    http.post(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details`, async ({ params, request }) => {
       const { caseReference } = params;
       const thirdPartyData = await request.json() as Record<string, any>;
       
@@ -91,8 +91,8 @@ export function createThirdPartyHandlers(
       return HttpResponse.json(transformToApiFormat(caseItem), { status: 201 });
     }),
 
-    // PUT /cases/:caseReference/third-party
-    http.put(`${API_BASE_URL}${API_PREFIX}/cases/:caseReference/third-party`, async ({ params, request }) => {
+    // PUT /case/:caseReference/thirdparty_details
+    http.put(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details`, async ({ params, request }) => {
       const { caseReference } = params;
       const thirdPartyData = await request.json() as Record<string, any>;
       
