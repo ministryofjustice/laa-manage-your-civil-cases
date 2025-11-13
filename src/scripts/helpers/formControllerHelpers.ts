@@ -156,7 +156,8 @@ export function prepareThirdPartyData(formFields: Record<string, unknown>): obje
     thirdPartyRelationshipToClient: personalRelationship
   } = formFields;
 
-  const safeToContact = thirdPartySafeToCall === 'true' ? 'SAFE' : 'DONT_CALL';
+  // Default to "SAFE", unless explicitly false
+  const safeToContact = thirdPartySafeToCall === 'false' || thirdPartySafeToCall === false ? 'DONT_CALL': 'SAFE';
 
   const spokeTo = !(typeof thirdPartyPassphraseSetUp === 'string' && thirdPartyPassphraseSetUp !== 'Yes')
 
@@ -176,8 +177,7 @@ export function prepareThirdPartyData(formFields: Record<string, unknown>): obje
     pass_phrase: passphraseConditional,
     reason,
     personal_relationship: personalRelationship,
-    spoke_to: spokeTo,
-    no_contact_reason: reason
+    spoke_to: spokeTo
   };
 }
 
