@@ -130,6 +130,7 @@
     }
   ]
 }) }}
+
 {# Contact Details summary card #}
 {{ summaryCardComponent({
   data: constructedData,
@@ -183,7 +184,7 @@
   ]
 }) }}
 
-{% if not data.clientSupportNeeds.no_adaptations_required %}
+{% if not data.clientSupportNeeds.no_adaptations_required or data.clientSupportNeeds.notes or data.clientSupportNeeds.languageSupportNeeds %}
   {# Client support needs summary card #}
   {{ summaryCardComponent({
     data: constructedData,
