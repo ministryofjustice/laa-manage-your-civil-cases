@@ -104,8 +104,7 @@ export class AuthService {
   private async acquireToken(): Promise<string> {
     try {
       devLog('Acquiring new JWT token from API');
-      console.log(`Token endpoint: ${this.tokenEndpoint}`);
-
+      devLog(`Token endpoint: ${this.tokenEndpoint}`);
       const requestBody = new URLSearchParams({
         grant_type: 'password',
         ...this.credentials
@@ -124,8 +123,8 @@ export class AuthService {
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.log(`Token acquisition failed: ${response.status} ${response.statusText}`);
-        console.log(`Response body: ${errorText}`);
+        devLog(`Token acquisition failed: ${response.status} ${response.statusText}`);
+        devLog(`Response body: ${errorText}`);
         throw new Error(`Token acquisition failed: ${response.status} ${response.statusText}`);
       }
 
