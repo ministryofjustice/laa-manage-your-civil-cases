@@ -154,7 +154,7 @@
           .replace('{{caseReference}}', row.caseReference)
           .replace('{{fullName}}', row.fullName) %}
         {% set cellHtml %}
-        <a href="{{ linkUrl }}" class="govuk-link{% if column.linkClasses %} {{ column.linkClasses }}{% endif %}">{{ cellContent | trim }}</a>
+        <a href="{{ linkUrl }}" class="govuk-link{% if column.linkClasses %} {{ column.linkClasses }}{% endif %}">{{ cellContent | trim | safe }}</a>
         {% endset %}
         {% set cellItem = {
           html: cellHtml,
@@ -162,7 +162,7 @@
         } %}
       {% else %}
         {% set cellItem = {
-          html: cellContent | trim,
+          html: cellContent | trim | safe,
           classes: column.cellClasses
         } %}
       {% endif %}

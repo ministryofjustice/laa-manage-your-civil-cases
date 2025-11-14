@@ -12,7 +12,7 @@ deploy_branch() {
   echo "Deploying commit: $GITHUB_SHA under release name: '$BRANCH_RELEASE_NAME'..."
 
   helm upgrade "$BRANCH_RELEASE_NAME" ./deploy/laa-manage-your-civil-cases/. \
-                --install --wait \
+                --install --wait --timeout=10m \
                 --namespace="${K8S_NAMESPACE}" \
                 --values ./deploy/laa-manage-your-civil-cases/values/"$ENVIRONMENT".yaml \
                 --set image.repository="$REGISTRY/$REPOSITORY" \
@@ -27,7 +27,7 @@ deploy_branch() {
 
 deploy_main() {  
   helm upgrade manage-civil-cases ./deploy/laa-manage-your-civil-cases/. \
-                          --install --wait \
+                          --install --wait --timeout=10m \
                           --namespace="${K8S_NAMESPACE}" \
                           --values ./deploy/laa-manage-your-civil-cases/values/"$ENVIRONMENT".yaml \
                           --set image.repository="$REGISTRY/$REPOSITORY" \

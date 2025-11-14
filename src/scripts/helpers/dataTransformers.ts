@@ -4,8 +4,26 @@
  * Utility functions for safely transforming and validating data from JSON fixtures
  */
 
+import { JSDOM } from 'jsdom';
 import type { FieldConfig } from '#types/form-controller-types.js';
 import { formatDate } from './dateFormatter.js';
+
+/**
+ * Decode HTML entities in a string using native DOM parser
+ * Handles all HTML entities that might be returned from the CLA API
+ * @param {string} str - String with HTML entities
+ * @returns {string} Decoded string
+ */
+function decodeHTMLEntities(str: string): string {
+  const dom = new JSDOM('');
+  const { window } = dom;
+  const { document } = window;
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = str;
+  const { value } = textarea;
+  return value;
+}
+
 /**
  * Safely extract nested field value using custom path resolution
  * @param {unknown} obj - Object to traverse
@@ -28,6 +46,7 @@ export function safeNestedField(obj: unknown, path: string): unknown {
 
 /**
  * Safely get string value from unknown data
+ * Decodes HTML entities that may be present in API responses
  * @param {unknown} value Value to convert
  * @returns {string} String value or empty string
  */
@@ -36,7 +55,7 @@ export function safeString(value: unknown): string {
     return '';
   }
   if (typeof value === 'string') {
-    return value;
+    return decodeHTMLEntities(value);
   }
   if (typeof value === 'number' || typeof value === 'boolean') {
     return String(value);
@@ -46,6 +65,7 @@ export function safeString(value: unknown): string {
 
 /**
  * Safely get optional string value from unknown data
+ * Decodes HTML entities that may be present in API responses
  * @param {unknown} value Value to convert
  * @returns {string | undefined} String value or undefined
  */
@@ -54,7 +74,7 @@ export function safeOptionalString(value: unknown): string | undefined {
     return undefined;
   }
   if (typeof value === 'string') {
-    return value;
+    return decodeHTMLEntities(value);
   }
   if (typeof value === 'number' || typeof value === 'boolean') {
     return String(value);
