@@ -294,6 +294,7 @@
         "phoneNumberHeading": "Phone number (optional)",
         "address": "Address",
         "addressHeading": "Address (optional)",
+        "postcodeHeading": "Postcode (optional)",
         "relationshipToClient": {
           "title": "Relationship to client"
         },
