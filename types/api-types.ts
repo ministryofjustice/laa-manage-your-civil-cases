@@ -58,6 +58,7 @@ export interface ClientSupportNeeds {
   callbackPreference: string;
   languageSupportNeeds: string;
   notes: string;
+  no_adaptations_required: boolean;
 }
 
 /**

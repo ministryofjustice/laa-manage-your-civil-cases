@@ -579,24 +579,39 @@ class ApiService {
   }
 
   /**
-   * Delete client support needs for a case
-   * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
-   * @param {string} caseReference - Case reference number
-   * @returns {Promise<ClientDetailsApiResponse>} API response confirming deletion
+   * Remove client support needs (soft delete via PATCH)
+   * Clears all adaptation_details fields and sets no_adaptations_required to true
+   * @param {AxiosInstanceWrapper} axiosMiddleware - Configured axios instance with auth
+   * @param {string} caseReference - The case reference to update
+   * @returns {Promise<ClientDetailsApiResponse>} Response with updated client details
    */
   static async deleteClientSupportNeeds(
     axiosMiddleware: AxiosInstanceWrapper,
     caseReference: string
   ): Promise<ClientDetailsApiResponse> {
     try {
-      devLog(`API: DELETE ${API_PREFIX}/cases/${caseReference}/client-support-needs`);
-      const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
-      const response = await configuredAxios.delete(`${API_PREFIX}/cases/${caseReference}/client-support-needs`);
-      devLog(`API: Delete client support needs response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
-      return {
-        data: transformClientDetailsItem(response.data),
-        status: 'success'
+      // Soft delete: PATCH with cleared fields and no_adaptations_required flag
+      const clearPayload = {
+        bsl_webcam: false,
+        minicom: false,
+        text_relay: false,
+        skype_webcam: false,
+        language: null,
+        notes: '',
+        callback_preference: false,
+        no_adaptations_required: true
       };
+
+      devLog(`API: PATCH ${API_PREFIX}/case/${caseReference}/adaptation_details/ (soft delete)`);
+      const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
+      const response = await configuredAxios.patch(
+        `${API_PREFIX}/case/${caseReference}/adaptation_details/`,
+        clearPayload
+      );
+      devLog(`API: Client support needs removed (soft delete) response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+      
+      // Re-fetch full case data to get updated state
+      return await ApiService.getClientDetails(axiosMiddleware, caseReference);
     } catch (error) {
       const errorMessage = extractAndLogError(error, 'API error');
       return {
