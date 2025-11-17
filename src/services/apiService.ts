@@ -492,16 +492,25 @@ class ApiService {
     caseReference: string
   ): Promise<ClientDetailsApiResponse> {
     try {
+      // Soft delete: PATCH with personal_details nested object and all fields cleared
       const payload = {
-        personal_relationship: 'OTHER',
-        full_name: null,
-        mobile_phone: null,
-        home_phone: null,
-        organisation: null,
-        reason: null,
-        personal_relationship_note: null,
+        personal_details: {
+          title: null,
+          full_name: null,
+          postcode: null,
+          street: null,
+          mobile_phone: null,
+          home_phone: '',  // Must be empty string, not null (CLA backend constraint)
+          email: '',        // Must be empty string, not null (CLA backend constraint)
+          safe_to_contact: null
+        },
         pass_phrase: null,
-        safe_to_contact: null
+        reason: null,
+        personal_relationship: 'OTHER',  // Required field
+        personal_relationship_note: '',
+        spoke_to: null,
+        no_contact_reason: null,
+        organisation_name: null
       };
       
       devLog(`API: PATCH ${API_PREFIX}/case/${caseReference}/thirdparty_details/ (soft delete)`);
@@ -510,7 +519,7 @@ class ApiService {
       devLog(`API: Third party soft delete response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
       
       // Re-fetch the case to get updated state
-      const caseResponse = await configuredAxios.get(`${API_PREFIX}/case/${caseReference}/`);
+      const caseResponse = await configuredAxios.get(`${API_PREFIX}/case/${caseReference}/detailed`);
       devLog(`API: Re-fetched case after third party deletion: ${JSON.stringify(caseResponse.data, null, JSON_INDENT)}`);
       
       return {

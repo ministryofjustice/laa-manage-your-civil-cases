@@ -24,9 +24,9 @@ export function createThirdPartyHandlers(
         return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
       }
 
-      // Detect soft delete: personal_relationship = 'OTHER' with null full_name and pass_phrase
+      // Detect soft delete: personal_relationship = 'OTHER' with nested personal_details.full_name null and pass_phrase null
       const isSoftDelete = updateData.personal_relationship === 'OTHER' &&
-                          updateData.full_name === null &&
+                          updateData.personal_details?.full_name === null &&
                           updateData.pass_phrase === null;
 
       if (isSoftDelete) {
