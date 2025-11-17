@@ -4,18 +4,18 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/tabComponent.njk" import tabComponent %}
 
-{% block backLink %}
-  {% set statusMap = {
-    "new": "new",
-    "opened": "pending",
-    "accepted": "advising",
-    "rejected": "closed",
-    "closed": "completed"
-  } %}
+{% set caseStatusToStates = {
+  "new": "new",
+  "opened": "pending",
+  "accepted": "advising",
+  "rejected": "closed",
+  "closed": "completed"
+} %}
 
+{% block backLink %}
   {{ govukBackLink({
     text: t('common.backToAllCases'),
-    href: "/cases/" + statusMap[client.caseStatus | lower],
+    href: "/cases/" + caseStatusToStates[client.caseStatus | lower],
     classes: "govuk-!-margin-bottom-0"
   }) }}
 {% endblock %}

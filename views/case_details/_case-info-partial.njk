@@ -1,11 +1,3 @@
-{% set statusMap = {
-  "new": "new",
-  "opened": "pending",
-  "accepted": "advising",
-  "rejected": "closed",
-  "closed": "completed"
-} %}
-
 {% set statusConfig = {
   "new": {
     text: t('common.status.new'),
@@ -29,7 +21,7 @@
   }
 } %}
 
-{% set currentStatus = statusMap[client.caseStatus | lower] %}
+{% set currentStatus = caseStatusToStates[client.caseStatus | lower] %}
 
 {{ govukTag({
   text: statusConfig[currentStatus].text,
