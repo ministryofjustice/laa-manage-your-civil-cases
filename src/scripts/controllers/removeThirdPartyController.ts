@@ -67,17 +67,9 @@ export async function getRemoveThirdPartyConfirmation(req: Request, res: Respons
  * @param {NextFunction} next Express next function
  */
 export async function deleteThirdParty(req: Request, res: Response, next: NextFunction): Promise<void> {
-  console.log('[CONTROLLER] ============================================');
-  console.log('[CONTROLLER] deleteThirdParty called');
-  console.log('[CONTROLLER] Request method:', req.method);
-  console.log('[CONTROLLER] Request path:', req.path);
-  console.log('[CONTROLLER] Request body:', req.body);
-  console.log('[CONTROLLER] ============================================');
-  
   const caseReference = safeString(req.params.caseReference);
 
   if (typeof caseReference !== 'string' || caseReference.trim() === '') {
-    console.log('[CONTROLLER] ERROR: Invalid case reference');
     res.status(BAD_REQUEST).render('main/error.njk', {
       status: '400',
       error: 'Invalid case reference'
@@ -86,33 +78,20 @@ export async function deleteThirdParty(req: Request, res: Response, next: NextFu
   }
 
   try {
-    console.log('[CONTROLLER] === START deleteThirdParty POST ===');
-    console.log('[CONTROLLER] Case reference:', caseReference);
     devLog(`Removing third party contact for case: ${caseReference}`);
 
     // Call API service to remove third party data
-    console.log('[CONTROLLER] About to call apiService.deleteThirdPartyContact');
-    console.log('[CONTROLLER] apiService object:', typeof apiService);
-    console.log('[CONTROLLER] deleteThirdPartyContact method:', typeof apiService.deleteThirdPartyContact);
     const response = await apiService.deleteThirdPartyContact(req.axiosMiddleware, caseReference);
-    console.log('[CONTROLLER] API response received:', { status: response.status, hasData: !!response.data, message: response.message });
 
     if (response.status === 'success') {
-      console.log('[CONTROLLER] ✅ SUCCESS - Third party deleted successfully');
-      console.log('[CONTROLLER] Redirecting to:', `/cases/${caseReference}/client-details`);
       devLog(`Third party contact successfully removed for case: ${caseReference}`);
       // Redirect back to client details page
       res.redirect(`/cases/${caseReference}/client-details`);
-      console.log('[CONTROLLER] Redirect sent');
     } else if (response.message?.includes('404') === true) {
-      console.log('[CONTROLLER] ⚠️  404 response, treating as success');
       // Third party already removed or doesn't exist - treat as success (idempotent)
       devLog(`Third party contact already removed or not found for case: ${caseReference}. Treating as success.`);
       res.redirect(`/cases/${caseReference}/client-details`);
     } else {
-      console.log('[CONTROLLER] ❌ ERROR - API returned non-success status');
-      console.log('[CONTROLLER] Response status:', response.status);
-      console.log('[CONTROLLER] Response message:', response.message);
       devError(`Failed to remove third party contact for case: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);
       res.status(INTERNAL_SERVER_ERROR).render('main/error.njk', {
         status: '500',
@@ -120,8 +99,6 @@ export async function deleteThirdParty(req: Request, res: Response, next: NextFu
       });
     }
   } catch (error) {
-    console.log('[CONTROLLER] ❌ EXCEPTION caught in deleteThirdParty');
-    console.error('[CONTROLLER] Exception:', error);
     // Use the error processing utility
     const processedError = createProcessedError(error, `removing third party contact for case ${caseReference}`);
 

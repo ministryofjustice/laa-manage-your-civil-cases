@@ -15,12 +15,8 @@ export function createThirdPartyHandlers(
   return [
     // PATCH /case/:caseReference/thirdparty_details/
     http.patch(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details/`, async ({ params, request }) => {
-      console.log('[MSW PATCH THIRD PARTY] ============================================');
-      console.log('[MSW PATCH THIRD PARTY] === PATCH thirdparty_details INTERCEPTED ===');
       const { caseReference } = params;
-      console.log('[MSW PATCH THIRD PARTY] Case reference from params:', caseReference);
       const updateData = await request.json() as Record<string, any>;
-      console.log('[MSW PATCH THIRD PARTY] Update data received:', JSON.stringify(updateData, null, 2));
       
       const caseItem = cases.find(c => c.caseReference === caseReference);
       
@@ -33,25 +29,11 @@ export function createThirdPartyHandlers(
       const isSoftDelete = updateData.personal_relationship === 'OTHER' &&
                           updateData.full_name === null &&
                           updateData.pass_phrase === null;
-      console.log('[MSW HANDLER] Soft delete detection:', { 
-        isSoftDelete, 
-        personal_relationship: updateData.personal_relationship,
-        full_name: updateData.full_name,
-        pass_phrase: updateData.pass_phrase
-      });
 
       if (isSoftDelete) {
-        console.log('[MSW PATCH THIRD PARTY] ✅ SOFT DELETE DETECTED');
-        console.log('[MSW PATCH THIRD PARTY] Before clear - thirdParty:', caseItem.thirdParty);
         caseItem.thirdParty = null;
-        console.log('[MSW PATCH THIRD PARTY] After clear - thirdParty:', caseItem.thirdParty);
-        const transformed = transformToApiFormat(caseItem);
-        console.log('[MSW PATCH THIRD PARTY] Transformed response:', JSON.stringify(transformed).substring(0, 200));
-        console.log('[MSW PATCH THIRD PARTY] Returning 200 with cleared third party');
-        console.log('[MSW PATCH THIRD PARTY] ============================================');
-        return HttpResponse.json(transformed);
+        return HttpResponse.json(transformToApiFormat(caseItem));
       }
-      console.log('[MSW HANDLER] Not a soft delete, proceeding with validation');
 
       const validationErrors: Record<string, any> = {};
 

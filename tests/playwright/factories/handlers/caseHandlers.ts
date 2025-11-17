@@ -27,22 +27,14 @@ function createGetCaseHandler(
 ) {
   return http.get(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/`, ({ params }) => {
     const { caseReference } = params;
-    console.log('[MSW GET CASE] ============================================');
-    console.log(`[MSW GET CASE] Intercepting GET /case/${caseReference}/`);
     
     const caseItem = cases.find(c => c.caseReference === caseReference);
     
     if (!caseItem) {
-      console.log(`[MSW GET CASE] ❌ Case ${caseReference} not found in mock data`);
       return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
     }
     
-    console.log(`[MSW GET CASE] ✅ Found case ${caseReference}`);
-    console.log(`[MSW GET CASE] thirdParty value:`, caseItem.thirdParty);
-    const transformed = transformToApiFormat(caseItem);
-    console.log(`[MSW GET CASE] Transformed response:`, JSON.stringify(transformed).substring(0, 200));
-    console.log('[MSW GET CASE] ============================================');
-    return HttpResponse.json(transformed);
+    return HttpResponse.json(transformToApiFormat(caseItem));
   });
 }
 
