@@ -31,9 +31,11 @@ export async function getRemoveSupportNeedsConfirmation(req: Request, res: Respo
     const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
 
     if (response.status === 'success' && response.data !== null) {
-      // Check if client support needs exists
+      // Check if client support needs record exists
+      // Note: We allow removal even if no_adaptations_required is true, as there may still be
+      // adaptation values set (BSL, language, etc.) that need to be cleared
       if (response.data.clientSupportNeeds === null) {
-        devError(`No client support needs data found for case: ${caseReference}`);
+        devError(`No client support needs to remove for case: ${caseReference}`);
         res.status(NOT_FOUND).render('main/error.njk', {
           status: '404',
           error: 'No client support needs data found for this case'
