@@ -433,6 +433,24 @@ export const transformThirdParty = (thirdpartyDetails: unknown): {
 };
 
 /**
+ * Detects if a third party record is soft-deleted
+ * A soft-deleted third party has relationshipToClient === 'OTHER' and no fullName
+ * This indicates the record exists in the database but has been cleared
+ * @param {unknown} thirdParty - Third party object to check
+ * @returns {boolean} True if third party is soft-deleted, false otherwise
+ */
+export function isSoftDeletedThirdParty(thirdParty: unknown): boolean {
+  if (!isRecord(thirdParty)) {
+    return false;
+  }
+  
+  const relationshipToClient = safeString(thirdParty.relationshipToClient);
+  const fullName = safeString(thirdParty.fullName);
+  
+  return relationshipToClient === 'OTHER' && fullName === '';
+}
+
+/**
  * Build ordering parameter based on `ordering` query string
  * @param {string} ordering - Query string for ordering (e.g., 'modified' or '-modified').
  * @param {string} sortBy - Default field to sort by.
