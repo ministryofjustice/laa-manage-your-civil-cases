@@ -13,16 +13,39 @@ export function createThirdPartyHandlers(
   cases: MockCase[]
 ) {
   return [
-    // PATCH /case/:caseReference/thirdparty_details
-    http.patch(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details`, async ({ params, request }) => {
+    // PATCH /case/:caseReference/thirdparty_details/
+    http.patch(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details/`, async ({ params, request }) => {
+      console.log('[MSW HANDLER] === PATCH thirdparty_details INTERCEPTED ===');
       const { caseReference } = params;
+      console.log('[MSW HANDLER] Case reference from params:', caseReference);
       const updateData = await request.json() as Record<string, any>;
+      console.log('[MSW HANDLER] Update data received:', JSON.stringify(updateData, null, 2));
       
       const caseItem = cases.find(c => c.caseReference === caseReference);
       
       if (!caseItem) {
+        console.log('[MSW HANDLER] Case not found:', caseReference);
         return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
       }
+
+      // Detect soft delete: personal_relationship = 'OTHER' with null full_name and pass_phrase
+      const isSoftDelete = updateData.personal_relationship === 'OTHER' &&
+                          updateData.full_name === null &&
+                          updateData.pass_phrase === null;
+      console.log('[MSW HANDLER] Soft delete detection:', { 
+        isSoftDelete, 
+        personal_relationship: updateData.personal_relationship,
+        full_name: updateData.full_name,
+        pass_phrase: updateData.pass_phrase
+      });
+
+      if (isSoftDelete) {
+        console.log('[MSW HANDLER] Third party soft delete detected - clearing thirdParty field');
+        caseItem.thirdParty = null;
+        console.log('[MSW HANDLER] Returning transformed case data');
+        return HttpResponse.json(transformToApiFormat(caseItem));
+      }
+      console.log('[MSW HANDLER] Not a soft delete, proceeding with validation');
 
       const validationErrors: Record<string, any> = {};
 
@@ -52,8 +75,8 @@ export function createThirdPartyHandlers(
       return HttpResponse.json(transformToApiFormat(caseItem));
     }),
 
-    // POST /case/:caseReference/thirdparty_details
-    http.post(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details`, async ({ params, request }) => {
+    // POST /case/:caseReference/thirdparty_details/
+    http.post(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details/`, async ({ params, request }) => {
       const { caseReference } = params;
       const thirdPartyData = await request.json() as Record<string, any>;
       
@@ -91,8 +114,8 @@ export function createThirdPartyHandlers(
       return HttpResponse.json(transformToApiFormat(caseItem), { status: 201 });
     }),
 
-    // PUT /case/:caseReference/thirdparty_details
-    http.put(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details`, async ({ params, request }) => {
+    // PUT /case/:caseReference/thirdparty_details/
+    http.put(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details/`, async ({ params, request }) => {
       const { caseReference } = params;
       const thirdPartyData = await request.json() as Record<string, any>;
       

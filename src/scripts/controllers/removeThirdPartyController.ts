@@ -78,10 +78,14 @@ export async function deleteThirdParty(req: Request, res: Response, next: NextFu
   }
 
   try {
+    console.log('[CONTROLLER] === START deleteThirdParty POST ===');
+    console.log('[CONTROLLER] Case reference:', caseReference);
     devLog(`Removing third party contact for case: ${caseReference}`);
 
     // Call API service to remove third party data
+    console.log('[CONTROLLER] About to call apiService.deleteThirdPartyContact');
     const response = await apiService.deleteThirdPartyContact(req.axiosMiddleware, caseReference);
+    console.log('[CONTROLLER] API response received:', { status: response.status, hasData: !!response.data, message: response.message });
 
     if (response.status === 'success') {
       devLog(`Third party contact successfully removed for case: ${caseReference}`);

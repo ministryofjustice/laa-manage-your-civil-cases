@@ -3,6 +3,9 @@
  * 
  * This script starts the actual Express application with MSW enabled for E2E testing.
  * It initializes MSW to intercept outgoing API calls and serve mock responses.
+ * 
+ * Note: NODE_OPTIONS='--no-webstorage' must be set to disable Web Storage APIs
+ * for MSW 2.12.1+ compatibility with Node.js 25.1.0
  */
 
 import { setupServer } from 'msw/node';
