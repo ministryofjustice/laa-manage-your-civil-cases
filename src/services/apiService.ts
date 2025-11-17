@@ -482,7 +482,7 @@ class ApiService {
   }
 
   /**
-   * Delete third party contact for a case (soft delete via PATCH)
+   * Delete third party contact for a case
    * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
    * @param {string} caseReference - Case reference number
    * @returns {Promise<ClientDetailsApiResponse>} API response confirming deletion
@@ -492,7 +492,6 @@ class ApiService {
     caseReference: string
   ): Promise<ClientDetailsApiResponse> {
     try {
-      // Soft delete: PATCH with cleared fields and personal_relationship = 'OTHER'
       const payload = {
         personal_relationship: 'OTHER',
         full_name: null,

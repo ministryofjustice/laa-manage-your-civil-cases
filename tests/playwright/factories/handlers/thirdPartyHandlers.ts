@@ -21,7 +21,6 @@ export function createThirdPartyHandlers(
       const caseItem = cases.find(c => c.caseReference === caseReference);
       
       if (!caseItem) {
-        console.log('[MSW HANDLER] Case not found:', caseReference);
         return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
       }
 
