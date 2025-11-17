@@ -79,14 +79,14 @@ const clientSupportNeedsBaseSchema = {
     if (typeof value === "string" && value.trim().length > MAX_LENGTH) {
       return new TypedValidationError({
         summaryMessage: t('forms.clientDetails.clientSupportNeeds.validationError.tooLongNotes'),
-        inlineMessage: t('forms.clientDetails.clientSupportNeeds.validationError.tooLongNotes'),
+        inlineMessage: t('forms.clientDetails.clientSupportNeeds.validationError.tooLongNotes')
       });
     }
 
     // Empty
     return new TypedValidationError({
       summaryMessage: t('forms.clientDetails.clientSupportNeeds.validationError.notEmptyNotes'),
-      inlineMessage: t('forms.clientDetails.clientSupportNeeds.validationError.notEmptyNotes'),
+      inlineMessage: t('forms.clientDetails.clientSupportNeeds.validationError.notEmptyNotes')
     });
   },
   },
