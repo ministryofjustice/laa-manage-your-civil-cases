@@ -18,6 +18,27 @@ function createAuthTokenHandler(API_BASE_URL: string) {
 }
 
 /**
+ * GET /case/:caseReference/ - Get case information (used by re-fetch after updates)
+ */
+function createGetCaseHandler(
+  API_BASE_URL: string,
+  API_PREFIX: string,
+  cases: MockCase[]
+) {
+  return http.get(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/`, ({ params }) => {
+    const { caseReference } = params;
+    
+    const caseItem = cases.find(c => c.caseReference === caseReference);
+    
+    if (!caseItem) {
+      return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
+    }
+    
+    return HttpResponse.json(transformToApiFormat(caseItem));
+  });
+}
+
+/**
  * GET /case/:caseReference/detailed - Get detailed case information
  */
 function createGetCaseDetailedHandler(
@@ -153,6 +174,7 @@ export function createCaseHandlers(
 ) {
   return [
     createAuthTokenHandler(API_BASE_URL),
+    createGetCaseHandler(API_BASE_URL, API_PREFIX, cases),
     createGetCaseDetailedHandler(API_BASE_URL, API_PREFIX, cases),
     createGetCasesListHandler(API_BASE_URL, API_PREFIX, cases),
     createDeleteClientSupportNeedsHandler(API_BASE_URL, API_PREFIX, cases),

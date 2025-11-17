@@ -1,11 +1,41 @@
 import type { Request, Response, NextFunction } from 'express';
+import type { ClientDetailsApiResponse } from '#types/api-types.js';
+import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
-import { handleGetEditForm, extractFormFields, handleAddThirdPartyValidationErrors, prepareThirdPartyData, devLog, devError, createProcessedError, safeString } from '#src/scripts/helpers/index.js';
+import { handleGetEditForm, extractFormFields, handleAddThirdPartyValidationErrors, prepareThirdPartyData, devLog, devError, createProcessedError, safeString, isSoftDeletedThirdParty } from '#src/scripts/helpers/index.js';
 import { apiService } from '#src/services/apiService.js';
 
 // HTTP Status codes
 const BAD_REQUEST = 400;
 const INTERNAL_SERVER_ERROR = 500;
+
+/**
+ * Handles API call to add or update third party based on soft-delete status
+ * @param {object} params - Parameters for API call
+ * @param {AxiosInstanceWrapper} params.axiosMiddleware - Axios middleware from request
+ * @param {string} params.caseReference - Case reference number
+ * @param {object} params.thirdPartyData - Third party data to send
+ * @param {boolean} params.hasSoftDeleted - Whether a soft-deleted third party exists
+ * @returns {Promise<ClientDetailsApiResponse>} API response
+ */
+async function callThirdPartyApi(params: {
+  axiosMiddleware: AxiosInstanceWrapper;
+  caseReference: string;
+  thirdPartyData: object;
+  hasSoftDeleted: boolean;
+}): Promise<ClientDetailsApiResponse> {
+  const { axiosMiddleware, caseReference, thirdPartyData, hasSoftDeleted } = params;
+  
+  if (hasSoftDeleted) {
+    // Use PATCH to update the existing soft-deleted record
+    devLog(`Detected soft-deleted third party for case: ${caseReference}. Using PATCH to update existing record.`);
+    return await apiService.updateThirdPartyContact(axiosMiddleware, caseReference, thirdPartyData);
+  } else {
+    // Use POST to create a new third party record
+    devLog(`No existing third party record for case: ${caseReference}. Using POST to create new record.`);
+    return await apiService.addThirdPartyContact(axiosMiddleware, caseReference, thirdPartyData);
+  }
+}
 
 /**
  * Renders the add client third party form for a given case reference.
@@ -67,11 +97,31 @@ export async function postAddClientThirdParty(req: Request, res: Response, next:
   try {
     devLog(`Adding third party contact for case: ${caseReference}`);
 
+    // Fetch current client details to check for soft-deleted third party
+    const clientDetailsResponse = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
+    
+    if (clientDetailsResponse.status !== 'success' || clientDetailsResponse.data === null) {
+      devError(`Failed to fetch case details before adding third party for case: ${caseReference}`);
+      res.status(INTERNAL_SERVER_ERROR).render('main/error.njk', {
+        status: '500',
+        error: 'Failed to fetch case details before adding third party'
+      });
+      return;
+    }
+
     // Prepare the third party data for the API
     const thirdPartyData = prepareThirdPartyData(formFields);
 
-    // Call the API to add third party contact
-    const response = await apiService.addThirdPartyContact(req.axiosMiddleware, caseReference, thirdPartyData);
+    // Check if there's a soft-deleted third party record
+    const hasSoftDeletedThirdParty = isSoftDeletedThirdParty(clientDetailsResponse.data.thirdParty);
+    
+    // Call appropriate API method (PATCH for soft-deleted, POST for new)
+    const response = await callThirdPartyApi({
+      axiosMiddleware: req.axiosMiddleware,
+      caseReference,
+      thirdPartyData,
+      hasSoftDeleted: hasSoftDeletedThirdParty
+    });
 
     if (response.status === 'success') {
       devLog(`Third party contact successfully added for case: ${caseReference}`);

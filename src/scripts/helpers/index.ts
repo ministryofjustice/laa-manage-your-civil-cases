@@ -39,7 +39,8 @@ export {
   transformContactDetails,
   transformClientSupportNeeds,
   transformThirdParty,
-  buildOrderingParamFields
+  buildOrderingParamFields,
+  isSoftDeletedThirdParty
 } from './dataTransformers.js';
 
 // Date formatting utilities
