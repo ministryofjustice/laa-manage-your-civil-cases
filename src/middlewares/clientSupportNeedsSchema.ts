@@ -73,22 +73,22 @@ const clientSupportNeedsBaseSchema = {
      * @returns {TypedValidationError} Returns TypedValidationError with structured error data
      */
     errorMessage: (value: string) => {
-    const MAX_LENGTH = 250;
+      const MAX_LENGTH = 250;
 
-    // Too long
-    if (typeof value === "string" && value.trim().length > MAX_LENGTH) {
+      // Too long
+      if (typeof value === "string" && value.trim().length > MAX_LENGTH) {
+        return new TypedValidationError({
+          summaryMessage: t('forms.clientDetails.clientSupportNeeds.validationError.tooLongNotes'),
+          inlineMessage: t('forms.clientDetails.clientSupportNeeds.validationError.tooLongNotes')
+        });
+      }
+
+      // Empty
       return new TypedValidationError({
-        summaryMessage: t('forms.clientDetails.clientSupportNeeds.validationError.tooLongNotes'),
-        inlineMessage: t('forms.clientDetails.clientSupportNeeds.validationError.tooLongNotes')
+        summaryMessage: t('forms.clientDetails.clientSupportNeeds.validationError.notEmptyNotes'),
+        inlineMessage: t('forms.clientDetails.clientSupportNeeds.validationError.notEmptyNotes')
       });
-    }
-
-    // Empty
-    return new TypedValidationError({
-      summaryMessage: t('forms.clientDetails.clientSupportNeeds.validationError.notEmptyNotes'),
-      inlineMessage: t('forms.clientDetails.clientSupportNeeds.validationError.notEmptyNotes')
-    });
-  },
+    },
   },
 };
 
@@ -105,23 +105,23 @@ export const validateAddClientSupportNeeds = (): ReturnType<typeof checkSchema> 
  * @returns {Error} Validation schema for express-validator
  */
 export const validateEditClientSupportNeeds = (): ReturnType<typeof checkSchema> => checkSchema({
-    // Include all base validation rules
-    ...clientSupportNeedsBaseSchema,
-    // Add session-based change detection at the end (consistent with other edit schemas)
-    notChanged: createSessionChangeDetectionValidator(
-      [
-        'clientSupportNeeds',
-        'languageSupportNeeds', 
-        'notes'
-      ],
-      'clientSupportNeedsOriginal',
-      {
-        /**
-         * Returns the summary message for unchanged third party details.
-         * @returns {string} Localized validation error message
-         */
-        summaryMessage: () => t('forms.clientDetails.clientSupportNeeds.validationError.notChanged'),
-        inlineMessage: ''
-      }
-    ),
-  });
+  // Include all base validation rules
+  ...clientSupportNeedsBaseSchema,
+  // Add session-based change detection at the end (consistent with other edit schemas)
+  notChanged: createSessionChangeDetectionValidator(
+    [
+      'clientSupportNeeds',
+      'languageSupportNeeds',
+      'notes'
+    ],
+    'clientSupportNeedsOriginal',
+    {
+      /**
+       * Returns the summary message for unchanged third party details.
+       * @returns {string} Localized validation error message
+       */
+      summaryMessage: () => t('forms.clientDetails.clientSupportNeeds.validationError.notChanged'),
+      inlineMessage: ''
+    }
+  ),
+});
