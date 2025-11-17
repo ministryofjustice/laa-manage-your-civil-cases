@@ -35,6 +35,14 @@ const personalDetailsHandlers = createPersonalDetailsHandlers(API_BASE_URL, API_
 const supportNeedsHandlers = createSupportNeedsHandlers(API_BASE_URL, API_PREFIX, cases);
 const thirdPartyHandlers = createThirdPartyHandlers(API_BASE_URL, API_PREFIX, cases);
 
+console.log('🔵 [MSW SETUP] Handlers created:', {
+  caseHandlers: caseHandlers.length,
+  personalDetailsHandlers: personalDetailsHandlers.length,
+  supportNeedsHandlers: supportNeedsHandlers.length,
+  thirdPartyHandlers: thirdPartyHandlers.length,
+  total: caseHandlers.length + personalDetailsHandlers.length + supportNeedsHandlers.length + thirdPartyHandlers.length
+});
+
 // Combine all handlers into a single export
 export const handlers = [
   ...caseHandlers,

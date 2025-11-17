@@ -482,7 +482,7 @@ class ApiService {
   }
 
   /**
-   * Delete third party contact for a case
+   * Delete third party contact for a case (soft delete via PATCH)
    * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
    * @param {string} caseReference - Case reference number
    * @returns {Promise<ClientDetailsApiResponse>} API response confirming deletion
@@ -492,12 +492,30 @@ class ApiService {
     caseReference: string
   ): Promise<ClientDetailsApiResponse> {
     try {
-      devLog(`API: DELETE ${API_PREFIX}/cases/${caseReference}/third-party`);
+      // Soft delete: PATCH with cleared fields and personal_relationship = 'OTHER'
+      const payload = {
+        personal_relationship: 'OTHER',
+        full_name: null,
+        mobile_phone: null,
+        home_phone: null,
+        organisation: null,
+        reason: null,
+        personal_relationship_note: null,
+        pass_phrase: null,
+        safe_to_contact: null
+      };
+      
+      devLog(`API: PATCH ${API_PREFIX}/case/${caseReference}/thirdparty_details/ (soft delete)`);
       const configuredAxios = ApiService.configureAxiosInstance(axiosMiddleware);
-      const response = await configuredAxios.delete(`${API_PREFIX}/cases/${caseReference}/third-party`);
-      devLog(`API: Delete third party response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+      const response = await configuredAxios.patch(`${API_PREFIX}/case/${caseReference}/thirdparty_details/`, payload);
+      devLog(`API: Third party soft delete response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+      
+      // Re-fetch the case to get updated state
+      const caseResponse = await configuredAxios.get(`${API_PREFIX}/case/${caseReference}/`);
+      devLog(`API: Re-fetched case after third party deletion: ${JSON.stringify(caseResponse.data, null, JSON_INDENT)}`);
+      
       return {
-        data: transformClientDetailsItem(response.data),
+        data: transformClientDetailsItem(caseResponse.data),
         status: 'success'
       };
     } catch (error) {

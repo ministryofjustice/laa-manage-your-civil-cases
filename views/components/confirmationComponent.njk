@@ -45,12 +45,13 @@
 
       <form method="post" action="{{ params.confirmAction.formAction }}">
         <input type="hidden" name="_csrf" value="{{ params.csrfToken }}">
+        <!-- DEBUG: Form action = {{ params.confirmAction.formAction }} -->
+        <!-- DEBUG: CSRF token = {{ csrfToken }} -->
 
         <div class="govuk-button-group govuk-!-margin-top-9">
-          {{ govukButton({
-            text: params.confirmAction.text,
-            classes: params.confirmAction.buttonClass or "govuk-button--success"
-          }) }}
+          <button type="submit" class="govuk-button {{ params.confirmAction.buttonClass or 'govuk-button--warning' }}" data-testid="confirm-button">
+            {{ params.confirmAction.text }}
+          </button>
 
           {{ govukButton({
             text: params.cancelAction.text,

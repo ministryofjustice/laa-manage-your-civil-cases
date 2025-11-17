@@ -49,9 +49,6 @@ export default defineConfig({
     env: {
       NODE_ENV: 'test',
       PORT: '3001',
-      // Node.js flags to disable Web Storage APIs (localStorage, sessionStorage)
-      // Required for MSW 2.12.1 on Node.js 25.1.0 which attempts to use localStorage during module initialization
-      NODE_OPTIONS: '--no-webstorage',
       // Add encryption key for testing (matches test key in unit tests)
       SESSION_ENCRYPTION_KEY: '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef',
       API_URL: 'https://laa-cla-backend-uat.apps.live-1.cloud-platform.service.justice.gov.uk',
