@@ -1,6 +1,6 @@
 {#
-  Opened Cases Content Partial
-  Displays sortable table of opened cases with pagination
+  Pending Cases Content Partial
+  Displays sortable table of pending cases with pagination
 #}
 
 {# Import the sortable table and pagination components #}
@@ -10,7 +10,7 @@
 {% if data and data.length > 0 %}
   {# Render the sortable table #}
   {{ sortableTableComponent({
-      id: "opened-cases-table",
+      id: "pending-cases-table",
       data: data,
       columns: [
         { key: "fullName", text: t('components.table.columns.name'), link: "/cases/{{caseReference}}/client-details" },
@@ -21,7 +21,7 @@
       ],
       sortBy: sortBy or "modified",
       sortOrder: sortOrder or "desc",
-      basePath: "/cases/opened"
+      basePath: "/cases/pending"
     }) }}
 
   {# Render pagination if pagination data is available #}
@@ -30,9 +30,9 @@
       pagination: pagination,
       sortBy: sortBy or "modified",
       sortOrder: sortOrder or "desc",
-      basePath: "/cases/opened"
+      basePath: "/cases/pending"
     }) }}
   {% endif %}
 {% else %}
-  <p>There are no opened cases.</p>
+  <p>There are no pending cases.</p>
 {% endif %}

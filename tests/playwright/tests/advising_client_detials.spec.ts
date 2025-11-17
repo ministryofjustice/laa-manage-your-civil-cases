@@ -6,11 +6,11 @@ test.beforeEach(async ({ page }) => {
   await setupAuth(page);
 });
 
-test('client details selected from accepted cases tab has correct page elements', async ({ page, i18nSetup }) => {
+test('client details selected from advising cases tab has correct page elements', async ({ page, i18nSetup }) => {
   // Navigate to the client details
   await page.goto(getClientDetailsUrlByStatus('accepted'));
 
-  const accepted_tag = page.getByText('Accepted', { exact: true });
+  const advising_tag = page.getByText('Advising', { exact: true });
   const generate_legal_help_form_button = page.getByRole('button', { name: t('pages.caseDetails.buttons.generateLegalHelpForm') });
   const reject_case_button = page.getByRole('button', { name: t('pages.caseDetails.buttons.rejectCase') });
   const split_case_button = page.getByRole('button', { name: t('pages.caseDetails.buttons.splitCase') });
@@ -19,7 +19,7 @@ test('client details selected from accepted cases tab has correct page elements'
 
   // expect to see the following elements
 
-  await expect(accepted_tag).toBeVisible();
+  await expect(advising_tag).toBeVisible();
   await expect(generate_legal_help_form_button).toBeVisible();
   await expect(reject_case_button).toBeVisible();
   await expect(split_case_button).toBeVisible();

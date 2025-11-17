@@ -1,23 +1,35 @@
+{% set statusMap = {
+  "new": "new",
+  "opened": "pending",
+  "accepted": "advising",
+  "rejected": "closed",
+  "closed": "completed"
+} %}
+
 {% set statusConfig = {
   "new": {
     text: t('common.status.new'),
-    classes: "govuk-tag--yellow govuk-!-margin-bottom-2"
+    classes: "govuk-tag--green govuk-!-margin-bottom-2"
   },
-  "opened": {
-    text: t('common.status.opened'),
-    classes: "govuk-tag--orange govuk-!-margin-bottom-2"
+  "pending": {
+    text: t('common.status.pending'),
+    classes: "govuk-tag--blue govuk-!-margin-bottom-2"
   },
-  "accepted": {
-    text: t('common.status.accepted'),
-    classes: "govuk-!-margin-bottom-2"
+  "advising": {
+    text: t('common.status.advising'),
+    classes: "govuk-tag--light-blue govuk-!-margin-bottom-2"
   },
   "closed": {
     text: t('common.status.closed'),
     classes: "govuk-tag--grey govuk-!-margin-bottom-2"
+  },
+  "completed": {
+    text: t('common.status.completed'),
+    classes: "govuk-tag--pink govuk-!-margin-bottom-2"
   }
 } %}
 
-{% set currentStatus = client.caseStatus | lower %}
+{% set currentStatus = statusMap[client.caseStatus | lower] %}
 
 {{ govukTag({
   text: statusConfig[currentStatus].text,
@@ -28,7 +40,7 @@
 <h2 class="govuk-heading-m govuk-!-margin-bottom-7">{{ t('pages.caseDetails.laaReference') }} <span class="govuk-body-l">{{ client.laaReference or t('pages.caseDetails.notProvided') }}</span></h2>
 
 <div class="govuk-button-group">
-  {% if currentStatus == "new" or currentStatus == "opened" %}
+  {% if currentStatus == "new" or currentStatus == "pending" %}
     {{ govukButton({
       text: t('pages.caseDetails.buttons.acceptCase')
     }) }}
@@ -44,7 +56,7 @@
       text: t('pages.caseDetails.buttons.leaveFeedback'),
       classes: "govuk-button--secondary"
     }) }}
-  {% elif currentStatus == "accepted" %}
+  {% elif currentStatus == "advising" %}
     {{ govukButton({
       text: t('pages.caseDetails.buttons.generateLegalHelpForm')
     }) }}
@@ -65,6 +77,14 @@
       classes: "govuk-button--secondary"
     }) }}
   {% elif currentStatus == "closed" %}
+    {{ govukButton({
+      text: t('pages.caseDetails.buttons.closeCase')
+    }) }}
+    {{ govukButton({
+      text: t('pages.caseDetails.buttons.leaveFeedback'),
+      classes: "govuk-button--secondary"
+    }) }}
+  {% elif currentStatus == "completed" %}
     {{ govukButton({
       text: t('pages.caseDetails.buttons.reopenCase')
     }) }}

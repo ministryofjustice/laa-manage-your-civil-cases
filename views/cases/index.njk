@@ -2,10 +2,13 @@
 
 {% block pageTitle %}
   {%- if activeTab == 'opened' -%}
-    {{ t('pages.yourCases.pageTitles.opened', { serviceName: config.SERVICE_NAME }) }}
+    {{ t('pages.yourCases.pageTitles.pending', { serviceName: config.SERVICE_NAME }) }}
   {%- elif activeTab == 'accepted' -%}
-    {{ t('pages.yourCases.pageTitles.accepted', { serviceName: config.SERVICE_NAME }) }}
+    {{ t('pages.yourCases.pageTitles.advising', { serviceName: config.SERVICE_NAME }) }}
   {%- elif activeTab == 'closed' -%}
+    {{ t('pages.yourCases.pageTitles.completed', { serviceName: config.SERVICE_NAME }) }}
+  {# TO DO: This activeTab doesn't exist yet #}
+  {%- elif activeTab == 'rejected' -%}
     {{ t('pages.yourCases.pageTitles.closed', { serviceName: config.SERVICE_NAME }) }}
   {%- else -%}
     {{ t('pages.yourCases.pageTitles.new', { serviceName: config.SERVICE_NAME }) }}
@@ -24,10 +27,13 @@
   {# Main page heading - changes based on active tab #}
   <h1 class="govuk-heading-xl" id="page-heading">
     {%- if activeTab == 'opened' -%}
-        {{ t('pages.yourCases.openedCases') }}
+        {{ t('pages.yourCases.pendingCases') }}
       {%- elif activeTab == 'accepted' -%}
-        {{ t('pages.yourCases.acceptedCases') }}
+        {{ t('pages.yourCases.advisingCases') }}
       {%- elif activeTab == 'closed' -%}
+        {{ t('pages.yourCases.completedCases') }}
+      {# TO DO: This activeTab doesn't exist yet #}
+      {%- elif activeTab == 'rejected' -%}
         {{ t('pages.yourCases.closedCases') }}
       {%- else -%}
         {{ t('pages.yourCases.newCases') }}
@@ -50,21 +56,27 @@
       },
       {
         id: "opened",
-        text: t('common.status.opened'),
-        href: "/cases/opened",
-        partial: "cases/_opened-partial.njk"
+        text: t('common.status.pending'),
+        href: "/cases/pending",
+        partial: "cases/_pending-partial.njk"
       },
       {
         id: "accepted",
-        text: t('common.status.accepted'),
-        href: "/cases/accepted",
-        partial: "cases/_accepted-partial.njk"
+        text: t('common.status.advising'),
+        href: "/cases/advising",
+        partial: "cases/_advising-partial.njk"
       },
       {
-        id: "closed",
+        id: "rejected",
         text: t('common.status.closed'),
         href: "/cases/closed",
         partial: "cases/_closed-partial.njk"
+      },
+      {
+        id: "closed",
+        text: t('common.status.completed'),
+        href: "/cases/completed",
+        partial: "cases/_completed-partial.njk"
       }
     ]
   }) }}

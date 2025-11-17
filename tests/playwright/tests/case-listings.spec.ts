@@ -18,39 +18,52 @@ test('new cases listing page should display correctly', async ({ page, i18nSetup
   await expect(caseTable).toBeVisible();
 });
 
-test('opened cases listing page should display correctly', async ({ page, i18nSetup }) => {
-  // Navigate to the opened cases page
-  await page.goto('/cases/opened');
+test('pending cases listing page should display correctly', async ({ page, i18nSetup }) => {
+  // Navigate to the pending cases page
+  await page.goto('/cases/pending');
   
   // Check for page heading
-  await expect(page.locator('h1')).toContainText('Opened cases');
+  await expect(page.locator('h1')).toContainText('Pending cases');
   
-  // Check for the specific opened cases table
-  const caseTable = page.locator('#opened-cases-table');
+  // Check for the specific pending cases table
+  const caseTable = page.locator('#pending-cases-table');
   await expect(caseTable).toBeVisible();
 });
 
-test('accepted cases listing page should display correctly', async ({ page, i18nSetup }) => {
-  // Navigate to the accepted cases page
-  await page.goto('/cases/accepted');
+test('advising cases listing page should display correctly', async ({ page, i18nSetup }) => {
+  // Navigate to the advising cases page
+  await page.goto('/cases/advising');
   
   // Check for page heading
-  await expect(page.locator('h1')).toContainText('Accepted cases');
+  await expect(page.locator('h1')).toContainText('Advising cases');
   
-  // Check for the specific accepted cases table
-  const caseTable = page.locator('#accepted-cases-table');
+  // Check for the specific advising cases table
+  const caseTable = page.locator('#advising-cases-table');
   await expect(caseTable).toBeVisible();
 });
 
-test('closed cases listing page should display correctly', async ({ page, i18nSetup }) => {
-  // Navigate to the closed cases page
-  await page.goto('/cases/closed');
+// TO-DO as `rejected` does not exist as a valid filter on api endpoint, the `rejected` activeTab will never show
+// test('closed cases listing page should display correctly', async ({ page, i18nSetup }) => {
+//   // Navigate to the closed cases page
+//   await page.goto('/cases/closed');
+  
+//   // Check for page heading
+//   await expect(page.locator('h1')).toContainText('Closed cases');
+  
+//   // Check for the specific closed cases table
+//   const caseTable = page.locator('#closed-cases-table');
+//   await expect(caseTable).toBeVisible();
+// });
+
+test('completed cases listing page should display correctly', async ({ page, i18nSetup }) => {
+  // Navigate to the completed cases page
+  await page.goto('/cases/completed');
   
   // Check for page heading
-  await expect(page.locator('h1')).toContainText('Closed cases');
+  await expect(page.locator('h1')).toContainText('Completed cases');
   
-  // Check for the specific closed cases table
-  const caseTable = page.locator('#closed-cases-table');
+  // Check for the specific completed cases table
+  const caseTable = page.locator('#completed-cases-table');
   await expect(caseTable).toBeVisible();
 });
 

@@ -5,9 +5,17 @@
 {% from "components/tabComponent.njk" import tabComponent %}
 
 {% block backLink %}
+  {% set statusMap = {
+    "new": "new",
+    "opened": "pending",
+    "accepted": "advising",
+    "rejected": "closed",
+    "closed": "completed"
+  } %}
+
   {{ govukBackLink({
     text: t('common.backToAllCases'),
-    href: "/cases/" + (client.caseStatus | lower),
+    href: "/cases/" + statusMap[client.caseStatus | lower],
     classes: "govuk-!-margin-bottom-0"
   }) }}
 {% endblock %}
