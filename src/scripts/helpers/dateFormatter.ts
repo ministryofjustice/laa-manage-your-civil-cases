@@ -11,9 +11,10 @@ const DATE_PADDING_CHAR = '0';
 /**
  * Format date for display in table cells and UI components
  * @param {string} dateString ISO date string
- * @returns {string} Formatted date in D MMM YYYY format (e.g., "6 Jan 1986")
+ * @param {boolean} includeTime Optional flag to include time in format (default: false)
+ * @returns {string} Formatted date in D MMM YYYY format (e.g., "6 Jan 1986") or D MMM YYYY at HH:MM format if includeTime is true
  */
-export function formatDate(dateString: string): string {
+export function formatDate(dateString: string, includeTime = false): string {
   const date = new Date(dateString);
 
   if (isNaN(date.getTime())) {
@@ -24,7 +25,18 @@ export function formatDate(dateString: string): string {
   const month = date.toLocaleString('en-GB', { month: 'short' });
   const year = date.getFullYear();
 
-  return `${day} ${month} ${year}`;
+  let formattedDate = `${day} ${month} ${year}`;
+
+  if (includeTime) {
+    const time = date.toLocaleTimeString('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
+    formattedDate += ` at ${time}`;
+  }
+
+  return formattedDate;
 }
 
 /**

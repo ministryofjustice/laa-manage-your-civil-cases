@@ -3,6 +3,7 @@
 {% from "govuk/components/tag/macro.njk" import govukTag %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/tabComponent.njk" import tabComponent %}
+{% from "components/caseStatusBanner.njk" import caseStatusBanner %}
 
 {% block backLink %}
   {{ govukBackLink({
@@ -17,6 +18,11 @@
   <h1 class="govuk-heading-xl govuk-!-margin-bottom-6" id="page-heading">{{ client.fullName }}</h1>
 
   {% include "case_details/_case-info-partial.njk" %}
+
+  {# Display case status banner if configuration is provided by controller #}
+  {% if bannerConfig %}
+    {{ caseStatusBanner(bannerConfig) }}
+  {% endif %}
 
   {{ tabComponent({
     activeTab: activeTab,

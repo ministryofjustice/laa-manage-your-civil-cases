@@ -1,0 +1,53 @@
+{#
+  Case Status Banner Component
+
+  A reusable component for displaying case status alert banners using MOJ Design System.
+  Displays important information about case states (Pending, Closed, Completed) with
+  contextual styling and timestamps.
+
+  Features:
+  - Standard MOJ banner styling (warning/information types)
+  - No dismiss functionality (permanent notifications)
+  - Accessible ARIA attributes
+  - Dynamic heading and message content
+
+  Usage:
+  {% from "components/caseStatusBanner.njk" import caseStatusBanner %}
+
+  {{ caseStatusBanner({
+    type: "warning",
+    heading: "Important",
+    message: "This case is pending. Awaiting client callback. (18 Nov 2025 at 14:30)"
+  }) }}
+
+  Options:
+  - type: 'warning' (red banner) or 'information' (blue banner, default)
+  - heading: Banner heading text
+  - message: Banner message content (can include HTML)
+
+#}
+
+{%- from "@ministryofjustice/frontend/moj/components/banner/macro.njk" import mojBanner -%}
+
+{% macro caseStatusBanner(options) %}
+  {% set bannerClasses = "moj-banner" %}
+  {% if options.type == "warning" %}
+    {% set bannerClasses = bannerClasses + " moj-banner--warning" %}
+  {% endif %}
+
+  {# Build banner content #}
+  {% set bannerHtml %}
+    <h2 class="govuk-heading-m">{{ options.heading }}</h2>
+    <p class="govuk-body">{{ options.message | safe }}</p>
+  {% endset %}
+
+  {# Render MOJ banner without dismiss functionality #}
+  <div class="{{ bannerClasses }}" role="region" aria-label="Case status information">
+    <svg class="moj-banner__icon" fill="currentColor" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" height="25" width="25">
+      <path d="M13.7,18.5h-2.4v-2.4h2.4V18.5z M12.5,13.7c-0.7,0-1.2-0.5-1.2-1.2V7.7c0-0.7,0.5-1.2,1.2-1.2s1.2,0.5,1.2,1.2v4.8 C13.7,13.2,13.2,13.7,12.5,13.7z M12.5,0.5c-6.6,0-12,5.4-12,12s5.4,12,12,12s12-5.4,12-12S19.1,0.5,12.5,0.5z" />
+    </svg>
+    <div class="moj-banner__message">
+      {{ bannerHtml | safe }}
+    </div>
+  </div>
+{% endmacro %}

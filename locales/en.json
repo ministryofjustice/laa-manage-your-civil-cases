@@ -109,6 +109,20 @@
       "dateReceived": "Date received",
       "laaReference": "LAA reference",
       "notProvided": "Not provided",
+      "banners": {
+        "pending": {
+          "heading": "Important",
+          "message": "This case is pending. {{reason}} ({{timestamp}})"
+        },
+        "closed": {
+          "heading": "Case closed",
+          "message": "This case was closed. {{reason}} ({{timestamp}})"
+        },
+        "completed": {
+          "heading": "Case completed",
+          "message": "This case was completed. ({{timestamp}})"
+        }
+      },
       "tabs": {
         "clientDetails": "Client details",
         "scope": "Scope",
