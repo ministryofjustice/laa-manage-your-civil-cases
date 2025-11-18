@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
-import { devLog, devError, createProcessedError, safeString, clearAllOriginalFormData } from '#src/scripts/helpers/index.js';
+import { devLog, devError, createProcessedError, safeString, clearAllOriginalFormData, getCaseStatusBannerConfig } from '#src/scripts/helpers/index.js';
 
 const BAD_REQUEST = 400;
 const NOT_FOUND = 404;
@@ -35,10 +35,14 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
     const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
 
     if (response.status === 'success' && response.data !== null) {
+      // Generate banner configuration based on case status
+      const bannerConfig = getCaseStatusBannerConfig(response.data);
+      
       res.render('case_details/index.njk', {
         activeTab,
         client: response.data,
-        caseReference: response.data.caseReference
+        caseReference: response.data.caseReference,
+        bannerConfig
       });
     } else {
       devError(`Client details not found for case: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);
