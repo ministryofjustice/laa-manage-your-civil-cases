@@ -5,59 +5,8 @@
  * It initializes MSW to intercept outgoing API calls and serve mock responses.
  */
 
-// Polyfill localStorage for MSW v2.x in Node.js environment
-// MSW uses localStorage for cookie management, which is not available in Node.js
 import { setupServer } from 'msw/node';
 import { handlers } from '../tests/playwright/factories/handlers/index.js';
-
-if (typeof globalThis.localStorage === 'undefined') {
-  const storage = new Map<string, string>();
-  
-  const localStoragePolyfill: Storage = {
-    /**
-     * Retrieves the value associated with the given key
-     * @param {string} key - The key to retrieve
-     * @returns {string | null} The stored value or null if not found
-     */
-    getItem: (key: string): string | null => storage.get(key) ?? null,
-    
-    /**
-     * Stores a value with the given key
-     * @param {string} key - The key to store under
-     * @param {string} value - The value to store
-     * @returns {void}
-     */
-    setItem: (key: string, value: string): void => { storage.set(key, value); },
-    
-    /**
-     * Removes the value associated with the given key
-     * @param {string} key - The key to remove
-     * @returns {void}
-     */
-    removeItem: (key: string): void => { storage.delete(key); },
-    
-    /**
-     * Clears all stored values
-     * @returns {void}
-     */
-    clear: (): void => { storage.clear(); },
-    
-    /**
-     * Gets the number of stored items
-     * @returns {number} The number of items in storage
-     */
-    get length(): number { return storage.size; },
-    
-    /**
-     * Retrieves the key at the specified index
-     * @param {number} index - The index of the key to retrieve
-     * @returns {string | null} The key at the index or null if not found
-     */
-    key: (index: number): string | null => Array.from(storage.keys())[index] ?? null,
-  };
-  
-  globalThis.localStorage = localStoragePolyfill;
-}
 
 // Disable rate limiting for E2E tests to prevent 429 errors during parallel test execution
 process.env.SKIP_RATE_LIMIT = 'true';
