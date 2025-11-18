@@ -155,3 +155,26 @@ export interface ClaSearchApiResponse {
   results: unknown[];
   count: number;
 }
+
+/**
+ * Log entry from CLA backend event log
+ */
+export interface LogEntry {
+  code: string;
+  created_by: string;
+  created: string;
+  notes: string | null;
+  type: 'outcome' | 'system' | 'event';
+  level: 'HIGH' | 'MODERATE' | 'MINOR';
+  timer: number | null;
+  patch: Record<string, unknown> | null;
+}
+
+/**
+ * Logs API response interface
+ */
+export interface LogsApiResponse {
+  data: LogEntry[] | null;
+  status: 'success' | 'error';
+  message?: string;
+}

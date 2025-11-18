@@ -17,11 +17,13 @@ import {
   updateClientSupportNeeds,
   deleteClientSupportNeeds
 } from './supportNeedsApiService.js';
+import { getCaseLogs } from './logsApiService.js';
 
 export * from './casesApiService.js';
 export * from './clientDetailsApiService.js';
 export * from './thirdPartyApiService.js';
 export * from './supportNeedsApiService.js';
+export * from './logsApiService.js';
 
 /**
  * Combined API Service object for backward compatibility
@@ -37,5 +39,6 @@ export const apiService = {
   deleteThirdPartyContact,
   addClientSupportNeeds,
   updateClientSupportNeeds,
-  deleteClientSupportNeeds
+  deleteClientSupportNeeds,
+  getCaseLogs
 };

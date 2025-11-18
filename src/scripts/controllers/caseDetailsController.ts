@@ -35,8 +35,16 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
     const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
 
     if (response.status === 'success' && response.data !== null) {
-      // Generate banner configuration based on case status
-      const bannerConfig = getCaseStatusBannerConfig(response.data);
+      // Fetch case logs to extract rejection/closure notes for banner
+      const logsResponse = await apiService.getCaseLogs(req.axiosMiddleware, caseReference);
+      const logs = logsResponse.status === 'success' ? logsResponse.data : null;
+      
+      if (logsResponse.status === 'error') {
+        devError(`Failed to fetch logs for case ${caseReference}: ${logsResponse.message ?? 'Unknown error'}`);
+      }
+      
+      // Generate banner configuration based on case status and logs
+      const bannerConfig = getCaseStatusBannerConfig(response.data, logs);
       
       devLog(`Banner config for case ${caseReference}: ${JSON.stringify(bannerConfig)}`);
       

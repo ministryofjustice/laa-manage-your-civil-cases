@@ -6,7 +6,8 @@
 
 import { formatDate } from './dateFormatter.js';
 import { t } from './i18nLoader.js';
-import type { ClientDetailsResponse } from '../../../types/api-types.js';
+import type { ClientDetailsResponse, LogEntry } from '../../../types/api-types.js';
+import { extractOutcomeNotes } from '#src/services/api/transforms/transformLogs.js';
 
 /**
  * Banner configuration interface
@@ -21,9 +22,10 @@ export interface BannerConfig {
 /**
  * Generate banner configuration based on case status
  * @param {ClientDetailsResponse} caseData Case data from API
+ * @param {LogEntry[] | null} logs Optional case event logs for extracting notes
  * @returns {BannerConfig | null} Banner configuration or null if no banner should be shown
  */
-export function getCaseStatusBannerConfig(caseData: ClientDetailsResponse): BannerConfig | null {
+export function getCaseStatusBannerConfig(caseData: ClientDetailsResponse, logs: LogEntry[] | null = null): BannerConfig | null {
   const { caseStatus, provider_viewed, provider_closed, outcomeCode } = caseData;
 
   // AC4: No banner for New state
@@ -39,13 +41,14 @@ export function getCaseStatusBannerConfig(caseData: ClientDetailsResponse): Bann
   // AC3: Red warning banner for Opened/Pending state
   if (caseStatus === 'Opened') {
     const timestamp = provider_viewed ? formatDate(provider_viewed, true) : formatDate(new Date().toISOString(), true);
-    // Using placeholder text - actual notes field mapping deferred
-    const reason = 'Not ready for determination.';
+    
+    // Try to extract notes from logs, otherwise omit reason
+    const reason = logs ? extractOutcomeNotes(logs, ['CASE_VIEWED']) : undefined;
     
     return {
       type: 'warning',
       statusLabel: 'pending',
-      reason,
+      ...(reason && { reason }), // Only include reason if it exists
       timestamp
     };
   }
@@ -65,14 +68,14 @@ export function getCaseStatusBannerConfig(caseData: ClientDetailsResponse): Bann
         timestamp
       };
     } else {
-      // AC2: Closed banner - with reason and timestamp
-      // Using placeholder text - actual notes field mapping deferred
-      const reason = 'This case is not in scope for my category';
+      // AC2: Closed banner - with reason from logs if available
+      // Rejection/closure outcome codes: MIS-OOS, MIS-MEANS, COI, MIS, DREFER
+      const reason = logs ? extractOutcomeNotes(logs, ['MIS-OOS', 'MIS-MEANS', 'COI', 'MIS', 'DREFER']) : undefined;
       
       return {
         type: 'information',
         statusLabel: 'closed',
-        reason,
+        ...(reason && { reason }), // Only include reason if it exists
         timestamp
       };
     }
