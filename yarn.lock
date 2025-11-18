@@ -77,24 +77,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bundled-es-modules/cookie@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "@bundled-es-modules/cookie@npm:2.0.1"
-  dependencies:
-    cookie: "npm:^0.7.2"
-  checksum: 10c0/dfac5e36127e827c5557b8577f17a8aa94c057baff6d38555917927b99da0ecf0b1357e7fedadc8853ecdbd4a8a7fa1f5e64111b2a656612f4a36376f5bdbe8d
-  languageName: node
-  linkType: hard
-
-"@bundled-es-modules/statuses@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "@bundled-es-modules/statuses@npm:1.0.1"
-  dependencies:
-    statuses: "npm:^2.0.1"
-  checksum: 10c0/c1a8ede3efa8da61ccda4b98e773582a9733edfbeeee569d4630785f8e018766202edb190a754a3ec7a7f6bd738e857829affc2fdb676b6dab4db1bb44e62785
-  languageName: node
-  linkType: hard
-
 "@cspotcode/source-map-support@npm:^0.8.0":
   version: 0.8.1
   resolution: "@cspotcode/source-map-support@npm:0.8.1"
@@ -821,9 +803,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mswjs/interceptors@npm:^0.39.1":
-  version: 0.39.8
-  resolution: "@mswjs/interceptors@npm:0.39.8"
+"@mswjs/interceptors@npm:^0.40.0":
+  version: 0.40.0
+  resolution: "@mswjs/interceptors@npm:0.40.0"
   dependencies:
     "@open-draft/deferred-promise": "npm:^2.2.0"
     "@open-draft/logger": "npm:^0.3.0"
@@ -831,7 +813,7 @@ __metadata:
     is-node-process: "npm:^1.2.0"
     outvariant: "npm:^1.4.3"
     strict-event-emitter: "npm:^0.5.1"
-  checksum: 10c0/0d07625ff1bbbf4b5ea702e164914490e26cc3754323f544429f843f5ad8b157194f6a650259cfd1bbdeb6003e1354f63be1d9bf483816aaa17d93ef4b321aaf
+  checksum: 10c0/4500f17b65910b2633182fdb15a81ccb6ccd4488a8c45bc2f7acdaaff4621c3cce5362e6b59ddc4fa28d315d0efb0608fd1f0d536bc5345141f8ac03fd7fab22
   languageName: node
   linkType: hard
 
@@ -1210,13 +1192,6 @@ __metadata:
   peerDependencies:
     "@types/express": "*"
   checksum: 10c0/5e2c0e0fd9cb47eae5bd7cd73768b36b7711594cbd07969a03f015118d57b832291726d9cb7bd350c9e3a1707e5e2f082e7e0635e8ce335474897ab940d55771
-  languageName: node
-  linkType: hard
-
-"@types/cookie@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "@types/cookie@npm:0.6.0"
-  checksum: 10c0/5b326bd0188120fb32c0be086b141b1481fec9941b76ad537f9110e10d61ee2636beac145463319c71e4be67a17e85b81ca9e13ceb6e3bb63b93d16824d6c149
   languageName: node
   linkType: hard
 
@@ -2604,10 +2579,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie@npm:0.7.2, cookie@npm:^0.7.1, cookie@npm:^0.7.2":
+"cookie@npm:0.7.2, cookie@npm:^0.7.1":
   version: 0.7.2
   resolution: "cookie@npm:0.7.2"
   checksum: 10c0/9596e8ccdbf1a3a88ae02cf5ee80c1c50959423e1022e4e60b91dd87c622af1da309253d8abdb258fb5e3eacb4f08e579dc58b4897b8087574eee0fd35dfa5d2
+  languageName: node
+  linkType: hard
+
+"cookie@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "cookie@npm:1.0.2"
+  checksum: 10c0/fd25fe79e8fbcfcaf6aa61cd081c55d144eeeba755206c058682257cb38c4bd6795c6620de3f064c740695bb65b7949ebb1db7a95e4636efb8357a335ad3f54b
   languageName: node
   linkType: hard
 
@@ -5051,7 +5033,7 @@ __metadata:
     mocha: "npm:^11.7.5"
     moment: "npm:^2.30.1"
     morgan: "npm:~1.10.1"
-    msw: "npm:2.11.3"
+    msw: "npm:~2.11.3"
     nodemon: "npm:^3.1.9"
     nunjucks: "npm:^3.2.4"
     playwright-core: "npm:^1.56.1"
@@ -5516,17 +5498,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"msw@npm:2.11.3":
-  version: 2.11.3
-  resolution: "msw@npm:2.11.3"
+"msw@npm:~2.11.3":
+  version: 2.11.6
+  resolution: "msw@npm:2.11.6"
   dependencies:
-    "@bundled-es-modules/cookie": "npm:^2.0.1"
-    "@bundled-es-modules/statuses": "npm:^1.0.1"
     "@inquirer/confirm": "npm:^5.0.0"
-    "@mswjs/interceptors": "npm:^0.39.1"
+    "@mswjs/interceptors": "npm:^0.40.0"
     "@open-draft/deferred-promise": "npm:^2.2.0"
-    "@types/cookie": "npm:^0.6.0"
     "@types/statuses": "npm:^2.0.4"
+    cookie: "npm:^1.0.2"
     graphql: "npm:^16.8.1"
     headers-polyfill: "npm:^4.0.2"
     is-node-process: "npm:^1.2.0"
@@ -5534,6 +5514,7 @@ __metadata:
     path-to-regexp: "npm:^6.3.0"
     picocolors: "npm:^1.1.1"
     rettime: "npm:^0.7.0"
+    statuses: "npm:^2.0.2"
     strict-event-emitter: "npm:^0.5.1"
     tough-cookie: "npm:^6.0.0"
     type-fest: "npm:^4.26.1"
@@ -5546,7 +5527,7 @@ __metadata:
       optional: true
   bin:
     msw: cli/index.js
-  checksum: 10c0/847cb0e66152328d898474cd12e2ea0b9c11ed997b3a1129018a99afd7ff1134e45aed7158d0a57a1052b7a80b241e91952285f915142bd70c905316dbe9a49d
+  checksum: 10c0/a19e9af0ca880bddbdfa7a852c40d7b8db8e04cd1d745575346cef5ee313acd65cadd0a1c48c6945b020235048168dce8e0ad856c3e14a0c1bb4b26618c5fb3c
   languageName: node
   linkType: hard
 
@@ -6941,7 +6922,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"statuses@npm:^2.0.1":
+"statuses@npm:^2.0.1, statuses@npm:^2.0.2":
   version: 2.0.2
   resolution: "statuses@npm:2.0.2"
   checksum: 10c0/a9947d98ad60d01f6b26727570f3bcceb6c8fa789da64fe6889908fe2e294d57503b14bf2b5af7605c2d36647259e856635cd4c49eab41667658ec9d0080ec3f
