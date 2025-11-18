@@ -6,7 +6,7 @@
 
 import { formatDate } from './dateFormatter.js';
 import { t } from './i18nLoader.js';
-import type { CaseData } from '../../../types/case-types.js';
+import type { ClientDetailsResponse } from '../../../types/api-types.js';
 
 /**
  * Banner configuration interface
@@ -19,10 +19,10 @@ export interface BannerConfig {
 
 /**
  * Generate banner configuration based on case status
- * @param {CaseData} caseData Case data from API
+ * @param {ClientDetailsResponse} caseData Case data from API
  * @returns {BannerConfig | null} Banner configuration or null if no banner should be shown
  */
-export function getCaseStatusBannerConfig(caseData: CaseData): BannerConfig | null {
+export function getCaseStatusBannerConfig(caseData: ClientDetailsResponse): BannerConfig | null {
   const { caseStatus, provider_viewed, provider_closed, outcomeDescription } = caseData;
 
   // AC4: No banner for New state

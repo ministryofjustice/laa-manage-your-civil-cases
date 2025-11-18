@@ -18,6 +18,8 @@ export interface CaseData {
   dateOfBirth: string;
   modified?: string;
   provider_closed?: string;
+  provider_viewed?: string; // Timestamp when provider viewed case (Opened/Pending state)
+  provider_accepted?: string; // Timestamp when provider accepted case (Advising state)
   // Client contact details
   phoneNumber?: string;
   safeToCall?: boolean;
@@ -29,6 +31,7 @@ export interface CaseData {
   postcode?: string;
   specialNotes?: string;
   outcomeDescription?: string;
+  outcomeCode?: string; // Outcome code for distinguishing Completed vs Closed
 }
 
 /**

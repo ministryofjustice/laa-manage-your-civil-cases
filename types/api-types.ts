@@ -100,6 +100,15 @@ export interface ClientDetailsResponse {
   //Third party contact (null if not present)
   thirdParty: ThirdPartyContact | null;
   
+  //Case state timestamps
+  provider_viewed?: string; // Timestamp when provider viewed case (Opened/Pending state)
+  provider_accepted?: string; // Timestamp when provider accepted case (Advising state)
+  provider_closed?: string; // Timestamp when case was closed
+  
+  //Case metadata
+  outcomeCode?: string; // Outcome code for distinguishing Completed vs Closed
+  outcomeDescription?: string; // Human-readable outcome description
+  
   // Allow additional fields for debugging
   [key: string]: unknown;
 }
