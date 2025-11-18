@@ -30,8 +30,9 @@ export function createThirdPartyHandlers(
                           updateData.pass_phrase === null;
 
       if (isSoftDelete) {
-        caseItem.thirdParty = null;
-        return HttpResponse.json(transformToApiFormat(caseItem));
+        // Return a copy with thirdParty removed - don't mutate shared state
+        const caseWithoutThirdParty = { ...caseItem, thirdParty: null };
+        return HttpResponse.json(transformToApiFormat(caseWithoutThirdParty));
       }
 
       const validationErrors: Record<string, any> = {};

@@ -44,6 +44,8 @@ test('should show 404 error when case not found', async ({ page, i18nSetup }) =>
 });
 
 test('should show 404 error when case has no third party contact', async ({ page, i18nSetup }) => {
-  await page.goto(visitUrl);
-  await expect(page.locator('h1')).toContainText('Remove third party?');
+  const caseWithNoThirdParty = 'PC-0000-0001';
+  const visitUrlNoThirdParty = `/cases/${caseWithNoThirdParty}/confirm/remove-third-party`;
+  await page.goto(visitUrlNoThirdParty);
+  await expect(page.locator('h1')).toContainText('404');
 });
