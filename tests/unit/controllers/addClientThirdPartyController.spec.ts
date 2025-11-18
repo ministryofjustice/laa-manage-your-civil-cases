@@ -1,10 +1,10 @@
 /**
- * Edit Client Third Party Controller Tests
+ * Add Client Third Party Controller Tests
  * 
- * Tests the Express.js controllers for client details editing functionality.
- * Covers HTTP request/response handling for name and email editing forms including:
+ * Tests the Express.js controllers for adding third party contact functionality.
+ * Covers HTTP request/response handling including:
  * - GET route handlers for form display
- * - POST route handlers for form submission  
+ * - POST route handlers for form submission (new and soft-delete scenarios)
  * - API integration and error handling
  * - CSRF token management
  * - Form data processing and validation integration
@@ -42,7 +42,7 @@ const runSchema = async (req: any, schema: ValidationChain[] | ValidationChain):
   }
 };
 
-describe('Edit Client Name Controller', () => {
+describe('Add Client Third Party Controller', () => {
   let req: Partial<RequestWithMiddleware>;
   let res: any;
   let next: any;
@@ -50,6 +50,7 @@ describe('Edit Client Name Controller', () => {
   let redirectStub: sinon.SinonStub;
   let statusStub: sinon.SinonStub;
   let apiServiceGetStub: sinon.SinonStub;
+  let apiServiceAddStub: sinon.SinonStub;
   let apiServiceUpdateStub: sinon.SinonStub;
 
   beforeEach(() => {
@@ -74,7 +75,8 @@ describe('Edit Client Name Controller', () => {
 
     // Stub the API service methods
     apiServiceGetStub = sinon.stub(apiService, 'getClientDetails');
-    apiServiceUpdateStub = sinon.stub(apiService, 'addThirdPartyContact');
+    apiServiceAddStub = sinon.stub(apiService, 'addThirdPartyContact');
+    apiServiceUpdateStub = sinon.stub(apiService, 'updateThirdPartyContact');
   });
 
   afterEach(() => {
@@ -115,11 +117,21 @@ describe('Edit Client Name Controller', () => {
   });
 
   describe('postAddClientThirdParty', () => {
-    it('should process successful addition of client third party name update and redirect to case details', async () => {
+    it('should process successful addition of new third party (POST) and redirect to case details', async () => {
       // Arrange
       req.body = { thirdPartyFullName: 'John Carpenter' };
 
-      apiServiceUpdateStub.resolves({
+      // Mock getClientDetails to return a case with NO existing third party
+      apiServiceGetStub.resolves({
+        status: 'success',
+        data: {
+          caseReference: 'TEST123',
+          thirdParty: null // No existing third party - will trigger POST
+        }
+      });
+
+      // Mock successful POST response
+      apiServiceAddStub.resolves({
         status: 'success',
         data: { thirdPartyFullName: 'John Carpenter' }
       });
@@ -128,7 +140,48 @@ describe('Edit Client Name Controller', () => {
       await postAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);
 
       // Assert
-      expect(apiServiceUpdateStub.calledOnce).to.be.true;
+      expect(apiServiceGetStub.calledOnce).to.be.true;
+      expect(apiServiceAddStub.calledOnce).to.be.true;
+      expect(apiServiceUpdateStub.called).to.be.false; // Should NOT call PATCH
+      expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
+    });
+
+    it('should process successful addition over soft-deleted third party (PATCH) and redirect to case details', async () => {
+      // Arrange
+      req.body = { thirdPartyFullName: 'Jane Smith' };
+
+      // Mock getClientDetails to return a case with a SOFT-DELETED third party
+      apiServiceGetStub.resolves({
+        status: 'success',
+        data: {
+          caseReference: 'TEST123',
+          thirdParty: {
+            fullName: '', // Empty name = soft-deleted
+            emailAddress: '',
+            contactNumber: '',
+            safeToCall: false,
+            address: '',
+            postcode: '',
+            relationshipToClient: 'OTHER', // OTHER = soft-deleted
+            passphraseSetUp: '',
+            passphrase: ''
+          }
+        }
+      });
+
+      // Mock successful PATCH response
+      apiServiceUpdateStub.resolves({
+        status: 'success',
+        data: { thirdPartyFullName: 'Jane Smith' }
+      });
+
+      // Act
+      await postAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);
+
+      // Assert
+      expect(apiServiceGetStub.calledOnce).to.be.true;
+      expect(apiServiceUpdateStub.calledOnce).to.be.true; // Should call PATCH
+      expect(apiServiceAddStub.called).to.be.false; // Should NOT call POST
       expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
     });
 
