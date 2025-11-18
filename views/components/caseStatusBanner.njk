@@ -34,7 +34,7 @@
 {% macro caseStatusBanner(options) %}
   {# Build banner content HTML #}
   {% set bannerHtml %}
-    <h2 class="govuk-heading-m">Case {{ options.statusLabel }}</h2>
+    <h2 class="govuk-heading-m">Case {{ t('common.status.' + options.statusLabel) }}</h2>
     {% if options.reason %}
       <p class="govuk-body">{{ options.reason }}</p>
     {% endif %}
@@ -45,6 +45,6 @@
   {{ mojBanner({
     type: options.type,
     html: bannerHtml,
-    iconFallbackText: "Case " + options.statusLabel
+    iconFallbackText: "Case " + t('common.status.' + options.statusLabel)
   }) }}
 {% endmacro %}

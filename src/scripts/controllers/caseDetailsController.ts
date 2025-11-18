@@ -38,6 +38,8 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
       // Generate banner configuration based on case status
       const bannerConfig = getCaseStatusBannerConfig(response.data);
       
+      devLog(`Banner config for case ${caseReference}: ${JSON.stringify(bannerConfig)}`);
+      
       res.render('case_details/index.njk', {
         activeTab,
         client: response.data,

@@ -37,8 +37,8 @@ export function getCaseStatusBannerConfig(caseData: ClientDetailsResponse): Bann
   }
 
   // AC3: Red warning banner for Opened/Pending state
-  if (caseStatus === 'Opened' && provider_viewed) {
-    const timestamp = formatDate(provider_viewed, true);
+  if (caseStatus === 'Opened') {
+    const timestamp = provider_viewed ? formatDate(provider_viewed, true) : formatDate(new Date().toISOString(), true);
     // Using placeholder text - actual notes field mapping deferred
     const reason = 'Not ready for determination.';
     
@@ -51,8 +51,8 @@ export function getCaseStatusBannerConfig(caseData: ClientDetailsResponse): Bann
   }
 
   // AC1 & AC2: Blue info banner for Closed/Completed state
-  if (caseStatus === 'Closed' && provider_closed) {
-    const timestamp = formatDate(provider_closed, true);
+  if (caseStatus === 'Closed') {
+    const timestamp = provider_closed ? formatDate(provider_closed, true) : formatDate(new Date().toISOString(), true);
     
     // Determine Completed vs Closed based on outcome_code
     const isCompleted = outcomeCode === 'CLSP';

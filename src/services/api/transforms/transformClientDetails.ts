@@ -10,7 +10,8 @@ import {
   formatDate,
   transformContactDetails,
   transformClientSupportNeeds,
-  transformThirdParty
+  transformThirdParty,
+  capitaliseFirst
 } from '#src/scripts/helpers/index.js';
 
 /**
@@ -27,7 +28,7 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
   // Extract top-level client information
   const caseReference = safeString(item.reference);
   const laaReference = safeString(item.laa_reference);
-  const caseStatus = safeString(item.state);
+  const caseStatus = capitaliseFirst(safeString(item.state));
 
   // eslint-disable-next-line @typescript-eslint/naming-convention -- `provider_assigned_at` matches API response field
   const provider_assigned_at = formatDate(safeString(item.provider_assigned_at));
