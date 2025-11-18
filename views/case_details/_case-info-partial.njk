@@ -1,28 +1,76 @@
+{% from "govuk/components/tag/macro.njk" import govukTag %}
+{% from "moj/components/button-menu/macro.njk" import mojButtonMenu %}
+
 {% set statusConfig = {
   "new": {
     text: t('common.status.new'),
-    classes: "govuk-tag--yellow govuk-!-margin-bottom-2"
+    classes: "govuk-tag--green govuk-!-margin-bottom-2"
   },
   "opened": {
-    text: t('common.status.opened'),
-    classes: "govuk-tag--orange govuk-!-margin-bottom-2"
+    text: t('common.status.pending'),
+    classes: "govuk-tag--blue govuk-!-margin-bottom-2"
   },
   "accepted": {
-    text: t('common.status.accepted'),
-    classes: "govuk-!-margin-bottom-2"
+    text: t('common.status.advising'),
+    classes: "govuk-tag--light-blue govuk-!-margin-bottom-2"
   },
   "closed": {
     text: t('common.status.closed'),
     classes: "govuk-tag--grey govuk-!-margin-bottom-2"
+  },
+  "completed": {
+    text: t('common.status.completed'),
+    classes: "govuk-tag--red govuk-!-margin-bottom-2"
   }
 } %}
 
 {% set currentStatus = client.caseStatus | lower %}
 
-{{ govukTag({
-  text: statusConfig[currentStatus].text,
-  classes: statusConfig[currentStatus].classes
-}) }}
+{# Determine if closed case is actually Completed based on outcome code #}
+{% set displayStatus = currentStatus %}
+{% if currentStatus == "closed" and client.outcomeCode == "CLSP" %}
+  {% set displayStatus = "completed" %}
+{% endif %}
+
+{# Status tag and change status dropdown container #}
+<div style="display: flex; align-items: center; gap: 20px; margin-bottom: 1rem;">
+  {{ govukTag({
+    text: statusConfig[displayStatus].text,
+    classes: statusConfig[displayStatus].classes
+  }) }}
+
+  {# Change status dropdown - state-based transitions #}
+  {% if currentStatus == "new" %}
+    {% set menuItems = [
+      { text: t('common.status.pending') },
+      { text: t('common.status.advising') },
+      { text: t('common.status.closed') }
+    ] %}
+  {% elif currentStatus == "opened" %}
+    {% set menuItems = [
+      { text: t('common.status.advising') },
+      { text: t('common.status.closed') }
+    ] %}
+  {% elif currentStatus == "accepted" %}
+    {% set menuItems = [
+      { text: t('common.status.completed') },
+      { text: t('common.status.closed') }
+    ] %}
+  {% elif currentStatus == "closed" or displayStatus == "completed" %}
+    {% set menuItems = [
+      { text: t('common.status.advising') }
+    ] %}
+  {% endif %}
+
+  {{ mojButtonMenu({
+    items: menuItems,
+    button: {
+      text: t('pages.caseDetails.changeStatusButton'),
+      classes: "govuk-button--secondary"
+    },
+    alignMenu: "left"
+  }) }}
+</div>
 
 <h2 class="govuk-heading-m govuk-!-margin-bottom-1">{{ t('pages.caseDetails.dateReceived') }} <span class="govuk-body-l">{{ client.provider_assigned_at | formatDate }}</span></h2>
 <h2 class="govuk-heading-m govuk-!-margin-bottom-7">{{ t('pages.caseDetails.laaReference') }} <span class="govuk-body-l">{{ client.laaReference or t('pages.caseDetails.notProvided') }}</span></h2>

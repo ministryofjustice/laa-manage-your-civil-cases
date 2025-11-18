@@ -32,6 +32,18 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
   // eslint-disable-next-line @typescript-eslint/naming-convention -- `provider_assigned_at` matches API response field
   const provider_assigned_at = formatDate(safeString(item.provider_assigned_at));
 
+  // Extract outcome codes for Completed vs Closed distinction
+  const outcomeCode = safeString(item.outcome_code || '');
+  const outcomeDescription = safeString(item.outcome_description || '');
+
+  // Extract provider timestamp fields for state determination and banner display
+  // eslint-disable-next-line @typescript-eslint/naming-convention -- matches API response fields
+  const provider_viewed = safeString(item.provider_viewed || '');
+  // eslint-disable-next-line @typescript-eslint/naming-convention -- matches API response fields
+  const provider_accepted = safeString(item.provider_accepted || '');
+  // eslint-disable-next-line @typescript-eslint/naming-convention -- matches API response fields
+  const provider_closed = safeString(item.provider_closed || '');
+
   // Transform contact details
   const contactDetails = transformContactDetails(item.personal_details);
 
@@ -46,6 +58,11 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
     laaReference,
     caseStatus,
     provider_assigned_at,
+    outcomeCode,
+    outcomeDescription,
+    provider_viewed,
+    provider_accepted,
+    provider_closed,
     ...contactDetails,
     clientSupportNeeds,
     thirdParty

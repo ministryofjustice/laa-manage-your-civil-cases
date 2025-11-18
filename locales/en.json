@@ -16,7 +16,10 @@
       "new": "New",
       "opened": "Opened",
       "accepted": "Accepted",
-      "closed": "Closed"
+      "closed": "Closed",
+      "pending": "Pending",
+      "advising": "Advising",
+      "completed": "Completed"
     },
     "thirdPartyRelationship": {
       "text": {
@@ -109,6 +112,7 @@
       "dateReceived": "Date received",
       "laaReference": "LAA reference",
       "notProvided": "Not provided",
+      "changeStatusButton": "Change status",
       "banners": {
         "pending": {
           "heading": "Important",

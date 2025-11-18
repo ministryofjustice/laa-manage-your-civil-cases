@@ -13,8 +13,9 @@ import type { ClientDetailsResponse } from '../../../types/api-types.js';
  */
 export interface BannerConfig {
   type: 'warning' | 'information';
-  heading: string;
-  message: string;
+  statusLabel: string;
+  reason?: string;
+  timestamp: string;
 }
 
 /**
@@ -23,7 +24,7 @@ export interface BannerConfig {
  * @returns {BannerConfig | null} Banner configuration or null if no banner should be shown
  */
 export function getCaseStatusBannerConfig(caseData: ClientDetailsResponse): BannerConfig | null {
-  const { caseStatus, provider_viewed, provider_closed, outcomeDescription } = caseData;
+  const { caseStatus, provider_viewed, provider_closed, outcomeCode } = caseData;
 
   // AC4: No banner for New state
   if (caseStatus === 'New') {
@@ -38,13 +39,14 @@ export function getCaseStatusBannerConfig(caseData: ClientDetailsResponse): Bann
   // AC3: Red warning banner for Opened/Pending state
   if (caseStatus === 'Opened' && provider_viewed) {
     const timestamp = formatDate(provider_viewed, true);
-    // TODO: Replace placeholder with actual notes field when available
-    const reason = 'Awaiting client callback';
+    // Using placeholder text - actual notes field mapping deferred
+    const reason = 'Not ready for determination.';
     
     return {
       type: 'warning',
-      heading: t('pages.caseDetails.banners.pending.heading'),
-      message: t('pages.caseDetails.banners.pending.message', { reason, timestamp })
+      statusLabel: 'pending',
+      reason,
+      timestamp
     };
   }
 
@@ -52,25 +54,26 @@ export function getCaseStatusBannerConfig(caseData: ClientDetailsResponse): Bann
   if (caseStatus === 'Closed' && provider_closed) {
     const timestamp = formatDate(provider_closed, true);
     
-    // TODO: Determine Completed vs Closed based on outcome_code when available
-    // For now, use outcomeDescription if available, otherwise placeholder
-    const isCompleted = false; // TODO: Check outcome_code === 'CLSP'
+    // Determine Completed vs Closed based on outcome_code
+    const isCompleted = outcomeCode === 'CLSP';
     
     if (isCompleted) {
-      // AC1: Completed banner
+      // AC1: Completed banner - timestamp only, no reason
       return {
         type: 'information',
-        heading: t('pages.caseDetails.banners.completed.heading'),
-        message: t('pages.caseDetails.banners.completed.message', { timestamp })
+        statusLabel: 'completed',
+        timestamp
       };
     } else {
-      // AC2: Closed banner
-      const reason = outcomeDescription || 'Case could not proceed';
+      // AC2: Closed banner - with reason and timestamp
+      // Using placeholder text - actual notes field mapping deferred
+      const reason = 'This case is not in scope for my category';
       
       return {
         type: 'information',
-        heading: t('pages.caseDetails.banners.closed.heading'),
-        message: t('pages.caseDetails.banners.closed.message', { reason, timestamp })
+        statusLabel: 'closed',
+        reason,
+        timestamp
       };
     }
   }
