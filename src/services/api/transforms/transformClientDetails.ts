@@ -45,6 +45,13 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
   // eslint-disable-next-line @typescript-eslint/naming-convention -- matches API response fields
   const provider_closed = safeString(item.provider_closed || '');
 
+  // Extract case notes fields for banner reasons
+  const notes = safeString(item.notes || '');
+  // eslint-disable-next-line @typescript-eslint/naming-convention -- matches API response fields
+  const provider_notes = safeString(item.provider_notes || '');
+  // eslint-disable-next-line @typescript-eslint/naming-convention -- matches API response fields
+  const client_notes = safeString(item.client_notes || '');
+
   // Transform contact details
   const contactDetails = transformContactDetails(item.personal_details);
 
@@ -64,6 +71,9 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
     provider_viewed,
     provider_accepted,
     provider_closed,
+    notes,
+    provider_notes,
+    client_notes,
     ...contactDetails,
     clientSupportNeeds,
     thirdParty

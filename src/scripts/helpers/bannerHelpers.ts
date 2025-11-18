@@ -26,7 +26,7 @@ export interface BannerConfig {
  * @returns {BannerConfig | null} Banner configuration or null if no banner should be shown
  */
 export function getCaseStatusBannerConfig(caseData: ClientDetailsResponse, logs: LogEntry[] | null = null): BannerConfig | null {
-  const { caseStatus, provider_viewed, provider_closed, outcomeCode } = caseData;
+  const { caseStatus, provider_viewed, provider_closed, outcomeCode, provider_notes } = caseData;
 
   // AC4: No banner for New state
   if (caseStatus === 'New') {
@@ -42,8 +42,8 @@ export function getCaseStatusBannerConfig(caseData: ClientDetailsResponse, logs:
   if (caseStatus === 'Opened') {
     const timestamp = provider_viewed ? formatDate(provider_viewed, true) : formatDate(new Date().toISOString(), true);
     
-    // Try to extract notes from logs, otherwise omit reason
-    const reason = logs ? extractOutcomeNotes(logs, ['CASE_VIEWED']) : undefined;
+    // Use provider_notes from case data for Pending reason
+    const reason = provider_notes || undefined;
     
     return {
       type: 'warning',

@@ -109,6 +109,11 @@ export interface ClientDetailsResponse {
   outcomeCode?: string; // Outcome code for distinguishing Completed vs Closed
   outcomeDescription?: string; // Human-readable outcome description
   
+  //Case notes
+  notes?: string; // Call centre operator notes
+  provider_notes?: string; // Provider notes (used for Pending banner reason)
+  client_notes?: string; // Client notes
+  
   // Allow additional fields for debugging
   [key: string]: unknown;
 }
