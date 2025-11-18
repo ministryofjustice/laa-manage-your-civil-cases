@@ -5,6 +5,21 @@
  * It initializes MSW to intercept outgoing API calls and serve mock responses.
  */
 
+// Polyfill localStorage for MSW v2.x in Node.js environment
+// MSW uses localStorage for cookie management, which is not available in Node.js
+if (typeof globalThis.localStorage === 'undefined') {
+  const storage = new Map<string, string>();
+  
+  globalThis.localStorage = {
+    getItem: (key: string) => storage.get(key) ?? null,
+    setItem: (key: string, value: string) => { storage.set(key, value); },
+    removeItem: (key: string) => { storage.delete(key); },
+    clear: () => { storage.clear(); },
+    get length() { return storage.size; },
+    key: (index: number) => Array.from(storage.keys())[index] ?? null,
+  } as Storage;
+}
+
 import { setupServer } from 'msw/node';
 import { handlers } from '../tests/playwright/factories/handlers/index.js';
 
