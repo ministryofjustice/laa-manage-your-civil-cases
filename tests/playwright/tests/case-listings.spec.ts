@@ -42,18 +42,17 @@ test('advising cases listing page should display correctly', async ({ page, i18n
   await expect(caseTable).toBeVisible();
 });
 
-// TO-DO as `rejected` does not exist as a valid filter on api endpoint, the `rejected` activeTab will never show
-// test('closed cases listing page should display correctly', async ({ page, i18nSetup }) => {
-//   // Navigate to the closed cases page
-//   await page.goto('/cases/closed');
+test('closed cases listing page should display correctly', async ({ page, i18nSetup }) => {
+  // Navigate to the closed cases page
+  await page.goto('/cases/closed');
   
-//   // Check for page heading
-//   await expect(page.locator('h1')).toContainText('Closed cases');
+  // Check for page heading
+  await expect(page.locator('h1')).toContainText('Closed cases');
   
-//   // Check for the specific closed cases table
-//   const caseTable = page.locator('#closed-cases-table');
-//   await expect(caseTable).toBeVisible();
-// });
+  // Check for the specific closed cases table
+  const caseTable = page.locator('#closed-cases-table');
+  await expect(caseTable).toBeVisible();
+});
 
 test('completed cases listing page should display correctly', async ({ page, i18nSetup }) => {
   // Navigate to the completed cases page

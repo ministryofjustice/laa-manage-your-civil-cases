@@ -29,7 +29,7 @@ export interface ApiResponse<T> {
  * API request parameters for cases
  */
 export interface CaseApiParams {
-  caseType: 'new' | 'accepted' | 'opened' | 'closed';
+  caseType: 'new' | 'accepted' | 'opened' | 'rejected' | 'completed';
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
   page?: number;

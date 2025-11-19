@@ -87,7 +87,8 @@ export function filterCasesByStatus(status: string, cases: MockCase[]): MockCase
     'new': ['New'],
     'accepted': ['Accepted'],
     'opened': ['Opened'],
-    'closed': ['Closed']
+    'rejected': ['Closed'],
+    'completed': ['Closed']
   };
 
   const validStatuses = statusMap[status] || [];

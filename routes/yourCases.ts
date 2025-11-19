@@ -17,7 +17,7 @@ router.get('/advising', createCaseRouteHandler('accepted'));
 router.get('/closed', createCaseRouteHandler('rejected'));
 
 /* GET your cases - completed tab. */
-router.get('/completed', createCaseRouteHandler('closed'));
+router.get('/completed', createCaseRouteHandler('completed'));
 
 
 export default router;
