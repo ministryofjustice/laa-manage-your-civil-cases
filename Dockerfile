@@ -4,16 +4,21 @@ FROM node:25.1.0-alpine
 # Set the working directory inside the container
 WORKDIR /app
 
-# Install corepack globally via Yarn as base image doesn't have it, 
-# then enable Corepack and prepare Yarn version
-RUN yarn global add corepack && \
-    corepack enable && corepack prepare yarn@4.9.2 --activate
+# Install build tools for native modules
+RUN apk add --no-cache build-base python3 make g++ pkgconfig
+
+# Install corepack via npm (force to overwrite existing yarn), enable it, prepare Yarn 4.9.2, then remove npm entirely
+RUN npm install -g --force corepack && \
+    corepack enable && \
+    corepack prepare yarn@4.9.2 --activate && \
+    rm -rf /usr/local/lib/node_modules/npm && \
+    rm -f /usr/local/bin/npm /usr/local/bin/npx
 
 # Copy package.json and yarn.lock to the working directory
 COPY package*.json yarn.lock .yarnrc.yml ./
 
-# Install dependencies
-RUN yarn install --immutable
+# Install dependencies with inline builds for native modules
+RUN yarn install --immutable --inline-builds
 
 # Create a non-root user
 RUN addgroup -g 1001 -S appuser && \
