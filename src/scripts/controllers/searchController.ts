@@ -9,7 +9,7 @@ import { storeSessionData, getSessionData, clearSessionData } from '#src/scripts
 // Constants
 const DEFAULT_SORT_BY = 'modified';
 const DEFAULT_PAGE = 1;
-const DEFAULT_LIMIT = 4;
+const DEFAULT_LIMIT = 20;
 const BAD_REQUEST = 400;
 
 /**

@@ -5,7 +5,7 @@ import { devLog, devError, createProcessedError, buildOrderingParamFields } from
 
 // Constants
 const DEFAULT_PAGE = 1;
-const DEFAULT_LIMIT = 4;
+const DEFAULT_LIMIT = 20;
 const EMPTY_TOTAL = 0;
 
 /**
@@ -25,7 +25,7 @@ function parsePageNumber(pageParam: unknown): number {
 /**
  * Load cases data using the API service with axios middleware
  * @param {Request} req Express request object (contains axios middleware)
- * @param {string} caseType Type of case (new, accepted, opened, closed)
+ * @param {string} caseType Type of case (new, accepted, opened, rejected, completed)
  * @param {object} sortParams Sort parameters object
  * @param {string} sortParams.sortBy Sort field
  * @param {'asc' | 'desc'} sortParams.sortOrder Sort order (asc/desc)
@@ -40,7 +40,7 @@ async function loadCasesData(
   page = DEFAULT_PAGE
 ): Promise<{ data: CaseData[], pagination: { total: number, page: number, limit: number, totalPages?: number } }> {
   // Validate case type
-  const validCaseTypes = ['new', 'accepted', 'opened', 'closed'] as const;
+  const validCaseTypes = ['new', 'accepted', 'opened', 'rejected', 'completed'] as const;
   type ValidCaseType = typeof validCaseTypes[number];
 
   /**

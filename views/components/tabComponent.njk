@@ -19,6 +19,7 @@
     data: data,
     sortOrder: sortOrder,
     pagination: pagination,
+    caseType: caseType,
     tabs: [
       {
         id: "new",
@@ -53,15 +54,26 @@
 {%- from "moj/components/sub-navigation/macro.njk" import mojSubNavigation -%}
 
 {% macro tabComponent(options) %}
+  {# Build valid tab ids #}
+  {% set tabIds = [] %}
+  {% for tab in options.tabs %}
+    {% set tabIds = (tabIds.push(tab.id), tabIds) %}
+  {% endfor %}
+
+  {# Safe active id fallback #}
+  {% set activeId = options.activeTab %}
+  {% if not (activeId in tabIds) %}
+    {% set activeId = options.tabs[0].id %}
+  {% endif %}
+
   {# Build navigation items from tabs configuration #}
   {% set navItems = [] %}
   {% for tab in options.tabs %}
-    {% set navItem = {
+    {% set navItems = (navItems.push({
       text: tab.text,
       href: tab.href,
-      active: (options.activeTab == tab.id)
-    } %}
-    {% set navItems = (navItems.push(navItem), navItems) %}
+      active: (activeId == tab.id)
+    }), navItems) %}
   {% endfor %}
 
   {# Render the MOJ sub-navigation #}
@@ -70,22 +82,25 @@
     items: navItems
   }) }}
 
-  {# Render the tab content container with data attributes for JavaScript #}
-  <div id="{{ options.containerId }}" class="tab-content-container" data-active-tab="{{ options.activeTab }}">
+  {# Render only the active tab content container with data attributes for JavaScript #}
+  <div id="{{ options.containerId }}" class="tab-content-container" data-active-tab="{{ activeId }}">
     {% for tab in options.tabs %}
-      <div class="tab-content {% if options.activeTab == tab.id %}show{% endif %}" data-tab-id="{{ tab.id }}">
-        {% if tab.partial %}
+      <div class="tab-content {% if activeId == tab.id %}show{% endif %}" data-tab-id="{{ tab.id }}">
+        {% if activeId == tab.id %}
           {# Set context variables for the partial #}
           {% set data = options.data %}
           {% set sortOrder = options.sortOrder %}
           {% set pagination = options.pagination %}
-          {% include tab.partial %}
-        {% elif tab.content %}
-          {{ tab.content | safe }}
-        {% else %}
-          <div class="govuk-body">
-            <p>Content for {{ tab.text }} tab</p>
-          </div>
+          {% set caseType = options.caseType %} 
+          {% if tab.partial %}
+            {% include tab.partial %}
+          {% elif tab.content %}
+            {{ tab.content | safe }}
+          {% else %}
+            <div class="govuk-body">
+              <p>Content for {{ tab.text }} tab</p>
+            </div>
+          {% endif %}
         {% endif %}
       </div>
     {% endfor %}
