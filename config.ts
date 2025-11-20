@@ -27,7 +27,7 @@ const config: Config = {
   SERVICE_NAME: process.env.SERVICE_NAME,
   SERVICE_PHASE: process.env.SERVICE_PHASE,
   SERVICE_URL: process.env.SERVICE_URL,
-  CHARACTER_THRESHOLD: CHARACTER_THRESHOLD,
+  CHARACTER_THRESHOLD,
   session: {
     secret: process.env.SESSION_SECRET,
     name: process.env.SESSION_NAME,
