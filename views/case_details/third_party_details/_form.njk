@@ -23,6 +23,7 @@
 
 <form method="post" action="{{ formAction }}">
   <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+  <input type="hidden" name="hasSoftDeletedThirdParty" value="{{ hasSoftDeletedThirdParty }}">
 
   <h2 class="govuk-heading-m">{{ t('pages.caseDetails.clientDetails.contactDetails') }}</h2>
   {{ govukInput({

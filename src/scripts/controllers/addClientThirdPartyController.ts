@@ -1,41 +1,11 @@
 import type { Request, Response, NextFunction } from 'express';
-import type { ClientDetailsApiResponse } from '#types/api-types.js';
-import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
-import { handleGetEditForm, extractFormFields, handleAddThirdPartyValidationErrors, prepareThirdPartyData, devLog, devError, createProcessedError, safeString, isSoftDeletedThirdParty } from '#src/scripts/helpers/index.js';
+import { handleGetEditForm, extractFormFields, handleAddThirdPartyValidationErrors, prepareThirdPartyData, devLog, devError, createProcessedError, safeString, isSoftDeletedThirdParty, isRecord, hasProperty } from '#src/scripts/helpers/index.js';
 import { apiService } from '#src/services/apiService.js';
 
 // HTTP Status codes
 const BAD_REQUEST = 400;
 const INTERNAL_SERVER_ERROR = 500;
-
-/**
- * Handles API call to add or update third party based on soft-delete status
- * @param {object} params - Parameters for API call
- * @param {AxiosInstanceWrapper} params.axiosMiddleware - Axios middleware from request
- * @param {string} params.caseReference - Case reference number
- * @param {object} params.thirdPartyData - Third party data to send
- * @param {boolean} params.hasSoftDeleted - Whether a soft-deleted third party exists
- * @returns {Promise<ClientDetailsApiResponse>} API response
- */
-async function callThirdPartyApi(params: {
-  axiosMiddleware: AxiosInstanceWrapper;
-  caseReference: string;
-  thirdPartyData: object;
-  hasSoftDeleted: boolean;
-}): Promise<ClientDetailsApiResponse> {
-  const { axiosMiddleware, caseReference, thirdPartyData, hasSoftDeleted } = params;
-  
-  if (hasSoftDeleted) {
-    // Use PATCH to update the existing soft-deleted record
-    devLog(`Detected soft-deleted third party for case: ${caseReference}. Using PATCH to update existing record.`);
-    return await apiService.updateThirdPartyContact(axiosMiddleware, caseReference, thirdPartyData);
-  } else {
-    // Use POST to create a new third party record
-    devLog(`No existing third party record for case: ${caseReference}. Using POST to create new record.`);
-    return await apiService.addThirdPartyContact(axiosMiddleware, caseReference, thirdPartyData);
-  }
-}
 
 /**
  * Renders the add client third party form for a given case reference.
@@ -47,15 +17,25 @@ async function callThirdPartyApi(params: {
 export async function getAddClientThirdParty(req: Request, res: Response, next: NextFunction): Promise<void> {
   await handleGetEditForm(req, res, next, {
     templatePath: 'case_details/third_party_details/add-client-third-party.njk',
-    fieldConfigs: [
-      { field: 'thirdPartyFullName', type: 'string' },
-      { field: 'thirdPartyEmailAddress', type: 'string' },
-      { field: 'thirdPartyContactNumber', type: 'string' },
-      { field: 'thirdPartySafeToCall', type: 'boolean' },
-      { field: 'thirdPartyAddress', type: 'string' },
-      { field: 'thirdPartyPostcode', type: 'string' },
-      { field: 'thirdPartyRelationshipToClient', type: 'string' }
-    ]
+    dataExtractor: (apiData: unknown): Record<string, unknown> => {
+      // Check if there's a soft-deleted third party and store the flag
+      const hasSoftDeletedThirdParty = isRecord(apiData) && hasProperty(apiData, 'thirdParty') 
+        ? isSoftDeletedThirdParty(apiData.thirdParty) 
+        : false;
+      
+      return {
+        hasSoftDeletedThirdParty: hasSoftDeletedThirdParty.toString(),
+        currentThirdPartyFullName: '',
+        currentThirdPartyEmailAddress: '',
+        currentThirdPartyContactNumber: '',
+        currentThirdPartySafeToCall: '',
+        currentThirdPartyAddress: '',
+        currentThirdPartyPostcode: '',
+        currentThirdPartyRelationshipToClient: '',
+        currentThirdPartyPassphraseSetUp: '',
+        currentThirdPartyPassphrase: ''
+      };
+    }
   });
 }
 
@@ -86,7 +66,8 @@ export async function postAddClientThirdParty(req: Request, res: Response, next:
     'thirdPartyPostcode',
     'thirdPartyRelationshipToClient',
     'thirdPartyPassphraseSetUp',
-    'thirdPartyPassphrase'
+    'thirdPartyPassphrase',
+    'hasSoftDeletedThirdParty'
   ]);
 
   // Check for validation errors
@@ -97,31 +78,16 @@ export async function postAddClientThirdParty(req: Request, res: Response, next:
   try {
     devLog(`Adding third party contact for case: ${caseReference}`);
 
-    // Fetch current client details to check for soft-deleted third party
-    const clientDetailsResponse = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
-    
-    if (clientDetailsResponse.status !== 'success' || clientDetailsResponse.data === null) {
-      devError(`Failed to fetch case details before adding third party for case: ${caseReference}`);
-      res.status(INTERNAL_SERVER_ERROR).render('main/error.njk', {
-        status: '500',
-        error: 'Failed to fetch case details before adding third party'
-      });
-      return;
-    }
-
     // Prepare the third party data for the API
     const thirdPartyData = prepareThirdPartyData(formFields);
 
-    // Check if there's a soft-deleted third party record
-    const hasSoftDeletedThirdParty = isSoftDeletedThirdParty(clientDetailsResponse.data.thirdParty);
+    // Check if there's a soft-deleted third party record (from hidden form field)
+    const hasSoftDeletedThirdParty = formFields.hasSoftDeletedThirdParty === 'true';
     
     // Call appropriate API method (PATCH for soft-deleted, POST for new)
-    const response = await callThirdPartyApi({
-      axiosMiddleware: req.axiosMiddleware,
-      caseReference,
-      thirdPartyData,
-      hasSoftDeleted: hasSoftDeletedThirdParty
-    });
+    const response = hasSoftDeletedThirdParty
+      ? await apiService.updateThirdPartyContact(req.axiosMiddleware, caseReference, thirdPartyData)
+      : await apiService.addThirdPartyContact(req.axiosMiddleware, caseReference, thirdPartyData);
 
     if (response.status === 'success') {
       devLog(`Third party contact successfully added for case: ${caseReference}`);

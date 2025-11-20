@@ -244,7 +244,8 @@ abstract class ThirdPartyValidator {
       currentThirdPartyPostcode: formFields.thirdPartyPostcode,
       currentThirdPartyRelationshipToClient: formFields.thirdPartyRelationshipToClient,
       currentThirdPartyPassphraseSetUp: formFields.thirdPartyPassphraseSetUp,
-      currentThirdPartyPassphrase: formFields.thirdPartyPassphrase
+      currentThirdPartyPassphrase: formFields.thirdPartyPassphrase,
+      hasSoftDeletedThirdParty: formFields.hasSoftDeletedThirdParty
     };
 
     res.status(BAD_REQUEST).render(this.templatePath, renderData);
