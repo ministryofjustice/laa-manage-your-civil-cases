@@ -44,6 +44,7 @@ export interface Config {
   SERVICE_NAME: string | undefined;
   SERVICE_PHASE: string | undefined;
   SERVICE_URL: string | undefined;
+  CHARACTER_THRESHOLD: number;
   app: AppConfig;
   csrf: CsrfConfig;
   session: SessionConfig;
