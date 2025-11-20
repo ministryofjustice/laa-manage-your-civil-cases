@@ -276,7 +276,7 @@
           "notEmptyLanguage": "Select a language",
           "notEmptyNotes": "Enter the client support need",
           "notChanged": "Change the client support needs or select 'Cancel'",
-          "tooLongNotes": "Enter less than 250 characters"
+          "tooLongNotes": "Notes must be 255 characters or less"
         }
       },
       "thirdParty": {

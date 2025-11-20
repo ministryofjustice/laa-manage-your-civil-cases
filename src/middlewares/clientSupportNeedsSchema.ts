@@ -61,7 +61,7 @@ const clientSupportNeedsBaseSchema = {
         const pickedCheckboxes = normaliseSelectedCheckbox(safeBodyString(meta.req.body, 'clientSupportNeeds'));
         const otherSupport = pickedCheckboxes.includes("otherSupport");
         const EMPTY = 0;
-        const MAX_LENGTH = 250;
+        const MAX_LENGTH = 255;
 
         if (!otherSupport) return true;
         return typeof value === "string" && value.trim().length > EMPTY && value.trim().length <= MAX_LENGTH;
@@ -73,7 +73,7 @@ const clientSupportNeedsBaseSchema = {
      * @returns {TypedValidationError} Returns TypedValidationError with structured error data
      */
     errorMessage: (value: string) => {
-      const MAX_LENGTH = 250;
+      const MAX_LENGTH = 255;
 
       // Too long
       if (typeof value === "string" && value.trim().length > MAX_LENGTH) {
