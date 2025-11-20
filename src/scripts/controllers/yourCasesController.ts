@@ -5,7 +5,7 @@ import { devLog, devError, createProcessedError, buildOrderingParamFields } from
 
 // Constants
 const DEFAULT_PAGE = 1;
-const DEFAULT_LIMIT = 4;
+const DEFAULT_LIMIT = 20;
 const EMPTY_TOTAL = 0;
 
 /**
