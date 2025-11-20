@@ -1,0 +1,26 @@
+name: Cache Yarn 4
+description: Cache Yarn v4 directories to speed up dependency installation
+
+inputs:
+  yarn-lock-path:
+    description: "Glob pattern to yarn.lock file(s)"
+    required: false
+    default: "**/yarn.lock"
+  yarnrc-path:
+    description: "Path to .yarnrc.yml configuration file"
+    required: false
+    default: ".yarnrc.yml"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Cache Yarn 4
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.yarn/cache
+          .yarn/unplugged
+          .yarn/build-state.yml
+        key: ${{ runner.os }}-yarn-${{ hashFiles(inputs.yarn-lock-path) }}-${{ hashFiles(inputs.yarnrc-path) }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-

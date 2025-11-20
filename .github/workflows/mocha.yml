@@ -16,6 +16,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
+      - name: Cache Yarn 4
+        uses: ./.github/actions/cache-yarn
+
       - name: Setup Node and Dependencies
         uses: ./.github/actions/setup-node
 
