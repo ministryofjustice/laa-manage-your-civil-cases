@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
 import { devLog, devError, createProcessedError, safeString } from '#src/scripts/helpers/index.js';
+import { getSessionData, clearSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 
 const BAD_REQUEST = 400;
 const NOT_FOUND = 404;
@@ -27,7 +28,32 @@ export async function getRemoveThirdPartyConfirmation(req: Request, res: Respons
   try {
     devLog(`Rendering remove third party confirmation for case: ${caseReference}`);
 
-    // Verify the case exists and has third party data
+    // Check session cache first to avoid redundant API call
+    const cachedData = getSessionData(req, 'thirdPartyCache');
+    
+    if (cachedData && cachedData.caseReference === caseReference) {
+      const hasThirdParty = cachedData.hasThirdParty === 'true';
+      
+      devLog(`Using cached third party state for case: ${caseReference}, hasThirdParty: ${hasThirdParty}`);
+      
+      if (!hasThirdParty) {
+        devError(`No third party data found for case: ${caseReference} (from cache)`);
+        res.status(NOT_FOUND).render('main/error.njk', {
+          status: '404',
+          error: 'No third party contact found for this case'
+        });
+        return;
+      }
+      
+      // Render confirmation without API call
+      res.render('case_details/confirm-remove-third-party.njk', {
+        caseReference
+      });
+      return;
+    }
+    
+    // Fallback: Make API call if cache miss (safety net for direct navigation)
+    devLog(`Cache miss for case: ${caseReference}, falling back to API call`);
     const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
 
     if (response.status === 'success' && response.data !== null) {
@@ -85,11 +111,15 @@ export async function deleteThirdParty(req: Request, res: Response, next: NextFu
 
     if (response.status === 'success') {
       devLog(`Third party contact successfully removed for case: ${caseReference}`);
+      // Clear the cache after successful deletion
+      clearSessionData(req, 'thirdPartyCache');
       // Redirect back to client details page
       res.redirect(`/cases/${caseReference}/client-details`);
     } else if (response.message?.includes('404') === true) {
       // Third party already removed or doesn't exist - treat as success (idempotent)
       devLog(`Third party contact already removed or not found for case: ${caseReference}. Treating as success.`);
+      // Clear the cache
+      clearSessionData(req, 'thirdPartyCache');
       res.redirect(`/cases/${caseReference}/client-details`);
     } else {
       devError(`Failed to remove third party contact for case: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);

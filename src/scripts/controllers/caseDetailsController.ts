@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
-import { devLog, devError, createProcessedError, safeString, clearAllOriginalFormData } from '#src/scripts/helpers/index.js';
+import { devLog, devError, createProcessedError, safeString, clearAllOriginalFormData, isSoftDeletedThirdParty } from '#src/scripts/helpers/index.js';
+import { storeSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 
 const BAD_REQUEST = 400;
 const NOT_FOUND = 404;
@@ -35,6 +36,17 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
     const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
 
     if (response.status === 'success' && response.data !== null) {
+      // Cache third party existence in session to avoid redundant API calls
+      // when navigating to remove third party confirmation page
+      const hasThirdParty = response.data.thirdParty !== null && 
+                            !isSoftDeletedThirdParty(response.data.thirdParty);
+      
+      storeSessionData(req, 'thirdPartyCache', {
+        caseReference,
+        hasThirdParty: String(hasThirdParty),
+        cachedAt: String(Date.now())
+      });
+      
       res.render('case_details/index.njk', {
         activeTab,
         client: response.data,
