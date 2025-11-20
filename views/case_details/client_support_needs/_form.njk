@@ -32,7 +32,7 @@
   {% endset -%}
 
   {% set notes %}
-    {{ govukTextarea({
+    {{ govukCharacterCount({
       label: {
         text: t('forms.clientDetails.clientSupportNeeds.notesTextAreaHint')
       },
@@ -40,7 +40,8 @@
       name: "notes",
       value: currentNotes,
       errorMessage: errorMessages.notes if error,
-      autocomplete: "off"
+      autocomplete: "off",
+      maxlength: 255
     }) }}
   {% endset -%}
 
