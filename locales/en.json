@@ -96,14 +96,16 @@
     },
     "yourCases": {
       "newCases": "New cases",
-      "openedCases": "Opened cases",
-      "acceptedCases": "Accepted cases",
+      "pendingCases": "Pending cases",
+      "advisingCases": "Advising cases",
       "closedCases": "Closed cases",
+      "completedCases": "Completed cases",
       "pageTitles": {
         "new": "New cases – {serviceName} – GOV.UK",
-        "opened": "Opened cases – {serviceName} – GOV.UK",
-        "accepted": "Accepted cases – {serviceName} – GOV.UK",
-        "closed": "Closed cases – {serviceName} – GOV.UK"
+        "pending": "Pending cases – {serviceName} – GOV.UK",
+        "advising": "Advising cases – {serviceName} – GOV.UK",
+        "closed": "Closed cases – {serviceName} – GOV.UK",
+        "completed": "Completed cases – {serviceName} – GOV.UK"
       }
     },
     "caseDetails": {

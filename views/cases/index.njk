@@ -2,10 +2,12 @@
 
 {% block pageTitle %}
   {%- if activeTab == 'opened' -%}
-    {{ t('pages.yourCases.pageTitles.opened', { serviceName: config.SERVICE_NAME }) }}
+    {{ t('pages.yourCases.pageTitles.pending', { serviceName: config.SERVICE_NAME }) }}
   {%- elif activeTab == 'accepted' -%}
-    {{ t('pages.yourCases.pageTitles.accepted', { serviceName: config.SERVICE_NAME }) }}
-  {%- elif activeTab == 'closed' -%}
+    {{ t('pages.yourCases.pageTitles.advising', { serviceName: config.SERVICE_NAME }) }}
+  {%- elif activeTab == 'completed' -%}
+    {{ t('pages.yourCases.pageTitles.completed', { serviceName: config.SERVICE_NAME }) }}
+  {%- elif activeTab == 'rejected' -%}
     {{ t('pages.yourCases.pageTitles.closed', { serviceName: config.SERVICE_NAME }) }}
   {%- else -%}
     {{ t('pages.yourCases.pageTitles.new', { serviceName: config.SERVICE_NAME }) }}
@@ -21,16 +23,23 @@
   {# Import the tabComponent macro #}
   {%- from "components/tabComponent.njk" import tabComponent -%}
 
-  {# Main page heading - changes based on active tab #}
+  {# Main page heading - changes based on active tab & set caseType for tab component #}
   <h1 class="govuk-heading-xl" id="page-heading">
     {%- if activeTab == 'opened' -%}
-        {{ t('pages.yourCases.openedCases') }}
+        {{ t('pages.yourCases.pendingCases') }}
+        {% set caseType = 'pending' %}
       {%- elif activeTab == 'accepted' -%}
-        {{ t('pages.yourCases.acceptedCases') }}
-      {%- elif activeTab == 'closed' -%}
+        {{ t('pages.yourCases.advisingCases') }}
+        {% set caseType = 'advising' %}
+      {%- elif activeTab == 'completed' -%}
+        {{ t('pages.yourCases.completedCases') }}
+        {% set caseType = 'completed' %}
+      {%- elif activeTab == 'rejected' -%}
         {{ t('pages.yourCases.closedCases') }}
+        {% set caseType = 'closed' %}
       {%- else -%}
         {{ t('pages.yourCases.newCases') }}
+        {% set caseType = 'new' %}
       {%- endif -%}
   </h1>
 
@@ -41,30 +50,37 @@
     data: data,
     sortOrder: sortOrder,
     pagination: pagination,
+    caseType: caseType,
     tabs: [
       {
         id: "new",
         text: t('common.status.new'),
         href: "/cases/new",
-        partial: "cases/_new-partial.njk"
+        partial: "cases/_cases-partial.njk"
       },
       {
         id: "opened",
-        text: t('common.status.opened'),
-        href: "/cases/opened",
-        partial: "cases/_opened-partial.njk"
+        text: t('common.status.pending'),
+        href: "/cases/pending",
+        partial: "cases/_cases-partial.njk"
       },
       {
         id: "accepted",
-        text: t('common.status.accepted'),
-        href: "/cases/accepted",
-        partial: "cases/_accepted-partial.njk"
+        text: t('common.status.advising'),
+        href: "/cases/advising",
+        partial: "cases/_cases-partial.njk"
       },
       {
-        id: "closed",
+        id: "rejected",
         text: t('common.status.closed'),
         href: "/cases/closed",
-        partial: "cases/_closed-partial.njk"
+        partial: "cases/_cases-partial.njk"
+      },
+      {
+        id: "completed",
+        text: t('common.status.completed'),
+        href: "/cases/completed",
+        partial: "cases/_cases-partial.njk"
       }
     ]
   }) }}
