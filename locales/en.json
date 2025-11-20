@@ -14,9 +14,10 @@
     "errorSummaryTitle": "There is a problem",
     "status": {
       "new": "New",
-      "opened": "Opened",
-      "accepted": "Accepted",
-      "closed": "Closed"
+      "pending": "Pending",
+      "advising": "Advising",
+      "closed": "Closed",
+      "completed": "Completed"
     },
     "thirdPartyRelationship": {
       "text": {
