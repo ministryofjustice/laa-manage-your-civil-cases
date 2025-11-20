@@ -23,18 +23,23 @@
   {# Import the tabComponent macro #}
   {%- from "components/tabComponent.njk" import tabComponent -%}
 
-  {# Main page heading - changes based on active tab #}
+  {# Main page heading - changes based on active tab & set caseType for tab component #}
   <h1 class="govuk-heading-xl" id="page-heading">
     {%- if activeTab == 'opened' -%}
         {{ t('pages.yourCases.pendingCases') }}
+        {% set caseType = 'pending' %}
       {%- elif activeTab == 'accepted' -%}
         {{ t('pages.yourCases.advisingCases') }}
+        {% set caseType = 'advising' %}
       {%- elif activeTab == 'completed' -%}
         {{ t('pages.yourCases.completedCases') }}
+        {% set caseType = 'completed' %}
       {%- elif activeTab == 'rejected' -%}
         {{ t('pages.yourCases.closedCases') }}
+        {% set caseType = 'closed' %}
       {%- else -%}
         {{ t('pages.yourCases.newCases') }}
+        {% set caseType = 'new' %}
       {%- endif -%}
   </h1>
 
@@ -45,36 +50,37 @@
     data: data,
     sortOrder: sortOrder,
     pagination: pagination,
+    caseType: caseType,
     tabs: [
       {
         id: "new",
         text: t('common.status.new'),
         href: "/cases/new",
-        partial: "cases/_new-partial.njk"
+        partial: "cases/_cases-partial.njk"
       },
       {
         id: "opened",
         text: t('common.status.pending'),
         href: "/cases/pending",
-        partial: "cases/_pending-partial.njk"
+        partial: "cases/_cases-partial.njk"
       },
       {
         id: "accepted",
         text: t('common.status.advising'),
         href: "/cases/advising",
-        partial: "cases/_advising-partial.njk"
+        partial: "cases/_cases-partial.njk"
       },
       {
         id: "rejected",
         text: t('common.status.closed'),
         href: "/cases/closed",
-        partial: "cases/_closed-partial.njk"
+        partial: "cases/_cases-partial.njk"
       },
       {
         id: "completed",
         text: t('common.status.completed'),
         href: "/cases/completed",
-        partial: "cases/_completed-partial.njk"
+        partial: "cases/_cases-partial.njk"
       }
     ]
   }) }}

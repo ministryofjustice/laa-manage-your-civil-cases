@@ -19,6 +19,7 @@
     data: data,
     sortOrder: sortOrder,
     pagination: pagination,
+    caseType: caseType,
     tabs: [
       {
         id: "new",
@@ -90,6 +91,7 @@
           {% set data = options.data %}
           {% set sortOrder = options.sortOrder %}
           {% set pagination = options.pagination %}
+          {% set caseType = options.caseType %} 
           {% if tab.partial %}
             {% include tab.partial %}
           {% elif tab.content %}
