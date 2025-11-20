@@ -43,6 +43,8 @@
       {%- endif -%}
   </h1>
 
+  {% set casesPartial = "cases/_cases-partial.njk" %}
+
   {# Use the reusable tabComponent for navigation and content #}
   {{ tabComponent({
     activeTab: activeTab,
@@ -56,31 +58,31 @@
         id: "new",
         text: t('common.status.new'),
         href: "/cases/new",
-        partial: "cases/_cases-partial.njk"
+        partial: casesPartial
       },
       {
         id: "opened",
         text: t('common.status.pending'),
         href: "/cases/pending",
-        partial: "cases/_cases-partial.njk"
+        partial: casesPartial
       },
       {
         id: "accepted",
         text: t('common.status.advising'),
         href: "/cases/advising",
-        partial: "cases/_cases-partial.njk"
+        partial: casesPartial
       },
       {
         id: "rejected",
         text: t('common.status.closed'),
         href: "/cases/closed",
-        partial: "cases/_cases-partial.njk"
+        partial: casesPartial
       },
       {
         id: "completed",
         text: t('common.status.completed'),
         href: "/cases/completed",
-        partial: "cases/_cases-partial.njk"
+        partial: casesPartial
       }
     ]
   }) }}

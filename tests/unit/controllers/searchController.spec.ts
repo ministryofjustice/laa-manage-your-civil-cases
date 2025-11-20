@@ -27,7 +27,7 @@ describe('Search Controller', () => {
   let res: Partial<Response>;
   let next: sinon.SinonStub;
   let apiServiceStub: sinon.SinonStub;
-  const PAGE_SIZE = 4;
+  const PAGE_SIZE = 20;
 
   beforeEach(() => {
     req = {

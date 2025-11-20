@@ -32,7 +32,7 @@
 <h2 class="govuk-heading-m govuk-!-margin-bottom-7">{{ t('pages.caseDetails.laaReference') }} <span class="govuk-body-l">{{ client.laaReference or t('pages.caseDetails.notProvided') }}</span></h2>
 
 <div class="govuk-button-group">
-  {% if currentStatus == "new" or currentStatus == "pending" %}
+  {% if currentStatus in ["new", "pending"] %}
     {{ govukButton({
       text: t('pages.caseDetails.buttons.acceptCase')
     }) }}
