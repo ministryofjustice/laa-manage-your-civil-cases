@@ -28,14 +28,24 @@ test.describe('Setup auth in beforeEach', () => {
     await expect(page.locator('h1')).toContainText('New cases');
   });
 
-  test('should view opened cases', async ({ page }) => {
-    await page.goto('/cases/opened');
-    await expect(page.locator('h1')).toContainText('Opened cases');
+  test('should view pending cases', async ({ page }) => {
+    await page.goto('/cases/pending');
+    await expect(page.locator('h1')).toContainText('Pending cases');
   });
 
-  test('should view accepted cases', async ({ page }) => {
-    await page.goto('/cases/accepted');
-    await expect(page.locator('h1')).toContainText('Accepted cases');
+  test('should view advising cases', async ({ page }) => {
+    await page.goto('/cases/advising');
+    await expect(page.locator('h1')).toContainText('Advising cases');
+  });
+
+  test('should view closed cases', async ({ page }) => {
+    await page.goto('/cases/closed');
+    await expect(page.locator('h1')).toContainText('Closed cases');
+  });
+
+  test('should view completed cases', async ({ page }) => {
+    await page.goto('/cases/completed');
+    await expect(page.locator('h1')).toContainText('Completed cases');
   });
 });
 

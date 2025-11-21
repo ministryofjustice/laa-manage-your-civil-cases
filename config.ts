@@ -6,6 +6,7 @@ const DEFAULT_RATE_LIMIT_MAX = 100;
 const DEFAULT_RATE_WINDOW_MS_MINUTE = 15;
 const MILLISECONDS_IN_A_MINUTE = 60000;
 const DEFAULT_PORT = 3000;
+const CHARACTER_THRESHOLD = 85;
 
 // Validate required session env vars
 if (process.env.SESSION_SECRET == null || process.env.SESSION_SECRET === '' ||
@@ -26,6 +27,7 @@ const config: Config = {
   SERVICE_NAME: process.env.SERVICE_NAME,
   SERVICE_PHASE: process.env.SERVICE_PHASE,
   SERVICE_URL: process.env.SERVICE_URL,
+  CHARACTER_THRESHOLD,
   session: {
     secret: process.env.SESSION_SECRET,
     name: process.env.SESSION_NAME,
