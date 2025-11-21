@@ -36,14 +36,14 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
     const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
 
     if (response.status === 'success' && response.data !== null) {
-      // Cache third party existence in session to avoid redundant API calls
-      // when navigating to remove third party confirmation page
-      const hasThirdParty = response.data.thirdParty !== null && 
-                            !isSoftDeletedThirdParty(response.data.thirdParty);
+      // Cache soft-deleted third party state in session to optimize add/remove operations
+      // addClientThirdPartyController uses this to decide POST (create) vs PATCH (restore)
+      const hasSoftDeletedThirdParty = response.data.thirdParty !== null && 
+                                        isSoftDeletedThirdParty(response.data.thirdParty);
       
       storeSessionData(req, 'thirdPartyCache', {
         caseReference,
-        hasThirdParty: String(hasThirdParty),
+        hasSoftDeletedThirdParty: String(hasSoftDeletedThirdParty),
         cachedAt: String(Date.now())
       });
       

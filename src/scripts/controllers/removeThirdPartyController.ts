@@ -32,12 +32,12 @@ export async function getRemoveThirdPartyConfirmation(req: Request, res: Respons
     const cachedData = getSessionData(req, 'thirdPartyCache');
     
     if (cachedData && cachedData.caseReference === caseReference) {
-      const hasThirdParty = cachedData.hasThirdParty === 'true';
+      const hasSoftDeletedThirdParty = cachedData.hasSoftDeletedThirdParty === 'true';
       
-      devLog(`Using cached third party state for case: ${caseReference}, hasThirdParty: ${hasThirdParty}`);
+      devLog(`Using cached third party state for case: ${caseReference}, hasSoftDeletedThirdParty: ${hasSoftDeletedThirdParty}`);
       
-      if (!hasThirdParty) {
-        devError(`No third party data found for case: ${caseReference} (from cache)`);
+      if (hasSoftDeletedThirdParty) {
+        devError(`No active third party to remove for case: ${caseReference} (soft-deleted found in cache)`);
         res.status(NOT_FOUND).render('main/error.njk', {
           status: '404',
           error: 'No third party contact found for this case'
@@ -45,7 +45,7 @@ export async function getRemoveThirdPartyConfirmation(req: Request, res: Respons
         return;
       }
       
-      // Render confirmation without API call
+      // Render confirmation without API call (cache indicates active third party exists)
       res.render('case_details/confirm-remove-third-party.njk', {
         caseReference
       });

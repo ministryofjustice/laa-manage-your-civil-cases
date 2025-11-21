@@ -70,27 +70,13 @@ export async function postAddClientThirdParty(req: Request, res: Response, next:
 
     // Check session cache to determine if soft-deleted third party exists
     const cachedData = getSessionData(req, 'thirdPartyCache');
-    let hasSoftDeletedThirdParty = false;
+    const hasSoftDeletedThirdParty = cachedData?.caseReference === caseReference && 
+                                      cachedData.hasSoftDeletedThirdParty === 'true';
 
-    if (cachedData && cachedData.caseReference === caseReference) {
-      // Cache indicates whether an active third party exists
-      const hasThirdParty = cachedData.hasThirdParty === 'true';
-      
-      if (!hasThirdParty) {
-        // No active third party - could be soft-deleted, use PATCH to update
-        hasSoftDeletedThirdParty = true;
-        devLog(`Cache indicates no active third party for case: ${caseReference}. Using PATCH.`);
-      } else {
-        devError(`Cache indicates active third party exists for case: ${caseReference}. Cannot add.`);
-        res.status(BAD_REQUEST).render('main/error.njk', {
-          status: '400',
-          error: 'A third party contact already exists for this case'
-        });
-        return;
-      }
+    if (hasSoftDeletedThirdParty) {
+      devLog(`Cache indicates soft-deleted third party exists for case: ${caseReference}. Using PATCH to restore.`);
     } else {
-      // No cache available - use POST as default
-      devLog(`No cache available for case: ${caseReference}. Using POST to create new record.`);
+      devLog(`No soft-deleted third party found for case: ${caseReference}. Using POST to create new record.`);
     }
 
     // Prepare the third party data for the API

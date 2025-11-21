@@ -149,10 +149,10 @@ describe('Add Client Third Party Controller', () => {
       // Arrange
       req.body = { thirdPartyFullName: 'Jane Smith' };
 
-      // Simulate cache hit indicating no active third party (soft-deleted exists)
+      // Simulate cache hit indicating soft-deleted third party exists
       req.session.thirdPartyCache = {
         caseReference: 'TEST123',
-        hasThirdParty: 'false', // No active third party - will trigger PATCH
+        hasSoftDeletedThirdParty: 'true', // Soft-deleted third party exists - will trigger PATCH
         cachedAt: String(Date.now())
       };
 

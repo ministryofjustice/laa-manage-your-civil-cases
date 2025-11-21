@@ -83,10 +83,10 @@ describe('Remove Third Party Controller', () => {
 
     it('should render confirmation page using cached data (cache hit)', async () => {
       // Arrange
-      // Simulate cache hit with third party present
+      // Simulate cache hit with active third party present
       req.session.thirdPartyCache = {
         caseReference: 'TEST123',
-        hasThirdParty: 'true',
+        hasSoftDeletedThirdParty: 'false', // No soft-deleted TP - indicates active TP exists
         cachedAt: String(Date.now())
       };
 
