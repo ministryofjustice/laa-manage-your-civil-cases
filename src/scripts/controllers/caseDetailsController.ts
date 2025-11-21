@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
-import { devLog, devError, createProcessedError, safeString, clearAllOriginalFormData, isSoftDeletedThirdParty } from '#src/scripts/helpers/index.js';
+import { devLog, devError, createProcessedError, safeString, clearAllOriginalFormData } from '#src/scripts/helpers/index.js';
 import { storeSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 
 const BAD_REQUEST = 400;
@@ -38,8 +38,7 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
     if (response.status === 'success' && response.data !== null) {
       // Cache soft-deleted third party state in session to optimize add/remove operations
       // addClientThirdPartyController uses this to decide POST (create) vs PATCH (restore)
-      const hasSoftDeletedThirdParty = response.data.thirdParty !== null && 
-                                        isSoftDeletedThirdParty(response.data.thirdParty);
+      const hasSoftDeletedThirdParty = response.data.thirdParty?.isSoftDeleted ?? false;
       
       storeSessionData(req, 'thirdPartyCache', {
         caseReference,

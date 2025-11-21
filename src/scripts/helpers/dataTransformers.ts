@@ -402,6 +402,7 @@ export const transformThirdParty = (thirdpartyDetails: unknown): {
   relationshipToClient: string;
   noContactReason: string;
   passphrase: string;
+  isSoftDeleted: boolean;
 } | null => {
   if (!isRecord(thirdpartyDetails)) {
     return null;
@@ -419,16 +420,24 @@ export const transformThirdParty = (thirdpartyDetails: unknown): {
   let tpPostcode = safeOptionalString(tpPersonal.postcode) ?? '';
   tpPostcode = tpPostcode.toUpperCase();
 
+  const fullName = safeOptionalString(tpPersonal.full_name) ?? '';
+  const relationshipToClient = safeOptionalString(thirdpartyDetails.personal_relationship) ?? '';
+  
+  // Detect if this is a soft-deleted third party
+  // Soft-deleted records have relationshipToClient === 'OTHER' and empty fullName
+  const isSoftDeleted = relationshipToClient === 'OTHER' && fullName === '';
+
   return {
-    fullName: safeOptionalString(tpPersonal.full_name) ?? '',
+    fullName,
     contactNumber: tpContactNumber,
     safeToCall: tpSafeToCall,
     emailAddress: safeOptionalString(tpPersonal.email) ?? '',
     address: safeOptionalString(tpPersonal.street) ?? '',
     postcode: tpPostcode,
-    relationshipToClient: safeOptionalString(thirdpartyDetails.personal_relationship) ?? '',
+    relationshipToClient,
     noContactReason: safeOptionalString(thirdpartyDetails.reason) ?? '',
-    passphrase: safeOptionalString(thirdpartyDetails.pass_phrase) ?? ''
+    passphrase: safeOptionalString(thirdpartyDetails.pass_phrase) ?? '',
+    isSoftDeleted
   };
 };
 
