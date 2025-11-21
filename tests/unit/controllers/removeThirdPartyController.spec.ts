@@ -64,89 +64,101 @@ describe('Remove Third Party Controller', () => {
   });
 
   describe('getRemoveThirdPartyConfirmation', () => {
-    it('should render confirmation page when case exists with third party data', async () => {
+    it('should render confirmation page when cache hit with active third party', () => {
       // Arrange
-      // Simulate cache miss (no cache data in session) - will fall back to API call
-      // req.session.thirdPartyCache is undefined
-      getClientDetailsStub.resolves({
-        status: 'success',
-        data: { caseReference: 'TEST123', thirdParty: { fullName: 'Jane Smith' } }
-      });
-
-      // Act
-      await getRemoveThirdPartyConfirmation(req as Request, res as Response, next);
-
-      // Assert
-      expect(getClientDetailsStub.calledWith(req.axiosMiddleware, 'TEST123')).to.be.true;
-      expect(renderStub.calledWith('case_details/confirm-remove-third-party.njk', { caseReference: 'TEST123' })).to.be.true;
-    });
-
-    it('should render confirmation page using cached data (cache hit)', async () => {
-      // Arrange
-      // Simulate cache hit with active third party present
+      // Simulate cache hit with active third party (not soft-deleted)
       req.session!.thirdPartyCache = {
         caseReference: 'TEST123',
-        hasSoftDeletedThirdParty: 'false', // No soft-deleted TP - indicates active TP exists
+        hasSoftDeletedThirdParty: 'false',
         cachedAt: String(Date.now())
       };
 
       // Act
-      await getRemoveThirdPartyConfirmation(req as Request, res as Response, next);
+      getRemoveThirdPartyConfirmation(req as Request, res as Response, next);
 
       // Assert
-      expect(getClientDetailsStub.called).to.be.false; // API call should be skipped
+      expect(getClientDetailsStub.called).to.be.false; // No API call made
       expect(renderStub.calledWith('case_details/confirm-remove-third-party.njk', { caseReference: 'TEST123' })).to.be.true;
     });
 
-    it('should return 400 when case reference is missing', async () => {
+    it('should return 404 when cache hit with soft-deleted third party', () => {
+      // Arrange
+      // Simulate cache hit with soft-deleted third party
+      req.session!.thirdPartyCache = {
+        caseReference: 'TEST123',
+        hasSoftDeletedThirdParty: 'true',
+        cachedAt: String(Date.now())
+      };
+
+      // Act
+      getRemoveThirdPartyConfirmation(req as Request, res as Response, next);
+
+      // Assert
+      expect(getClientDetailsStub.called).to.be.false; // No API call made
+      expect(statusStub.calledWith(404)).to.be.true;
+      expect(renderStub.calledWith('main/error.njk', { 
+        status: '404', 
+        error: 'No third party contact found for this case' 
+      })).to.be.true;
+    });
+
+    it('should return 500 when cache miss (session expired)', () => {
+      // Arrange
+      // No cache data in session - simulates expired session
+      // req.session.thirdPartyCache is undefined
+
+      // Act
+      getRemoveThirdPartyConfirmation(req as Request, res as Response, next);
+
+      // Assert
+      expect(getClientDetailsStub.called).to.be.false; // No API fallback
+      expect(statusStub.calledWith(500)).to.be.true;
+      expect(renderStub.calledWith('main/error.njk', { 
+        status: '500', 
+        error: 'Session expired or invalid. Please reload the case details page.' 
+      })).to.be.true;
+    });
+
+    it('should return 500 when cache exists but for different case', () => {
+      // Arrange
+      // Cache exists but for different case reference
+      req.session!.thirdPartyCache = {
+        caseReference: 'DIFFERENT123',
+        hasSoftDeletedThirdParty: 'false',
+        cachedAt: String(Date.now())
+      };
+
+      // Act
+      getRemoveThirdPartyConfirmation(req as Request, res as Response, next);
+
+      // Assert
+      expect(getClientDetailsStub.called).to.be.false; // No API fallback
+      expect(statusStub.calledWith(500)).to.be.true;
+      expect(renderStub.calledWith('main/error.njk', { 
+        status: '500', 
+        error: 'Session expired or invalid. Please reload the case details page.' 
+      })).to.be.true;
+    });
+
+    it('should return 400 when case reference is missing', () => {
       // Arrange
       req.params = {};
 
       // Act
-      await getRemoveThirdPartyConfirmation(req as Request, res as Response, next);
+      getRemoveThirdPartyConfirmation(req as Request, res as Response, next);
 
       // Assert
       expect(statusStub.calledWith(400)).to.be.true;
       expect(renderStub.calledWith('main/error.njk', { status: '400', error: 'Invalid case reference' })).to.be.true;
     });
 
-    const errorScenarios = [
-      {
-        name: 'case has no third party data',
-        response: { status: 'success', data: { caseReference: 'TEST123', thirdParty: null } },
-        expectedError: 'No third party contact found for this case'
-      },
-      {
-        name: 'API returns error with message',
-        response: { status: 'error', data: null, message: 'Case not found' },
-        expectedError: 'Case not found'
-      },
-      {
-        name: 'API returns error without message',
-        response: { status: 'error', data: null },
-        expectedError: 'Case not found'
-      }
-    ];
-
-    errorScenarios.forEach(({ name, response, expectedError }) => {
-      it(`should return 404 when ${name}`, async () => {
-        // Simulate cache miss (no cache data) - will fall back to API call for error scenarios
-        // req.session.thirdPartyCache is undefined
-        getClientDetailsStub.resolves(response);
-        await getRemoveThirdPartyConfirmation(req as Request, res as Response, next);
-        expect(statusStub.calledWith(404)).to.be.true;
-        expect(renderStub.calledWith('main/error.njk', { status: '404', error: expectedError })).to.be.true;
-      });
-    });
-
-    it('should delegate exceptions to error middleware', async () => {
+    it('should delegate exceptions to error middleware', () => {
       // Arrange
-      // Simulate cache miss (no cache data) - will fall back to API call which throws error
-      // req.session.thirdPartyCache is undefined
-      getClientDetailsStub.rejects(new Error('API Error'));
+      // Force an error by making session helpers throw
+      req.session = null as any;
 
       // Act
-      await getRemoveThirdPartyConfirmation(req as Request, res as Response, next);
+      getRemoveThirdPartyConfirmation(req as Request, res as Response, next);
 
       // Assert
       expect(next.calledOnce).to.be.true;
