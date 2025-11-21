@@ -84,7 +84,7 @@ describe('Remove Third Party Controller', () => {
     it('should render confirmation page using cached data (cache hit)', async () => {
       // Arrange
       // Simulate cache hit with active third party present
-      req.session.thirdPartyCache = {
+      req.session!.thirdPartyCache = {
         caseReference: 'TEST123',
         hasSoftDeletedThirdParty: 'false', // No soft-deleted TP - indicates active TP exists
         cachedAt: String(Date.now())
@@ -164,7 +164,7 @@ describe('Remove Third Party Controller', () => {
 
       // Assert
       expect(deleteThirdPartyContactStub.calledWith(req.axiosMiddleware, 'TEST123')).to.be.true;
-      expect(req.session.thirdPartyCache).to.be.undefined; // Session cache should be cleared
+      expect(req.session!.thirdPartyCache).to.be.undefined; // Session cache should be cleared
       expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
     });
 
@@ -220,7 +220,7 @@ describe('Remove Third Party Controller', () => {
       await deleteThirdParty(req as Request, res as Response, next);
 
       // Assert
-      expect(req.session.thirdPartyCache).to.be.undefined; // Session cache should be cleared
+      expect(req.session!.thirdPartyCache).to.be.undefined; // Session cache should be cleared
       expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
     });
 

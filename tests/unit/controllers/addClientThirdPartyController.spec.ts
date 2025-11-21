@@ -141,7 +141,7 @@ describe('Add Client Third Party Controller', () => {
       expect(apiServiceGetStub.called).to.be.false; // Should NOT call getClientDetails
       expect(apiServiceAddStub.calledOnce).to.be.true;
       expect(apiServiceUpdateStub.called).to.be.false; // Should NOT call PATCH
-      expect(req.session.thirdPartyCache).to.be.undefined; // Session cache should be cleared
+      expect(req.session!.thirdPartyCache).to.be.undefined; // Session cache should be cleared
       expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
     });
 
@@ -150,7 +150,7 @@ describe('Add Client Third Party Controller', () => {
       req.body = { thirdPartyFullName: 'Jane Smith' };
 
       // Simulate cache hit indicating soft-deleted third party exists
-      req.session.thirdPartyCache = {
+      req.session!.thirdPartyCache = {
         caseReference: 'TEST123',
         hasSoftDeletedThirdParty: 'true', // Soft-deleted third party exists - will trigger PATCH
         cachedAt: String(Date.now())
@@ -169,7 +169,7 @@ describe('Add Client Third Party Controller', () => {
       expect(apiServiceGetStub.called).to.be.false; // Should NOT call getClientDetails
       expect(apiServiceUpdateStub.calledOnce).to.be.true; // Should call PATCH
       expect(apiServiceAddStub.called).to.be.false; // Should NOT call POST
-      expect(req.session.thirdPartyCache).to.be.undefined; // Session cache should be cleared
+      expect(req.session!.thirdPartyCache).to.be.undefined; // Session cache should be cleared
       expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
     });
 
