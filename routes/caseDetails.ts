@@ -27,8 +27,8 @@ router.get('/:caseReference/notes-and-history', async function (req: Request, re
 });
 
 /* GET confirmation page for removing third party. */
-router.get('/:caseReference/confirm/remove-third-party', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
-  await getRemoveThirdPartyConfirmation(req, res, next);
+router.get('/:caseReference/confirm/remove-third-party', function (req: Request, res: Response, next: NextFunction): void {
+  getRemoveThirdPartyConfirmation(req, res, next);
 });
 
 /* DELETE third party contact. */

@@ -55,9 +55,9 @@ const INTERNAL_SERVER_ERROR = 500;
  * @param {Request} req Express request object
  * @param {Response} res Express response object
  * @param {NextFunction} next Express next function
- * @returns {Promise<void>} Renders the confirmation page
+ * @returns {void} Renders the confirmation page
  */
-export async function getRemoveThirdPartyConfirmation(req: Request, res: Response, next: NextFunction): Promise<void> {
+export function getRemoveThirdPartyConfirmation(req: Request, res: Response, next: NextFunction): void {
   const caseReference = safeString(req.params.caseReference);
 
   if (typeof caseReference !== 'string' || caseReference.trim() === '') {
