@@ -33,9 +33,13 @@ describe('Remove Third Party Controller', () => {
   let deleteThirdPartyContactStub: sinon.SinonStub;
 
   beforeEach(() => {
+    // Restore all stubs first to ensure clean state
+    sinon.restore();
+    
     req = {
       params: { caseReference: 'TEST123' },
-      axiosMiddleware: {} as any
+      axiosMiddleware: {} as any,
+      session: {} as any // Provide session object for session helpers to use
     };
 
     renderStub = sinon.stub();
@@ -62,6 +66,8 @@ describe('Remove Third Party Controller', () => {
   describe('getRemoveThirdPartyConfirmation', () => {
     it('should render confirmation page when case exists with third party data', async () => {
       // Arrange
+      // Simulate cache miss (no cache data in session) - will fall back to API call
+      // req.session.thirdPartyCache is undefined
       getClientDetailsStub.resolves({
         status: 'success',
         data: { caseReference: 'TEST123', thirdParty: { fullName: 'Jane Smith' } }
@@ -72,6 +78,23 @@ describe('Remove Third Party Controller', () => {
 
       // Assert
       expect(getClientDetailsStub.calledWith(req.axiosMiddleware, 'TEST123')).to.be.true;
+      expect(renderStub.calledWith('case_details/confirm-remove-third-party.njk', { caseReference: 'TEST123' })).to.be.true;
+    });
+
+    it('should render confirmation page using cached data (cache hit)', async () => {
+      // Arrange
+      // Simulate cache hit with third party present
+      req.session.thirdPartyCache = {
+        caseReference: 'TEST123',
+        hasThirdParty: 'true',
+        cachedAt: String(Date.now())
+      };
+
+      // Act
+      await getRemoveThirdPartyConfirmation(req as Request, res as Response, next);
+
+      // Assert
+      expect(getClientDetailsStub.called).to.be.false; // API call should be skipped
       expect(renderStub.calledWith('case_details/confirm-remove-third-party.njk', { caseReference: 'TEST123' })).to.be.true;
     });
 
@@ -107,6 +130,8 @@ describe('Remove Third Party Controller', () => {
 
     errorScenarios.forEach(({ name, response, expectedError }) => {
       it(`should return 404 when ${name}`, async () => {
+        // Simulate cache miss (no cache data) - will fall back to API call for error scenarios
+        // req.session.thirdPartyCache is undefined
         getClientDetailsStub.resolves(response);
         await getRemoveThirdPartyConfirmation(req as Request, res as Response, next);
         expect(statusStub.calledWith(404)).to.be.true;
@@ -116,6 +141,8 @@ describe('Remove Third Party Controller', () => {
 
     it('should delegate exceptions to error middleware', async () => {
       // Arrange
+      // Simulate cache miss (no cache data) - will fall back to API call which throws error
+      // req.session.thirdPartyCache is undefined
       getClientDetailsStub.rejects(new Error('API Error'));
 
       // Act
@@ -137,6 +164,7 @@ describe('Remove Third Party Controller', () => {
 
       // Assert
       expect(deleteThirdPartyContactStub.calledWith(req.axiosMiddleware, 'TEST123')).to.be.true;
+      expect(req.session.thirdPartyCache).to.be.undefined; // Session cache should be cleared
       expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
     });
 
@@ -192,6 +220,7 @@ describe('Remove Third Party Controller', () => {
       await deleteThirdParty(req as Request, res as Response, next);
 
       // Assert
+      expect(req.session.thirdPartyCache).to.be.undefined; // Session cache should be cleared
       expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
     });
 

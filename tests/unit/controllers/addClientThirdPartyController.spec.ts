@@ -54,11 +54,15 @@ describe('Add Client Third Party Controller', () => {
   let apiServiceUpdateStub: sinon.SinonStub;
 
   beforeEach(() => {
+    // Restore all stubs first to ensure clean state
+    sinon.restore();
+    
     req = {
       params: { caseReference: 'TEST123' },
       body: {},
       axiosMiddleware: {} as any,
-      csrfToken: () => 'test-csrf-token'
+      csrfToken: () => 'test-csrf-token',
+      session: {} as any // Provide session object for session helpers to use
     } as Partial<RequestWithMiddleware>;
 
     renderStub = sinon.stub();
@@ -121,14 +125,8 @@ describe('Add Client Third Party Controller', () => {
       // Arrange
       req.body = { thirdPartyFullName: 'John Carpenter' };
 
-      // Mock getClientDetails to return a case with NO existing third party
-      apiServiceGetStub.resolves({
-        status: 'success',
-        data: {
-          caseReference: 'TEST123',
-          thirdParty: null // No existing third party - will trigger POST
-        }
-      });
+      // Simulate cache miss (no cache data in session) - will use POST
+      // req.session.thirdPartyCache is undefined
 
       // Mock successful POST response
       apiServiceAddStub.resolves({
@@ -140,9 +138,10 @@ describe('Add Client Third Party Controller', () => {
       await postAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);
 
       // Assert
-      expect(apiServiceGetStub.calledOnce).to.be.true;
+      expect(apiServiceGetStub.called).to.be.false; // Should NOT call getClientDetails
       expect(apiServiceAddStub.calledOnce).to.be.true;
       expect(apiServiceUpdateStub.called).to.be.false; // Should NOT call PATCH
+      expect(req.session.thirdPartyCache).to.be.undefined; // Session cache should be cleared
       expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
     });
 
@@ -150,24 +149,12 @@ describe('Add Client Third Party Controller', () => {
       // Arrange
       req.body = { thirdPartyFullName: 'Jane Smith' };
 
-      // Mock getClientDetails to return a case with a SOFT-DELETED third party
-      apiServiceGetStub.resolves({
-        status: 'success',
-        data: {
-          caseReference: 'TEST123',
-          thirdParty: {
-            fullName: '', // Empty name = soft-deleted
-            emailAddress: '',
-            contactNumber: '',
-            safeToCall: false,
-            address: '',
-            postcode: '',
-            relationshipToClient: 'OTHER', // OTHER = soft-deleted
-            passphraseSetUp: '',
-            passphrase: ''
-          }
-        }
-      });
+      // Simulate cache hit indicating no active third party (soft-deleted exists)
+      req.session.thirdPartyCache = {
+        caseReference: 'TEST123',
+        hasThirdParty: 'false', // No active third party - will trigger PATCH
+        cachedAt: String(Date.now())
+      };
 
       // Mock successful PATCH response
       apiServiceUpdateStub.resolves({
@@ -179,9 +166,10 @@ describe('Add Client Third Party Controller', () => {
       await postAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);
 
       // Assert
-      expect(apiServiceGetStub.calledOnce).to.be.true;
+      expect(apiServiceGetStub.called).to.be.false; // Should NOT call getClientDetails
       expect(apiServiceUpdateStub.calledOnce).to.be.true; // Should call PATCH
       expect(apiServiceAddStub.called).to.be.false; // Should NOT call POST
+      expect(req.session.thirdPartyCache).to.be.undefined; // Session cache should be cleared
       expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
     });
 
