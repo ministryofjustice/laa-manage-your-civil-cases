@@ -37,6 +37,7 @@ export async function getAddClientThirdParty(req: Request, res: Response, next: 
  * @param {NextFunction} next - Express next middleware function
  * @returns {Promise<void>}
  */
+// eslint-disable-next-line complexity -- Business logic requires validation, cache check, API decision, and error handling
 export async function postAddClientThirdParty(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
@@ -73,24 +74,13 @@ export async function postAddClientThirdParty(req: Request, res: Response, next:
     const hasSoftDeletedThirdParty = cachedData?.caseReference === caseReference && 
                                       cachedData.hasSoftDeletedThirdParty === 'true';
 
-    if (hasSoftDeletedThirdParty) {
-      devLog(`Cache indicates soft-deleted third party exists for case: ${caseReference}. Using PATCH to restore.`);
-    } else {
-      devLog(`No soft-deleted third party found for case: ${caseReference}. Using POST to create new record.`);
-    }
-
     // Prepare the third party data for the API
     const thirdPartyData = prepareThirdPartyData(formFields);
 
     // Call appropriate API method (PATCH for soft-deleted, POST for new)
-    let response;
-    if (hasSoftDeletedThirdParty) {
-      devLog(`Using PATCH to update existing soft-deleted third party for case: ${caseReference}`);
-      response = await apiService.updateThirdPartyContact(req.axiosMiddleware, caseReference, thirdPartyData);
-    } else {
-      devLog(`Using POST to create new third party for case: ${caseReference}`);
-      response = await apiService.addThirdPartyContact(req.axiosMiddleware, caseReference, thirdPartyData);
-    }
+    const response = hasSoftDeletedThirdParty
+      ? await apiService.updateThirdPartyContact(req.axiosMiddleware, caseReference, thirdPartyData)
+      : await apiService.addThirdPartyContact(req.axiosMiddleware, caseReference, thirdPartyData);
 
     if (response.status === 'success') {
       devLog(`Third party contact successfully added for case: ${caseReference}`);

@@ -8,12 +8,13 @@ const NOT_FOUND = 404;
 const INTERNAL_SERVER_ERROR = 500;
 
 /**
- * Handle GET request for remove third party confirmation page
+ * Render the remove third party confirmation page
  * @param {Request} req Express request object
  * @param {Response} res Express response object
  * @param {NextFunction} next Express next function
  * @returns {Promise<void>} Renders the confirmation page
  */
+// eslint-disable-next-line complexity -- Business logic requires cache check, validation, fallback API call, and error handling
 export async function getRemoveThirdPartyConfirmation(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
@@ -30,10 +31,10 @@ export async function getRemoveThirdPartyConfirmation(req: Request, res: Respons
 
     // Check session cache first to avoid redundant API call
     const cachedData = getSessionData(req, 'thirdPartyCache');
+    const isCacheHit = cachedData?.caseReference === caseReference;
+    const hasSoftDeletedThirdParty = isCacheHit && cachedData.hasSoftDeletedThirdParty === 'true';
     
-    if (cachedData && cachedData.caseReference === caseReference) {
-      const hasSoftDeletedThirdParty = cachedData.hasSoftDeletedThirdParty === 'true';
-      
+    if (isCacheHit) {
       devLog(`Using cached third party state for case: ${caseReference}, hasSoftDeletedThirdParty: ${hasSoftDeletedThirdParty}`);
       
       if (hasSoftDeletedThirdParty) {

@@ -388,9 +388,70 @@ export const transformClientSupportNeeds = (adaptationDetails: unknown): {
 };
 
 /**
- * Transform third party contact from thirdparty_details
- * @param {unknown} thirdpartyDetails - Third party details from API
- * @returns {object | null} Transformed third party or null if not present
+ * Extract email address from personal details, defaulting to empty string
+ * @param {unknown} personalDetails - Personal details object
+ * @returns {string} Email address or empty string
+ */
+const extractEmailAddress = (personalDetails: unknown): string => {
+  if (!isRecord(personalDetails)) return '';
+  return safeOptionalString(personalDetails.email) ?? '';
+};
+
+/**
+ * Extract street address from personal details, defaulting to empty string
+ * @param {unknown} personalDetails - Personal details object
+ * @returns {string} Street address or empty string
+ */
+const extractStreetAddress = (personalDetails: unknown): string => {
+  if (!isRecord(personalDetails)) return '';
+  return safeOptionalString(personalDetails.street) ?? '';
+};
+
+/**
+ * Extract and uppercase postcode from personal details
+ * @param {unknown} personalDetails - Personal details object
+ * @returns {string} Uppercased postcode or empty string
+ */
+const extractPostcode = (personalDetails: unknown): string => {
+  if (!isRecord(personalDetails)) return '';
+  return (safeOptionalString(personalDetails.postcode) ?? '').toUpperCase();
+};
+
+/**
+ * Extract relationship to client, defaulting to empty string
+ * @param {unknown} thirdpartyDetails - Third party details object
+ * @returns {string} Relationship to client or empty string
+ */
+const extractRelationshipToClient = (thirdpartyDetails: unknown): string => {
+  if (!isRecord(thirdpartyDetails)) return '';
+  return safeOptionalString(thirdpartyDetails.personal_relationship) ?? '';
+};
+
+/**
+ * Extract no contact reason, defaulting to empty string
+ * @param {unknown} thirdpartyDetails - Third party details object
+ * @returns {string} No contact reason or empty string
+ */
+const extractNoContactReason = (thirdpartyDetails: unknown): string => {
+  if (!isRecord(thirdpartyDetails)) return '';
+  return safeOptionalString(thirdpartyDetails.reason) ?? '';
+};
+
+/**
+ * Extract passphrase, defaulting to empty string
+ * @param {unknown} thirdpartyDetails - Third party details object
+ * @returns {string} Passphrase or empty string
+ */
+const extractPassphrase = (thirdpartyDetails: unknown): string => {
+  if (!isRecord(thirdpartyDetails)) return '';
+  return safeOptionalString(thirdpartyDetails.pass_phrase) ?? '';
+};
+
+/**
+ * Transform raw third party details from API to display format.
+ * Includes soft-delete detection for records with relationshipToClient='OTHER' and empty fullName.
+ * @param {unknown} thirdpartyDetails - Raw third party details from API
+ * @returns {object | null} Transformed third party contact object with isSoftDeleted flag, or null if invalid
  */
 export const transformThirdParty = (thirdpartyDetails: unknown): {
   fullName: string;
@@ -414,14 +475,8 @@ export const transformThirdParty = (thirdpartyDetails: unknown): {
     return null;
   }
 
-  const tpContactNumber = extractPhoneNumber(tpPersonal);
-  const tpSafeToCall = isSafeToCall(tpPersonal);
-
-  let tpPostcode = safeOptionalString(tpPersonal.postcode) ?? '';
-  tpPostcode = tpPostcode.toUpperCase();
-
   const fullName = safeOptionalString(tpPersonal.full_name) ?? '';
-  const relationshipToClient = safeOptionalString(thirdpartyDetails.personal_relationship) ?? '';
+  const relationshipToClient = extractRelationshipToClient(thirdpartyDetails);
   
   // Detect if this is a soft-deleted third party
   // Soft-deleted records have relationshipToClient === 'OTHER' and empty fullName
@@ -429,14 +484,14 @@ export const transformThirdParty = (thirdpartyDetails: unknown): {
 
   return {
     fullName,
-    contactNumber: tpContactNumber,
-    safeToCall: tpSafeToCall,
-    emailAddress: safeOptionalString(tpPersonal.email) ?? '',
-    address: safeOptionalString(tpPersonal.street) ?? '',
-    postcode: tpPostcode,
+    contactNumber: extractPhoneNumber(tpPersonal),
+    safeToCall: isSafeToCall(tpPersonal),
+    emailAddress: extractEmailAddress(tpPersonal),
+    address: extractStreetAddress(tpPersonal),
+    postcode: extractPostcode(tpPersonal),
     relationshipToClient,
-    noContactReason: safeOptionalString(thirdpartyDetails.reason) ?? '',
-    passphrase: safeOptionalString(thirdpartyDetails.pass_phrase) ?? '',
+    noContactReason: extractNoContactReason(thirdpartyDetails),
+    passphrase: extractPassphrase(thirdpartyDetails),
     isSoftDeleted
   };
 };
