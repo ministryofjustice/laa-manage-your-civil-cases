@@ -3,6 +3,49 @@ import { apiService } from '#src/services/apiService.js';
 import { devLog, devError, createProcessedError, safeString } from '#src/scripts/helpers/index.js';
 import { getSessionData, clearSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 
+/**
+ * Handle third party removal confirmation using cached session data
+ * @param {Request} req Express request object
+ * @param {string} caseReference Case reference to check
+ * @param {Response} res Express response object
+ * @returns {void}
+ */
+function handleCachedThirdPartyCheck(
+  req: Request,
+  caseReference: string,
+  res: Response
+): void {
+  const cachedData = getSessionData(req, 'thirdPartyCache');
+  const isCacheHit = cachedData?.caseReference === caseReference;
+  const hasSoftDeletedThirdParty = isCacheHit && cachedData.hasSoftDeletedThirdParty === 'true';
+
+  // Case 1: Soft-deleted third party in cache → render 404
+  if (hasSoftDeletedThirdParty) {
+    devError(`No active third party to remove for case: ${caseReference} (soft-deleted found in cache)`);
+    res.status(NOT_FOUND).render('main/error.njk', {
+      status: '404',
+      error: 'No third party contact found for this case'
+    });
+    return;
+  }
+
+  // Case 2: Active third party in cache → render confirmation
+  if (isCacheHit) {
+    devLog(`Using cached third party state for case: ${caseReference}`);
+    res.render('case_details/confirm-remove-third-party.njk', {
+      caseReference
+    });
+    return;
+  }
+
+  // Case 3: Cache miss → render 500 (expired session or server issue)
+  devError(`Cache miss for case: ${caseReference} - session expired or invalid`);
+  res.status(INTERNAL_SERVER_ERROR).render('main/error.njk', {
+    status: '500',
+    error: 'Session expired or invalid. Please reload the case details page.'
+  });
+}
+
 const BAD_REQUEST = 400;
 const NOT_FOUND = 404;
 const INTERNAL_SERVER_ERROR = 500;
@@ -14,7 +57,6 @@ const INTERNAL_SERVER_ERROR = 500;
  * @param {NextFunction} next Express next function
  * @returns {Promise<void>} Renders the confirmation page
  */
-// eslint-disable-next-line complexity -- Business logic requires cache check, validation, fallback API call, and error handling
 export async function getRemoveThirdPartyConfirmation(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
@@ -28,56 +70,7 @@ export async function getRemoveThirdPartyConfirmation(req: Request, res: Respons
 
   try {
     devLog(`Rendering remove third party confirmation for case: ${caseReference}`);
-
-    // Check session cache first to avoid redundant API call
-    const cachedData = getSessionData(req, 'thirdPartyCache');
-    const isCacheHit = cachedData?.caseReference === caseReference;
-    const hasSoftDeletedThirdParty = isCacheHit && cachedData.hasSoftDeletedThirdParty === 'true';
-    
-    if (isCacheHit) {
-      devLog(`Using cached third party state for case: ${caseReference}, hasSoftDeletedThirdParty: ${hasSoftDeletedThirdParty}`);
-      
-      if (hasSoftDeletedThirdParty) {
-        devError(`No active third party to remove for case: ${caseReference} (soft-deleted found in cache)`);
-        res.status(NOT_FOUND).render('main/error.njk', {
-          status: '404',
-          error: 'No third party contact found for this case'
-        });
-        return;
-      }
-      
-      // Render confirmation without API call (cache indicates active third party exists)
-      res.render('case_details/confirm-remove-third-party.njk', {
-        caseReference
-      });
-      return;
-    }
-    
-    // Fallback: Make API call if cache miss (safety net for direct navigation)
-    devLog(`Cache miss for case: ${caseReference}, falling back to API call`);
-    const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
-
-    if (response.status === 'success' && response.data !== null) {
-      // Check if third party data exists
-      if (response.data.thirdParty === null) {
-        devError(`No third party data found for case: ${caseReference}`);
-        res.status(NOT_FOUND).render('main/error.njk', {
-          status: '404',
-          error: 'No third party contact found for this case'
-        });
-        return;
-      }
-
-      res.render('case_details/confirm-remove-third-party.njk', {
-        caseReference
-      });
-    } else {
-      devError(`Case not found: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);
-      res.status(NOT_FOUND).render('main/error.njk', {
-        status: '404',
-        error: response.message ?? 'Case not found'
-      });
-    }
+    handleCachedThirdPartyCheck(req, caseReference, res);
   } catch (error) {
     // Use the error processing utility
     const processedError = createProcessedError(error, `rendering remove third party confirmation for case ${caseReference}`);
