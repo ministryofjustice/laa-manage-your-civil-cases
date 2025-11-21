@@ -197,6 +197,21 @@ function handleValidationErrors(req: Request, res: Response): boolean {
 }
 
 /**
+ * This function helps statusSelect to be mapped to equivalent search param
+ * @param {string} status - The statusSelect string value
+ * @returns {string} Return a mapped string value or current value
+ */
+function statusSelectToSearchParam(status: string): string {
+  const map: Record<string, string> = {
+    pending: "opened",
+    advising: "accepted",
+    closed: "rejected",
+  };
+
+  return map[status] ?? status;
+}
+
+/**
  * Processes the search request and renders the results.
  * @param {Request} req - Express request object
  * @param {Response} res - Express response object
@@ -228,10 +243,13 @@ export async function processSearch(req: Request, res: Response, next: NextFunct
     const finalSortBy = sortBy !== '' ? sortBy : DEFAULT_SORT_BY;
     const finalSortOrder = sortOrder !== '' ? sortOrder : 'desc';
 
+    // statusSelect needs to be mapped to equivalent search param
+    const searchStatus = statusSelectToSearchParam(status);
+
     // Call API and render results
     const response = await apiService.searchCases(req.axiosMiddleware, {
       keyword,
-      status,
+      status: searchStatus,
       sortBy: finalSortBy,
       sortOrder: finalSortOrder,
       page,
