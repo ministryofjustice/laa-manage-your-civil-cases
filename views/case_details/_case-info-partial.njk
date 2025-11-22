@@ -1,3 +1,4 @@
+{%- from "moj/components/button-menu/macro.njk" import mojButtonMenu -%}
 {% set statusConfig = {
   "new": {
     text: t('common.status.new'),
@@ -23,66 +24,90 @@
 
 {% set currentStatus = caseStatusToStates[client.caseStatus | lower] %}
 
-{{ govukTag({
-  text: statusConfig[currentStatus].text,
-  classes: statusConfig[currentStatus].classes
-}) }}
+{# Case state change button logic #}
+{% if currentStatus == "new" %}
+  {% set menuItems = [
+    {
+      text: t('pages.caseDetails.buttons.actions.advising'),
+      href: "#"
+    }, {
+      text: t('pages.caseDetails.buttons.actions.pending'),
+      href: "#"
+    }, {
+      text: t('pages.caseDetails.buttons.actions.closed'),
+      href: "#"
+    }
+  ] %}
+{% elif currentStatus == "pending" %}
+  {% set menuItems = [
+    {
+      text: t('pages.caseDetails.buttons.actions.advising'),
+      href: "#"
+    }, {
+      text: t('pages.caseDetails.buttons.actions.closed'),
+      href: "#"
+    }
+  ] %}
+{% elif currentStatus == "advising" %}
+  {# Empty hidden menu item to fix the issue: MOJ Button Menu component hides the dropdown when there's only one item #}
+  {% set menuItems = [
+    {
+      text: t('pages.caseDetails.buttons.actions.completed'),
+      href: "#"
+    }, {
+      text: '',
+      classes: 'govuk-visually-hidden'
+    }
+  ] %}
+{% elif currentStatus in["closed", "completed"] %}
+  {% set menuItems = [
+    {
+      text: t('pages.caseDetails.buttons.actions.advising'),
+      href: "#"
+    }, {
+      text: '',
+      classes: 'govuk-visually-hidden'
+    }
+  ] %}
+{% endif %}
 
-<h2 class="govuk-heading-m govuk-!-margin-bottom-1">{{ t('pages.caseDetails.dateReceived') }} <span class="govuk-body-l">{{ client.provider_assigned_at | formatDate }}</span></h2>
-<h2 class="govuk-heading-m govuk-!-margin-bottom-7">{{ t('pages.caseDetails.laaReference') }} <span class="govuk-body-l">{{ client.laaReference or t('pages.caseDetails.notProvided') }}</span></h2>
+<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6"/>
+    <div class="govuk-!-display-block">
+      {# Name and case reference #}
+      <div class="govuk-!-display-inline-block govuk-!-static-padding-right-6">
+        <h1 class="govuk-heading-s govuk-!-margin-bottom-2">{{ client.fullName }}</h1>
+        <p class="govuk-body">{{ client.caseReference }}</p>
+      </div>
+      {# Date received #}
+      <div class="govuk-!-display-inline-block govuk-!-static-padding-right-6">
+        <h1 class="govuk-heading-s govuk-!-margin-bottom-2">{{ t('pages.caseDetails.dateReceived') }}</h1>
+        <p class="govuk-body">{{ client.provider_assigned_at | formatDate }}</p>
+      </div>
+      {# LAA reference #}
+      <div class="govuk-!-display-inline-block">
+        <h1 class="govuk-heading-s govuk-!-margin-bottom-2">{{ t('pages.caseDetails.laaReference') }}</h1>
+        <p class="govuk-body">{{ client.laaReference }}</p>
+      </div>
+    </div>
 
-<div class="govuk-button-group">
-  {% if currentStatus in ["new", "pending"] %}
-    {{ govukButton({
-      text: t('pages.caseDetails.buttons.acceptCase')
-    }) }}
-    {{ govukButton({
-      text: t('pages.caseDetails.buttons.rejectCase'),
-      classes: "govuk-button--secondary"
-    }) }}
-    {{ govukButton({
-      text: t('pages.caseDetails.buttons.splitCase'),
-      classes: "govuk-button--secondary"
-    }) }}
-    {{ govukButton({
-      text: t('pages.caseDetails.buttons.leaveFeedback'),
-      classes: "govuk-button--secondary"
-    }) }}
-  {% elif currentStatus == "advising" %}
-    {{ govukButton({
-      text: t('pages.caseDetails.buttons.generateLegalHelpForm')
-    }) }}
-    {{ govukButton({
-      text: t('pages.caseDetails.buttons.rejectCase'),
-      classes: "govuk-button--secondary"
-    }) }}
-    {{ govukButton({
-      text: t('pages.caseDetails.buttons.splitCase'),
-      classes: "govuk-button--secondary"
-    }) }}
-    {{ govukButton({
-      text: t('pages.caseDetails.buttons.closeCase'),
-      classes: "govuk-button--secondary"
-    }) }}
-    {{ govukButton({
-      text: t('pages.caseDetails.buttons.leaveFeedback'),
-      classes: "govuk-button--secondary"
-    }) }}
-  {% elif currentStatus == "closed" %}
-    {{ govukButton({
-      text: t('pages.caseDetails.buttons.closeCase')
-    }) }}
-    {{ govukButton({
-      text: t('pages.caseDetails.buttons.leaveFeedback'),
-      classes: "govuk-button--secondary"
-    }) }}
-  {% elif currentStatus == "completed" %}
-    {{ govukButton({
-      text: t('pages.caseDetails.buttons.reopenCase')
-    }) }}
-    {{ govukButton({
-      text: t('pages.caseDetails.buttons.generateLegalHelpForm'),
-      classes: "govuk-button--secondary"
-    }) }}
-  {% endif %}
+<div class="govuk-!-display-inline-block">
+  <div class="govuk-!-display-inline-block">
+    {{ govukTag({
+      text: statusConfig[currentStatus].text,
+      classes: statusConfig[currentStatus].classes}) }}
+  </div>
+  <span class="govuk-!-margin-left-2 govuk-!-margin-right-2"> | </span>
+  <div class="govuk-!-display-inline-block">
+    {{ mojButtonMenu({
+      id: "change-case-status-menu",
+      button: {
+        text: t('pages.caseDetails.buttons.label'),
+        classes: "govuk-button--secondary govuk-!-display-inline-block govuk-!-margin-bottom-2"
+      },
+      preventDoubleClick: true,
+      items: menuItems
+      })
+    }}
+  </div>
 </div>
+<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6"/>
