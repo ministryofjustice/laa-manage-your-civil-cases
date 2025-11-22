@@ -19,6 +19,12 @@
       "closed": "Closed",
       "completed": "Completed"
     },
+    "outcomeCode": {
+      "MIS-OOS": "Client signposted to other help – not in scope",
+      "MIS": "Refer back to CLA helpline – not in scope",
+      "MIS-MEANS": "Means – not eligible",
+      "COI": "Conflict of interest"
+    },
     "thirdPartyRelationship": {
       "text": {
         "PARENT_GUARDIAN": "Parent or guardian",

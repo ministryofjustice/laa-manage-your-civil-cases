@@ -6,6 +6,7 @@
 import type { ClientDetailsResponse } from '#types/api-types.js';
 import {
   safeString,
+  safeOptionalString,
   isRecord,
   formatDate,
   transformContactDetails,
@@ -31,7 +32,14 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
 
   // eslint-disable-next-line @typescript-eslint/naming-convention -- `provider_assigned_at` matches API response field
   const provider_assigned_at = formatDate(safeString(item.provider_assigned_at));
-
+  // eslint-disable-next-line @typescript-eslint/naming-convention -- `provider_viewed` matches API response field
+  const provider_viewed = formatDate(safeOptionalString(item.provider_viewed) ?? '');
+  // eslint-disable-next-line @typescript-eslint/naming-convention -- `provider_accepted` matches API response field
+  const provider_accepted = formatDate(safeOptionalString(item.provider_accepted) ?? '');
+  // eslint-disable-next-line @typescript-eslint/naming-convention -- `provider_closed` matches API response field
+  const provider_closed = formatDate(safeOptionalString(item.provider_closed) ?? '');
+  // eslint-disable-next-line @typescript-eslint/naming-convention -- `outcome_code` matches API response field
+  const outcome_code = safeOptionalString(item.outcome_code) ?? '';
   // Transform contact details
   const contactDetails = transformContactDetails(item.personal_details);
 
@@ -46,6 +54,10 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
     laaReference,
     caseStatus,
     provider_assigned_at,
+    provider_viewed,
+    provider_accepted, 
+    provider_closed,     
+    outcome_code, 
     ...contactDetails,
     clientSupportNeeds,
     thirdParty
