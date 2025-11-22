@@ -126,11 +126,13 @@
         "clientSupportNeeds": "Client support needs"
       },
       "buttons": {
-        "acceptCase": "Accept case",
-        "rejectCase": "Reject case",
-        "splitCase": "Split case",
-        "closeCase": "Close case",
-        "leaveFeedback": "Leave feedback",
+        "label": "Change status",
+        "actions":{
+          "advising": "Advising",
+          "pending": "Pending",
+          "closed": "Closed",
+          "completed": "Completed"
+        },
         "generateLegalHelpForm": "Generate legal help form",
         "reopenCase": "Reopen case",
         "addThirdPartyContact": "Add third party contact",

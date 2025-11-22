@@ -7,3 +7,11 @@
 @use "components/pagination";
 @use "components/sortable-table";
 @use "components/search";
+
+// Custom styles
+.govuk-main-wrapper {
+  padding-top: 0px !important;
+}
+.moj-button-menu__wrapper {
+  margin-top: -5px !important;
+}
