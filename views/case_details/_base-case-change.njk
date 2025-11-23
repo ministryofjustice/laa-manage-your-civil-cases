@@ -1,0 +1,23 @@
+{% extends "base.njk" %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/tag/macro.njk" import govukTag %}
+{% from "moj/components/button-menu/macro.njk" import mojButtonMenu %}
+{% from "components/caseDetailsHeaderComponent.njk" import caseDetailsHeaderComponent %}
+
+{% set backLinkHref = "/cases/" + caseReference + "/client-details" %}
+
+{% block backLink %}
+  {{ govukBackLink({
+      text: t('common.back'),
+      href: backLinkHref,
+      classes: "govuk-!-margin-bottom-0"
+    }) }}
+{% endblock %}
+
+{% block pageContent %}
+  {{ caseDetailsHeaderComponent(client) }}
+  
+  {% block formContent %}
+    {# Child templates override this block with their specific form content #}
+  {% endblock %}
+{% endblock %}

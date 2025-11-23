@@ -14,6 +14,7 @@ import {
   transformThirdParty
 } from '#src/scripts/helpers/index.js';
 
+import { translateCaseStatus } from '#utils/caseStatusHelper.js';
 /**
  * Transform raw client details item to display format
  * Maps nested API structures (personal_details, adaptation_details, thirdparty_details)
@@ -28,7 +29,9 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
   // Extract top-level client information
   const caseReference = safeString(item.reference);
   const laaReference = safeString(item.laa_reference);
-  const caseStatus = safeString(item.state);
+  const apiState = safeString(item.state);
+  const outcomeCode = safeOptionalString(item.outcome_code) ?? '';
+  const caseStatus = translateCaseStatus(apiState, outcomeCode);
 
   // eslint-disable-next-line @typescript-eslint/naming-convention -- `provider_assigned_at` matches API response field
   const provider_assigned_at = formatDate(safeString(item.provider_assigned_at));
