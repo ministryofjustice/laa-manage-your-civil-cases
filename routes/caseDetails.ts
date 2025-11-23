@@ -1,9 +1,10 @@
 import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
-import { handleCaseDetailsTab, acceptCase, completeCase, closeCase, getCloseCaseForm, getReopenCaseForm, reopenCase } from '#src/scripts/controllers/caseDetailsController.js';
+import { handleCaseDetailsTab, acceptCase, completeCase, closeCase, getCloseCaseForm, getPendingCaseForm, pendingCase, getReopenCaseForm, reopenCase } from '#src/scripts/controllers/caseDetailsController.js';
 import { getRemoveThirdPartyConfirmation, deleteThirdParty, getRemoveSupportNeedsConfirmation, deleteClientSupportNeeds } from '#src/scripts/controllers/index.js';
 import { validateReopenCase } from '#src/middlewares/reopenCaseSchema.js';
 import { validateCloseCase } from '#src/middlewares/closeCaseSchema.js';
+import { validatePendingCase } from '#src/middlewares/pendingCaseSchema.js';
 
 // Create a new router for case details routes
 const router = express.Router();
@@ -51,6 +52,16 @@ router.post('/:caseReference/confirm/remove-support-need', async function (req: 
 /* POST accept case (change status to advising). */
 router.post('/:caseReference/accept', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
   await acceptCase(req, res, next);
+});
+
+/* GET why-pending page (interstitial for marking case as pending). */
+router.get('/:caseReference/why-pending', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
+  await getPendingCaseForm(req, res, next);
+});
+
+/* POST pending case. */
+router.post('/:caseReference/why-pending', validatePendingCase(), async function (req: Request, res: Response, next: NextFunction): Promise<void> {
+  await pendingCase(req, res, next);
 });
 
 /* POST complete case (change status to completed). */

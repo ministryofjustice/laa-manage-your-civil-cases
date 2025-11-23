@@ -50,6 +50,7 @@ export interface Config {
   SERVICE_PHASE: string | undefined;
   SERVICE_URL: string | undefined;
   CHARACTER_THRESHOLD: number;
+  MAX_NOTE_LENGTH: number;
   app: AppConfig;
   csrf: CsrfConfig;
   session: SessionConfig;

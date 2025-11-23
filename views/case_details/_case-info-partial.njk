@@ -36,7 +36,7 @@
       }
     }, {
       text: t('pages.caseDetails.buttons.actions.pending'),
-      href: "#"
+      href: "/cases/" + client.caseReference + "/why-pending"
     }, {
       text: t('pages.caseDetails.buttons.actions.closed'),
       href: "/cases/" + client.caseReference + "/why-closed"
@@ -116,6 +116,7 @@
       text: statusConfig[currentStatus].text,
       classes: statusConfig[currentStatus].classes}) }}
   </div>
+  {% if not hideButtonMenu %}
   <span class="govuk-!-margin-left-2 govuk-!-margin-right-2"> | </span>
   <div class="govuk-!-display-inline-block">
     {{ mojButtonMenu({
@@ -129,5 +130,6 @@
       })
     }}
   </div>
+  {% endif %}
 </div>
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6"/>

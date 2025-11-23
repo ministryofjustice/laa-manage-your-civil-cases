@@ -86,6 +86,42 @@ class ChangeCaseStateService {
   }
 
   /**
+   * Mark a case as pending with a reason note
+   * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+   * @param {string} caseReference - Case reference number
+   * @param {string} note - Note explaining why the case is pending
+   * @returns {Promise<ClientDetailsApiResponse>} API response with updated client details
+   */
+  static async pendingCase(
+    axiosMiddleware: AxiosInstanceWrapper,
+    caseReference: string,
+    note: string
+  ): Promise<ClientDetailsApiResponse> {
+    try {
+      devLog(`API: POST ${API_PREFIX}/case/${caseReference}/open/`);
+      const configuredAxios = configureAxiosInstance(axiosMiddleware);
+      await configuredAxios.post(`${API_PREFIX}/case/${caseReference}/open/`, {
+        notes: note
+      });
+      devLog(`API: Case marked as pending successfully, fetching updated details`);
+
+      // Re-fetch the full case details to get complete data structure
+      const detailedResponse = await configuredAxios.get(`${API_PREFIX}/case/${caseReference}/detailed`);
+      devLog(`API: Pending case - full details: ${JSON.stringify(detailedResponse.data, null, JSON_INDENT)}`);
+
+      return {
+        data: transformClientDetailsItem(detailedResponse.data),
+        status: 'success'
+      };
+    } catch (error) {
+      const errorMessage = extractAndLogError(error, 'API pending case error');
+      const pendingError = new Error(errorMessage);
+      pendingError.cause = error;
+      throw pendingError;
+    }
+  }
+
+  /**
    * Close a case with reason code and optional note
    * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
    * @param {string} caseReference - Case reference number

@@ -68,8 +68,8 @@
           name: "closeNote",
           value: currentCloseNote,
           errorMessage: errorMessages.closeNote if error,
-          maxlength: 5000,
-          threshold: 85
+          maxlength: maxCloseNoteLength,
+          threshold: characterThreshold
         }) }}
 
         <div class="govuk-button-group">

@@ -1,0 +1,95 @@
+{% extends "case_details/_base-case-change.njk" %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "components/errorSummaryComponent.njk" import errorSummary %}
+
+{% block pageTitle %}{{ t('pages.caseDetails.pendingCase.title') }} - {{ serviceName }} - GOV.UK{% endblock %}
+
+{% block formContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% if error %}
+        {{ errorSummary(error.errorSummaryList) }}
+        {% set errorMessages = {
+          pendingReason: {text: error.inputErrors.pendingReason } if error.inputErrors.pendingReason,
+          otherNote: {text: error.inputErrors.otherNote } if error.inputErrors.otherNote
+        } %}
+      {% endif %}
+
+      <form method="post" action="/cases/{{ caseReference }}/why-pending">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+        {# Character count component for "Other" option #}
+        {% set otherNoteHtml %}
+          {{ govukCharacterCount({
+            id: "otherNote",
+            name: "otherNote",
+            maxlength: maxPendingNoteLength,
+            threshold: characterThreshold,
+            label: {
+              text: t('pages.caseDetails.pendingCase.otherNoteLabel')
+            },
+            value: currentOtherNote,
+            errorMessage: errorMessages.otherNote if error
+          }) }}
+        {% endset %}
+
+        {# Radio buttons for pending reasons #}
+        {{ govukRadios({
+          name: "pendingReason",
+          fieldset: {
+            legend: {
+              text: t('pages.caseDetails.pendingCase.legend'),
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
+            }
+          },
+          errorMessage: errorMessages.pendingReason if error,
+          items: [
+            {
+              value: "not_ready",
+              text: t('pages.caseDetails.pendingCase.reasons.notReady'),
+              checked: currentPendingReason == "not_ready"
+            },
+            {
+              value: "can_not_contact",
+              text: t('pages.caseDetails.pendingCase.reasons.canNotContact'),
+              checked: currentPendingReason == "can_not_contact"
+            },
+            {
+              value: "third_party",
+              text: t('pages.caseDetails.pendingCase.reasons.thirdParty'),
+              checked: currentPendingReason == "third_party"
+            },
+            {
+              value: "consent_from_another",
+              text: t('pages.caseDetails.pendingCase.reasons.consentFromAnother'),
+              checked: currentPendingReason == "consent_from_another"
+            },
+            {
+              value: "requires_interpreter",
+              text: t('pages.caseDetails.pendingCase.reasons.requiresInterpreter'),
+              checked: currentPendingReason == "requires_interpreter"
+            },
+            {
+              value: "other",
+              text: t('pages.caseDetails.pendingCase.reasons.other'),
+              checked: currentPendingReason == "other",
+              conditional: {
+                html: otherNoteHtml
+              }
+            }
+          ]
+        }) }}
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: t('common.save')
+          }) }}
+          <a class="govuk-link" href="/cases/{{ caseReference }}/client-details">{{ t('common.cancel') }}</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -1,24 +1,48 @@
-import { body, type ValidationChain } from 'express-validator';
+import { checkSchema } from 'express-validator';
+import { TypedValidationError, t } from '#src/scripts/helpers/index.js';
+import config from '#config.js';
 
-const MAX_CLOSE_NOTE_LENGTH = 5000;
+const { MAX_NOTE_LENGTH }: { MAX_NOTE_LENGTH: number } = config;
+export const MAX_CLOSE_NOTE_LENGTH = MAX_NOTE_LENGTH;
 
 /**
- * Validation schema for closing a case
- * @returns {ValidationChain[]} Array of validation chains
+ * Base schema object for close case validation.
+ * Contains all validation rules for close case form fields.
  */
-export function validateCloseCase(): ValidationChain[] {
-  return [
-    body('eventCode')
-      .trim()
-      .notEmpty()
-      .withMessage('Select why this case is closed'),
+const closeCaseBaseSchema = {
+  eventCode: {
+    trim: true,
+    notEmpty: {
+      /**
+       * Error message for eventCode validation
+       * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+       */
+      errorMessage: () => new TypedValidationError({
+        summaryMessage: t('forms.caseDetails.closeCase.validationError.eventCode.notEmpty'),
+        inlineMessage: t('forms.caseDetails.closeCase.validationError.eventCode.notEmpty')
+      })
+    }
+  },
+  closeNote: {
+    optional: { options: { values: 'falsy' } as const },
+    trim: true,
+    isLength: {
+      options: { max: MAX_NOTE_LENGTH },
+      /**
+       * Error message for closeNote length validation
+       * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+       */
+      errorMessage: () => new TypedValidationError({
+        summaryMessage: t('forms.caseDetails.closeCase.validationError.closeNote.tooLong'),
+        inlineMessage: t('forms.caseDetails.closeCase.validationError.closeNote.tooLong')
+      })
+    }
+  }
+};
 
-    body('closeNote')
-      .optional({ values: 'falsy' })
-      .trim()
-      .isLength({ max: MAX_CLOSE_NOTE_LENGTH })
-      .withMessage(`Note must be ${MAX_CLOSE_NOTE_LENGTH} characters or fewer`)
-  ];
-}
-
-export { MAX_CLOSE_NOTE_LENGTH };
+/**
+ * Validation middleware for closing a case.
+ * @returns {Error} Validation schema for express-validator
+ */
+export const validateCloseCase = (): ReturnType<typeof checkSchema> =>
+  checkSchema(closeCaseBaseSchema);

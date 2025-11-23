@@ -173,6 +173,19 @@
           "coi": "Conflict of interest",
           "coiHint": "The case will be sent to the CLA helpline"
         }
+      },
+      "pendingCase": {
+        "title": "Why is this case pending?",
+        "legend": "Why is this case pending?",
+        "otherNoteLabel": "Enter why this case is pending",
+        "reasons": {
+          "notReady": "Not ready for determination",
+          "canNotContact": "Cannot contact client",
+          "thirdParty": "Third party authorisation",
+          "consentFromAnother": "Consent from another provider",
+          "requiresInterpreter": "Requires interpreter",
+          "other": "Other"
+        }
       }
     },
     "error": {
@@ -225,6 +238,17 @@
             "notEmpty": "Select why this case is closed"
           },
           "closeNote": {
+            "tooLong": "Note must be 5000 characters or less"
+          }
+        }
+      },
+      "pendingCase": {
+        "validationError": {
+          "pendingReason": {
+            "notEmpty": "Select why this case is pending"
+          },
+          "otherNote": {
+            "notEmpty": "Enter why this case is pending",
             "tooLong": "Note must be 5000 characters or less"
           }
         }
