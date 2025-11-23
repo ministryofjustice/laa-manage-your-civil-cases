@@ -25,6 +25,6 @@
       title: "Case pending",
       showTitleAsHeading: true,
       dismissible: false,
-      html: "Not ready for determination<p>" + client.provider_viewed + "</p>"
+      html: client.state_note + "<p>" + client.provider_viewed + "</p>"
     }) }}
 {% endif %}
