@@ -54,7 +54,7 @@ router.post('/:caseReference/accept', async function (req: Request, res: Respons
 });
 
 /* POST complete case (change status to completed). */
-router.post('/:caseReference/close', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
+router.post('/:caseReference/completed', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
   await completeCase(req, res, next);
 });
 

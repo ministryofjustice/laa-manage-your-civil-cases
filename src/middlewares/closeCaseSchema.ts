@@ -1,4 +1,4 @@
-import { body, ValidationChain } from 'express-validator';
+import { body, type ValidationChain } from 'express-validator';
 
 const MAX_CLOSE_NOTE_LENGTH = 5000;
 
@@ -12,7 +12,7 @@ export function validateCloseCase(): ValidationChain[] {
       .trim()
       .notEmpty()
       .withMessage('Select why this case is closed'),
-    
+
     body('closeNote')
       .optional({ values: 'falsy' })
       .trim()
