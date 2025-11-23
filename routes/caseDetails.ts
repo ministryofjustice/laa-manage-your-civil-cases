@@ -1,7 +1,8 @@
 import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
-import { handleCaseDetailsTab, acceptCase, closeCase } from '#src/scripts/controllers/caseDetailsController.js';
+import { handleCaseDetailsTab, acceptCase, closeCase, getReopenCaseForm, reopenCase } from '#src/scripts/controllers/caseDetailsController.js';
 import { getRemoveThirdPartyConfirmation, deleteThirdParty, getRemoveSupportNeedsConfirmation, deleteClientSupportNeeds } from '#src/scripts/controllers/index.js';
+import { validateReopenCase } from '#src/middlewares/reopenCaseSchema.js';
 
 // Create a new router for case details routes
 const router = express.Router();
@@ -54,6 +55,16 @@ router.post('/:caseReference/accept', async function (req: Request, res: Respons
 /* POST close case (change status to completed). */
 router.post('/:caseReference/close', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
   await closeCase(req, res, next);
+});
+
+/* GET why-reopen page (interstitial for reopening a case). */
+router.get('/:caseReference/why-reopen', function (req: Request, res: Response, next: NextFunction): void {
+  getReopenCaseForm(req, res, next);
+});
+
+/* POST reopen case. */
+router.post('/:caseReference/why-reopen', validateReopenCase(), async function (req: Request, res: Response, next: NextFunction): Promise<void> {
+  await reopenCase(req, res, next);
 });
 
 export default router;

@@ -155,6 +155,11 @@
         "pageTitle": "Remove client support needs? – {serviceName} – GOV.UK",
         "heading": "Remove client support needs?",
         "description": "This will permanently delete all information about the clients's support needs."
+      },
+      "reopenCase": {
+        "title": "Why is this case reopened?",
+        "label": "Why is this case reopened?",
+        "hint": "Add a note"
       }
     },
     "error": {
@@ -194,6 +199,14 @@
     }
   },
   "forms": {
+    "caseDetails": {
+      "reopenCase": {
+        "validationError": {
+          "notEmpty": "Explain why this case is reopened",
+          "tooLong": "Explanation must be 5000 characters or less"
+        }
+      }
+    },
     "clientDetails": {
       "name": {
         "label": "Name",

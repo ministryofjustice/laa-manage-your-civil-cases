@@ -1,7 +1,8 @@
 import type { Request, Response, NextFunction } from 'express';
+import { validationResult } from 'express-validator';
 import { apiService } from '#src/services/apiService.js';
 import { changeCaseStateService } from '#src/services/changeCaseState.js';
-import { devLog, devError, createProcessedError, safeString, clearAllOriginalFormData } from '#src/scripts/helpers/index.js';
+import { devLog, devError, createProcessedError, safeString, clearAllOriginalFormData, safeBodyString, formatValidationError } from '#src/scripts/helpers/index.js';
 import { storeSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 
 const BAD_REQUEST = 400;
@@ -126,6 +127,96 @@ export async function closeCase(req: Request, res: Response, next: NextFunction)
     res.redirect(referer);
   } catch (error) {
     const processedError = createProcessedError(error, `closing case ${caseReference}`);
+    next(processedError);
+  }
+}
+
+/**
+ * Show the reopen case form (why-reopen page)
+ * @param {Request} req Express request object
+ * @param {Response} res Express response object
+ * @param {NextFunction} next Express next function
+ * @returns {void} Render the why-reopen page
+ */
+export function getReopenCaseForm(req: Request, res: Response, next: NextFunction): void {
+  const caseReference = safeString(req.params.caseReference);
+
+  if (typeof caseReference !== 'string' || caseReference.trim() === '') {
+    res.status(BAD_REQUEST).render('main/error.njk', {
+      status: '400',
+      error: 'Invalid case reference'
+    });
+    return;
+  }
+
+  res.render('case_details/why_reopen.njk', {
+    caseReference,
+    currentReopenNote: ''
+  });
+}
+
+/**
+ * Handle reopening a case with a note
+ * @param {Request} req Express request object
+ * @param {Response} res Express response object
+ * @param {NextFunction} next Express next function
+ * @returns {Promise<void>} Redirect to advising cases page
+ */
+export async function reopenCase(req: Request, res: Response, next: NextFunction): Promise<void> {
+  const caseReference = safeString(req.params.caseReference);
+
+  if (typeof caseReference !== 'string' || caseReference.trim() === '') {
+    res.status(BAD_REQUEST).render('main/error.njk', {
+      status: '400',
+      error: 'Invalid case reference'
+    });
+    return;
+  }
+
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const rawErrors = errors.array({ onlyFirstError: false });
+
+    const validationErrors = rawErrors.map((error) => {
+      const field = 'path' in error && typeof error.path === 'string' ? error.path : '';
+      const { inlineMessage = '', summaryMessage } = formatValidationError(error);
+      return { field, inlineMessage, summaryMessage };
+    });
+
+    const inputErrors = validationErrors.reduce<Record<string, string>>((acc, { field, inlineMessage }) => {
+      const inline = inlineMessage.trim();
+      acc[field] = inline;
+      return acc;
+    }, {});
+
+    // Build the GOV.UK error summary list
+    const errorSummaryList = validationErrors.map(({ field, summaryMessage }) => ({
+      text: summaryMessage,
+      href: `#${field}`
+    }));
+
+    const currentReopenNote = safeBodyString(req.body, 'reopenNote');
+
+    res.render('case_details/why_reopen.njk', {
+      caseReference,
+      currentReopenNote,
+      error: {
+        inputErrors,
+        errorSummaryList
+      }
+    }); return;
+  }
+
+  try {
+    const reopenNote = safeString(safeBodyString(req.body, 'reopenNote'));
+    devLog(`Reopening case: ${caseReference}`);
+    await changeCaseStateService.reopenCase(req.axiosMiddleware, caseReference, reopenNote);
+    
+    // Redirect to advising cases page
+    res.redirect('/cases/advising');
+  } catch (error) {
+    const processedError = createProcessedError(error, `reopening case ${caseReference}`);
     next(processedError);
   }
 }

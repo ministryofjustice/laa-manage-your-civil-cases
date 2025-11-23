@@ -88,6 +88,38 @@ class ChangeCaseStateService {
       throw closeError;
     }
   }
+
+  /**
+   * Reopen a case with a note explaining why
+   * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+   * @param {string} caseReference - Case reference number
+   * @param {string} note - Note explaining why the case is being reopened
+   * @returns {Promise<ClientDetailsApiResponse>} API response
+   */
+  static async reopenCase(
+    axiosMiddleware: AxiosInstanceWrapper,
+    caseReference: string,
+    note: string
+  ): Promise<ClientDetailsApiResponse> {
+    try {
+      devLog(`API: POST ${API_PREFIX}/case/${caseReference}/reopen/`);
+      const configuredAxios = configureAxiosInstance(axiosMiddleware);
+      await configuredAxios.post(`${API_PREFIX}/case/${caseReference}/reopen/`, {
+        notes: note
+      });
+      devLog(`API: Case reopened successfully`);
+
+      return {
+        data: null,
+        status: 'success'
+      };
+    } catch (error) {
+      const errorMessage = extractAndLogError(error, 'API reopen case error');
+      const reopenError = new Error(errorMessage);
+      reopenError.cause = error;
+      throw reopenError;
+    }
+  }
 }
 
 export const changeCaseStateService = ChangeCaseStateService;
