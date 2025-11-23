@@ -91,6 +91,7 @@ export interface ClientDetailsResponse {
   provider_accepted?: string;
   provider_closed?: string;
   outcome_code?: string;
+  state_note?: string;
   
   //Contact details
   phoneNumber: string;
