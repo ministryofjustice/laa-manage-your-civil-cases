@@ -1,24 +1,12 @@
-{% extends "base.njk" %}
+{% extends "case_details/_base-case-change.njk" %}
 
 {% from "govuk/components/input/macro.njk" import govukInput %}
-{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
 
 {% block pageTitle %}{{ t('forms.clientDetails.name.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}{% endblock %}
 
-
-{% set backLinkHref = "/cases/" + caseReference + "/client-details" %}
-
-{% block backLink %}
-  {{ govukBackLink({
-      text: t('common.back'),
-      href: backLinkHref,
-      classes: "govuk-!-margin-bottom-0"
-    }) }}
-{% endblock %}
-
-{% block pageContent %}
+{% block formContent %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       {% if error %}
@@ -48,4 +36,4 @@
       </form>
     </div>
   </div>
-{% endblock %}
+{% endblock formContent %}

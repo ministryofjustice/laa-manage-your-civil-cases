@@ -41,6 +41,7 @@ export async function handleGetEditForm(
 
     const templateData = {
       caseReference,
+      client: response.data,
       csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
       ...extractedData
     };
@@ -107,8 +108,12 @@ export async function handlePostEditForm(
   }
 
   if (formIsInvalid) {
+    // Fetch client details for the case info header and alert banner
+    const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
+    
     const renderData: RenderData = {
       caseReference,
+      client: response.data,
       error: { inputErrors, errorSummaryList },
       csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
     };
