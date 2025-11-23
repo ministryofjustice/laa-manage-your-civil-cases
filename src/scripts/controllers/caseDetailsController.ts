@@ -138,7 +138,7 @@ export async function closeCase(req: Request, res: Response, next: NextFunction)
  * @param {NextFunction} next Express next function
  * @returns {void} Render the why-reopen page
  */
-export function getReopenCaseForm(req: Request, res: Response, next: NextFunction): void {
+export async function getReopenCaseForm(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
   if (typeof caseReference !== 'string' || caseReference.trim() === '') {
@@ -149,10 +149,27 @@ export function getReopenCaseForm(req: Request, res: Response, next: NextFunctio
     return;
   }
 
-  res.render('case_details/why_reopen.njk', {
-    caseReference,
-    currentReopenNote: ''
-  });
+  try {
+    // Fetch client details for the case header
+    const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
+
+    if (response.status === 'success' && response.data !== null) {
+      res.render('case_details/why-reopen.njk', {
+        caseReference,
+        client: response.data,
+        currentReopenNote: '',
+        csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined
+      });
+    } else {
+      res.status(NOT_FOUND).render('main/error.njk', {
+        status: '404',
+        error: response.message ?? 'Case not found'
+      });
+    }
+  } catch (error) {
+    const processedError = createProcessedError(error, `fetching case details for reopen form ${caseReference}`);
+    next(processedError);
+  }
 }
 
 /**
@@ -198,14 +215,27 @@ export async function reopenCase(req: Request, res: Response, next: NextFunction
 
     const currentReopenNote = safeBodyString(req.body, 'reopenNote');
 
-    res.render('case_details/why_reopen.njk', {
-      caseReference,
-      currentReopenNote,
-      error: {
-        inputErrors,
-        errorSummaryList
-      }
-    }); return;
+    // Fetch client details for the case header
+    const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
+
+    if (response.status === 'success' && response.data !== null) {
+      res.status(BAD_REQUEST).render('case_details/why-reopen.njk', {
+        caseReference,
+        client: response.data,
+        currentReopenNote,
+        csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
+        error: {
+          inputErrors,
+          errorSummaryList
+        }
+      });
+    } else {
+      res.status(NOT_FOUND).render('main/error.njk', {
+        status: '404',
+        error: response.message ?? 'Case not found'
+      });
+    }
+    return;
   }
 
   try {

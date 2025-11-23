@@ -7,6 +7,7 @@
 
 import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
 import type { ClientDetailsResponse } from '#types/api-types.js';
+import { translateCaseStatus } from '#utils/caseStatusHelper.js';
 import {
   safeString,
   safeOptionalString,
@@ -32,7 +33,9 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
   // Extract top-level client information
   const caseReference = safeString(item.reference);
   const laaReference = safeString(item.laa_reference);
-  const caseStatus = safeString(item.state);
+  const apiState = safeString(item.state);
+  const outcomeCode = safeOptionalString(item.outcome_code) ?? '';
+  const caseStatus = translateCaseStatus(apiState, outcomeCode);
 
   // eslint-disable-next-line @typescript-eslint/naming-convention -- `provider_assigned_at` matches API response field
   const provider_assigned_at = formatDate(safeString(item.provider_assigned_at));
@@ -42,8 +45,6 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
   const provider_accepted = formatDate(safeOptionalString(item.provider_accepted) ?? '');
   // eslint-disable-next-line @typescript-eslint/naming-convention -- `provider_closed` matches API response field
   const provider_closed = formatDate(safeOptionalString(item.provider_closed) ?? '');
-  // eslint-disable-next-line @typescript-eslint/naming-convention -- `outcome_code` matches API response field
-  const outcome_code = safeOptionalString(item.outcome_code) ?? '';
   // eslint-disable-next-line @typescript-eslint/naming-convention -- `state_note` matches API response field
   const state_note = safeOptionalString(item.state_note) ?? '';
 
@@ -64,7 +65,7 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
     provider_viewed,
     provider_accepted,
     provider_closed,
-    outcome_code,
+    outcome_code: outcomeCode,
     state_note,
     ...contactDetails,
     clientSupportNeeds,
