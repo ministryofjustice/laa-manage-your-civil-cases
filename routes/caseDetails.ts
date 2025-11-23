@@ -1,8 +1,9 @@
 import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
-import { handleCaseDetailsTab, acceptCase, closeCase, getReopenCaseForm, reopenCase } from '#src/scripts/controllers/caseDetailsController.js';
+import { handleCaseDetailsTab, acceptCase, completeCase, closeCase, getCloseCaseForm, getReopenCaseForm, reopenCase } from '#src/scripts/controllers/caseDetailsController.js';
 import { getRemoveThirdPartyConfirmation, deleteThirdParty, getRemoveSupportNeedsConfirmation, deleteClientSupportNeeds } from '#src/scripts/controllers/index.js';
 import { validateReopenCase } from '#src/middlewares/reopenCaseSchema.js';
+import { validateCloseCase } from '#src/middlewares/closeCaseSchema.js';
 
 // Create a new router for case details routes
 const router = express.Router();
@@ -52,8 +53,18 @@ router.post('/:caseReference/accept', async function (req: Request, res: Respons
   await acceptCase(req, res, next);
 });
 
-/* POST close case (change status to completed). */
+/* POST complete case (change status to completed). */
 router.post('/:caseReference/close', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
+  await completeCase(req, res, next);
+});
+
+/* GET why-closed page (interstitial for closing a case). */
+router.get('/:caseReference/why-closed', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
+  await getCloseCaseForm(req, res, next);
+});
+
+/* POST close case. */
+router.post('/:caseReference/why-closed', validateCloseCase(), async function (req: Request, res: Response, next: NextFunction): Promise<void> {
   await closeCase(req, res, next);
 });
 

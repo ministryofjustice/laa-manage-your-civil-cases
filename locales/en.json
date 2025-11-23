@@ -160,6 +160,19 @@
         "title": "Why is this case reopened?",
         "label": "Why is this case reopened?",
         "hint": "Add a note"
+      },
+      "closedCase": {
+        "title": "Why is this case closed?",
+        "legend": "Why is this case closed?",
+        "noteLabel": "Add a note",
+        "reasons": {
+          "misOos": "Client signposted to other help – not in scope",
+          "mis": "Refer back to CLA helpline – not in scope",
+          "misHint": "The case will be sent to the CLA helpline",
+          "misMeans": "Means – not eligible",
+          "coi": "Conflict of interest",
+          "coiHint": "The case will be sent to the CLA helpline"
+        }
       }
     },
     "error": {
@@ -204,6 +217,16 @@
         "validationError": {
           "notEmpty": "Explain why this case is reopened",
           "tooLong": "Explanation must be 5000 characters or less"
+        }
+      },
+      "closeCase": {
+        "validationError": {
+          "eventCode": {
+            "notEmpty": "Select why this case is closed"
+          },
+          "closeNote": {
+            "tooLong": "Note must be 5000 characters or less"
+          }
         }
       }
     },

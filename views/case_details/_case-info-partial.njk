@@ -39,7 +39,7 @@
       href: "#"
     }, {
       text: t('pages.caseDetails.buttons.actions.closed'),
-      href: "#"
+      href: "/cases/" + client.caseReference + "/why-closed"
     }
   ] %}
 {% elif currentStatus == "pending" %}
@@ -52,7 +52,7 @@
       }
     }, {
       text: t('pages.caseDetails.buttons.actions.closed'),
-      href: "#"
+      href: "/cases/" + client.caseReference + "/why-closed"
     }
   ] %}
 {% elif currentStatus == "advising" %}

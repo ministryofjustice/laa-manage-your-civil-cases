@@ -7,12 +7,10 @@
 
 import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
 import type { ClientDetailsApiResponse } from '#types/api-types.js';
-import { devLog, extractAndLogError } from '#src/scripts/helpers/index.js';
-import { configureAxiosInstance } from '#src/services/apiServiceHelpers.js';
-
-// Constants
-const JSON_INDENT = 2;
-const API_PREFIX = process.env.API_PREFIX ?? '/cla_provider/api/v1';
+import { devLog, extractAndLogError, safeOptionalString } from '#src/scripts/helpers/index.js';
+import { configureAxiosInstance } from '#src/services/api/base/BaseApiService.js';
+import { transformClientDetailsItem } from '#src/services/api/transforms/transformClientDetails.js';
+import { API_PREFIX, JSON_INDENT } from '#src/services/api/base/constants.js';
 
 /**
  * Change Case State Service
@@ -42,6 +40,7 @@ class ChangeCaseStateService {
       // Import transformClientDetailsItem dynamically to avoid circular dependency
       const { transformClientDetailsItem } = await import('#src/services/apiServiceHelpers.js');
       
+
       return {
         data: transformClientDetailsItem(detailedResponse.data),
         status: 'success'
@@ -55,12 +54,12 @@ class ChangeCaseStateService {
   }
 
   /**
-   * Close a case (change status to completed)
+   * Complete a case (change status to completed)
    * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
    * @param {string} caseReference - Case reference number
    * @returns {Promise<ClientDetailsApiResponse>} API response with updated client details
    */
-  static async closeCase(
+  static async completeCase(
     axiosMiddleware: AxiosInstanceWrapper,
     caseReference: string
   ): Promise<ClientDetailsApiResponse> {
@@ -68,6 +67,52 @@ class ChangeCaseStateService {
       devLog(`API: POST ${API_PREFIX}/case/${caseReference}/close/`);
       const configuredAxios = configureAxiosInstance(axiosMiddleware);
       await configuredAxios.post(`${API_PREFIX}/case/${caseReference}/close/`);
+      devLog(`API: Case completed successfully, fetching updated details`);
+
+      // Re-fetch the full case details to get complete data structure
+      const detailedResponse = await configuredAxios.get(`${API_PREFIX}/case/${caseReference}/detailed`);
+      devLog(`API: Complete case - full details: ${JSON.stringify(detailedResponse.data, null, JSON_INDENT)}`);
+
+      return {
+        data: transformClientDetailsItem(detailedResponse.data),
+        status: 'success'
+      };
+    } catch (error) {
+      const errorMessage = extractAndLogError(error, 'API complete case error');
+      const completeError = new Error(errorMessage);
+      completeError.cause = error;
+      throw completeError;
+    }
+  }
+
+  /**
+   * Close a case with reason code and optional note
+   * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+   * @param {string} caseReference - Case reference number
+   * @param {string} eventCode - Event code explaining why the case is closed
+   * @param {string} [note] - Optional note
+   * @returns {Promise<ClientDetailsApiResponse>} API response with updated client details
+   */
+  static async closeCase(
+    axiosMiddleware: AxiosInstanceWrapper,
+    caseReference: string,
+    eventCode: string,
+    note?: string
+  ): Promise<ClientDetailsApiResponse> {
+    try {
+      devLog(`API: POST ${API_PREFIX}/case/${caseReference}/reject/`);
+      const configuredAxios = configureAxiosInstance(axiosMiddleware);
+
+      const payload: { event_code: string; notes?: string } = {
+        event_code: eventCode
+      };
+
+      const trimmedNote = (safeOptionalString(note) ?? '').trim();
+      if (trimmedNote !== '') {
+        payload.notes = trimmedNote;
+      }
+
+      await configuredAxios.post(`${API_PREFIX}/case/${caseReference}/reject/`, payload);
       devLog(`API: Case closed successfully, fetching updated details`);
 
       // Re-fetch the full case details to get complete data structure
@@ -77,6 +122,7 @@ class ChangeCaseStateService {
       // Import transformClientDetailsItem dynamically to avoid circular dependency
       const { transformClientDetailsItem } = await import('#src/services/apiServiceHelpers.js');
       
+
       return {
         data: transformClientDetailsItem(detailedResponse.data),
         status: 'success'

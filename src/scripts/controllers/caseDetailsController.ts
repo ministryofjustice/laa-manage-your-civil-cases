@@ -41,13 +41,13 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
       // Cache soft-deleted third party state in session to optimize add/remove operations
       // addClientThirdPartyController uses this to decide POST (create) vs PATCH (restore)
       const hasSoftDeletedThirdParty = response.data.thirdParty?.isSoftDeleted ?? false;
-      
+
       storeSessionData(req, 'thirdPartyCache', {
         caseReference,
         hasSoftDeletedThirdParty: String(hasSoftDeletedThirdParty),
         cachedAt: String(Date.now())
       });
-      
+
       res.render('case_details/index.njk', {
         activeTab,
         client: response.data,
@@ -90,7 +90,7 @@ export async function acceptCase(req: Request, res: Response, next: NextFunction
   try {
     devLog(`Accepting case: ${caseReference}`);
     await changeCaseStateService.acceptCase(req.axiosMiddleware, caseReference);
-    
+
     // Redirect back to the referring page (stays on current tab)
     const referer = req.get('Referer') ?? `/cases/${caseReference}/client-details`;
     res.redirect(referer);
@@ -101,13 +101,13 @@ export async function acceptCase(req: Request, res: Response, next: NextFunction
 }
 
 /**
- * Handle closing a case (change status to completed)
+ * Handle completing a case (change status to completed)
  * @param {Request} req Express request object
  * @param {Response} res Express response object
  * @param {NextFunction} next Express next function
  * @returns {Promise<void>} Redirect to case details page
  */
-export async function closeCase(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function completeCase(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
   if (typeof caseReference !== 'string' || caseReference.trim() === '') {
@@ -119,12 +119,139 @@ export async function closeCase(req: Request, res: Response, next: NextFunction)
   }
 
   try {
-    devLog(`Closing case: ${caseReference}`);
-    await changeCaseStateService.closeCase(req.axiosMiddleware, caseReference);
-    
+    devLog(`Completing case: ${caseReference}`);
+    await changeCaseStateService.completeCase(req.axiosMiddleware, caseReference);
+
     // Redirect back to the referring page (stays on current tab)
     const referer = req.get('Referer') ?? `/cases/${caseReference}/client-details`;
     res.redirect(referer);
+  } catch (error) {
+    const processedError = createProcessedError(error, `completing case ${caseReference}`);
+    next(processedError);
+  }
+}
+
+/**
+ * Show the close case form (why-closed page)
+ * @param {Request} req Express request object
+ * @param {Response} res Express response object
+ * @param {NextFunction} next Express next function
+ * @returns {Promise<void>} Render the why-closed page
+ */
+export async function getCloseCaseForm(req: Request, res: Response, next: NextFunction): Promise<void> {
+  const caseReference = safeString(req.params.caseReference);
+
+  if (typeof caseReference !== 'string' || caseReference.trim() === '') {
+    res.status(BAD_REQUEST).render('main/error.njk', {
+      status: '400',
+      error: 'Invalid case reference'
+    });
+    return;
+  }
+
+  try {
+    // Fetch client details for the case header
+    const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
+
+    if (response.status === 'success' && response.data !== null) {
+      res.render('case_details/why-closed.njk', {
+        caseReference,
+        client: response.data,
+        currentEventCode: '',
+        currentCloseNote: '',
+        csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined
+      });
+    } else {
+      res.status(NOT_FOUND).render('main/error.njk', {
+        status: '404',
+        error: response.message ?? 'Case not found'
+      });
+    }
+  } catch (error) {
+    const processedError = createProcessedError(error, `fetching case details for close form ${caseReference}`);
+    next(processedError);
+  }
+}
+
+/**
+ * Handle closing a case with event code and optional note
+ * @param {Request} req Express request object
+ * @param {Response} res Express response object
+ * @param {NextFunction} next Express next function
+ * @returns {Promise<void>} Redirect to client details page
+ */
+// eslint-disable-next-line complexity -- Validation error handling requires branching logic
+export async function closeCase(req: Request, res: Response, next: NextFunction): Promise<void> {
+  const caseReference = safeString(req.params.caseReference);
+
+  if (typeof caseReference !== 'string' || caseReference.trim() === '') {
+    res.status(BAD_REQUEST).render('main/error.njk', {
+      status: '400',
+      error: 'Invalid case reference'
+    });
+    return;
+  }
+
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const rawErrors = errors.array({ onlyFirstError: false });
+
+    const validationErrors = rawErrors.map((error) => {
+      const field = 'path' in error && typeof error.path === 'string' ? error.path : '';
+      const { inlineMessage = '', summaryMessage } = formatValidationError(error);
+      return { field, inlineMessage, summaryMessage };
+    });
+
+    const inputErrors = validationErrors.reduce<Record<string, string>>((acc, { field, inlineMessage }) => {
+      const inline = inlineMessage.trim();
+      acc[field] = inline;
+      return acc;
+    }, {});
+
+    // Build the GOV.UK error summary list
+    const errorSummaryList = validationErrors.map(({ field, summaryMessage }) => ({
+      text: summaryMessage,
+      href: `#${field}`
+    }));
+
+    const currentEventCode = safeBodyString(req.body, 'eventCode');
+    const currentCloseNote = safeBodyString(req.body, 'closeNote');
+
+    // Fetch client details for the case header
+    const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
+
+    if (response.status === 'success' && response.data !== null) {
+      res.status(BAD_REQUEST).render('case_details/why-closed.njk', {
+        caseReference,
+        client: response.data,
+        currentEventCode,
+        currentCloseNote,
+        csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
+        error: {
+          inputErrors,
+          errorSummaryList
+        }
+      });
+    } else {
+      res.status(NOT_FOUND).render('main/error.njk', {
+        status: '404',
+        error: response.message ?? 'Case not found'
+      });
+    }
+    return;
+  }
+
+  try {
+    const eventCode = safeString(safeBodyString(req.body, 'eventCode'));
+    const rawCloseNote = safeBodyString(req.body, 'closeNote');
+    const closeNote = typeof rawCloseNote === 'string' && rawCloseNote.trim() !== '' ? rawCloseNote : undefined;
+
+    devLog(`Closing case: ${caseReference} with event code: ${eventCode}`);
+    await changeCaseStateService.closeCase(req.axiosMiddleware, caseReference, eventCode, closeNote);
+
+    // Redirect to client details page
+    res.redirect(`/cases/${caseReference}/client-details`);
   } catch (error) {
     const processedError = createProcessedError(error, `closing case ${caseReference}`);
     next(processedError);
@@ -242,7 +369,7 @@ export async function reopenCase(req: Request, res: Response, next: NextFunction
     const reopenNote = safeString(safeBodyString(req.body, 'reopenNote'));
     devLog(`Reopening case: ${caseReference}`);
     await changeCaseStateService.reopenCase(req.axiosMiddleware, caseReference, reopenNote);
-    
+
     // Redirect to advising cases page
     res.redirect('/cases/advising');
   } catch (error) {
