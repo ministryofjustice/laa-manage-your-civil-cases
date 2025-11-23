@@ -1,6 +1,6 @@
 import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
-import { handleCaseDetailsTab } from '#src/scripts/controllers/caseDetailsController.js';
+import { handleCaseDetailsTab, acceptCase, closeCase } from '#src/scripts/controllers/caseDetailsController.js';
 import { getRemoveThirdPartyConfirmation, deleteThirdParty, getRemoveSupportNeedsConfirmation, deleteClientSupportNeeds } from '#src/scripts/controllers/index.js';
 
 // Create a new router for case details routes
@@ -44,6 +44,16 @@ router.get('/:caseReference/confirm/remove-support-need', async function (req: R
 /* DELETE client support needs. */
 router.post('/:caseReference/confirm/remove-support-need', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
   await deleteClientSupportNeeds(req, res, next);
+});
+
+/* POST accept case (change status to advising). */
+router.post('/:caseReference/accept', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
+  await acceptCase(req, res, next);
+});
+
+/* POST close case (change status to completed). */
+router.post('/:caseReference/close', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
+  await closeCase(req, res, next);
 });
 
 export default router;

@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
+import { changeCaseStateService } from '#src/services/changeCaseState.js';
 import { devLog, devError, createProcessedError, safeString, clearAllOriginalFormData } from '#src/scripts/helpers/index.js';
 import { storeSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 
@@ -63,6 +64,68 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
     const processedError = createProcessedError(error, `fetching client details for case ${caseReference}`);
 
     // Pass the processed error to the global error handler
+    next(processedError);
+  }
+}
+
+/**
+ * Handle accepting a case (change status to advising)
+ * @param {Request} req Express request object
+ * @param {Response} res Express response object
+ * @param {NextFunction} next Express next function
+ * @returns {Promise<void>} Redirect to case details page
+ */
+export async function acceptCase(req: Request, res: Response, next: NextFunction): Promise<void> {
+  const caseReference = safeString(req.params.caseReference);
+
+  if (typeof caseReference !== 'string' || caseReference.trim() === '') {
+    res.status(BAD_REQUEST).render('main/error.njk', {
+      status: '400',
+      error: 'Invalid case reference'
+    });
+    return;
+  }
+
+  try {
+    devLog(`Accepting case: ${caseReference}`);
+    await changeCaseStateService.acceptCase(req.axiosMiddleware, caseReference);
+    
+    // Redirect back to the referring page (stays on current tab)
+    const referer = req.get('Referer') ?? `/cases/${caseReference}/client-details`;
+    res.redirect(referer);
+  } catch (error) {
+    const processedError = createProcessedError(error, `accepting case ${caseReference}`);
+    next(processedError);
+  }
+}
+
+/**
+ * Handle closing a case (change status to completed)
+ * @param {Request} req Express request object
+ * @param {Response} res Express response object
+ * @param {NextFunction} next Express next function
+ * @returns {Promise<void>} Redirect to case details page
+ */
+export async function closeCase(req: Request, res: Response, next: NextFunction): Promise<void> {
+  const caseReference = safeString(req.params.caseReference);
+
+  if (typeof caseReference !== 'string' || caseReference.trim() === '') {
+    res.status(BAD_REQUEST).render('main/error.njk', {
+      status: '400',
+      error: 'Invalid case reference'
+    });
+    return;
+  }
+
+  try {
+    devLog(`Closing case: ${caseReference}`);
+    await changeCaseStateService.closeCase(req.axiosMiddleware, caseReference);
+    
+    // Redirect back to the referring page (stays on current tab)
+    const referer = req.get('Referer') ?? `/cases/${caseReference}/client-details`;
+    res.redirect(referer);
+  } catch (error) {
+    const processedError = createProcessedError(error, `closing case ${caseReference}`);
     next(processedError);
   }
 }

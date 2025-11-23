@@ -29,7 +29,10 @@
   {% set menuItems = [
     {
       text: t('pages.caseDetails.buttons.actions.advising'),
-      href: "#"
+      href: "/cases/" + client.caseReference + "/accept",
+      attributes: {
+        "data-method": "post"
+      }
     }, {
       text: t('pages.caseDetails.buttons.actions.pending'),
       href: "#"
@@ -42,7 +45,10 @@
   {% set menuItems = [
     {
       text: t('pages.caseDetails.buttons.actions.advising'),
-      href: "#"
+      href: "/cases/" + client.caseReference + "/accept",
+      attributes: {
+        "data-method": "post"
+      }
     }, {
       text: t('pages.caseDetails.buttons.actions.closed'),
       href: "#"
@@ -53,7 +59,10 @@
   {% set menuItems = [
     {
       text: t('pages.caseDetails.buttons.actions.completed'),
-      href: "#"
+      href: "/cases/" + client.caseReference + "/close",
+      attributes: {
+        "data-method": "post"
+      }
     }, {
       text: '',
       classes: 'govuk-visually-hidden'
@@ -63,7 +72,10 @@
   {% set menuItems = [
     {
       text: t('pages.caseDetails.buttons.actions.advising'),
-      href: "#"
+      href: "/cases/" + client.caseReference + "/accept",
+      attributes: {
+        "data-method": "post"
+      }
     }, {
       text: '',
       classes: 'govuk-visually-hidden'
