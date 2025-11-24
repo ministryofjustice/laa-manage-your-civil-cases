@@ -19,7 +19,7 @@ test('client details selected from closed cases tab has correct page elements', 
   await expect(changeStatusButton).toBeVisible();
 
   
-  // After opening the menu, the "Completed" option should be visible
+  // After opening the menu, the "Advising" option should be visible
   await changeStatusButton.click();
   await expect(advisingMenuItem).toBeVisible();
 });

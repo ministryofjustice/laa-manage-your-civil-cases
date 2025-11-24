@@ -16,12 +16,11 @@ test('client details selected from new cases tab has correct page elements', asy
   const pendingMenuItem = page.getByRole('button', { name: 'Pending' });
   const closedMenuItem = page.getByRole('button', { name: 'Closed' });
 
-
   // expect to see the following elements
   await expect(new_tag).toBeVisible();
   await expect(changeStatusButton).toBeVisible();
 
-  // After opening the menu, the "Completed" option should be visible
+  // After opening the menu, the correct options should be visible
   await changeStatusButton.click();
   await expect(advisingMenuItem).toBeVisible();
   await expect(pendingMenuItem).toBeVisible();
