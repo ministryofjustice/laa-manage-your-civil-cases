@@ -77,17 +77,17 @@
 <div class="govuk-!-display-block">
   {# Name and case reference #}
   <div class="govuk-!-display-inline-block govuk-!-static-padding-right-6">
-    <h1 class="govuk-heading-s govuk-!-margin-bottom-2">{{ client.fullName }}</h1>
+    <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{ client.fullName }}</h2>
     <p class="govuk-body">{{ client.caseReference }}</p>
   </div>
   {# Date received #}
   <div class="govuk-!-display-inline-block govuk-!-static-padding-right-6">
-    <h1 class="govuk-heading-s govuk-!-margin-bottom-2">{{ t('pages.caseDetails.dateReceived') }}</h1>
+    <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{ t('pages.caseDetails.dateReceived') }}</h2>
     <p class="govuk-body">{{ client.provider_assigned_at | formatDate }}</p>
   </div>
   {# LAA reference #}
   <div class="govuk-!-display-inline-block">
-    <h1 class="govuk-heading-s govuk-!-margin-bottom-2">{{ t('pages.caseDetails.laaReference') }}</h1>
+    <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{ t('pages.caseDetails.laaReference') }}</h2>
     <p class="govuk-body">{{ client.laaReference }}</p>
   </div>
 </div>

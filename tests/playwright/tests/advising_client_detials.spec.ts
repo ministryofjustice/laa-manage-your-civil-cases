@@ -11,20 +11,16 @@ test('client details selected from advising cases tab has correct page elements'
   await page.goto(getClientDetailsUrlByStatus('accepted'));
 
   const advising_tag = page.getByText('Advising', { exact: true });
-  const generate_legal_help_form_button = page.getByRole('button', { name: t('pages.caseDetails.buttons.generateLegalHelpForm') });
-  const reject_case_button = page.getByRole('button', { name: t('pages.caseDetails.buttons.rejectCase') });
-  const split_case_button = page.getByRole('button', { name: t('pages.caseDetails.buttons.splitCase') });
-  const close_case_button = page.getByRole('button', { name: t('pages.caseDetails.buttons.closeCase') });
-  const leave_feedback_button = page.getByRole('button', { name: t('pages.caseDetails.buttons.leaveFeedback') });
+  const changeStatusButton = page.getByRole('button', { name: 'Change status' });
+  const completedMenuItem = page.getByRole('button', { name: 'Completed' });
 
   // expect to see the following elements
-
   await expect(advising_tag).toBeVisible();
-  await expect(generate_legal_help_form_button).toBeVisible();
-  await expect(reject_case_button).toBeVisible();
-  await expect(split_case_button).toBeVisible();
-  await expect(close_case_button).toBeVisible();
-  await expect(leave_feedback_button).toBeVisible();
+  await expect(changeStatusButton).toBeVisible();
+
+  // After opening the menu, the "Completed" option should be visible
+  await changeStatusButton.click();
+  await expect(completedMenuItem).toBeVisible();
 });
 
 test('accepted client details page should be accessible', {

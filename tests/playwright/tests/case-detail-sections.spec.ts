@@ -12,8 +12,8 @@ test('financial eligibility page should display correctly', async ({ page, i18nS
   // Navigate to the financial eligibility page
   await page.goto(`/cases/${caseReference}/financial-eligibility`);
   
-  // Check for page heading (target the main heading with id)
-  await expect(page.locator('#page-heading')).toContainText('Jack Youngs');
+  // Check for first instance of header, which is the name
+  await expect(page.getByRole('heading', { name: 'Jack Youngs' })).toBeVisible();
   
   // Check for back link to client details (be more specific)
   const backLink = page.locator('.govuk-back-link');
@@ -28,8 +28,8 @@ test('notes and history page should display correctly', async ({ page, i18nSetup
   // Navigate to the notes and history page
   await page.goto(`/cases/${caseReference}/notes-and-history`);
   
-  // Check for page heading (target the main heading with id)
-  await expect(page.locator('#page-heading')).toContainText('Jack Youngs');
+  // Check for first instance of header, which is the name
+  await expect(page.getByRole('heading', { name: 'Jack Youngs' })).toBeVisible();
   
   // Check for back link to client details (be more specific)
   const backLink = page.locator('.govuk-back-link');
@@ -44,9 +44,9 @@ test('scope page should display correctly', async ({ page, i18nSetup }) => {
   // Navigate to the scope page
   await page.goto(`/cases/${caseReference}/scope`);
   
-  // Check for page heading (target the main heading with id)
-  await expect(page.locator('#page-heading')).toContainText('Jack Youngs');
-  
+  // Check for first instance of header, which is the name
+  await expect(page.getByRole('heading', { name: 'Jack Youngs' })).toBeVisible();
+
   // Check for back link to client details (be more specific)
   const backLink = page.locator('.govuk-back-link');
   await expect(backLink).toBeVisible();

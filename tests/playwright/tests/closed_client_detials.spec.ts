@@ -6,31 +6,27 @@ test.beforeEach(async ({ page }) => {
   await setupAuth(page);
 });
 
-test('client details selected from new cases tab has correct page elements', async ({ page, i18nSetup }) => {
+test('client details selected from closed cases tab has correct page elements', async ({ page, i18nSetup }) => {
   // Navigate to the client details
-  await page.goto(getClientDetailsUrlByStatus('new'));
+  await page.goto(getClientDetailsUrlByStatus('closed'));
 
-  const new_tag = page.getByText('New', { exact: true });
+  const closed_tag = page.getByText('Closed', { exact: true });
   const changeStatusButton = page.getByRole('button', { name: 'Change status' });
   const advisingMenuItem = page.getByRole('button', { name: 'Advising' });
-  const pendingMenuItem = page.getByRole('button', { name: 'Pending' });
-  const closedMenuItem = page.getByRole('button', { name: 'Closed' });
-
 
   // expect to see the following elements
-  await expect(new_tag).toBeVisible();
+  await expect(closed_tag).toBeVisible();
   await expect(changeStatusButton).toBeVisible();
 
+  
   // After opening the menu, the "Completed" option should be visible
   await changeStatusButton.click();
   await expect(advisingMenuItem).toBeVisible();
-  await expect(pendingMenuItem).toBeVisible();
-  await expect(closedMenuItem).toBeVisible();
 });
 
-test('new client details page should be accessible', {
+test('closed client details page should be accessible', {
   tag: '@accessibility',
 }, async ({ page, checkAccessibility }) => {
-  await page.goto(getClientDetailsUrlByStatus('new'));
+  await page.goto(getClientDetailsUrlByStatus('closed'));
   await checkAccessibility();
 });
