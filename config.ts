@@ -57,6 +57,11 @@ const config: Config = {
       clientId: process.env.API_CLIENT_ID ?? '',
       clientSecret: process.env.API_CLIENT_SECRET ?? ''
     }
+  },
+  // Pagination configuration
+  pagination: {
+    defaultPage: 1,
+    defaultLimit: Number(process.env.PAGINATION_LIMIT ?? '20')
   }
 };
 

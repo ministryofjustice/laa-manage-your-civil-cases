@@ -2,10 +2,11 @@ import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
 import type { CaseData } from '#types/case-types.js';
 import { devLog, devError, createProcessedError, buildOrderingParamFields } from '#src/scripts/helpers/index.js';
+import config from '../../../config.js';
 
 // Constants
-const DEFAULT_PAGE = 1;
-const DEFAULT_LIMIT = 20;
+const DEFAULT_PAGE = config.pagination.defaultPage;
+const DEFAULT_LIMIT = config.pagination.defaultLimit;
 const EMPTY_TOTAL = 0;
 
 /**

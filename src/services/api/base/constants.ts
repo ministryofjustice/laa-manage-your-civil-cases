@@ -2,11 +2,13 @@
  * API Service Constants
  */
 
+import config from '../../../../config.js';
+
 /** Default page number for pagination (used in casesApiService.getCases, searchCases and pagination.extractPaginationMeta) */
-export const DEFAULT_PAGE = 1;
+export const DEFAULT_PAGE = config.pagination.defaultPage;
 
 /** Default items per page for pagination, configurable via PAGINATION_LIMIT env var (used in casesApiService.getCases, searchCases and pagination.extractPaginationMeta) */
-export const DEFAULT_LIMIT = parseInt(process.env.PAGINATION_LIMIT ?? '20', 10);
+export const DEFAULT_LIMIT = config.pagination.defaultLimit;
 
 /** Indentation level for JSON.stringify in debug logs (used in all API service files for development logging) */
 export const JSON_INDENT = 2;
