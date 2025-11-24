@@ -5,66 +5,6 @@
  * It initializes MSW to intercept outgoing API calls and serve mock responses.
  */
 
-//Polyfill localStorage BEFORE any MSW-related imports - node 25/msw compatibility 
-const hasValidLocalStorage = 
-  'localStorage' in globalThis &&
-  typeof (globalThis.localStorage).getItem === 'function';
-
-if (!hasValidLocalStorage) {
-  const storage = new Map<string, string>();
-  
-  const localStoragePolyfill = {
-    /**
-     * Retrieves an item from storage
-     * @param {string} key - The storage key
-     * @returns {string | null} The stored value or null if not found
-     */
-    getItem(key: string): string | null {
-      const result = storage.get(key) ?? null;
-      return result;
-    },
-    /**
-     * Stores an item in storage
-     * @param {string} key - The storage key
-     * @param {string} value - The value to store
-     */
-    setItem(key: string, value: string): void {
-      storage.set(key, value);
-    },
-    /**
-     * Removes an item from storage
-     * @param {string} key - The storage key to remove
-     */
-    removeItem(key: string): void {
-      storage.delete(key);
-    },
-    /**
-     * Clears all items from storage
-     */
-    clear(): void {
-      storage.clear();
-    },
-    /**
-     * Retrieves the key at the specified index
-     * @param {number} index - The index position
-     * @returns {string | null} The key at the index or null if not found
-     */
-    key(index: number): string | null {
-      return Array.from(storage.keys())[index] ?? null;
-    },
-    /**
-     * Gets the number of items in storage
-     * @returns {number} The count of stored items
-     */
-    get length(): number {
-      return storage.size;
-    }
-  };
-  
-  (globalThis as typeof globalThis & { localStorage: Storage }).localStorage = localStoragePolyfill as Storage;
-}
-
-// Use dynamic imports to ensure polyfill is set up before MSW loads
 void (async () => {
   try {
     const { setupServer } = await import('msw/node');
