@@ -7,14 +7,4 @@
 @use "components/pagination";
 @use "components/sortable-table";
 @use "components/search";
-
-// Custom styles
-.mcc-case-details-header {
-  margin-top: -40px;
-}
-.moj-button-menu__wrapper {
-  margin-top: -5px !important;
-}
-.moj-alert {
-  margin: 20px 0 !important;
-}
+@use "components/case_details_header";

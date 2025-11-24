@@ -7,7 +7,7 @@
 /**
  * Translate API case state to user-facing status
  * @param {string} apiState - Case state from API (new, opened, accepted, rejected, closed)
- * @param {string} [outcomeCode] - Outcome code from API (e.g., "CLSP" for completed)
+ * @param {string} [outcomeCode] - Outcome code from API ("CLSP" for completed)
  * @returns {string} User-facing status (new, pending, advising, closed, completed)
  */
 export function translateCaseStatus(apiState: string, outcomeCode?: string): string {
