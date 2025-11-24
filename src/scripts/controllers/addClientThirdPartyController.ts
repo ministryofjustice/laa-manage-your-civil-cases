@@ -113,7 +113,7 @@ export async function postAddClientThirdParty(req: Request, res: Response, next:
   const formFields = extractThirdPartyFormFields(req.body);
 
   // Check for validation errors
-  if (handleAddThirdPartyValidationErrors(req, res, caseReference, formFields)) {
+  if (await handleAddThirdPartyValidationErrors(req, res, caseReference, formFields)) {
     return;
   }
 

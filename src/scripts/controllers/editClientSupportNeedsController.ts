@@ -107,7 +107,7 @@ export async function postEditClientSupportNeeds(req: Request, res: Response, ne
   ]);
 
   // Check for validation errors
-  if (handleEditClientSupportNeedsErrors(req, res, caseReference, formFields)) {
+  if (await handleEditClientSupportNeedsErrors(req, res, caseReference, formFields)) {
     return;
   }
 
