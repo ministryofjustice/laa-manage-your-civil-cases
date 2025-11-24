@@ -39,13 +39,13 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'yarn node public/scripts/test-server-with-msw.js',
+    command: 'yarn tsx scripts/test-server-with-msw.ts',
     url: 'http://127.0.0.1:3001',
     reuseExistingServer: process.env.CI !== 'true',
     stdout: 'pipe',
     stderr: 'pipe',
     timeout: TIMEOUT_MS,
-    cwd: process.cwd().replace(/\/tests\/playwright$/, ''),
+    cwd: '../..', // Run from project root since config is now in tests/playwright/ subdirectory
     env: {
       NODE_ENV: 'test',
       PORT: '3001',
@@ -55,7 +55,8 @@ export default defineConfig({
       API_PREFIX: '/cla_provider/api/v1',
       // API client credentials for OAuth2 authentication (required for tests)
       API_CLIENT_ID: 'test-client-id',
-      API_CLIENT_SECRET: 'test-client-secret'
+      API_CLIENT_SECRET: 'test-client-secret',
+      NODE_OPTIONS: '--no-webstorage'
     }
   },
 });
