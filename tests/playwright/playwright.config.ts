@@ -39,7 +39,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'node public/scripts/test-server-with-msw.js',
+    command: 'yarn node public/scripts/test-server-with-msw.js',
     url: 'http://127.0.0.1:3001',
     reuseExistingServer: process.env.CI !== 'true',
     stdout: 'pipe',
