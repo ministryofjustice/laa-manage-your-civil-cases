@@ -1,5 +1,24 @@
 [
   {
+    "fullName": "Test Case No Third Party",
+    "caseReference": "PC-0000-0001",
+    "refCode": "",
+    "dateReceived": "2025-01-01T19:00:00-05:00",
+    "lastModified": "2025-01-02T14:30:00-05:00",
+    "caseStatus": "Accepted",
+    "dateOfBirth": "1990-01-01T00:00:00-05:00",
+    "clientIsVulnerable": false,
+    "language": "English",
+    "phoneNumber": "0700000000",
+    "safeToCall": true,
+    "announceCall": false,
+    "emailAddress": "test@example.com",
+    "address": "1 Test Street, London",
+    "postcode": "E1 1AA",
+    "laaReference": "0000001",
+    "thirdParty": null
+  },
+  {
     "fullName": "Ember Hamilton",
     "caseReference": "PC-3184-5962",
     "refCode": "",

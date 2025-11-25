@@ -74,6 +74,7 @@ export interface ThirdPartyContact {
   relationshipToClient: string;
   noContactReason: string;
   passphrase: string;
+  isSoftDeleted: boolean;
 }
 
 /**

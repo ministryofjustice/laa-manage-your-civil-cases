@@ -34,6 +34,11 @@ export interface ApiConfig {
   };
 }
 
+export interface PaginationConfig {
+  defaultPage: number;
+  defaultLimit: number;
+}
+
 export interface Config {
   CONTACT_EMAIL: string | undefined;
   DEPARTMENT_NAME: string | undefined;
@@ -50,4 +55,5 @@ export interface Config {
   session: SessionConfig;
   paths: PathsConfig;
   api: ApiConfig;
+  pagination: PaginationConfig;
 }

@@ -242,7 +242,7 @@
 {% endif %}
 
 
-{% if data.thirdParty %}
+{% if data.thirdParty and (data.thirdParty.relationshipToClient != 'OTHER' or data.thirdParty.fullName) %}
   {# Third party info summary card #}
   {{ summaryCardComponent({
     data: constructedData,

@@ -13,8 +13,8 @@ export function createThirdPartyHandlers(
   cases: MockCase[]
 ) {
   return [
-    // PATCH /case/:caseReference/thirdparty_details
-    http.patch(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details`, async ({ params, request }) => {
+    // PATCH /case/:caseReference/thirdparty_details/
+    http.patch(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details/`, async ({ params, request }) => {
       const { caseReference } = params;
       const updateData = await request.json() as Record<string, any>;
       
@@ -22,6 +22,17 @@ export function createThirdPartyHandlers(
       
       if (!caseItem) {
         return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
+      }
+
+      // Detect soft delete: personal_relationship = 'OTHER' with nested personal_details.full_name null and pass_phrase null
+      const isSoftDelete = updateData.personal_relationship === 'OTHER' &&
+                          updateData.personal_details?.full_name === null &&
+                          updateData.pass_phrase === null;
+
+      if (isSoftDelete) {
+        // Return a copy with thirdParty removed - don't mutate shared state
+        const caseWithoutThirdParty = { ...caseItem, thirdParty: null };
+        return HttpResponse.json(transformToApiFormat(caseWithoutThirdParty));
       }
 
       const validationErrors: Record<string, any> = {};
@@ -52,8 +63,8 @@ export function createThirdPartyHandlers(
       return HttpResponse.json(transformToApiFormat(caseItem));
     }),
 
-    // POST /case/:caseReference/thirdparty_details
-    http.post(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details`, async ({ params, request }) => {
+    // POST /case/:caseReference/thirdparty_details/
+    http.post(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details/`, async ({ params, request }) => {
       const { caseReference } = params;
       const thirdPartyData = await request.json() as Record<string, any>;
       
@@ -91,8 +102,8 @@ export function createThirdPartyHandlers(
       return HttpResponse.json(transformToApiFormat(caseItem), { status: 201 });
     }),
 
-    // PUT /case/:caseReference/thirdparty_details
-    http.put(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details`, async ({ params, request }) => {
+    // PUT /case/:caseReference/thirdparty_details/
+    http.put(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details/`, async ({ params, request }) => {
       const { caseReference } = params;
       const thirdPartyData = await request.json() as Record<string, any>;
       

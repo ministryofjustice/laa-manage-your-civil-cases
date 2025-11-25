@@ -1,10 +1,10 @@
 /**
- * Edit Client Third Party Controller Tests
+ * Add Client Third Party Controller Tests
  * 
- * Tests the Express.js controllers for client details editing functionality.
- * Covers HTTP request/response handling for name and email editing forms including:
+ * Tests the Express.js controllers for adding third party contact functionality.
+ * Covers HTTP request/response handling including:
  * - GET route handlers for form display
- * - POST route handlers for form submission  
+ * - POST route handlers for form submission (new and soft-delete scenarios)
  * - API integration and error handling
  * - CSRF token management
  * - Form data processing and validation integration
@@ -42,7 +42,7 @@ const runSchema = async (req: any, schema: ValidationChain[] | ValidationChain):
   }
 };
 
-describe('Edit Client Name Controller', () => {
+describe('Add Client Third Party Controller', () => {
   let req: Partial<RequestWithMiddleware>;
   let res: any;
   let next: any;
@@ -50,14 +50,19 @@ describe('Edit Client Name Controller', () => {
   let redirectStub: sinon.SinonStub;
   let statusStub: sinon.SinonStub;
   let apiServiceGetStub: sinon.SinonStub;
+  let apiServiceAddStub: sinon.SinonStub;
   let apiServiceUpdateStub: sinon.SinonStub;
 
   beforeEach(() => {
+    // Restore all stubs first to ensure clean state
+    sinon.restore();
+    
     req = {
       params: { caseReference: 'TEST123' },
       body: {},
       axiosMiddleware: {} as any,
-      csrfToken: () => 'test-csrf-token'
+      csrfToken: () => 'test-csrf-token',
+      session: {} as any // Provide session object for session helpers to use
     } as Partial<RequestWithMiddleware>;
 
     renderStub = sinon.stub();
@@ -74,7 +79,8 @@ describe('Edit Client Name Controller', () => {
 
     // Stub the API service methods
     apiServiceGetStub = sinon.stub(apiService, 'getClientDetails');
-    apiServiceUpdateStub = sinon.stub(apiService, 'addThirdPartyContact');
+    apiServiceAddStub = sinon.stub(apiService, 'addThirdPartyContact');
+    apiServiceUpdateStub = sinon.stub(apiService, 'updateThirdPartyContact');
   });
 
   afterEach(() => {
@@ -115,11 +121,15 @@ describe('Edit Client Name Controller', () => {
   });
 
   describe('postAddClientThirdParty', () => {
-    it('should process successful addition of client third party name update and redirect to case details', async () => {
+    it('should process successful addition of new third party (POST) and redirect to case details', async () => {
       // Arrange
       req.body = { thirdPartyFullName: 'John Carpenter' };
 
-      apiServiceUpdateStub.resolves({
+      // Simulate cache miss (no cache data in session) - will use POST
+      // req.session.thirdPartyCache is undefined
+
+      // Mock successful POST response
+      apiServiceAddStub.resolves({
         status: 'success',
         data: { thirdPartyFullName: 'John Carpenter' }
       });
@@ -128,7 +138,38 @@ describe('Edit Client Name Controller', () => {
       await postAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);
 
       // Assert
-      expect(apiServiceUpdateStub.calledOnce).to.be.true;
+      expect(apiServiceGetStub.called).to.be.false; // Should NOT call getClientDetails
+      expect(apiServiceAddStub.calledOnce).to.be.true;
+      expect(apiServiceUpdateStub.called).to.be.false; // Should NOT call PATCH
+      expect(req.session!.thirdPartyCache).to.be.undefined; // Session cache should be cleared
+      expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
+    });
+
+    it('should process successful addition over soft-deleted third party (PATCH) and redirect to case details', async () => {
+      // Arrange
+      req.body = { thirdPartyFullName: 'Jane Smith' };
+
+      // Simulate cache hit indicating soft-deleted third party exists
+      req.session!.thirdPartyCache = {
+        caseReference: 'TEST123',
+        hasSoftDeletedThirdParty: 'true', // Soft-deleted third party exists - will trigger PATCH
+        cachedAt: String(Date.now())
+      };
+
+      // Mock successful PATCH response
+      apiServiceUpdateStub.resolves({
+        status: 'success',
+        data: { thirdPartyFullName: 'Jane Smith' }
+      });
+
+      // Act
+      await postAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);
+
+      // Assert
+      expect(apiServiceGetStub.called).to.be.false; // Should NOT call getClientDetails
+      expect(apiServiceUpdateStub.calledOnce).to.be.true; // Should call PATCH
+      expect(apiServiceAddStub.called).to.be.false; // Should NOT call POST
+      expect(req.session!.thirdPartyCache).to.be.undefined; // Session cache should be cleared
       expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
     });
 

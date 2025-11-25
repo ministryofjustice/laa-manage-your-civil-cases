@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
 import { devLog, devError, createProcessedError, safeString, clearAllOriginalFormData } from '#src/scripts/helpers/index.js';
+import { storeSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 
 const BAD_REQUEST = 400;
 const NOT_FOUND = 404;
@@ -35,6 +36,16 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
     const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
 
     if (response.status === 'success' && response.data !== null) {
+      // Cache soft-deleted third party state in session to optimize add/remove operations
+      // addClientThirdPartyController uses this to decide POST (create) vs PATCH (restore)
+      const hasSoftDeletedThirdParty = response.data.thirdParty?.isSoftDeleted ?? false;
+      
+      storeSessionData(req, 'thirdPartyCache', {
+        caseReference,
+        hasSoftDeletedThirdParty: String(hasSoftDeletedThirdParty),
+        cachedAt: String(Date.now())
+      });
+      
       res.render('case_details/index.njk', {
         activeTab,
         client: response.data,

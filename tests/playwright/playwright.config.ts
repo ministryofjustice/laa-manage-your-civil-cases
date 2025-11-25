@@ -56,7 +56,7 @@ export default defineConfig({
       // API client credentials for OAuth2 authentication (required for tests)
       API_CLIENT_ID: 'test-client-id',
       API_CLIENT_SECRET: 'test-client-secret',
-      NODE_OPTIONS: '--no-webstorage'
+      NODE_OPTIONS: '--no-experimental-webstorage'
     }
   },
 });

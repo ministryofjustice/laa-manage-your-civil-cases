@@ -6,20 +6,15 @@
  */
 
 import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import { join } from 'node:path';
 import type { MockCase } from './types.js';
 import { createCaseHandlers } from './caseHandlers.js';
 import { createPersonalDetailsHandlers } from './personalDetailsHandlers.js';
 import { createSupportNeedsHandlers } from './supportNeedsHandlers.js';
 import { createThirdPartyHandlers } from './thirdPartyHandlers.js';
 
-// Get the current file's directory
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-// Load official mock data from laa-civil-case-api
-const mockDataPath = join(__dirname, '../../fixtures/mock-data.json');
+// Load official mock data from laa-civil-case-api (relative to project root)
+const mockDataPath = join(process.cwd(), 'tests/playwright/fixtures/mock-data.json');
 const mockData = JSON.parse(readFileSync(mockDataPath, 'utf-8'));
 
 // Base API URL that the application calls
