@@ -3,10 +3,9 @@ import { apiService } from '#src/services/apiService.js';
 import type { CaseData } from '#types/case-types.js';
 import { devLog, devError, createProcessedError, buildOrderingParamFields } from '#src/scripts/helpers/index.js';
 import config from '../../../config.js';
+const { pagination: { defaultPage: DEFAULT_PAGE, defaultLimit: DEFAULT_LIMIT } } = config;
 
 // Constants
-const DEFAULT_PAGE = config.pagination.defaultPage;
-const DEFAULT_LIMIT = config.pagination.defaultLimit;
 const EMPTY_TOTAL = 0;
 
 /**

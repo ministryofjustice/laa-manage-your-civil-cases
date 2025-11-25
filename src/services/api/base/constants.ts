@@ -3,12 +3,13 @@
  */
 
 import config from '../../../../config.js';
+const { pagination: { defaultPage, defaultLimit } } = config;
 
 /** Default page number for pagination (used in casesApiService.getCases, searchCases and pagination.extractPaginationMeta) */
-export const DEFAULT_PAGE = config.pagination.defaultPage;
+export const DEFAULT_PAGE = defaultPage;
 
 /** Default items per page for pagination, configurable via PAGINATION_LIMIT env var (used in casesApiService.getCases, searchCases and pagination.extractPaginationMeta) */
-export const DEFAULT_LIMIT = config.pagination.defaultLimit;
+export const DEFAULT_LIMIT = defaultLimit;
 
 /** Indentation level for JSON.stringify in debug logs (used in all API service files for development logging) */
 export const JSON_INDENT = 2;

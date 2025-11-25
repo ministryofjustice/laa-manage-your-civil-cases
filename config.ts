@@ -7,6 +7,7 @@ const DEFAULT_RATE_WINDOW_MS_MINUTE = 15;
 const MILLISECONDS_IN_A_MINUTE = 60000;
 const DEFAULT_PORT = 3000;
 const CHARACTER_THRESHOLD = 85;
+const DEFAULT_PAGINATION_PAGE = 1;
 
 // Validate required session env vars
 if (process.env.SESSION_SECRET == null || process.env.SESSION_SECRET === '' ||
@@ -60,7 +61,7 @@ const config: Config = {
   },
   // Pagination configuration
   pagination: {
-    defaultPage: 1,
+    defaultPage: DEFAULT_PAGINATION_PAGE,
     defaultLimit: Number(process.env.PAGINATION_LIMIT ?? '20')
   }
 };

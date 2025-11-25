@@ -6,11 +6,10 @@ import { validationResult } from 'express-validator';
 import { formatValidationError, type ValidationErrorData } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 import { storeSessionData, getSessionData, clearSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 import config from '../../../config.js';
+const { pagination: { defaultPage: DEFAULT_PAGE, defaultLimit: DEFAULT_LIMIT } } = config;
 
 // Constants
 const DEFAULT_SORT_BY = 'modified';
-const DEFAULT_PAGE = config.pagination.defaultPage;
-const DEFAULT_LIMIT = config.pagination.defaultLimit;
 const BAD_REQUEST = 400;
 
 /**
