@@ -80,8 +80,8 @@ router.post('/:caseReference/why-closed', validateCloseCase(), async function (r
 });
 
 /* GET why-reopen page (interstitial for reopening a case). */
-router.get('/:caseReference/why-reopen', function (req: Request, res: Response, next: NextFunction): void {
-  getReopenCaseForm(req, res, next);
+router.get('/:caseReference/why-reopen', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
+  await getReopenCaseForm(req, res, next);
 });
 
 /* POST reopen case. */
