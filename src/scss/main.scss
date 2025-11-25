@@ -8,6 +8,8 @@
 @use "components/sortable-table";
 @use "components/search";
 
+@use "components/case_details_header";
+
 // Custom styles
 .mcc-case-details-header {
   margin-top: -40px;

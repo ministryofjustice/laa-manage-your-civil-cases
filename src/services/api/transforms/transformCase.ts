@@ -27,6 +27,9 @@ export function transformCaseItem(item: unknown): CaseData {
     laaReference: safeString(item.laa_reference),
     refCode: safeString(item.reference),
     provider_assigned_at: formatDate(safeString(item.provider_assigned_at)),
+    provider_viewed: formatDate(safeOptionalString(item.provider_viewed) ?? ''), 
+    provider_accepted: formatDate(safeOptionalString(item.provider_accepted) ?? ''),
+    outcome_code: safeOptionalString(item.outcome_code) ?? '',
     caseStatus: safeString(item.caseStatus),
     dateOfBirth: formatDate(safeString(item.date_of_birth)),
     modified: formatDate(safeOptionalString(item.modified) ?? ''),
@@ -58,24 +61,22 @@ export function transformCaseItemForSearch(item: unknown): CaseData {
    * @returns {string} Readable case status
    */
   function determineCaseStatus(item: Record<string, unknown>): string {
-    const viewed = Boolean(item.provider_viewed);
-    const accepted = Boolean(item.provider_accepted);
-    const closed = Boolean(item.provider_closed);
+  const viewed = Boolean(item.provider_viewed);
+  const accepted = Boolean(item.provider_accepted);
+  const closed = Boolean(item.provider_closed);
+  const outcomeCode = item.outcome_code === "CLSP";
 
-    if (!viewed && !accepted && !closed) {
-      return 'New';
-    }
-    if (viewed && !accepted && !closed) {
-      return 'Opened';
-    }
-    if (accepted && !closed) {
-      return 'Accepted';
-    }
-    if (closed) {
-      return 'Closed';
-    }
-    return '';
+  if (closed) {
+    return outcomeCode ? "Completed" : "Closed";
   }
+  if (accepted) {
+    return 'Advising';
+  }
+  if (viewed) {
+    return 'Pending';
+  }
+  return 'New';
+}
 
   return {
     fullName: safeString(item.full_name),

@@ -10,13 +10,13 @@
   {{ govukBackLink({
       text: t('common.back'),
       href: backLinkHref,
-      classes: "govuk-!-margin-bottom-0"
+      classes: "govuk-!-margin-bottom-2"
     }) }}
 {% endblock %}
 
 {% block pageContent %}
-  {{ caseDetailsHeaderComponent(client, hideButtonMenu=true) }}
-
+  {{ caseDetailsHeaderComponent(client) }}
+  
   {% block formContent %}
     {# Child templates override this block with their specific form content #}
   {% endblock %}

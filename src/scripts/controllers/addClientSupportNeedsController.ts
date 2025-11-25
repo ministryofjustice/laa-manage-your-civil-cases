@@ -53,7 +53,7 @@ export async function postAddClientSupportNeeds(req: Request, res: Response, nex
   ]);
 
   // Check for validation errors
-  if (handleAddClientSupportNeedsErrors(req, res, caseReference, formFields)) {
+  if (await handleAddClientSupportNeedsErrors(req, res, caseReference, formFields)) {
     return;
   }
 

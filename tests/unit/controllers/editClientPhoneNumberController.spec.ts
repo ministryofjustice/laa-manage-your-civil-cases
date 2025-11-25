@@ -152,6 +152,11 @@ describe('Edit Client Phone Number Controller', () => {
 
       await runSchema(req as any, validateEditClientPhoneNumber());
 
+      // Stub a successful getClientDetails response so handlePostEditForm thinks it has info
+      apiServiceGetStub.resolves({
+        status: 'success'
+      });
+
       // Act
       await postEditClientPhoneNumber(req as RequestWithMiddleware, res as Response, next);
 

@@ -1,6 +1,6 @@
 {%- from "moj/components/alert/macro.njk" import mojAlert -%}
 
-{% set currentStatus = caseStatusToStates[client.caseStatus | lower] %}
+{% set currentStatus = client.caseStatus %}
 
 {% if currentStatus == "completed" %}
   {{ mojAlert({

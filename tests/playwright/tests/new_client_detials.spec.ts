@@ -11,17 +11,20 @@ test('client details selected from new cases tab has correct page elements', asy
   await page.goto(getClientDetailsUrlByStatus('new'));
 
   const new_tag = page.getByText('New', { exact: true });
-  const accept_case_button = page.getByRole('button', { name: t('pages.caseDetails.buttons.acceptCase') })
-  const reject_case_button = page.getByRole('button', { name: t('pages.caseDetails.buttons.rejectCase') })
-  const split_case_button = page.getByRole('button', { name: t('pages.caseDetails.buttons.splitCase') })
-  const leave_feedback_button = page.getByRole('button', { name: t('pages.caseDetails.buttons.leaveFeedback') })
+  const changeStatusButton = page.getByRole('button', { name: 'Change status' });
+  const advisingMenuItem = page.getByRole('button', { name: 'Advising' });
+  const pendingMenuItem = page.getByRole('button', { name: 'Pending' });
+  const closedMenuItem = page.getByRole('button', { name: 'Closed' });
 
   // expect to see the following elements
   await expect(new_tag).toBeVisible();
-  await expect(accept_case_button).toBeVisible();
-  await expect(reject_case_button).toBeVisible();
-  await expect(split_case_button).toBeVisible();
-  await expect(leave_feedback_button).toBeVisible();
+  await expect(changeStatusButton).toBeVisible();
+
+  // After opening the menu, the correct options should be visible
+  await changeStatusButton.click();
+  await expect(advisingMenuItem).toBeVisible();
+  await expect(pendingMenuItem).toBeVisible();
+  await expect(closedMenuItem).toBeVisible();
 });
 
 test('new client details page should be accessible', {

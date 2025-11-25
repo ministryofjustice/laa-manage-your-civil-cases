@@ -14,6 +14,9 @@ export interface CaseData {
   caseReference: string;
   refCode: string;
   provider_assigned_at: string;
+  provider_viewed?: string;
+  provider_accepted?: string;
+  outcome_code?: string; 
   caseStatus: string;
   dateOfBirth: string;
   modified?: string;

@@ -1,25 +1,26 @@
 {% from "govuk/components/tag/macro.njk" import govukTag %}
 {%- from "moj/components/button-menu/macro.njk" import mojButtonMenu -%}
+
 {% set statusConfig = {
   "new": {
     text: t('common.status.new'),
-    classes: "govuk-tag--green govuk-!-margin-bottom-2"
+    classes: "govuk-tag--green govuk-!-margin-bottom-2 tag-padding"
   },
   "pending": {
     text: t('common.status.pending'),
-    classes: "govuk-tag--blue govuk-!-margin-bottom-2"
+    classes: "govuk-tag--blue govuk-!-margin-bottom-2 tag-padding"
   },
   "advising": {
     text: t('common.status.advising'),
-    classes: "govuk-tag--light-blue govuk-!-margin-bottom-2"
+    classes: "govuk-tag--light-blue govuk-!-margin-bottom-2 tag-padding"
   },
   "closed": {
     text: t('common.status.closed'),
-    classes: "govuk-tag--grey govuk-!-margin-bottom-2"
+    classes: "govuk-tag--grey govuk-!-margin-bottom-2 tag-padding"
   },
   "completed": {
     text: t('common.status.completed'),
-    classes: "govuk-tag--pink govuk-!-margin-bottom-2"
+    classes: "govuk-tag--pink govuk-!-margin-bottom-2 tag-padding"
   }
 } %}
 
@@ -30,29 +31,23 @@
   {% set menuItems = [
     {
       text: t('pages.caseDetails.buttons.actions.advising'),
-      href: "/cases/" + client.caseReference + "/accept",
-      attributes: {
-        "data-method": "post"
-      }
+      href: "#"
     }, {
       text: t('pages.caseDetails.buttons.actions.pending'),
-      href: "/cases/" + client.caseReference + "/why-pending"
+      href: "#"
     }, {
       text: t('pages.caseDetails.buttons.actions.closed'),
-      href: "/cases/" + client.caseReference + "/why-closed"
+      href: "#"
     }
   ] %}
 {% elif currentStatus == "pending" %}
   {% set menuItems = [
     {
       text: t('pages.caseDetails.buttons.actions.advising'),
-      href: "/cases/" + client.caseReference + "/accept",
-      attributes: {
-        "data-method": "post"
-      }
+      href: "#"
     }, {
       text: t('pages.caseDetails.buttons.actions.closed'),
-      href: "/cases/" + client.caseReference + "/why-closed"
+      href: "#"
     }
   ] %}
 {% elif currentStatus == "advising" %}
@@ -60,30 +55,17 @@
   {% set menuItems = [
     {
       text: t('pages.caseDetails.buttons.actions.completed'),
-      href: "/cases/" + client.caseReference + "/completed",
-      attributes: {
-        "data-method": "post"
-      }
+      href: "#"
     }, {
       text: '',
       classes: 'govuk-visually-hidden'
     }
   ] %}
-{% elif currentStatus == "completed" %}
+{% elif currentStatus in["closed", "completed"] %}
   {% set menuItems = [
     {
       text: t('pages.caseDetails.buttons.actions.advising'),
-      href: "/cases/" + client.caseReference + "/why-reopen"
-    }, {
-      text: '',
-      classes: 'govuk-visually-hidden'
-    }
-  ] %}
-  {% elif currentStatus == "closed" %}
-  {% set menuItems = [
-    {
-      text: t('pages.caseDetails.buttons.actions.advising'),
-      href: "/cases/" + client.caseReference + "/why-reopen"
+      href: "#"
     }, {
       text: '',
       classes: 'govuk-visually-hidden'
@@ -92,44 +74,41 @@
 {% endif %}
 
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6"/>
-    <div class="govuk-!-display-block">
-      {# Name and case reference #}
-      <div class="govuk-!-display-inline-block govuk-!-static-padding-right-6">
-        <h1 class="govuk-heading-s govuk-!-margin-bottom-2">{{ client.fullName }}</h1>
-        <p class="govuk-body">{{ client.caseReference }}</p>
-      </div>
-      {# Date received #}
-      <div class="govuk-!-display-inline-block govuk-!-static-padding-right-6">
-        <h1 class="govuk-heading-s govuk-!-margin-bottom-2">{{ t('pages.caseDetails.dateReceived') }}</h1>
-        <p class="govuk-body">{{ client.provider_assigned_at | formatDate }}</p>
-      </div>
-      {# LAA reference #}
-      <div class="govuk-!-display-inline-block">
-        <h1 class="govuk-heading-s govuk-!-margin-bottom-2">{{ t('pages.caseDetails.laaReference') }}</h1>
-        <p class="govuk-body">{{ client.laaReference }}</p>
-      </div>
-    </div>
+<div class="govuk-!-display-block">
+  {# Name and case reference #}
+  <div class="govuk-!-display-inline-block govuk-!-static-padding-right-6">
+    <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{ client.fullName }}</h2>
+    <p class="govuk-body">{{ client.caseReference }}</p>
+  </div>
+  {# Date received #}
+  <div class="govuk-!-display-inline-block govuk-!-static-padding-right-6">
+    <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{ t('pages.caseDetails.dateReceived') }}</h2>
+    <p class="govuk-body">{{ client.provider_assigned_at | formatDate }}</p>
+  </div>
+  {# LAA reference #}
+  <div class="govuk-!-display-inline-block">
+    <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{ t('pages.caseDetails.laaReference') }}</h2>
+    <p class="govuk-body">{{ client.laaReference }}</p>
+  </div>
+</div>
 
-<div class="govuk-!-display-inline-block">
-  <div class="govuk-!-display-inline-block">
-    {{ govukTag({
-      text: statusConfig[currentStatus].text,
-      classes: statusConfig[currentStatus].classes}) }}
-  </div>
-  {% if not hideButtonMenu %}
-  <span class="govuk-!-margin-left-2 govuk-!-margin-right-2"> | </span>
-  <div class="govuk-!-display-inline-block">
-    {{ mojButtonMenu({
-      id: "change-case-status-menu",
-      button: {
-        text: t('pages.caseDetails.buttons.label'),
-        classes: "govuk-button--secondary govuk-!-display-inline-block govuk-!-margin-bottom-2"
-      },
-      preventDoubleClick: true,
-      items: menuItems
-      })
-    }}
-  </div>
-  {% endif %}
+<div class="case-status-wrapper govuk-!-display-inline-block">
+  {{ govukTag({
+    text: statusConfig[currentStatus].text,
+    classes: statusConfig[currentStatus].classes}) 
+  }}
+
+  <span class="pipe"></span>
+
+  {{ mojButtonMenu({
+    id: "change-case-status-menu",
+    button: {
+      text: t('pages.caseDetails.buttons.label'),
+      classes: "govuk-button--secondary govuk-!-display-inline-block govuk-!-margin-bottom-2"
+    },
+    preventDoubleClick: true,
+    items: menuItems
+    })
+  }}
 </div>
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6"/>

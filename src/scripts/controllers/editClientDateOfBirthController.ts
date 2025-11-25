@@ -63,7 +63,7 @@ export async function postEditClientDateOfBirth(req: Request, res: Response, nex
     if (!validationErrors.isEmpty()) {
       // Handle validation errors with date error handling
       const caseReference = safeString(req.params.caseReference);
-      handleDateOfBirthValidationErrors(validationErrors, req, res, caseReference);
+      await handleDateOfBirthValidationErrors(validationErrors, req, res, caseReference);
       return;
     }
 
