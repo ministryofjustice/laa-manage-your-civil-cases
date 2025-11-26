@@ -86,6 +86,12 @@ export interface ClientDetailsResponse {
   fullName: string;
   dateOfBirth: string;
   caseStatus: string;
+  provider_assigned_at: string;
+  provider_viewed?: string;
+  provider_accepted?: string;
+  provider_closed?: string;
+  outcome_code?: string;
+  state_note?: string;
   
   //Contact details
   phoneNumber: string;

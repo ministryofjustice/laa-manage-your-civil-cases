@@ -172,6 +172,11 @@ describe('Edit Client Third Party Controller', () => {
 
       await runSchema(req as any, validateEditClientThirdParty());
 
+      // Stub a successful getClientDetails response so handleAddThirdPartyValidationErrors thinks it has info
+      apiServiceGetStub.resolves({
+        status: 'success'
+      });
+
       // Act
       await postEditClientThirdParty(req as RequestWithMiddleware, res as Response, next);
 
@@ -193,6 +198,11 @@ describe('Edit Client Third Party Controller', () => {
       };
 
       await runSchema(req as any, validateEditClientThirdParty());
+
+      // Stub a successful getClientDetails response so handleAddThirdPartyValidationErrors thinks it has info
+      apiServiceGetStub.resolves({
+        status: 'success'
+      });
 
       // Act
       await postEditClientThirdParty(req as RequestWithMiddleware, res as Response, next);

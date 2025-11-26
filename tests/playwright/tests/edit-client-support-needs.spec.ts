@@ -1,9 +1,9 @@
 import { test, expect } from '../fixtures/index.js';
 import { getClientDetailsUrlByStatus, setupAuth } from '../utils/index.js';
 
-const caseReference = 'PC-1922-1879'; // Default test case reference
+const caseReference = 'PC-1869-9154'; // Default test case reference
 const editSupportNeedsUrl = `/cases/${caseReference}/client-details/change/support-need`;
-const clientDetailsUrl = getClientDetailsUrlByStatus('default');
+const clientDetailsUrl = getClientDetailsUrlByStatus('open');
 
 test.beforeEach(async ({ page }) => {
   await setupAuth(page);

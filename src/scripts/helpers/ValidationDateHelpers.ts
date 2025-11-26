@@ -1,3 +1,4 @@
+import { apiService } from '#src/services/apiService.js';
 import { hasProperty, safeString, extractFormFields } from './dataTransformers.js';
 import { dateStringFromThreeFields } from './dateFormatter.js';
 import { t } from './i18nLoader.js';
@@ -223,12 +224,12 @@ function filterDateOfBirthErrors(formData: DateFormData, allErrors: ValidationEr
  * @param {Response} res - Express response object
  * @param {string} caseReference - Case reference number
  */
-export function handleDateOfBirthValidationErrors(
+export async function handleDateOfBirthValidationErrors(
   validationErrors: Result<ValidationErrorData>,
   req: Request,
   res: Response,
   caseReference: string
-): void {
+): Promise<void>  {
   const allErrors = validationErrors.array();
 
   // Check if any required fields are empty
@@ -253,9 +254,13 @@ export function handleDateOfBirthValidationErrors(
   // Smart highlighting - determine which fields should be highlighted based on error messages
   const { highlightDay, highlightMonth, highlightYear } = getDateFieldHighlights(allErrors);
 
+  // Fetch client details for the case info header and alert banner
+  const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
+
   // Re-render the form with errors and preserve user input
   res.status(BAD_REQUEST).render('case_details/edit-date-of-birth.njk', {
     caseReference,
+    client: response.data,
     formData,
     originalData,
     errorState: {

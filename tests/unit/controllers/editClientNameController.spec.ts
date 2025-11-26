@@ -139,6 +139,11 @@ describe('Edit Client Name Controller', () => {
 
       await runSchema(req as any, validateEditClientName());
 
+      // Stub a successful getClientDetails response so handlePostEditForm thinks it has info
+      apiServiceGetStub.resolves({
+        status: 'success'
+      });
+
       // Act
       await postEditClientName(req as RequestWithMiddleware, res as Response, next);
 

@@ -1,0 +1,30 @@
+{%- from "moj/components/alert/macro.njk" import mojAlert -%}
+
+{% set currentStatus = client.caseStatus %}
+
+{% if currentStatus == "completed" %}
+  {{ mojAlert({
+      variant: "information",
+      title: "Case completed",
+      showTitleAsHeading: true,
+      dismissible: false,
+      text: client.provider_closed
+    }) }}
+{% elif currentStatus == "closed" %}
+  {% set outcomeDescription = t('common.outcomeCode.' + client.outcome_code) if client.outcome_code else '' %}
+  {{ mojAlert({
+      variant: "information",
+      title: "Case closed",
+      showTitleAsHeading: true,
+      dismissible: false,
+      html: outcomeDescription + "<p>" + client.provider_closed + "</p>"
+    }) }}
+{% elif currentStatus == "pending" %}
+  {{ mojAlert({
+      variant: "warning",
+      title: "Case pending",
+      showTitleAsHeading: true,
+      dismissible: false,
+      html: client.state_note + "<p>" + client.provider_viewed + "</p>"
+    }) }}
+{% endif %}

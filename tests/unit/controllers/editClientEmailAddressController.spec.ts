@@ -142,6 +142,11 @@ describe('Edit Client Email Address Controller', () => {
 
       await runSchema(req as any, validateEditClientEmailAddress());
 
+      // Stub a successful getClientDetails response so handlePostEditForm thinks it has info
+      apiServiceGetStub.resolves({
+        status: 'success'
+      });
+
       // Act
       await postEditClientEmailAddress(req as RequestWithMiddleware, res as Response, next);
 

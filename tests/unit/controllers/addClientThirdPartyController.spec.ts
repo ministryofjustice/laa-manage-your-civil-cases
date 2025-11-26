@@ -179,6 +179,11 @@ describe('Add Client Third Party Controller', () => {
 
       await runSchema(req as any, validateAddClientThirdParty());
 
+      // Stub a successful getClientDetails response so handleAddThirdPartyValidationErrors thinks it has info
+      apiServiceGetStub.resolves({
+        status: 'success'
+      });
+
       // Act
       await postAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);
 
@@ -195,6 +200,11 @@ describe('Add Client Third Party Controller', () => {
       }; 
 
       await runSchema(req as any, validateAddClientThirdParty());
+
+      // Stub a successful getClientDetails response so handleAddThirdPartyValidationErrors thinks it has info
+      apiServiceGetStub.resolves({
+        status: 'success'
+      });
 
       // Act
       await postAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);
@@ -213,6 +223,11 @@ describe('Add Client Third Party Controller', () => {
 
       await runSchema(req as any, validateAddClientThirdParty());
 
+      // Stub a successful getClientDetails response so handleAddThirdPartyValidationErrors thinks it has info
+      apiServiceGetStub.resolves({
+        status: 'success'
+      });
+
       // Act
       await postAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);
 
@@ -229,6 +244,11 @@ describe('Add Client Third Party Controller', () => {
       }; 
 
       await runSchema(req as any, validateAddClientThirdParty());
+
+      // Stub a successful getClientDetails response so handleAddThirdPartyValidationErrors thinks it has info
+      apiServiceGetStub.resolves({
+        status: 'success'
+      });
 
       // Act
       await postAddClientThirdParty(req as RequestWithMiddleware, res as Response, next);

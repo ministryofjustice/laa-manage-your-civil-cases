@@ -1,32 +1,19 @@
 {% extends "base.njk" %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
-{% from "govuk/components/tag/macro.njk" import govukTag %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/tabComponent.njk" import tabComponent %}
-
-{# TO-DO Adding this in temporarily, will be resolved in EL-2754 #}
-{% set caseStatusToStates = {
-  "new": "new",
-  "opened": "pending",
-  "accepted": "advising",
-  "rejected": "closed",
-  "closed": "completed"
-} %}
+{% from "components/caseDetailsHeaderComponent.njk" import caseDetailsHeaderComponent %}
 
 {% block backLink %}
   {{ govukBackLink({
     text: t('common.backToAllCases'),
-    href: "/cases/" + caseStatusToStates[client.caseStatus | lower],
-    classes: "govuk-!-margin-bottom-0"
+    href: "/cases/" + client.caseStatus,
+    classes: "govuk-!-margin-bottom-2"
   }) }}
 {% endblock %}
 
 {% block pageContent %}
-  <h1 class="govuk-caption-xl">{{ client.caseReference }}</h1>
-  <h1 class="govuk-heading-xl govuk-!-margin-bottom-6" id="page-heading">{{ client.fullName }}</h1>
-
-  {% include "case_details/_case-info-partial.njk" %}
-
+  {{ caseDetailsHeaderComponent(client) }}
   {{ tabComponent({
     activeTab: activeTab,
     containerId: "cases-tab-container",

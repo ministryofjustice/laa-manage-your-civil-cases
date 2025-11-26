@@ -150,6 +150,11 @@ describe('Edit Client Support Needs Controller', () => {
 
       await runSchema(req as any, validateEditClientSupportNeeds());
 
+      // Stub a successful getClientDetails response so handleAddClientSupportNeedsErrors thinks it has info
+      apiServiceGetStub.resolves({
+        status: 'success'
+      });
+
       // Act
       await postEditClientSupportNeeds(req as RequestWithMiddleware, res as Response, next);
 
@@ -169,6 +174,11 @@ describe('Edit Client Support Needs Controller', () => {
       };
 
       await runSchema(req as any, validateEditClientSupportNeeds());
+
+      // Stub a successful getClientDetails response so handleAddClientSupportNeedsErrors thinks it has info
+      apiServiceGetStub.resolves({
+        status: 'success'
+      });
 
       // Act
       await postEditClientSupportNeeds(req as RequestWithMiddleware, res as Response, next);

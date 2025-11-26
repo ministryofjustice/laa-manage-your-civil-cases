@@ -41,6 +41,7 @@ export async function handleGetEditForm(
 
     const templateData = {
       caseReference,
+      client: response.data,
       csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
       ...extractedData
     };
@@ -107,8 +108,12 @@ export async function handlePostEditForm(
   }
 
   if (formIsInvalid) {
+    // Fetch client details for the case info header and alert banner
+    const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
+    
     const renderData: RenderData = {
       caseReference,
+      client: response.data,
       error: { inputErrors, errorSummaryList },
       csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
     };
@@ -195,12 +200,12 @@ abstract class ThirdPartyValidator {
    * @param {Record<string, unknown>} formFields - Form field values
    * @returns {boolean} - Returns true if there were validation errors, false otherwise
    */
-  public handleValidationErrors(
+  public async handleValidationErrors(
     req: Request,
     res: Response,
     caseReference: string,
     formFields: Record<string, unknown>
-  ): boolean {
+  ): Promise<boolean> {
     const rawValidationResult = validationResult(req);
 
     if (rawValidationResult.isEmpty()) {
@@ -232,8 +237,12 @@ abstract class ThirdPartyValidator {
       href: `#${fieldName}`,
     }));
 
+    // Fetch client details for the case info header and alert banner
+    const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
+
     const renderData = {
       caseReference,
+      client: response.data,
       error: { inputErrors, errorSummaryList },
       csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
       currentThirdPartyFullName: formFields.thirdPartyFullName,
@@ -278,13 +287,13 @@ const editThirdPartyValidator = new EditThirdPartyValidator();
  * @param {Record<string, unknown>} formFields - Form field values
  * @returns {boolean} - Returns true if there were validation errors, false otherwise
  */
-export function handleAddThirdPartyValidationErrors(
+export async function handleAddThirdPartyValidationErrors(
   req: Request,
   res: Response,
   caseReference: string,
   formFields: Record<string, unknown>
-): boolean {
-  return addThirdPartyValidator.handleValidationErrors(req, res, caseReference, formFields);
+): Promise<boolean> {
+  return await addThirdPartyValidator.handleValidationErrors(req, res, caseReference, formFields);
 }
 
 /**
@@ -295,13 +304,13 @@ export function handleAddThirdPartyValidationErrors(
  * @param {Record<string, unknown>} formFields - Form field values
  * @returns {boolean} - Returns true if there were validation errors, false otherwise
  */
-export function handleEditThirdPartyValidationErrors(
+export async function handleEditThirdPartyValidationErrors(
   req: Request,
   res: Response,
   caseReference: string,
   formFields: Record<string, unknown>
-): boolean {
-  return editThirdPartyValidator.handleValidationErrors(req, res, caseReference, formFields);
+): Promise<boolean> {
+  return await editThirdPartyValidator.handleValidationErrors(req, res, caseReference, formFields);
 }
 
 /**
@@ -365,12 +374,12 @@ abstract class ClientSupportNeedsValidator {
    * @param {Record<string, unknown>} formFields - Form field values
    * @returns {boolean} - Returns true if there were validation errors, false otherwise
    */
-  public handleValidationErrors(
+  public async handleValidationErrors(
     req: Request,
     res: Response,
     caseReference: string,
     formFields: Record<string, unknown>
-  ): boolean {
+  ): Promise<boolean> {
     const rawValidationResult = validationResult(req);
 
     if (rawValidationResult.isEmpty()) {
@@ -402,8 +411,12 @@ abstract class ClientSupportNeedsValidator {
       href: `#${fieldName}`,
     }));
 
+    // Fetch client details for the case info header and alert banner
+    const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
+
     const renderData = {
       caseReference,
+      client: response.data,
       error: { inputErrors, errorSummaryList },
       csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
       currentClientSupportNeeds: formFields.clientSupportNeeds,
@@ -442,13 +455,13 @@ const editClientSupportNeedsValidator = new EditClientSupportNeedsValidator();
  * @param {Record<string, unknown>} formFields - Form field values
  * @returns {boolean} - Returns true if there were validation errors, false otherwise
  */
-export function handleAddClientSupportNeedsErrors(
+export async function handleAddClientSupportNeedsErrors(
   req: Request,
   res: Response,
   caseReference: string,
   formFields: Record<string, unknown>
-): boolean {
-  return addClientSupportNeedsValidator.handleValidationErrors(req, res, caseReference, formFields);
+): Promise<boolean> {
+  return await addClientSupportNeedsValidator.handleValidationErrors(req, res, caseReference, formFields);
 }
 
 /**
@@ -459,11 +472,11 @@ export function handleAddClientSupportNeedsErrors(
  * @param {Record<string, unknown>} formFields - Form field values
  * @returns {boolean} - Returns true if there were validation errors, false otherwise
  */
-export function handleEditClientSupportNeedsErrors(
+export async function handleEditClientSupportNeedsErrors(
   req: Request,
   res: Response,
   caseReference: string,
   formFields: Record<string, unknown>
-): boolean {
-  return editClientSupportNeedsValidator.handleValidationErrors(req, res, caseReference, formFields);
+): Promise<boolean> {
+  return await editClientSupportNeedsValidator.handleValidationErrors(req, res, caseReference, formFields);
 }

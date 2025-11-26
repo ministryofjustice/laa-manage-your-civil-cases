@@ -5,7 +5,6 @@
 
 type CaseStatus = 'new' | 'open' | 'accepted' | 'closed' | 'default';
 
-
 interface TestCase {
   reference: string;
   status: CaseStatus;

@@ -135,7 +135,7 @@ export async function postEditClientThirdParty(req: Request, res: Response, next
   ]);
 
   // Check for validation errors
-  if (handleEditThirdPartyValidationErrors(req, res, caseReference, formFields)) {
+  if (await handleEditThirdPartyValidationErrors(req, res, caseReference, formFields)) {
     return;
   }
 
