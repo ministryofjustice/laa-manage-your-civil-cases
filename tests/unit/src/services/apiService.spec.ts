@@ -12,14 +12,20 @@ describe('ApiService', () => {
   let axiosMiddlewareStub: AxiosInstanceWrapper;
   let getStub: sinon.SinonStub;
 
+  let postStub: sinon.SinonStub;
+  let patchStub: sinon.SinonStub;
+
   beforeEach(() => {
-    // Create a stub for the axios get method
+    // Create stubs for the axios methods
     getStub = sinon.stub();
+    postStub = sinon.stub();
+    patchStub = sinon.stub();
 
     // Create a mock axios middleware with proper structure
     axiosMiddlewareStub = {
       axiosInstance: {
         defaults: {
+          baseURL: '',
           headers: {
             common: {}
           }
@@ -29,25 +35,30 @@ describe('ApiService', () => {
           response: { use: sinon.stub() }
         },
         get: getStub,
-        post: sinon.stub(),
+        post: postStub,
         put: sinon.stub(),
-        delete: sinon.stub()
+        delete: sinon.stub(),
+        patch: patchStub
       },
       // Direct methods that AxiosInstanceWrapper should have
       get: getStub,
-      post: sinon.stub(),
+      post: postStub,
       put: sinon.stub(),
       delete: sinon.stub(),
       request: sinon.stub(),
       head: sinon.stub(),
       options: sinon.stub(),
-      patch: sinon.stub(),
+      patch: patchStub,
       use: sinon.stub()
     } as any;
   });
 
   afterEach(() => {
     sinon.restore();
+    // Reset stubs
+    getStub?.reset();
+    postStub?.reset();
+    patchStub?.reset();
   });
 
   describe('searchCases', () => {
@@ -170,6 +181,243 @@ describe('ApiService', () => {
         page: 2,
         page_size: 15,
         ordering: 'modified'
+      });
+    });
+  });
+
+  describe('Third Party Operations', () => {
+    describe('addThirdPartyContact', () => {
+      it('should successfully add third party contact and return transformed data', async () => {
+        // Mock API response - must include client's personal_details at top level
+        const mockApiResponse = {
+          data: {
+            reference: 'TEST123',
+            full_name: 'John Doe',
+            date_of_birth: '1990-01-01',
+            state: 'OPEN',
+            laa_reference: 'LAA-123',
+            provider_assigned_at: '2024-01-01T10:00:00Z',
+            personal_details: {
+              full_name: 'John Doe',
+              date_of_birth: '1990-01-01',
+              home_phone: '01234567890',
+              mobile_phone: '07700900000'
+            },
+            thirdparty_details: {
+              personal_details: {
+                full_name: 'Jane Smith',
+                mobile_phone: '07700900123',
+                email: 'jane@example.com',
+                safe_to_contact: 'SAFE'
+              },
+              personal_relationship: 'PARENT_GUARDIAN',
+              pass_phrase: 'secret'
+            }
+          }
+        };
+
+        postStub.resolves(mockApiResponse);
+        
+        const thirdPartyData = {
+          personal_details: {
+            full_name: 'Jane Smith',
+            mobile_phone: '07700900123',
+            email: 'jane@example.com',
+            safe_to_contact: 'SAFE'
+          },
+          personal_relationship: 'PARENT_GUARDIAN',
+          pass_phrase: 'secret'
+        };
+
+        const result = await apiService.addThirdPartyContact(
+          axiosMiddlewareStub,
+          'TEST123',
+          thirdPartyData
+        );
+
+        expect(result.status).to.equal('success');
+        expect(result.data).to.be.an('object');
+        expect(postStub.calledOnce).to.be.true;
+        expect(postStub.calledWith('/cla_provider/api/v1/case/TEST123/thirdparty_details/', thirdPartyData)).to.be.true;
+      });
+
+      it('should handle API errors gracefully', async () => {
+        postStub.rejects(new Error('API connection failed'));
+
+        const thirdPartyData = {
+          personal_details: {
+            full_name: 'Jane Smith'
+          }
+        };
+
+        const result = await apiService.addThirdPartyContact(
+          axiosMiddlewareStub,
+          'TEST123',
+          thirdPartyData
+        );
+
+        expect(result.status).to.equal('error');
+        expect(result.data).to.be.null;
+        expect(result.message).to.include('An unexpected error occurred');
+      });
+    });
+
+    describe('updateThirdPartyContact', () => {
+      it('should successfully update third party contact and return transformed data', async () => {
+        // Mock API response - must include client's personal_details at top level
+        const mockApiResponse = {
+          data: {
+            reference: 'TEST123',
+            full_name: 'John Doe',
+            date_of_birth: '1990-01-01',
+            state: 'OPEN',
+            laa_reference: 'LAA-123',
+            provider_assigned_at: '2024-01-01T10:00:00Z',
+            personal_details: {
+              full_name: 'John Doe',
+              date_of_birth: '1990-01-01',
+              home_phone: '01234567890',
+              mobile_phone: '07700900000'
+            },
+            thirdparty_details: {
+              personal_details: {
+                full_name: 'Jane Smith Updated',
+                mobile_phone: '07700900456',
+                email: 'jane.updated@example.com',
+                safe_to_contact: 'SAFE'
+              },
+              personal_relationship: 'PARENT_GUARDIAN'
+            }
+          }
+        };
+
+        patchStub.resolves(mockApiResponse);
+
+        const updateData = {
+          personal_details: {
+            full_name: 'Jane Smith Updated',
+            mobile_phone: '07700900456',
+            email: 'jane.updated@example.com',
+            safe_to_contact: 'SAFE'
+          },
+          personal_relationship: 'PARENT_GUARDIAN'
+        };
+
+        const result = await apiService.updateThirdPartyContact(
+          axiosMiddlewareStub,
+          'TEST123',
+          updateData
+        );
+
+        expect(result.status).to.equal('success');
+        expect(result.data).to.be.an('object');
+        expect(patchStub.calledOnce).to.be.true;
+        expect(patchStub.calledWith('/cla_provider/api/v1/case/TEST123/thirdparty_details/', updateData)).to.be.true;
+      });
+
+      it('should handle API errors gracefully', async () => {
+        patchStub.rejects(new Error('API connection failed'));
+
+        const updateData = {
+          personal_details: {
+            full_name: 'Jane Smith'
+          }
+        };
+
+        const result = await apiService.updateThirdPartyContact(
+          axiosMiddlewareStub,
+          'TEST123',
+          updateData
+        );
+
+        expect(result.status).to.equal('error');
+        expect(result.data).to.be.null;
+        expect(result.message).to.include('An unexpected error occurred');
+      });
+    });
+
+    describe('deleteThirdPartyContact', () => {
+      it('should successfully soft delete third party contact with correct payload', async () => {
+        // Mock API responses for both PATCH and GET
+        const mockPatchResponse = {
+          data: {
+            reference: 'TEST123',
+            full_name: 'John Doe'
+          }
+        };
+
+        const mockGetResponse = {
+          data: {
+            reference: 'TEST123',
+            full_name: 'John Doe',
+            date_of_birth: '1990-01-01',
+            state: 'OPEN',
+            laa_reference: 'LAA-123',
+            provider_assigned_at: '2024-01-01T10:00:00Z',
+            personal_details: {
+              full_name: 'John Doe',
+              date_of_birth: '1990-01-01',
+              home_phone: '01234567890',
+              mobile_phone: '07700900000'
+            },
+            thirdparty_details: null
+          }
+        };
+
+        patchStub.resolves(mockPatchResponse);
+        getStub.resolves(mockGetResponse);
+
+        const result = await apiService.deleteThirdPartyContact(
+          axiosMiddlewareStub,
+          'TEST123'
+        );
+
+        expect(result.status).to.equal('success');
+        expect(result.data).to.be.an('object');
+
+        // Verify PATCH was called with correct endpoint and soft-delete payload
+        expect(patchStub.calledOnce).to.be.true;
+        const patchCall = patchStub.getCall(0);
+        expect(patchCall.args[0]).to.equal('/cla_provider/api/v1/case/TEST123/thirdparty_details/');
+        
+        // Verify the exact soft-delete payload structure
+        const payload = patchCall.args[1];
+        expect(payload).to.deep.equal({
+          personal_details: {
+            title: null,
+            full_name: null,
+            postcode: null,
+            street: null,
+            mobile_phone: null,
+            home_phone: '',
+            email: '',
+            safe_to_contact: null
+          },
+          pass_phrase: null,
+          reason: null,
+          personal_relationship: 'OTHER',
+          personal_relationship_note: '',
+          spoke_to: null,
+          no_contact_reason: null,
+          organisation_name: null
+        });
+
+        // Verify GET was called to re-fetch case data
+        expect(getStub.calledOnce).to.be.true;
+        expect(getStub.calledWith('/cla_provider/api/v1/case/TEST123/detailed')).to.be.true;
+      });
+
+      it('should handle API errors gracefully', async () => {
+        patchStub.rejects(new Error('API connection failed'));
+
+        const result = await apiService.deleteThirdPartyContact(
+          axiosMiddlewareStub,
+          'TEST123'
+        );
+
+        expect(result.status).to.equal('error');
+        expect(result.data).to.be.null;
+        expect(result.message).to.include('An unexpected error occurred');
       });
     });
   });
