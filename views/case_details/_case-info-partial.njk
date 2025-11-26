@@ -31,23 +31,29 @@
   {% set menuItems = [
     {
       text: t('pages.caseDetails.buttons.actions.advising'),
-      href: "#"
+      href: "/cases/" + client.caseReference + "/accept",
+      attributes: {
+        "data-method": "post"
+      }
     }, {
       text: t('pages.caseDetails.buttons.actions.pending'),
-      href: "#"
+      href: "/cases/" + client.caseReference + "/why-pending"
     }, {
       text: t('pages.caseDetails.buttons.actions.closed'),
-      href: "#"
+      href: "/cases/" + client.caseReference + "/why-closed"
     }
   ] %}
 {% elif currentStatus == "pending" %}
   {% set menuItems = [
     {
       text: t('pages.caseDetails.buttons.actions.advising'),
-      href: "#"
+      href: "/cases/" + client.caseReference + "/accept",
+      attributes: {
+        "data-method": "post"
+      }
     }, {
       text: t('pages.caseDetails.buttons.actions.closed'),
-      href: "#"
+      href: "/cases/" + client.caseReference + "/why-closed"
     }
   ] %}
 {% elif currentStatus == "advising" %}
@@ -55,7 +61,10 @@
   {% set menuItems = [
     {
       text: t('pages.caseDetails.buttons.actions.completed'),
-      href: "#"
+      href: "/cases/" + client.caseReference + "/completed",
+      attributes: {
+        "data-method": "post"
+      }
     }, {
       text: '',
       classes: 'govuk-visually-hidden'
@@ -65,7 +74,7 @@
   {% set menuItems = [
     {
       text: t('pages.caseDetails.buttons.actions.advising'),
-      href: "#"
+      href: "/cases/" + client.caseReference + "/why-reopen"
     }, {
       text: '',
       classes: 'govuk-visually-hidden'
