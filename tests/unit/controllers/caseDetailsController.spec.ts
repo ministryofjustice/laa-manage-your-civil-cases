@@ -17,6 +17,7 @@ import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import type { Request, Response, NextFunction } from 'express';
+import * as expressValidator from 'express-validator';
 import {
   handleCaseDetailsTab,
   acceptCase,
@@ -32,6 +33,18 @@ import { apiService } from '#src/services/apiService.js';
 import { changeCaseStateService } from '#src/services/changeCaseState.js';
 // Import to get global type declarations for axiosMiddleware
 import '#utils/axiosSetup.js';
+import { validateCloseCase } from '#src/middlewares/closeCaseSchema.js';
+import { validatePendingCase } from '#src/middlewares/pendingCaseSchema.js';
+import { validateReopenCase } from '#src/middlewares/reopenCaseSchema.js';
+import { ValidationChain } from 'express-validator';
+
+// Run an express-validator schema against a fake request
+const runSchema = async (req: any, schema: ValidationChain[] | ValidationChain): Promise<void> => {
+  const chains = Array.isArray(schema) ? schema : [schema];
+  for (const chain of chains) {
+    await chain.run(req);
+  }
+};
 
 describe('Case Details Controller', () => {
   let req: Partial<Request>;
@@ -220,10 +233,6 @@ describe('Case Details Controller', () => {
       const redirectStub = sinon.stub();
       res.redirect = redirectStub;
       req.body = { eventCode: 'TEST_EVENT', closeNote: 'Test note' };
-      
-      // Mock validationResult to return no errors
-      const validationResultStub = sinon.stub();
-      validationResultStub.isEmpty = sinon.stub().returns(true);
 
       // Act
       await closeCase(req as Request, res as Response, next);
@@ -241,10 +250,6 @@ describe('Case Details Controller', () => {
       const redirectStub = sinon.stub();
       res.redirect = redirectStub;
       req.body = { pendingReason: 'not_ready', otherNote: '' };
-
-      // Mock validationResult to return no errors
-      const validationResultStub = sinon.stub();
-      validationResultStub.isEmpty = sinon.stub().returns(true);
 
       // Act
       await pendingCase(req as Request, res as Response, next);
@@ -285,10 +290,6 @@ describe('Case Details Controller', () => {
       const redirectStub = sinon.stub();
       res.redirect = redirectStub;
       req.body = { reopenNote: 'Test reopen note' };
-
-      // Mock validationResult to return no errors
-      const validationResultStub = sinon.stub();
-      validationResultStub.isEmpty = sinon.stub().returns(true);
 
       // Act
       await reopenCase(req as Request, res as Response, next);
