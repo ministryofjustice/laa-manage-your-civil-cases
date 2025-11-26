@@ -14,7 +14,12 @@ const caseStateUpdates = new Map<string, Partial<MockCase>>();
  * Reset case state updates (call in beforeEach hook)
  */
 export function resetMockCaseState(): void {
+  console.log('[MSW] resetMockCaseState() called - clearing', caseStateUpdates.size, 'state updates');
+  caseStateUpdates.forEach((value, key) => {
+    console.log(`[MSW]   - ${key}: ${JSON.stringify(value)}`);
+  });
   caseStateUpdates.clear();
+  console.log('[MSW] State cleared, Map size now:', caseStateUpdates.size);
 }
 
 /**

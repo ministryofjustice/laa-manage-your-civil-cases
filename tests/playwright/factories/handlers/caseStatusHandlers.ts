@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import type { MockCase } from './types.js';
-import { transformToApiFormat, updateCaseState, findMockCase } from './utils.js';
+import { transformToApiFormat, findMockCase } from './utils.js';
 
 export const createCaseStatusHandlers = (
   apiBaseUrl: string,
@@ -23,7 +23,6 @@ export const createCaseStatusHandlers = (
           provider_accepted: new Date().toISOString(),
         };
         
-        updateCaseState(caseReference, updates);
         const updatedCase = { ...mockCase, ...updates };
 
         return HttpResponse.json(transformToApiFormat(updatedCase));
@@ -48,7 +47,6 @@ export const createCaseStatusHandlers = (
           dateClosed: new Date().toISOString(),
         };
         
-        updateCaseState(caseReference, updates);
         const updatedCase = { ...mockCase, ...updates };
 
         return HttpResponse.json(transformToApiFormat(updatedCase));
@@ -85,7 +83,6 @@ export const createCaseStatusHandlers = (
           dateClosed: new Date().toISOString(),
         };
         
-        updateCaseState(caseReference, updates);
         const updatedCase = { ...mockCase, ...updates };
 
         return HttpResponse.json(transformToApiFormat(updatedCase));
@@ -121,7 +118,6 @@ export const createCaseStatusHandlers = (
           state_note: notes,
         };
         
-        updateCaseState(caseReference, updates);
         const updatedCase = { ...mockCase, ...updates };
 
         return HttpResponse.json(transformToApiFormat(updatedCase));
@@ -157,7 +153,6 @@ export const createCaseStatusHandlers = (
           dateClosed: undefined,
         };
         
-        updateCaseState(caseReference, updates);
         const updatedCase = { ...mockCase, ...updates };
 
         return HttpResponse.json(transformToApiFormat(updatedCase));
