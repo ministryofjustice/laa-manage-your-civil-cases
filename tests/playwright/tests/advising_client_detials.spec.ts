@@ -8,7 +8,7 @@ test.beforeEach(async ({ page }) => {
 
 test('client details selected from advising cases tab has correct page elements', async ({ page, i18nSetup }) => {
   // Navigate to the client details
-  await page.goto(getClientDetailsUrlByStatus('accepted'));
+  await page.goto(getClientDetailsUrlByStatus('advising'));
 
   const advising_tag = page.getByText('Advising', { exact: true });
   const changeStatusButton = page.getByRole('button', { name: 'Change status' });
@@ -26,6 +26,6 @@ test('client details selected from advising cases tab has correct page elements'
 test('accepted client details page should be accessible', {
   tag: '@accessibility',
 }, async ({ page, checkAccessibility }) => {
-  await page.goto(getClientDetailsUrlByStatus('accepted'));
+  await page.goto(getClientDetailsUrlByStatus('advising'));
   await checkAccessibility();
 });

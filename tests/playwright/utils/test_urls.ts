@@ -3,7 +3,7 @@
  * Provides consistent URLs for different case statuses and pages
  */
 
-type CaseStatus = 'new' | 'open' | 'accepted' | 'closed' | 'default';
+type CaseStatus = 'new' | 'open' | 'closed' | 'advising' | 'default';
 
 
 interface TestCase {
@@ -29,8 +29,8 @@ const TEST_CASES: Record<string, TestCase> = {
     status: 'open'
   },
   ACCEPTED_CASE: {
-    reference: 'PC-3184-5962', // Ember Hamilton - Accepted status
-    status: 'accepted'
+    reference: 'PC-3184-5962', // Ember Hamilton - Advising status
+    status: 'advising'
   },
   CLOSED_CASE: {
     reference: 'PC-4575-7150', // Noah Brown - Closed status
