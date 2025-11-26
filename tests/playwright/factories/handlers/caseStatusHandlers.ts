@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import type { MockCase } from './types.js';
-import { transformToApiFormat } from './utils.js';
+import { transformToApiFormat, updateCaseState, findMockCase } from './utils.js';
 
 export const createCaseStatusHandlers = (
   apiBaseUrl: string,
@@ -12,17 +12,19 @@ export const createCaseStatusHandlers = (
       `${apiBaseUrl}${apiPrefix}/case/:caseReference/accept/`,
       async ({ request, params }) => {
         const caseReference = params.caseReference as string;
-        const mockCase = cases.find((c) => c.caseReference === caseReference);
+        const mockCase = findMockCase(caseReference, cases);
 
         if (!mockCase) {
           return new HttpResponse(null, { status: 404 });
         }
 
-        const updatedCase = {
-          ...mockCase,
+        const updates = {
           caseStatus: 'Advising',
           provider_accepted: new Date().toISOString(),
         };
+        
+        updateCaseState(caseReference, updates);
+        const updatedCase = { ...mockCase, ...updates };
 
         return HttpResponse.json(transformToApiFormat(updatedCase));
       }
@@ -34,18 +36,20 @@ export const createCaseStatusHandlers = (
       `${apiBaseUrl}${apiPrefix}/case/:caseReference/completed/`,
       async ({ request, params }) => {
         const caseReference = params.caseReference as string;
-        const mockCase = cases.find((c) => c.caseReference === caseReference);
+        const mockCase = findMockCase(caseReference, cases);
 
         if (!mockCase) {
           return new HttpResponse(null, { status: 404 });
         }
 
-        const updatedCase = {
-          ...mockCase,
+        const updates = {
           caseStatus: 'Completed',
           outcome_code: 'CLSP',
           dateClosed: new Date().toISOString(),
         };
+        
+        updateCaseState(caseReference, updates);
+        const updatedCase = { ...mockCase, ...updates };
 
         return HttpResponse.json(transformToApiFormat(updatedCase));
       }
@@ -54,31 +58,35 @@ export const createCaseStatusHandlers = (
 
   const createCloseCaseHandler = () => {
     return http.post(
-      `${apiBaseUrl}${apiPrefix}/case/:caseReference/why-closed/`,
+      `${apiBaseUrl}${apiPrefix}/case/:caseReference/reject/`,
       async ({ request, params }) => {
         const caseReference = params.caseReference as string;
         const body = await request.json() as Record<string, any>;
 
-        if (!body?.event_code || !body?.notes) {
+        // Validate: event_code is required, notes is optional
+        const eventCode = typeof body?.event_code === 'string' ? body.event_code.trim() : '';
+        if (!eventCode) {
           return new HttpResponse(
-            JSON.stringify({ error: 'event_code and notes are required' }),
+            JSON.stringify({ error: 'Missing required field: event_code' }),
             { status: 400 }
           );
         }
 
-        const mockCase = cases.find((c) => c.caseReference === caseReference);
+        const mockCase = findMockCase(caseReference, cases);
 
         if (!mockCase) {
           return new HttpResponse(null, { status: 404 });
         }
 
-        const updatedCase = {
-          ...mockCase,
+        const updates = {
           caseStatus: 'Closed',
           provider_closed: new Date().toISOString(),
-          state_note: body.notes,
+          state_note: body.notes || '',
           dateClosed: new Date().toISOString(),
         };
+        
+        updateCaseState(caseReference, updates);
+        const updatedCase = { ...mockCase, ...updates };
 
         return HttpResponse.json(transformToApiFormat(updatedCase));
       }
@@ -87,30 +95,34 @@ export const createCaseStatusHandlers = (
 
   const createPendingCaseHandler = () => {
     return http.post(
-      `${apiBaseUrl}${apiPrefix}/case/:caseReference/why-pending/`,
+      `${apiBaseUrl}${apiPrefix}/case/:caseReference/open/`,
       async ({ request, params }) => {
         const caseReference = params.caseReference as string;
         const body = await request.json() as Record<string, any>;
 
-        if (!body?.event_code || !body?.notes) {
+        // Validate: notes is required, no event_code field
+        const notes = typeof body?.notes === 'string' ? body.notes.trim() : '';
+        if (!notes) {
           return new HttpResponse(
-            JSON.stringify({ error: 'event_code and notes are required' }),
+            JSON.stringify({ error: 'Missing required field: notes' }),
             { status: 400 }
           );
         }
 
-        const mockCase = cases.find((c) => c.caseReference === caseReference);
+        const mockCase = findMockCase(caseReference, cases);
 
         if (!mockCase) {
           return new HttpResponse(null, { status: 404 });
         }
 
-        const updatedCase = {
-          ...mockCase,
-          caseStatus: 'Pending',
+        const updates = {
+          caseStatus: 'Opened',
           provider_viewed: new Date().toISOString(),
-          state_note: body.notes,
+          state_note: notes,
         };
+        
+        updateCaseState(caseReference, updates);
+        const updatedCase = { ...mockCase, ...updates };
 
         return HttpResponse.json(transformToApiFormat(updatedCase));
       }
@@ -119,30 +131,34 @@ export const createCaseStatusHandlers = (
 
   const createReopenCaseHandler = () => {
     return http.post(
-      `${apiBaseUrl}${apiPrefix}/case/:caseReference/why-reopen/`,
+      `${apiBaseUrl}${apiPrefix}/case/:caseReference/reopen/`,
       async ({ request, params }) => {
         const caseReference = params.caseReference as string;
         const body = await request.json() as Record<string, any>;
 
-        if (!body?.event_code || !body?.notes) {
+        // Validate: notes is required, no event_code field
+        const notes = typeof body?.notes === 'string' ? body.notes.trim() : '';
+        if (!notes) {
           return new HttpResponse(
-            JSON.stringify({ error: 'event_code and notes are required' }),
+            JSON.stringify({ error: 'Missing required field: notes' }),
             { status: 400 }
           );
         }
 
-        const mockCase = cases.find((c) => c.caseReference === caseReference);
+        const mockCase = findMockCase(caseReference, cases);
 
         if (!mockCase) {
           return new HttpResponse(null, { status: 404 });
         }
 
-        const updatedCase = {
-          ...mockCase,
+        const updates = {
           caseStatus: 'Advising',
-          state_note: body.notes,
+          state_note: notes,
           dateClosed: undefined,
         };
+        
+        updateCaseState(caseReference, updates);
+        const updatedCase = { ...mockCase, ...updates };
 
         return HttpResponse.json(transformToApiFormat(updatedCase));
       }

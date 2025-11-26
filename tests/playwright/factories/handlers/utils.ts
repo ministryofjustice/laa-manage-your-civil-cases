@@ -5,6 +5,38 @@
 import type { MockCase } from './types.js';
 
 /**
+ * In-memory state tracking for case updates during tests
+ * Maps caseReference to partial case updates
+ */
+const caseStateUpdates = new Map<string, Partial<MockCase>>();
+
+/**
+ * Reset case state updates (call in beforeEach hook)
+ */
+export function resetMockCaseState(): void {
+  caseStateUpdates.clear();
+}
+
+/**
+ * Update case state
+ */
+export function updateCaseState(caseReference: string, updates: Partial<MockCase>): void {
+  const existing = caseStateUpdates.get(caseReference) || {};
+  caseStateUpdates.set(caseReference, { ...existing, ...updates });
+}
+
+/**
+ * Find mock case with state updates applied
+ */
+export function findMockCase(caseReference: string, cases: MockCase[]): MockCase | undefined {
+  const baseCase = cases.find(c => c.caseReference === caseReference);
+  if (!baseCase) return undefined;
+  
+  const updates = caseStateUpdates.get(caseReference);
+  return updates ? { ...baseCase, ...updates } : baseCase;
+}
+
+/**
  * Map boolean safe to call value to CLA API format
  * @param {boolean} booleanValueTrue - Whether it's safe to call
  * @returns {string} 'SAFE' or 'DONT_CALL'
@@ -22,7 +54,8 @@ export function transformToApiFormat(caseItem: MockCase): object {
     laa_reference: caseItem.laaReference,
     full_name: caseItem.fullName,
     date_of_birth: caseItem.dateOfBirth,
-    state: caseItem.caseStatus,
+    // Real CLA API returns lowercase state names (e.g., "accepted", "opened", "closed")
+    state: caseItem.caseStatus.toLowerCase(),
     provider_assigned_at: caseItem.dateReceived,
     modified: caseItem.lastModified || caseItem.dateReceived,
     provider_closed: caseItem.dateClosed || null,
