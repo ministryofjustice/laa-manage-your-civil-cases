@@ -100,15 +100,17 @@
 
   <span class="pipe"></span>
 
-  {{ mojButtonMenu({
-    id: "change-case-status-menu",
-    button: {
-      text: t('pages.caseDetails.buttons.label'),
-      classes: "govuk-button--secondary govuk-!-display-inline-block govuk-!-margin-bottom-2"
-    },
-    preventDoubleClick: true,
-    items: menuItems
-    })
-  }}
+  {% if not hideStatusButton%}
+    {{ mojButtonMenu({
+      id: "change-case-status-menu",
+      button: {
+        text: t('pages.caseDetails.buttons.label'),
+        classes: "govuk-button--secondary govuk-!-display-inline-block govuk-!-margin-bottom-2"
+      },
+      preventDoubleClick: true,
+      items: menuItems
+      })
+    }}
+  {% endif %}
 </div>
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6"/>
