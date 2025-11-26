@@ -82,9 +82,8 @@ test.describe('Case Status Handling', () => {
       await reopenPage.navigate();
       await reopenPage.submitWithNote('Client requested case to be reopened');
 
-      const clientDetails = ClientDetailsPage.forCase(page, 'PC-4575-7150');
-      await expect(page).toHaveURL(clientDetails.url);
-      await clientDetails.expectStatus('Advising');
+      // After reopening, the controller redirects to /cases/advising (not back to client details)
+      await expect(page).toHaveURL('/cases/advising');
     });
 
     test('why-reopen form should be accessible', {

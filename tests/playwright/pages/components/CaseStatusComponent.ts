@@ -39,7 +39,9 @@ export class CaseStatusComponent {
    * @param {string} status - The expected status
    */
   async expectStatus(status: 'New' | 'Advising' | 'Closed' | 'Pending'): Promise<void> {
+    await this.page.waitForLoadState('domcontentloaded');
     const tagLocator = this.getTagLocator(status);
+    await expect(tagLocator).toBeVisible();
     await expect(tagLocator).toContainText(status);
   }
 }

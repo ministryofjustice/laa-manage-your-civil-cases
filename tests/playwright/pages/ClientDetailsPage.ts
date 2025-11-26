@@ -41,6 +41,7 @@ export class ClientDetailsPage {
    */
   async navigate(): Promise<void> {
     await this.page.goto(this.url);
+    await this.page.waitForLoadState('networkidle');
   }
 
   /**

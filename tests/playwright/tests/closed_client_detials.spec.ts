@@ -9,6 +9,7 @@ test.beforeEach(async ({ page }) => {
 test('client details selected from closed cases tab has correct page elements', async ({ page, i18nSetup }) => {
   // Navigate to the client details
   await page.goto(getClientDetailsUrlByStatus('closed'));
+  await page.waitForLoadState('networkidle');
 
   const closed_tag = page.getByText('Closed', { exact: true });
   const changeStatusButton = page.getByRole('button', { name: 'Change status' });
