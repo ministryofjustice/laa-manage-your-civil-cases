@@ -159,7 +159,7 @@ export async function processLogin(req: Request, res: Response, _next: NextFunct
       const userInfo = authResult.authService.getUserInfo();
 
       req.session.regenerate((regenErr) => {
-        if (regenErr !== null) {
+        if (regenErr !== null && regenErr !== undefined) {
           devError(`Session regenerate failed: ${regenErr instanceof Error ? regenErr.message : String(regenErr)}`);
           renderLoginPage(res, { authMessage: 'An error occurred during login. Please try again.' }, { username });
           return;
@@ -184,7 +184,7 @@ export async function processLogin(req: Request, res: Response, _next: NextFunct
         }
 
         req.session.save((saveErr) => {
-          if (saveErr !== null) {
+          if (saveErr !== null && saveErr !== undefined) {
             devError(`Session save failed: ${saveErr instanceof Error ? saveErr.message : String(saveErr)}`);
             renderLoginPage(res, { authMessage: 'An error occurred during login. Please try again.' }, { username });
             return;
