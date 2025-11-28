@@ -40,7 +40,8 @@ export {
   transformClientSupportNeeds,
   transformThirdParty,
   buildOrderingParamFields,
-  isSoftDeletedThirdParty
+  isSoftDeletedThirdParty,
+  trimOrUndefined
 } from './dataTransformers.js';
 
 // Date formatting utilities

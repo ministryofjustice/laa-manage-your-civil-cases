@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 import { apiService } from '#src/services/apiService.js';
 import { changeCaseStateService } from '#src/services/changeCaseStateService.js';
-import { devLog, devError, createProcessedError, safeString, clearAllOriginalFormData, safeBodyString, formatValidationError } from '#src/scripts/helpers/index.js';
+import { devLog, devError, createProcessedError, safeString, clearAllOriginalFormData, safeBodyString, formatValidationError, trimOrUndefined } from '#src/scripts/helpers/index.js';
 import { storeSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 import config from '#config.js';
 
@@ -229,7 +229,6 @@ export async function getCloseCaseForm(req: Request, res: Response, next: NextFu
  * @param {NextFunction} next Express next function
  * @returns {Promise<void>} Redirect to client details page
  */
-// eslint-disable-next-line complexity -- Validation error handling requires branching logic
 export async function closeCase(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
@@ -295,9 +294,8 @@ export async function closeCase(req: Request, res: Response, next: NextFunction)
 
   try {
     const eventCode = safeString(safeBodyString(req.body, 'eventCode'));
-    const rawCloseNote = safeBodyString(req.body, 'closeNote');
-    const closeNote = typeof rawCloseNote === 'string' && rawCloseNote.trim() !== '' ? rawCloseNote : undefined;
-
+    const closeNote = trimOrUndefined(safeBodyString(req.body, 'closeNote'));
+    
     devLog(`Closing case: ${caseReference} with event code: ${eventCode}`);
     await changeCaseStateService.closeCase(req.axiosMiddleware, caseReference, eventCode, closeNote);
 
