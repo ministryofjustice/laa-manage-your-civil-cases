@@ -166,11 +166,7 @@
         "legend": "Why is this case closed?",
         "noteLabel": "Add a note",
         "reasons": {
-          "misOos": "Client signposted to other help – not in scope",
-          "mis": "Refer back to CLA helpline – not in scope",
           "misHint": "The case will be sent to the CLA helpline",
-          "misMeans": "Means – not eligible",
-          "coi": "Conflict of interest",
           "coiHint": "The case will be sent to the CLA helpline"
         }
       },
