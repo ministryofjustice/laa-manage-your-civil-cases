@@ -38,7 +38,7 @@ class ChangeCaseStateService {
       devLog(`API: Accept case - full details: ${JSON.stringify(detailedResponse.data, null, JSON_INDENT)}`);
 
       // Import transformClientDetailsItem dynamically to avoid circular dependency
-      const { transformClientDetailsItem } = await import('#src/services/apiServiceHelpers.js');
+      const { transformClientDetailsItem } = await import('#src/services/api/transforms/transformClientDetails.js');
       
 
       return {
@@ -156,7 +156,7 @@ class ChangeCaseStateService {
       devLog(`API: Close case - full details: ${JSON.stringify(detailedResponse.data, null, JSON_INDENT)}`);
 
       // Import transformClientDetailsItem dynamically to avoid circular dependency
-      const { transformClientDetailsItem } = await import('#src/services/apiServiceHelpers.js');
+      const { transformClientDetailsItem } = await import('#src/services/api/transforms/transformClientDetails.js');
       
 
       return {
