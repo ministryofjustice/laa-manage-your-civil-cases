@@ -16,13 +16,13 @@ import {
   prepareClientSupportNeedsData,
   handleEditClientSupportNeedsErrors,
   isYes,
-  capitaliseFirstLetter
+  capitaliseFirstLetter,
+  validCaseReference
 } from '#src/scripts/helpers/index.js';
 import { apiService } from '#src/services/apiService.js';
 import languages from '#views/case_details/client_support_needs/languages.json' with { type: 'json' };
 
 // HTTP Status codes
-const BAD_REQUEST = 400;
 const INTERNAL_SERVER_ERROR = 500;
 
 /**
@@ -92,11 +92,7 @@ export async function postEditClientSupportNeeds(req: Request, res: Response, ne
   res.locals.languageItems = languages; 
   const caseReference = safeString(req.params.caseReference);
 
-  if (typeof caseReference !== 'string' || caseReference.trim() === '') {
-    res.status(BAD_REQUEST).render('main/error.njk', {
-      status: '400',
-      error: 'Invalid case reference'
-    });
+  if (!validCaseReference(caseReference, res)) {
     return;
   }
 

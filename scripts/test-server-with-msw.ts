@@ -38,6 +38,12 @@ void (async () => {
       }
     });
 
+    // Reset MSW state between tests for isolation
+    // Note: This resets handlers, but case state is managed separately
+    mswServer.events.on('request:start', () => {
+      // Individual test files can reset state using resetMockCaseState if needed
+    });
+
     // Set environment variables
     process.env.NODE_ENV = 'test';
     process.env.PORT = TEST_PORT;

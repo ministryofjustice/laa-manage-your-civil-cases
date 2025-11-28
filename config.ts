@@ -7,6 +7,7 @@ const DEFAULT_RATE_WINDOW_MS_MINUTE = 15;
 const MILLISECONDS_IN_A_MINUTE = 60000;
 const DEFAULT_PORT = 3000;
 const CHARACTER_THRESHOLD = 85;
+const MAX_NOTE_LENGTH = 5000;
 const DEFAULT_PAGINATION_PAGE = 1;
 
 // Validate required session env vars
@@ -29,6 +30,7 @@ const config: Config = {
   SERVICE_PHASE: process.env.SERVICE_PHASE,
   SERVICE_URL: process.env.SERVICE_URL,
   CHARACTER_THRESHOLD,
+  MAX_NOTE_LENGTH,
   session: {
     secret: process.env.SESSION_SECRET,
     name: process.env.SESSION_NAME,

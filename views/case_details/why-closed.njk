@@ -1,0 +1,84 @@
+{% extends "case_details/_base-case-change.njk" %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "components/errorSummaryComponent.njk" import errorSummary %}
+
+{% block pageTitle %}{{ t('pages.caseDetails.closedCase.title') }} - {{ serviceName }} - GOV.UK{% endblock %}
+
+{% block formContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% if error %}
+        {{ errorSummary(error.errorSummaryList) }}
+        {% set errorMessages = {
+          eventCode: {text: error.inputErrors.eventCode } if error.inputErrors.eventCode,
+          closeNote: {text: error.inputErrors.closeNote } if error.inputErrors.closeNote
+        } %}
+      {% endif %}
+
+      <form method="post" action="/cases/{{ caseReference }}/why-closed">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+        {{ govukRadios({
+          name: "eventCode",
+          fieldset: {
+            legend: {
+              text: t('pages.caseDetails.closedCase.legend'),
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--l"
+            }
+          },
+          errorMessage: errorMessages.eventCode if error,
+          items: [
+            {
+              value: "MIS-OOS",
+              text: t('common.outcomeCode.MIS-OOS'),
+              checked: currentEventCode == "MIS-OOS"
+            },
+            {
+              value: "MIS",
+              text: t('common.outcomeCode.MIS'),
+              hint: {
+                text: t('pages.caseDetails.closedCase.reasons.misHint')
+              },
+              checked: currentEventCode == "MIS"
+            },
+            {
+              value: "MIS-MEANS",
+              text: t('common.outcomeCode.MIS-MEANS'),
+              checked: currentEventCode == "MIS-MEANS"
+            },
+            {
+              value: "COI",
+              text: t('common.outcomeCode.COI'),
+              hint: {
+                text: t('pages.caseDetails.closedCase.reasons.coiHint')
+              },
+              checked: currentEventCode == "COI"
+            }
+          ]
+        }) }}
+
+        {{ govukCharacterCount({
+          label: {
+            text: t('pages.caseDetails.closedCase.noteLabel')
+          },
+          id: "closeNote",
+          name: "closeNote",
+          value: currentCloseNote,
+          errorMessage: errorMessages.closeNote if error,
+          maxlength: maxCloseNoteLength,
+          threshold: characterThreshold
+        }) }}
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: t('common.save')
+          }) }}
+          <a class="govuk-link" href="/cases/{{ caseReference }}/client-details">{{ t('common.cancel') }}</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

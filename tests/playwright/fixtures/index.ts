@@ -2,12 +2,14 @@ import { test as base, expect } from '@playwright/test';
 import { AxeBuilder } from '@axe-core/playwright';
 import { initI18nSync } from '../utils/i18n.js';
 import { PageFactory } from '../pages/PageFactory.js';
+import { resetMockCaseState } from '../factories/handlers/utils.js';
 
 /**
  * Custom test fixture with i18n setup, accessibility testing, and page objects
  */
 interface TestFixtures {
   i18nSetup: undefined;
+  mswReset: undefined;
   checkAccessibility: () => Promise<void>;
   pages: PageFactory;
 }
@@ -31,6 +33,19 @@ export const test = base.extend<TestFixtures>({
     }
     await use(undefined);
   }, { scope: 'test' }],
+
+  // Reset MSW case state between tests for isolation
+  /**
+   * Fixture that resets MSW mock case state before each test
+   * @param {object} param0 - Fixture parameters
+   * @param {import('@playwright/test').Page} param0.page - The Playwright page instance (unused but required)
+   * @param {Function} use - The fixture use function
+   * @returns {Promise<void>} Promise that resolves when state is reset
+   */
+  mswReset: [async ({ page: _page }, use) => {
+    resetMockCaseState();
+    await use(undefined);
+  }, { auto: true, scope: 'test' }],
 
   // Thin accessibility testing fixture
   /**

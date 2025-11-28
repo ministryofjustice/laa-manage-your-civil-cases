@@ -4,7 +4,7 @@
 
 import { http, HttpResponse } from 'msw';
 import type { MockCase } from './types.js';
-import { transformToApiFormat, filterCasesByStatus, paginateResults } from './utils.js';
+import { transformToApiFormat, filterCasesByStatus, paginateResults, findMockCase } from './utils.js';
 
 /**
  * Authentication token handler
@@ -28,7 +28,7 @@ function createGetCaseHandler(
   return http.get(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/`, ({ params }) => {
     const { caseReference } = params;
     
-    const caseItem = cases.find(c => c.caseReference === caseReference);
+    const caseItem = findMockCase(caseReference as string, cases);
     
     if (!caseItem) {
       return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
@@ -50,7 +50,7 @@ function createGetCaseDetailedHandler(
     const { caseReference } = params;
     console.log(`[MSW] Intercepting GET /case/${caseReference}/detailed`);
     
-    const caseItem = cases.find(c => c.caseReference === caseReference);
+    const caseItem = findMockCase(caseReference as string, cases);
     
     if (!caseItem) {
       console.log(`[MSW] Case ${caseReference} not found in mock data`);

@@ -75,6 +75,7 @@ export async function patchAndRefetch(
  * @returns {AxiosInstanceWrapper} Configured axios instance
  */
 export function configureAxiosInstance(axiosMiddleware: AxiosInstanceWrapper): AxiosInstanceWrapper {
+  // Override base URL and add API-specific headers
   const { axiosInstance } = axiosMiddleware;
   const { defaults } = axiosInstance;
   const { api: { baseUrl } } = config;

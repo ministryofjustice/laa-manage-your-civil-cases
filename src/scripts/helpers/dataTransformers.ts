@@ -166,6 +166,17 @@ export function extractFormFields(body: unknown, keys: string[]): Record<string,
 }
 
 /**
+ * Normalises a form field value by trimming whitespace and converting empty strings to undefined
+ * @param {string} raw - The input filed to transform
+ * @returns {string | undefined} The trimmed string, or undefined if empty or not a string.
+ */
+export function trimOrUndefined(raw: unknown): string | undefined {
+  if (typeof raw !== 'string') return undefined;
+  const trimmed = raw.trim();
+  return trimmed === '' ? undefined : trimmed;
+}
+
+/**
  * Check if the value matches the expected type
  * @param {unknown} value - Value to check
  * @param {'string' | 'boolean' | 'number' | 'array'} expectedType - Expected type
