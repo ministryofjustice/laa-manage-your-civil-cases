@@ -1,6 +1,7 @@
 import { test, expect } from '../fixtures/index.js';
 import { t, getClientDetailsUrlByStatus, setupAuth } from '../utils/index.js';
 
+// Login before each test since client details pages require authentication
 test.beforeEach(async ({ page }) => {
   await setupAuth(page);
 });
@@ -8,7 +9,6 @@ test.beforeEach(async ({ page }) => {
 test('client details selected from closed cases tab has correct page elements', async ({ page, i18nSetup }) => {
   // Navigate to the client details
   await page.goto(getClientDetailsUrlByStatus('closed'));
-  await page.waitForLoadState('networkidle');
 
   const closed_tag = page.getByText('Closed', { exact: true });
   const changeStatusButton = page.getByRole('button', { name: 'Change status' });

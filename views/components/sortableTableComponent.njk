@@ -139,7 +139,7 @@
         {% endif %}
       {% else %}
         {% if row[column.key] %}
-          {{ row[column.key] }}
+          {{ row[column.key] | safe }}
         {% else %}
           <span class="govuk-visually-hidden">{{ t.components.table.noData }}</span>
         {% endif %}

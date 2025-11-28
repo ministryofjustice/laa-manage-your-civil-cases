@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block pageContent %}
-  {{ caseDetailsHeaderComponent(client) }}
+  {{ caseDetailsHeaderComponent(client, hideStatusButton = true) }}
   
   {% block formContent %}
     {# Child templates override this block with their specific form content #}
