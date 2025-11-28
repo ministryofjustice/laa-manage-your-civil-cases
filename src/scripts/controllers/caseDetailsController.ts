@@ -1,15 +1,15 @@
 import type { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 import { apiService } from '#src/services/apiService.js';
-import { changeCaseStateService } from '#src/services/changeCaseState.js';
+import { changeCaseStateService } from '#src/services/changeCaseStateService.js';
 import { devLog, devError, createProcessedError, safeString, clearAllOriginalFormData, safeBodyString, formatValidationError } from '#src/scripts/helpers/index.js';
 import { storeSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 import config from '#config.js';
 
 const { MAX_NOTE_LENGTH, CHARACTER_THRESHOLD }: { MAX_NOTE_LENGTH: number; CHARACTER_THRESHOLD: number } = config;
-
 const BAD_REQUEST = 400;
 const NOT_FOUND = 404;
+
 /**
  * Handle case details view with API data
  * @param {Request} req Express request object

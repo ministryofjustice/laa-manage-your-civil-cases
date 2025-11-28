@@ -30,7 +30,7 @@ import {
   reopenCase
 } from '#src/scripts/controllers/caseDetailsController.js';
 import { apiService } from '#src/services/apiService.js';
-import { changeCaseStateService } from '#src/services/changeCaseState.js';
+import { changeCaseStateService } from '#src/services/changeCaseStateService.js';
 // Import to get global type declarations for axiosMiddleware
 import '#utils/axiosSetup.js';
 import { validateCloseCase } from '#src/middlewares/closeCaseSchema.js';
