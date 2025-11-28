@@ -10,9 +10,9 @@ const CHARACTER_THRESHOLD = 85;
 const DEFAULT_PAGINATION_PAGE = 1;
 
 // Validate required session env vars
-if (process.env.SESSION_SECRET == null || process.env.SESSION_SECRET === '' ||
-  process.env.SESSION_NAME == null || process.env.SESSION_NAME === '' ||
-  process.env.SESSION_ENCRYPTION_KEY == null || process.env.SESSION_ENCRYPTION_KEY === '') {
+if (process.env.SESSION_SECRET === undefined || process.env.SESSION_SECRET === '' ||
+  process.env.SESSION_NAME === undefined || process.env.SESSION_NAME === '' ||
+  process.env.SESSION_ENCRYPTION_KEY === undefined || process.env.SESSION_ENCRYPTION_KEY === '') {
   throw new Error('SESSION_SECRET, SESSION_NAME, and SESSION_ENCRYPTION_KEY must be defined in environment variables.');
 }
 
