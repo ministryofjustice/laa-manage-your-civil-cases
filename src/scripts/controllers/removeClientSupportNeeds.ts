@@ -1,8 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
-import { devLog, devError, createProcessedError, safeString } from '#src/scripts/helpers/index.js';
+import { devLog, devError, createProcessedError, safeString, validCaseReference } from '#src/scripts/helpers/index.js';
 
-const BAD_REQUEST = 400;
 const NOT_FOUND = 404;
 const INTERNAL_SERVER_ERROR = 500;
 
@@ -16,11 +15,7 @@ const INTERNAL_SERVER_ERROR = 500;
 export async function getRemoveSupportNeedsConfirmation(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
-  if (typeof caseReference !== 'string' || caseReference.trim() === '') {
-    res.status(BAD_REQUEST).render('main/error.njk', {
-      status: '400',
-      error: 'Invalid case reference'
-    });
+  if (!validCaseReference(caseReference, res)) {
     return;
   }
 
@@ -71,11 +66,7 @@ export async function getRemoveSupportNeedsConfirmation(req: Request, res: Respo
 export async function deleteClientSupportNeeds(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
-  if (typeof caseReference !== 'string' || caseReference.trim() === '') {
-    res.status(BAD_REQUEST).render('main/error.njk', {
-      status: '400',
-      error: 'Invalid case reference'
-    });
+  if (!validCaseReference(caseReference, res)) {
     return;
   }
 

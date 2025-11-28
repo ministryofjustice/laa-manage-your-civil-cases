@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 import { apiService } from '#src/services/apiService.js';
 import { changeCaseStateService } from '#src/services/changeCaseStateService.js';
-import { devLog, devError, createProcessedError, safeString, clearAllOriginalFormData, safeBodyString, formatValidationError, trimOrUndefined } from '#src/scripts/helpers/index.js';
+import { devLog, devError, createProcessedError, safeString, clearAllOriginalFormData, safeBodyString, formatValidationError, trimOrUndefined, validCaseReference } from '#src/scripts/helpers/index.js';
 import { storeSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 import config from '#config.js';
 
@@ -22,11 +22,7 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
 
   const caseReference = safeString(req.params.caseReference);
 
-  if (typeof caseReference !== 'string' || caseReference.trim() === '') {
-    res.status(BAD_REQUEST).render('main/error.njk', {
-      status: '400',
-      error: 'Invalid case reference'
-    });
+  if (!validCaseReference(caseReference, res)) {
     return;
   }
 
@@ -82,11 +78,7 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
 export async function acceptCase(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
-  if (typeof caseReference !== 'string' || caseReference.trim() === '') {
-    res.status(BAD_REQUEST).render('main/error.njk', {
-      status: '400',
-      error: 'Invalid case reference'
-    });
+  if (!validCaseReference(caseReference, res)) {
     return;
   }
 
@@ -113,11 +105,7 @@ export async function acceptCase(req: Request, res: Response, next: NextFunction
 export async function completeCase(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
-  if (typeof caseReference !== 'string' || caseReference.trim() === '') {
-    res.status(BAD_REQUEST).render('main/error.njk', {
-      status: '400',
-      error: 'Invalid case reference'
-    });
+  if (!validCaseReference(caseReference, res)) {
     return;
   }
 
@@ -144,11 +132,7 @@ export async function completeCase(req: Request, res: Response, next: NextFuncti
 export async function getPendingCaseForm(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
-  if (typeof caseReference !== 'string' || caseReference.trim() === '') {
-    res.status(BAD_REQUEST).render('main/error.njk', {
-      status: '400',
-      error: 'Invalid case reference'
-    });
+  if (!validCaseReference(caseReference, res)) {
     return;
   }
 
@@ -188,11 +172,7 @@ export async function getPendingCaseForm(req: Request, res: Response, next: Next
 export async function getCloseCaseForm(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
-  if (typeof caseReference !== 'string' || caseReference.trim() === '') {
-    res.status(BAD_REQUEST).render('main/error.njk', {
-      status: '400',
-      error: 'Invalid case reference'
-    });
+  if (!validCaseReference(caseReference, res)) {
     return;
   }
 
@@ -232,11 +212,7 @@ export async function getCloseCaseForm(req: Request, res: Response, next: NextFu
 export async function closeCase(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
-  if (typeof caseReference !== 'string' || caseReference.trim() === '') {
-    res.status(BAD_REQUEST).render('main/error.njk', {
-      status: '400',
-      error: 'Invalid case reference'
-    });
+  if (!validCaseReference(caseReference, res)) {
     return;
   }
 
@@ -314,15 +290,10 @@ export async function closeCase(req: Request, res: Response, next: NextFunction)
  * @param {NextFunction} next Express next function
  * @returns {Promise<void>} Redirect to client details page
  */
-// eslint-disable-next-line complexity -- Validation error handling requires branching logic
 export async function pendingCase(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
-  if (typeof caseReference !== 'string' || caseReference.trim() === '') {
-    res.status(BAD_REQUEST).render('main/error.njk', {
-      status: '400',
-      error: 'Invalid case reference'
-    });
+  if (!validCaseReference(caseReference, res)) {
     return;
   }
 
@@ -414,11 +385,7 @@ export async function pendingCase(req: Request, res: Response, next: NextFunctio
 export async function getReopenCaseForm(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
-  if (typeof caseReference !== 'string' || caseReference.trim() === '') {
-    res.status(BAD_REQUEST).render('main/error.njk', {
-      status: '400',
-      error: 'Invalid case reference'
-    });
+  if (!validCaseReference(caseReference, res)) {
     return;
   }
 
@@ -455,11 +422,7 @@ export async function getReopenCaseForm(req: Request, res: Response, next: NextF
 export async function reopenCase(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
-  if (typeof caseReference !== 'string' || caseReference.trim() === '') {
-    res.status(BAD_REQUEST).render('main/error.njk', {
-      status: '400',
-      error: 'Invalid case reference'
-    });
+  if (!validCaseReference(caseReference, res)) {
     return;
   }
 

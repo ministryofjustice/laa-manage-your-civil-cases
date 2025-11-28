@@ -480,3 +480,20 @@ export async function handleEditClientSupportNeedsErrors(
 ): Promise<boolean> {
   return await editClientSupportNeedsValidator.handleValidationErrors(req, res, caseReference, formFields);
 }
+
+/**
+ * Validates a case reference and renders a 400 error page if invalid
+ * @param {unknown} caseReference - The case reference value to validate
+ * @param {Response} res - Express response object used to render the error page
+ * @returns {boolean} Returns true if valid, otherwise returns false after rendering an error
+ */
+export function validCaseReference(caseReference: unknown, res: Response): boolean {
+  if (typeof caseReference !== 'string' || caseReference.trim() === '') {
+    res.status(BAD_REQUEST).render('main/error.njk', {
+      status: '400',
+      error: 'Invalid case reference'
+    });
+    return false;
+  }
+  return true;
+}
