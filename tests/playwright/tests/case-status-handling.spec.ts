@@ -36,17 +36,17 @@ test.describe('Case Status Handling', () => {
 
   test.describe('Close Case', () => {
     test('should submit close case form', async ({ page }) => {
-      const closePage = CloseCaseFormPage.forCase(page, 'PC-3184-5962');
+      const closePage = CloseCaseFormPage.forCase(page, 'PC-4575-7150');
       await closePage.navigate();
-      await closePage.submitWithData('MIS-OOS', 'Case successfully closed');
+      await closePage.submitWithData('MIS-MEANS', 'Case successfully closed');
 
-      const clientDetails = ClientDetailsPage.forCase(page, 'PC-3184-5962');
+      const clientDetails = ClientDetailsPage.forCase(page, 'PC-4575-7150');
       await expect(page).toHaveURL(clientDetails.url);
       await clientDetails.expectStatus('Closed');
     });
 
     test('should validate required fields', async ({ page }) => {
-      const closePage = CloseCaseFormPage.forCase(page, 'PC-3184-5962');
+      const closePage = CloseCaseFormPage.forCase(page, 'PC-4575-7150');
       await closePage.navigate();
       await closePage.clickSave();
 
