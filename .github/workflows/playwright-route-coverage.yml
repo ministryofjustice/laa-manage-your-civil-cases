@@ -10,8 +10,14 @@ jobs:
       run:
         working-directory: ./scripts/e2e_coverage/
     steps:
-      - name: Check out the repository to the runner
+      - name: Checkout code
         uses: actions/checkout@v5
+
+      - name: Cache Yarn 4
+        uses: ./.github/actions/cache-yarn
+
+      - name: Setup Node and Dependencies
+        uses: ./.github/actions/setup-node
 
       - name: Run script
         run: ./route-coverage-analysis.sh
