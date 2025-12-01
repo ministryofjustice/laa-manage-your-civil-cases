@@ -19,15 +19,37 @@ jobs:
       - name: Setup Node and Dependencies
         uses: ./.github/actions/setup-node
 
-      - name: Build app
+      - name: Build application
         working-directory: ./
         run: yarn build
+
+      - name: Install Playwright Chromium
+        run: yarn playwright install chromium --with-deps
 
       - name: Make script executable
         run: chmod +x ./route-coverage-analysis.sh
 
       - name: Run script
         run: ./route-coverage-analysis.sh
+        env:
+          CI: true
+          SESSION_SECRET: "accessibility-test-secret"
+          SESSION_NAME: "sessionId"
+          SESSION_ENCRYPTION_KEY: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef" # Test encryption key (64 hex chars)
+          NODE_ENV: "test"
+          SERVICE_NAME: "Manage your civil cases"
+          SERVICE_PHASE: "Beta"
+          DEPARTMENT_NAME: "Legal Aid Agency"
+          DEPARTMENT_URL: "https://www.gov.uk/government/organisations/legal-aid-agency"
+          CONTACT_EMAIL: "your-team@digital.justice.gov.uk"
+          SERVICE_URL: "https://www.gov.uk/legal-aid"
+          CHARACTER_THRESHOLD: "85"
+          RATELIMIT_HEADERS_ENABLED: "true"
+          RATE_LIMIT_MAX: "100"
+          RATE_WINDOW_MS: "900000"
+          API_URL: "http://localhost:3001"
+          API_PREFIX: "/mock-api"
+          USE_MOCK_API: "true"
 
       - name: Upload Playwright test route coverage artifact
         if: always()
