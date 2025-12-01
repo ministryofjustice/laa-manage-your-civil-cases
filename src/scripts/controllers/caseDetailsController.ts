@@ -479,8 +479,8 @@ export async function reopenCase(req: Request, res: Response, next: NextFunction
     devLog(`Reopening case: ${caseReference}`);
     await changeCaseStateService.reopenCase(req.axiosMiddleware, caseReference, reopenNote);
 
-    // Redirect to advising cases page
-    res.redirect('/cases/advising');
+    // Redirect to client details page
+    res.redirect(`/cases/${caseReference}/client-details`);
   } catch (error) {
     const processedError = createProcessedError(error, `reopening case ${caseReference}`);
     next(processedError);
