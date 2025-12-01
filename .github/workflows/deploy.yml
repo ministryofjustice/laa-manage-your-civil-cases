@@ -116,6 +116,15 @@ jobs:
     # Only run tests when deploying to UAT
     if: success() && github.event_name != 'workflow_dispatch' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'uat' || github.event.inputs.environment == null)
 
+  playwright-route-coverage:
+    name: Playwright Tests
+    uses: ./.github/workflows/playwright-route-coverage.yml
+    needs:
+      - build-image
+      - playwright
+    # Only run when deploying to UAT
+    if: success() && github.event_name != 'workflow_dispatch' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'uat' || github.event.inputs.environment == null)
+
   deploy-uat:
     environment: uat
     runs-on: ubuntu-latest
@@ -125,7 +134,7 @@ jobs:
       - snyk
       - build-image
       - mocha-unit-tests
-      # - playwright
+      - playwright
 
     steps:
       - name: Checkout

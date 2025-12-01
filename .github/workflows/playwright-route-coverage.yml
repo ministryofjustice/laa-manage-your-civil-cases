@@ -1,0 +1,24 @@
+name: Playwright Test Route Coverage
+on:
+  workflow_dispatch: # Allow manual triggering only
+  workflow_call: # Allow this workflow to be called by other workflows
+
+jobs:
+  example-job:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./scripts/e2e_coverage/
+    steps:
+      - name: Check out the repository to the runner
+        uses: actions/checkout@v5
+
+      - name: Run a script
+        run: route-coverage-analysis.sh
+
+      - name: Upload Playwright test route coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: playwright-test-route-coverage-report
+          path: coverage/
