@@ -67,10 +67,12 @@ export function createThirdPartyHandlers(
     http.post(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details/`, async ({ params, request }) => {
       const { caseReference } = params;
       const thirdPartyData = await request.json() as Record<string, any>;
+      console.log(`[MSW] Intercepting POST /case/${caseReference}/thirdparty_details/`);
       
       const caseItem = cases.find(c => c.caseReference === caseReference);
       
       if (!caseItem) {
+        console.log(`[MSW] Case ${caseReference} not found in mock data (POST thirdparty_details)`);
         return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
       }
 
@@ -98,7 +100,7 @@ export function createThirdPartyHandlers(
       if (Object.keys(validationErrors).length > 0) {
         return HttpResponse.json(validationErrors, { status: 400 });
       }
-      
+      console.log(`[MSW] Returning updated case data for ${caseReference} (POST thirdparty_details)`);
       return HttpResponse.json(transformToApiFormat(caseItem), { status: 201 });
     }),
 
@@ -106,12 +108,10 @@ export function createThirdPartyHandlers(
     http.put(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details/`, async ({ params, request }) => {
       const { caseReference } = params;
       const thirdPartyData = await request.json() as Record<string, any>;
-      console.log(`[MSW] Intercepting POST /case/${caseReference}/thirdparty_details/`);
       
       const caseItem = cases.find(c => c.caseReference === caseReference);
       
       if (!caseItem) {
-        console.log(`[MSW] Case ${caseReference} not found in mock data (POST thirdparty_details)`);
         return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
       }
 
@@ -139,7 +139,6 @@ export function createThirdPartyHandlers(
       if (Object.keys(validationErrors).length > 0) {
         return HttpResponse.json(validationErrors, { status: 400 });
       }
-      console.log(`[MSW] Returning updated case data for ${caseReference} (POST thirdparty_details)`);
       return HttpResponse.json(transformToApiFormat(caseItem));
     })
   ];
