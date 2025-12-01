@@ -6,9 +6,7 @@ on:
 jobs:
   playwright-test-route-coverage:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./scripts/e2e_coverage/
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
