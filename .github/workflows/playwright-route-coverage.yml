@@ -22,13 +22,14 @@ jobs:
         run: yarn build
 
       - name: Install Playwright Chromium
+        working-directory: ./
         run: yarn playwright install chromium --with-deps
 
       - name: Make script executable
-        run: chmod +x ./route-coverage-analysis.sh
+        run: chmod +x ./scripts/e2e_coverage/route-coverage-analysis.sh
 
       - name: Run script
-        run: ./route-coverage-analysis.sh
+        run: ./scripts/e2e_coverage/route-coverage-analysis.sh
         env:
           CI: true
           SESSION_SECRET: "accessibility-test-secret"
