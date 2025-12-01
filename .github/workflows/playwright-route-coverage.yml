@@ -4,7 +4,7 @@ on:
   workflow_call: # Allow this workflow to be called by other workflows
 
 jobs:
-  example-job:
+  playwright-test-route-coverage:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -13,8 +13,8 @@ jobs:
       - name: Check out the repository to the runner
         uses: actions/checkout@v5
 
-      - name: Run a script
-        run: route-coverage-analysis.sh
+      - name: Run script
+        run: ./route-coverage-analysis.sh
 
       - name: Upload Playwright test route coverage artifact
         if: always()

@@ -117,7 +117,7 @@ jobs:
     if: success() && github.event_name != 'workflow_dispatch' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'uat' || github.event.inputs.environment == null)
 
   playwright-route-coverage:
-    name: Playwright Tests
+    name: Playwright Test Route Coverage
     uses: ./.github/workflows/playwright-route-coverage.yml
     needs:
       - build-image
