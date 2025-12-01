@@ -19,6 +19,13 @@ jobs:
       - name: Setup Node and Dependencies
         uses: ./.github/actions/setup-node
 
+      - name: Build app
+        working-directory: ./
+        run: yarn build
+
+      - name: Make script executable
+        run: chmod +x ./route-coverage-analysis.sh
+
       - name: Run script
         run: ./route-coverage-analysis.sh
 
