@@ -151,10 +151,6 @@ export class ThirdPartyFormPage extends BaseEditFormPage {
     if (data.postcode) {
       await this.postcodeInput.fill(data.postcode);
     }
-
-    if (data.hasPassphrase && data.passphrase) {
-      await this.passphraseInput.fill(data.passphrase);
-    }
   }
 
   /**
