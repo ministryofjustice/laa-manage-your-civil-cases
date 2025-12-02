@@ -5,6 +5,10 @@ import { EditPhoneNumberPage } from './EditPhoneNumberPage.js';
 import { EditDateOfBirthPage } from './EditDateOfBirthPage.js';
 import { EditEmailPage } from './EditEmailPage.js';
 import { LoginPage } from './LoginPage.js';
+import { PendingCaseFormPage } from './PendingCaseFormPage.js';
+import { CloseCaseFormPage } from './CloseCaseFormPage.js';
+import { ReopenCaseFormPage } from './ReopenCaseFormPage.js';
+import { ClientDetailsPage } from './ClientDetailsPage.js';
 
 /**
  * Factory class for creating page objects for client detail edit forms
@@ -65,5 +69,50 @@ export class PageFactory {
    */
   get login(): LoginPage {
     return new LoginPage(this.page);
+  }
+
+  /**
+   * Extracts the case reference from the client details URL
+   * @returns {string} The case reference
+   * @private
+   */
+  private getCaseReference(): string {
+    const match = this.clientDetailsUrl.match(/\/cases\/([^/]+)\//);
+    if (!match) {
+      throw new Error('Cannot extract case reference from URL: ' + this.clientDetailsUrl);
+    }
+    return match[1];
+  }
+
+  /**
+   * Gets an instance of the pending case form page
+   * @returns {PendingCaseFormPage} The pending case form page object
+   */
+  get pendingCaseForm(): PendingCaseFormPage {
+    return PendingCaseFormPage.forCase(this.page, this.getCaseReference());
+  }
+
+  /**
+   * Gets an instance of the close case form page
+   * @returns {CloseCaseFormPage} The close case form page object
+   */
+  get closeCaseForm(): CloseCaseFormPage {
+    return CloseCaseFormPage.forCase(this.page, this.getCaseReference());
+  }
+
+  /**
+   * Gets an instance of the reopen case form page
+   * @returns {ReopenCaseFormPage} The reopen case form page object
+   */
+  get reopenCaseForm(): ReopenCaseFormPage {
+    return ReopenCaseFormPage.forCase(this.page, this.getCaseReference());
+  }
+
+  /**
+   * Gets an instance of the client details page
+   * @returns {ClientDetailsPage} The client details page object
+   */
+  get clientDetails(): ClientDetailsPage {
+    return ClientDetailsPage.forCase(this.page, this.getCaseReference());
   }
 }

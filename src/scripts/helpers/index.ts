@@ -40,7 +40,8 @@ export {
   transformClientSupportNeeds,
   transformThirdParty,
   buildOrderingParamFields,
-  isSoftDeletedThirdParty
+  isSoftDeletedThirdParty,
+  trimOrUndefined
 } from './dataTransformers.js';
 
 // Date formatting utilities
@@ -68,7 +69,8 @@ export {
   prepareThirdPartyData,
   handleAddClientSupportNeedsErrors,
   prepareClientSupportNeedsData,
-  handleEditClientSupportNeedsErrors
+  handleEditClientSupportNeedsErrors,
+  validCaseReference
 } from './formControllerHelpers.js';
 
 // Session helpers
