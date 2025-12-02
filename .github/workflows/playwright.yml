@@ -17,17 +17,8 @@ jobs:
         with:
           fetch-depth: 0 # Fetch all history for proper change detection
 
-      - name: Cache Yarn 4
-        uses: ./.github/actions/cache-yarn
-
-      - name: Setup Node and Dependencies
-        uses: ./.github/actions/setup-node
-
-      - name: Build application
-        run: yarn build
-
-      - name: Install Playwright Chromium
-        run: yarn playwright install chromium --with-deps
+      - name: Reusable playwright steps
+        uses: ./.github/actions/reusable-playwright-steps
 
       - name: Cache Playwright browsers
         uses: actions/cache@v4
@@ -87,17 +78,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Cache Yarn 4
-        uses: ./.github/actions/cache-yarn
-
-      - name: Setup Node and Dependencies
-        uses: ./.github/actions/setup-node
-
-      - name: Build application
-        run: yarn build
-
-      - name: Install Playwright Chromium
-        run: yarn playwright install chromium --with-deps
+      - name: Reusable playwright steps
+        uses: ./.github/actions/reusable-playwright-steps
 
       - name: Cache Playwright browsers
         uses: actions/cache@v4
@@ -148,19 +130,8 @@ jobs:
         - name: Checkout code
           uses: actions/checkout@v5
 
-        - name: Cache Yarn 4
-          uses: ./.github/actions/cache-yarn
-
-        - name: Setup Node and Dependencies
-          uses: ./.github/actions/setup-node
-
-        - name: Build application
-          working-directory: ./
-          run: yarn build
-
-        - name: Install Playwright Chromium
-          working-directory: ./
-          run: yarn playwright install chromium --with-deps
+        - name: Reusable playwright steps
+          uses: ./.github/actions/reusable-playwright-steps
 
         - name: Make script executable
           run: chmod +x ./scripts/e2e_coverage/route-coverage-analysis.sh

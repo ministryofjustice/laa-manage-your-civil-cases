@@ -1,0 +1,19 @@
+name: Reusable playwright steps (a composite action)
+description: Playwright e2e tests, accessibility tests and playwright route coverage all have similar steps, so combining them into one
+
+runs:
+  using: "composite"
+  steps:
+  - name: Cache Yarn 4
+    uses: ./.github/actions/cache-yarn
+
+  - name: Setup Node and Dependencies
+    uses: ./.github/actions/setup-node
+
+  - name: Build application
+    working-directory: ./
+    run: yarn build
+
+  - name: Install Playwright Chromium
+    working-directory: ./
+    run: yarn playwright install chromium --with-deps
