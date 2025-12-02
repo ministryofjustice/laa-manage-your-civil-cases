@@ -2,9 +2,12 @@
 
 # E2E Route Coverage Analysis Script
 # This script runs Playwright tests, extracts visited routes, compares with Express routes,
-# and shows coverage with color coding
+# and shows coverage with colour coding
 
 set -e
+
+# Threshold (integer percentage, e.g. 80)
+COVERAGE_THRESHOLD="${ROUTE_COVERAGE_THRESHOLD:-}"
 
 # Parse command line arguments
 SKIP_TESTS=false
@@ -13,12 +16,12 @@ if [[ "$1" == "--skip-tests" ]]; then
     echo "⚠️  Skipping Playwright tests - will only analyze Express routes"
 fi
 
-# Colors for output
+# Colours for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+NC='\033[0m' # No Colour
 
 # List of temporary files to clean up
 TEMP_FILES=(
@@ -121,7 +124,7 @@ else
 fi
 
 # Step 4: Create temporary files for comparison
-echo -e "${YELLOW}📊 Analyzing route coverage...${NC}"
+echo -e "${YELLOW}📊 Analysing route coverage...${NC}"
 
 # Extract just the route paths from Express routes and sort
 cat express-routes.txt | sort > express-routes-sorted.txt
@@ -166,10 +169,27 @@ echo -e "Routes without tests: ${RED}$uncovered_routes${NC}"
 if [ $total_routes -gt 0 ]; then
     coverage_percentage=$(( (covered_routes * 100) / total_routes ))
     echo -e "Coverage percentage: ${YELLOW}${coverage_percentage}%${NC}"
+
+    # If a threshold is set, enforce it
+    if [[ -n "$COVERAGE_THRESHOLD" ]]; then
+        echo ""
+        echo -e "${BLUE}📏 Coverage threshold check${NC}"
+        echo "Required: ${COVERAGE_THRESHOLD}%"
+        echo "Actual:   ${coverage_percentage}%"
+
+        if (( coverage_percentage < COVERAGE_THRESHOLD )); then
+            echo -e "${RED}❌ Coverage below threshold (${coverage_percentage}% < ${COVERAGE_THRESHOLD}%)${NC}"
+            # Exiting non-zero will fail the pipeline (cleanup still runs via trap)
+            exit 1
+        else
+            echo -e "${GREEN}✅ Coverage meets threshold (${coverage_percentage}% ≥ ${COVERAGE_THRESHOLD}%)${NC}"
+        fi
+    fi
 fi
 
+
 echo ""
-echo -e "${BLUE}📋 ALL ROUTES (organized by endpoint)${NC}"
+echo -e "${BLUE}📋 ALL ROUTES (organised by endpoint)${NC}"
 echo "===================================="
 
 # Function to display routes by category

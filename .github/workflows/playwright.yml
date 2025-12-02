@@ -17,17 +17,8 @@ jobs:
         with:
           fetch-depth: 0 # Fetch all history for proper change detection
 
-      - name: Cache Yarn 4
-        uses: ./.github/actions/cache-yarn
-
-      - name: Setup Node and Dependencies
-        uses: ./.github/actions/setup-node
-
-      - name: Build application
-        run: yarn build
-
-      - name: Install Playwright Chromium
-        run: yarn playwright install chromium --with-deps
+      - name: Reusable playwright steps
+        uses: ./.github/actions/reusable-playwright-steps
 
       - name: Cache Playwright browsers
         uses: actions/cache@v4
@@ -87,17 +78,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Cache Yarn 4
-        uses: ./.github/actions/cache-yarn
-
-      - name: Setup Node and Dependencies
-        uses: ./.github/actions/setup-node
-
-      - name: Build application
-        run: yarn build
-
-      - name: Install Playwright Chromium
-        run: yarn playwright install chromium --with-deps
+      - name: Reusable playwright steps
+        uses: ./.github/actions/reusable-playwright-steps
 
       - name: Cache Playwright browsers
         uses: actions/cache@v4
@@ -140,3 +122,39 @@ jobs:
       - name: Notify on accessibility failure
         if: failure()
         run: echo "::error::Accessibility tests failed! Check the accessibility report for details."
+
+  playwright-test-route-coverage:
+      name: Playwright Test Route Coverage
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v5
+
+        - name: Reusable playwright steps
+          uses: ./.github/actions/reusable-playwright-steps
+
+        - name: Make script executable
+          run: chmod +x ./scripts/e2e_coverage/route-coverage-analysis.sh
+
+        - name: Run script
+          run: ./scripts/e2e_coverage/route-coverage-analysis.sh
+          env:
+            CI: true
+            SESSION_SECRET: "accessibility-test-secret"
+            SESSION_NAME: "sessionId"
+            SESSION_ENCRYPTION_KEY: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+            NODE_ENV: "test"
+            SERVICE_NAME: "Manage your civil cases"
+            SERVICE_PHASE: "Beta"
+            DEPARTMENT_NAME: "Legal Aid Agency"
+            DEPARTMENT_URL: "https://www.gov.uk/government/organisations/legal-aid-agency"
+            CONTACT_EMAIL: "your-team@digital.justice.gov.uk"
+            SERVICE_URL: "https://www.gov.uk/legal-aid"
+            CHARACTER_THRESHOLD: "85"
+            RATELIMIT_HEADERS_ENABLED: "true"
+            RATE_LIMIT_MAX: "100"
+            RATE_WINDOW_MS: "900000"
+            API_URL: "http://localhost:3001"
+            API_PREFIX: "/mock-api"
+            USE_MOCK_API: "true"
+            ROUTE_COVERAGE_THRESHOLD: "90" # The percentage value you want the route coverage to be
