@@ -122,49 +122,6 @@ function createGetCasesListHandler(
 }
 
 /**
- * DELETE /cases/:caseReference/client-support-needs - Remove client support needs
- */
-function createDeleteClientSupportNeedsHandler(
-  API_BASE_URL: string,
-  API_PREFIX: string,
-  cases: MockCase[]
-) {
-  return http.delete(`${API_BASE_URL}${API_PREFIX}/cases/:caseReference/client-support-needs`, ({ params }) => {
-    const { caseReference } = params;
-    
-    const caseItem = cases.find(c => c.caseReference === caseReference);
-    
-    if (!caseItem) {
-      return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
-    }
-    
-    const caseWithoutSupportNeeds = { ...caseItem, clientSupportNeeds: undefined };
-    return HttpResponse.json(transformToApiFormat(caseWithoutSupportNeeds));
-  });
-}
-
-/**
- * POST /cases/:caseReference/client-support-needs - Add client support needs
- */
-function createPostClientSupportNeedsHandler(
-  API_BASE_URL: string,
-  API_PREFIX: string,
-  cases: MockCase[]
-) {
-  return http.post(`${API_BASE_URL}${API_PREFIX}/cases/:caseReference/client-support-needs`, async ({ params }) => {
-    const { caseReference } = params;
-    
-    const caseItem = cases.find(c => c.caseReference === caseReference);
-    
-    if (!caseItem) {
-      return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
-    }
-    
-    return HttpResponse.json(transformToApiFormat(caseItem), { status: 201 });
-  });
-}
-
-/**
  * Create all case and authentication handlers
  */
 export function createCaseHandlers(
@@ -176,8 +133,6 @@ export function createCaseHandlers(
     createAuthTokenHandler(API_BASE_URL),
     createGetCaseHandler(API_BASE_URL, API_PREFIX, cases),
     createGetCaseDetailedHandler(API_BASE_URL, API_PREFIX, cases),
-    createGetCasesListHandler(API_BASE_URL, API_PREFIX, cases),
-    createDeleteClientSupportNeedsHandler(API_BASE_URL, API_PREFIX, cases),
-    createPostClientSupportNeedsHandler(API_BASE_URL, API_PREFIX, cases)
+    createGetCasesListHandler(API_BASE_URL, API_PREFIX, cases)
   ];
 }
