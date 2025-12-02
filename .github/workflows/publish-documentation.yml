@@ -28,7 +28,7 @@ jobs:
       # generating the docs separate from the app.
       - name: Checkout
         # Updated to v5 now that Docker image v6.0.1 resolved previous compatibility issues (EL-2591)
-        uses: actions/checkout@v5 
+        uses: actions/checkout@v6 
         with:
           sparse-checkout: |
             docs
