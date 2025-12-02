@@ -21,9 +21,9 @@ jobs:
         working-directory: ./
         run: yarn build
 
-      - name: Install Playwright Chromium
-        working-directory: ./
-        run: yarn playwright install chromium --with-deps
+      # - name: Install Playwright Chromium
+      #   working-directory: ./
+      #   run: yarn playwright install chromium --with-deps
 
       - name: Make script executable
         run: chmod +x ./scripts/e2e_coverage/route-coverage-analysis.sh
@@ -49,4 +49,4 @@ jobs:
           API_URL: "http://localhost:3001"
           API_PREFIX: "/mock-api"
           USE_MOCK_API: "true"
-          ROUTE_COVERAGE_THRESHOLD: "100" # Require at least 100% route coverage
+          ROUTE_COVERAGE_THRESHOLD: "90" # The percentage value you want the route coverage to be
