@@ -12,8 +12,10 @@ runs:
 
   - name: Build application
     working-directory: ./
+    shell: bash
     run: yarn build
 
   - name: Install Playwright Chromium
     working-directory: ./
+    shell: bash
     run: yarn playwright install chromium --with-deps
