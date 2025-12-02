@@ -155,6 +155,33 @@
         "pageTitle": "Remove client support needs? – {serviceName} – GOV.UK",
         "heading": "Remove client support needs?",
         "description": "This will permanently delete all information about the clients's support needs."
+      },
+      "reopenCase": {
+        "title": "Why is this case re-opened?",
+        "label": "Why is this case re-opened?",
+        "hint": "Add a note"
+      },
+      "closedCase": {
+        "title": "Why is this case closed?",
+        "legend": "Why is this case closed?",
+        "noteLabel": "Add a note",
+        "reasons": {
+          "misHint": "The case will be sent to the CLA helpline",
+          "coiHint": "The case will be sent to the CLA helpline"
+        }
+      },
+      "pendingCase": {
+        "title": "Why is this case pending?",
+        "legend": "Why is this case pending?",
+        "otherNoteLabel": "Enter why this case is pending",
+        "reasons": {
+          "notReady": "Not ready for determination",
+          "canNotContact": "Cannot contact client",
+          "thirdParty": "Third party authorisation",
+          "consentFromAnother": "Consent from another provider",
+          "requiresInterpreter": "Requires interpreter",
+          "other": "Other"
+        }
       }
     },
     "error": {
@@ -194,6 +221,35 @@
     }
   },
   "forms": {
+    "caseDetails": {
+      "reopenCase": {
+        "validationError": {
+          "notEmpty": "Enter why this case is re-opened",
+          "tooLong": "Note must be 5000 characters or less"
+        }
+      },
+      "closeCase": {
+        "validationError": {
+          "eventCode": {
+            "notEmpty": "Select why this case is closed"
+          },
+          "closeNote": {
+            "tooLong": "Note must be 5000 characters or less"
+          }
+        }
+      },
+      "pendingCase": {
+        "validationError": {
+          "pendingReason": {
+            "notEmpty": "Select why this case is pending"
+          },
+          "otherNote": {
+            "notEmpty": "Enter why this case is pending",
+            "tooLong": "Note must be 5000 characters or less"
+          }
+        }
+      }
+    },
     "clientDetails": {
       "name": {
         "label": "Name",

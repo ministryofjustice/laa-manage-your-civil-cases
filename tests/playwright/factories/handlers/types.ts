@@ -43,3 +43,19 @@ export interface MockCase {
     notes?: string;
   };
 }
+
+/**
+ * Request body types for status change endpoints
+ */
+export interface CloseRequest {
+  event_code: string;
+  notes?: string;
+}
+
+export interface PendingRequest {
+  notes: string;
+}
+
+export interface ReopenRequest {
+  notes: string;
+}

@@ -35,7 +35,7 @@ export abstract class BaseEditFormPage {
    * @returns {Locator} The save button locator
    */
   get saveButton(): Locator {
-    return this.page.getByRole('button', { name: t('common.save') });
+    return this.page.locator('button[type="submit"]');
   }
 
   /**

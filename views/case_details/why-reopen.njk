@@ -1,0 +1,47 @@
+{% extends "case_details/_base-case-change.njk" %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "components/errorSummaryComponent.njk" import errorSummary %}
+
+{% block pageTitle %}{{ t('pages.caseDetails.reopenCase.title') }} - {{ serviceName }} - GOV.UK{% endblock %}
+
+{% block formContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% if error %}
+        {{ errorSummary(error.errorSummaryList) }}
+        {% set errorMessages = {
+          reopenNote: {text: error.inputErrors.reopenNote } if error.inputErrors.reopenNote
+        } %}
+      {% endif %}
+
+      <form method="post" action="/cases/{{ caseReference }}/why-reopen">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+        {{ govukCharacterCount({
+          label: {
+            text: t('pages.caseDetails.reopenCase.label'),
+            classes: 'govuk-label--l',
+            isPageHeading: true
+          },
+          hint: {
+            text: t('pages.caseDetails.reopenCase.hint')
+          },
+          id: "reopenNote",
+          name: "reopenNote",
+          value: currentReopenNote,
+          errorMessage: errorMessages.reopenNote if error,
+          maxlength: 5000,
+          threshold: 95
+        }) }}
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: t('common.save')
+          }) }}
+          <a class="govuk-link" href="/cases/{{ caseReference }}/client-details">{{ t('common.cancel') }}</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
