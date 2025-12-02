@@ -135,6 +135,7 @@ jobs:
       - build-image
       - mocha-unit-tests
       - playwright
+      - playwright-route-coverage
 
     steps:
       - name: Checkout

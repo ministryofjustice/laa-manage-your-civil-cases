@@ -21,9 +21,9 @@ jobs:
         working-directory: ./
         run: yarn build
 
-      # - name: Install Playwright Chromium
-      #   working-directory: ./
-      #   run: yarn playwright install chromium --with-deps
+      - name: Install Playwright Chromium
+        working-directory: ./
+        run: yarn playwright install chromium --with-deps
 
       - name: Make script executable
         run: chmod +x ./scripts/e2e_coverage/route-coverage-analysis.sh
