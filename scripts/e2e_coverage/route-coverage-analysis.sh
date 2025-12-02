@@ -6,6 +6,9 @@
 
 set -e
 
+# Threshold (integer percentage, e.g. 80)
+COVERAGE_THRESHOLD="${ROUTE_COVERAGE_THRESHOLD:-}"
+
 # Parse command line arguments
 SKIP_TESTS=false
 if [[ "$1" == "--skip-tests" ]]; then
@@ -166,7 +169,24 @@ echo -e "Routes without tests: ${RED}$uncovered_routes${NC}"
 if [ $total_routes -gt 0 ]; then
     coverage_percentage=$(( (covered_routes * 100) / total_routes ))
     echo -e "Coverage percentage: ${YELLOW}${coverage_percentage}%${NC}"
+
+    # If a threshold is set, enforce it
+    if [[ -n "$COVERAGE_THRESHOLD" ]]; then
+        echo ""
+        echo -e "${BLUE}📏 Coverage threshold check${NC}"
+        echo "Required: ${COVERAGE_THRESHOLD}%"
+        echo "Actual:   ${coverage_percentage}%"
+
+        if (( coverage_percentage < COVERAGE_THRESHOLD )); then
+            echo -e "${RED}❌ Coverage below threshold (${coverage_percentage}% < ${COVERAGE_THRESHOLD}%)${NC}"
+            # Exiting non-zero will fail the pipeline (cleanup still runs via trap)
+            exit 1
+        else
+            echo -e "${GREEN}✅ Coverage meets threshold (${coverage_percentage}% ≥ ${COVERAGE_THRESHOLD}%)${NC}"
+        fi
+    fi
 fi
+
 
 echo ""
 echo -e "${BLUE}📋 ALL ROUTES (organised by endpoint)${NC}"
