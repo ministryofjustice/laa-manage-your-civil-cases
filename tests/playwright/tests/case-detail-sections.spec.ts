@@ -24,9 +24,9 @@ test('financial eligibility page should display correctly', async ({ page, i18nS
   await expect(mainContent).toBeVisible();
 });
 
-test('notes and history page should display correctly', async ({ page, i18nSetup }) => {
-  // Navigate to the notes and history page
-  await page.goto(`/cases/${caseReference}/notes-and-history`);
+test('history page should display correctly', async ({ page, i18nSetup }) => {
+  // Navigate to the history page
+  await page.goto(`/cases/${caseReference}/history`);
   
   // Check for first instance of header, which is the name
   await expect(page.getByRole('heading', { name: 'Jack Youngs' })).toBeVisible();
@@ -40,9 +40,9 @@ test('notes and history page should display correctly', async ({ page, i18nSetup
   await expect(mainContent).toBeVisible();
 });
 
-test('scope page should display correctly', async ({ page, i18nSetup }) => {
-  // Navigate to the scope page
-  await page.goto(`/cases/${caseReference}/scope`);
+test('case details page should display correctly', async ({ page, i18nSetup }) => {
+  // Navigate to the case details page
+  await page.goto(`/cases/${caseReference}/case-details`);
   
   // Check for first instance of header, which is the name
   await expect(page.getByRole('heading', { name: 'Jack Youngs' })).toBeVisible();
