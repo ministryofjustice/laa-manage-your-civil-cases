@@ -14,9 +14,9 @@ router.get('/:caseReference/client-details', async function (req: Request, res: 
   await handleCaseDetailsTab(req, res, next, 'client_details');
 });
 
-/* GET scope details for a specific case. */
-router.get('/:caseReference/scope', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
-  await handleCaseDetailsTab(req, res, next, 'scope');
+/* GET case details details for a specific case. */
+router.get('/:caseReference/case-details', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
+  await handleCaseDetailsTab(req, res, next, 'case_details');
 });
 
 /* GET financial eligibility details for a specific case. */
@@ -24,9 +24,9 @@ router.get('/:caseReference/financial-eligibility', async function (req: Request
   await handleCaseDetailsTab(req, res, next, 'financial_eligibility');
 });
 
-/* GET notes and history for a specific case. */
-router.get('/:caseReference/notes-and-history', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
-  await handleCaseDetailsTab(req, res, next, 'notes_and_history');
+/* GET history for a specific case. */
+router.get('/:caseReference/history', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
+  await handleCaseDetailsTab(req, res, next, 'history');
 });
 
 /* GET confirmation page for removing third party. */

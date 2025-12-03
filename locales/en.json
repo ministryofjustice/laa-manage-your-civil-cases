@@ -120,9 +120,9 @@
       "notProvided": "Not provided",
       "tabs": {
         "clientDetails": "Client details",
-        "scope": "Scope",
+        "caseDetails": "Case details",
         "financialEligibility": "Financial eligibility",
-        "notesAndHistory": "Notes and history"
+        "history": "History"
       },
       "clientDetails": {
         "heading": "Client details",
