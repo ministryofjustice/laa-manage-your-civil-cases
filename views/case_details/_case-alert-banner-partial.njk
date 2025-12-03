@@ -8,7 +8,7 @@
       title: "Case completed",
       showTitleAsHeading: true,
       dismissible: false,
-      text: client.provider_closed
+      text: client.providerClosedBanner
     }) }}
 {% elif currentStatus == "closed" %}
   {% set outcomeDescription = t('common.outcomeCode.' + client.outcome_code) if client.outcome_code else '' %}
@@ -17,7 +17,7 @@
       title: "Case closed",
       showTitleAsHeading: true,
       dismissible: false,
-      html: outcomeDescription + "<p>" + client.provider_closed + "</p>"
+      html: outcomeDescription + "<p>" + client.providerClosedBanner + "</p>"
     }) }}
 {% elif currentStatus == "pending" %}
   {{ mojAlert({
@@ -25,6 +25,6 @@
       title: "Case pending",
       showTitleAsHeading: true,
       dismissible: false,
-      html: client.state_note + "<p>" + client.provider_viewed + "</p>"
+      html: client.state_note + "<p>" + client.providerViewedBanner + "</p>"
     }) }}
 {% endif %}

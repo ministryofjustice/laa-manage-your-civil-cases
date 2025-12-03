@@ -9,6 +9,7 @@ import {
   safeOptionalString,
   isRecord,
   formatDate,
+  formatDateForBanner,
   transformContactDetails,
   transformClientSupportNeeds,
   transformThirdParty
@@ -54,14 +55,20 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
   // Transform third party contact
   const thirdParty = transformThirdParty(item.thirdparty_details);
 
+  // Format dates differently for banner
+  const providerClosedBanner = formatDateForBanner(safeOptionalString(item.provider_closed) ?? '');
+  const providerViewedBanner = formatDateForBanner(safeOptionalString(item.provider_viewed) ?? '');
+
   return {
     caseReference,
     laaReference,
     caseStatus,
     provider_assigned_at,
     provider_viewed,
+    providerViewedBanner,
     provider_accepted, 
-    provider_closed,     
+    provider_closed,
+    providerClosedBanner,     
     outcome_code, 
     state_note,
     ...contactDetails,
