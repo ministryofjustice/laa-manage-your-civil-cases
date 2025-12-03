@@ -21,7 +21,7 @@
   } %}
 {% endif %}
 
-<form method="post" action="{{ formAction }}">
+<form method="post" action="{{ formAction }}" autocomplete="off">
   <input type="hidden" name="_csrf" value="{{ csrfToken }}">
 
   <h2 class="govuk-heading-m">{{ t('pages.caseDetails.clientDetails.contactDetails') }}</h2>
@@ -32,7 +32,6 @@
     },
     id: "thirdPartyFullName",
     name: "thirdPartyFullName",
-    autocomplete: "off",
     value: currentThirdPartyFullName,
     errorMessage: errorMessages.thirdPartyFullName if error
   }) }}
@@ -46,7 +45,6 @@
     id: "thirdPartyContactNumber",
     name: "thirdPartyContactNumber",
     type: "tel",
-    autocomplete: "off",
     classes: "govuk-input--width-20",
     value: currentThirdPartyContactNumber
   }) }}
@@ -80,7 +78,6 @@
     },
     id: "thirdPartyEmailAddress",
     name: "thirdPartyEmailAddress",
-    autocomplete: "off",
     spellcheck: false,
     value: currentThirdPartyEmailAddress,
     errorMessage: errorMessages.thirdPartyEmailAddress if error
@@ -105,7 +102,6 @@
     },
     id: "thirdPartyPostcode",
     name: "thirdPartyPostcode",
-    autocomplete: "off",
     classes: "govuk-input--width-10",
     value: currentThirdPartyPostcode,
     errorMessage: errorMessages.thirdPartyPostcode if error,
@@ -150,7 +146,6 @@
     {{ govukInput({
       id: "thirdPartyPassphrase",
       name: "thirdPartyPassphrase",
-      autocomplete: "off",
       value: currentThirdPartyPassphrase,
       spellcheck: false,
       classes: "govuk-!-width-one-half",
