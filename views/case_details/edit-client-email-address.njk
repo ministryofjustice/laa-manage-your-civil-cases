@@ -13,7 +13,7 @@
         {{ errorSummary(error.errorSummaryList) }}
         {% set emailAddressErrorMessage = { text: error.inputErrors.emailAddress } if error.inputErrors.emailAddress %}
       {% endif %}
-      <form method="post" action="/cases/{{ caseReference }}/client-details/change/email-address">
+      <form method="post" action="/cases/{{ caseReference }}/client-details/change/email-address" autocomplete="off">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
         <input type="hidden" name="existingEmailAddress" value="{{ existingEmailAddress }}">
         {{ govukInput({

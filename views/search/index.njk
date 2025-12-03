@@ -33,7 +33,7 @@
         <li>{{ t('pages.search.searchHint.items.address') }}</li>
       </ul>
     </div>
-    <form action="/search" method="POST" class="govuk-form">
+    <form action="/search" method="POST" class="govuk-form" autocomplete="off">
       <input type="hidden" name="_csrf" value="{{ csrfToken }}">
 
       {{ govukInput({

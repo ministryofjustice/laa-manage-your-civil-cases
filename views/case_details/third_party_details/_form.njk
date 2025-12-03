@@ -21,7 +21,7 @@
   } %}
 {% endif %}
 
-<form method="post" action="{{ formAction }}">
+<form method="post" action="{{ formAction }}" autocomplete="off">
   <input type="hidden" name="_csrf" value="{{ csrfToken }}">
 
   <h2 class="govuk-heading-m">{{ t('pages.caseDetails.clientDetails.contactDetails') }}</h2>
@@ -45,7 +45,6 @@
     id: "thirdPartyContactNumber",
     name: "thirdPartyContactNumber",
     type: "tel",
-    autocomplete: "off",
     classes: "govuk-input--width-20",
     value: currentThirdPartyContactNumber
   }) }}

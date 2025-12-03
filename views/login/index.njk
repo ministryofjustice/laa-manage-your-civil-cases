@@ -15,7 +15,7 @@
 
       <h1 class="govuk-heading-xl">{{ t('pages.login.heading') }}</h1>
 
-      <form action="/login" method="POST" class="govuk-form">
+      <form action="/login" method="POST" class="govuk-form" autocomplete="off">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
 
         {% set usernameValue = (values and values.username) or '' %}
