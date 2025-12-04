@@ -27,7 +27,7 @@ jobs:
       # We only checkout the docs directory, which allows us to keep all necessary files for
       # generating the docs separate from the app.
       - name: Checkout
-        uses: actions/checkout@v6 
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v6
         with:
           sparse-checkout: |
             docs
