@@ -547,3 +547,51 @@ export function buildOrderingParamFields(ordering: string, sortBy: string, sortO
   }
   return { sortBy: sortByParam, sortOrder: sortOrderParam };
 }
+
+/**
+ * Create pagination for a given dataset
+ * @template T
+ * @param {T[]} items The full dataset to paginate
+ * @param {unknown} pageQuery The raw page query value from the request (e.g. req.query.page)
+ * @param {string} basePath  The root path used to construct pagination links
+ * @param {number} PAGE_SIZE  The number of items per page
+ * @returns {{ slicedItems: T[], paginationMeta: { page: number, pageSize: number, totalItems: number, totalPages: number } }} Pagination results and metadata
+ */
+export function createPaginationForGivenDataSet<T>(items: T[], pageQuery: unknown, basePath: string, PAGE_SIZE: number ): {
+  slicedItems: T[];
+  paginationMeta: {
+    page: number;
+    pageSize: number;
+    totalItems: number;
+    totalPages: number;
+    basePath: string;
+  };
+} {
+  const ONE = 1;
+
+  // Parse page number safely
+  const rawPage = Number(safeString(pageQuery ?? ONE));
+  const page = Number.isFinite(rawPage) && rawPage >= ONE ? rawPage : ONE;
+
+  const { length: totalItems } = items;
+  const totalPages = Math.max(ONE, Math.ceil(totalItems / PAGE_SIZE));
+
+  // Put viewable page into valid range
+  const currentPage = Math.min(page, totalPages);
+
+  // Slice items
+  const start = (currentPage - ONE) * PAGE_SIZE;
+  const end = start + PAGE_SIZE;
+
+  return {
+    slicedItems: items.slice(start, end),
+    paginationMeta: {
+      page: currentPage,
+      pageSize: PAGE_SIZE,
+      totalItems,
+      totalPages,
+      basePath
+    },
+  };
+}
+

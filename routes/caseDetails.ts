@@ -1,6 +1,7 @@
 import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
 import { handleCaseDetailsTab, acceptCase, completeCase, closeCase, getCloseCaseForm, getPendingCaseForm, pendingCase, getReopenCaseForm, reopenCase } from '#src/scripts/controllers/caseDetailsController.js';
+import { handleCaseHistoryTab } from '#src/scripts/controllers/caseHistoryController.js';
 import { getRemoveThirdPartyConfirmation, deleteThirdParty, getRemoveSupportNeedsConfirmation, deleteClientSupportNeeds } from '#src/scripts/controllers/index.js';
 import { validateReopenCase } from '#src/middlewares/reopenCaseSchema.js';
 import { validateCloseCase } from '#src/middlewares/closeCaseSchema.js';
@@ -26,7 +27,7 @@ router.get('/:caseReference/financial-eligibility', async function (req: Request
 
 /* GET history for a specific case. */
 router.get('/:caseReference/history', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
-  await handleCaseDetailsTab(req, res, next, 'history');
+  await handleCaseHistoryTab(req, res, next, 'history');
 });
 
 /* GET confirmation page for removing third party. */
