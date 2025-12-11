@@ -27,36 +27,11 @@
 }) }}
 
 
-{# Build pagination config from pagination meta #}
+{# Render pagination if available #}
 {% if pagination and pagination.totalPages > 1 %}
-  {% set page = pagination.page %}
-  {% set totalPages = pagination.totalPages %}
-  {% set basePath = pagination.basePath %}
-
-  {# initialise paginationItems as an empty array #}
-  {% set paginationItems = [] %}
-
-  {% for i in range(1, totalPages + 1) %}
-    {% set paginationItems = (paginationItems.push({
-      number: i,
-      href: basePath + '?page=' + i,
-      current: (i == page)
-    }), paginationItems) %}
-  {% endfor %}
-
-  {% set previousLink = null %}
-  {% if page > 1 %}
-    {% set previousLink = { href: basePath + '?page=' + (page - 1) } %}
-  {% endif %}
-
-  {% set nextLink = null %}
-  {% if page < totalPages %}
-    {% set nextLink = { href: basePath + '?page=' + (page + 1) } %}
-  {% endif %}
-
   {{ govukPagination({
-    previous: previousLink,
-    next: nextLink,
-    items: paginationItems
+    previous: pagination.previous,
+    next: pagination.next,
+    items: pagination.items
   }) }}
 {% endif %}

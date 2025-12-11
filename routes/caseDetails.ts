@@ -6,27 +6,28 @@ import { getRemoveThirdPartyConfirmation, deleteThirdParty, getRemoveSupportNeed
 import { validateReopenCase } from '#src/middlewares/reopenCaseSchema.js';
 import { validateCloseCase } from '#src/middlewares/closeCaseSchema.js';
 import { validatePendingCase } from '#src/middlewares/pendingCaseSchema.js';
+import { fetchClientDetails } from '#middleware/caseDetailsMiddleware.js';
 
 // Create a new router for case details routes
 const router = express.Router();
 
 /* GET client details for a specific case. */
-router.get('/:caseReference/client-details', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
-  await handleCaseDetailsTab(req, res, next, 'client_details');
+router.get('/:caseReference/client-details', fetchClientDetails, function (req: Request, res: Response, next: NextFunction): void {
+  handleCaseDetailsTab(req, res, next, 'client_details');
 });
 
 /* GET case details details for a specific case. */
-router.get('/:caseReference/case-details', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
-  await handleCaseDetailsTab(req, res, next, 'case_details');
+router.get('/:caseReference/case-details', fetchClientDetails, function (req: Request, res: Response, next: NextFunction): void {
+  handleCaseDetailsTab(req, res, next, 'case_details');
 });
 
 /* GET financial eligibility details for a specific case. */
-router.get('/:caseReference/financial-eligibility', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
-  await handleCaseDetailsTab(req, res, next, 'financial_eligibility');
+router.get('/:caseReference/financial-eligibility', fetchClientDetails, function (req: Request, res: Response, next: NextFunction): void {
+  handleCaseDetailsTab(req, res, next, 'financial_eligibility');
 });
 
 /* GET history for a specific case. */
-router.get('/:caseReference/history', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
+router.get('/:caseReference/history', fetchClientDetails, async function (req: Request, res: Response, next: NextFunction): Promise<void> {
   await handleCaseHistoryTab(req, res, next, 'history');
 });
 
