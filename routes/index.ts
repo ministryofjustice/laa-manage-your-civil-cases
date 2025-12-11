@@ -13,7 +13,7 @@ const router = express.Router();
 const SUCCESSFUL_REQUEST = 200;
 
 /* GET home page (no auth required) - redirect to cases once authorised. */
-router.get('/', requireAuth, function (req: Request, res: Response): void {
+router.get('/', requireAuth, (req: Request, res: Response): void => {
   res.redirect('/cases/new');
 });
 
@@ -36,17 +36,17 @@ router.use('/cases', requireAuth, editClientDetailsRouter);
 router.use('/search', requireAuth, searchRouter);
 
 /* GET liveness and readiness probes for Helm deployments */
-router.get('/status', function (req: Request, res: Response): void {
+router.get('/status', (req: Request, res: Response): void => {
   res.status(SUCCESSFUL_REQUEST).send('OK');
 });
 
 /* GET health checks for monitoring */
-router.get('/health', function (req: Request, res: Response): void {
+router.get('/health', (req: Request, res: Response): void => {
   res.status(SUCCESSFUL_REQUEST).send('Healthy');
 });
 
 // Global 404 handler - must be after all other routes
-router.use(function (req: Request, res: Response): void {
+router.use((req: Request, res: Response): void => {
   const { originalUrl, method } = req;
 
   devError(`404 - Page not found: ${method} ${originalUrl}`);
@@ -74,7 +74,7 @@ router.use(function (req: Request, res: Response): void {
 });
 
 // Global error handler middleware
-router.use(function (err: Error, req: Request, res: Response, next: NextFunction): void {
+router.use((err: Error, req: Request, res: Response, next: NextFunction): void => {
   const { originalUrl } = req;
 
   // Check if error already has user-friendly message, otherwise extract it
