@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 import { apiService } from '#src/services/apiService.js';
 import { changeCaseStateService } from '#src/services/changeCaseStateService.js';
-import { devLog, devError, createProcessedError, safeString, clearAllOriginalFormData, safeBodyString, formatValidationError, trimOrUndefined, validCaseReference } from '#src/scripts/helpers/index.js';
+import { devLog, createProcessedError, safeString, clearAllOriginalFormData, safeBodyString, formatValidationError, trimOrUndefined, validCaseReference } from '#src/scripts/helpers/index.js';
 import { storeSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 import config from '#config.js';
 
@@ -16,9 +16,9 @@ const NOT_FOUND = 404;
  * @param {Response} res Express response object
  * @param {NextFunction} next Express next function
  * @param {string} activeTab The active tab of the primary navigation
- * @returns {Promise<void>} Page to be returned
+ * @returns {void} Page to be returned
  */
-export async function handleCaseDetailsTab(req: Request, res: Response, next: NextFunction, activeTab: string): Promise<void> {
+export function handleCaseDetailsTab(req: Request, res: Response, next: NextFunction, activeTab: string): void {
 
   const caseReference = safeString(req.params.caseReference);
 
@@ -27,38 +27,37 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
   }
 
   try {
-    devLog(`Fetching case details for case: ${caseReference}, tab: ${activeTab}`);
+    devLog(`Rendering case details for case: ${caseReference}, tab: ${activeTab}`);
 
     // Clear any lingering form session data when users navigate to client details page
     // This automatically clears all session keys containing 'Original' (e.g., 'thirdPartyOriginal', 'clientNameOriginal', etc.)
     clearAllOriginalFormData(req);
 
-    // Fetch client details from API
-    const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
+    // Client details already fetched by middleware, available at req.clientData
+    const { clientData } = req;
 
-    if (response.status === 'success' && response.data !== null) {
+    if (clientData !== null && typeof clientData === 'object' && 'thirdParty' in clientData) {
       // Cache soft-deleted third party state in session to optimize add/remove operations
       // addClientThirdPartyController uses this to decide POST (create) vs PATCH (restore)
-      const hasSoftDeletedThirdParty = response.data.thirdParty?.isSoftDeleted ?? false;
+      const { thirdParty } = clientData as Record<string, unknown>;
+      const hasSoftDeletedThirdParty =
+        typeof thirdParty === 'object' &&
+          thirdParty !== null &&
+          'isSoftDeleted' in thirdParty ?
+          Boolean(thirdParty.isSoftDeleted) : false;
 
       storeSessionData(req, 'thirdPartyCache', {
         caseReference,
         hasSoftDeletedThirdParty: String(hasSoftDeletedThirdParty),
         cachedAt: String(Date.now())
       });
-
-      res.render('case_details/index.njk', {
-        activeTab,
-        client: response.data,
-        caseReference: response.data.caseReference
-      });
-    } else {
-      devError(`Client details not found for case: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);
-      res.status(NOT_FOUND).render('main/error.njk', {
-        status: '404',
-        error: response.message ?? 'Case not found'
-      });
     }
+
+    res.render('case_details/index.njk', {
+      activeTab,
+      client: clientData,
+      caseReference
+    });
   } catch (error) {
     // Use the error processing utility
     const processedError = createProcessedError(error, `fetching client details for case ${caseReference}`);
@@ -271,7 +270,7 @@ export async function closeCase(req: Request, res: Response, next: NextFunction)
   try {
     const eventCode = safeString(safeBodyString(req.body, 'eventCode'));
     const closeNote = trimOrUndefined(safeBodyString(req.body, 'closeNote'));
-    
+
     devLog(`Closing case: ${caseReference} with event code: ${eventCode}`);
     await changeCaseStateService.closeCase(req.axiosMiddleware, caseReference, eventCode, closeNote);
 

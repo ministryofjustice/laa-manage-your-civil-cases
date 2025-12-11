@@ -1,4 +1,5 @@
 import type { Request, Response, NextFunction } from '#node_modules/@types/express/index.js';
+import type { ClientHistoryApiResponse } from '#types/api-types.js';
 import { apiService } from '#src/services/apiService.js';
 import { createPaginationForGivenDataSet, safeString } from '../helpers/dataTransformers.js';
 import { devLog, devError } from '../helpers/devLogger.js';
@@ -31,11 +32,11 @@ export async function handleCaseHistoryTab(req: Request, res: Response, next: Ne
   try {
     devLog(`Fetching case history details for case: ${caseReference}, tab: ${activeTab}`);
 
-    // Fetch client details & history from API
-    const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
-    const historyResponse = await apiService.getClientHistoryDetails(req.axiosMiddleware, caseReference);
+    // Client details already fetched by middleware, available at req.clientData
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call -- apiService type inference issue
+    const historyResponse: ClientHistoryApiResponse = await apiService.getClientHistoryDetails(req.axiosMiddleware, caseReference);
 
-    if ((response.status === 'success' && response.data !== null) && (historyResponse.status === 'success' && historyResponse.data !== null)) {
+    if (historyResponse.status === 'success' && historyResponse.data !== null) {
       // Pagination setup
       const { slicedItems: slicedHistoryLogs, paginationMeta } = createPaginationForGivenDataSet(
         historyResponse.data,
@@ -46,16 +47,16 @@ export async function handleCaseHistoryTab(req: Request, res: Response, next: Ne
 
       res.render('case_details/index.njk', {
         activeTab,
-        client: response.data,
+        client: req.clientData,
         history: slicedHistoryLogs, // only logs for this page
         pagination: paginationMeta,
-        caseReference: response.data.caseReference
+        caseReference
       });
     } else {
-      devError(`Client details not found for case: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);
+      devError(`History not found for case: ${caseReference}. API response: ${historyResponse.message ?? 'Unknown error'}`);
       res.status(NOT_FOUND).render('main/error.njk', {
         status: '404',
-        error: response.message ?? 'Case not found'
+        error: historyResponse.message ?? 'History not found'
       });
     }
   } catch (error) {

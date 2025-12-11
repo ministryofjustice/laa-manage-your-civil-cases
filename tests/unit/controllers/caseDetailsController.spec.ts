@@ -82,28 +82,25 @@ describe('Case Details Controller', () => {
   describe('handleCaseDetailsTab', () => {
     it('should render case details page with client data and correct template for specified tab', async () => {
       // Arrange
-      const mockApiResponse = {
-        status: 'success',
-        data: {
-          fullName: 'John Doe',
-          caseReference: 'TEST123',
-          dateOfBirth: '1990-01-01'
-        }
+      const mockClientData = {
+        fullName: 'John Doe',
+        caseReference: 'TEST123',
+        dateOfBirth: '1990-01-01'
       };
       
-      apiServiceStub.resolves(mockApiResponse);
+      // Mock client data from middleware
+      req.clientData = mockClientData;
 
       // Act
-      await handleCaseDetailsTab(
+      handleCaseDetailsTab(
         req as Request,
         res as Response,
         next,
         'opened'
       );
 
-      // Assert
-      expect(apiServiceStub.calledOnce).to.be.true;
-      expect(apiServiceStub.calledWith(req.axiosMiddleware, 'TEST123')).to.be.true;
+      // Assert - API service should not be called (middleware handles it)
+      expect(apiServiceStub.called).to.be.false;
       expect(renderStub.calledWith('case_details/index.njk')).to.be.true;
     });
 
@@ -112,7 +109,7 @@ describe('Case Details Controller', () => {
       req.params = {};
 
       // Act
-      await handleCaseDetailsTab(
+      handleCaseDetailsTab(
         req as Request,
         res as Response,
         next,
@@ -124,13 +121,16 @@ describe('Case Details Controller', () => {
       expect(statusStub.calledWith(400)).to.be.true;
     });
 
-    it('should delegate API errors to Express error handling middleware with user-friendly message', async () => {
-      // Arrange
-      const error = new Error('API Error');
-      apiServiceStub.rejects(error);
+    it('should delegate errors to Express error handling middleware with user-friendly message', async () => {
+      // Arrange - simulate an error in rendering or session handling
+      const mockClientData = { fullName: 'John Doe', caseReference: 'TEST123' };
+      req.clientData = mockClientData;
+      
+      // Force an error by making render throw
+      renderStub.throws(new Error('Render error'));
 
       // Act
-      await handleCaseDetailsTab(
+      handleCaseDetailsTab(
         req as Request,
         res as Response,
         next,
