@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from '#node_modules/@types/expre
 import type { ClientHistoryApiResponse } from '#types/api-types.js';
 import { apiService } from '#src/services/apiService.js';
 import { createPaginationForGivenDataSet, safeString } from '../helpers/dataTransformers.js';
+import { transformHistoryLogToTimelineItem } from '#src/services/api/transforms/transformClientHistoryLogs.js';
 import { devLog, devError } from '../helpers/devLogger.js';
 import { createProcessedError } from '../helpers/errorHandler.js';
 import { validCaseReference } from '../helpers/formControllerHelpers.js';
@@ -33,7 +34,7 @@ export async function handleCaseHistoryTab(req: Request, res: Response, next: Ne
     devLog(`Fetching case history details for case: ${caseReference}, tab: ${activeTab}`);
 
     // Client details already fetched by middleware, available at req.clientData
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call -- apiService type inference issue
+     
     const historyResponse: ClientHistoryApiResponse = await apiService.getClientHistoryDetails(req.axiosMiddleware, caseReference);
 
     if (historyResponse.status === 'success' && historyResponse.data !== null) {
@@ -45,10 +46,13 @@ export async function handleCaseHistoryTab(req: Request, res: Response, next: Ne
         PAGE_SIZE
       );
 
+      // Transform history logs to timeline items
+      const timelineItems = slicedHistoryLogs.map(log => transformHistoryLogToTimelineItem(log, req.locale.t));
+
       res.render('case_details/index.njk', {
         activeTab,
         client: req.clientData,
-        history: slicedHistoryLogs, // only logs for this page
+        timelineItems,
         pagination: paginationMeta,
         caseReference
       });

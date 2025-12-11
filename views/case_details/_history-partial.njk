@@ -3,27 +3,8 @@
 
 <h2 class="govuk-heading-m">{{ t('pages.caseDetails.tabs.history') }}</h2>
 
-{% set items = [] %}
-
-{% for log in history %}
-  {% set outcomeDescription = t('common.outcomeCode.' + log.code) if log.code else '' %}
-  {% set items = (items.push({
-    label: {
-      text: outcomeDescription
-    },
-    text: (log.notes if log.code != "MT_CHANGED" and log.code != "MT_CREATED"),
-    datetime: {
-      timestamp: log.created,
-      type: "datetime"
-    },
-    byline: {
-      text: log.createdBy
-    }
-  }), items) %}
-{% endfor %}
-
 {{ mojTimeline({
-  items: items
+  items: timelineItems
 }) }}
 
 
