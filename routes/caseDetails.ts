@@ -6,27 +6,28 @@ import { getRemoveThirdPartyConfirmation, deleteThirdParty, getRemoveSupportNeed
 import { validateReopenCase } from '#src/middlewares/reopenCaseSchema.js';
 import { validateCloseCase } from '#src/middlewares/closeCaseSchema.js';
 import { validatePendingCase } from '#src/middlewares/pendingCaseSchema.js';
+import { fetchClientDetails } from '#middleware/caseDetailsMiddleware.js';
 
 // Create a new router for case details routes
 const router = express.Router();
 
 /* GET client details for a specific case. */
-router.get('/:caseReference/client-details', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  await handleCaseDetailsTab(req, res, next, 'client_details');
+router.get('/:caseReference/client-details', fetchClientDetails, (req: Request, res: Response, next: NextFunction): void => {
+  handleCaseDetailsTab(req, res, next, 'client_details');
 });
 
 /* GET case details details for a specific case. */
-router.get('/:caseReference/case-details', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  await handleCaseDetailsTab(req, res, next, 'case_details');
+router.get('/:caseReference/case-details', fetchClientDetails, (req: Request, res: Response, next: NextFunction): void => {
+  handleCaseDetailsTab(req, res, next, 'case_details');
 });
 
 /* GET financial eligibility details for a specific case. */
-router.get('/:caseReference/financial-eligibility', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  await handleCaseDetailsTab(req, res, next, 'financial_eligibility');
+router.get('/:caseReference/financial-eligibility', fetchClientDetails, (req: Request, res: Response, next: NextFunction): void => {
+  handleCaseDetailsTab(req, res, next, 'financial_eligibility');
 });
 
 /* GET history for a specific case. */
-router.get('/:caseReference/history', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+router.get('/:caseReference/history', fetchClientDetails, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   await handleCaseHistoryTab(req, res, next, 'history');
 });
 
@@ -41,8 +42,8 @@ router.post('/:caseReference/confirm/remove-third-party', async (req: Request, r
 });
 
 /* GET confirmation page for removing client support needs. */
-router.get('/:caseReference/confirm/remove-support-need', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  await getRemoveSupportNeedsConfirmation(req, res, next);
+router.get('/:caseReference/confirm/remove-support-need', fetchClientDetails, (req: Request, res: Response, next: NextFunction): void => {
+  getRemoveSupportNeedsConfirmation(req, res, next);
 });
 
 /* DELETE client support needs. */
@@ -56,8 +57,8 @@ router.post('/:caseReference/accept', async (req: Request, res: Response, next: 
 });
 
 /* GET why-pending page (interstitial for marking case as pending). */
-router.get('/:caseReference/why-pending', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  await getPendingCaseForm(req, res, next);
+router.get('/:caseReference/why-pending', fetchClientDetails, (req: Request, res: Response, next: NextFunction): void => {
+  getPendingCaseForm(req, res, next);
 });
 
 /* POST pending case. */
@@ -71,8 +72,8 @@ router.post('/:caseReference/completed', async (req: Request, res: Response, nex
 });
 
 /* GET why-closed page (interstitial for closing a case). */
-router.get('/:caseReference/why-closed', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  await getCloseCaseForm(req, res, next);
+router.get('/:caseReference/why-closed', fetchClientDetails, (req: Request, res: Response, next: NextFunction): void => {
+  getCloseCaseForm(req, res, next);
 });
 
 /* POST close case. */
@@ -81,8 +82,8 @@ router.post('/:caseReference/why-closed', validateCloseCase(), async (req: Reque
 });
 
 /* GET why-reopen page (interstitial for reopening a case). */
-router.get('/:caseReference/why-reopen', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  await getReopenCaseForm(req, res, next);
+router.get('/:caseReference/why-reopen', fetchClientDetails, (req: Request, res: Response, next: NextFunction): void => {
+  getReopenCaseForm(req, res, next);
 });
 
 /* POST reopen case. */

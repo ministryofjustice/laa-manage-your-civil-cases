@@ -5,6 +5,7 @@
  */
 
 import type { FieldConfig } from '#types/form-controller-types.js';
+import type { PaginationResult } from '#types/pagination-types.js';
 import { formatDate } from './dateFormatter.js';
 /**
  * Safely extract nested field value using custom path resolution
@@ -555,33 +556,40 @@ export function buildOrderingParamFields(ordering: string, sortBy: string, sortO
  * @param {unknown} pageQuery The raw page query value from the request (e.g. req.query.page)
  * @param {string} basePath  The root path used to construct pagination links
  * @param {number} PAGE_SIZE  The number of items per page
- * @returns {{ slicedItems: T[], paginationMeta: { page: number, pageSize: number, totalItems: number, totalPages: number } }} Pagination results and metadata
+ * @returns {PaginationResult<T>} Pagination results and metadata
  */
-export function createPaginationForGivenDataSet<T>(items: T[], pageQuery: unknown, basePath: string, PAGE_SIZE: number ): {
-  slicedItems: T[];
-  paginationMeta: {
-    page: number;
-    pageSize: number;
-    totalItems: number;
-    totalPages: number;
-    basePath: string;
-  };
-} {
-  const ONE = 1;
+export function createPaginationForGivenDataSet<T>(items: T[], pageQuery: unknown, basePath: string, PAGE_SIZE: number ): PaginationResult<T> {
+  const FIRST_PAGE = 1;
 
   // Parse page number safely
-  const rawPage = Number(safeString(pageQuery ?? ONE));
-  const page = Number.isFinite(rawPage) && rawPage >= ONE ? rawPage : ONE;
+  const rawPage = Number(safeString(pageQuery ?? FIRST_PAGE));
+  const page = Number.isFinite(rawPage) && rawPage >= FIRST_PAGE ? rawPage : FIRST_PAGE;
 
   const { length: totalItems } = items;
-  const totalPages = Math.max(ONE, Math.ceil(totalItems / PAGE_SIZE));
+  const totalPages = Math.max(FIRST_PAGE, Math.ceil(totalItems / PAGE_SIZE));
 
   // Put viewable page into valid range
   const currentPage = Math.min(page, totalPages);
 
   // Slice items
-  const start = (currentPage - ONE) * PAGE_SIZE;
+  const start = (currentPage - FIRST_PAGE) * PAGE_SIZE;
   const end = start + PAGE_SIZE;
+
+  // Build pagination items array
+  const paginationItems = [];
+  for (let pageNumber = FIRST_PAGE; pageNumber <= totalPages; pageNumber += FIRST_PAGE) {
+    paginationItems.push({
+      number: pageNumber,
+      href: `${basePath}?page=${pageNumber}`,
+      current: pageNumber === currentPage
+    });
+  }
+
+  // Build previous link
+  const previous = currentPage > FIRST_PAGE ? { href: `${basePath}?page=${currentPage - FIRST_PAGE}` } : null;
+
+  // Build next link
+  const next = currentPage < totalPages ? { href: `${basePath}?page=${currentPage + FIRST_PAGE}` } : null;
 
   return {
     slicedItems: items.slice(start, end),
@@ -590,7 +598,9 @@ export function createPaginationForGivenDataSet<T>(items: T[], pageQuery: unknow
       pageSize: PAGE_SIZE,
       totalItems,
       totalPages,
-      basePath
+      items: paginationItems,
+      previous,
+      next
     },
   };
 }

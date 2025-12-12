@@ -33,3 +33,32 @@ export function transformClientHistoryLogs(item: unknown): ClientHistoryLogItem 
     notes
   };
 }
+
+/**
+ * Transform client history log to timeline item format for MOJ Timeline component
+ * @param {ClientHistoryLogItem} log Client history log item
+ * @param {Function} t Translation function
+ * @returns {object} Timeline item for MOJ Timeline component
+ */
+export function transformHistoryLogToTimelineItem(log: ClientHistoryLogItem, t: (key: string, options?: Record<string, unknown>) => string): {
+  label: { text: string };
+  text: string;
+  datetime: { timestamp: string; type: string };
+  byline: { text: string };
+} {
+  const outcomeDescription = log.code !== '' ? t(`common.outcomeCode.${log.code}`) : '';
+
+  return {
+    label: {
+      text: outcomeDescription
+    },
+    text: log.notes,
+    datetime: {
+      timestamp: log.created,
+      type: 'datetime'
+    },
+    byline: {
+      text: log.createdBy
+    }
+  };
+}

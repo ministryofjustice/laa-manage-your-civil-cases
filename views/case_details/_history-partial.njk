@@ -3,60 +3,15 @@
 
 <h2 class="govuk-heading-m">{{ t('pages.caseDetails.tabs.history') }}</h2>
 
-{% set items = [] %}
-
-{% for log in history %}
-  {% set outcomeDescription = t('common.outcomeCode.' + log.code) if log.code else '' %}
-  {% set items = (items.push({
-    label: {
-      text: outcomeDescription
-    },
-    text: (log.notes if log.code != "MT_CHANGED" and log.code != "MT_CREATED"),
-    datetime: {
-      timestamp: log.created,
-      type: "datetime"
-    },
-    byline: {
-      text: log.createdBy
-    }
-  }), items) %}
-{% endfor %}
-
 {{ mojTimeline({
-  items: items
+  items: timelineItems
 }) }}
 
-
-{# Build pagination config from pagination meta #}
+{# Render pagination from pagination meta, if available #}
 {% if pagination and pagination.totalPages > 1 %}
-  {% set page = pagination.page %}
-  {% set totalPages = pagination.totalPages %}
-  {% set basePath = pagination.basePath %}
-
-  {# initialise paginationItems as an empty array #}
-  {% set paginationItems = [] %}
-
-  {% for i in range(1, totalPages + 1) %}
-    {% set paginationItems = (paginationItems.push({
-      number: i,
-      href: basePath + '?page=' + i,
-      current: (i == page)
-    }), paginationItems) %}
-  {% endfor %}
-
-  {% set previousLink = null %}
-  {% if page > 1 %}
-    {% set previousLink = { href: basePath + '?page=' + (page - 1) } %}
-  {% endif %}
-
-  {% set nextLink = null %}
-  {% if page < totalPages %}
-    {% set nextLink = { href: basePath + '?page=' + (page + 1) } %}
-  {% endif %}
-
   {{ govukPagination({
-    previous: previousLink,
-    next: nextLink,
-    items: paginationItems
+    previous: pagination.previous,
+    next: pagination.next,
+    items: pagination.items
   }) }}
 {% endif %}
