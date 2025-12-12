@@ -89,8 +89,10 @@
         {% if activeId == tab.id %}
           {# Set context variables for the partial #}
           {% set data = options.data %}
+          {% set history = options.history %} 
           {% set sortOrder = options.sortOrder %}
           {% set pagination = options.pagination %}
+          {% set timelineItems = options.timelineItems %}
           {% set caseType = options.caseType %} 
           {% if tab.partial %}
             {% include tab.partial %}

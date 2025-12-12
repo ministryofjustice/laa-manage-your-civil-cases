@@ -18,6 +18,9 @@
     activeTab: activeTab,
     containerId: "cases-tab-container",
     data: client,
+    history: history,
+    pagination: pagination,
+    timelineItems: timelineItems,
     tabs: [
       {
         id: "client_details",
@@ -38,7 +41,8 @@
       {
         id: "history",
         text: t('pages.caseDetails.tabs.history'),
-        href:"/cases/" + caseReference + "/history"
+        href:"/cases/" + caseReference + "/history",
+        partial: "case_details/_history-partial.njk"
       }
     ]
   }) }}

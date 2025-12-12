@@ -35,8 +35,10 @@ test('history page should display correctly', async ({ page, i18nSetup }) => {
   const backLink = page.locator('.govuk-back-link');
   await expect(backLink).toBeVisible();
   
-  // Check for notes and history content
+  // Check for history content
   const mainContent = page.locator('main');
+  await expect(page.getByRole('heading', { name: 'History' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Manually allocated by operator' })).toBeVisible();
   await expect(mainContent).toBeVisible();
 });
 
@@ -62,7 +64,7 @@ test('case detail sections accessibility', {
   await page.goto(`/cases/${caseReference}/financial-eligibility`);
   await checkAccessibility();
   
-  await page.goto(`/cases/${caseReference}/notes-and-history`);
+  await page.goto(`/cases/${caseReference}/history`);
   await checkAccessibility();
   
   await page.goto(`/cases/${caseReference}/scope`);

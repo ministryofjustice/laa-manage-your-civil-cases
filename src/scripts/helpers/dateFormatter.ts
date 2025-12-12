@@ -28,11 +28,11 @@ export function formatDate(dateString: string): string {
 }
 
 /**
- * Format date for display in banner
+ * Format date in long format
  * @param {string} dateString ISO date string
  * @returns {string} Formatted date in D MMM YYYY H:MMam/pm format (e.g., "6 January 1986 at 2:01pm")
  */
-export function formatDateForBanner(dateString: string): string {
+export function formatLongFormDate(dateString: string): string {
   const date = new Date(dateString);
   const AM_HOURS = 12;
   const PADDING = 2;

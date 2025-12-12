@@ -63,6 +63,56 @@ function createGetCaseDetailedHandler(
 }
 
 /**
+ * GET /case/:caseReference/logs/ - Get case history logs
+ */
+function createGetCaseHistoryHandler(
+  API_BASE_URL: string,
+  API_PREFIX: string,
+  cases: MockCase[]
+) {
+  return http.get(
+    `${API_BASE_URL}${API_PREFIX}/case/:caseReference/logs/`,
+    ({ params }) => {
+      const { caseReference } = params;
+      console.log(`[MSW] Intercepting GET /case/${caseReference}/logs/`);
+
+      const caseItem = findMockCase(caseReference as string, cases);
+
+      if (!caseItem) {
+        console.log(`[MSW] Case ${caseReference} not found in mock data (logs)`);
+        return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
+      }
+
+      // Minimal set of logs
+      const logs = [
+        {
+          code: 'MANALC',
+          created_by: 'test_operator',
+          created: '2025-12-08T17:14:45.428Z',
+          notes: 'Assigned to Howells. ',
+          type: 'outcome',
+          level: '29',
+          timer: 1746,
+          patch: null
+        },
+        {
+          code: 'CASE_CREATED',
+          created_by: 'test_operator',
+          created: '2025-12-08T17:10:11.530Z',
+          notes: 'Case Created',
+          type: 'system',
+          level: '29',
+          timer: null,
+          patch: null
+        }
+      ];
+
+      return HttpResponse.json(logs);
+    }
+  );
+}
+
+/**
  * GET /case - List/search cases with filtering, sorting, and pagination
  */
 function createGetCasesListHandler(
@@ -133,6 +183,7 @@ export function createCaseHandlers(
     createAuthTokenHandler(API_BASE_URL),
     createGetCaseHandler(API_BASE_URL, API_PREFIX, cases),
     createGetCaseDetailedHandler(API_BASE_URL, API_PREFIX, cases),
-    createGetCasesListHandler(API_BASE_URL, API_PREFIX, cases)
+    createGetCasesListHandler(API_BASE_URL, API_PREFIX, cases),
+    createGetCaseHistoryHandler(API_BASE_URL, API_PREFIX, cases)
   ];
 }
