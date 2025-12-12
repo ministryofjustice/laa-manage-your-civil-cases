@@ -42,8 +42,8 @@ router.post('/:caseReference/confirm/remove-third-party', async function (req: R
 });
 
 /* GET confirmation page for removing client support needs. */
-router.get('/:caseReference/confirm/remove-support-need', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
-  await getRemoveSupportNeedsConfirmation(req, res, next);
+router.get('/:caseReference/confirm/remove-support-need', fetchClientDetails, function (req: Request, res: Response, next: NextFunction): void {
+  getRemoveSupportNeedsConfirmation(req, res, next);
 });
 
 /* DELETE client support needs. */
@@ -57,8 +57,8 @@ router.post('/:caseReference/accept', async function (req: Request, res: Respons
 });
 
 /* GET why-pending page (interstitial for marking case as pending). */
-router.get('/:caseReference/why-pending', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
-  await getPendingCaseForm(req, res, next);
+router.get('/:caseReference/why-pending', fetchClientDetails, function (req: Request, res: Response, next: NextFunction): void {
+  getPendingCaseForm(req, res, next);
 });
 
 /* POST pending case. */
@@ -72,8 +72,8 @@ router.post('/:caseReference/completed', async function (req: Request, res: Resp
 });
 
 /* GET why-closed page (interstitial for closing a case). */
-router.get('/:caseReference/why-closed', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
-  await getCloseCaseForm(req, res, next);
+router.get('/:caseReference/why-closed', fetchClientDetails, function (req: Request, res: Response, next: NextFunction): void {
+  getCloseCaseForm(req, res, next);
 });
 
 /* POST close case. */
@@ -82,8 +82,8 @@ router.post('/:caseReference/why-closed', validateCloseCase(), async function (r
 });
 
 /* GET why-reopen page (interstitial for reopening a case). */
-router.get('/:caseReference/why-reopen', async function (req: Request, res: Response, next: NextFunction): Promise<void> {
-  await getReopenCaseForm(req, res, next);
+router.get('/:caseReference/why-reopen', fetchClientDetails, function (req: Request, res: Response, next: NextFunction): void {
+  getReopenCaseForm(req, res, next);
 });
 
 /* POST reopen case. */

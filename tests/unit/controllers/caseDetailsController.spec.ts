@@ -181,47 +181,35 @@ describe('Case Details Controller', () => {
   });
 
   describe('getPendingCaseForm', () => {
-    it('should successfully render the pending case form', async () => {
+    it('should successfully render the pending case form', () => {
       // Arrange
-      const mockApiResponse = {
-        status: 'success',
-        data: {
-          fullName: 'John Doe',
-          caseReference: 'TEST123'
-        }
+      req.clientData = {
+        fullName: 'John Doe',
+        caseReference: 'TEST123'
       };
-      apiServiceStub.resolves(mockApiResponse);
       req.csrfToken = sinon.stub().returns('csrf-token');
 
       // Act
-      await getPendingCaseForm(req as Request, res as Response, next);
+      getPendingCaseForm(req as Request, res as Response, next);
 
       // Assert
-      expect(apiServiceStub.calledOnce).to.be.true;
-      expect(apiServiceStub.calledWith(req.axiosMiddleware, 'TEST123')).to.be.true;
       expect(renderStub.calledWith('case_details/why-pending.njk')).to.be.true;
     });
   });
 
   describe('getCloseCaseForm', () => {
-    it('should successfully render the close case form', async () => {
+    it('should successfully render the close case form', () => {
       // Arrange
-      const mockApiResponse = {
-        status: 'success',
-        data: {
-          fullName: 'John Doe',
-          caseReference: 'TEST123'
-        }
+      req.clientData = {
+        fullName: 'John Doe',
+        caseReference: 'TEST123'
       };
-      apiServiceStub.resolves(mockApiResponse);
       req.csrfToken = sinon.stub().returns('csrf-token');
 
       // Act
-      await getCloseCaseForm(req as Request, res as Response, next);
+      getCloseCaseForm(req as Request, res as Response, next);
 
       // Assert
-      expect(apiServiceStub.calledOnce).to.be.true;
-      expect(apiServiceStub.calledWith(req.axiosMiddleware, 'TEST123')).to.be.true;
       expect(renderStub.calledWith('case_details/why-closed.njk')).to.be.true;
     });
   });
@@ -261,24 +249,18 @@ describe('Case Details Controller', () => {
   });
 
   describe('getReopenCaseForm', () => {
-    it('should successfully render the reopen case form', async () => {
+    it('should successfully render the reopen case form', () => {
       // Arrange
-      const mockApiResponse = {
-        status: 'success',
-        data: {
-          fullName: 'John Doe',
-          caseReference: 'TEST123'
-        }
+      req.clientData = {
+        fullName: 'John Doe',
+        caseReference: 'TEST123'
       };
-      apiServiceStub.resolves(mockApiResponse);
       req.csrfToken = sinon.stub().returns('csrf-token');
 
       // Act
-      await getReopenCaseForm(req as Request, res as Response, next);
+      getReopenCaseForm(req as Request, res as Response, next);
 
       // Assert
-      expect(apiServiceStub.calledOnce).to.be.true;
-      expect(apiServiceStub.calledWith(req.axiosMiddleware, 'TEST123')).to.be.true;
       expect(renderStub.calledWith('case_details/why-reopen.njk')).to.be.true;
     });
   });
