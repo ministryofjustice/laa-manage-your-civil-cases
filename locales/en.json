@@ -21,7 +21,7 @@
     },
     "outcomeCode": {
       "CASE_CREATED": "Case created",
-      "CASE_VIEWED": "Case viewed",
+      "CASE_VIEWED": "Case pending",
       "CASE_ORGANISATION_SET": "Case organisation set",
       "DIAGNOSIS_CREATED": "Diagnosis created",
       "DIAGNOSIS_DELETED": "Diagnosis deleted",
