@@ -54,7 +54,7 @@ jobs:
           USE_MOCK_API: "true"
       - name: Upload trace artifacts
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: playwright-traces
           path: |
@@ -111,7 +111,7 @@ jobs:
 
       - name: Upload Accessibility Report
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: accessibility-report
           path: |
