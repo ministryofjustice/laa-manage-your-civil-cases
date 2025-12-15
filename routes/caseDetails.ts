@@ -32,7 +32,7 @@ router.get('/:caseReference/history', fetchClientDetails, async (req: Request, r
 });
 
 /* GET confirmation page for removing third party. */
-router.get('/:caseReference/confirm/remove-third-party', (req: Request, res: Response, next: NextFunction): void => {
+router.get('/:caseReference/confirm/remove-third-party', fetchClientDetails, (req: Request, res: Response, next: NextFunction): void => {
   getRemoveThirdPartyConfirmation(req, res, next);
 });
 
