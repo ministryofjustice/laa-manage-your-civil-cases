@@ -47,7 +47,7 @@ export {
 // Date formatting utilities
 export {
   formatDate,
-  formatDateForBanner,
+  formatLongFormDate,
   dateStringFromThreeFields
 } from './dateFormatter.js';
 

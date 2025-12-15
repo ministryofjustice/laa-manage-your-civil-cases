@@ -9,7 +9,7 @@ import {
   safeOptionalString,
   isRecord,
   formatDate,
-  formatDateForBanner,
+  formatLongFormDate,
   transformContactDetails,
   transformClientSupportNeeds,
   transformThirdParty
@@ -56,8 +56,8 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
   const thirdParty = transformThirdParty(item.thirdparty_details);
 
   // Format dates differently for banner
-  const providerClosedBanner = formatDateForBanner(safeOptionalString(item.provider_closed) ?? '');
-  const providerViewedBanner = formatDateForBanner(safeOptionalString(item.provider_viewed) ?? '');
+  const providerClosedBanner = formatLongFormDate(safeOptionalString(item.provider_closed) ?? '');
+  const providerViewedBanner = formatLongFormDate(safeOptionalString(item.provider_viewed) ?? '');
 
   return {
     caseReference,

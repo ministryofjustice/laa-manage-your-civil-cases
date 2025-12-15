@@ -1,0 +1,17 @@
+{% from "moj/components/timeline/macro.njk" import mojTimeline %}
+{% from "govuk/components/pagination/macro.njk" import govukPagination %}
+
+<h2 class="govuk-heading-m">{{ t('pages.caseDetails.tabs.history') }}</h2>
+
+{{ mojTimeline({
+  items: timelineItems
+}) }}
+
+{# Render pagination from pagination meta, if available #}
+{% if pagination and pagination.totalPages > 1 %}
+  {{ govukPagination({
+    previous: pagination.previous,
+    next: pagination.next,
+    items: pagination.items
+  }) }}
+{% endif %}
