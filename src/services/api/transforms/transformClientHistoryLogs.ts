@@ -47,12 +47,13 @@ export function transformHistoryLogToTimelineItem(log: ClientHistoryLogItem, t: 
   byline: { text: string };
 } {
   const outcomeDescription = log.code !== '' ? t(`common.outcomeCode.${log.code}`) : '';
+  const filteredNotes = log.code !== 'MT_CHANGED' && log.code !== 'MT_CREATED' ? log.notes : '';
 
   return {
     label: {
       text: outcomeDescription
     },
-    text: log.notes,
+    text: filteredNotes,
     datetime: {
       timestamp: log.created,
       type: 'datetime'

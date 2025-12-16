@@ -92,7 +92,7 @@ export async function getClientHistoryDetails(axiosMiddleware: AxiosInstanceWrap
 
     devLog(`API: Client history details response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
 
-    const logs = Array.isArray(response.data) ? response.data.map(transformClientHistoryLogs).filter(log => log.code !== 'MT_CHANGED' && log.code !== 'MT_CREATED') : [];
+    const logs = Array.isArray(response.data) ? response.data.map(transformClientHistoryLogs) : [];
 
     return {
       data: logs,
