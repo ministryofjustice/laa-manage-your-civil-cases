@@ -153,3 +153,22 @@ export interface ClaSearchApiResponse {
   results: unknown[];
   count: number;
 }
+
+/**
+ * Client history details API response interface
+ */
+export interface ClientHistoryLogItem {
+  code: string;
+  createdBy: string;
+  created: string;
+  notes: string;
+}
+
+/**
+ * API response interface for single client history details
+ */
+export interface ClientHistoryApiResponse {
+  data: ClientHistoryLogItem[] | null;
+  status: 'success' | 'error';
+  message?: string;
+}

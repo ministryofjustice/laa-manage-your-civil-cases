@@ -4,9 +4,10 @@
  */
 
 import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
-import type { ClientDetailsResponse, ClientDetailsApiResponse } from '#types/api-types.js';
+import type { ClientDetailsResponse, ClientDetailsApiResponse, ClientHistoryApiResponse } from '#types/api-types.js';
 import { devLog, extractAndLogError } from '#src/scripts/helpers/index.js';
 import { transformClientDetailsItem } from '../transforms/transformClientDetails.js';
+import { transformClientHistoryLogs } from '../transforms/transformClientHistoryLogs.js';
 import { configureAxiosInstance } from '../base/BaseApiService.js';
 import { API_PREFIX, JSON_INDENT } from '../base/constants.js';
 
@@ -66,6 +67,41 @@ export async function updateClientDetails(
     };
   } catch (error) {
     const errorMessage = extractAndLogError(error, 'API error');
+    return {
+      data: null,
+      status: 'error',
+      message: errorMessage
+    };
+  }
+}
+
+/**
+ * Get client history details by case reference
+ * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+ * @param {string} caseReference - Case reference number
+ * @returns {Promise<ClientHistoryApiResponse>} API response with client details
+ */
+export async function getClientHistoryDetails(axiosMiddleware: AxiosInstanceWrapper, caseReference: string): Promise<ClientHistoryApiResponse> {
+  try {
+    devLog(`API: GET ${API_PREFIX}/case/${caseReference}/logs/`);
+
+    const configuredAxios = configureAxiosInstance(axiosMiddleware);
+
+    // Call API endpoint
+    const response = await configuredAxios.get(`${API_PREFIX}/case/${caseReference}/logs/`);
+
+    devLog(`API: Client history details response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+
+    const logs = Array.isArray(response.data) ? response.data.map(transformClientHistoryLogs) : [];
+
+    return {
+      data: logs,
+      status: 'success'
+    };
+
+  } catch (error) {
+    const errorMessage = extractAndLogError(error, 'API error');
+
     return {
       data: null,
       status: 'error',
