@@ -73,7 +73,7 @@ describe('Remove Client Support Needs Controller', () => {
       getRemoveSupportNeedsConfirmation(req as Request, res as Response, next);
 
       // Assert
-      expect(renderStub.calledWith('case_details/confirm-remove-client-support-needs.njk', { caseReference: 'TEST123' })).to.be.true;
+      expect(renderStub.calledWith('case_details/confirm-remove-client-support-needs.njk', { caseReference: 'TEST123', client: req.clientData })).to.be.true;
     });
 
     it('should return 400 when case reference is missing', async () => {

@@ -33,7 +33,8 @@ function handleCachedThirdPartyCheck(
   if (isCacheHit) {
     devLog(`Using cached third party state for case: ${caseReference}`);
     res.render('case_details/confirm-remove-third-party.njk', {
-      caseReference
+      caseReference,
+      client: req.clientData
     });
     return;
   }

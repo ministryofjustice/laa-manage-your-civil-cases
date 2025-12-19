@@ -13,6 +13,12 @@ test('viewing remove third party confirmation should display expected elements',
   await page.goto(clientDetailsUrl);
   await page.goto(visitUrl);
 
+  // Header components 
+  const dateReceivedText = page.getByText('Date received', { exact: true });
+  const laaReferenceText = page.getByText('LAA reference', { exact: true });
+
+  await expect(dateReceivedText).toBeVisible();
+  await expect(laaReferenceText).toBeVisible();
   await expect(page.locator('h1')).toContainText('Remove third party?');
   await expect(page.getByRole('button', { name: 'Yes, remove' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'No, go back to client details' })).toBeVisible();

@@ -1,10 +1,10 @@
-{% extends "base.njk" %}
+{% extends "case_details/_base-case-change.njk" %}
 {% from "components/confirmationComponent.njk" import confirmationComponent %}
 
 {% block pageTitle %}{{ t('pages.caseDetails.removeThirdParty.pageTitle', { serviceName: config.SERVICE_NAME }) }}
 {% endblock %}
 
-{% block pageContent %}
+{% block formContent %}
   {{ confirmationComponent({
     heading: t('pages.caseDetails.removeThirdParty.heading'),
     description: t('pages.caseDetails.removeThirdParty.description'),

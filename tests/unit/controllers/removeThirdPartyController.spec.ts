@@ -78,7 +78,7 @@ describe('Remove Third Party Controller', () => {
 
       // Assert
       expect(getClientDetailsStub.called).to.be.false; // No API call made
-      expect(renderStub.calledWith('case_details/confirm-remove-third-party.njk', { caseReference: 'TEST123' })).to.be.true;
+      expect(renderStub.calledWith('case_details/confirm-remove-third-party.njk', { caseReference: 'TEST123', client: req.clientData })).to.be.true;
     });
 
     it('should return 404 when cache hit with soft-deleted third party', () => {

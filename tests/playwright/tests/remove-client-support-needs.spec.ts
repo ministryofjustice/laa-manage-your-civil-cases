@@ -14,10 +14,16 @@ test('viewing remove client support needs confirmation should display expected e
   const confirmButton = page.getByRole('button', { name: 'Yes, remove' });
   const cancelButton = page.getByRole('button', { name: 'No, go back to client details' }); // It's a button, not a link
 
+  // Header components 
+  const dateReceivedText = page.getByText('Date received', { exact: true });
+  const laaReferenceText = page.getByText('LAA reference', { exact: true });
+
   // Navigate to the remove client support needs confirmation
   await page.goto(visitUrl);
 
   // Expect to see the main elements
+  await expect(dateReceivedText).toBeVisible();
+  await expect(laaReferenceText).toBeVisible();
   await expect(page.locator('h1')).toContainText('Remove client support needs?'); // Use actual text
   await expect(confirmButton).toBeVisible();
   await expect(cancelButton).toBeVisible();

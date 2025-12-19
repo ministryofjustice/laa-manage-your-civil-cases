@@ -39,7 +39,8 @@ export function getRemoveSupportNeedsConfirmation(req: Request, res: Response, n
   }
 
   res.render('case_details/confirm-remove-client-support-needs.njk', {
-    caseReference
+    caseReference,
+    client: req.clientData
   });
 }
 
