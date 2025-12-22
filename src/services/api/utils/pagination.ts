@@ -31,7 +31,7 @@ export function extractPaginationFromBody(data: unknown, requestedPage: number, 
     // Calculate current page from next/previous URLs or fall back to requested page
     let currentPage = requestedPage;
 
-    const PAGE_REGEX = /[?&]page=(\d+)/;
+    const PAGE_REGEX = /[?&]page=(?<page>\d+)/;
     const NEXT_PAGE_OFFSET = 1;
     const PREV_PAGE_OFFSET = 1;
 
