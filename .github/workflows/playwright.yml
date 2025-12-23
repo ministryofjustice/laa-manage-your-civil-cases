@@ -21,7 +21,7 @@ jobs:
         uses: ./.github/actions/reusable-playwright-steps
 
       - name: Cache Playwright browsers
-        uses: actions/cache@v4
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-chromium-${{ hashFiles('**/yarn.lock') }}
