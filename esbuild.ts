@@ -96,8 +96,8 @@ const buildScss = async (watch = false): Promise<esbuild.BuildContext | undefine
 				 */
 				transform: (source: string): string =>
 					source
-						.replace(/url\(["']?\/assets\/fonts\/([^"')]+)["']?\)/g, 'url("/assets/fonts/$1")')
-						.replace(/url\(["']?\/assets\/images\/([^"')]+)["']?\)/g, 'url("/assets/images/$1")')
+						.replace(/url\(["']?\/assets\/fonts\/(?<filename>[^"')]+)["']?\)/g, 'url("/assets/fonts/$<filename>")')
+						.replace(/url\(["']?\/assets\/images\/(?<filename>[^"')]+)["']?\)/g, 'url("/assets/images/$<filename>")')
 			} satisfies SassPluginOptions)
 		],
 		loader: {

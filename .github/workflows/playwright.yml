@@ -21,7 +21,7 @@ jobs:
         uses: ./.github/actions/reusable-playwright-steps
 
       - name: Cache Playwright browsers
-        uses: actions/cache@v4
+        uses: actions/cache@9255dc7a253b0ccc959486e2bca901246202afeb # v5.0.1
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-chromium-${{ hashFiles('**/yarn.lock') }}
@@ -54,7 +54,7 @@ jobs:
           USE_MOCK_API: "true"
       - name: Upload trace artifacts
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: playwright-traces
           path: |
