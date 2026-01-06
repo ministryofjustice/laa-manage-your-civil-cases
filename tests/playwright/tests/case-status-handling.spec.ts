@@ -16,7 +16,7 @@ test.describe('Case Status Handling', () => {
       await clientDetails.expectStatus('New');
       await expect(page).toHaveURL(clientDetails.url);
     });
-  
+
     test('accepted case should be accessible', {
       tag: '@accessibility',
     }, async ({ page, checkAccessibility }) => {
@@ -25,6 +25,25 @@ test.describe('Case Status Handling', () => {
       await checkAccessibility();
     });
 
+    test('should be able to click Advising and hit endpoint', async ({ page }) => {
+      const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1879');
+
+      await clientDetails.navigate();
+      await clientDetails.expectClientName('Jack Youngs');
+      await clientDetails.expectStatus('New');
+
+      // Click `Change status` button
+      const toggle = page.getByRole('button', { name: 'Change status' });
+      await expect(toggle).toBeVisible();
+      await toggle.click();
+      await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+
+      // Click advising and send a post request. 
+      const advisingButton = page.getByRole('button', { name: 'Advising' })
+      await advisingButton.click();
+
+      await expect(page).toHaveURL(clientDetails.url);
+    });
   });
 
   test.describe('Mark Case as Pending', () => {
@@ -36,7 +55,7 @@ test.describe('Case Status Handling', () => {
       await expect(pendingPage.saveButton).toBeVisible();
     });
 
-      test('should validate required fields', async ({ page }) => {
+    test('should validate required fields', async ({ page }) => {
       const pendingPage = PendingCaseFormPage.forCase(page, 'PC-1922-1879');
       await pendingPage.navigate();
       await pendingPage.clickSave();
@@ -82,56 +101,33 @@ test.describe('Case Status Handling', () => {
 
   test.describe('Complete Case', () => {
     test('should show completed case status', async ({ page }) => {
+      const clientDetails = ClientDetailsPage.forCase(page, 'PC-4575-7150');
+      await clientDetails.navigate();
+      await clientDetails.expectClientName('Noah Brown');
+      // TO-DO: No way to differentiate between closed and completed case without the `outcome_code`
+      // TO-DO: We currently do not change the state on the data in MSW
+      await clientDetails.expectStatus('Closed');
+    });
+
+    test('should be able to click Completed and hit endpoint', async ({ page }) => {
       const clientDetails = ClientDetailsPage.forCase(page, 'PC-3184-5962');
+
       await clientDetails.navigate();
       await clientDetails.expectClientName('Ember Hamilton');
-      // Accepted status from API displays as Advising with light-blue tag
       await clientDetails.expectStatus('Advising');
 
+      // Click `Change status` button
+      const toggle = page.getByRole('button', { name: 'Change status' });
+      await expect(toggle).toBeVisible();
+      await toggle.click();
+      await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+
+      // Click completed and send a post request. 
+      const completedButton = page.getByRole('button', { name: 'Completed' })
+      await completedButton.click();
+
+      await expect(page).toHaveURL(clientDetails.url);
     });
-   
-    
-test('should change status to Completed and show alert', async ({ page }) => {
-  const clientDetails = ClientDetailsPage.forCase(page, 'PC-3184-5962');
-
-  await clientDetails.navigate();
-  await clientDetails.expectClientName('Ember Hamilton');
-  await clientDetails.expectStatus('Advising');
-
-  
-  const toggle = page.getByRole('button', { name: 'Change status' });
-  await expect(toggle).toBeVisible();
-
-  await toggle.click();
-
-  await expect(toggle).toHaveAttribute('aria-expanded', 'true');
-
-  const menuContainer = page.locator('.moj-button-menu');
-  await expect(menuContainer).toBeVisible({ timeout: 3000 });
-
-  const completedCandidate =
-      page.getByRole('button', { name: 'Completed' })
- 
-
-  await expect(completedCandidate).toBeVisible({ timeout: 3000 });
-  // Click completed and send a post request. 
-  await completedCandidate.click();
-
-  //await clientDetails.navigate();
-
-  const alert = page.getByText('Completed');
-  await expect(alert).toBeVisible();
-
-});
-
-    test('Completed case should be accessible', {
-      tag: '@accessibility',
-    }, async ({ page, checkAccessibility }) => {
-      const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1879');
-      await clientDetails.navigate();
-      await checkAccessibility();
-    });
-
   });
 
   test.describe('Reopen Case', () => {
