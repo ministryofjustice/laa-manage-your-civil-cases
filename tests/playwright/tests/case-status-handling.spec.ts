@@ -127,6 +127,7 @@ test.describe('Case Status Handling', () => {
       await completedButton.click();
 
       await expect(page).toHaveURL(clientDetails.url);
+      await expect(page.locator('.govuk-tag--pink')).toHaveText('Completed');
     });
   });
 

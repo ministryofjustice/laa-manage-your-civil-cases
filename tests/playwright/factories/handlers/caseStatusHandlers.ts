@@ -41,15 +41,11 @@ export const createCaseStatusHandlers = (
           return new HttpResponse(null, { status: 404 });
         }
 
-        const updates = {
-          caseStatus: 'Completed',
-          outcome_code: 'CLSP',
-          dateClosed: new Date().toISOString(),
-        };
+        mockCase.caseStatus = 'Completed';
+        //mockCase.outcome_code = 'CLSP'; 
+        mockCase.dateClosed = new Date().toISOString();
 
-        const updatedCase = { ...mockCase, ...updates };
-
-        return HttpResponse.json(transformToApiFormat(updatedCase));
+        return HttpResponse.json(transformToApiFormat(mockCase));
       }
     );
   };
