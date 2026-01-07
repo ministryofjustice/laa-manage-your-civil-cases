@@ -22,7 +22,7 @@ export const createCaseStatusHandlers = (
           caseStatus: 'Advising',
           provider_accepted: new Date().toISOString(),
         };
-        
+
         const updatedCase = { ...mockCase, ...updates };
 
         return HttpResponse.json(transformToApiFormat(updatedCase));
@@ -32,8 +32,8 @@ export const createCaseStatusHandlers = (
 
   const createCompleteCaseHandler = () => {
     return http.post(
-      `${apiBaseUrl}${apiPrefix}/case/:caseReference/completed/`,
-      async ({ request, params }) => {
+      `${apiBaseUrl}${apiPrefix}/case/:caseReference/close/`,
+      async ({ params }) => {
         const caseReference = params.caseReference as string;
         const mockCase = findMockCase(caseReference, cases);
 
@@ -46,7 +46,7 @@ export const createCaseStatusHandlers = (
           outcome_code: 'CLSP',
           dateClosed: new Date().toISOString(),
         };
-        
+
         const updatedCase = { ...mockCase, ...updates };
 
         return HttpResponse.json(transformToApiFormat(updatedCase));
@@ -82,7 +82,7 @@ export const createCaseStatusHandlers = (
           state_note: body.notes || '',
           dateClosed: new Date().toISOString(),
         };
-        
+
         const updatedCase = { ...mockCase, ...updates };
 
         return HttpResponse.json(transformToApiFormat(updatedCase));
@@ -117,7 +117,7 @@ export const createCaseStatusHandlers = (
           provider_viewed: new Date().toISOString(),
           state_note: notes,
         };
-        
+
         const updatedCase = { ...mockCase, ...updates };
 
         return HttpResponse.json(transformToApiFormat(updatedCase));
@@ -152,7 +152,7 @@ export const createCaseStatusHandlers = (
           state_note: notes,
           dateClosed: undefined,
         };
-        
+
         const updatedCase = { ...mockCase, ...updates };
 
         return HttpResponse.json(transformToApiFormat(updatedCase));
