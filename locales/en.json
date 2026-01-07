@@ -378,7 +378,8 @@
         "pageTitle": "Client address – {caseReference} – {serviceName} – GOV.UK",
         "postcode": "Postcode",
         "validationError": {
-          "notChanged": "Change the client address, or select 'Cancel'"
+          "notChanged": "Change the client address, or select 'Cancel'",
+          "isLength": "Postcode must be 12 characters or fewer"
         }
       },
       "language": {
@@ -443,7 +444,8 @@
           "notEmptyRelationshipToClient": "Select the relationship to client",
           "notEmptyPassphraseSetUp": "Select if the client has set up a passphrase",
           "notEmptyPassphrase": "Enter the passphrase ",
-          "notChanged": "Change third party details, or select 'Cancel'"
+          "notChanged": "Change third party details, or select 'Cancel'",
+          "isLength": "Postcode must be 12 characters or fewer"
         }
       }
     },
