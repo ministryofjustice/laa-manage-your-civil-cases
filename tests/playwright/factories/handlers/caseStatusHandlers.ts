@@ -20,7 +20,6 @@ export const createCaseStatusHandlers = (
 
         mockCase.caseStatus = 'Advising';
         mockCase.lastModified = new Date().toISOString();
-      
 
         return HttpResponse.json(transformToApiFormat(mockCase));
       }
@@ -39,7 +38,6 @@ export const createCaseStatusHandlers = (
         }
 
         mockCase.caseStatus = 'Completed';
-        //mockCase.outcome_code = 'CLSP'; 
         mockCase.dateClosed = new Date().toISOString();
 
         return HttpResponse.json(transformToApiFormat(mockCase));
