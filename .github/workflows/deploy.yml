@@ -14,11 +14,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
-      - name: Cache Yarn 4
-        uses: ./.github/actions/cache-yarn
-
-      - name: Setup Node and Dependencies
-        uses: ./.github/actions/setup-node
+      - name: Reuseable set up app
+        uses: ./.github/actions/set_up_app
 
       - name: Run ESLint
         run: yarn lint
@@ -29,12 +26,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-
-      - name: Cache Yarn 4
-        uses: ./.github/actions/cache-yarn
-
-      - name: Setup Node and Dependencies
-        uses: ./.github/actions/setup-node
+        
+      - name: Reuseable set up app
+        uses: ./.github/actions/set_up_app
 
       - name: Run security audit
         run: yarn npm audit
@@ -128,7 +122,7 @@ jobs:
       - playwright
 
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
       - name: Deploy to UAT
@@ -154,7 +148,7 @@ jobs:
     if: github.ref_name == 'main'
 
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
       - name: Deploy to staging
@@ -180,7 +174,7 @@ jobs:
     if: github.ref_name == 'main'
 
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
       - name: Deploy to production
