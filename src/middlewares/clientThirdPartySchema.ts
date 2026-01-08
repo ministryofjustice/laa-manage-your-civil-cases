@@ -2,6 +2,9 @@ import { checkSchema } from 'express-validator';
 import type { Meta } from 'express-validator';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 import { TypedValidationError, t, safeBodyString, createSessionChangeDetectionValidator } from '#src/scripts/helpers/index.js';
+import config from '#config.js';
+
+const { MAX_POSTCODE_LENGTH }: { MAX_POSTCODE_LENGTH: number } = config;
 
 /**
  * Base schema object for client third party validation.
@@ -77,6 +80,17 @@ const clientThirdPartyBaseSchema = {
        */
       options: (value: string) => typeof value === 'string' ? value.toUpperCase() : value
     },
+    isLength: {
+      options: { max: MAX_POSTCODE_LENGTH },
+      /**
+       * Custom error message for postcode exceeding max length
+       * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+       */
+      errorMessage: () => new TypedValidationError({
+        summaryMessage: t('forms.clientDetails.thirdParty.validationError.isLength'),
+        inlineMessage: t('forms.clientDetails.thirdParty.validationError.isLength')
+      })
+    }
   },
   thirdPartyRelationshipToClient: {
     notEmpty: {

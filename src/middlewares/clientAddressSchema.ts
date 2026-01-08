@@ -1,6 +1,9 @@
 import { checkSchema } from 'express-validator';
 import { createChangeDetectionValidator } from '#src/scripts/helpers/ValidationErrorHelpers.js';
-import { t } from '#src/scripts/helpers/index.js';
+import { TypedValidationError, t } from '#src/scripts/helpers/index.js';
+import config from '#config.js';
+
+const { MAX_POSTCODE_LENGTH }: { MAX_POSTCODE_LENGTH: number } = config;
 
 /**
  * Validation middleware when user edits client's contact address.
@@ -30,6 +33,17 @@ export const validateEditClientAddress = (): ReturnType<typeof checkSchema> =>
          */
         options: (value: string) => typeof value === 'string' ? value.toUpperCase() : value
       },
+      isLength: {
+        options: { max: MAX_POSTCODE_LENGTH },
+        /**
+         * Custom error message for postcode exceeding max length
+         * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+         */
+        errorMessage: () => new TypedValidationError({
+          summaryMessage: t('forms.clientDetails.address.validationError.isLength'),
+          inlineMessage: t('forms.clientDetails.address.validationError.isLength')
+        })
+      }
     },
     notChanged: createChangeDetectionValidator(
       [

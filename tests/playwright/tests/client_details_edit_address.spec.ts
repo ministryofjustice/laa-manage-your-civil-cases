@@ -26,14 +26,14 @@ test('viewing change address form, to see the expected elements', async ({ page,
   // For now, we test the form structure without specific data expectations
 });
 
-test('unchanged fields trigger change detection error (AC5)', async ({ page, i18nSetup }) => {
+test('unchanged fields trigger change detection error', async ({ page, i18nSetup }) => {
   const saveButton = page.getByRole('button', { name: t('common.save') });
   const errorSummary = page.locator('.govuk-error-summary');
 
   // Navigate to the edit form
   await page.goto(visitUrl);
 
-  // Submit form (should trigger AC5 validation error)
+  // Submit form
   await expect(saveButton).toBeVisible();
   await saveButton.click();
 
@@ -42,7 +42,7 @@ test('unchanged fields trigger change detection error (AC5)', async ({ page, i18
   await expect(errorSummary).toContainText(t('components.errorSummary.title'));
   await expect(errorSummary).toContainText(t('forms.clientDetails.address.validationError.notChanged'));
 
-  // AC5 change detection error should NOT have inline field error messages
+  // Change detection error should NOT have inline field error messages
   const addressErrorMessage = page.locator('#address-error');
   const postcodeErrorMessage = page.locator('#postcode-error');
   await expect(addressErrorMessage).not.toBeVisible();
@@ -66,6 +66,28 @@ test('save button should redirect to client details when valid data submitted', 
 
   // Should redirect to client details page
   await expect(page).toHaveURL(clientDetailsUrl);
+});
+
+test('should trigger postcode validation when 12 or more characters are entered', async ({ page, i18nSetup }) => {
+  const addressInput = page.locator('#address');
+  const postcodeInput = page.locator('#postcode');
+  const saveButton = page.getByRole('button', { name: t('common.save') });
+  const errorSummary = page.locator('.govuk-error-summary');
+
+  // Navigate to the change address form
+  await page.goto(visitUrl);
+
+  // Fill in invalid postcode filed with 13 characters
+  await addressInput.fill('123 New Street\nLondon');
+  await postcodeInput.fill('TEST567890123');
+
+  // Submit the form
+  await saveButton.click();
+
+  // Check GOV.UK error summary appears for change detection
+  await expect(errorSummary).toBeVisible();
+  await expect(errorSummary).toContainText(t('components.errorSummary.title'));
+  await expect(errorSummary).toContainText(t('forms.clientDetails.address.validationError.isLength'));
 });
 
 test('address edit page should be accessible', {
