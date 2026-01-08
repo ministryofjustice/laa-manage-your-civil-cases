@@ -26,10 +26,10 @@ test.describe('Case Status Handling', () => {
     });
 
     test('should be able to click Advising and hit endpoint', async ({ page }) => {
-      const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1879');
+      const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1866');
 
       await clientDetails.navigate();
-      await clientDetails.expectClientName('Jack Youngs');
+      await clientDetails.expectClientName('Katie Young');
       await clientDetails.expectStatus('New');
 
       // Click `Change status` button

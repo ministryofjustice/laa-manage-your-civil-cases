@@ -18,14 +18,11 @@ export const createCaseStatusHandlers = (
           return new HttpResponse(null, { status: 404 });
         }
 
-        const updates = {
-          caseStatus: 'Advising',
-          provider_accepted: new Date().toISOString(),
-        };
+        mockCase.caseStatus = 'Advising';
+        mockCase.lastModified = new Date().toISOString();
+      
 
-        const updatedCase = { ...mockCase, ...updates };
-
-        return HttpResponse.json(transformToApiFormat(updatedCase));
+        return HttpResponse.json(transformToApiFormat(mockCase));
       }
     );
   };
