@@ -1,8 +1,9 @@
 import { checkSchema } from 'express-validator';
 import { createChangeDetectionValidator } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 import { TypedValidationError, t } from '#src/scripts/helpers/index.js';
+import config from '#config.js';
 
-const MAX_POSTCODE_LENGTH = 12;
+const { MAX_POSTCODE_LENGTH }: { MAX_POSTCODE_LENGTH: number } = config;
 
 /**
  * Validation middleware when user edits client's contact address.

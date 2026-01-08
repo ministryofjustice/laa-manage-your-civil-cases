@@ -2,8 +2,9 @@ import { checkSchema } from 'express-validator';
 import type { Meta } from 'express-validator';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 import { TypedValidationError, t, safeBodyString, createSessionChangeDetectionValidator } from '#src/scripts/helpers/index.js';
+import config from '#config.js';
 
-const MAX_POSTCODE_LENGTH = 12;
+const { MAX_POSTCODE_LENGTH }: { MAX_POSTCODE_LENGTH: number } = config;
 
 /**
  * Base schema object for client third party validation.
