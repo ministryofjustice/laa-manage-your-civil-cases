@@ -92,7 +92,6 @@
     "caseStatus": "New",
     "dateOfBirth": "1981-08-18T00:00:00-05:00",
     "clientIsVulnerable": true,
-    "language": "German",
     "phoneNumber": "0786442261",
     "safeToCall": false,
     "announceCall": false,
@@ -116,11 +115,13 @@
       }
     },
     "clientSupportNeeds": {
+      "skype": true,
       "bslWebcam": "No",
-      "textRelay": "Yes",
-      "callbackPreference": "Yes",
-      "languageSupportNeeds": "German",
-      "notes": "Client requires German language support and text relay assistance."
+      "textRelay": "No",
+      "callbackPreference": "No",
+      "languageSupportNeeds": "",
+      "notes": "",
+      "no_adaptations_required": false
     },
     "lastModified": "2025-07-06T19:00:00-05:00"
   },

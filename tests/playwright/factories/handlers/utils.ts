@@ -81,6 +81,7 @@ export function transformToApiFormat(caseItem: MockCase): object {
       bsl_webcam: caseItem.clientSupportNeeds.bslWebcam === 'Yes',
       minicom: caseItem.clientSupportNeeds.textRelay === 'Yes',
       text_relay: caseItem.clientSupportNeeds.textRelay === 'Yes',
+      skype_webcam: caseItem.clientSupportNeeds.skype === true, 
       callback_preference: caseItem.clientSupportNeeds.callbackPreference === 'Yes',
       language: caseItem.clientSupportNeeds.languageSupportNeeds || null,
       notes: caseItem.clientSupportNeeds.notes || null
@@ -89,7 +90,9 @@ export function transformToApiFormat(caseItem: MockCase): object {
       bsl_webcam: false,
       minicom: false,
       text_relay: false,
+      skype_webcam: false,
       callback_preference: false,
+      no_adaptations_required: true, 
       language: null,
       notes: null
     },
