@@ -378,6 +378,7 @@ export const transformContactDetails = (personalDetails: unknown): {
  * @returns {object | null} Transformed support needs or null if not present
  */
 export const transformClientSupportNeeds = (adaptationDetails: unknown): {
+  skype: boolean;
   bslWebcam: string;
   textRelay: string;
   callbackPreference: string;
@@ -390,6 +391,7 @@ export const transformClientSupportNeeds = (adaptationDetails: unknown): {
   }
 
   return {
+    skype: adaptationDetails.skype_webcam === true,
     bslWebcam: adaptationDetails.bsl_webcam === true ? 'Yes' : 'No',
     textRelay: adaptationDetails.text_relay === true ? 'Yes' : 'No',
     callbackPreference: adaptationDetails.callback_preference === true ? 'Yes' : 'No',
