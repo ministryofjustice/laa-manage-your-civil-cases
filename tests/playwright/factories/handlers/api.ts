@@ -16,14 +16,14 @@ import { createCaseStatusHandlers } from './caseStatusHandlers.js';
 
 // Load official mock data from laa-civil-case-api (relative to project root)
 const mockDataPath = join(process.cwd(), 'tests/playwright/fixtures/mock-data.json');
-const mockData = JSON.parse(readFileSync(mockDataPath, 'utf-8'));
+const initialData: MockCase[] = JSON.parse(readFileSync(mockDataPath, 'utf-8'));
 
 // Base API URL that the application calls
 const API_BASE_URL = 'https://laa-cla-backend-uat.apps.live-1.cloud-platform.service.justice.gov.uk';
 const API_PREFIX = '/cla_provider/api/v1';
 
-// Cast the imported JSON to our known structure
-const cases = mockData as MockCase[];
+// Mutable runtime state
+let cases: MockCase[] = structuredClone(initialData);
 
 // Create all handlers by calling the factory functions
 const caseHandlers = createCaseHandlers(API_BASE_URL, API_PREFIX, cases);
