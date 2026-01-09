@@ -38,6 +38,5 @@ export const handlers = [
   ...personalDetailsHandlers,
   ...supportNeedsHandlers,
   ...thirdPartyHandlers,
- 
- ...caseStatusHandlers,
+  ...caseStatusHandlers,
 ];

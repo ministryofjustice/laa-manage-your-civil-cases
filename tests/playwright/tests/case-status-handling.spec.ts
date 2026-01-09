@@ -43,6 +43,7 @@ test.describe('Case Status Handling', () => {
       await advisingButton.click();
 
       await expect(page).toHaveURL(clientDetails.url);
+      await expect(page.locator('.govuk-tag--light-blue')).toHaveText('Advising');
     });
   });
 
