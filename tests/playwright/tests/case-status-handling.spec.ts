@@ -43,6 +43,7 @@ test.describe('Case Status Handling', () => {
       await advisingButton.click();
 
       await expect(page).toHaveURL(clientDetails.url);
+      await expect(page.locator('.govuk-tag--light-blue')).toHaveText('Advising');
     });
   });
 
@@ -99,16 +100,6 @@ test.describe('Case Status Handling', () => {
     });
   });
 
-  test.describe('Complete Case', () => {
-    test('should show completed case status', async ({ page }) => {
-      const clientDetails = ClientDetailsPage.forCase(page, 'PC-4575-7150');
-      await clientDetails.navigate();
-      await clientDetails.expectClientName('Noah Brown');
-      // TO-DO: No way to differentiate between closed and completed case without the `outcome_code`
-      // TO-DO: We currently do not change the state on the data in MSW
-      await clientDetails.expectStatus('Closed');
-    });
-
     test('should be able to click Completed and hit endpoint', async ({ page }) => {
       const clientDetails = ClientDetailsPage.forCase(page, 'PC-3184-5962');
 
@@ -129,7 +120,6 @@ test.describe('Case Status Handling', () => {
       await expect(page).toHaveURL(clientDetails.url);
       await expect(page.locator('.govuk-tag--pink')).toHaveText('Completed');
     });
-  });
 
   test.describe('Reopen Case', () => {
     test('should submit reopen case form', async ({ page }) => {
