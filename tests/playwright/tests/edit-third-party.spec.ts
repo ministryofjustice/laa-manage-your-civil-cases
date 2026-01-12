@@ -69,6 +69,33 @@ test('edit third party form displays validation errors correctly', async ({ page
   await thirdPartyPage.expectNameFieldError();
 });
 
+test('edit third party form displays postcode validation errors correctly', async ({ page, i18nSetup }) => {
+  const thirdPartyPage = ThirdPartyFormPage.forEdit(page, clientDetailsUrl);
+
+  // Navigate to the edit third party form
+  await thirdPartyPage.navigate();
+
+  // Update third party details
+  await thirdPartyPage.fillValidThirdPartyData({
+    name: 'Jane Smith',
+    phone: '07700900456',
+    email: 'jane.smith@example.com',
+    relationshipValue: 'PARENT_GUARDIAN',
+    safeToCall: true,
+    hasPassphrase: false,
+    postcode: "TEST567890123" // Invalid postcode input
+  });
+
+  // Submit the form
+  await thirdPartyPage.clickSave();
+
+  // Check GOV.UK error summary appears
+  await thirdPartyPage.expectErrorSummaryVisible();
+
+  // Check individual field errors appear
+  await thirdPartyPage.expectPostcodeFieldError();
+});
+
 test('unchanged fields trigger change detection error', async ({ page, i18nSetup }) => {
   const thirdPartyPage = ThirdPartyFormPage.forEdit(page, clientDetailsUrl);
 

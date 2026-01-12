@@ -184,6 +184,14 @@ export class ThirdPartyFormPage extends BaseEditFormPage {
   }
 
   /**
+   * Asserts that the postcode field has a validation error
+   */
+  async expectPostcodeFieldError(): Promise<void> {
+    const postcodeError = this.page.locator('#thirdPartyPostcode-error');
+    await expect(postcodeError).toBeVisible();
+  }
+
+  /**
    * Returns the expected heading text based on form type
    * @returns {string} The expected heading text
    */
