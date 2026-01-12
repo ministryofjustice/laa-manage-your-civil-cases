@@ -38,6 +38,7 @@ export interface MockCase {
   clientSupportNeeds?: {
     bslWebcam?: string;
     textRelay?: string;
+    skype: boolean;
     callbackPreference?: string;
     languageSupportNeeds?: string;
     notes?: string;
