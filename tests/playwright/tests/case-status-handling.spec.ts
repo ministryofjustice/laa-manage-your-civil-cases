@@ -100,6 +100,7 @@ test.describe('Case Status Handling', () => {
     });
   });
 
+   test.describe('Complete Case', () => {
     test('should be able to click Completed and hit endpoint', async ({ page }) => {
       const clientDetails = ClientDetailsPage.forCase(page, 'PC-3184-5962');
 
@@ -120,6 +121,8 @@ test.describe('Case Status Handling', () => {
       await expect(page).toHaveURL(clientDetails.url);
       await expect(page.locator('.govuk-tag--pink')).toHaveText('Completed');
     });
+
+  });
 
   test.describe('Reopen Case', () => {
     test('should submit reopen case form', async ({ page }) => {
