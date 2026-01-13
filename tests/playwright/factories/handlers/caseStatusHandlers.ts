@@ -18,14 +18,10 @@ export const createCaseStatusHandlers = (
           return new HttpResponse(null, { status: 404 });
         }
 
-        const updates = {
-          caseStatus: 'Advising',
-          provider_accepted: new Date().toISOString(),
-        };
+        mockCase.caseStatus = 'Advising';
+        mockCase.lastModified = new Date().toISOString();
 
-        const updatedCase = { ...mockCase, ...updates };
-
-        return HttpResponse.json(transformToApiFormat(updatedCase));
+        return HttpResponse.json(transformToApiFormat(mockCase));
       }
     );
   };
@@ -41,15 +37,10 @@ export const createCaseStatusHandlers = (
           return new HttpResponse(null, { status: 404 });
         }
 
-        const updates = {
-          caseStatus: 'Completed',
-          outcome_code: 'CLSP',
-          dateClosed: new Date().toISOString(),
-        };
+        mockCase.caseStatus = 'Completed';
+        mockCase.dateClosed = new Date().toISOString();
 
-        const updatedCase = { ...mockCase, ...updates };
-
-        return HttpResponse.json(transformToApiFormat(updatedCase));
+        return HttpResponse.json(transformToApiFormat(mockCase));
       }
     );
   };
