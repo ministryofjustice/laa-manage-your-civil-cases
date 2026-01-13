@@ -47,10 +47,10 @@ test.describe('Case Status Handling', () => {
     });
 
     test('Move a closed case to advising', async ({ page }) => {
-      const clientDetails = ClientDetailsPage.forCase(page, 'PC-4575-7150');
+      const clientDetails = ClientDetailsPage.forCase(page, 'PC-4532-2312');
 
       await clientDetails.navigate();
-      await clientDetails.expectClientName('Noah Brown');
+      await clientDetails.expectClientName('Zechariah Twelve');
       await clientDetails.expectStatus('Closed');
 
       // Click `Change status` button
@@ -64,7 +64,7 @@ test.describe('Case Status Handling', () => {
       await advisingButton.click();
 
       // Add note and save. 
-      await expect(page).toHaveURL(`/cases/PC-4575-7150/why-advising`);
+      await expect(page).toHaveURL(`/cases/PC-4532-2312/why-advising`);
       const adviseNote = page.locator('textarea[name="adviseNote"]');
       await adviseNote.fill("Needs more advise")
       const save = page.getByRole('button', { name: 'Save' });

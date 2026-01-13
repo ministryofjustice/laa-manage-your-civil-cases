@@ -232,6 +232,40 @@
     "lastModified": "2025-01-05T19:00:00-05:00"
   },
   {
+    "fullName": "Zechariah Twelve",
+    "caseReference": "PC-4532-2312",
+    "refCode": "",
+    "dateReceived": "2025-01-05T19:00:00-05:00",
+    "dateClosed": "2025-01-09T19:00:00-05:00",
+    "caseStatus": "Closed",
+    "dateOfBirth": "1982-09-06T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "language": "Aramaic",
+    "phoneNumber": "0783990658",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "zechariah.twelve@outlook.com",
+    "address": "647 King Street, Cardiff",
+    "postcode": "ST1 5QU",
+    "laaReference": "1731666",
+    "thirdParty": {
+      "fullName": "Alex Rivers",
+      "emailAddress": "alex@rivers.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "22 Baker Street, London",
+      "postcode": "NW1 6XE",
+      "relationshipToClient": {
+        "selected": ["Legal adviser"]
+      },
+      "passphraseSetUp": {
+        "selected": ["Yes"],
+        "passphrase": "LetMeIn"
+      }
+    },
+    "lastModified": "2025-01-05T19:00:00-05:00"
+  },
+  {
     "fullName": "Ian Phillips",
     "caseReference": "PC-9173-4826",
     "refCode": "Operator recommends second opinion",
