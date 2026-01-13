@@ -45,6 +45,33 @@ test.describe('Case Status Handling', () => {
       await expect(page).toHaveURL(clientDetails.url);
       await expect(page.locator('.govuk-tag--light-blue')).toHaveText('Advising');
     });
+
+    test('Move a closed case to advising', async ({ page }) => {
+      const clientDetails = ClientDetailsPage.forCase(page, 'PC-4575-7150');
+
+      await clientDetails.navigate();
+      await clientDetails.expectClientName('Noah Brown');
+      await clientDetails.expectStatus('Closed');
+
+      // Click `Change status` button
+      const toggle = page.getByRole('button', { name: 'Change status' });
+      await expect(toggle).toBeVisible();
+      await toggle.click();
+      await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+
+      // Click advising and send a post request. 
+      const advisingButton = page.getByRole('button', { name: 'Advising' })
+      await advisingButton.click();
+
+      // Add note and save. 
+      await expect(page).toHaveURL(`/cases/PC-4575-7150/why-advising`);
+      const adviseNote = page.locator('textarea[name="adviseNote"]');
+      await adviseNote.fill("Needs more advise")
+      const save = page.getByRole('button', { name: 'Save' });
+      await save.click();
+
+      await expect(page.locator('.govuk-tag--light-blue')).toHaveText('Advising');
+    });
   });
 
   test.describe('Mark Case as Pending', () => {

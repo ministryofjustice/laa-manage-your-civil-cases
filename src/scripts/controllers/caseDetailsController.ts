@@ -479,7 +479,7 @@ export function getAdvisingCaseForm(req: Request, res: Response, next: NextFunct
 }
 
 /**
- * Handle moving a closed case to advising with a note
+ * Handle moving a closed case to advising with a mandatory note
  * @param {Request} req Express request object
  * @param {Response} res Express response object
  * @param {NextFunction} next Express next function
