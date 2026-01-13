@@ -12,6 +12,15 @@ export const createCaseStatusHandlers = (
       `${apiBaseUrl}${apiPrefix}/case/:caseReference/accept/`,
       async ({ request, params }) => {
         const caseReference = params.caseReference as string;
+        let body: Record<string, any> = {};
+        try {
+          body = (await request.json()) as Record<string, any>;
+        } catch {
+          body = {};
+        }
+
+        const notes = typeof body?.notes === 'string' ? body.notes.trim() : '';
+
         const mockCase = findMockCase(caseReference, cases);
 
         if (!mockCase) {
@@ -21,6 +30,7 @@ export const createCaseStatusHandlers = (
         const updates = {
           caseStatus: 'Advising',
           provider_accepted: new Date().toISOString(),
+          ...(notes.length > 0 ? { state_note: notes } : {}),
         };
 
         const updatedCase = { ...mockCase, ...updates };

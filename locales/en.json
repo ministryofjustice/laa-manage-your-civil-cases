@@ -224,6 +224,10 @@
         "label": "Why is this case re-opened?",
         "hint": "Add a note"
       },
+      "adviseCase": {
+        "title": "Why are you advising on this case?",
+        "label": "Why are you advising on this case?"
+      },
       "closedCase": {
         "title": "Why is this case closed?",
         "legend": "Why is this case closed?",
