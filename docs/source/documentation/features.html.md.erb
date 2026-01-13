@@ -234,3 +234,29 @@ This command builds the project initially and then sets up all watch processes f
 
 - Type definitions for Node, Express, and other dependencies are included as dev dependencies (see `@types/*` packages in `package.json`).
 - These are required for type safety and improved autocompletion in TypeScript.
+
+## DevSecOps pre-commit hooks
+This project uses the Ministry of Justice pre-commit hooks for scanning hardcoded secrets and credentials. More information can be found here.
+
+The DevSecOps pre-commit hooks are a lightweight, Docker-based security scanner that integrate with Git workflows to prevent hardcoded secrets from being committed to your repository.
+
+To set-up locally:
+
+Sign into your Docker Desktop locally
+
+Ensure prek is installed globally
+
+```
+curl --proto '=https' --tlsv1.2 \
+-LsSf https://raw.githubusercontent.com/ministryofjustice/devsecops-hooks/e85ca6127808ef407bc1e8ff21efed0bbd32bb1a/prek/prek-installer.sh | sh
+```
+Close terminal
+
+Activate, by executing the following command in the repository directory
+```
+prek install
+```
+Test
+```
+prek run
+```
