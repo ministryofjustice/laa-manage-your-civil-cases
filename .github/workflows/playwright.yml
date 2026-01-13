@@ -157,4 +157,4 @@ jobs:
             API_URL: "http://localhost:3001"
             API_PREFIX: "/mock-api"
             USE_MOCK_API: "true"
-            ROUTE_COVERAGE_THRESHOLD: "90" # The percentage value you want the route coverage to be
+            ROUTE_COVERAGE_THRESHOLD: "100" # The percentage value you want the route coverage to be
