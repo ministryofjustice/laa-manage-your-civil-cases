@@ -125,6 +125,46 @@
     },
     "lastModified": "2025-07-06T19:00:00-05:00"
   },
+    {
+    "fullName": "Katie Young",
+    "caseReference": "PC-1922-1866",
+    "refCode": "",
+    "dateReceived": "2025-07-06T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1981-08-18T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "language": "German",
+    "phoneNumber": "0786442261",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "Katie@young.com",
+    "address": "870 King Street, Sheffield",
+    "postcode": "G1 2LQ",
+    "laaReference": "8196672",
+    "thirdParty": {
+      "fullName": "Sarah Johnson",
+      "emailAddress": "sarah@johnson.com",
+      "contactNumber": "0787123456",
+      "safeToCall": true,
+      "address": "45 Main Street, Sheffield",
+      "postcode": "S1 2AB",
+      "relationshipToClient": {
+        "selected": ["Friend or Family"]
+      },
+      "passphraseSetUp": {
+        "selected": ["Yes"],
+        "passphrase": "TestPass123"
+      }
+    },
+    "clientSupportNeeds": {
+      "bslWebcam": "No",
+      "textRelay": "Yes",
+      "callbackPreference": "Yes",
+      "languageSupportNeeds": "German",
+      "notes": "Client requires German language support and text relay assistance."
+    },
+    "lastModified": "2025-07-06T19:00:00-05:00"
+  },
   {
     "fullName": "George Allen",
     "caseReference": "PC-9159-2337",

@@ -1,0 +1,12 @@
+name: Reusable set up steps (a composite action)
+description: Common jobs to be used from a common config.
+
+runs:
+  using: "composite"
+  steps:
+
+    - name: Cache Yarn 4
+      uses: ./.github/actions/cache-yarn
+      
+    - name: Setup Node and Dependencies
+      uses: ./.github/actions/setup-node

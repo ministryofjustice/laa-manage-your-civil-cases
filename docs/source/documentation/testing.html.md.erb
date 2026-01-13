@@ -83,8 +83,13 @@ yarn test:accessibility
 # Run specific test file (full command)
 yarn playwright test --config=tests/playwright/playwright.config.ts tests/playwright/tests/specific-test.spec.ts
 
-# Run in UI mode with Playwright Test Explorer
+# Run in UI mode with Playwright Test Explorer with either 
 yarn playwright test --config=tests/playwright/playwright.config.ts --ui
+
+OR 
+
+npx playwright test --ui -c tests/playwright/playwright.config.ts
+
 ```
 
 #### Configuration
