@@ -220,13 +220,13 @@
         "description": "This will permanently delete all information about the clients's support needs."
       },
       "reopenCase": {
-        "title": "Why is this case re-opened?",
-        "label": "Why is this case re-opened?",
+        "title": "Why do you want to reopen this case?",
+        "label": "Why do you want to reopen this case?",
         "hint": "Add a note"
       },
       "adviseCase": {
-        "title": "Why are you advising on this case?",
-        "label": "Why are you advising on this case?"
+        "title": "Why do you want to reopen this case?",
+        "label": "Why do you want to reopen this case?"
       },
       "closedCase": {
         "title": "Why is this case closed?",
