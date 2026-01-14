@@ -1,15 +1,18 @@
 import globals from 'globals';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
-import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import love from 'eslint-config-love';
 
 // Alter this config file to meet your project's needs and standards.
 
 export default [
-  {
     ...love,
+  {
     files: ['**/*.js', '**/*.ts'],
+    rules: {
+      'require-unicode-regexp': ['error', { requireFlag: 'u' }],
+  },
+
   },
   // JS/Default config (no parser override)
   {

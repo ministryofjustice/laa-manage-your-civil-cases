@@ -96,8 +96,8 @@ const buildScss = async (watch = false): Promise<esbuild.BuildContext | undefine
 				 */
 				transform: (source: string): string =>
 					source
-						.replace(/url\(["']?\/assets\/fonts\/(?<filename>[^"')]+)["']?\)/g, 'url("/assets/fonts/$<filename>")')
-						.replace(/url\(["']?\/assets\/images\/(?<filename>[^"')]+)["']?\)/g, 'url("/assets/images/$<filename>")')
+						.replace(/url\(["']?\/assets\/fonts\/(?<filename>[^"')]+)["']?\)/gu, 'url("/assets/fonts/$<filename>")')
+						.replace(/url\(["']?\/assets\/images\/(?<filename>[^"')]+)["']?\)/gu, 'url("/assets/images/$<filename>")')
 			} satisfies SassPluginOptions)
 		],
 		loader: {
@@ -243,7 +243,7 @@ const watchBuild = async (): Promise<void> => {
 
 		// Watch for asset changes and copy them
 		const assetWatcher = chokidar.watch(['node_modules/govuk-frontend/dist/govuk/assets/**/*', 'node_modules/@ministryofjustice/frontend/moj/assets/images/**/*'], {
-			ignored: /node_modules\/(?!govuk-frontend|@ministryofjustice)/,
+			ignored: /node_modules\/(?!govuk-frontend|@ministryofjustice)/u,
 			persistent: true
 		});
 
