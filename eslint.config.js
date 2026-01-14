@@ -6,14 +6,21 @@ import love from 'eslint-config-love';
 // Alter this config file to meet your project's needs and standards.
 
 export default [
-    ...love,
   {
+     ...love,
     files: ['**/*.js', '**/*.ts'],
-    rules: {
-      'require-unicode-regexp': ['error', { requireFlag: 'u' }],
-  },
 
   },
+
+
+      // If love (or another preset) enables this regexp plugin rule,
+      // it will still force `v`. Turn it off to avoid conflicts.
+      {
+      'regexp/require-unicode-sets-regexp': 'off',
+    },
+
+
+
   // JS/Default config (no parser override)
   {
     languageOptions: {
