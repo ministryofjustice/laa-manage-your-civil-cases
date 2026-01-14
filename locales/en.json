@@ -291,7 +291,7 @@
     "caseDetails": {
       "reopenCase": {
         "validationError": {
-          "notEmpty": "Enter why this case is re-opened",
+          "notEmpty": "Enter why you want to reopen this case",
           "tooLong": "Note must be 5000 characters or less"
         }
       },
