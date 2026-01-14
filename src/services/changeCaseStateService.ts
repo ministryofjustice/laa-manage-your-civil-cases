@@ -36,6 +36,8 @@ class ChangeCaseStateService {
       const configuredAxios = configureAxiosInstance(axiosMiddleware);
 
       // `notes` are optional for accept endpoint when going from completed to advising. 
+      // `notes` are optional for accept endpoint when going from new to advising. 
+      // `notes` are optional for accept endpoint when going from pending to advising. 
       // `notes` are mandatory for accept endpoint when going from closed to advising. 
       const safeNote = safeOptionalString(note);
       const notes = safeNote !== undefined && safeNote.trim().length > EMPTY ? { notes: safeNote } : undefined;
