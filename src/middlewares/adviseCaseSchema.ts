@@ -5,7 +5,7 @@ import { TypedValidationError, t } from '#src/scripts/helpers/index.js';
 const MAX_REOPEN_NOTE_LENGTH = 5000;
 
 /**
- * Validation schema for reopening a case.
+ * Validation schema for moving a case to advising, with a note.
  * Requires a mandatory note explaining why the case is being reopened.
  */
 const adviseCaseSchema = {
@@ -13,7 +13,7 @@ const adviseCaseSchema = {
     trim: true,
     notEmpty: {
       /**
-       * Custom error message for empty reopen note
+       * Custom error message for empty note
        * @returns {TypedValidationError} Returns TypedValidationError with structured error data
        */
       errorMessage: () => new TypedValidationError({
