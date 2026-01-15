@@ -350,11 +350,11 @@ export async function pendingCase(req: Request, res: Response, next: NextFunctio
 }
 
 /**
- * Show the reopen case form (why-reopen page)
+ * Show the reopen case form (why-reopen-completed-case page)
  * @param {Request} req Express request object
  * @param {Response} res Express response object
  * @param {NextFunction} next Express next function
- * @returns {void} Render the why-reopen page
+ * @returns {void} Render the why-reopen-completed-case page
  */
 export function getReopenCaseForm(req: Request, res: Response, next: NextFunction): void {
   const caseReference = safeString(req.params.caseReference);
@@ -364,7 +364,7 @@ export function getReopenCaseForm(req: Request, res: Response, next: NextFunctio
   }
 
   try {
-    res.render('case_details/why-reopen.njk', {
+    res.render('case_details/why-reopen-completed-case.njk', {
       caseReference,
       client: req.clientData,
       currentReopenNote: '',
@@ -419,7 +419,7 @@ export async function reopenCase(req: Request, res: Response, next: NextFunction
     const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
 
     if (response.status === 'success' && response.data !== null) {
-      res.status(BAD_REQUEST).render('case_details/why-reopen.njk', {
+      res.status(BAD_REQUEST).render('case_details/why-reopen-completed-case.njk', {
         caseReference,
         client: response.data,
         currentReopenNote,

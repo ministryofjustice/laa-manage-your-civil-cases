@@ -221,8 +221,7 @@
       },
       "reopenCase": {
         "title": "Why do you want to reopen this case?",
-        "label": "Why do you want to reopen this case?",
-        "hint": "Add a note"
+        "label": "Why do you want to reopen this case?"
       },
       "adviseCase": {
         "title": "Why do you want to reopen this case?",

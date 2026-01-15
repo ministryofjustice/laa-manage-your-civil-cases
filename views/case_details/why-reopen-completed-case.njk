@@ -15,7 +15,7 @@
         } %}
       {% endif %}
 
-      <form method="post" action="/cases/{{ caseReference }}/why-reopen">
+      <form method="post" action="/cases/{{ caseReference }}/why-reopen-completed-case">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
 
         {{ govukCharacterCount({
@@ -23,9 +23,6 @@
             text: t('pages.caseDetails.reopenCase.label'),
             classes: 'govuk-label--l',
             isPageHeading: true
-          },
-          hint: {
-            text: t('pages.caseDetails.reopenCase.hint')
           },
           id: "reopenNote",
           name: "reopenNote",

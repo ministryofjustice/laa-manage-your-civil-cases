@@ -264,7 +264,7 @@ describe('Case Details Controller', () => {
       getReopenCaseForm(req as Request, res as Response, next);
 
       // Assert
-      expect(renderStub.calledWith('case_details/why-reopen.njk')).to.be.true;
+      expect(renderStub.calledWith('case_details/why-reopen-completed-case.njk')).to.be.true;
     });
   });
 

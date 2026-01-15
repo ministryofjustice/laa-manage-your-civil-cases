@@ -161,7 +161,7 @@ test.describe('Case Status Handling', () => {
       await expect(page).toHaveURL(clientDetails.url);
     });
 
-    test('why-reopen form should be accessible', {
+    test('why-reopen-completed-case form should be accessible', {
       tag: '@accessibility',
     }, async ({ page, checkAccessibility }) => {
       const reopenPage = ReopenCaseFormPage.forCase(page, 'PC-4575-7150');
