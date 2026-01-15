@@ -64,8 +64,8 @@ test.describe('Case Status Handling', () => {
       await advisingButton.click();
 
       // Add note and save. 
-      await expect(page).toHaveURL(`/cases/PC-4532-2312/why-advising`);
-      const adviseNote = page.locator('textarea[name="adviseNote"]');
+      await expect(page).toHaveURL(`/cases/PC-4532-2312/why-reopen-closed-case`);
+      const adviseNote = page.locator('textarea[name="reopenNote"]');
       await adviseNote.fill("Needs more advise")
       const save = page.getByRole('button', { name: 'Save' });
       await save.click();

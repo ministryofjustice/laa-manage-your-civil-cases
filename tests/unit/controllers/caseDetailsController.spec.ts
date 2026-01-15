@@ -27,7 +27,7 @@ import {
   closeCase,
   pendingCase,
   getReopenCaseForm,
-  reopenCase
+  reopenCompletedCase
 } from '#src/scripts/controllers/caseDetailsController.js';
 import { apiService } from '#src/services/apiService.js';
 import { changeCaseStateService } from '#src/services/changeCaseStateService.js';
@@ -261,7 +261,7 @@ describe('Case Details Controller', () => {
       req.csrfToken = sinon.stub().returns('csrf-token');
 
       // Act
-      getReopenCaseForm(req as Request, res as Response, next);
+      getReopenCaseForm(req as Request, res as Response, 'completedCase', next);
 
       // Assert
       expect(renderStub.calledWith('case_details/why-reopen-completed-case.njk')).to.be.true;
@@ -277,7 +277,7 @@ describe('Case Details Controller', () => {
       req.body = { reopenNote: 'Test reopen note' };
 
       // Act
-      await reopenCase(req as Request, res as Response, next);
+      await reopenCompletedCase(req as Request, res as Response, next);
 
       // Assert
       expect(reopenCaseStub.calledOnce).to.be.true;

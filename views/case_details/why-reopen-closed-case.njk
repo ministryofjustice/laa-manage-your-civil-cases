@@ -3,7 +3,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
 
-{% block pageTitle %}{{ t('pages.caseDetails.adviseCase.title') }} - {{ serviceName }} - GOV.UK{% endblock %}
+{% block pageTitle %}{{ t('pages.caseDetails.reopenCase.title') }} - {{ serviceName }} - GOV.UK{% endblock %}
 
 {% block formContent %}
   <div class="govuk-grid-row">
@@ -11,23 +11,23 @@
       {% if error %}
         {{ errorSummary(error.errorSummaryList) }}
         {% set errorMessages = {
-          adviseNote: {text: error.inputErrors.adviseNote } if error.inputErrors.adviseNote
+          reopenNote: {text: error.inputErrors.reopenNote } if error.inputErrors.reopenNote
         } %}
       {% endif %}
 
-      <form method="post" action="/cases/{{ caseReference }}/why-advising">
+      <form method="post" action="/cases/{{ caseReference }}/why-reopen-closed-case">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
 
         {{ govukCharacterCount({
           label: {
-            text: t('pages.caseDetails.adviseCase.label'),
+            text: t('pages.caseDetails.reopenCase.label'),
             classes: 'govuk-label--l',
             isPageHeading: true
           },
-          id: "adviseNote",
-          name: "adviseNote",
-          value: currentAdviseNote,
-          errorMessage: errorMessages.adviseNote if error,
+          id: "reopenNote",
+          name: "reopenNote",
+          value: currentReopenNote,
+          errorMessage: errorMessages.reopenNote if error,
           maxlength: 5000,
           threshold: 95
         }) }}

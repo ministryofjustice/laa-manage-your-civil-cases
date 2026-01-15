@@ -223,10 +223,6 @@
         "title": "Why do you want to reopen this case?",
         "label": "Why do you want to reopen this case?"
       },
-      "adviseCase": {
-        "title": "Why do you want to reopen this case?",
-        "label": "Why do you want to reopen this case?"
-      },
       "closedCase": {
         "title": "Why is this case closed?",
         "legend": "Why is this case closed?",
