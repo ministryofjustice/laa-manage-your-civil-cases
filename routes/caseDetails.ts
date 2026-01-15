@@ -86,7 +86,7 @@ router.get('/:caseReference/why-reopen-completed-case', fetchClientDetails, (req
   getReopenCaseForm(req, res, 'completedCase', next);
 });
 
-/* POST reopen case. */
+/* POST reopen completed case. */
 router.post('/:caseReference/why-reopen-completed-case', validateReopenCase(), async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   await reopenCompletedCase(req, res, next);
 });
@@ -96,7 +96,7 @@ router.get('/:caseReference/why-reopen-closed-case', fetchClientDetails, (req: R
   getReopenCaseForm(req, res, 'closedCase', next);
 });
 
-/* POST advising case. */
+/* POST reopen closed case. */
 router.post('/:caseReference/why-reopen-closed-case', validateReopenCase(), async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   await reopenClosedCase(req, res, next);
 });
