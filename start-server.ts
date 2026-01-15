@@ -87,7 +87,7 @@ const start = async (): Promise<void> => {
 
 		// Watch for changes in JS and SCSS files
 		const watcher = chokidar.watch('src/**/*.{js,ts,scss}', {
-			ignored: /node_modules/, // Ignore node_modules directory
+			ignored: /node_modules/u, // Ignore node_modules directory
 			persistent: true, // Keep watching for changes
 		});
 
@@ -139,7 +139,7 @@ const sanitizeError = (error: unknown): object => {
 
 		// Remove any other sensitive information if necessary
 		if (typeof sanitizedError.message === 'string') {
-			sanitizedError.message = sanitizedError.message.replace(/sensitive information/g, '[REDACTED]');
+			sanitizedError.message = sanitizedError.message.replace(/sensitive information/gu, '[REDACTED]');
 		}
 
 		return sanitizedError;

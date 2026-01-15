@@ -21,7 +21,7 @@ function getEncryptionKey(): Buffer {
   const { session } = config;
   const { encryptionKey: key } = session;
   
-  if (typeof key !== 'string' || key === '' || !/^[0-9a-fA-F]{64}$/.test(key)) {
+  if (typeof key !== 'string' || key === '' || !/^[0-9a-fA-F]{64}$/u.test(key)) {
     throw new Error('SESSION_ENCRYPTION_KEY must be a 64-character hexadecimal string');
   }
   
