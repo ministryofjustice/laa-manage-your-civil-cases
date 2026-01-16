@@ -9,7 +9,10 @@ import love from 'eslint-config-love';
 export default [
   {
     ...love,
-    files: ['**/*.js', '**/*.ts'],
+    files: ['**/*.js', '**/*.ts', '**/*.tsx'],
+    rules: {
+      'unicorn/require-unicode-regexp': 'off',
+    },
   },
   // JS/Default config (no parser override)
   {
