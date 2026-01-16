@@ -9,7 +9,10 @@ import love from 'eslint-config-love';
 export default [
   {
     ...love,
-    files: ['**/*.js', '**/*.ts'],
+    files: ['**/*.js', '**/*.ts', '**/*.tsx'],
+    rules: {
+      'unicorn/require-unicode-regexp': 'off',
+    },
   },
   // JS/Default config (no parser override)
   {
@@ -68,7 +71,6 @@ export default [
           },
         },
       ],
-      'require-unicode-regexp': 'off',
       'jsdoc/require-param': 'error',
       'jsdoc/require-param-description': 'error',
       'jsdoc/require-param-name': 'error',
@@ -86,7 +88,6 @@ export default [
         'error',
         { path: 'never', types: 'prefer-import', lib: 'never' }
       ],
-      '@typescript-eslint/naming-convention': 'off', // disabled to allow snake_case naming 
       '@typescript-eslint/no-var-requires': 'error',
       '@typescript-eslint/no-explicit-any': 'warn',
     },
