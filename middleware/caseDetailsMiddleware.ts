@@ -39,6 +39,7 @@ export async function fetchClientDetails(req: Request, res: Response, next: Next
     if (response.status === 'success' && response.data !== null) {
       // Attach client data to request object for use by controllers
       const { data } = response;
+      // eslint-disable-next-line require-atomic-updates -- false positive; Express res object is per-request and cannot race
       req.clientData = data;
       next();
     } else {
