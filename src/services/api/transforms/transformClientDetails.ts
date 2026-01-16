@@ -33,18 +33,11 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
   const apiState = safeString(item.state);
   const outcomeCode = safeOptionalString(item.outcome_code) ?? '';
   const caseStatus = translateCaseStatus(apiState, outcomeCode);
-
-   
   const provider_assigned_at = formatDate(safeString(item.provider_assigned_at));
-   
   const provider_viewed = formatDate(safeOptionalString(item.provider_viewed) ?? '');
-   
   const provider_accepted = formatDate(safeOptionalString(item.provider_accepted) ?? '');
-   
   const provider_closed = formatDate(safeOptionalString(item.provider_closed) ?? '');
-   
   const outcome_code = safeOptionalString(item.outcome_code) ?? '';
-   
   const state_note = safeOptionalString(item.state_note) ?? '';
   // Transform contact details
   const contactDetails = transformContactDetails(item.personal_details);
