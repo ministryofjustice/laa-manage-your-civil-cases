@@ -220,9 +220,8 @@
         "description": "This will permanently delete all information about the clients's support needs."
       },
       "reopenCase": {
-        "title": "Why is this case re-opened?",
-        "label": "Why is this case re-opened?",
-        "hint": "Add a note"
+        "title": "Why do you want to reopen this case?",
+        "label": "Why do you want to reopen this case?"
       },
       "closedCase": {
         "title": "Why is this case closed?",
@@ -287,7 +286,7 @@
     "caseDetails": {
       "reopenCase": {
         "validationError": {
-          "notEmpty": "Enter why this case is re-opened",
+          "notEmpty": "Enter why you want to reopen this case",
           "tooLong": "Note must be 5000 characters or less"
         }
       },

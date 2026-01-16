@@ -10,6 +10,7 @@ export interface MockCase {
   lastModified?: string;
   dateClosed?: string;
   caseStatus: string;
+  stateNote?: string;
   dateOfBirth: string;
   clientIsVulnerable: boolean;
   language: string;
@@ -43,20 +44,4 @@ export interface MockCase {
     languageSupportNeeds?: string;
     notes?: string;
   };
-}
-
-/**
- * Request body types for status change endpoints
- */
-export interface CloseRequest {
-  event_code: string;
-  notes?: string;
-}
-
-export interface PendingRequest {
-  notes: string;
-}
-
-export interface ReopenRequest {
-  notes: string;
 }

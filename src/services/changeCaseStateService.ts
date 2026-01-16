@@ -12,25 +12,37 @@ import { configureAxiosInstance } from '#src/services/api/base/BaseApiService.js
 import { transformClientDetailsItem } from '#src/services/api/transforms/transformClientDetails.js';
 import { API_PREFIX, JSON_INDENT } from '#src/services/api/base/constants.js';
 
+const EMPTY = 0;
+
 /**
  * Change Case State Service
  * Handles case state transitions
  */
 class ChangeCaseStateService {
   /**
-   * Accept a case (change status to advising)
+   * Accept a case (change status to advising), with optional note
    * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
    * @param {string} caseReference - Case reference number
+   * @param {string} note - Optional note explaining why the case is being moved to advising
    * @returns {Promise<ClientDetailsApiResponse>} API response with updated client details
    */
   static async acceptCase(
     axiosMiddleware: AxiosInstanceWrapper,
-    caseReference: string
+    caseReference: string,
+    note?: string
   ): Promise<ClientDetailsApiResponse> {
     try {
       devLog(`API: POST ${API_PREFIX}/case/${caseReference}/accept/`);
       const configuredAxios = configureAxiosInstance(axiosMiddleware);
-      await configuredAxios.post(`${API_PREFIX}/case/${caseReference}/accept/`);
+
+      // `notes` are optional for accept endpoint when going from completed to advising. 
+      // `notes` are optional for accept endpoint when going from new to advising. 
+      // `notes` are optional for accept endpoint when going from pending to advising. 
+      // `notes` are mandatory for accept endpoint when going from closed to advising. 
+      const safeNote = safeOptionalString(note);
+      const notes = safeNote !== undefined && safeNote.trim().length > EMPTY ? { notes: safeNote } : undefined;
+
+      await configuredAxios.post(`${API_PREFIX}/case/${caseReference}/accept/`, notes);
       devLog(`API: Case accepted successfully, fetching updated details`);
 
       // Re-fetch the full case details to get complete data structure
@@ -39,7 +51,6 @@ class ChangeCaseStateService {
 
       // Import transformClientDetailsItem dynamically to avoid circular dependency
       const { transformClientDetailsItem } = await import('#src/services/api/transforms/transformClientDetails.js');
-      
 
       return {
         data: transformClientDetailsItem(detailedResponse.data),

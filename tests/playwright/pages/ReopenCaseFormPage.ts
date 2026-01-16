@@ -3,7 +3,7 @@ import { BaseEditFormPage } from './BaseEditFormPage.js';
 import { t } from '../utils/index.js';
 
 /**
- * Page object model for the reopen case form (why-reopen page)
+ * Page object model for the reopen case form (why-reopen-completed-case page)
  */
 export class ReopenCaseFormPage extends BaseEditFormPage {
   /**
@@ -12,7 +12,7 @@ export class ReopenCaseFormPage extends BaseEditFormPage {
    * @param {string} caseReference - The case reference number
    */
   constructor(page: Page, caseReference: string) {
-    const formUrl = `/cases/${caseReference}/why-reopen`;
+    const formUrl = `/cases/${caseReference}/why-reopen-completed-case`;
     const clientDetailsUrl = `/cases/${caseReference}/client-details`;
     super(page, formUrl, clientDetailsUrl);
   }

@@ -350,21 +350,24 @@ export async function pendingCase(req: Request, res: Response, next: NextFunctio
 }
 
 /**
- * Show the reopen case form (why-reopen page)
+ * Show the reopen case form (`why-reopen-completed-case` or `why-reopen-closed-case`)
  * @param {Request} req Express request object
  * @param {Response} res Express response object
+ * @param {string} typeOfCase The type of case that wants the re-open form
  * @param {NextFunction} next Express next function
- * @returns {void} Render the why-reopen page
+ * @returns {void} Render the `why-reopen-completed-case` or `why-reopen-closed-case` page
  */
-export function getReopenCaseForm(req: Request, res: Response, next: NextFunction): void {
+export function getReopenCaseForm(req: Request, res: Response, typeOfCase: string,  next: NextFunction): void {
   const caseReference = safeString(req.params.caseReference);
 
   if (!validCaseReference(caseReference, res)) {
     return;
   }
 
+  const template = typeOfCase === 'completedCase' ? 'case_details/why-reopen-completed-case.njk' : 'case_details/why-reopen-closed-case.njk';
+
   try {
-    res.render('case_details/why-reopen.njk', {
+    res.render(template, {
       caseReference,
       client: req.clientData,
       currentReopenNote: '',
@@ -383,7 +386,7 @@ export function getReopenCaseForm(req: Request, res: Response, next: NextFunctio
  * @param {NextFunction} next Express next function
  * @returns {Promise<void>} Redirect to advising cases page
  */
-export async function reopenCase(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function reopenCompletedCase(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
   if (!validCaseReference(caseReference, res)) {
@@ -419,7 +422,7 @@ export async function reopenCase(req: Request, res: Response, next: NextFunction
     const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
 
     if (response.status === 'success' && response.data !== null) {
-      res.status(BAD_REQUEST).render('case_details/why-reopen.njk', {
+      res.status(BAD_REQUEST).render('case_details/why-reopen-completed-case.njk', {
         caseReference,
         client: response.data,
         currentReopenNote,
@@ -447,6 +450,81 @@ export async function reopenCase(req: Request, res: Response, next: NextFunction
     res.redirect(`/cases/${caseReference}/client-details`);
   } catch (error) {
     const processedError = createProcessedError(error, `reopening case ${caseReference}`);
+    next(processedError);
+  }
+}
+
+/**
+ * Handle moving a closed case to advising with a mandatory note
+ * @param {Request} req Express request object
+ * @param {Response} res Express response object
+ * @param {NextFunction} next Express next function
+ * @returns {Promise<void>} Redirect to advising cases page
+ */
+export async function reopenClosedCase(req: Request, res: Response, next: NextFunction): Promise<void> {
+  const caseReference = safeString(req.params.caseReference);
+
+  if (!validCaseReference(caseReference, res)) {
+    return;
+  }
+
+  // Check for validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const rawErrors = errors.array({ onlyFirstError: false });
+
+    const validationErrors = rawErrors.map((error) => {
+      const field = 'path' in error && typeof error.path === 'string' ? error.path : '';
+      const { inlineMessage = '', summaryMessage } = formatValidationError(error);
+      return { field, inlineMessage, summaryMessage };
+    });
+
+    const inputErrors = validationErrors.reduce<Record<string, string>>((acc, { field, inlineMessage }) => {
+      const inline = inlineMessage.trim();
+      acc[field] = inline;
+      return acc;
+    }, {});
+
+    // Build the GOV.UK error summary list
+    const errorSummaryList = validationErrors.map(({ field, summaryMessage }) => ({
+      text: summaryMessage,
+      href: `#${field}`
+    }));
+
+    const currentReopenNote = safeBodyString(req.body, 'reopenNote');
+
+    // POST handlers don't have middleware, so fetch client details for validation error rendering
+    const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
+
+    if (response.status === 'success' && response.data !== null) {
+      res.status(BAD_REQUEST).render('case_details/why-reopen-closed-case.njk', {
+        caseReference,
+        client: response.data,
+        currentReopenNote,
+        csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
+        error: {
+          inputErrors,
+          errorSummaryList
+        }
+      });
+    } else {
+      res.status(NOT_FOUND).render('main/error.njk', {
+        status: '404',
+        error: response.message ?? 'Case not found'
+      });
+    }
+    return;
+  }
+
+  try {
+    const reopenNote = safeString(safeBodyString(req.body, 'reopenNote'));
+    devLog(`Advising case: ${caseReference}`);
+    await changeCaseStateService.acceptCase(req.axiosMiddleware, caseReference, reopenNote);
+
+    // Redirect to client details page
+    res.redirect(`/cases/${caseReference}/client-details`);
+  } catch (error) {
+    const processedError = createProcessedError(error, `advising case ${caseReference}`);
     next(processedError);
   }
 }

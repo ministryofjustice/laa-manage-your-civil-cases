@@ -70,11 +70,21 @@
       classes: 'govuk-visually-hidden'
     }
   ] %}
-{% elif currentStatus in["closed", "completed"] %}
+{% elif currentStatus == "closed" %}
   {% set menuItems = [
     {
       text: t('pages.caseDetails.buttons.actions.advising'),
-      href: "/cases/" + client.caseReference + "/why-reopen"
+      href: "/cases/" + client.caseReference + "/why-reopen-closed-case"
+    }, {
+      text: '',
+      classes: 'govuk-visually-hidden'
+    }
+  ] %}
+{% elif currentStatus == "completed" %}
+  {% set menuItems = [
+    {
+      text: t('pages.caseDetails.buttons.actions.advising'),
+      href: "/cases/" + client.caseReference + "/why-reopen-completed-case"
     }, {
       text: '',
       classes: 'govuk-visually-hidden'

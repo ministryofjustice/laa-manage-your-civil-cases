@@ -32,7 +32,7 @@ const TEST_CASES: Record<string, TestCase> = {
     status: 'accepted'
   },
   CLOSED_CASE: {
-    reference: 'PC-4575-7150', // Noah Brown - Closed status
+    reference: 'PC-6667-9089', // Roronoa Zoro - Closed status
     status: 'closed'
   }
 } as const;

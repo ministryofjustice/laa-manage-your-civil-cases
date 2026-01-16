@@ -12,6 +12,15 @@ export const createCaseStatusHandlers = (
       `${apiBaseUrl}${apiPrefix}/case/:caseReference/accept/`,
       async ({ request, params }) => {
         const caseReference = params.caseReference as string;
+        let body: Record<string, any> = {};
+        try {
+          body = (await request.json()) as Record<string, any>;
+        } catch {
+          body = {};
+        }
+
+        const notes = typeof body?.notes === 'string' ? body.notes.trim() : '';
+
         const mockCase = findMockCase(caseReference, cases);
 
         if (!mockCase) {
@@ -20,6 +29,7 @@ export const createCaseStatusHandlers = (
 
         mockCase.caseStatus = 'Advising';
         mockCase.lastModified = new Date().toISOString();
+        mockCase.stateNote = notes
 
         return HttpResponse.json(transformToApiFormat(mockCase));
       }
@@ -138,15 +148,11 @@ export const createCaseStatusHandlers = (
           return new HttpResponse(null, { status: 404 });
         }
 
-        const updates = {
-          caseStatus: 'Advising',
-          state_note: notes,
-          dateClosed: undefined,
-        };
+        mockCase.caseStatus = 'Advising';
+        mockCase.stateNote = notes
+        mockCase.dateClosed = undefined;
 
-        const updatedCase = { ...mockCase, ...updates };
-
-        return HttpResponse.json(transformToApiFormat(updatedCase));
+        return HttpResponse.json(transformToApiFormat(mockCase));
       }
     );
   };
