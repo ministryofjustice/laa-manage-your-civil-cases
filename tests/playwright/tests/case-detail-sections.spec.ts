@@ -13,6 +13,9 @@ test('financial eligibility page should display correctly', async ({ page, i18nS
   // Navigate to the financial eligibility page
   await page.goto(`/cases/${caseReference}/financial-eligibility`);
 
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(page, false);  
+
   // Check for first instance of header, which is the name
   await expect(page.getByRole('heading', { name: 'Jack Youngs' })).toBeVisible();
   
@@ -47,7 +50,6 @@ test('case details page should display correctly', async ({ page, i18nSetup }) =
   // Navigate to the case details page
   await page.goto(`/cases/${caseReference}/case-details`);
 
-  await assertCaseDetailsHeaderPresent(page, false);
   // Check for first instance of header, which is the name
   await expect(page.getByRole('heading', { name: 'Jack Youngs' })).toBeVisible();
 
