@@ -260,7 +260,8 @@
           "phoneNumber": "phone number",
           "name": "name",
           "postcode": "postcode",
-          "address": "address"
+          "address": "address",
+          "laaReference": "LAA reference, for example 3000435"
         }
       },
       "inputLabel": "Search by case ID, client name, phone number, postcode or address",
