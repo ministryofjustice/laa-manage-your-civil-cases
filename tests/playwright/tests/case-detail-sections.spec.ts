@@ -1,5 +1,6 @@
 import { test, expect } from '../fixtures/index.js';
 import { t, setupAuth } from '../utils/index.js';
+import { assertCaseDetailsHeaderPresent } from '../utils/case-details-helper.js';
 
 // Login before each test since case detail pages require authentication
 test.beforeEach(async ({ page }) => {
@@ -11,7 +12,7 @@ const caseReference = 'PC-1922-1879'; // Default test case reference
 test('financial eligibility page should display correctly', async ({ page, i18nSetup }) => {
   // Navigate to the financial eligibility page
   await page.goto(`/cases/${caseReference}/financial-eligibility`);
-  
+
   // Check for first instance of header, which is the name
   await expect(page.getByRole('heading', { name: 'Jack Youngs' })).toBeVisible();
   
@@ -45,7 +46,8 @@ test('history page should display correctly', async ({ page, i18nSetup }) => {
 test('case details page should display correctly', async ({ page, i18nSetup }) => {
   // Navigate to the case details page
   await page.goto(`/cases/${caseReference}/case-details`);
-  
+
+  await assertCaseDetailsHeaderPresent(page, false);
   // Check for first instance of header, which is the name
   await expect(page.getByRole('heading', { name: 'Jack Youngs' })).toBeVisible();
 
