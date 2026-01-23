@@ -121,8 +121,52 @@ test('search with valid keyword should display results', async ({ page, i18nSetu
   // Verify the page loaded successfully by checking for main content
   const mainContent = page.locator('main');
   await expect(mainContent).toBeVisible();
+});
+
+  test('search with valid laa reference should display results', async ({ page, i18nSetup }) => {
   
-});test('search clear functionality via GET route', async ({ page, i18nSetup }) => {
+  // Navigate to search page
+  await page.goto('/search');
+  
+  // Wait for page to load
+  await page.waitForLoadState('networkidle');
+  
+  // Check if page loaded correctly
+  const title = await page.title();
+  
+  // Enter search keyword
+  const searchInput = page.locator('#searchKeyword');
+  await expect(searchInput).toBeVisible();
+  await searchInput.fill('3000435');
+  
+  // Verify the input value was set
+  const inputValue = await searchInput.inputValue();
+  
+  // Click the search button
+  const searchButton = page.locator('button[type="submit"]');
+  await expect(searchButton).toBeVisible();
+  
+  await searchButton.click();
+  
+  
+  // Wait for navigation or response
+  await page.waitForLoadState('networkidle');
+  
+  // Check current URL
+  const currentUrl = page.url();
+  
+  // Check for any console errors
+  const logs = [];
+  page.on('console', msg => {
+    logs.push(`${msg.type()}: ${msg.text()}`);
+  });
+  
+  // Verify the page loaded successfully by checking for main content
+  const mainContent = page.locator('main');
+  await expect(mainContent).toBeVisible();
+  
+});
+test('search clear functionality via GET route', async ({ page, i18nSetup }) => {
   // Navigate to the search clear route directly
   await page.goto('/search/clear');
 
