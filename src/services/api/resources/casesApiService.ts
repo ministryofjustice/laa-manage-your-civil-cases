@@ -18,7 +18,7 @@ import {
   extractPaginationFromBody,
   extractPaginationMeta,
   buildOrderingParam
-} from '../utils/pagination.js';
+} from '../base/pagination.js';
 import { configureAxiosInstance } from '../base/BaseApiService.js';
 import {
   API_PREFIX,

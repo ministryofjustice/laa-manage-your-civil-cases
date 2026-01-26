@@ -5,7 +5,7 @@ import caseDetailsRouter from './caseDetails.js';
 import editClientDetailsRouter from './editClientDetails.js';
 import searchRouter from './search.js';
 import loginRouter from './login.js';
-import { requireAuth } from '#middleware/index.js';
+import { requireAuth } from '#src/middlewares/indexSetUp.js';
 import { devError, extractErrorMessage } from '#src/scripts/helpers/index.js';
 
 // Create a new router

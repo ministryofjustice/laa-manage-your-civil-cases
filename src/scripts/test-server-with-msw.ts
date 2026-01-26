@@ -9,7 +9,7 @@ void (async () => {
   try {
     const { setupServer } = await import('msw/node');
     
-    const { handlers } = await import('../tests/playwright/factories/handlers/index.js');
+    const { handlers } = await import('../../tests/playwright/factories/handlers/index.js');
 
     // Disable rate limiting for E2E tests
     process.env.SKIP_RATE_LIMIT = 'true';
@@ -52,8 +52,8 @@ void (async () => {
     process.env.API_PREFIX = API_PREFIX;
 
     // Import and start Express app
-    // Path is relative to this script location (scripts/ directory)
-    const appModulePath = '../public/app.js';
+    // Path is relative to this script location (src/ scripts/ directory)
+    const appModulePath = '../../public/app.js';
 
     import(appModulePath)
       .then(() => {

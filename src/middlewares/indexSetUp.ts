@@ -1,3 +1,7 @@
+/**
+ * Index for middlewares which set-up the application
+ */
+
 export { setupMiddlewares } from './commonMiddleware.js'
 export { setupCsrf } from './setupCsrf.js';
 export { setupConfig } from './setupConfigs.js';
