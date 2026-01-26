@@ -4,7 +4,7 @@ import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
 import type { InternalAxiosRequestConfig } from 'axios';
 import { createAuthServiceWithCredentials } from '#src/services/authService.js';
 import { devLog, devError } from '#src/scripts/helpers/index.js';
-import { decrypt } from '#utils/encryption.js';
+import { decrypt } from '#utils/server/index.js';
 import '#src/scripts/helpers/sessionHelpers.js';
 
 const DEFAULT_TIMEOUT = 5000;

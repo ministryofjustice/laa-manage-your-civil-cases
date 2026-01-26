@@ -20,7 +20,7 @@ import type { Request, Response, NextFunction } from 'express';
 import { getRemoveSupportNeedsConfirmation, deleteClientSupportNeeds } from '#src/scripts/controllers/removeClientSupportNeeds.js';
 import { apiService } from '#src/services/apiService.js';
 // Import to get global type declarations for axiosMiddleware
-import '#utils/axiosSetup.js';
+import '#utils/server/axiosSetup.js';
 
 describe('Remove Client Support Needs Controller', () => {
   let req: Partial<Request>;

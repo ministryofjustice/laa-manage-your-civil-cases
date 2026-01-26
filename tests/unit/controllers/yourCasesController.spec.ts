@@ -18,7 +18,7 @@ import * as sinon from 'sinon';
 import { expect } from 'chai';
 import { createCaseRouteHandler } from '#src/scripts/controllers/yourCasesController.js';
 import { apiService } from '#src/services/apiService.js';
-import '#utils/axiosSetup.js'; // Import to get global type declarations
+import '#utils/server/axiosSetup.js'; // Import to get global type declarations
 
 describe('Your Cases Controller', () => {
   let req: Partial<Request>;

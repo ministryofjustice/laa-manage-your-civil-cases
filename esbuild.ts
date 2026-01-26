@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import fs from 'fs-extra';
 import path from 'node:path';
 import chokidar from 'chokidar';
-import { getBuildNumber } from './utils/buildHelper.js';
+import { getBuildNumber } from './utils/server/buildHelper.js';
 import type { SassPluginOptions } from './types/sass-plugin-types.js';
 
 // Load environment variables

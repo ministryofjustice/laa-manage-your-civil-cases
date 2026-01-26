@@ -20,7 +20,7 @@ import type { Request, Response, NextFunction } from 'express';
 import { getRemoveThirdPartyConfirmation, deleteThirdParty } from '#src/scripts/controllers/removeThirdPartyController.js';
 import { apiService } from '#src/services/apiService.js';
 // Import to get global type declarations for axiosMiddleware
-import '#utils/axiosSetup.js';
+import '#utils/server/axiosSetup.js';
 
 describe('Remove Third Party Controller', () => {
   let req: Partial<Request>;

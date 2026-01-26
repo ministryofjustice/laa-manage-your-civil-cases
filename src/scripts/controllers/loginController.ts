@@ -6,7 +6,7 @@ import '#src/scripts/helpers/sessionHelpers.js';
 import config from '#config.js';
 import { validationResult, matchedData } from 'express-validator';
 import { formatValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
-import { encrypt } from '#utils/encryption.js';
+import { encrypt } from '#utils/server/index.js';
 
 // HTTP Status codes
 const BAD_REQUEST = 400;
