@@ -5,7 +5,7 @@
 
 import { strict as assert } from 'assert';
 import sinon from 'sinon';
-import { encrypt, decrypt, isEncryptionConfigured } from '#src/utils/encryption.js';
+import { encrypt, decrypt, isEncryptionConfigured } from '#utils/index.js';
 import config from '#config.js';
 
 describe('encryption', () => {
