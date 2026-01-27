@@ -370,13 +370,52 @@
       "notes": "Here are some notes from the operator!"
     }
   },
-    {
+  {
     "fullName": "Red Haired Shanks",
     "caseReference": "PC-1122-3344",
     "refCode": "",
     "dateReceived": "2025-08-07T19:00:00-05:00",
     "lastModified": "2025-08-08T17:30:00-05:00",
     "caseStatus": "Completed",
+    "dateOfBirth": "1979-11-12T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "language": "Irish",
+    "phoneNumber": "0777929124",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "red.hair@outlook.com",
+    "address": "544 King Street, Scotland",
+    "postcode": "LE1 1UL",
+    "laaReference": "2850581",
+    "thirdParty": {
+      "fullName": "Samira Patel",
+      "emailAddress": "samira@patel.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": ["Legal adviser"]
+      },
+      "passphraseSetUp": {
+        "selected": ["No, client is a child or patient"]
+      }
+    },
+    "clientSupportNeeds": {
+      "bslWebcam": "Yes",
+      "textRelay": "No",
+      "callbackPreference": "No",
+      "languageSupportNeeds": "English",
+      "notes": "Here are some notes from the operator!"
+    }
+  },
+  {
+    "fullName": "Sanji",
+    "caseReference": "PC-2211-4466",
+    "refCode": "",
+    "dateReceived": "2025-08-07T19:00:00-05:00",
+    "lastModified": "2025-08-08T17:30:00-05:00",
+    "caseStatus": "New",
     "dateOfBirth": "1979-11-12T00:00:00-05:00",
     "clientIsVulnerable": true,
     "language": "Irish",
