@@ -9,7 +9,6 @@ test.describe('Case Status Handling', () => {
   });
 
   test.describe('Accept Case', () => {
-    test.describe.configure({ mode: 'serial' });
     test('should show case status', async ({ page }) => {
       const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1879');
       await clientDetails.navigate();
@@ -76,7 +75,6 @@ test.describe('Case Status Handling', () => {
   });
 
   test.describe('Mark Case as Pending', () => {
-    test.describe.configure({ mode: 'serial' });
     test('should display pending form correctly', async ({ page }) => {
       const pendingPage = PendingCaseFormPage.forCase(page, 'PC-1922-1879');
       await pendingPage.navigate();
@@ -102,13 +100,12 @@ test.describe('Case Status Handling', () => {
   });
 
   test.describe('Close Case', () => {
-    test.describe.configure({ mode: 'serial' });
     test('should submit close case form', async ({ page }) => {
-      const closePage = CloseCaseFormPage.forCase(page, 'PC-4575-7150');
+      const closePage = CloseCaseFormPage.forCase(page, 'PC-9159-2337');
       await closePage.navigate();
       await closePage.submitWithData('MIS-MEANS', 'Case successfully closed');
 
-      const clientDetails = ClientDetailsPage.forCase(page, 'PC-4575-7150');
+      const clientDetails = ClientDetailsPage.forCase(page, 'PC-9159-2337');
       await expect(page).toHaveURL(clientDetails.url);
       await clientDetails.expectStatus('Closed');
     });
@@ -131,7 +128,6 @@ test.describe('Case Status Handling', () => {
   });
 
    test.describe('Complete Case', () => {
-    test.describe.configure({ mode: 'serial' });
     test('should be able to click Completed and hit endpoint', async ({ page }) => {
       const clientDetails = ClientDetailsPage.forCase(page, 'PC-3184-5962');
 
@@ -156,20 +152,19 @@ test.describe('Case Status Handling', () => {
   });
 
   test.describe('Reopen Case', () => {
-    test.describe.configure({ mode: 'serial' });
     test('should submit reopen case form', async ({ page }) => {
-      const reopenPage = ReopenCaseFormPage.forCase(page, 'PC-4575-7150');
+      const reopenPage = ReopenCaseFormPage.forCase(page, 'PC-1122-3344');
       await reopenPage.navigate();
       await reopenPage.submitWithNote('Client requested case to be reopened');
 
-      const clientDetails = ClientDetailsPage.forCase(page, 'PC-4575-7150');
+      const clientDetails = ClientDetailsPage.forCase(page, 'PC-1122-3344');
       await expect(page).toHaveURL(clientDetails.url);
     });
 
     test('why-reopen-completed-case form should be accessible', {
       tag: '@accessibility',
     }, async ({ page, checkAccessibility }) => {
-      const reopenPage = ReopenCaseFormPage.forCase(page, 'PC-4575-7150');
+      const reopenPage = ReopenCaseFormPage.forCase(page, 'PC-1122-3344');
       await reopenPage.navigate();
       await checkAccessibility();
     });
