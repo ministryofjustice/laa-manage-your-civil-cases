@@ -2,7 +2,7 @@
  * @description Test for setupLocaleMiddleware function
  */
 
-import { setupLocaleMiddleware } from '#middleware/setupLocale.js';
+import { setupLocaleMiddleware } from '#src/middlewares/setupLocale.js';
 import { initializeI18nextSync } from '#src/scripts/helpers/index.js';
 import { expect } from 'chai';
 import type { Request, Response, NextFunction } from 'express';

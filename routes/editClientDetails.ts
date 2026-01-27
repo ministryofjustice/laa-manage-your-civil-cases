@@ -31,7 +31,7 @@ import {
   validateEditClientThirdParty,
   validateAddClientSupportNeeds,
   validateEditClientSupportNeeds
-} from '#src/middlewares/index.js';
+} from '#src/middlewares/indexSchema.js';
 
 const router = express.Router();
 

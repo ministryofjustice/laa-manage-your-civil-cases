@@ -6,7 +6,7 @@ import { getRemoveThirdPartyConfirmation, deleteThirdParty, getRemoveSupportNeed
 import { validateReopenCase } from '#src/middlewares/reopenCaseSchema.js';
 import { validateCloseCase } from '#src/middlewares/closeCaseSchema.js';
 import { validatePendingCase } from '#src/middlewares/pendingCaseSchema.js';
-import { fetchClientDetails } from '#middleware/caseDetailsMiddleware.js';
+import { fetchClientDetails } from '#src/middlewares/caseDetailsMiddleware.js';
 
 // Create a new router for case details routes
 const router = express.Router();

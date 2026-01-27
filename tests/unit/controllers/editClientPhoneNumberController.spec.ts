@@ -25,7 +25,7 @@ import {
 import { apiService } from '#src/services/apiService.js';
 import { initializeI18nextSync } from '#src/scripts/helpers/index.js';
 // Import to get global type declarations for axiosMiddleware
-import '#utils/axiosSetup.js';
+import '#utils/server/axiosSetup.js';
 import { validateEditClientPhoneNumber } from '#src/middlewares/clientPhoneNumberSchema.js';
 import { ValidationChain } from '#node_modules/express-validator/lib/index.js';
 

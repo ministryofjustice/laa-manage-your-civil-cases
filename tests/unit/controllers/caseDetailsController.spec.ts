@@ -32,7 +32,7 @@ import {
 import { apiService } from '#src/services/apiService.js';
 import { changeCaseStateService } from '#src/services/changeCaseStateService.js';
 // Import to get global type declarations for axiosMiddleware
-import '#utils/axiosSetup.js';
+import '#utils/server/axiosSetup.js';
 import { validateCloseCase } from '#src/middlewares/closeCaseSchema.js';
 import { validatePendingCase } from '#src/middlewares/pendingCaseSchema.js';
 import { validateReopenCase } from '#src/middlewares/reopenCaseSchema.js';

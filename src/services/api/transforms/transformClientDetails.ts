@@ -15,7 +15,7 @@ import {
   transformThirdParty
 } from '#src/scripts/helpers/index.js';
 
-import { translateCaseStatus } from '#utils/caseStatusHelper.js';
+import { translateCaseStatus } from '#utils/server/caseStatusHelper.js';
 /**
  * Transform raw client details item to display format
  * Maps nested API structures (personal_details, adaptation_details, thirdparty_details)

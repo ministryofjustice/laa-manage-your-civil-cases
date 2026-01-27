@@ -5,7 +5,7 @@
 
 import type { PaginationMeta, CaseApiParams } from '#types/api-types.js';
 import { isRecord, safeStringFromRecord, devLog } from '#src/scripts/helpers/index.js';
-import { DEFAULT_PAGE, DEFAULT_LIMIT } from '../base/constants.js';
+import { DEFAULT_PAGE, DEFAULT_LIMIT } from './constants.js';
 
 /**
  * Extract results array from API response

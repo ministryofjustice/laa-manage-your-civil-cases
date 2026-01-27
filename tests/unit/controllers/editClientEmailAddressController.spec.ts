@@ -24,7 +24,7 @@ import {
 } from '#src/scripts/controllers/editClientEmailAddressController.js';
 import { apiService } from '#src/services/apiService.js';
 // Import to get global type declarations for axiosMiddleware
-import '#utils/axiosSetup.js';
+import '#utils/server/axiosSetup.js';
 import { validateEditClientEmailAddress } from '#src/middlewares/clientEmailAddressSchema.js';
 import { ValidationChain } from '#node_modules/express-validator/lib/index.js';
 

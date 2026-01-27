@@ -20,7 +20,7 @@ import * as sinon from 'sinon';
 import { expect } from 'chai';
 import { processSearch, clearSearch } from '#src/scripts/controllers/searchController.js';
 import { apiService } from '#src/services/apiService.js';
-import '#utils/axiosSetup.js'; // Import to get global type declarations
+import '#utils/server/axiosSetup.js'; // Import to get global type declarations
 
 describe('Search Controller', () => {
   let req: Partial<Request>;
