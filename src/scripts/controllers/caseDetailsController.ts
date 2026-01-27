@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 import { apiService } from '#src/services/apiService.js';
 import { changeCaseStateService } from '#src/services/changeCaseStateService.js';
-import { devLog, createProcessedError, safeString, clearAllOriginalFormData, safeBodyString, formatValidationError, trimOrUndefined, validCaseReference } from '#src/scripts/helpers/index.js';
+import { devLog, createProcessedError, safeString, clearAllOriginalFormData, safeBodyString, formatValidationError, trimOrUndefined, validCaseReference, hasCaseStatus } from '#src/scripts/helpers/index.js';
 import { storeSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 import config from '#config.js';
 
@@ -128,6 +128,10 @@ export function getPendingCaseForm(req: Request, res: Response, next: NextFuncti
 
   if (!validCaseReference(caseReference, res)) {
     return;
+  }
+
+  if (!hasCaseStatus(req.clientData) || req.clientData.caseStatus !== 'new') {
+    return res.redirect(`/cases/${caseReference}/client-details`);
   }
 
   try {

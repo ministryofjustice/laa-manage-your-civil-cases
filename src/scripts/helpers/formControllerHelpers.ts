@@ -497,3 +497,21 @@ export function validCaseReference(caseReference: unknown, res: Response): boole
   }
   return true;
 }
+
+/**
+ * Checks whether request object contains `caseStatus` property
+ * @param {unknown} requestObject - The request object to check.
+ * @returns {boolean} True if the value has a string caseStatus property.
+ */
+export function hasCaseStatus(requestObject: unknown): requestObject is { caseStatus: string } {
+  if (typeof requestObject !== 'object' || requestObject === null) {
+    return false;
+  }
+
+  if (!('caseStatus' in requestObject)) {
+    return false;
+  }
+
+  const record = requestObject as Record<string, unknown>;
+  return typeof record.caseStatus === 'string';
+}
