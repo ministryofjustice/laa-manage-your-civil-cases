@@ -67,7 +67,7 @@ export abstract class BaseEditFormPage {
    * Navigates to the form URL
    */
   async navigate(): Promise<void> {
-    await this.page.goto(this.formUrl);
+    await this.page.goto(this.formUrl, { waitUntil: 'domcontentloaded' });
   }
 
   /**

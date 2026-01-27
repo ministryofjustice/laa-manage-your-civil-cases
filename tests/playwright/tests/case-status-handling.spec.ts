@@ -9,6 +9,7 @@ test.describe('Case Status Handling', () => {
   });
 
   test.describe('Accept Case', () => {
+    test.describe.configure({ mode: 'serial' });
     test('should show case status', async ({ page }) => {
       const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1879');
       await clientDetails.navigate();
@@ -75,6 +76,7 @@ test.describe('Case Status Handling', () => {
   });
 
   test.describe('Mark Case as Pending', () => {
+    test.describe.configure({ mode: 'serial' });
     test('should display pending form correctly', async ({ page }) => {
       const pendingPage = PendingCaseFormPage.forCase(page, 'PC-1922-1879');
       await pendingPage.navigate();
@@ -129,6 +131,7 @@ test.describe('Case Status Handling', () => {
   });
 
    test.describe('Complete Case', () => {
+    test.describe.configure({ mode: 'serial' });
     test('should be able to click Completed and hit endpoint', async ({ page }) => {
       const clientDetails = ClientDetailsPage.forCase(page, 'PC-3184-5962');
 
