@@ -29,7 +29,7 @@
     "coverage": "c8 yarn test:unit --check-coverage"
   },
   "engines": {
-    "node": "25.3.0"
+    "node": "25.4.0"
   },
   "dependencies": {
     "@ministryofjustice/frontend": "^8.0.0",
