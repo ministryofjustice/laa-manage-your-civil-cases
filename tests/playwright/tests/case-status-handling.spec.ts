@@ -100,6 +100,7 @@ test.describe('Case Status Handling', () => {
   });
 
   test.describe('Close Case', () => {
+    test.describe.configure({ mode: 'serial' });
     test('should submit close case form', async ({ page }) => {
       const closePage = CloseCaseFormPage.forCase(page, 'PC-4575-7150');
       await closePage.navigate();
@@ -152,6 +153,7 @@ test.describe('Case Status Handling', () => {
   });
 
   test.describe('Reopen Case', () => {
+    test.describe.configure({ mode: 'serial' });
     test('should submit reopen case form', async ({ page }) => {
       const reopenPage = ReopenCaseFormPage.forCase(page, 'PC-4575-7150');
       await reopenPage.navigate();
