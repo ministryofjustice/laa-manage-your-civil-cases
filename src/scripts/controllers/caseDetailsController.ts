@@ -164,6 +164,10 @@ export function getCloseCaseForm(req: Request, res: Response, next: NextFunction
     return;
   }
 
+  if (!hasCaseStatus(req.clientData) || (req.clientData.caseStatus !== 'new' && req.clientData.caseStatus !== 'pending')) {
+    return res.redirect(`/cases/${caseReference}/client-details`);
+  }
+
   try {
     res.render('case_details/why-closed.njk', {
       caseReference,
@@ -366,6 +370,18 @@ export function getReopenCaseForm(req: Request, res: Response, typeOfCase: strin
 
   if (!validCaseReference(caseReference, res)) {
     return;
+  }
+
+  if (typeOfCase === 'completedCase'){
+    if (!hasCaseStatus(req.clientData) || req.clientData.caseStatus !== 'completed') {
+      return res.redirect(`/cases/${caseReference}/client-details`);
+    }
+  }
+
+  if (typeOfCase === 'closedCase'){
+    if (!hasCaseStatus(req.clientData) || req.clientData.caseStatus !== 'closed') {
+      return res.redirect(`/cases/${caseReference}/client-details`);
+    }
   }
 
   const template = typeOfCase === 'completedCase' ? 'case_details/why-reopen-completed-case.njk' : 'case_details/why-reopen-closed-case.njk';
