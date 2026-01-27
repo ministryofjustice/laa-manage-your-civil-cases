@@ -111,7 +111,7 @@ test.describe('Case Status Handling', () => {
     });
 
     test('should validate required fields', async ({ page }) => {
-      const closePage = CloseCaseFormPage.forCase(page, 'PC-4575-7150');
+      const closePage = CloseCaseFormPage.forCase(page, 'PC-9159-2337');
       await closePage.navigate();
       await closePage.clickSave();
 
