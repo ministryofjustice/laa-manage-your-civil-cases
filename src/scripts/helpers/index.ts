@@ -72,7 +72,8 @@ export {
   prepareClientSupportNeedsData,
   handleEditClientSupportNeedsErrors,
   validCaseReference,
-  hasCaseStatus
+  hasCaseStatus, 
+  hasAllowedCaseStatus
 } from './formControllerHelpers.js';
 
 // Session helpers

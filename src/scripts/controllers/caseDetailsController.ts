@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 import { apiService } from '#src/services/apiService.js';
 import { changeCaseStateService } from '#src/services/changeCaseStateService.js';
-import { devLog, createProcessedError, safeString, clearAllOriginalFormData, safeBodyString, formatValidationError, trimOrUndefined, validCaseReference, hasCaseStatus } from '#src/scripts/helpers/index.js';
+import { devLog, createProcessedError, safeString, clearAllOriginalFormData, safeBodyString, formatValidationError, trimOrUndefined, validCaseReference, hasAllowedCaseStatus } from '#src/scripts/helpers/index.js';
 import { storeSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 import config from '#config.js';
 
@@ -130,7 +130,7 @@ export function getPendingCaseForm(req: Request, res: Response, next: NextFuncti
     return;
   }
 
-  if (!hasCaseStatus(req.clientData) || req.clientData.caseStatus !== 'new') {
+  if (!hasAllowedCaseStatus(req.clientData, ['new'])){
     return res.redirect(`/cases/${caseReference}/client-details`);
   }
 
@@ -164,7 +164,7 @@ export function getCloseCaseForm(req: Request, res: Response, next: NextFunction
     return;
   }
 
-  if (!hasCaseStatus(req.clientData) || (req.clientData.caseStatus !== 'new' && req.clientData.caseStatus !== 'pending')) {
+  if (!hasAllowedCaseStatus(req.clientData, ['new', 'pending'])){
     return res.redirect(`/cases/${caseReference}/client-details`);
   }
 
@@ -373,13 +373,13 @@ export function getReopenCaseForm(req: Request, res: Response, typeOfCase: strin
   }
 
   if (typeOfCase === 'completedCase'){
-    if (!hasCaseStatus(req.clientData) || req.clientData.caseStatus !== 'completed') {
+    if (!hasAllowedCaseStatus(req.clientData, ['completed'])){
       return res.redirect(`/cases/${caseReference}/client-details`);
     }
   }
 
   if (typeOfCase === 'closedCase'){
-    if (!hasCaseStatus(req.clientData) || req.clientData.caseStatus !== 'closed') {
+    if (!hasAllowedCaseStatus(req.clientData, ['closed'])){
       return res.redirect(`/cases/${caseReference}/client-details`);
     }
   }
