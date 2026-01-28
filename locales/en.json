@@ -187,6 +187,13 @@
         "financialEligibility": "Financial eligibility",
         "history": "History"
       },
+      "caseDetailsSection": {
+        "clientProblemTitle": "Client problem from check if you can get legal aid",
+        "operatorDiagnosisTitle": "Operator scope diagnosis",
+        "operatorNotesTitle": "Notes from operator",
+        "providerNotesTitle": "Notes from provider",
+        "noteLabel": "Add a note"
+      },
       "clientDetails": {
         "heading": "Client details",
         "aboutClient": "About the client",
