@@ -78,6 +78,20 @@ export interface ThirdPartyContact {
 }
 
 /**
+ * Scope Traversal (transformed from scope_traversal)
+ */
+export interface ScopeTraversal {
+  category: string;
+  subCategory: string;
+  onwardQuestion: Array<{
+    question: string;
+    answer: string;
+  }>;
+  financialAssessmentStatus: string;
+  created: string;
+}
+
+/**
  * Client details API response interface
  */
 export interface ClientDetailsResponse {
@@ -106,6 +120,9 @@ export interface ClientDetailsResponse {
   
   //Third party contact (null if not present)
   thirdParty: ThirdPartyContact | null;
+
+  //Scope traversal (null if not present)
+  scopeTraversal: ScopeTraversal | null;
   
   // Allow additional fields for debugging
   [key: string]: unknown;

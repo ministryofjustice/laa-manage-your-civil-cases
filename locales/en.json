@@ -192,7 +192,11 @@
         "operatorDiagnosisTitle": "Operator scope diagnosis",
         "operatorNotesTitle": "Notes from operator",
         "providerNotesTitle": "Notes from provider",
-        "noteLabel": "Add a note"
+        "noteLabel": "Add a note",
+        "category": "Category:",
+        "subCategory": "Sub category:",
+        "tellUsMore": "Tell us more about your problem:",
+        "financialAssessmentStatus": "Financial assessment:"
       },
       "clientDetails": {
         "heading": "Client details",

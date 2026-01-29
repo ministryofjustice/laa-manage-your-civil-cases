@@ -6,7 +6,7 @@
 
 import type { FieldConfig } from '#types/form-controller-types.js';
 import type { PaginationResult } from '#types/pagination-types.js';
-import { formatDate } from './dateFormatter.js';
+import { formatDate, formatLongFormDate } from './dateFormatter.js';
 /**
  * Safely extract nested field value using custom path resolution
  * @param {unknown} obj - Object to traverse
@@ -15,9 +15,9 @@ import { formatDate } from './dateFormatter.js';
  */
 export function safeNestedField(obj: unknown, path: string): unknown {
   if (!isRecord(obj)) return undefined;
-  
+
   const segments = path.split('.');
-  
+
   return segments.reduce<unknown>((current, segment) => {
     if (!isRecord(current) || !hasProperty(current, segment)) {
       return undefined;
@@ -138,7 +138,7 @@ export const capitaliseFirstLetter = (str: string): string => {
   const EMPTY_STRING_LENGTH = 0;
   const FIRST_CHAR_INDEX = 0;
   const REST_OF_STRING_START = 1;
-  
+
   if (str.length === EMPTY_STRING_LENGTH) return '';
   return str.charAt(FIRST_CHAR_INDEX).toUpperCase() + str.slice(REST_OF_STRING_START).toLowerCase();
 };
@@ -251,7 +251,7 @@ export function extractCurrentFields(
 ): Record<string, unknown> {
   return fieldConfigs.reduce<Record<string, unknown>>((formData, config) => {
     const { field, currentName, keepOriginal = false, includeExisting = false } = config;
-    
+
     // Extract field value
     const fieldValue = getFieldValue(data, config);
 
@@ -311,10 +311,10 @@ export const isYes = (value: unknown): boolean => {
  */
 export const extractPhoneNumber = (personalDetails: unknown): string => {
   if (!isRecord(personalDetails)) return '';
-  
+
   const mobilePhone = safeOptionalString(personalDetails.mobile_phone);
   const homePhone = safeOptionalString(personalDetails.home_phone);
-  
+
   return (mobilePhone ?? homePhone) ?? '';
 };
 
@@ -326,7 +326,7 @@ export const extractPhoneNumber = (personalDetails: unknown): string => {
  */
 export const isSafeToCall = (personalDetails: unknown): boolean => {
   if (!isRecord(personalDetails)) return false;
-  
+
   const safeToContactValue = safeOptionalString(personalDetails.safe_to_contact);
   return safeToContactValue === '' || safeToContactValue === 'SAFE';
 };
@@ -491,7 +491,7 @@ export const transformThirdParty = (thirdpartyDetails: unknown): {
 
   const fullName = safeOptionalString(tpPersonal.full_name) ?? '';
   const relationshipToClient = extractRelationshipToClient(thirdpartyDetails);
-  
+
   // Detect if this is a soft-deleted third party
   // Soft-deleted records have relationshipToClient === 'OTHER' and empty fullName
   const isSoftDeleted = relationshipToClient === 'OTHER' && fullName === '';
@@ -511,6 +511,52 @@ export const transformThirdParty = (thirdpartyDetails: unknown): {
 };
 
 /**
+ * Transform raw scope traversal details from API to display format.
+ * @param {unknown} scopeTraversal - Raw scope traversal details from API
+ * @returns {object | null} Transformed scope traversal object
+ */
+export const transformScopeTraversal = (scopeTraversal: unknown): {
+  category: string;
+  subCategory: string;
+  onwardQuestion: Array<{
+    question: string;
+    answer: string;
+  }>;
+  financialAssessmentStatus: string;
+  created: string;
+} | null => {
+  if (!isRecord(scopeTraversal)) {
+    return null;
+  }
+
+  const { scope_answers: sAnswersAndQuestions } = scopeTraversal;
+
+  if (!Array.isArray(sAnswersAndQuestions)) {
+    return null;
+  }
+
+  const records = sAnswersAndQuestions.filter(isRecord);
+  const category = records.find(obj => safeStringFromRecord(obj, 'type') === 'category')?.answer as string ?? '';
+  const subCategory = records.find(obj => safeStringFromRecord(obj, 'type') === 'sub_category')?.answer as string ?? '';
+  const onwardQuestion = records.filter(obj => safeStringFromRecord(obj, 'type') === 'onward_question').map(obj => ({
+    question: safeStringFromRecord(obj, 'question') ?? '',
+    answer: safeStringFromRecord(obj, 'answer') ?? ''
+  })).filter((item): item is { question: string; answer: string } => Boolean(item.question || item.answer));
+
+  const financialAssessmentStatus = safeOptionalString(scopeTraversal.financial_assessment_status) ?? '';
+  const created = formatLongFormDate(safeOptionalString(scopeTraversal.created) ?? '');
+
+  return {
+    category,
+    subCategory,
+    onwardQuestion,
+    financialAssessmentStatus,
+    created
+  };
+};
+
+
+/**
  * Detects if a third party record is soft-deleted
  * A soft-deleted third party has relationshipToClient === 'OTHER' and no fullName
  * This indicates the record exists in the database but has been cleared
@@ -521,10 +567,10 @@ export function isSoftDeletedThirdParty(thirdParty: unknown): boolean {
   if (!isRecord(thirdParty)) {
     return false;
   }
-  
+
   const relationshipToClient = safeString(thirdParty.relationshipToClient);
   const fullName = safeString(thirdParty.fullName);
-  
+
   return relationshipToClient === 'OTHER' && fullName === '';
 }
 
@@ -560,7 +606,7 @@ export function buildOrderingParamFields(ordering: string, sortBy: string, sortO
  * @param {number} PAGE_SIZE  The number of items per page
  * @returns {PaginationResult<T>} Pagination results and metadata
  */
-export function createPaginationForGivenDataSet<T>(items: T[], pageQuery: unknown, basePath: string, PAGE_SIZE: number ): PaginationResult<T> {
+export function createPaginationForGivenDataSet<T>(items: T[], pageQuery: unknown, basePath: string, PAGE_SIZE: number): PaginationResult<T> {
   const FIRST_PAGE = 1;
 
   // Parse page number safely

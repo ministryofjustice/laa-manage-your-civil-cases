@@ -4,35 +4,76 @@
 
 <h2 class="govuk-heading-m">{{ t('pages.caseDetails.tabs.caseDetails') }}</h2>
 
-<h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.clientProblemTitle') }}</h3>
-<div class="govuk-hint">body text<div>
-<p class="govuk-body">body text</p>
+{# <div class="govuk-hint">
+  [debug] data: “{{ data | dump }}”
+</div> #}
 
+{# Client problem section #}
+{% if data.scopeTraversal %}
+  <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.clientProblemTitle') }}</h3>
+
+  <p class="govuk-hint">{{ data.scopeTraversal.created }}</p>
+
+  <ul class="govuk-list govuk-list--bullet">
+    {% if data.scopeTraversal.category %}
+      <li>{{ t('pages.caseDetails.caseDetailsSection.category') }} {{ data.scopeTraversal.category }}</li>
+    {% endif %}
+
+    {% if data.scopeTraversal.subCategory %}
+      <li>{{ t('pages.caseDetails.caseDetailsSection.subCategory') }} {{ data.scopeTraversal.subCategory }}</li>
+    {% endif %}
+
+    {% if data.scopeTraversal.onwardQuestion %}
+      {% for qa in data.scopeTraversal.onwardQuestion %}
+        <li>{{ qa.question }} {{ qa.answer }}</li>
+      {% endfor %}
+    {% endif %}
+
+    {% if data.scopeTraversal.client_notes %}
+      <li>{{ t('pages.caseDetails.caseDetailsSection.tellUsMore') }} {{ data.client_notes }}</li>
+    {% endif %}
+
+    {% if data.scopeTraversal.financialAssessmentStatus %}
+      <li>{{ t('pages.caseDetails.caseDetailsSection.financialAssessmentStatus') }} {{ data.scopeTraversal.financialAssessmentStatus }}</li>
+    {% endif %}
+  </ul>
+
+  <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6"/>
+{% endif %}
+
+{# Operator diagnosis section #}
 <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle') }}</h3>
 <p class="govuk-body">body text</p>
+<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6"/>
 
+{# Operator notes section #}
 <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.operatorNotesTitle') }}</h3>
 <p class="govuk-body">body text</p>
+<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6"/>
 
+{# Providers notes section #}
 <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.providerNotesTitle') }}</h3>
 <div class="govuk-hint">body text<div>
-<p class="govuk-body">body text</p>
+    <p class="govuk-body">body text</p>
 
-{% block formContent %}
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      {% if error %}
-        {{ errorSummary(error.errorSummaryList) }}
-        {% set errorMessages = {
-          providerNote: {text: error.inputErrors.providerNote } if error.inputErrors.providerNote
-        } %}
-      {% endif %}
+    {% block formContent %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          {% if error %}
+            {{ errorSummary(error.errorSummaryList) }}
+            {% set errorMessages = {
+              providerNote: {
+                text: error.inputErrors.providerNote
+              }
+              if error.inputErrors.providerNote
+            } %}
+          {% endif %}
 
-      <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.noteLabel') }}</h3>
+          <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.noteLabel') }}</h3>
 
-      <form method="post" action="">
-        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-          {{ govukCharacterCount({
+          <form method="post" action="">
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+            {{ govukCharacterCount({
             id: "providerNote",
             name: "providerNote",
             value: currentProviderNote,
@@ -41,10 +82,10 @@
             threshold: characterThreshold
           }) }}
 
-          {{ govukButton({
+            {{ govukButton({
             text: t('common.save')
           }) }}
-      </form>
-    </div>
-  </div>
-{% endblock %}
+          </form>
+        </div>
+      </div>
+    {% endblock %}
