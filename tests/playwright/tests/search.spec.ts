@@ -142,11 +142,12 @@ test('search hint should display correct list', async ({ page, i18nSetup }) => {
 
   // Verify the text of each hint item
   expect(await hintItems.nth(0).innerText()).toBe(t('case ID (eg. EH-1234-2925)'));
-  expect(await hintItems.nth(1).innerText()).toBe(t('phone number'));
-  expect(await hintItems.nth(2).innerText()).toBe(t('name'));
-  expect(await hintItems.nth(3).innerText()).toBe(t('postcode'));
-  expect(await hintItems.nth(4).innerText()).toBe(t('address'));
-  expect(await hintItems.nth(5).innerText()).toBe(t('LAA reference, for example 3000435'));
+  expect(await hintItems.nth(1).innerText()).toBe(t('LAA reference, for example 3000435'));
+  expect(await hintItems.nth(2).innerText()).toBe(t('phone number'));
+  expect(await hintItems.nth(3).innerText()).toBe(t('name'));
+  expect(await hintItems.nth(4).innerText()).toBe(t('postcode'));
+  expect(await hintItems.nth(5).innerText()).toBe(t('address'));
+
 });
 
 test('search clear functionality via GET route', async ({ page, i18nSetup }) => {
