@@ -13,7 +13,8 @@ import {
   transformContactDetails,
   transformClientSupportNeeds,
   transformThirdParty,
-  transformScopeTraversal
+  transformScopeTraversal,
+  transformDiagnosis
 } from '#src/scripts/helpers/index.js';
 
 import { translateCaseStatus } from '#utils/server/caseStatusHelper.js';
@@ -56,6 +57,9 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
   // Transform scope traversal details
   const scopeTraversal = transformScopeTraversal(item.scope_traversal);
 
+  // Transform diagnosis details
+  const diagnosis = transformDiagnosis(item.diagnosis);
+
   return {
     caseReference,
     laaReference,
@@ -71,6 +75,7 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
     ...contactDetails,
     clientSupportNeeds,
     thirdParty,
-    scopeTraversal
+    scopeTraversal,
+    diagnosis
   };
 }

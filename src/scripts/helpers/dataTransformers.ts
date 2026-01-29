@@ -511,6 +511,24 @@ export const transformThirdParty = (thirdpartyDetails: unknown): {
 };
 
 /**
+ * Detects if a third party record is soft-deleted
+ * A soft-deleted third party has relationshipToClient === 'OTHER' and no fullName
+ * This indicates the record exists in the database but has been cleared
+ * @param {unknown} thirdParty - Third party object to check
+ * @returns {boolean} True if third party is soft-deleted, false otherwise
+ */
+export function isSoftDeletedThirdParty(thirdParty: unknown): boolean {
+  if (!isRecord(thirdParty)) {
+    return false;
+  }
+
+  const relationshipToClient = safeString(thirdParty.relationshipToClient);
+  const fullName = safeString(thirdParty.fullName);
+
+  return relationshipToClient === 'OTHER' && fullName === '';
+}
+
+/**
  * Transform raw scope traversal details from API to display format.
  * @param {unknown} scopeTraversal - Raw scope traversal details from API
  * @returns {object | null} Transformed scope traversal object
@@ -555,24 +573,44 @@ export const transformScopeTraversal = (scopeTraversal: unknown): {
   };
 };
 
-
 /**
- * Detects if a third party record is soft-deleted
- * A soft-deleted third party has relationshipToClient === 'OTHER' and no fullName
- * This indicates the record exists in the database but has been cleared
- * @param {unknown} thirdParty - Third party object to check
- * @returns {boolean} True if third party is soft-deleted, false otherwise
+ * Transform raw diagnosis details from API to display format.
+ * @param {unknown} diagnosis - Raw diagnosis from API
+ * @returns {object | null} Transformed diagnosis object
  */
-export function isSoftDeletedThirdParty(thirdParty: unknown): boolean {
-  if (!isRecord(thirdParty)) {
-    return false;
+export const transformDiagnosis = (diagnosis: unknown): {
+  category: string;
+  diagnosisNode: Array<{ node: string; }>;
+} | null => {
+  if (!isRecord(diagnosis)) {
+    return null;
   }
 
-  const relationshipToClient = safeString(thirdParty.relationshipToClient);
-  const fullName = safeString(thirdParty.fullName);
+  const nodeFilterList = [
+    "INSCOPE",
+    "The client has been discriminated against, or they've been treated badly because they complained about discrimination or supported someone else’s discrimination claim\n\nIt is against the law to discriminate against anyone because of:\n\n* age\n* gender reassignment\n* being married or in a civil partnership\n* being pregnant or having recently given birth\n* disability\n* race including colour, nationality, ethnic or national origin\n* religion, belief or lack of religion or belief\n* sex\n* sexual orientation",
+    "Describe scenario carefully in notes - client's circumstances and why they believe they are facing eviction or have been evicted. Then click 'next' to continue",
+    "Describe scenario carefully in notes - including the client's circumstances and why they believe they are facing eviction or have been evicted"
+  ]
 
-  return relationshipToClient === 'OTHER' && fullName === '';
-}
+  const { nodes: key } = diagnosis;
+
+  if (!Array.isArray(key)) {
+    return null;
+  }
+
+  const category = safeOptionalString(diagnosis.category) ?? '';
+  const diagnosisNode = key.filter(isRecord)
+    .map(obj => safeStringFromRecord(obj, "key") ?? "")
+    .filter((node): node is string => Boolean(node) && !nodeFilterList.includes(node))
+    .map(node => ({ node }));
+
+
+  return {
+    category,
+    diagnosisNode
+  };
+};
 
 /**
  * Build ordering parameter based on `ordering` query string

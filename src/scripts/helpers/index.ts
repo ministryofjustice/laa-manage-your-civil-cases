@@ -40,6 +40,7 @@ export {
   transformClientSupportNeeds,
   transformThirdParty,
   transformScopeTraversal,
+  transformDiagnosis,
   buildOrderingParamFields,
   isSoftDeletedThirdParty,
   trimOrUndefined

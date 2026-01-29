@@ -2,11 +2,11 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
 
-<h2 class="govuk-heading-m">{{ t('pages.caseDetails.tabs.caseDetails') }}</h2>
-
-{# <div class="govuk-hint">
+<div class="govuk-hint">
   [debug] data: “{{ data | dump }}”
-</div> #}
+</div>
+
+<h2 class="govuk-heading-m">{{ t('pages.caseDetails.tabs.caseDetails') }}</h2>
 
 {# Client problem section #}
 {% if data.scopeTraversal %}
@@ -42,50 +42,68 @@
 {% endif %}
 
 {# Operator diagnosis section #}
-<h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle') }}</h3>
-<p class="govuk-body">body text</p>
-<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6"/>
+{% if data.diagnosis %}
+  <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle') }}</h3>
+
+  <ul class="govuk-list govuk-list--bullet">
+    {% if data.diagnosis.category %}
+      <li>{{ t('pages.caseDetails.caseDetailsSection.category') }} {{ data.diagnosis.category }}</li>
+    {% endif %}
+
+    {% if data.diagnosis.diagnosisNode %}
+      {% for node in data.diagnosis.diagnosisNode %}
+        <li>{{ node.node }} </li>
+      {% endfor %}
+    {% endif %}
+  </ul>
+
+  <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6"/>
+{% endif %}
+
 
 {# Operator notes section #}
-<h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.operatorNotesTitle') }}</h3>
-<p class="govuk-body">body text</p>
-<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6"/>
+{% if data.notes %}
+  <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.operatorNotesTitle') }}</h3>
+  <p class="govuk-body">b{{ data.notes }}</p>
+  <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6"/>
+{% endif %}
+
 
 {# Providers notes section #}
 <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.providerNotesTitle') }}</h3>
 <div class="govuk-hint">body text<div>
     <p class="govuk-body">body text</p>
 
-    {% block formContent %}
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-          {% if error %}
-            {{ errorSummary(error.errorSummaryList) }}
-            {% set errorMessages = {
-              providerNote: {
-                text: error.inputErrors.providerNote
-              }
-              if error.inputErrors.providerNote
-            } %}
-          {% endif %}
+{% block formContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% if error %}
+        {{ errorSummary(error.errorSummaryList) }}
+        {% set errorMessages = {
+          providerNote: {
+            text: error.inputErrors.providerNote
+          }
+          if error.inputErrors.providerNote
+        } %}
+      {% endif %}
 
-          <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.noteLabel') }}</h3>
+      <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.noteLabel') }}</h3>
 
-          <form method="post" action="">
-            <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-            {{ govukCharacterCount({
-            id: "providerNote",
-            name: "providerNote",
-            value: currentProviderNote,
-            errorMessage: errorMessages.providerNote if error,
-            maxlength: maxProviderNoteLength,
-            threshold: characterThreshold
-          }) }}
+      <form method="post" action="">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+        {{ govukCharacterCount({
+        id: "providerNote",
+        name: "providerNote",
+        value: currentProviderNote,
+        errorMessage: errorMessages.providerNote if error,
+        maxlength: maxProviderNoteLength,
+        threshold: characterThreshold
+      }) }}
 
-            {{ govukButton({
-            text: t('common.save')
-          }) }}
-          </form>
-        </div>
-      </div>
-    {% endblock %}
+        {{ govukButton({
+        text: t('common.save')
+      }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

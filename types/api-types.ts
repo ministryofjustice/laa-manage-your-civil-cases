@@ -92,6 +92,14 @@ export interface ScopeTraversal {
 }
 
 /**
+ * Diagnosis (transformed from diagnosis)
+ */
+export interface Diagnosis {
+  category: string;
+  diagnosisNode: Array<{node: string;}>;
+}
+
+/**
  * Client details API response interface
  */
 export interface ClientDetailsResponse {
@@ -123,6 +131,9 @@ export interface ClientDetailsResponse {
 
   //Scope traversal (null if not present)
   scopeTraversal: ScopeTraversal | null;
+
+  //Diagnosis (null if not present)
+  diagnosis: Diagnosis | null;
   
   // Allow additional fields for debugging
   [key: string]: unknown;

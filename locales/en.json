@@ -193,10 +193,10 @@
         "operatorNotesTitle": "Notes from operator",
         "providerNotesTitle": "Notes from provider",
         "noteLabel": "Add a note",
-        "category": "Category:",
-        "subCategory": "Sub category:",
-        "tellUsMore": "Tell us more about your problem:",
-        "financialAssessmentStatus": "Financial assessment:"
+        "category": "category:",
+        "subCategory": "sub category:",
+        "tellUsMore": "tell us more about your problem:",
+        "financialAssessmentStatus": "financial assessment:"
       },
       "clientDetails": {
         "heading": "Client details",
