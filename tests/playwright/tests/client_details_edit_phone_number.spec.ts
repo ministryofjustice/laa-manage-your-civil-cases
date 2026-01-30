@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures/index.js';
-import { t, getClientDetailsUrlByStatus, setupAuth } from '../utils/index.js';
+import { t, getClientDetailsUrlByStatus, setupAuth, assertCaseDetailsHeaderPresent } from '../utils/index.js';
 
 const visitUrl = getClientDetailsUrlByStatus('default') + '/change/phone-number';
 const clientDetailsUrl = getClientDetailsUrlByStatus('default');
@@ -16,6 +16,9 @@ test('viewing change phone-number form, to see the expected elements', async ({ 
 
   // Navigate to the `/change/phone-number`
   await page.goto(visitUrl);
+
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
 
   // Expect to see the following elements
   await expect(page.locator('h1')).toContainText(t('forms.clientDetails.phoneNumber.title'));
@@ -34,6 +37,9 @@ test('phoneNumber is blank and correct validation errors display', async ({ page
 
   // Navigate to the change form
   await page.goto(visitUrl);
+
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
 
   // Submit form with blank phoneNumber
   await page.locator('#phoneNumber').fill('');
@@ -65,6 +71,9 @@ test('phoneNumber is not valid and correct validation errors display', async ({ 
   // Navigate to the change form
   await page.goto(visitUrl);
 
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+
   // Submit form with invalid phoneNumber
   await page.locator('#phoneNumber').fill('ggg');
 
@@ -91,6 +100,9 @@ test('safeToCall & phoneNumber & announceCall not changed and correct validation
 
   // Navigate to the `/change/phone-number`
   await page.goto(visitUrl);
+
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
 
   // Wait for the form to load with existing data
   await page.waitForLoadState('networkidle');
@@ -134,6 +146,9 @@ test('save button should redirect to client details when valid data submitted', 
 
   // Navigate to the change phone number form
   await page.goto(visitUrl);
+
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
 
   // Fill in valid phone number details
   await phoneInput.fill('07700900123');
