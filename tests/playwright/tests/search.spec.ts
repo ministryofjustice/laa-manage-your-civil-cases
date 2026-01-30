@@ -141,7 +141,7 @@ test('search hint should display correct list', async ({ page, i18nSetup }) => {
   expect(itemCount).toBe(6);
 
   // Verify the text of each hint item
-  expect(await hintItems.nth(0).innerText()).toBe(t('case ID (eg. EH-1234-2925)'));
+  expect(await hintItems.nth(0).innerText()).toBe(t('case ID, for example EH-1234-2925'));
   expect(await hintItems.nth(1).innerText()).toBe(t('LAA reference, for example 3000435'));
   expect(await hintItems.nth(2).innerText()).toBe(t('phone number'));
   expect(await hintItems.nth(3).innerText()).toBe(t('name'));
