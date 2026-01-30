@@ -556,20 +556,19 @@ export const transformScopeTraversal = (scopeTraversal: unknown): {
   const records = sAnswersAndQuestions.filter(isRecord);
   const category = records.find(obj => safeStringFromRecord(obj, 'type') === 'category')?.answer as string ?? '';
   const subCategory = records.find(obj => safeStringFromRecord(obj, 'type') === 'sub_category')?.answer as string ?? '';
-  const onwardQuestion = records.filter(obj => safeStringFromRecord(obj, 'type') === 'onward_question').map(obj => ({
-    question: safeStringFromRecord(obj, 'question') ?? '',
-    answer: safeStringFromRecord(obj, 'answer') ?? ''
-  })).filter((item): item is { question: string; answer: string } => Boolean(item.question || item.answer));
-
-  const financialAssessmentStatus = safeOptionalString(scopeTraversal.financial_assessment_status) ?? '';
-  const created = formatLongFormDate(safeOptionalString(scopeTraversal.created) ?? '');
+  const onwardQuestion = records.filter(obj => safeStringFromRecord(obj, 'type') === 'onward_question')
+    .map(obj => ({
+      question: safeStringFromRecord(obj, 'question') ?? '',
+      answer: safeStringFromRecord(obj, 'answer') ?? ''
+    }))
+    .filter((item): item is { question: string; answer: string } => Boolean(item.question || item.answer));
 
   return {
     category,
     subCategory,
     onwardQuestion,
-    financialAssessmentStatus,
-    created
+    financialAssessmentStatus: safeOptionalString(scopeTraversal.financial_assessment_status) ?? '',
+    created: formatLongFormDate(safeOptionalString(scopeTraversal.created) ?? '')
   };
 };
 
@@ -589,7 +588,7 @@ export const transformDiagnosis = (diagnosis: unknown): {
   const nodeFilterList = [
     "INSCOPE",
     "The client has been discriminated against, or they've been treated badly because they complained about discrimination or supported someone else’s discrimination claim\n\nIt is against the law to discriminate against anyone because of:\n\n* age\n* gender reassignment\n* being married or in a civil partnership\n* being pregnant or having recently given birth\n* disability\n* race including colour, nationality, ethnic or national origin\n* religion, belief or lack of religion or belief\n* sex\n* sexual orientation",
-    "Describe scenario carefully in notes - client's circumstances and why they believe they are facing eviction or have been evicted. Then click 'next' to continue",
+    "Describe scenario carefully in notes - client's circumstances and why they believe they are facing eviction or have been evicted. *Then click 'next' to continue*",
     "Describe scenario carefully in notes - including the client's circumstances and why they believe they are facing eviction or have been evicted"
   ]
 
@@ -599,16 +598,55 @@ export const transformDiagnosis = (diagnosis: unknown): {
     return null;
   }
 
-  const category = safeOptionalString(diagnosis.category) ?? '';
   const diagnosisNode = key.filter(isRecord)
     .map(obj => safeStringFromRecord(obj, "key") ?? "")
     .filter((node): node is string => Boolean(node) && !nodeFilterList.includes(node))
     .map(node => ({ node }));
 
+  return {
+    category: safeOptionalString(diagnosis.category) ?? '',
+    diagnosisNode
+  };
+};
+
+/**
+ * Transform raw notes history from API to display format.
+ * @param {unknown} notesHistory - Raw notes history from API
+ * @returns {object | null} Transformed notes history object
+ */
+export const transformNotesHistory = (
+  notesHistory: unknown
+): {
+  createdBy: string;
+  created: string;
+  providerNotes: string;
+} | null => {
+
+  let notesHistoryArray: unknown[] | null = null;
+
+  if (Array.isArray(notesHistory)) {
+    notesHistoryArray = notesHistory;
+  } else if (
+    hasProperty(notesHistory, 'notes_history') &&
+    Array.isArray(notesHistory.notes_history)
+  ) {
+    notesHistoryArray = notesHistory.notes_history;
+  }
+
+  if (!notesHistoryArray || notesHistoryArray.length === 0) {
+    return null
+  };
+
+  const firstItem = notesHistoryArray[0];
+
+  if (!isRecord(firstItem)) {
+    return null;
+  }
 
   return {
-    category,
-    diagnosisNode
+    createdBy: safeOptionalString(firstItem.created_by) ?? '',
+    created: formatLongFormDate(safeOptionalString(firstItem.created) ?? ''),
+    providerNotes: safeOptionalString(firstItem.provider_notes) ?? ''
   };
 };
 

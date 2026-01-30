@@ -100,6 +100,15 @@ export interface Diagnosis {
 }
 
 /**
+ * Notes history (transformed from notes_history)
+ */
+export interface NotesHistory {
+  createdBy: string;
+  created: string;
+  providerNotes: string;
+}
+
+/**
  * Client details API response interface
  */
 export interface ClientDetailsResponse {
@@ -134,6 +143,9 @@ export interface ClientDetailsResponse {
 
   //Diagnosis (null if not present)
   diagnosis: Diagnosis | null;
+
+  //Notes history (null if not present)
+  notesHistory: NotesHistory | null;
   
   // Allow additional fields for debugging
   [key: string]: unknown;

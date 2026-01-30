@@ -7,6 +7,7 @@ import { clearAllOriginalFormData } from '../helpers/sessionHelpers.js';
 import config from '#config.js';
 
 const { MAX_NOTE_LENGTH, CHARACTER_THRESHOLD }: { MAX_NOTE_LENGTH: number; CHARACTER_THRESHOLD: number } = config;
+
 /**
  * Handle case details with API data
  * @param {Request} req Express request object

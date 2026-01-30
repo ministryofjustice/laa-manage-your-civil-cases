@@ -2,9 +2,6 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
 
-<div class="govuk-hint">
-  [debug] data: “{{ data | dump }}”
-</div>
 
 <h2 class="govuk-heading-m">{{ t('pages.caseDetails.tabs.caseDetails') }}</h2>
 
@@ -70,9 +67,12 @@
 
 
 {# Providers notes section #}
-<h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.providerNotesTitle') }}</h3>
-<div class="govuk-hint">body text<div>
-    <p class="govuk-body">body text</p>
+{% if data.notesHistory.providerNotes %}
+  <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.providerNotesTitle') }}</h3>
+  <p class="govuk-hint">{{ data.notesHistory.createdBy }} on {{ data.notesHistory.created }}</p>
+  <p class="govuk-body">{{ data.notesHistory.providerNotes }}</p>
+{% endif %}
+
 
 {% block formContent %}
   <div class="govuk-grid-row">
