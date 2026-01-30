@@ -17,7 +17,6 @@ import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import type { Request, Response, NextFunction } from 'express';
-import * as expressValidator from 'express-validator';
 import {
   handleClientDetailsTab,
   acceptCase,
@@ -33,9 +32,6 @@ import { apiService } from '#src/services/apiService.js';
 import { changeCaseStateService } from '#src/services/changeCaseStateService.js';
 // Import to get global type declarations for axiosMiddleware
 import '#utils/server/axiosSetup.js';
-import { validateCloseCase } from '#src/middlewares/closeCaseSchema.js';
-import { validatePendingCase } from '#src/middlewares/pendingCaseSchema.js';
-import { validateReopenCase } from '#src/middlewares/reopenCaseSchema.js';
 import { ValidationChain } from 'express-validator';
 
 // Run an express-validator schema against a fake request
