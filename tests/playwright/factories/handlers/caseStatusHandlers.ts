@@ -77,16 +77,12 @@ export const createCaseStatusHandlers = (
           return new HttpResponse(null, { status: 404 });
         }
 
-        const updates = {
-          caseStatus: 'Closed',
-          provider_closed: new Date().toISOString(),
-          state_note: body.notes || '',
-          dateClosed: new Date().toISOString(),
-        };
+        mockCase.caseStatus = 'Closed';
+        mockCase.provider_closed = new Date().toISOString();
+        mockCase.stateNote = body.notes || '';
+        mockCase.dateClosed = new Date().toISOString();
 
-        const updatedCase = { ...mockCase, ...updates };
-
-        return HttpResponse.json(transformToApiFormat(updatedCase));
+        return HttpResponse.json(transformToApiFormat(mockCase));
       }
     );
   };

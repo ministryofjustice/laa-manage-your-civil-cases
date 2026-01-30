@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
 import { apiService } from '#src/services/apiService.js';
-import { safeString, capitaliseFirst, extractCurrentFields , normaliseSelectedCheckbox} from '#src/scripts/helpers/index.js';
+import { safeString, capitaliseFirst, extractCurrentFields, normaliseSelectedCheckbox } from '#src/scripts/helpers/index.js';
 import { validationResult } from 'express-validator';
 import { formatValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 import type {
@@ -9,6 +9,7 @@ import type {
   GetFormOptions,
   PostFormOptions,
 } from '#types/form-controller-types.js';
+import type { CaseStatusLabels } from '#types/case-types.js';
 
 const BAD_REQUEST = 400;
 
@@ -162,13 +163,13 @@ export function prepareThirdPartyData(formFields: Record<string, unknown>): obje
   } = formFields;
 
   // Default to "SAFE", unless explicitly false
-  const safeToContact = thirdPartySafeToCall === 'false' || thirdPartySafeToCall === false ? 'DONT_CALL': 'SAFE';
+  const safeToContact = thirdPartySafeToCall === 'false' || thirdPartySafeToCall === false ? 'DONT_CALL' : 'SAFE';
 
   const spokeTo = !(typeof thirdPartyPassphraseSetUp === 'string' && thirdPartyPassphraseSetUp !== 'Yes')
 
   const reason = typeof thirdPartyPassphraseSetUp === 'string' && thirdPartyPassphraseSetUp !== 'Yes' ? thirdPartyPassphraseSetUp : '';
 
-  const passphraseConditional = thirdPartyPassphraseSetUp === 'Yes' ? thirdPartyPassphrase: '';
+  const passphraseConditional = thirdPartyPassphraseSetUp === 'Yes' ? thirdPartyPassphrase : '';
 
   return {
     personal_details: {
@@ -496,4 +497,38 @@ export function validCaseReference(caseReference: unknown, res: Response): boole
     return false;
   }
   return true;
+}
+
+/**
+ * Checks whether request object contains `caseStatus` property
+ * @param {unknown} requestObject - The request object to check.
+ * @returns {boolean} True if the value has a string caseStatus property.
+ */
+export function hasCaseStatus(requestObject: unknown): requestObject is { caseStatus: string } {
+  if (typeof requestObject !== 'object' || requestObject === null) {
+    return false;
+  }
+
+  if (!('caseStatus' in requestObject)) {
+    return false;
+  }
+
+  const record = requestObject as Record<string, unknown>;
+  return typeof record.caseStatus === 'string';
+}
+
+/**
+ * Checks if clientData has one of the allowed case statuses
+ * @param {unknown} clientData - The client data object to check
+ * @param {CaseStatusLabels[]} allowedStatuses - Array of allowed case status values
+ * @returns {boolean} True if clientData has caseStatus and it matches one of the allowed values
+ */
+export function hasAllowedCaseStatus(
+  clientData: unknown,
+  allowedStatuses: CaseStatusLabels[]
+): boolean {
+  if (!hasCaseStatus(clientData)) {
+    return false;
+  }
+  return allowedStatuses.includes(clientData.caseStatus as CaseStatusLabels);
 }
