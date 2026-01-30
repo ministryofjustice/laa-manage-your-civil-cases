@@ -17,9 +17,8 @@ import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import type { Request, Response, NextFunction } from 'express';
-import * as expressValidator from 'express-validator';
 import {
-  handleCaseDetailsTab,
+  handleClientDetailsTab,
   acceptCase,
   completeCase,
   getPendingCaseForm,
@@ -28,14 +27,11 @@ import {
   pendingCase,
   getReopenCaseForm,
   reopenCompletedCase
-} from '#src/scripts/controllers/caseDetailsController.js';
+} from '#src/scripts/controllers/clientDetailsController.js';
 import { apiService } from '#src/services/apiService.js';
 import { changeCaseStateService } from '#src/services/changeCaseStateService.js';
 // Import to get global type declarations for axiosMiddleware
 import '#utils/server/axiosSetup.js';
-import { validateCloseCase } from '#src/middlewares/closeCaseSchema.js';
-import { validatePendingCase } from '#src/middlewares/pendingCaseSchema.js';
-import { validateReopenCase } from '#src/middlewares/reopenCaseSchema.js';
 import { ValidationChain } from 'express-validator';
 
 // Run an express-validator schema against a fake request
@@ -79,7 +75,7 @@ describe('Case Details Controller', () => {
     sinon.restore();
   });
 
-  describe('handleCaseDetailsTab', () => {
+  describe('handleClientDetailsTab', () => {
     it('should render case details page with client data and correct template for specified tab', async () => {
       // Arrange
       const mockClientData = {
@@ -92,7 +88,7 @@ describe('Case Details Controller', () => {
       req.clientData = mockClientData;
 
       // Act
-      handleCaseDetailsTab(
+      handleClientDetailsTab(
         req as Request,
         res as Response,
         next,
@@ -109,7 +105,7 @@ describe('Case Details Controller', () => {
       req.params = {};
 
       // Act
-      handleCaseDetailsTab(
+      handleClientDetailsTab(
         req as Request,
         res as Response,
         next,
@@ -130,7 +126,7 @@ describe('Case Details Controller', () => {
       renderStub.throws(new Error('Render error'));
 
       // Act
-      handleCaseDetailsTab(
+      handleClientDetailsTab(
         req as Request,
         res as Response,
         next,

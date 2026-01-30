@@ -12,7 +12,10 @@ import {
   formatLongFormDate,
   transformContactDetails,
   transformClientSupportNeeds,
-  transformThirdParty
+  transformThirdParty,
+  transformScopeTraversal,
+  transformDiagnosis,
+  transformNotesHistory
 } from '#src/scripts/helpers/index.js';
 
 import { translateCaseStatus } from '#utils/server/caseStatusHelper.js';
@@ -52,6 +55,15 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
   const providerClosedBanner = formatLongFormDate(safeOptionalString(item.provider_closed) ?? '');
   const providerViewedBanner = formatLongFormDate(safeOptionalString(item.provider_viewed) ?? '');
 
+  // Transform scope traversal details
+  const scopeTraversal = transformScopeTraversal(item.scope_traversal);
+
+  // Transform diagnosis details
+  const diagnosis = transformDiagnosis(item.diagnosis);
+
+  // Transform notes history details
+  const notesHistory = transformNotesHistory(item.notes_history);
+
   return {
     caseReference,
     laaReference,
@@ -66,6 +78,9 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
     state_note,
     ...contactDetails,
     clientSupportNeeds,
-    thirdParty
+    thirdParty,
+    scopeTraversal,
+    diagnosis,
+    notesHistory
   };
 }

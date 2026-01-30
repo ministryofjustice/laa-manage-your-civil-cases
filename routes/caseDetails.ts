@@ -1,19 +1,21 @@
 import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
-import { handleCaseDetailsTab, acceptCase, completeCase, closeCase, getCloseCaseForm, getPendingCaseForm, pendingCase, getReopenCaseForm, reopenCompletedCase, reopenClosedCase } from '#src/scripts/controllers/caseDetailsController.js';
+import { handleClientDetailsTab, acceptCase, completeCase, closeCase, getCloseCaseForm, getPendingCaseForm, pendingCase, getReopenCaseForm, reopenCompletedCase, reopenClosedCase } from '#src/scripts/controllers/clientDetailsController.js';
 import { handleCaseHistoryTab } from '#src/scripts/controllers/caseHistoryController.js';
+import { handleCaseDetailsTab } from '#src/scripts/controllers/caseDetailsController.js';
 import { getRemoveThirdPartyConfirmation, deleteThirdParty, getRemoveSupportNeedsConfirmation, deleteClientSupportNeeds } from '#src/scripts/controllers/index.js';
 import { validateReopenCase } from '#src/middlewares/reopenCaseSchema.js';
 import { validateCloseCase } from '#src/middlewares/closeCaseSchema.js';
 import { validatePendingCase } from '#src/middlewares/pendingCaseSchema.js';
 import { fetchClientDetails } from '#src/middlewares/caseDetailsMiddleware.js';
 
+
 // Create a new router for case details routes
 const router = express.Router();
 
 /* GET client details for a specific case. */
 router.get('/:caseReference/client-details', fetchClientDetails, (req: Request, res: Response, next: NextFunction): void => {
-  handleCaseDetailsTab(req, res, next, 'client_details');
+  handleClientDetailsTab(req, res, next, 'client_details');
 });
 
 /* GET case details details for a specific case. */
@@ -23,7 +25,7 @@ router.get('/:caseReference/case-details', fetchClientDetails, (req: Request, re
 
 /* GET financial eligibility details for a specific case. */
 router.get('/:caseReference/financial-eligibility', fetchClientDetails, (req: Request, res: Response, next: NextFunction): void => {
-  handleCaseDetailsTab(req, res, next, 'financial_eligibility');
+  handleClientDetailsTab(req, res, next, 'financial_eligibility');
 });
 
 /* GET history for a specific case. */
