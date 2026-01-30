@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 import { apiService } from '#src/services/apiService.js';
 import { changeCaseStateService } from '#src/services/changeCaseStateService.js';
-import { devLog, createProcessedError, safeString, clearAllOriginalFormData, safeBodyString, formatValidationError, trimOrUndefined, validCaseReference } from '#src/scripts/helpers/index.js';
+import { devLog, createProcessedError, safeString, clearAllOriginalFormData, safeBodyString, formatValidationError, trimOrUndefined, validCaseReference, hasAllowedCaseStatus } from '#src/scripts/helpers/index.js';
 import { storeSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 import config from '#config.js';
 
@@ -130,6 +130,10 @@ export function getPendingCaseForm(req: Request, res: Response, next: NextFuncti
     return;
   }
 
+  if (!hasAllowedCaseStatus(req.clientData, ['new'])) {
+    return res.redirect(`/cases/${caseReference}/client-details`);
+  }
+
   try {
     res.render('case_details/why-pending.njk', {
       caseReference,
@@ -158,6 +162,10 @@ export function getCloseCaseForm(req: Request, res: Response, next: NextFunction
 
   if (!validCaseReference(caseReference, res)) {
     return;
+  }
+
+  if (!hasAllowedCaseStatus(req.clientData, ['new', 'pending'])) {
+    return res.redirect(`/cases/${caseReference}/client-details`);
   }
 
   try {
@@ -245,7 +253,7 @@ export async function closeCase(req: Request, res: Response, next: NextFunction)
   try {
     const eventCode = safeString(safeBodyString(req.body, 'eventCode'));
     const closeNote = trimOrUndefined(safeBodyString(req.body, 'closeNote'));
-    
+
     devLog(`Closing case: ${caseReference} with event code: ${eventCode}`);
     await changeCaseStateService.closeCase(req.axiosMiddleware, caseReference, eventCode, closeNote);
 
@@ -357,11 +365,23 @@ export async function pendingCase(req: Request, res: Response, next: NextFunctio
  * @param {NextFunction} next Express next function
  * @returns {void} Render the `why-reopen-completed-case` or `why-reopen-closed-case` page
  */
-export function getReopenCaseForm(req: Request, res: Response, typeOfCase: string,  next: NextFunction): void {
+export function getReopenCaseForm(req: Request, res: Response, typeOfCase: string, next: NextFunction): void {
   const caseReference = safeString(req.params.caseReference);
 
   if (!validCaseReference(caseReference, res)) {
     return;
+  }
+
+  if (typeOfCase === 'completedCase') {
+    if (!hasAllowedCaseStatus(req.clientData, ['completed'])) {
+      return res.redirect(`/cases/${caseReference}/client-details`);
+    }
+  }
+
+  if (typeOfCase === 'closedCase') {
+    if (!hasAllowedCaseStatus(req.clientData, ['closed'])) {
+      return res.redirect(`/cases/${caseReference}/client-details`);
+    }
   }
 
   const template = typeOfCase === 'completedCase' ? 'case_details/why-reopen-completed-case.njk' : 'case_details/why-reopen-closed-case.njk';

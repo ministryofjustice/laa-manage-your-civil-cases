@@ -440,6 +440,31 @@
         "selected": ["No, client is a child or patient"]
       }
     },
+    "scopeTraversal": {
+      "category": "Discrimination",
+      "subCategory": "",
+      "onwardQuestion": [
+        {
+          "question": "Where did the discrimination happen?",
+          "answer": "Work - including colleagues, employer or employment agency"
+        }
+      ],
+      "financialAssessmentStatus": "PASSED",
+      "created": "2025-08-19T00:00:00-05:00"
+    },
+    "diagnosis": {
+      "category": "Debt",
+      "diagnosisNode":[
+        {"node": "Debt and housing - loss of home"},
+        {"node": "Homeless or at risk of becoming homeless within 56 days"},
+        {"node": "The landlord has unlawfully evicted the client without due process"}
+      ]
+    },
+    "notesHistory": {
+      "createdBy": "mcc_all_uat",
+      "created": "2025-08-18T00:00:00-05:00",
+      "providerNotes": "This are some test provider notes"
+    },
     "clientSupportNeeds": {
       "bslWebcam": "Yes",
       "textRelay": "No",

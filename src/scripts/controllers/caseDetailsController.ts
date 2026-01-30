@@ -17,9 +17,9 @@ const { MAX_NOTE_LENGTH, CHARACTER_THRESHOLD }: { MAX_NOTE_LENGTH: number; CHARA
  * @returns {Promise<void>} Page to be returned
  */
 export async function handleCaseDetailsTab(req: Request, res: Response, next: NextFunction, activeTab: string): Promise<void> {
-  
+
   const caseReference = safeString(req.params.caseReference);
-  
+
   if (!validCaseReference(caseReference, res)) {
     return;
   }
@@ -43,7 +43,6 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
   } catch (error) {
     // Use the error processing utility
     const processedError = createProcessedError(error, `fetching client details for case ${caseReference}`);
-    
     // Pass the processed error to the global error handler
     next(processedError);
   }

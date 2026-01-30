@@ -1,4 +1,5 @@
 export { BaseEditFormPage } from './BaseEditFormPage.js';
+export { CaseDetailsTabPage } from './CaseDetailsPage.js'
 export { EditDateOfBirthPage } from './EditDateOfBirthPage.js';
 export { EditEmailPage } from './EditEmailPage.js';
 export { EditNamePage } from './EditNamePage.js';

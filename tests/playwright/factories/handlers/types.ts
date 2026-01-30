@@ -37,10 +37,29 @@ export interface MockCase {
       passphrase?: string;
     };
   } | null;
+  scopeTraversal?:{
+    category?: string;
+    subCategory?: string;
+    onwardQuestion?: Array<{
+      question: string;
+      answer: string;
+    }>;
+    financialAssessmentStatus?: string;
+    created?: string;
+  }
+  diagnosis?:{
+    category?:string;
+    diagnosisNode?: Array<{ node: string; }>;
+  }
+  notesHistory?:{
+    createdBy?: string;
+    created?: string;
+    providerNotes?: string;
+  }
   clientSupportNeeds?: {
     bslWebcam?: string;
     textRelay?: string;
-    skype: boolean;
+    skype?: boolean;
     callbackPreference?: string;
     languageSupportNeeds?: string;
     notes?: string;
