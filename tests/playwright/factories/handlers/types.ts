@@ -10,6 +10,7 @@ export interface MockCase {
   lastModified?: string;
   dateClosed?: string;
   caseStatus: string;
+  provider_closed?: string;
   stateNote?: string;
   dateOfBirth: string;
   clientIsVulnerable: boolean;

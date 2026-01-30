@@ -185,7 +185,8 @@ describe('Case Details Controller', () => {
       // Arrange
       req.clientData = {
         fullName: 'John Doe',
-        caseReference: 'TEST123'
+        caseReference: 'TEST123',
+        caseStatus: 'new'
       };
 
       req.csrfToken = sinon.stub().returns('csrf-token');
@@ -196,6 +197,25 @@ describe('Case Details Controller', () => {
       // Assert
       expect(renderStub.calledWith('case_details/why-pending.njk')).to.be.true;
     });
+
+    it('should not render the pending case form, when the case is anything other than "new"', () => {
+      // Arrange
+      req.clientData = {
+        fullName: 'John Doe',
+        caseReference: 'TEST123',
+        caseStatus: 'completed' // Completed case visiting `why-pending` page via URL
+      };
+      const redirectStub = sinon.stub();
+      res.redirect = redirectStub;
+
+      req.csrfToken = sinon.stub().returns('csrf-token');
+
+      // Act
+      getPendingCaseForm(req as Request, res as Response, next);
+
+      // Assert
+      expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
+    });
   });
 
   describe('getCloseCaseForm', () => {
@@ -203,7 +223,8 @@ describe('Case Details Controller', () => {
       // Arrange
       req.clientData = {
         fullName: 'John Doe',
-        caseReference: 'TEST123'
+        caseReference: 'TEST123',
+        caseStatus: 'pending'
       };
 
       req.csrfToken = sinon.stub().returns('csrf-token');
@@ -213,6 +234,25 @@ describe('Case Details Controller', () => {
 
       // Assert
       expect(renderStub.calledWith('case_details/why-closed.njk')).to.be.true;
+    });
+
+    it('should not render the close case form, when the case is anything other than "new" or "pending"', () => {
+      // Arrange
+      req.clientData = {
+        fullName: 'John Doe',
+        caseReference: 'TEST123',
+        caseStatus: 'completed' // Completed case visiting `why-closed` page via URL
+      };
+      const redirectStub = sinon.stub();
+      res.redirect = redirectStub;
+
+      req.csrfToken = sinon.stub().returns('csrf-token');
+
+      // Act
+      getCloseCaseForm(req as Request, res as Response, next);
+
+      // Assert
+      expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
     });
   });
 
@@ -255,7 +295,8 @@ describe('Case Details Controller', () => {
       // Arrange
       req.clientData = {
         fullName: 'John Doe',
-        caseReference: 'TEST123'
+        caseReference: 'TEST123',
+        caseStatus: 'completed'
       };
 
       req.csrfToken = sinon.stub().returns('csrf-token');
@@ -265,6 +306,44 @@ describe('Case Details Controller', () => {
 
       // Assert
       expect(renderStub.calledWith('case_details/why-reopen-completed-case.njk')).to.be.true;
+    });
+
+    it('should not render the `why-reopen-closed-case` form, when the case is anything other than "closed"', () => {
+      // Arrange
+      req.clientData = {
+        fullName: 'John Doe',
+        caseReference: 'TEST123',
+        caseStatus: 'completed' // Completed case visiting `why-reopen-closed-case` page via URL
+      };
+      const redirectStub = sinon.stub();
+      res.redirect = redirectStub;
+
+      req.csrfToken = sinon.stub().returns('csrf-token');
+
+      // Act
+      getReopenCaseForm(req as Request, res as Response, 'closedCase', next);
+
+      // Assert
+      expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
+    });
+
+    it('should not render the `why-reopen-completed-case` form, when the case is anything other than "completed"', () => {
+      // Arrange
+      req.clientData = {
+        fullName: 'John Doe',
+        caseReference: 'TEST123',
+        caseStatus: 'closed' // Closed case visiting `why-reopen-completed-case` page via URL
+      };
+      const redirectStub = sinon.stub();
+      res.redirect = redirectStub;
+
+      req.csrfToken = sinon.stub().returns('csrf-token');
+
+      // Act
+      getReopenCaseForm(req as Request, res as Response, 'completedCase', next);
+
+      // Assert
+      expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
     });
   });
 

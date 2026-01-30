@@ -268,7 +268,8 @@
       "searchHint": {
         "intro": "You can search by:",
         "items": {
-          "caseId": "case ID (eg. EH-1234-2925)",
+          "caseId": "case ID, for example EH-1234-2925",
+          "laaReference": "LAA reference, for example 3000435",
           "phoneNumber": "phone number",
           "name": "name",
           "postcode": "postcode",

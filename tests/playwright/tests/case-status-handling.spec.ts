@@ -101,17 +101,17 @@ test.describe('Case Status Handling', () => {
 
   test.describe('Close Case', () => {
     test('should submit close case form', async ({ page }) => {
-      const closePage = CloseCaseFormPage.forCase(page, 'PC-4575-7150');
+      const closePage = CloseCaseFormPage.forCase(page, 'PC-9159-2337');
       await closePage.navigate();
       await closePage.submitWithData('MIS-MEANS', 'Case successfully closed');
 
-      const clientDetails = ClientDetailsPage.forCase(page, 'PC-4575-7150');
+      const clientDetails = ClientDetailsPage.forCase(page, 'PC-9159-2337');
       await expect(page).toHaveURL(clientDetails.url);
       await clientDetails.expectStatus('Closed');
     });
 
     test('should validate required fields', async ({ page }) => {
-      const closePage = CloseCaseFormPage.forCase(page, 'PC-4575-7150');
+      const closePage = CloseCaseFormPage.forCase(page, 'PC-2211-4466');
       await closePage.navigate();
       await closePage.clickSave();
 
@@ -153,18 +153,18 @@ test.describe('Case Status Handling', () => {
 
   test.describe('Reopen Case', () => {
     test('should submit reopen case form', async ({ page }) => {
-      const reopenPage = ReopenCaseFormPage.forCase(page, 'PC-4575-7150');
+      const reopenPage = ReopenCaseFormPage.forCase(page, 'PC-1122-3344');
       await reopenPage.navigate();
       await reopenPage.submitWithNote('Client requested case to be reopened');
 
-      const clientDetails = ClientDetailsPage.forCase(page, 'PC-4575-7150');
+      const clientDetails = ClientDetailsPage.forCase(page, 'PC-1122-3344');
       await expect(page).toHaveURL(clientDetails.url);
     });
 
     test('why-reopen-completed-case form should be accessible', {
       tag: '@accessibility',
     }, async ({ page, checkAccessibility }) => {
-      const reopenPage = ReopenCaseFormPage.forCase(page, 'PC-4575-7150');
+      const reopenPage = ReopenCaseFormPage.forCase(page, 'PC-1122-3344');
       await reopenPage.navigate();
       await checkAccessibility();
     });
