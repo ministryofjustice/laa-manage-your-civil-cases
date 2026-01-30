@@ -196,7 +196,8 @@
         "category": "category:",
         "subCategory": "sub category:",
         "tellUsMore": "tell us more about your problem:",
-        "financialAssessmentStatus": "financial assessment:"
+        "financialAssessmentStatus": "financial assessment:",
+        "noNotes": "No notes to display"
       },
       "clientDetails": {
         "heading": "Client details",

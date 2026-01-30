@@ -2,8 +2,10 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
 
-
-<h2 class="govuk-heading-m">{{ t('pages.caseDetails.tabs.caseDetails') }}</h2>
+<span class="case-details-tab-heading-alignment govuk-!-margin-bottom-4">
+  <h2 class="govuk-heading-m">{{ t('pages.caseDetails.tabs.caseDetails') }}</h2>
+  <a class="govuk-body govuk-link" href="#providerNote">{{ t('pages.caseDetails.caseDetailsSection.noteLabel') }}</a>
+</span>
 
 {# Client problem section #}
 {% if data.scopeTraversal %}
@@ -61,7 +63,7 @@
 {# Operator notes section #}
 {% if data.notes %}
   <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.operatorNotesTitle') }}</h3>
-  <p class="govuk-body">b{{ data.notes }}</p>
+  <p class="govuk-body">{{ data.notes }}</p>
   <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6"/>
 {% endif %}
 
@@ -71,6 +73,9 @@
   <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.providerNotesTitle') }}</h3>
   <p class="govuk-hint">{{ data.notesHistory.createdBy }} on {{ data.notesHistory.created }}</p>
   <p class="govuk-body">{{ data.notesHistory.providerNotes }}</p>
+{% else %}
+  <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.providerNotesTitle') }}</h3>
+  <p class="govuk-body">{{ t('pages.caseDetails.caseDetailsSection.noNotes') }}</p>
 {% endif %}
 
 
@@ -87,7 +92,7 @@
         } %}
       {% endif %}
 
-      <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.noteLabel') }}</h3>
+      <h3 class="govuk-heading-s govuk-!-margin-top-5">{{ t('pages.caseDetails.caseDetailsSection.noteLabel') }}</h3>
 
       <form method="post" action="">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
