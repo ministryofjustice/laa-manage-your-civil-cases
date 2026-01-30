@@ -67,7 +67,6 @@ test('if no keyword is entered error message shows', async ({ page, i18nSetup })
   await expect(page.locator('#searchKeyword-error')).toContainText(t('forms.search.validationError.notEmpty'));
 });
 
-
 test('if clear button clicked page should refresh', async ({ page, i18nSetup }) => {
   // Navigate to the search page
   await page.goto(visitUrl);
@@ -105,7 +104,6 @@ test('search with valid keyword should display results', async ({ page, i18nSetu
   
   await searchButton.click();
   
-  
   // Wait for navigation or response
   await page.waitForLoadState('networkidle');
   
@@ -121,8 +119,38 @@ test('search with valid keyword should display results', async ({ page, i18nSetu
   // Verify the page loaded successfully by checking for main content
   const mainContent = page.locator('main');
   await expect(mainContent).toBeVisible();
+});
+
+test('search hint should display correct list', async ({ page, i18nSetup }) => {
   
-});test('search clear functionality via GET route', async ({ page, i18nSetup }) => {
+  // Navigate to search page
+  await page.goto('/search');
+  
+  // Wait for page to load
+  await page.waitForLoadState('networkidle');
+  
+  // check search hint section is present 
+  const searchHint = page.locator('#search-hint');
+  await expect(searchHint).toBeVisible();
+
+  // Check a list is present within the hint section
+  const hintItems = searchHint.locator('li');
+  const itemCount = await hintItems.count();
+  
+  // Verify there are 6 hint items
+  expect(itemCount).toBe(6);
+
+  // Verify the text of each hint item
+  expect(await hintItems.nth(0).innerText()).toBe(t('case ID, for example EH-1234-2925'));
+  expect(await hintItems.nth(1).innerText()).toBe(t('LAA reference, for example 3000435'));
+  expect(await hintItems.nth(2).innerText()).toBe(t('phone number'));
+  expect(await hintItems.nth(3).innerText()).toBe(t('name'));
+  expect(await hintItems.nth(4).innerText()).toBe(t('postcode'));
+  expect(await hintItems.nth(5).innerText()).toBe(t('address'));
+
+});
+
+test('search clear functionality via GET route', async ({ page, i18nSetup }) => {
   // Navigate to the search clear route directly
   await page.goto('/search/clear');
 
