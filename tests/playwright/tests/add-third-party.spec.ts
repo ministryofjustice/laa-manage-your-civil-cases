@@ -1,7 +1,7 @@
 import { test, expect } from '../fixtures/index.js';
-import { getClientDetailsUrlByStatus, setupAuth } from '../utils/index.js';
+import { getClientDetailsUrlByStatus, setupAuth, assertCaseDetailsHeaderPresent } from '../utils/index.js';
 import { ThirdPartyFormPage } from '../pages/ThirdPartyFormPage.js';
-import { assertCaseDetailsHeaderPresent } from '../utils/case-details-helper.js';
+
 
 const clientDetailsUrl = getClientDetailsUrlByStatus('default');
 
@@ -18,7 +18,6 @@ test('viewing add third party form should display expected elements', async ({ p
   // Assert the case details header is present
   await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");  
   
-
   // Expect to see the main elements
   await thirdPartyPage.expectPageLoaded(thirdPartyPage.getExpectedHeading());
   await thirdPartyPage.expectFormElementsVisible();
