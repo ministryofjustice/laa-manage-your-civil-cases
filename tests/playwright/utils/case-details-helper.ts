@@ -10,20 +10,20 @@ export async function assertCaseDetailsHeaderPresent(page: Page, withMenuButtons
   await assertHeaderItem(caseHeader, expectedName, expectedCaseRef);
 
   if (withMenuButtons) {
-    await assertMenuButtonVisible(page);
+    await assertMenuButtonVisible(caseHeader);
   }
 }
 
-async function assertMenuButtonVisible(page: Page) {
-  const toggle = page.getByRole('button', { name: 'Change status' });
+async function assertMenuButtonVisible(container: Locator) {
+  const toggle = container.getByRole('button', { name: 'Change status' });
   await expect(toggle).toBeVisible();
 }
 
 async function assertHeaderItem(container: Locator,
   headingText: string,
   expectedValue: string) {
-  const item = container.getByRole('heading', { level: 2, name: headingText });
-  const value = item.locator('xpath=following-sibling::p[contains(@class,"govuk-body")][1]');
-  await expect(value).toHaveText(expectedValue);
+
+  const item = container.getByRole('heading', { level: 2, name: headingText }).locator('..');
+  await expect(item.locator('p.govuk-body')).toHaveText(expectedValue);
 
 }
