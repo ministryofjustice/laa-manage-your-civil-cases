@@ -1,4 +1,5 @@
 import { test, expect } from '../fixtures/index.js';
+import { assertCaseDetailsHeaderPresent } from '../utils/index.js';
 
 test('health endpoint should return 200 OK', async ({ page, i18nSetup }) => {
   // Navigate to the health endpoint

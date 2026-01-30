@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures/index.js';
-import { setupAuth } from '../utils/index.js';
+import { setupAuth, assertCaseDetailsHeaderPresent } from '../utils/index.js';
 
 test.describe('Edit Client Name', () => {
   test.beforeEach(async ({ page }) => {
@@ -9,17 +9,25 @@ test.describe('Edit Client Name', () => {
   test('viewing change name form should display expected elements', async ({ pages, i18nSetup }) => {
     const editNamePage = pages.editName;
     await editNamePage.navigate();
+    // Assert the case details header is present
+    await assertCaseDetailsHeaderPresent(pages.editName.getPage, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
     await editNamePage.expectPageLoaded(editNamePage.getExpectedHeading());
   });
 
   test('cancel link should navigate back to client details', async ({ pages, i18nSetup }) => {
     await pages.editName.expectCancelNavigatesBack();
+       // Assert the case details header is present
+    await assertCaseDetailsHeaderPresent(pages.editName.getPage, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");
   });
 
   test('save button should redirect to client details when valid data submitted', async ({ pages, i18nSetup }) => {
     const editNamePage = pages.editName;
-    await editNamePage.submitWithValidName('John Updated Smith');
+    // Assert the case details header is present
+    //await assertCaseDetailsHeaderPresent(editNamePage.getPage, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+    await editNamePage.submitWithValidName('John Updated Smith'); 
     await editNamePage.expectSuccessfulSubmission();
+    // Assert the case details header is present
+   // await assertCaseDetailsHeaderPresent(editNamePage.getPage, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
   });
 
   test('invalid data rejected by backend should not update client details', async ({ page, pages, i18nSetup }) => {

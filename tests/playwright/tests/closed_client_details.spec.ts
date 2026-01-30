@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures/index.js';
-import { t, getClientDetailsUrlByStatus, setupAuth } from '../utils/index.js';
+import { t, getClientDetailsUrlByStatus, setupAuth, assertCaseDetailsHeaderPresent } from '../utils/index.js';
 
 // Login before each test since client details pages require authentication
 test.beforeEach(async ({ page }) => {
@@ -9,6 +9,9 @@ test.beforeEach(async ({ page }) => {
 test('client details selected from closed cases tab has correct page elements', async ({ page, i18nSetup }) => {
   // Navigate to the client details
   await page.goto(getClientDetailsUrlByStatus('closed'));
+
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(page, true, "Roronoa Zoro", "PC-6667-9089", "6 Jan 2025"); 
 
   const closed_tag = page.getByText('Closed', { exact: true });
   const changeStatusButton = page.getByRole('button', { name: 'Change status' });

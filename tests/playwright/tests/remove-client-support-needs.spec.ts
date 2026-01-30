@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures/index.js';
-import { t, getClientDetailsUrlByStatus, setupAuth } from '../utils/index.js';
+import { t, getClientDetailsUrlByStatus, setupAuth, assertCaseDetailsHeaderPresent } from '../utils/index.js';
 
 // Remove client support needs is a case route, not a client-details route, so we need to build the URL differently
 const caseReference = 'PC-1922-1879'; // Default test case reference
@@ -21,6 +21,9 @@ test('viewing remove client support needs confirmation should display expected e
   // Navigate to the remove client support needs confirmation
   await page.goto(visitUrl);
 
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");  
+
   // Expect to see the main elements
   await expect(dateReceivedText).toBeVisible();
   await expect(laaReferenceText).toBeVisible();
@@ -38,6 +41,9 @@ test('cancel link should navigate back to client details', async ({ page, i18nSe
   // Navigate to the remove client support needs confirmation
   await page.goto(visitUrl);
 
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+
   // Click cancel button
   await cancelButton.click();
 
@@ -51,6 +57,9 @@ test('confirm button should delete client support needs and redirect to client d
   // Navigate to the remove client support needs confirmation
   await page.goto(visitUrl);
 
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+
   // Click confirm button
   await expect(confirmButton).toBeVisible();
   await confirmButton.click();
@@ -62,6 +71,9 @@ test('confirm button should delete client support needs and redirect to client d
 test('confirmation page shows warning text about removing client support needs', async ({ page, i18nSetup }) => {
   // Navigate to the remove client support needs confirmation
   await page.goto(visitUrl);
+
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
 
   // Check the page heading
   await expect(page.locator('h1')).toContainText('Remove client support needs?');
