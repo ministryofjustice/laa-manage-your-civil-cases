@@ -581,10 +581,10 @@ export const transformDiagnosis = (diagnosis: unknown): {
   category: string;
   diagnosisNode: Array<{ node: string; }>;
 } | null => {
-  if (!isRecord(diagnosis)) {
+  if (!isRecord(diagnosis) || !Array.isArray(diagnosis.nodes)) {
     return null;
   }
-
+  
   const nodeFilterList = [
     "INSCOPE",
     "The client has been discriminated against, or they've been treated badly because they complained about discrimination or supported someone else’s discrimination claim\n\nIt is against the law to discriminate against anyone because of:\n\n* age\n* gender reassignment\n* being married or in a civil partnership\n* being pregnant or having recently given birth\n* disability\n* race including colour, nationality, ethnic or national origin\n* religion, belief or lack of religion or belief\n* sex\n* sexual orientation",
@@ -592,13 +592,7 @@ export const transformDiagnosis = (diagnosis: unknown): {
     "Describe scenario carefully in notes - including the client's circumstances and why they believe they are facing eviction or have been evicted"
   ]
 
-  const { nodes: key } = diagnosis;
-
-  if (!Array.isArray(key)) {
-    return null;
-  }
-
-  const diagnosisNode = key.filter(isRecord)
+  const diagnosisNode = diagnosis.nodes.filter(isRecord)
     .map(obj => safeStringFromRecord(obj, "key") ?? "")
     .filter((node): node is string => Boolean(node) && !nodeFilterList.includes(node))
     .map(node => ({ node }));
@@ -627,8 +621,7 @@ export const transformNotesHistory = (
   if (Array.isArray(notesHistory)) {
     notesHistoryArray = notesHistory;
   } else if (
-    hasProperty(notesHistory, 'notes_history') &&
-    Array.isArray(notesHistory.notes_history)
+    hasProperty(notesHistory, 'notes_history') && Array.isArray(notesHistory.notes_history)
   ) {
     notesHistoryArray = notesHistory.notes_history;
   }
