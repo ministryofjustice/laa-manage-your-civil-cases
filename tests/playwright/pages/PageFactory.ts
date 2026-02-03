@@ -22,9 +22,15 @@ export class PageFactory {
    * @param {Page} page - The Playwright page instance
    * @param {'new' | 'open' | 'accepted' | 'closed' | 'default'} caseStatus - The case status to use for URL generation
    */
-  constructor(page: Page, caseStatus: 'new' | 'open' | 'accepted' | 'closed' | 'default' = 'default') {
+  constructor(page: Page, caseStatus: 'new' | 'open' | 'accepted' | 'closed' | 'default' = 'default', caseId?: string) {
     this.page = page;
+
+  if (caseId) {
+    this.clientDetailsUrl = `/cases/${caseId}/client-details`;
+  } else {
     this.clientDetailsUrl = getClientDetailsUrlByStatus(caseStatus);
+  }
+
   }
 
   /**
