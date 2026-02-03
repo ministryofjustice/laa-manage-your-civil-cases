@@ -16,17 +16,20 @@ test.describe('Edit Client Name', () => {
 
   test('cancel link should navigate back to client details', async ({ pages, i18nSetup }) => {
     await pages.editName.expectCancelNavigatesBack();
-       // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(pages.editName.getPage, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");
+    // Assert the case details header is present
+    await assertCaseDetailsHeaderPresent(pages.editName.getPage, true, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");
   });
 
   test('invalid data rejected by backend should not update client details', async ({ page, pages, i18nSetup }) => {
     // This test verifies that when MSW rejects invalid data (400 response),
     // the client details are NOT updated, even though the app currently redirects
     const editNamePage = pages.editName;
-    
+
+
     // First, get the original name from the client details page
     await page.goto('/cases/PC-1922-1879/client-details');
+        // Assert the case details header is present
+    await assertCaseDetailsHeaderPresent(editNamePage.getPage, true, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");
     const originalName = await page.locator('.govuk-summary-list__value').first().textContent();
     
     // Navigate to edit name page

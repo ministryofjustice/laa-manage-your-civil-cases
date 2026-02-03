@@ -26,7 +26,7 @@ test('cancel link should navigate back to client details', async ({ page, i18nSe
   // Test cancel navigation functionality
   await editDateOfBirthPage.expectCancelNavigatesBack();
   // Assert the case details header is present
-  //await assertCaseDetailsHeaderPresent(editDateOfBirthPage.getPage, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+  await assertCaseDetailsHeaderPresent(editDateOfBirthPage.getPage, true, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
 
 
 });
@@ -42,6 +42,10 @@ test('save button should redirect to client details when no validation errors', 
 
   // Should redirect to client details
   await expect(page).toHaveURL(clientDetailsUrl);
+
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(editDateOfBirthPage.getPage, true, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+
 });
 
 test('date of birth edit page should be accessible', {

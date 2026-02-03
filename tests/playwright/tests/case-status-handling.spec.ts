@@ -115,7 +115,7 @@ test.describe('Case Status Handling', () => {
       const closePage = CloseCaseFormPage.forCase(page, 'PC-9159-2337');
       await closePage.navigate();
       // Assert the case details header is present
-      await assertCaseDetailsHeaderPresent(page, false, "Noah Brown", "PC-4575-7150", "6 Jan 2025"); 
+      await assertCaseDetailsHeaderPresent(page, false, "George Allen", "PC-9159-2337", "9 Jan 2025"); 
       await closePage.submitWithData('MIS-MEANS', 'Case successfully closed');
 
       const clientDetails = ClientDetailsPage.forCase(page, 'PC-9159-2337');
@@ -127,7 +127,7 @@ test.describe('Case Status Handling', () => {
       const closePage = CloseCaseFormPage.forCase(page, 'PC-2211-4466');
       await closePage.navigate();
       // Assert the case details header is present
-      await assertCaseDetailsHeaderPresent(page, false, "Noah Brown", "PC-4575-7150", "6 Jan 2025"); 
+      await assertCaseDetailsHeaderPresent(page, false, "Vinsmoke Sanj", "PC-2211-4466", "8 Aug 2025"); 
       await closePage.clickSave();
 
       await closePage.expectErrorSummaryVisible();
@@ -173,7 +173,7 @@ test.describe('Case Status Handling', () => {
       const reopenPage = ReopenCaseFormPage.forCase(page, 'PC-1122-3344');
       await reopenPage.navigate();
       // Assert the case details header is present
-      await assertCaseDetailsHeaderPresent(page, false, "Noah Brown", "PC-4575-7150", "6 Jan 2025"); 
+      await assertCaseDetailsHeaderPresent(page, false, "Red Haired Shanks", "PC-1122-3344", "8 Aug 2025"); 
       await reopenPage.submitWithNote('Client requested case to be reopened');
 
       const clientDetails = ClientDetailsPage.forCase(page, 'PC-1122-3344');
