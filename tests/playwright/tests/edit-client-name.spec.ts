@@ -51,20 +51,20 @@ test.describe('Edit Client Name', () => {
   });
 
   
-test.describe('PC-1854-6521 scenario', () => {
-  test.use({ caseId: 'PC-1854-6521' });
+  test.describe('PC-1854-6521 scenario', () => {
+    test.use({ caseId: 'PC-1854-6521' });
 
-test('save button should redirect to client details when valid data submitted', async ({ pages, i18nSetup }) => {
-    const editNamePage = pages.editName;
-    await editNamePage.navigate();
-    // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(editNamePage.getPage, false, "Walter White", "PC-1854-6521", "8 Aug 2025"); 
-    await editNamePage.submitWithValidName('John Updated Smith'); 
-    await editNamePage.expectSuccessfulSubmission();
-    // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(editNamePage.getPage, false, "John Updated Smith", "PC-1854-6521", "8 Aug 2025"); 
+    test('save button should redirect to client details when valid data submitted', async ({ pages, i18nSetup }) => {
+      const editNamePage = pages.editName;
+      await editNamePage.navigate();
+      // Assert the case details header is present
+      await assertCaseDetailsHeaderPresent(editNamePage.getPage, false, "Walter White", "PC-1854-6521", "8 Aug 2025");
+      await editNamePage.submitWithValidName('John Updated Smith');
+      await editNamePage.expectSuccessfulSubmission();
+      // Assert the case details header is present
+      await assertCaseDetailsHeaderPresent(editNamePage.getPage, false, "John Updated Smith", "PC-1854-6521", "8 Aug 2025");
+    });
   });
-});
 
   test('name form displays validation errors correctly', async ({ pages, i18nSetup }) => {
     const editNamePage = pages.editName;

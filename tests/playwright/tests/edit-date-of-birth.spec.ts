@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures/index.js';
-import { t, getClientDetailsUrlByStatus, setupAuth, assertCaseDetailsHeaderPresent } from '../utils/index.js';
+import { getClientDetailsUrlByStatus, setupAuth, assertCaseDetailsHeaderPresent } from '../utils/index.js';
 import { EditDateOfBirthPage } from '../pages/EditDateOfBirthPage.js';
 
 const clientDetailsUrl = getClientDetailsUrlByStatus('default');

@@ -62,7 +62,6 @@ test.describe('Case Status Handling', () => {
 
       // Click `Change status` button
       const toggle = page.getByRole('button', { name: 'Change status' });
-      await expect(toggle).toBeVisible();
       await toggle.click();
       await expect(toggle).toHaveAttribute('aria-expanded', 'true');
 

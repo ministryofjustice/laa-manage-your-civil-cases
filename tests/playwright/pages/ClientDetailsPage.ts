@@ -45,14 +45,6 @@ export class ClientDetailsPage {
   }
 
   /**
-   * Asserts that the client name is displayed correctly
-   * @param {string} name - The expected client name
-   */
-  async expectClientName(name: string): Promise<void> {
-    await expect(this.clientName).toContainText(name);
-  }
-
-  /**
    * Asserts that the case status is displayed correctly
    * @param {string} status - The expected status
    */

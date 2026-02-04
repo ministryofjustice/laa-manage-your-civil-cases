@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures/index.js';
-import { t, setupAuth, assertCaseDetailsHeaderPresent } from '../utils/index.js';
+import { setupAuth, assertCaseDetailsHeaderPresent } from '../utils/index.js';
 
 // Login before each test since case detail pages require authentication
 test.beforeEach(async ({ page }) => {

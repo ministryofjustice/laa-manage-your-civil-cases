@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures/index.js';
+import { test } from '../fixtures/index.js';
 import { getClientDetailsUrlByStatus, setupAuth, assertCaseDetailsHeaderPresent } from '../utils/index.js';
 import { ThirdPartyFormPage } from '../pages/ThirdPartyFormPage.js';
 
