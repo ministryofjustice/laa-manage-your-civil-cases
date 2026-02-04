@@ -553,15 +553,31 @@ export const transformScopeTraversal = (scopeTraversal: unknown): {
     return null;
   }
 
-  const records = sAnswersAndQuestions.filter(isRecord);
-  const category = records.find(obj => safeStringFromRecord(obj, 'type') === 'category')?.answer as string ?? '';
-  const subCategory = records.find(obj => safeStringFromRecord(obj, 'type') === 'sub_category')?.answer as string ?? '';
-  const onwardQuestion = records.filter(obj => safeStringFromRecord(obj, 'type') === 'onward_question')
-    .map(obj => ({
-      question: safeStringFromRecord(obj, 'question') ?? '',
-      answer: safeStringFromRecord(obj, 'answer') ?? ''
-    }))
-    .filter((item): item is { question: string; answer: string } => Boolean(item.question || item.answer));
+  const { category, subCategory, onwardQuestion } = sAnswersAndQuestions
+    .filter(isRecord)
+    .reduce<{
+      category: string; subCategory: string; onwardQuestion: Array<{ question: string; answer: string }>;
+    }>((result, obj) => {
+      const type = safeStringFromRecord(obj, 'type');
+
+      if (type === 'category') {
+        result.category = safeOptionalString(obj.answer) ?? '';
+      } else if (type === 'sub_category') {
+        result.subCategory = safeOptionalString(obj.answer) ?? '';
+      } else if (type === 'onward_question') {
+        const question = safeStringFromRecord(obj, 'question') ?? '';
+        const answer = safeStringFromRecord(obj, 'answer') ?? '';
+        if (question || answer) {
+          result.onwardQuestion.push({ question, answer });
+        }
+      }
+
+      return result;
+    }, {
+      category: '',
+      subCategory: '',
+      onwardQuestion: []
+    });
 
   return {
     category,
@@ -584,7 +600,7 @@ export const transformDiagnosis = (diagnosis: unknown): {
   if (!isRecord(diagnosis) || !Array.isArray(diagnosis.nodes)) {
     return null;
   }
-  
+
   const nodeFilterList = [
     "INSCOPE",
     "The client has been discriminated against, or they've been treated badly because they complained about discrimination or supported someone else’s discrimination claim\n\nIt is against the law to discriminate against anyone because of:\n\n* age\n* gender reassignment\n* being married or in a civil partnership\n* being pregnant or having recently given birth\n* disability\n* race including colour, nationality, ethnic or national origin\n* religion, belief or lack of religion or belief\n* sex\n* sexual orientation",
@@ -616,19 +632,11 @@ export const transformNotesHistory = (
   providerNotes: string;
 } | null => {
 
-  let notesHistoryArray: unknown[] | null = null;
-
-  if (Array.isArray(notesHistory)) {
-    notesHistoryArray = notesHistory;
-  } else if (
-    hasProperty(notesHistory, 'notes_history') && Array.isArray(notesHistory.notes_history)
-  ) {
-    notesHistoryArray = notesHistory.notes_history;
-  }
-
-  if (!notesHistoryArray || notesHistoryArray.length === 0) {
-    return null
-  };
+  const notesHistoryArray = Array.isArray(notesHistory)
+    ? notesHistory
+    : hasProperty(notesHistory, 'notes_history') && Array.isArray(notesHistory.notes_history)
+      ? notesHistory.notes_history
+      : [];
 
   const firstItem = notesHistoryArray[0];
 
