@@ -13,7 +13,7 @@
   {# Import the tabComponent macro #}
   {%- from "components/tabComponent.njk" import tabComponent -%}
 
-  {# Main page heading - always shows "Your cases" #}
+  {# Main page heading #}
   <h1 class="govuk-heading-xl" id="page-heading">
     {{ t('pages.yourCases.heading') }}
   </h1>
@@ -28,6 +28,7 @@
     sortOrder: sortOrder,
     pagination: pagination,
     caseType: caseType,
+    showStatusHeading: true,
     tabs: [
       {
         id: "new",
