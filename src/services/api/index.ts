@@ -17,11 +17,13 @@ import {
   updateClientSupportNeeds,
   deleteClientSupportNeeds
 } from './resources/supportNeedsApiService.js';
+import { getFeedbackChoices, submitOperatorFeedback } from './resources/operatorFeedbackApiService.js';
 
 export * from './resources/casesApiService.js';
 export * from './resources/clientDetailsApiService.js';
 export * from './resources/thirdPartyApiService.js';
 export * from './resources/supportNeedsApiService.js';
+export * from './resources/operatorFeedbackApiService.js';
 
 /**
  * Combined API Service object for backward compatibility
@@ -38,5 +40,7 @@ export const apiService = {
   addClientSupportNeeds,
   updateClientSupportNeeds,
   deleteClientSupportNeeds,
-  getClientHistoryDetails
+  getClientHistoryDetails,
+  getFeedbackChoices,
+  submitOperatorFeedback
 };

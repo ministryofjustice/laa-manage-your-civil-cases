@@ -172,3 +172,37 @@ export interface ClientHistoryApiResponse {
   status: 'success' | 'error';
   message?: string;
 }
+
+/**
+ * Feedback choice interface from API OPTIONS response
+ */
+export interface FeedbackChoice {
+  display_name: string;
+  value: string;
+}
+
+/**
+ * Feedback choices API response interface
+ */
+export interface FeedbackChoicesApiResponse {
+  data: FeedbackChoice[] | null;
+  status: 'success' | 'error';
+  message?: string;
+}
+
+/**
+ * Feedback submission request body
+ */
+export interface FeedbackSubmissionRequest {
+  issue: string;
+  comment: string;
+}
+
+/**
+ * Feedback submission API response interface
+ */
+export interface FeedbackSubmissionApiResponse {
+  data: unknown | null;
+  status: 'success' | 'error';
+  message?: string;
+}
