@@ -12,6 +12,7 @@ interface TestFixtures {
   mswReset: undefined;
   checkAccessibility: () => Promise<void>;
   pages: PageFactory;
+  caseId: string;
 }
 
 export const test = base.extend<TestFixtures>({
@@ -23,6 +24,7 @@ export const test = base.extend<TestFixtures>({
    * @param {Function} use - The fixture use function
    * @returns {Promise<void>} Promise that resolves when i18n is initialized
    */
+
   i18nSetup: [async ({ page: _page }, use) => {
     try {
       initI18nSync();
@@ -74,6 +76,9 @@ export const test = base.extend<TestFixtures>({
     await use(checkAccessibility);
   },
 
+  // Default caseId for test suites, unless overridden. Can be overridden per test/test suite.
+  caseId: ['PC-1922-1879', { option: true }],
+
   // Page objects fixture
   /**
    * Provides a PageFactory instance for creating page objects
@@ -82,8 +87,8 @@ export const test = base.extend<TestFixtures>({
    * @param {Function} use - The fixture use function
    * @returns {Promise<void>} Promise that resolves when the fixture is setup
    */
-  pages: async ({ page }, use) => {
-    await use(new PageFactory(page));
+  pages: async ({ page, caseId}, use) => {
+    await use(new PageFactory(page, 'default', caseId));
   }
 });
 

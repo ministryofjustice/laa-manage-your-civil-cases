@@ -75,6 +75,10 @@ export function createPersonalDetailsHandlers(
       if (Object.keys(validationErrors).length > 0) {
         return HttpResponse.json(validationErrors, { status: 400 });
       }
+
+      if ('full_name' in updateData) {
+        caseItem.fullName = updateData.full_name;
+      }
       
       return HttpResponse.json(transformToApiFormat(caseItem));
     })

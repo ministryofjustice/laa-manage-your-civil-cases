@@ -1,5 +1,4 @@
 import { test, expect } from '../fixtures/index.js';
-import type { Page } from '@playwright/test';
 
 // Test data
 const TEST_CREDENTIALS = {

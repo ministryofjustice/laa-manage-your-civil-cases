@@ -21,10 +21,17 @@ export class PageFactory {
    * Creates a new page factory instance
    * @param {Page} page - The Playwright page instance
    * @param {'new' | 'open' | 'accepted' | 'closed' | 'default'} caseStatus - The case status to use for URL generation
+   * @param {string} caseId - Provide an optional caseId, to go to specific case in test
    */
-  constructor(page: Page, caseStatus: 'new' | 'open' | 'accepted' | 'closed' | 'default' = 'default') {
+  constructor(page: Page, caseStatus: 'new' | 'open' | 'accepted' | 'closed' | 'default' = 'default', caseId?: string) {
     this.page = page;
+
+  if (caseId) {
+    this.clientDetailsUrl = `/cases/${caseId}/client-details`;
+  } else {
     this.clientDetailsUrl = getClientDetailsUrlByStatus(caseStatus);
+  }
+
   }
 
   /**
