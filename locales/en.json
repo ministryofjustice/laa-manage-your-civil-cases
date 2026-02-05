@@ -196,6 +196,7 @@
       },
       "buttons": {
         "label": "Change status",
+        "giveOperatorFeedback": "Give operator feedback",
         "actions":{
           "advising": "Advising",
           "pending": "Pending",

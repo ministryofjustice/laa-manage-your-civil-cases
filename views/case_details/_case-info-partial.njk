@@ -1,4 +1,5 @@
 {% from "govuk/components/tag/macro.njk" import govukTag %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 {%- from "moj/components/button-menu/macro.njk" import mojButtonMenu -%}
 
 {% set statusConfig = {
@@ -130,6 +131,12 @@
       items: menuItems
       })
     }}
+  <span class="pipe"></span>
+  {{ govukButton({
+    text: t('pages.caseDetails.buttons.giveOperatorFeedback'),
+    href: "/cases/" + client.caseReference + "/give-operator-feedback",
+    classes: "govuk-button--secondary govuk-!-margin-bottom-2"
+  }) }}
   {% endif %}
 </div>
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6"/>
