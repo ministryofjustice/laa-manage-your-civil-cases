@@ -84,6 +84,7 @@
 
   {# Render only the active tab content container with data attributes for JavaScript #}
   <div id="{{ options.containerId }}" class="tab-content-container" data-active-tab="{{ activeId }}">
+    <h2 class="govuk-heading-m">{{ t('common.status.' + options.caseType) }}</h2>
     {% for tab in options.tabs %}
       <div class="tab-content {% if activeId == tab.id %}show{% endif %}" data-tab-id="{{ tab.id }}">
         {% if activeId == tab.id %}
