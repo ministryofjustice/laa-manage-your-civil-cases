@@ -78,6 +78,37 @@ export interface ThirdPartyContact {
 }
 
 /**
+ * Scope Traversal (transformed from scope_traversal)
+ */
+export interface ScopeTraversal {
+  category: string;
+  subCategory: string;
+  onwardQuestion: Array<{
+    question: string;
+    answer: string;
+  }>;
+  financialAssessmentStatus: string;
+  created: string;
+}
+
+/**
+ * Diagnosis (transformed from diagnosis)
+ */
+export interface Diagnosis {
+  category: string;
+  diagnosisNode: Array<{node: string;}>;
+}
+
+/**
+ * Notes history (transformed from notes_history)
+ */
+export interface NotesHistory {
+  createdBy: string;
+  created: string;
+  providerNotes: string;
+}
+
+/**
  * Client details API response interface
  */
 export interface ClientDetailsResponse {
@@ -92,6 +123,8 @@ export interface ClientDetailsResponse {
   provider_closed?: string;
   outcome_code?: string;
   state_note?: string;
+  client_notes?: string;
+  operatorNotes?: string;
   
   //Contact details
   phoneNumber: string;
@@ -106,6 +139,15 @@ export interface ClientDetailsResponse {
   
   //Third party contact (null if not present)
   thirdParty: ThirdPartyContact | null;
+
+  //Scope traversal (null if not present)
+  scopeTraversal: ScopeTraversal | null;
+
+  //Diagnosis (null if not present)
+  diagnosis: Diagnosis | null;
+
+  //Notes history (null if not present)
+  notesHistory: NotesHistory[];
   
   // Allow additional fields for debugging
   [key: string]: unknown;

@@ -12,6 +12,8 @@ export interface MockCase {
   caseStatus: string;
   provider_closed?: string;
   stateNote?: string;
+  client_notes?: string;
+  operatorNotes?: string;
   dateOfBirth: string;
   clientIsVulnerable: boolean;
   language: string;
@@ -37,10 +39,29 @@ export interface MockCase {
       passphrase?: string;
     };
   } | null;
+  scopeTraversal?:{
+    category?: string;
+    subCategory?: string;
+    onwardQuestion?: Array<{
+      question: string;
+      answer: string;
+    }>;
+    financialAssessmentStatus?: string;
+    created?: string;
+  }
+  diagnosis?:{
+    category?:string;
+    diagnosisNode?: Array<{ node: string; }>;
+  }
+  notesHistory?:Array <{
+    createdBy?: string;
+    created?: string;
+    providerNotes?: string;
+  }>;
   clientSupportNeeds?: {
     bslWebcam?: string;
     textRelay?: string;
-    skype: boolean;
+    skype?: boolean;
     callbackPreference?: string;
     languageSupportNeeds?: string;
     notes?: string;

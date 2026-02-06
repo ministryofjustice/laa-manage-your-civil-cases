@@ -348,6 +348,7 @@
     "address": "544 King Street, Newcastle",
     "postcode": "LE1 1UL",
     "laaReference": "2850581",
+    "client_notes": "Some notes about beer",
     "thirdParty": {
       "fullName": "Samira Patel",
       "emailAddress": "samira@patel.com",
@@ -426,6 +427,8 @@
     "address": "Baratie Restaurant, East Blue",
     "postcode": "EB7 5BR",
     "laaReference": "2850581",
+    "client_notes": "Some notes about Food",
+    "operatorNotes": "Operator notes for Sanji",
     "thirdParty": {
       "fullName": "Zeff",
       "emailAddress": "ef.zeff@baratie.com",
@@ -440,6 +443,33 @@
         "selected": ["No, client is a child or patient"]
       }
     },
+    "scopeTraversal": {
+      "category": "Discrimination",
+      "subCategory": "",
+      "onwardQuestion": [
+        {
+          "question": "Where did the discrimination happen?",
+          "answer": "Work - including colleagues, employer or employment agency"
+        }
+      ],
+      "financialAssessmentStatus": "PASSED",
+      "created": "2025-08-19T00:00:00-05:00"
+    },
+    "diagnosis": {
+      "category": "Debt",
+      "diagnosisNode":[
+        {"node": "Debt and housing - loss of home"},
+        {"node": "Homeless or at risk of becoming homeless within 56 days"},
+        {"node": "The landlord has unlawfully evicted the client without due process"}
+      ]
+    },
+    "notesHistory": [
+      {
+        "createdBy": "mcc_all_uat",
+        "created": "2025-08-18T00:00:00-05:00",
+        "providerNotes": "These are some test provider notes"
+      }
+    ],
     "clientSupportNeeds": {
       "bslWebcam": "Yes",
       "textRelay": "No",
@@ -457,13 +487,13 @@
     "caseStatus": "Opened",
     "dateOfBirth": "1979-11-12T00:00:00-05:00",
     "clientIsVulnerable": true,
-    "language": "Polish",
+    "language": "American",
     "phoneNumber": "0777929124",
     "safeToCall": true,
     "announceCall": true,
-    "emailAddress": "grace_baker@outlook.com",
-    "address": "544 King Street, Newcastle",
-    "postcode": "LE1 1UL",
+    "emailAddress": "walter_white@yahoo.com",
+    "address": "674 King Road, Nebraska, USA",
+    "postcode": "NEE1 1UL",
     "laaReference": "2850581",
     "thirdParty": {
       "fullName": "Samira Patel",

@@ -12,7 +12,10 @@ import {
   formatLongFormDate,
   transformContactDetails,
   transformClientSupportNeeds,
-  transformThirdParty
+  transformThirdParty,
+  transformScopeTraversal,
+  transformDiagnosis,
+  transformNotesHistory
 } from '#src/scripts/helpers/index.js';
 
 import { translateCaseStatus } from '#utils/server/caseStatusHelper.js';
@@ -39,6 +42,8 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
   const provider_closed = formatDate(safeOptionalString(item.provider_closed) ?? '');
   const outcome_code = safeOptionalString(item.outcome_code) ?? '';
   const state_note = safeOptionalString(item.state_note) ?? '';
+  const client_notes = safeOptionalString(item.client_notes) ?? '';
+  const operatorNotes = safeOptionalString(item.notes) ?? '';
   // Transform contact details
   const contactDetails = transformContactDetails(item.personal_details);
 
@@ -52,6 +57,15 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
   const providerClosedBanner = formatLongFormDate(safeOptionalString(item.provider_closed) ?? '');
   const providerViewedBanner = formatLongFormDate(safeOptionalString(item.provider_viewed) ?? '');
 
+  // Transform scope traversal details
+  const scopeTraversal = transformScopeTraversal(item.scope_traversal);
+
+  // Transform diagnosis details
+  const diagnosis = transformDiagnosis(item.diagnosis);
+
+  // Transform notes history details
+  const notesHistory = transformNotesHistory(item.notes_history);
+
   return {
     caseReference,
     laaReference,
@@ -64,8 +78,13 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
     providerClosedBanner,     
     outcome_code, 
     state_note,
+    client_notes,
+    operatorNotes,
     ...contactDetails,
     clientSupportNeeds,
-    thirdParty
+    thirdParty,
+    scopeTraversal,
+    diagnosis,
+    notesHistory
   };
 }

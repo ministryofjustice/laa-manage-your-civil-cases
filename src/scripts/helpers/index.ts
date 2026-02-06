@@ -39,6 +39,9 @@ export {
   transformContactDetails,
   transformClientSupportNeeds,
   transformThirdParty,
+  transformScopeTraversal,
+  transformDiagnosis,
+  transformNotesHistory,
   buildOrderingParamFields,
   isSoftDeletedThirdParty,
   trimOrUndefined

@@ -36,7 +36,7 @@ export function updateCaseState(caseReference: string, updates: Partial<MockCase
 export function findMockCase(caseReference: string, cases: MockCase[]): MockCase | undefined {
   const baseCase = cases.find(c => c.caseReference === caseReference);
   if (!baseCase) return undefined;
-  
+
   const updates = caseStateUpdates.get(caseReference);
   return updates ? { ...baseCase, ...updates } : baseCase;
 }
@@ -59,6 +59,8 @@ export function transformToApiFormat(caseItem: MockCase): object {
     laa_reference: caseItem.laaReference,
     full_name: caseItem.fullName,
     date_of_birth: caseItem.dateOfBirth,
+    client_notes: caseItem.client_notes,
+    notes: caseItem.operatorNotes,
     // Real CLA API returns lowercase state names (e.g., "accepted", "opened", "closed")
     state: caseItem.caseStatus.toLowerCase(),
     provider_assigned_at: caseItem.dateReceived,
@@ -81,7 +83,7 @@ export function transformToApiFormat(caseItem: MockCase): object {
       bsl_webcam: caseItem.clientSupportNeeds.bslWebcam === 'Yes',
       minicom: caseItem.clientSupportNeeds.textRelay === 'Yes',
       text_relay: caseItem.clientSupportNeeds.textRelay === 'Yes',
-      skype_webcam: caseItem.clientSupportNeeds.skype === true, 
+      skype_webcam: caseItem.clientSupportNeeds.skype === true,
       callback_preference: caseItem.clientSupportNeeds.callbackPreference === 'Yes',
       language: caseItem.clientSupportNeeds.languageSupportNeeds || null,
       notes: caseItem.clientSupportNeeds.notes || null
@@ -92,7 +94,7 @@ export function transformToApiFormat(caseItem: MockCase): object {
       text_relay: false,
       skype_webcam: false,
       callback_preference: false,
-      no_adaptations_required: true, 
+      no_adaptations_required: true,
       language: null,
       notes: null
     },
@@ -113,7 +115,28 @@ export function transformToApiFormat(caseItem: MockCase): object {
       organisation_name: null,
       reason: caseItem.thirdParty.passphraseSetUp?.selected?.[0] || 'OTHER',
       pass_phrase: caseItem.thirdParty.passphraseSetUp?.passphrase || null
-    } : null
+    } : null,
+    // Scope traversal nested object
+    scope_traversal: caseItem.scopeTraversal ? {
+      scope_answers: [
+        ...(caseItem.scopeTraversal.category ? [{ type: 'category', answer: caseItem.scopeTraversal.category }] : []),
+        ...(caseItem.scopeTraversal.subCategory ? [{ type: 'sub_category', answer: caseItem.scopeTraversal.subCategory }] : []),
+        ...((caseItem.scopeTraversal.onwardQuestion ?? []).map(q => ({ type: 'onward_question', question: q.question, answer: q.answer,}))),
+      ],
+      financial_assessment_status: caseItem.scopeTraversal.financialAssessmentStatus,
+      created: caseItem.scopeTraversal.created,
+    } : null,
+    // Diagnosis nested object
+    diagnosis: caseItem.diagnosis ? {
+      category: caseItem.diagnosis.category,
+      nodes: (caseItem.diagnosis.diagnosisNode ?? []).map(n => ({ key: n.node })),
+    } : null,
+    // Notes history array
+    notes_history: caseItem.notesHistory ? caseItem.notesHistory.map(note => ({
+      created_by: note.createdBy,
+      created: note.created,
+      provider_notes: note.providerNotes,
+    })) : [],
   };
 }
 
@@ -146,7 +169,7 @@ export function filterCasesByStatus(status: string, cases: MockCase[]): MockCase
 export function paginateResults(data: MockCase[], page = 1, limit = 20) {
   const startIndex = (page - 1) * limit;
   const endIndex = startIndex + limit;
-  
+
   return {
     data: data.slice(startIndex, endIndex),
     pagination: {
