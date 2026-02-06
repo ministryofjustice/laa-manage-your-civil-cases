@@ -2,13 +2,14 @@ import express from 'express';
 import type { Request, Response, NextFunction } from 'express';
 import { handleClientDetailsTab, acceptCase, completeCase, closeCase, getCloseCaseForm, getPendingCaseForm, pendingCase, getReopenCaseForm, reopenCompletedCase, reopenClosedCase } from '#src/scripts/controllers/clientDetailsController.js';
 import { handleCaseHistoryTab } from '#src/scripts/controllers/caseHistoryController.js';
-import { handleCaseDetailsTab } from '#src/scripts/controllers/caseDetailsController.js';
+import { handleCaseDetailsTab, saveProviderNote } from '#src/scripts/controllers/caseDetailsController.js';
 import { getRemoveThirdPartyConfirmation, deleteThirdParty, getRemoveSupportNeedsConfirmation, deleteClientSupportNeeds } from '#src/scripts/controllers/index.js';
 import { getOperatorFeedbackForm, submitOperatorFeedback } from '#src/scripts/controllers/operatorFeedbackController.js';
 import { validateReopenCase } from '#src/middlewares/reopenCaseSchema.js';
 import { validateCloseCase } from '#src/middlewares/closeCaseSchema.js';
 import { validatePendingCase } from '#src/middlewares/pendingCaseSchema.js';
 import { validateOperatorFeedback } from '#src/middlewares/operatorFeedbackSchema.js';
+import { validateProviderNote } from '#src/middlewares/providerNoteSchema.js';
 import { fetchClientDetails } from '#src/middlewares/caseDetailsMiddleware.js';
 
 
@@ -23,6 +24,11 @@ router.get('/:caseReference/client-details', fetchClientDetails, (req: Request, 
 /* GET case details details for a specific case. */
 router.get('/:caseReference/case-details', fetchClientDetails, (req: Request, res: Response, next: NextFunction): void => {
   handleCaseDetailsTab(req, res, next, 'case_details');
+});
+
+/* POST save provider note for a case. */
+router.post('/:caseReference/case-details', validateProviderNote(), async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  await saveProviderNote(req, res, next);
 });
 
 /* GET financial eligibility details for a specific case. */

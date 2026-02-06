@@ -96,7 +96,13 @@
           {% set sortOrder = options.sortOrder %}
           {% set pagination = options.pagination %}
           {% set timelineItems = options.timelineItems %}
-          {% set caseType = options.caseType %} 
+          {% set caseType = options.caseType %}
+          {% set csrfToken = options.csrfToken %}
+          {% set maxProviderNoteLength = options.maxProviderNoteLength %}
+          {% set characterThreshold = options.characterThreshold %}
+          {% set currentProviderNote = options.currentProviderNote %}
+          {% set caseReference = options.caseReference %}
+          {% set error = options.error %}
           {% if tab.partial %}
             {% include tab.partial %}
           {% elif tab.content %}

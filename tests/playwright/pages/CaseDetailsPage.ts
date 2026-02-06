@@ -69,6 +69,46 @@ export class CaseDetailsTabPage {
   }
 
   /**
+   * Gets the save button for provider notes
+   * @returns {Locator} The save button locator
+   */
+  get saveButton(): Locator {
+    return this.page.getByRole('button', { name: 'Save' });
+  }
+
+  /**
+   * Gets the error summary component
+   * @returns {Locator} The error summary locator
+   */
+  get errorSummary(): Locator {
+    return this.page.locator('.govuk-error-summary');
+  }
+
+  /**
+   * Gets the provider note field error
+   * @returns {Locator} The field error locator
+   */
+  get providerNoteError(): Locator {
+    return this.page.locator('#providerNote-error');
+  }
+
+  /**
+   * Gets the character count message
+   * @returns {Locator} The character count info locator
+   */
+  get characterCountInfo(): Locator {
+    return this.page.locator('#providerNote-info');
+  }
+
+  /**
+   * Gets all displayed provider notes
+   * @returns {Locator} The provider notes display locator
+   */
+  get displayedProviderNotes(): Locator {
+    return this.page.locator('.govuk-body').filter({ hasText: /.+/ });
+  }
+
+  /**
    * Navigates to the client details page
    */
   async navigate(): Promise<void> {
@@ -117,6 +157,52 @@ export class CaseDetailsTabPage {
   async fillProviderNote(note: string): Promise<void> {
     await expect(this.providerNoteTextarea).toBeVisible();
     await this.providerNoteTextarea.fill(note);
+  }
+
+  /**
+   * Clicks the save button
+   */
+  async clickSave(): Promise<void> {
+    await this.saveButton.click();
+  }
+
+  /**
+   * Submits a provider note
+   */
+  async submitProviderNote(note: string): Promise<void> {
+    await this.fillProviderNote(note);
+    await this.clickSave();
+  }
+
+  /**
+   * Submits an empty provider note (for validation testing)
+   */
+  async submitEmptyProviderNote(): Promise<void> {
+    await this.providerNoteTextarea.clear();
+    await this.clickSave();
+  }
+
+  /**
+   * Expects error summary to be visible
+   */
+  async expectErrorSummaryVisible(): Promise<void> {
+    await expect(this.errorSummary).toBeVisible();
+  }
+
+  /**
+   * Expects successful submission (redirect back to case details)
+   */
+  async expectSuccessfulSubmission(): Promise<void> {
+    await this.page.waitForURL(this.url);
+    await expect(this.page).toHaveURL(this.url);
+  }
+
+  /**
+   * Expects a specific validation error message
+   */
+  async expectValidationError(message: string): Promise<void> {
+    await expect(this.errorSummary).toContainText(message);
+    await expect(this.providerNoteError).toBeVisible();
   }
 
   /**
