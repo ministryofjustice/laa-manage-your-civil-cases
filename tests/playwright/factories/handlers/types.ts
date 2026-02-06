@@ -51,11 +51,11 @@ export interface MockCase {
     category?:string;
     diagnosisNode?: Array<{ node: string; }>;
   }
-  notesHistory?:{
+  notesHistory?: Array<{
     createdBy?: string;
     created?: string;
     providerNotes?: string;
-  }
+  }>;
   clientSupportNeeds?: {
     bslWebcam?: string;
     textRelay?: string;

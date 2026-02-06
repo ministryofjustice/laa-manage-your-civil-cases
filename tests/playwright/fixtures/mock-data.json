@@ -460,11 +460,13 @@
         {"node": "The landlord has unlawfully evicted the client without due process"}
       ]
     },
-    "notesHistory": {
-      "createdBy": "mcc_all_uat",
-      "created": "2025-08-18T00:00:00-05:00",
-      "providerNotes": "This are some test provider notes"
-    },
+    "notesHistory": [
+      {
+        "createdBy": "mcc_all_uat",
+        "created": "2025-08-18T00:00:00-05:00",
+        "providerNotes": "This are some test provider notes"
+      }
+    ],
     "clientSupportNeeds": {
       "bslWebcam": "Yes",
       "textRelay": "No",

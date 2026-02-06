@@ -4,7 +4,7 @@
 
 import { http, HttpResponse } from 'msw';
 import type { MockCase } from './types.js';
-import { transformToApiFormat, filterCasesByStatus, paginateResults, findMockCase } from './utils.js';
+import { transformToApiFormat, filterCasesByStatus, paginateResults, findMockCase, updateCaseState } from './utils.js';
 
 /**
  * Authentication token handler
@@ -35,6 +35,56 @@ function createGetCaseHandler(
     }
     
     return HttpResponse.json(transformToApiFormat(caseItem));
+  });
+}
+
+/**
+ * PATCH /case/:caseReference/ - Update case information (e.g., provider notes)
+ */
+function createPatchCaseHandler(
+  API_BASE_URL: string,
+  API_PREFIX: string,
+  cases: MockCase[]
+) {
+  return http.patch(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/`, async ({ params, request }) => {
+    const { caseReference } = params;
+    console.log(`[MSW] Intercepting PATCH /case/${caseReference}/`);
+    
+    const caseItem = findMockCase(caseReference as string, cases);
+    
+    if (!caseItem) {
+      console.log(`[MSW] Case ${caseReference} not found in mock data (PATCH)`);
+      return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
+    }
+    
+    // Parse the request body to get the updated provider notes
+    const body = await request.json() as Record<string, unknown>;
+    
+    // Update the provider notes if provided
+    if ('provider_notes' in body && typeof body.provider_notes === 'string') {
+      // Get existing notes history or initialize as empty array
+      const existingNotes = caseItem.notesHistory || [];
+      
+      // Create new note entry
+      const newNote = {
+        providerNotes: body.provider_notes,
+        created: new Date().toISOString(),
+        createdBy: 'test-user@example.com',
+      };
+      
+      // Create updated notes array with new note prepended (most recent first)
+      const updatedNotesHistory = [newNote, ...existingNotes];
+      
+      // Use updateCaseState to store the update (will be cleared between tests)
+      updateCaseState(caseReference as string, { notesHistory: updatedNotesHistory });
+      
+      console.log(`[MSW] Added provider note for case ${caseReference}`);
+    }
+    
+    // Get the updated case data (with state updates applied) and return it
+    const updatedCase = findMockCase(caseReference as string, cases);
+    console.log(`[MSW] Returning updated case data for ${caseReference}`);
+    return HttpResponse.json(transformToApiFormat(updatedCase!));
   });
 }
 
@@ -182,6 +232,7 @@ export function createCaseHandlers(
   return [
     createAuthTokenHandler(API_BASE_URL),
     createGetCaseHandler(API_BASE_URL, API_PREFIX, cases),
+    createPatchCaseHandler(API_BASE_URL, API_PREFIX, cases),
     createGetCaseDetailedHandler(API_BASE_URL, API_PREFIX, cases),
     createGetCasesListHandler(API_BASE_URL, API_PREFIX, cases),
     createGetCaseHistoryHandler(API_BASE_URL, API_PREFIX, cases)

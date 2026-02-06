@@ -111,7 +111,6 @@ test.describe('Case details tab', () => {
     await expect(operatorNotes).toBeVisible();
   });
 
-
   test('should show provider notes section title and "no notes" text, when no operator notes exist', async ({ page, i18nSetup }) => {
     const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-1922-1879');
     await caseDetails.navigate();
@@ -123,6 +122,133 @@ test.describe('Case details tab', () => {
 
     // When no `providerNotes`, the `noNotes` text should appear
     await expect(page.locator('main')).toContainText(t('pages.caseDetails.caseDetailsSection.noNotes'));
+  });
+
+  test('save button should submit note when valid data provided', async ({ page, i18nSetup }) => {
+    const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-1922-1879');
+    await caseDetails.navigate();
+
+    const testNote = 'This is a test provider note for the case.';
+    await caseDetails.submitProviderNote(testNote);
+
+    // Should redirect back to case details page
+    await caseDetails.expectSuccessfulSubmission();
+
+    // Note should now be displayed on the page
+    await expect(page.getByText(testNote)).toBeVisible();
+  });
+
+  test('form should display validation error when note is empty', async ({ page, i18nSetup }) => {
+    const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-1922-1879');
+    await caseDetails.navigate();
+
+    // Try to submit empty note
+    await caseDetails.submitEmptyProviderNote();
+
+    // Error summary should be visible
+    await caseDetails.expectErrorSummaryVisible();
+
+    // Specific validation error should appear
+    await caseDetails.expectValidationError(t('forms.caseDetails.providerNote.validationError.notEmpty'));
+
+    // Should stay on same page
+    await expect(page).toHaveURL(caseDetails.url);
+  });
+
+  test('form should display validation error when note exceeds maximum length', async ({ page, i18nSetup }) => {
+    const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-1922-1879');
+    await caseDetails.navigate();
+
+    // Create a note that exceeds 2500 characters
+    const tooLongNote = 'A'.repeat(2501);
+    await caseDetails.submitProviderNote(tooLongNote);
+
+    // Error summary should be visible
+    await caseDetails.expectErrorSummaryVisible();
+
+    // Specific validation error should appear
+    await caseDetails.expectValidationError(t('forms.caseDetails.providerNote.validationError.tooLong'));
+
+    // Should stay on same page
+    await expect(page).toHaveURL(caseDetails.url);
+  });
+
+  test('multiple provider notes should be displayed correctly', async ({ page, i18nSetup }) => {
+    const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-2211-4466'); // Case with existing notes
+    await caseDetails.navigate();
+
+    // Check provider notes section is visible
+    await expect(caseDetails.headingH3ByText(t('pages.caseDetails.caseDetailsSection.providerNotesTitle'))).toBeVisible();
+
+    // Add a new note
+    const newNote = 'Additional provider note for testing multiple notes display.';
+    await caseDetails.submitProviderNote(newNote);
+
+    // Should redirect back
+    await caseDetails.expectSuccessfulSubmission();
+
+    // New note should be visible
+    await expect(page.getByText(newNote)).toBeVisible();
+  });
+
+  test('submitted note should display with timestamp and creator', async ({ page, i18nSetup }) => {
+    const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-1922-1879');
+    await caseDetails.navigate();
+
+    const testNote = 'Note with timestamp verification';
+    await caseDetails.submitProviderNote(testNote);
+
+    await caseDetails.expectSuccessfulSubmission();
+
+    // Note content should be visible
+    await expect(page.getByText(testNote)).toBeVisible();
+
+    // Timestamp hint should be visible (govuk-hint class)
+    const hintText = page.locator('.govuk-hint').filter({ hasText: /on/ }).first();
+    await expect(hintText).toBeVisible();
+  });
+
+  test('form should preserve note content when validation fails', async ({ page, i18nSetup }) => {
+    const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-1922-1879');
+    await caseDetails.navigate();
+
+    // Submit note that's too long
+    const tooLongNote = 'X'.repeat(2501);
+    await caseDetails.submitProviderNote(tooLongNote);
+
+    // Error should be shown
+    await caseDetails.expectErrorSummaryVisible();
+
+    // Form should still contain the entered text
+    await expect(caseDetails.providerNoteTextarea).toHaveValue(tooLongNote);
+  });
+
+  test('note form should have correct CSRF protection', async ({ page, i18nSetup }) => {
+    const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-1922-1879');
+    await caseDetails.navigate();
+
+    // Check for CSRF token in form
+    const csrfInput = page.locator('input[name="_csrf"]');
+    await expect(csrfInput).toHaveAttribute('type', 'hidden');
+
+    // CSRF token should have a value
+    const csrfValue = await csrfInput.getAttribute('value');
+    expect(csrfValue).toBeTruthy();
+    expect(csrfValue).not.toBe('');
+  });
+
+  test('add provider note form with errors should be accessible', {
+    tag: '@accessibility',
+  }, async ({ page, checkAccessibility }) => {
+    const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-1922-1879');
+    await caseDetails.navigate();
+
+    // Submit empty note to trigger validation error
+    await caseDetails.submitEmptyProviderNote();
+    await caseDetails.expectErrorSummaryVisible();
+
+    // Check accessibility with error state
+    await checkAccessibility();
   });
 
   test('case details tab should be accessible', { tag: '@accessibility' }, async ({ page, checkAccessibility }) => {
