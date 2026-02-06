@@ -147,7 +147,7 @@ export interface ClientDetailsResponse {
   diagnosis: Diagnosis | null;
 
   //Notes history (null if not present)
-  notesHistory: NotesHistory | null;
+  notesHistory: NotesHistory[];
   
   // Allow additional fields for debugging
   [key: string]: unknown;

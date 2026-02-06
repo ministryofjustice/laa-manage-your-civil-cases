@@ -71,12 +71,15 @@
 
 
 {# Providers notes section #}
-{% if data.notesHistory.providerNotes %}
-  <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.providerNotesTitle') }}</h3>
-  <p class="govuk-hint">{{ data.notesHistory.createdBy }} on {{ data.notesHistory.created }}</p>
-  <p class="govuk-body">{{ data.notesHistory.providerNotes }}</p>
+<h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.providerNotesTitle') }}</h3>
+{% if data.notesHistory and data.notesHistory.length > 0 %}
+  {% for note in data.notesHistory %}
+    <div class="govuk-!-margin-bottom-4">
+      <p class="govuk-hint">{{ note.createdBy }} on {{ note.created }}</p>
+      <p class="govuk-body">{{ note.providerNotes }}</p>
+    </div>
+  {% endfor %}
 {% else %}
-  <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.providerNotesTitle') }}</h3>
   <p class="govuk-body">{{ t('pages.caseDetails.caseDetailsSection.noNotes') }}</p>
 {% endif %}
 

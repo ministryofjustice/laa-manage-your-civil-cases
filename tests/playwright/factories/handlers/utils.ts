@@ -131,13 +131,12 @@ export function transformToApiFormat(caseItem: MockCase): object {
       category: caseItem.diagnosis.category,
       nodes: (caseItem.diagnosis.diagnosisNode ?? []).map(n => ({ key: n.node })),
     } : null,
-    // Notes history object
-    notes_history: caseItem.notesHistory ? [
-      {
-        created_by: caseItem.notesHistory.createdBy,
-        created: caseItem.notesHistory.created
-      },
-    ] : [],
+    // Notes history array
+    notes_history: caseItem.notesHistory ? caseItem.notesHistory.map(note => ({
+      created_by: note.createdBy,
+      created: note.created,
+      provider_notes: note.providerNotes,
+    })) : [],
   };
 }
 
