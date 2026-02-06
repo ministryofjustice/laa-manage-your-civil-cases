@@ -6,13 +6,11 @@ import { createProcessedError } from '../helpers/errorHandler.js';
 import { validCaseReference } from '../helpers/formControllerHelpers.js';
 import { clearAllOriginalFormData } from '../helpers/sessionHelpers.js';
 import { safeBodyString, formatValidationError } from '../helpers/index.js';
-import { updateProviderNotes } from '#src/services/api/resources/clientDetailsApiService.js';
 import { apiService } from '#src/services/apiService.js';
 import config from '#config.js';
 
 const { MAX_PROVIDER_NOTE_LENGTH, CHARACTER_THRESHOLD }: { MAX_PROVIDER_NOTE_LENGTH: number; CHARACTER_THRESHOLD: number } = config;
 const BAD_REQUEST = 400;
-const NOT_FOUND = 404;
 
 /**
  * Handle case details with API data
@@ -73,59 +71,67 @@ export async function saveProviderNote(req: Request, res: Response, next: NextFu
   // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    const rawErrors = errors.array({ onlyFirstError: false });
+    try {
+      const rawErrors = errors.array({ onlyFirstError: false });
 
-    const validationErrors = rawErrors.map((error) => {
-      const field = 'path' in error && typeof error.path === 'string' ? error.path : '';
-      const { inlineMessage = '', summaryMessage } = formatValidationError(error);
-      return { field, inlineMessage, summaryMessage };
-    });
-
-    const inputErrors = validationErrors.reduce<Record<string, string>>((acc, { field, inlineMessage }) => {
-      const inline = inlineMessage.trim();
-      acc[field] = inline;
-      return acc;
-    }, {});
-
-    // Build the GOV.UK error summary list
-    const errorSummaryList = validationErrors.map(({ field, summaryMessage }) => ({
-      text: summaryMessage,
-      href: `#${field}`
-    }));
-
-    const currentProviderNote = safeBodyString(req.body, 'providerNote');
-
-    // POST handlers don't have middleware, so fetch client details for validation error rendering
-    const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
-
-    if (response.status === 'success' && response.data !== null) {
-      res.status(BAD_REQUEST).render('case_details/index.njk', {
-        activeTab: 'case_details',
-        client: response.data,
-        currentProviderNote,
-        maxProviderNoteLength: MAX_PROVIDER_NOTE_LENGTH,
-        characterThreshold: CHARACTER_THRESHOLD,
-        caseReference,
-        csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
-        error: {
-          inputErrors,
-          errorSummaryList
-        }
+      const validationErrors = rawErrors.map((error) => {
+        const field = 'path' in error && typeof error.path === 'string' ? error.path : '';
+        const { inlineMessage = '', summaryMessage } = formatValidationError(error);
+        return { field, inlineMessage, summaryMessage };
       });
-    } else {
-      res.status(NOT_FOUND).render('main/error.njk', {
-        status: '404',
-        error: response.message ?? 'Case not found'
-      });
+
+      const inputErrors = validationErrors.reduce<Record<string, string>>((acc, { field, inlineMessage }) => {
+        const inline = inlineMessage.trim();
+        acc[field] = inline;
+        return acc;
+      }, {});
+
+      // Build the GOV.UK error summary list
+      const errorSummaryList = validationErrors.map(({ field, summaryMessage }) => ({
+        text: summaryMessage,
+        href: `#${field}`
+      }));
+
+      const currentProviderNote = safeBodyString(req.body, 'providerNote');
+
+      // POST handlers don't have middleware, so fetch client details for validation error rendering
+      const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
+
+      if (response.status === 'success' && response.data !== null) {
+        res.status(BAD_REQUEST).render('case_details/index.njk', {
+          activeTab: 'case_details',
+          client: response.data,
+          currentProviderNote,
+          maxProviderNoteLength: MAX_PROVIDER_NOTE_LENGTH,
+          characterThreshold: CHARACTER_THRESHOLD,
+          caseReference,
+          csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
+          error: {
+            inputErrors,
+            errorSummaryList
+          }
+        });
+        return;
+      }
+
+      // If case not found, create an error and delegate to global error handler
+      const notFoundError = new Error(`Case ${caseReference} not found`);
+      const processedError = createProcessedError(notFoundError, `fetching case details for validation error rendering`);
+      next(processedError);
+      return;
+    } catch (error) {
+      // Delegate any errors during validation error handling to global error handler
+      const processedError = createProcessedError(error, `handling validation errors for case ${caseReference}`);
+      next(processedError);
+      return;
     }
-    return;
   }
 
   try {
     const providerNote = safeString(safeBodyString(req.body, 'providerNote'));
 
     devLog(`Saving provider note for case: ${caseReference}`);
-    await updateProviderNotes(req.axiosMiddleware, caseReference, providerNote);
+    await apiService.updateProviderNotes(req.axiosMiddleware, caseReference, providerNote);
 
     // Redirect back to case details tab
     res.redirect(`/cases/${caseReference}/case-details`);
