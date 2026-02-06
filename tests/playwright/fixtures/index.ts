@@ -76,10 +76,14 @@ export const test = base.extend<TestFixtures>({
     await use(checkAccessibility);
   },
 
-  // Default caseId for test suites, unless overridden. Can be overridden per test/test suite.
+  // Page objects fixture
+   /**
+   * Provides a unique case identifier for the test.
+   * This value can be overridden per test using:
+   *   test.use({ caseId: 'PC-1844-2379' })
+   */
   caseId: ['PC-1922-1879', { option: true }],
 
-  // Page objects fixture
   /**
    * Provides a PageFactory instance for creating page objects
    * @param {object} param0 - Fixture parameters

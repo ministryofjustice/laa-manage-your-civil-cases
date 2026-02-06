@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures/index.js';
-import { setupAuth, t } from '../utils/index.js';
+import { assertCaseDetailsHeaderPresent, setupAuth, t } from '../utils/index.js';
 import { CaseDetailsTabPage } from '../pages/index.js';
 
 test.describe('Case details tab', () => {
@@ -10,12 +10,10 @@ test.describe('Case details tab', () => {
   test('should display main elements of case details page', async ({ page, i18nSetup }) => {
     const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-1922-1879');
     await caseDetails.navigate();
-    await caseDetails.expectClientName('Jack Youngs');
-    await caseDetails.expectStatus('New');
 
-    // Check for page heading
-    await expect(caseDetails.tabHeading).toBeVisible();
-    await expect(caseDetails.tabHeading).toContainText(t('pages.caseDetails.tabs.caseDetails'));
+    // Assert the case details header is present
+    await assertCaseDetailsHeaderPresent(page, true, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");  
+    await caseDetails.expectStatus('New');
 
     // Check for `Add a Note` jump link
     await expect(caseDetails.noteJumpLink).toBeVisible();
@@ -35,7 +33,9 @@ test.describe('Case details tab', () => {
   test('clicking `Add a note` link should take user to provider note textarea', async ({ page, i18nSetup }) => {
     const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-1922-1879');
     await caseDetails.navigate();
-    await caseDetails.expectClientName('Jack Youngs');
+
+    // Assert the case details header is present
+    await assertCaseDetailsHeaderPresent(page, true, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");  
     await caseDetails.expectStatus('New');
 
     // Click `Add a note` jump link
@@ -46,8 +46,10 @@ test.describe('Case details tab', () => {
   test('should show client problem section, when scopeTraversal data present', async ({ page, i18nSetup }) => {
     const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-2211-4466'); // This case has some mock data
     await caseDetails.navigate();
-    await caseDetails.expectClientName('Vinsmoke Sanj');
-    await caseDetails.expectStatus('New');
+
+    // Assert the case details header is present
+    await assertCaseDetailsHeaderPresent(page, true, "Vinsmoke Sanj", "PC-2211-4466", "8 Aug 2025");
+    await caseDetails.expectStatus('New');  
 
     // `Client problem from check if you can get legal aid` title
     await expect(caseDetails.headingH3ByText(t('pages.caseDetails.caseDetailsSection.clientProblemTitle'))).toBeVisible();
@@ -75,8 +77,11 @@ test.describe('Case details tab', () => {
   test('should show part of client problem section, when only client_notes is data present', async ({ page, i18nSetup }) => {
     const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-1869-9154'); // This case has client_notes but not scopeTraversal
     await caseDetails.navigate();
-    await caseDetails.expectClientName('Grace Baker');
-    await caseDetails.expectStatus('Pending');
+
+    // Assert the case details header is present
+    await assertCaseDetailsHeaderPresent(page, true, "Grace Baker", "PC-1869-9154", "8 Aug 2025");
+    await caseDetails.expectStatus('Pending');  
+
 
     // `Client problem from check if you can get legal aid` title
     await expect(caseDetails.headingH3ByText(t('pages.caseDetails.caseDetailsSection.clientProblemTitle'))).toBeVisible();
@@ -97,8 +102,10 @@ test.describe('Case details tab', () => {
   test('should show operator diagnosis section, when diagnosis data present', async ({ page, i18nSetup }) => {
     const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-2211-4466'); // This case has some mock data
     await caseDetails.navigate();
-    await caseDetails.expectClientName('Vinsmoke Sanj');
-    await caseDetails.expectStatus('New');
+
+    // Assert the case details header is present
+    await assertCaseDetailsHeaderPresent(page, true, "Vinsmoke Sanj", "PC-2211-4466", "8 Aug 2025");
+    await caseDetails.expectStatus('New');  
 
     // `Operator scope diagnosis` title
     await expect(caseDetails.headingH3ByText(t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle'))).toBeVisible();
@@ -119,8 +126,11 @@ test.describe('Case details tab', () => {
   test('should show operator notes section, when notes data is present', async ({ page, i18nSetup }) => {
     const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-2211-4466'); // This case has some mock data
     await caseDetails.navigate();
-    await caseDetails.expectClientName('Vinsmoke Sanj');
-    await caseDetails.expectStatus('New');
+
+    // Assert the case details header is present
+    await assertCaseDetailsHeaderPresent(page, true, "Vinsmoke Sanj", "PC-2211-4466", "8 Aug 2025");
+    await caseDetails.expectStatus('New');  
+
 
     // `Operator scope diagnosis` title
     await expect(caseDetails.headingH3ByText(t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle'))).toBeVisible();
@@ -133,8 +143,11 @@ test.describe('Case details tab', () => {
   test('should show provider notes section, when notesHistory & provider_notes are present', async ({ page, i18nSetup }) => {
     const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-2211-4466'); // This case has some mock data
     await caseDetails.navigate();
-    await caseDetails.expectClientName('Vinsmoke Sanj');
-    await caseDetails.expectStatus('New');
+
+    // Assert the case details header is present
+    await assertCaseDetailsHeaderPresent(page, true, "Vinsmoke Sanj", "PC-2211-4466", "8 Aug 2025");
+    await caseDetails.expectStatus('New');  
+
 
     // `Operator scope diagnosis` title
     await expect(caseDetails.headingH3ByText(t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle'))).toBeVisible();
@@ -147,7 +160,9 @@ test.describe('Case details tab', () => {
   test('should show provider notes section title and "no notes" text, when notesHistory & provider_notes DO NOT exist', async ({ page, i18nSetup }) => {
     const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-1922-1879');
     await caseDetails.navigate();
-    await caseDetails.expectClientName('Jack Youngs');
+
+    // Assert the case details header is present
+    await assertCaseDetailsHeaderPresent(page, true, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");  
     await caseDetails.expectStatus('New');
 
     // `Notes from provider` title

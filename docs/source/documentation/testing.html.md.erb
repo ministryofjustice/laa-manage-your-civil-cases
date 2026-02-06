@@ -38,18 +38,22 @@ This command runs `yarn test:unit` followed by `yarn test:e2e`, which includes b
 | `yarn coverage` | Run unit tests with coverage report |
 
 ### Unit/Integration Testing frameworks
+
 - We use [Mocha](https://mochajs.org/) as our unit testing framework. It is a widely-used JavaScript testing framework that works well with TypeScript projects and integrates with CI pipelines.
 - We also use [chai](https://www.chaijs.com/) to help with our test assertions, in mocha.
 - Unit tests run from the `tests/unit/` directory
 - Run unit tests with `yarn test:unit`
 
 **To set-up locally**
+
 - Install all the dependencies:
+
 ```shell
 yarn install
 ```
 
 - run unit test's:
+
 ```shell
 yarn test:unit
 ```
@@ -97,6 +101,7 @@ npx playwright test --ui -c tests/playwright/playwright.config.ts
 The project uses Chromium for testing to ensure consistency with our production environment. The configuration can be found in `tests/playwright/playwright.config.ts`.
 
 Key configuration points:
+
 - Tests are located in `tests/playwright/tests/` directory
 - Only Chromium browser is used for testing
 - Test retries are enabled in CI environments (2 retries)
@@ -113,6 +118,7 @@ The tests are automatically run in our GitHub Actions workflow (`.github/workflo
 #### Debugging Failed Tests
 
 When tests fail in CI:
+
 1. Check the error message in the GitHub Actions log
 2. Download the trace artifacts (named `playwright-traces.zip`) from GitHub Actions
 3. Extract the downloaded ZIP file - inside you'll find folders organized by test name
@@ -143,6 +149,7 @@ The `scripts/e2e_coverage/route-coverage-analysis.sh` script analyses which Expr
 ```
 
 The script:
+
 - Extracts all registered Express routes from the application
 - Runs E2E tests with debug logging to capture visited routes (unless --skip-tests is used)
 - Compares the two lists and reports coverage percentage
@@ -238,6 +245,7 @@ open coverage/index.html
 ```
 
 When coverage fails in CI:
+
 1. Check the error message in the GitHub Actions log - in the `Mocha Unit Test` job
 2. Download the trace artifacts (named `code-coverage-report.zip`) from GitHub Actions
 3. Extract the downloaded ZIP file

@@ -19,7 +19,7 @@ test('client details selected from new cases tab has correct page elements', asy
   const pendingMenuItem = page.getByRole('button', { name: 'Pending' });
   const closedMenuItem = page.getByRole('button', { name: 'Closed' });
 
-  // expect to see the following elements
+  // Expect to see the following elements
   await expect(new_tag).toBeVisible();
   await expect(changeStatusButton).toBeVisible();
 
@@ -43,7 +43,7 @@ test('client support needs card is not shown on new case when `skype_webcam` is 
   const pendingMenuItem = page.getByRole('button', { name: 'Pending' });
   const closedMenuItem = page.getByRole('button', { name: 'Closed' });
 
-  // expect to see the following elements
+  // Expect to see the following elements
   await expect(new_tag).toBeVisible();
   await expect(changeStatusButton).toBeVisible();
 
