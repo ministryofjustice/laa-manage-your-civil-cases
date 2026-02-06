@@ -472,5 +472,44 @@
       "languageSupportNeeds": "English",
       "notes": "Client becomes flustered when speaking; may require calm communication approach."
     }
+  },
+  {
+    "fullName": "Walter White",
+    "caseReference": "PC-1854-6521",
+    "refCode": "",
+    "dateReceived": "2025-08-07T19:00:00-05:00",
+    "lastModified": "2025-08-08T17:30:00-05:00",
+    "caseStatus": "Opened",
+    "dateOfBirth": "1979-11-12T00:00:00-05:00",
+    "clientIsVulnerable": true,
+    "language": "Polish",
+    "phoneNumber": "0777929124",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "grace_baker@outlook.com",
+    "address": "544 King Street, Newcastle",
+    "postcode": "LE1 1UL",
+    "laaReference": "2850581",
+    "thirdParty": {
+      "fullName": "Samira Patel",
+      "emailAddress": "samira@patel.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": ["Legal adviser"]
+      },
+      "passphraseSetUp": {
+        "selected": ["No, client is a child or patient"]
+      }
+    },
+    "clientSupportNeeds": {
+      "bslWebcam": "Yes",
+      "textRelay": "No",
+      "callbackPreference": "No",
+      "languageSupportNeeds": "English",
+      "notes": "Here are some notes from the operator!"
+    }
   }
 ]

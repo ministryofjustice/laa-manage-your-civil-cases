@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures/index.js';
-import { setupAuth } from '../utils/index.js';
+import { setupAuth, assertCaseDetailsHeaderPresent} from '../utils/index.js';
 import { ClientDetailsPage, PendingCaseFormPage, CloseCaseFormPage, ReopenCaseFormPage } from '../pages/index.js';
 
 
@@ -12,7 +12,10 @@ test.describe('Case Status Handling', () => {
     test('should show case status', async ({ page }) => {
       const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1879');
       await clientDetails.navigate();
-      await clientDetails.expectClientName('Jack Youngs');
+
+      // Assert the case details header is present
+      await assertCaseDetailsHeaderPresent(page, true, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");  
+
       await clientDetails.expectStatus('New');
       await expect(page).toHaveURL(clientDetails.url);
     });
@@ -29,7 +32,9 @@ test.describe('Case Status Handling', () => {
       const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1866');
 
       await clientDetails.navigate();
-      await clientDetails.expectClientName('Katie Young');
+      // Assert the case details header is present
+      await assertCaseDetailsHeaderPresent(page, true, "Katie Young", "PC-1922-1866", "7 Jul 2025");  
+
       await clientDetails.expectStatus('New');
 
       // Click `Change status` button
@@ -50,12 +55,13 @@ test.describe('Case Status Handling', () => {
       const clientDetails = ClientDetailsPage.forCase(page, 'PC-4532-2312');
 
       await clientDetails.navigate();
-      await clientDetails.expectClientName('Zechariah Twelve');
+      // Assert the case details header is present
+      await assertCaseDetailsHeaderPresent(page, true, "Zechariah Twelve", "PC-4532-2312", "6 Jan 2025"); 
+
       await clientDetails.expectStatus('Closed');
 
       // Click `Change status` button
       const toggle = page.getByRole('button', { name: 'Change status' });
-      await expect(toggle).toBeVisible();
       await toggle.click();
       await expect(toggle).toHaveAttribute('aria-expanded', 'true');
 
@@ -78,6 +84,8 @@ test.describe('Case Status Handling', () => {
     test('should display pending form correctly', async ({ page }) => {
       const pendingPage = PendingCaseFormPage.forCase(page, 'PC-1922-1879');
       await pendingPage.navigate();
+      // Assert the case details header is present
+      await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");  
       await pendingPage.expectFormLoaded();
       await pendingPage.expectReasonOptionVisible('Third party authorisation');
       await expect(pendingPage.saveButton).toBeVisible();
@@ -86,6 +94,8 @@ test.describe('Case Status Handling', () => {
     test('should validate required fields', async ({ page }) => {
       const pendingPage = PendingCaseFormPage.forCase(page, 'PC-1922-1879');
       await pendingPage.navigate();
+      // Assert the case details header is present
+      await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");  
       await pendingPage.clickSave();
       await pendingPage.expectErrorSummaryVisible();
     });
@@ -103,6 +113,8 @@ test.describe('Case Status Handling', () => {
     test('should submit close case form', async ({ page }) => {
       const closePage = CloseCaseFormPage.forCase(page, 'PC-9159-2337');
       await closePage.navigate();
+      // Assert the case details header is present
+      await assertCaseDetailsHeaderPresent(page, false, "George Allen", "PC-9159-2337", "9 Jan 2025"); 
       await closePage.submitWithData('MIS-MEANS', 'Case successfully closed');
 
       const clientDetails = ClientDetailsPage.forCase(page, 'PC-9159-2337');
@@ -113,6 +125,8 @@ test.describe('Case Status Handling', () => {
     test('should validate required fields', async ({ page }) => {
       const closePage = CloseCaseFormPage.forCase(page, 'PC-2211-4466');
       await closePage.navigate();
+      // Assert the case details header is present
+      await assertCaseDetailsHeaderPresent(page, false, "Vinsmoke Sanj", "PC-2211-4466", "8 Aug 2025"); 
       await closePage.clickSave();
 
       await closePage.expectErrorSummaryVisible();
@@ -132,7 +146,9 @@ test.describe('Case Status Handling', () => {
       const clientDetails = ClientDetailsPage.forCase(page, 'PC-3184-5962');
 
       await clientDetails.navigate();
-      await clientDetails.expectClientName('Ember Hamilton');
+      // Assert the case details header is present
+      await assertCaseDetailsHeaderPresent(page, true, "Ember Hamilton", "PC-3184-5962", "9 Jan 2025"); 
+      
       await clientDetails.expectStatus('Advising');
 
       // Click `Change status` button
@@ -155,6 +171,8 @@ test.describe('Case Status Handling', () => {
     test('should submit reopen case form', async ({ page }) => {
       const reopenPage = ReopenCaseFormPage.forCase(page, 'PC-1122-3344');
       await reopenPage.navigate();
+      // Assert the case details header is present
+      await assertCaseDetailsHeaderPresent(page, false, "Red Haired Shanks", "PC-1122-3344", "8 Aug 2025"); 
       await reopenPage.submitWithNote('Client requested case to be reopened');
 
       const clientDetails = ClientDetailsPage.forCase(page, 'PC-1122-3344');

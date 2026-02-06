@@ -31,6 +31,14 @@ export abstract class BaseEditFormPage {
   }
 
   /**
+   * Gets the page 
+   * @returns {Page} The page
+   */
+  get getPage(): Page {
+    return this.page;
+  }
+  
+  /**
    * Gets the save button element
    * @returns {Locator} The save button locator
    */
