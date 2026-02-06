@@ -10,8 +10,11 @@ test('new cases listing page should display correctly', async ({ page, i18nSetup
   // Navigate to the new cases page
   await page.goto('/cases/new');
   
-  // Check for page heading
-  await expect(page.locator('h1')).toContainText('New cases');
+  // Check for main page heading
+  await expect(page.locator('h1')).toContainText('Your cases');
+  
+  // Check for case type heading
+  await expect(page.locator('h2.govuk-heading-m')).toContainText('New');
   
   // Check for the specific new cases table
   const caseTable = page.locator('#new-cases-table');
@@ -22,8 +25,11 @@ test('pending cases listing page should display correctly', async ({ page, i18nS
   // Navigate to the pending cases page
   await page.goto('/cases/pending');
   
-  // Check for page heading
-  await expect(page.locator('h1')).toContainText('Pending cases');
+  // Check for main page heading
+  await expect(page.locator('h1')).toContainText('Your cases');
+  
+  // Check for case type heading
+  await expect(page.locator('h2.govuk-heading-m')).toContainText('Pending');
   
   // Check for the specific pending cases table
   const caseTable = page.locator('#pending-cases-table');
@@ -34,8 +40,11 @@ test('advising cases listing page should display correctly', async ({ page, i18n
   // Navigate to the advising cases page
   await page.goto('/cases/advising');
   
-  // Check for page heading
-  await expect(page.locator('h1')).toContainText('Advising cases');
+  // Check for main page heading
+  await expect(page.locator('h1')).toContainText('Your cases');
+  
+  // Check for case type heading
+  await expect(page.locator('h2.govuk-heading-m')).toContainText('Advising');
   
   // Check for the specific advising cases table
   const caseTable = page.locator('#advising-cases-table');
@@ -46,8 +55,11 @@ test('closed cases listing page should display correctly', async ({ page, i18nSe
   // Navigate to the closed cases page
   await page.goto('/cases/closed');
   
-  // Check for page heading
-  await expect(page.locator('h1')).toContainText('Closed cases');
+  // Check for main page heading
+  await expect(page.locator('h1')).toContainText('Your cases');
+  
+  // Check for case type heading
+  await expect(page.locator('h2.govuk-heading-m')).toContainText('Closed');
   
   // Check for the specific closed cases table
   const caseTable = page.locator('#closed-cases-table');
@@ -58,8 +70,11 @@ test('completed cases listing page should display correctly', async ({ page, i18
   // Navigate to the completed cases page
   await page.goto('/cases/completed');
   
-  // Check for page heading
-  await expect(page.locator('h1')).toContainText('Completed cases');
+  // Check for main page heading
+  await expect(page.locator('h1')).toContainText('Your cases');
+  
+  // Check for case type heading
+  await expect(page.locator('h2.govuk-heading-m')).toContainText('Completed');
   
   // Check for the specific completed cases table
   const caseTable = page.locator('#completed-cases-table');

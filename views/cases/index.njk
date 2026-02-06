@@ -1,17 +1,7 @@
 {% extends "base.njk" %}
 
 {% block pageTitle %}
-  {%- if activeTab == 'opened' -%}
-    {{ t('pages.yourCases.pageTitles.pending', { serviceName: config.SERVICE_NAME }) }}
-  {%- elif activeTab == 'accepted' -%}
-    {{ t('pages.yourCases.pageTitles.advising', { serviceName: config.SERVICE_NAME }) }}
-  {%- elif activeTab == 'completed' -%}
-    {{ t('pages.yourCases.pageTitles.completed', { serviceName: config.SERVICE_NAME }) }}
-  {%- elif activeTab == 'rejected' -%}
-    {{ t('pages.yourCases.pageTitles.closed', { serviceName: config.SERVICE_NAME }) }}
-  {%- else -%}
-    {{ t('pages.yourCases.pageTitles.new', { serviceName: config.SERVICE_NAME }) }}
-  {%- endif -%}
+  {{ t('pages.yourCases.pageTitles.' + pageTitleKey, { serviceName: config.SERVICE_NAME }) }}
 {% endblock %}
 
 {% block pageContent %}
@@ -23,24 +13,9 @@
   {# Import the tabComponent macro #}
   {%- from "components/tabComponent.njk" import tabComponent -%}
 
-  {# Main page heading - changes based on active tab & set caseType for tab component #}
+  {# Main page heading #}
   <h1 class="govuk-heading-xl" id="page-heading">
-    {%- if activeTab == 'opened' -%}
-        {{ t('pages.yourCases.pendingCases') }}
-        {% set caseType = 'pending' %}
-      {%- elif activeTab == 'accepted' -%}
-        {{ t('pages.yourCases.advisingCases') }}
-        {% set caseType = 'advising' %}
-      {%- elif activeTab == 'completed' -%}
-        {{ t('pages.yourCases.completedCases') }}
-        {% set caseType = 'completed' %}
-      {%- elif activeTab == 'rejected' -%}
-        {{ t('pages.yourCases.closedCases') }}
-        {% set caseType = 'closed' %}
-      {%- else -%}
-        {{ t('pages.yourCases.newCases') }}
-        {% set caseType = 'new' %}
-      {%- endif -%}
+    {{ t('pages.yourCases.heading') }}
   </h1>
 
   {% set casesPartial = "cases/_cases-partial.njk" %}
@@ -53,6 +28,7 @@
     sortOrder: sortOrder,
     pagination: pagination,
     caseType: caseType,
+    showStatusHeading: true,
     tabs: [
       {
         id: "new",
