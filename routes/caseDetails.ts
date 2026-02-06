@@ -4,9 +4,11 @@ import { handleClientDetailsTab, acceptCase, completeCase, closeCase, getCloseCa
 import { handleCaseHistoryTab } from '#src/scripts/controllers/caseHistoryController.js';
 import { handleCaseDetailsTab } from '#src/scripts/controllers/caseDetailsController.js';
 import { getRemoveThirdPartyConfirmation, deleteThirdParty, getRemoveSupportNeedsConfirmation, deleteClientSupportNeeds } from '#src/scripts/controllers/index.js';
+import { getOperatorFeedbackForm, submitOperatorFeedback } from '#src/scripts/controllers/operatorFeedbackController.js';
 import { validateReopenCase } from '#src/middlewares/reopenCaseSchema.js';
 import { validateCloseCase } from '#src/middlewares/closeCaseSchema.js';
 import { validatePendingCase } from '#src/middlewares/pendingCaseSchema.js';
+import { validateOperatorFeedback } from '#src/middlewares/operatorFeedbackSchema.js';
 import { fetchClientDetails } from '#src/middlewares/caseDetailsMiddleware.js';
 
 
@@ -101,6 +103,16 @@ router.get('/:caseReference/why-reopen-closed-case', fetchClientDetails, (req: R
 /* POST reopen closed case. */
 router.post('/:caseReference/why-reopen-closed-case', validateReopenCase(), async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   await reopenClosedCase(req, res, next);
+});
+
+/* GET operator feedback form. */
+router.get('/:caseReference/give-operator-feedback', fetchClientDetails, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  await getOperatorFeedbackForm(req, res, next);
+});
+
+/* POST operator feedback. */
+router.post('/:caseReference/give-operator-feedback', validateOperatorFeedback(), async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  await submitOperatorFeedback(req, res, next);
 });
 
 export default router;

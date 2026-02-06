@@ -1,0 +1,80 @@
+{% extends "case_details/_base-case-change.njk" %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% block pageTitle %}
+  {% if errorState.hasErrors %}{{ t('common.error') }}: {% endif %}{{ t('pages.caseDetails.operatorFeedback.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
+{% endblock %}
+
+{% block backLink %}
+  {# No back link for this page #}
+{% endblock %}
+
+{% block formContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      {% if errorState.hasErrors %}
+        {{ govukErrorSummary({
+          titleText: t('common.errorSummaryTitle'),
+          errorList: errorState.errors
+        }) }}
+      {% endif %}
+
+      <form method="POST" action="/cases/{{ caseReference }}/give-operator-feedback">
+
+        <!-- CSRF Protection -->
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+
+        {% call govukFieldset({
+          legend: {
+            text: t('pages.caseDetails.operatorFeedback.legend'),
+            classes: "govuk-fieldset__legend--m",
+            isPageHeading: true
+          }
+        }) %}
+
+        <div class="govuk-hint govuk-!-margin-bottom-6">
+          {{ t('pages.caseDetails.operatorFeedback.hint') }}
+        </div>
+
+        {{ govukSelect({
+            id: "category",
+            name: "category",
+            label: {
+              text: t('pages.caseDetails.operatorFeedback.categoryLabel')
+            },
+            items: categoryItems,
+            errorMessage: errorState.fieldErrors.category if errorState.fieldErrors.category
+          }) }}
+
+        {{ govukCharacterCount({
+            label: {
+              text: t('pages.caseDetails.operatorFeedback.commentLabel')
+            },
+            id: "comment",
+            name: "comment",
+            value: formData.comment,
+            rows: 8,
+            errorMessage: errorState.fieldErrors.comment if errorState.fieldErrors.comment,
+            maxlength: maxCommentLength,
+            threshold: characterThreshold
+          }) }}
+
+        {% endcall %}
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: t('common.save')
+          }) }}
+          <a class="govuk-link" href="/cases/{{ caseReference }}/client-details">{{ t('common.cancel') }}</a>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+{% endblock %}

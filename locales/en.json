@@ -204,6 +204,7 @@
       },
       "buttons": {
         "label": "Change status",
+        "giveOperatorFeedback": "Give operator feedback",
         "actions":{
           "advising": "Advising",
           "pending": "Pending",
@@ -252,6 +253,14 @@
           "requiresInterpreter": "Requires interpreter",
           "other": "Other"
         }
+      },
+      "operatorFeedback": {
+        "pageTitle": "Give operator feedback – {caseReference} – {serviceName} – GOV.UK",
+        "legend": "Give operator feedback",
+        "hint": "Feedback is used to help improve the operator service. It will not be displayed in the case notes.",
+        "categoryLabel": "Feedback category",
+        "categoryPlaceholder": "Select a category",
+        "commentLabel": "Comment"
       }
     },
     "error": {
@@ -317,6 +326,17 @@
           "otherNote": {
             "notEmpty": "Enter why this case is pending",
             "tooLong": "Note must be 5000 characters or less"
+          }
+        }
+      },
+      "operatorFeedback": {
+        "validationError": {
+          "category": {
+            "notEmpty": "Select a feedback category"
+          },
+          "comment": {
+            "notEmpty": "Enter a feedback comment",
+            "tooLong": "Comment must be 2500 characters or less"
           }
         }
       }
