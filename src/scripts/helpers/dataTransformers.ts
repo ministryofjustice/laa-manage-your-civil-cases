@@ -566,10 +566,20 @@ export const transformScopeTraversal = (scopeTraversal: unknown): {
         result.subCategory = safeOptionalString(obj.answer) ?? '';
       } else if (type === 'onward_question') {
         const question = safeStringFromRecord(obj, 'question') ?? '';
-        const answer = safeStringFromRecord(obj, 'answer') ?? '';
-        if (question || answer) {
-          result.onwardQuestion.push({ question, answer });
-        }
+        let answer = '';
+
+          if (Array.isArray(obj.answer)) {
+            answer = obj.answer
+              .map((a) => (typeof a === 'string' ? a : String(a)))
+              .filter(Boolean)
+              .join(' | ');
+          } else {
+            answer = safeOptionalString(obj.answer) ?? '';
+          }
+
+          if (question || answer) {
+            result.onwardQuestion.push({ question, answer });
+          }
       }
 
       return result;

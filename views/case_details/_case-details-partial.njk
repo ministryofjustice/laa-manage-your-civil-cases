@@ -16,10 +16,12 @@
         } %}
       {% endif %}
 {# Client problem section #}
-{% if data.scopeTraversal %}
+{% if data.scopeTraversal or data.client_notes %}
   <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.clientProblemTitle') }}</h3>
 
-  <p class="govuk-hint">{{ data.scopeTraversal.created }}</p>
+  {% if data.scopeTraversal %}
+    <p class="govuk-hint">{{ data.scopeTraversal.created }}</p>
+  {% endif %}
 
   <ul class="govuk-list govuk-list--bullet">
     {% if data.scopeTraversal.category %}
@@ -36,7 +38,7 @@
       {% endfor %}
     {% endif %}
 
-    {% if data.scopeTraversal.client_notes %}
+    {% if data.client_notes %}
       <li>{{ t('pages.caseDetails.caseDetailsSection.tellUsMore') }} {{ data.client_notes }}</li>
     {% endif %}
 
@@ -69,9 +71,9 @@
 
 
 {# Operator notes section #}
-{% if data.notes %}
+{% if data.operatorNotes %}
   <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.operatorNotesTitle') }}</h3>
-  <p class="govuk-body">{{ data.notes }}</p>
+  <p class="govuk-body">{{ data.operatorNotes }}</p>
   <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6"/>
 {% endif %}
 

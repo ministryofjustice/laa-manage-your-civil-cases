@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures/index.js';
-import { t, setupAuth } from '../utils/index.js';
+import { setupAuth } from '../utils/index.js';
 
 // Login before each test since all case listing pages require authentication
 test.beforeEach(async ({ page }) => {

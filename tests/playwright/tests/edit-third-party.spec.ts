@@ -1,5 +1,5 @@
-import { test, expect } from '../fixtures/index.js';
-import { getClientDetailsUrlByStatus, setupAuth } from '../utils/index.js';
+import { test } from '../fixtures/index.js';
+import { getClientDetailsUrlByStatus, setupAuth, assertCaseDetailsHeaderPresent } from '../utils/index.js';
 import { ThirdPartyFormPage } from '../pages/ThirdPartyFormPage.js';
 
 const clientDetailsUrl = getClientDetailsUrlByStatus('default');
@@ -14,6 +14,9 @@ test('viewing edit third party form should display expected elements', async ({ 
   // Navigate to the edit third party form
   await thirdPartyPage.navigate();
 
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+  
   // Expect to see the main elements
   await thirdPartyPage.expectPageLoaded(thirdPartyPage.getExpectedHeading());
   await thirdPartyPage.expectFormElementsVisible();
@@ -27,6 +30,10 @@ test('cancel link should navigate back to client details', async ({ page, i18nSe
 
   // Test cancel navigation using base class method
   await thirdPartyPage.expectCancelNavigatesBack();
+
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, true, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+  
 });
 
 test('save button should redirect to client details when valid data submitted', async ({ page, i18nSetup }) => {
@@ -50,6 +57,9 @@ test('save button should redirect to client details when valid data submitted', 
 
   // Should redirect to client details page
   await thirdPartyPage.expectSuccessfulSubmission();
+
+  // Assert the new 3rd party details are shown.
+  //TODO
 });
 
 test('edit third party form displays validation errors correctly', async ({ page, i18nSetup }) => {
@@ -58,6 +68,9 @@ test('edit third party form displays validation errors correctly', async ({ page
   // Navigate to the edit third party form
   await thirdPartyPage.navigate();
 
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+  
   // Submit form with invalid data
   await thirdPartyPage.clearNameField();
   await thirdPartyPage.clickSave();
@@ -74,6 +87,9 @@ test('edit third party form displays postcode validation errors correctly', asyn
 
   // Navigate to the edit third party form
   await thirdPartyPage.navigate();
+
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
 
   // Update third party details
   await thirdPartyPage.fillValidThirdPartyData({
@@ -101,6 +117,9 @@ test('unchanged fields trigger change detection error', async ({ page, i18nSetup
 
   // Navigate to the edit third party form
   await thirdPartyPage.navigate();
+
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
 
   // Submit form without making any changes
   // (assuming the form loads with existing third party data)

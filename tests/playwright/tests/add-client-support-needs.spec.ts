@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures/index.js';
-import { getClientDetailsUrlByStatus, setupAuth } from '../utils/index.js';
+import { getClientDetailsUrlByStatus, setupAuth, assertCaseDetailsHeaderPresent } from '../utils/index.js';
 
 const caseReference = 'PC-1922-1879'; // Default test case reference
 const addSupportNeedsUrl = `/cases/${caseReference}/client-details/add/support-need`;
@@ -12,6 +12,9 @@ test.beforeEach(async ({ page }) => {
 test('add client support needs form should save valid data and redirect to client details', async ({ page, i18nSetup }) => {
   // Navigate to the add client support needs form
   await page.goto(addSupportNeedsUrl);
+
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");  
 
   // Expect to see the form heading
   await expect(page.locator('h1')).toContainText('Add a client support need');

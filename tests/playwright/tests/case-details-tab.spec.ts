@@ -53,13 +53,14 @@ test.describe('Case details tab', () => {
     await expect(caseDetails.headingH3ByText(t('pages.caseDetails.caseDetailsSection.clientProblemTitle'))).toBeVisible();
 
     // Hint text with date & time
-    const hintText = page.getByText('18 August 2025') // Not added time as our CI has different timezone
+    const hintText = page.getByText('19 August 2025') // Not added time as our CI has different timezone
     await expect(hintText).toBeVisible();
 
     // Bullet list of onward question data
     const onwardQuestionBulletsList = [
       'category: Discrimination',
-      'Where did the discrimination happen? Work - including colleagues, employer or employment agency'
+      'Where did the discrimination happen? Work - including colleagues, employer or employment agency',
+      'tell us more about your problem: Some notes about Food'
     ];
 
     for (const text of onwardQuestionBulletsList) {
@@ -69,6 +70,28 @@ test.describe('Case details tab', () => {
     // Bullet list of assessment status
     const data2 = page.getByText('financial assessment: PASSED', { exact: true });
     await expect(data2).toBeVisible();
+  });
+
+  test('should show part of client problem section, when only client_notes is data present', async ({ page, i18nSetup }) => {
+    const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-1869-9154'); // This case has client_notes but not scopeTraversal
+    await caseDetails.navigate();
+    await caseDetails.expectClientName('Grace Baker');
+    await caseDetails.expectStatus('Pending');
+
+    // `Client problem from check if you can get legal aid` title
+    await expect(caseDetails.headingH3ByText(t('pages.caseDetails.caseDetailsSection.clientProblemTitle'))).toBeVisible();
+
+    // Hint text with date & time, NOT to be shown 
+    const hintText = page.getByText('18 August 2025') // 
+    await expect(hintText).not.toBeVisible();
+
+    // Bullet list of assessment status, NOT to be shown
+    const data2 = page.getByText('financial assessment: PASSED', { exact: true });
+    await expect(data2).not.toBeVisible();
+
+    // Bullet list of client note should be visible
+    const clientNotes =  page.getByText('tell us more about your problem: Some notes about beer', { exact: true });
+    await expect(clientNotes).toBeVisible();
   });
 
   test('should show operator diagnosis section, when diagnosis data present', async ({ page, i18nSetup }) => {
@@ -102,12 +125,8 @@ test.describe('Case details tab', () => {
     // `Operator scope diagnosis` title
     await expect(caseDetails.headingH3ByText(t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle'))).toBeVisible();
 
-    // Hint text with operator name and the date & time
-    const hintText = page.getByText('mcc_all_uat on 18 August 2025') // Not added time as our CI has different timezone
-    await expect(hintText).toBeVisible();
-
     // Notes from operator
-    const operatorNotes = page.getByText('This are some test provider notes', { exact: true });
+    const operatorNotes = page.getByText('Operator notes for Sanji', { exact: true });
     await expect(operatorNotes).toBeVisible();
   });
 
