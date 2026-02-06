@@ -348,6 +348,7 @@
     "address": "544 King Street, Newcastle",
     "postcode": "LE1 1UL",
     "laaReference": "2850581",
+    "client_notes": "Some notes about beer",
     "thirdParty": {
       "fullName": "Samira Patel",
       "emailAddress": "samira@patel.com",
@@ -426,6 +427,8 @@
     "address": "Baratie Restaurant, East Blue",
     "postcode": "EB7 5BR",
     "laaReference": "2850581",
+    "client_notes": "Some notes about Food",
+    "operatorNotes": "Operator notes for Sanji",
     "thirdParty": {
       "fullName": "Zeff",
       "emailAddress": "ef.zeff@baratie.com",
@@ -462,8 +465,7 @@
     },
     "notesHistory": {
       "createdBy": "mcc_all_uat",
-      "created": "2025-08-18T00:00:00-05:00",
-      "providerNotes": "This are some test provider notes"
+      "created": "2025-08-18T00:00:00-05:00"
     },
     "clientSupportNeeds": {
       "bslWebcam": "Yes",
