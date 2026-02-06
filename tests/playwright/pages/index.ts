@@ -11,4 +11,5 @@ export { PendingCaseFormPage } from './PendingCaseFormPage.js';
 export { CloseCaseFormPage } from './CloseCaseFormPage.js';
 export { ReopenCaseFormPage } from './ReopenCaseFormPage.js';
 export { ClientDetailsPage } from './ClientDetailsPage.js';
+export { OperatorFeedbackFormPage } from './OperatorFeedbackFormPage.js';
 export * from './components/index.js';
