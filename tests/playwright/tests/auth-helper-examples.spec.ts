@@ -25,27 +25,32 @@ test.describe('Setup auth in beforeEach', () => {
 
   test('should view new cases', async ({ page }) => {
     await page.goto('/cases/new');
-    await expect(page.locator('h1')).toContainText('New cases');
+    await expect(page.locator('h1')).toContainText('Your cases');
+    await expect(page.locator('h2.govuk-heading-m')).toContainText('New');
   });
 
   test('should view pending cases', async ({ page }) => {
     await page.goto('/cases/pending');
-    await expect(page.locator('h1')).toContainText('Pending cases');
+    await expect(page.locator('h1')).toContainText('Your cases');
+    await expect(page.locator('h2.govuk-heading-m')).toContainText('Pending');
   });
 
   test('should view advising cases', async ({ page }) => {
     await page.goto('/cases/advising');
-    await expect(page.locator('h1')).toContainText('Advising cases');
+    await expect(page.locator('h1')).toContainText('Your cases');
+    await expect(page.locator('h2.govuk-heading-m')).toContainText('Advising');
   });
 
   test('should view closed cases', async ({ page }) => {
     await page.goto('/cases/closed');
-    await expect(page.locator('h1')).toContainText('Closed cases');
+    await expect(page.locator('h1')).toContainText('Your cases');
+    await expect(page.locator('h2.govuk-heading-m')).toContainText('Closed');
   });
 
   test('should view completed cases', async ({ page }) => {
     await page.goto('/cases/completed');
-    await expect(page.locator('h1')).toContainText('Completed cases');
+    await expect(page.locator('h1')).toContainText('Your cases');
+    await expect(page.locator('h2.govuk-heading-m')).toContainText('Completed');
   });
 });
 

@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
 import type { CaseData } from '#types/case-types.js';
 import { devLog, devError, createProcessedError, buildOrderingParamFields } from '#src/scripts/helpers/index.js';
+import { translateCaseStatus } from '#utils/server/caseStatusHelper.js';
 import config from '../../../config.js';
 const { pagination: { defaultPage: DEFAULT_PAGE, defaultLimit: DEFAULT_LIMIT } } = config;
 
@@ -108,15 +109,20 @@ export function createCaseRouteHandler(caseType: string) {
       const ordering = typeof req.query.ordering === 'string' ? req.query.ordering : '';
       let {sortBy} = defaultSort;
       let {sortOrder} = defaultSort;
-      
+
       // Parse ordering parameter (e.g., 'modified' for asc, '-modified' for desc)
       ({ sortBy, sortOrder } = buildOrderingParamFields(ordering, sortBy, sortOrder));
 
       const page = parsePageNumber(req.query.page);
       const result = await loadCasesData(req, caseType, { sortBy, sortOrder }, page);
 
+      // Use the shared helper to translate case type to display label
+      const caseDisplayStatus = translateCaseStatus(caseType);
+
       res.render('cases/index', {
         activeTab: caseType,
+        caseType: caseDisplayStatus,
+        pageTitleKey: caseDisplayStatus,
         data: result.data,
         sortBy,
         sortOrder,
