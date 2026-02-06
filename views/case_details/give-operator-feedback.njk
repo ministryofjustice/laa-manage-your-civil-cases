@@ -37,11 +37,12 @@
           }
         }) %}
 
-          <div class="govuk-hint govuk-!-margin-bottom-6">
-            {{ t('pages.caseDetails.operatorFeedback.hint') }}
-          </div>
+        <div class="govuk-hint govuk-!-margin-bottom-6">
+          {{ t('pages.caseDetails.operatorFeedback.hint') }}
+        </div>
 
-          {{ govukSelect({            id: "category",
+        {{ govukSelect({
+            id: "category",
             name: "category",
             label: {
               text: t('pages.caseDetails.operatorFeedback.categoryLabel')
@@ -50,7 +51,7 @@
             errorMessage: errorState.fieldErrors.category if errorState.fieldErrors.category
           }) }}
 
-          {{ govukCharacterCount({
+        {{ govukCharacterCount({
             label: {
               text: t('pages.caseDetails.operatorFeedback.commentLabel')
             },
