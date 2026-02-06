@@ -24,15 +24,15 @@
   {% endif %}
 
   <ul class="govuk-list govuk-list--bullet">
-    {% if data.scopeTraversal.category %}
+    {% if data.scopeTraversal and data.scopeTraversal.category %}
       <li>{{ t('pages.caseDetails.caseDetailsSection.category') }} {{ data.scopeTraversal.category }}</li>
     {% endif %}
 
-    {% if data.scopeTraversal.subCategory %}
+    {% if data.scopeTraversal and data.scopeTraversal.subCategory %}
       <li>{{ t('pages.caseDetails.caseDetailsSection.subCategory') }} {{ data.scopeTraversal.subCategory }}</li>
     {% endif %}
 
-    {% if data.scopeTraversal.onwardQuestion %}
+    {% if data.scopeTraversal and data.scopeTraversal.onwardQuestion %}
       {% for qa in data.scopeTraversal.onwardQuestion %}
         <li>{{ qa.question }} {{ qa.answer }}</li>
       {% endfor %}
@@ -42,7 +42,7 @@
       <li>{{ t('pages.caseDetails.caseDetailsSection.tellUsMore') }} {{ data.client_notes }}</li>
     {% endif %}
 
-    {% if data.scopeTraversal.financialAssessmentStatus %}
+    {% if data.scopeTraversal and data.scopeTraversal.financialAssessmentStatus %}
       <li>{{ t('pages.caseDetails.caseDetailsSection.financialAssessmentStatus') }} {{ data.scopeTraversal.financialAssessmentStatus }}</li>
     {% endif %}
   </ul>
