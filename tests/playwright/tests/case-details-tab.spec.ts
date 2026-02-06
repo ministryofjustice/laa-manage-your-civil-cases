@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures/index.js';
-import { setupAuth, t } from '../utils/index.js';
+import { assertCaseDetailsHeaderPresent, setupAuth, t } from '../utils/index.js';
 import { CaseDetailsTabPage } from '../pages/index.js';
 
 test.describe('Case details tab', () => {
@@ -12,6 +12,8 @@ test.describe('Case details tab', () => {
     await caseDetails.navigate();
     await caseDetails.expectClientName('Jack Youngs');
     await caseDetails.expectStatus('New');
+    // Assert the case details header is present
+    await assertCaseDetailsHeaderPresent(page, true, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");
 
     // Check for page heading
     await expect(caseDetails.tabHeading).toBeVisible();
