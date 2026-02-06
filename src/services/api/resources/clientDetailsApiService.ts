@@ -109,3 +109,41 @@ export async function getClientHistoryDetails(axiosMiddleware: AxiosInstanceWrap
     };
   }
 }
+
+/**
+ * Update provider notes for a case
+ * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+ * @param {string} caseReference - Case reference number
+ * @param {string} providerNotes - Provider notes to save
+ * @returns {Promise<ClientDetailsApiResponse>} API response with updated client details
+ */
+export async function updateProviderNotes(
+  axiosMiddleware: AxiosInstanceWrapper,
+  caseReference: string,
+  providerNotes: string
+): Promise<ClientDetailsApiResponse> {
+  try {
+    devLog(`API: PATCH ${API_PREFIX}/case/${caseReference}/`);
+
+    const configuredAxios = configureAxiosInstance(axiosMiddleware);
+
+    const payload = {
+      provider_notes: providerNotes
+    };
+
+    const response = await configuredAxios.patch(`${API_PREFIX}/case/${caseReference}/`, payload);
+    devLog(`API: Update provider notes response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+
+    return {
+      data: transformClientDetailsItem(response.data),
+      status: 'success'
+    };
+  } catch (error) {
+    const errorMessage = extractAndLogError(error, 'API error');
+    return {
+      data: null,
+      status: 'error',
+      message: errorMessage
+    };
+  }
+}

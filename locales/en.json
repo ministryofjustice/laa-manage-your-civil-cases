@@ -297,6 +297,12 @@
   },
   "forms": {
     "caseDetails": {
+      "providerNote": {
+        "validationError": {
+          "notEmpty": "You cannot save an empty note",
+          "tooLong": "Note must be 2500 characters or less"
+        }
+      },
       "reopenCase": {
         "validationError": {
           "notEmpty": "Enter why you want to reopen this case",

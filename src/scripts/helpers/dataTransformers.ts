@@ -622,15 +622,15 @@ export const transformDiagnosis = (diagnosis: unknown): {
 /**
  * Transform raw notes history from API to display format.
  * @param {unknown} notesHistory - Raw notes history from API
- * @returns {object | null} Transformed notes history object
+ * @returns {Array} Array of transformed notes history objects
  */
 export const transformNotesHistory = (
   notesHistory: unknown
-): {
+): Array<{
   createdBy: string;
   created: string;
   providerNotes: string;
-} | null => {
+}> => {
 
   const notesHistoryArray = Array.isArray(notesHistory)
     ? notesHistory
@@ -638,17 +638,18 @@ export const transformNotesHistory = (
       ? notesHistory.notes_history
       : [];
 
-  const firstItem = notesHistoryArray[0];
-
-  if (!isRecord(firstItem)) {
-    return null;
-  }
-
-  return {
-    createdBy: safeOptionalString(firstItem.created_by) ?? '',
-    created: formatLongFormDate(safeOptionalString(firstItem.created) ?? ''),
-    providerNotes: safeOptionalString(firstItem.provider_notes) ?? ''
-  };
+  return notesHistoryArray
+    .filter(isRecord)
+    .filter((item) => {
+      // Only include items that have provider_notes
+      const notes = safeOptionalString(item.provider_notes);
+      return notes !== undefined && notes !== null && notes.trim() !== '';
+    })
+    .map((item) => ({
+      createdBy: safeOptionalString(item.created_by) ?? '',
+      created: formatLongFormDate(safeOptionalString(item.created) ?? ''),
+      providerNotes: safeOptionalString(item.provider_notes) ?? ''
+    }));
 };
 
 /**

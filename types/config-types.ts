@@ -51,6 +51,7 @@ export interface Config {
   SERVICE_URL: string | undefined;
   CHARACTER_THRESHOLD: number;
   MAX_NOTE_LENGTH: number;
+  MAX_PROVIDER_NOTE_LENGTH: number;
   MAX_POSTCODE_LENGTH: number;
   app: AppConfig;
   csrf: CsrfConfig;
