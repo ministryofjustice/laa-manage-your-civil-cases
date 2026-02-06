@@ -146,7 +146,7 @@ export interface ClientDetailsResponse {
   //Diagnosis (null if not present)
   diagnosis: Diagnosis | null;
 
-  //Notes history (array of provider notes)
+  //Notes history (null if not present)
   notesHistory: NotesHistory[];
   
   // Allow additional fields for debugging

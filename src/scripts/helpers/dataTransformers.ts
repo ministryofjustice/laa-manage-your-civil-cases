@@ -568,18 +568,18 @@ export const transformScopeTraversal = (scopeTraversal: unknown): {
         const question = safeStringFromRecord(obj, 'question') ?? '';
         let answer = '';
 
-          if (Array.isArray(obj.answer)) {
-            answer = obj.answer
-              .map((a) => (typeof a === 'string' ? a : String(a)))
-              .filter(Boolean)
-              .join(' | ');
-          } else {
-            answer = safeOptionalString(obj.answer) ?? '';
-          }
+        if (Array.isArray(obj.answer)) {
+          answer = obj.answer
+            .map((a) => (typeof a === 'string' ? a : String(a)))
+            .filter(Boolean)
+            .join(' | ');
+        } else {
+          answer = safeOptionalString(obj.answer) ?? '';
+        }
 
-          if (question || answer) {
-            result.onwardQuestion.push({ question, answer });
-          }
+        if (question || answer) {
+          result.onwardQuestion.push({ question, answer });
+        }
       }
 
       return result;
@@ -651,7 +651,6 @@ export const transformNotesHistory = (
   return notesHistoryArray
     .filter(isRecord)
     .filter((item) => {
-      // Only include items that have provider_notes
       const notes = safeOptionalString(item.provider_notes);
       return notes !== undefined && notes !== null && notes.trim() !== '';
     })
@@ -659,7 +658,8 @@ export const transformNotesHistory = (
       createdBy: safeOptionalString(item.created_by) ?? '',
       created: formatLongFormDate(safeOptionalString(item.created) ?? ''),
       providerNotes: safeOptionalString(item.provider_notes) ?? ''
-    }));
+    }))
+    .reverse();
 };
 
 /**

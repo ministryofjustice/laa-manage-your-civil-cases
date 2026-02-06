@@ -53,7 +53,7 @@ export interface MockCase {
     category?:string;
     diagnosisNode?: Array<{ node: string; }>;
   }
-  notesHistory?: Array<{
+  notesHistory?:Array <{
     createdBy?: string;
     created?: string;
     providerNotes?: string;

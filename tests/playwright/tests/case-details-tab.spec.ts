@@ -130,7 +130,21 @@ test.describe('Case details tab', () => {
     await expect(operatorNotes).toBeVisible();
   });
 
-  test('should show provider notes section title and "no notes" text, when no operator notes exist', async ({ page, i18nSetup }) => {
+  test('should show provider notes section, when notesHistory & provider_notes are present', async ({ page, i18nSetup }) => {
+    const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-2211-4466'); // This case has some mock data
+    await caseDetails.navigate();
+    await caseDetails.expectClientName('Vinsmoke Sanj');
+    await caseDetails.expectStatus('New');
+
+    // `Operator scope diagnosis` title
+    await expect(caseDetails.headingH3ByText(t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle'))).toBeVisible();
+
+    // Notes from operator
+    const operatorNotes = page.getByText('These are some test provider notes', { exact: true });
+    await expect(operatorNotes).toBeVisible();
+  });
+
+  test('should show provider notes section title and "no notes" text, when notesHistory & provider_notes DO NOT exist', async ({ page, i18nSetup }) => {
     const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-1922-1879');
     await caseDetails.navigate();
     await caseDetails.expectClientName('Jack Youngs');
