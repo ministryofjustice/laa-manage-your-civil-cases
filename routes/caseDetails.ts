@@ -4,13 +4,14 @@ import { handleClientDetailsTab, acceptCase, completeCase, closeCase, getCloseCa
 import { handleCaseHistoryTab } from '#src/scripts/controllers/caseHistoryController.js';
 import { handleCaseDetailsTab, saveProviderNote } from '#src/scripts/controllers/caseDetailsController.js';
 import { getRemoveThirdPartyConfirmation, deleteThirdParty, getRemoveSupportNeedsConfirmation, deleteClientSupportNeeds } from '#src/scripts/controllers/index.js';
-import { getOperatorFeedbackForm, submitOperatorFeedback } from '#src/scripts/controllers/operatorFeedbackController.js';
+import { getOperatorFeedbackForm, submitOperatorFeedback, getDoYouWantToGiveFeedbackForm, submitDoYouWantToGiveFeedbackForm } from '#src/scripts/controllers/operatorFeedbackController.js';
 import { validateReopenCase } from '#src/middlewares/reopenCaseSchema.js';
 import { validateCloseCase } from '#src/middlewares/closeCaseSchema.js';
 import { validatePendingCase } from '#src/middlewares/pendingCaseSchema.js';
 import { validateOperatorFeedback } from '#src/middlewares/operatorFeedbackSchema.js';
 import { validateProviderNote } from '#src/middlewares/providerNoteSchema.js';
 import { fetchClientDetails } from '#src/middlewares/caseDetailsMiddleware.js';
+import { validateGiveFeedback } from '#src/middlewares/giveFeedbackSchema.js';
 
 
 // Create a new router for case details routes
@@ -119,6 +120,16 @@ router.get('/:caseReference/give-operator-feedback', fetchClientDetails, async (
 /* POST operator feedback. */
 router.post('/:caseReference/give-operator-feedback', validateOperatorFeedback(), async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   await submitOperatorFeedback(req, res, next);
+});
+
+/* GET do-you-want-to-give-feedback form. */
+router.get('/:caseReference/do-you-want-to-give-feedback', fetchClientDetails, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  await getDoYouWantToGiveFeedbackForm(req, res, next);
+});
+
+/* POST do-you-want-to-give-feedback form. */
+router.post('/:caseReference/do-you-want-to-give-feedback', validateGiveFeedback(), async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  await submitDoYouWantToGiveFeedbackForm(req, res, next);
 });
 
 export default router;

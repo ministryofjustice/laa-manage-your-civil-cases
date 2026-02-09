@@ -257,8 +257,8 @@ export async function closeCase(req: Request, res: Response, next: NextFunction)
     devLog(`Closing case: ${caseReference} with event code: ${eventCode}`);
     await changeCaseStateService.closeCase(req.axiosMiddleware, caseReference, eventCode, closeNote);
 
-    // Redirect to client details page
-    res.redirect(`/cases/${caseReference}/client-details`);
+    // Redirect to "do you want to give feedback" page
+    res.redirect(`/cases/${caseReference}/do-you-want-to-give-feedback`);
   } catch (error) {
     const processedError = createProcessedError(error, `closing case ${caseReference}`);
     next(processedError);
@@ -349,8 +349,8 @@ export async function pendingCase(req: Request, res: Response, next: NextFunctio
     devLog(`Marking case as pending: ${caseReference} with reason: ${pendingReason}`);
     await changeCaseStateService.pendingCase(req.axiosMiddleware, caseReference, notes);
 
-    // Redirect to client details page
-    res.redirect(`/cases/${caseReference}/client-details`);
+    // Redirect to "do you want to give feedback" page
+    res.redirect(`/cases/${caseReference}/do-you-want-to-give-feedback`);
   } catch (error) {
     const processedError = createProcessedError(error, `marking case as pending ${caseReference}`);
     next(processedError);

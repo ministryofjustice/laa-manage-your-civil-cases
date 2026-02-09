@@ -9,6 +9,7 @@
     "signOut": "Sign out",
     "yes": "Yes",
     "no": "No",
+    "continue": "Continue",
     "error": "Error",
     "warning": "Warning",
     "errorSummaryTitle": "There is a problem",
@@ -205,7 +206,7 @@
       "buttons": {
         "label": "Change status",
         "giveOperatorFeedback": "Give operator feedback",
-        "actions":{
+        "actions": {
           "advising": "Advising",
           "pending": "Pending",
           "closed": "Closed",
@@ -261,6 +262,10 @@
         "categoryLabel": "Feedback category",
         "categoryPlaceholder": "Select a category",
         "commentLabel": "Comment"
+      },
+      "doYouWantToGiveFeedback": {
+        "pageTitle": "Do you want to give feedback about the operator service? – {caseReference} – {serviceName} – GOV.UK",
+        "legend": "Do you want to give feedback about the operator service?"
       }
     },
     "error": {
@@ -343,6 +348,13 @@
           "comment": {
             "notEmpty": "Enter a feedback comment",
             "tooLong": "Comment must be 2500 characters or less"
+          }
+        }
+      },
+      "doYouWantToGiveFeedback": {
+        "validationError": {
+          "doYouWantToGiveFeedback": {
+            "notEmpty": "Select yes if you want to give feedback about the operator service"
           }
         }
       }
