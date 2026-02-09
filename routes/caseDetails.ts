@@ -5,14 +5,7 @@ import { handleCaseHistoryTab } from '#src/scripts/controllers/caseHistoryContro
 import { handleCaseDetailsTab, saveProviderNote } from '#src/scripts/controllers/caseDetailsController.js';
 import { getRemoveThirdPartyConfirmation, deleteThirdParty, getRemoveSupportNeedsConfirmation, deleteClientSupportNeeds } from '#src/scripts/controllers/index.js';
 import { getOperatorFeedbackForm, submitOperatorFeedback, getDoYouWantToGiveFeedbackForm, submitDoYouWantToGiveFeedbackForm } from '#src/scripts/controllers/operatorFeedbackController.js';
-import { validateReopenCase } from '#src/middlewares/reopenCaseSchema.js';
-import { validateCloseCase } from '#src/middlewares/closeCaseSchema.js';
-import { validatePendingCase } from '#src/middlewares/pendingCaseSchema.js';
-import { validateOperatorFeedback } from '#src/middlewares/operatorFeedbackSchema.js';
-import { validateProviderNote } from '#src/middlewares/providerNoteSchema.js';
-import { fetchClientDetails } from '#src/middlewares/caseDetailsMiddleware.js';
-import { validateGiveFeedback } from '#src/middlewares/giveFeedbackSchema.js';
-
+import { validateReopenCase, validateCloseCase, validatePendingCase, validateOperatorFeedback, validateProviderNote, fetchClientDetails, validateGiveFeedback } from '#src/middlewares/indexSchema.js';
 
 // Create a new router for case details routes
 const router = express.Router();

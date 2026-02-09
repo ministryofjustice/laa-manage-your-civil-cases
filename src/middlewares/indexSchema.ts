@@ -34,3 +34,31 @@ export {
   validateAddClientSupportNeeds,
   validateEditClientSupportNeeds
 } from './clientSupportNeedsSchema.js';
+
+export {
+  validateReopenCase
+} from './reopenCaseSchema.js'
+
+export {
+  validateCloseCase
+} from './closeCaseSchema.js'
+
+export {
+  validatePendingCase
+} from './pendingCaseSchema.js'
+
+export {
+  validateOperatorFeedback
+} from './operatorFeedbackSchema.js'
+
+export {
+  validateProviderNote
+} from './providerNoteSchema.js'
+
+export {
+  fetchClientDetails
+} from './caseDetailsMiddleware.js'
+
+export {
+  validateGiveFeedback
+} from './giveFeedbackSchema.js'
