@@ -209,9 +209,9 @@ export async function getDoYouWantToGiveFeedbackForm(req: Request, res: Response
     return;
   }
 
-  // if (!hasAllowedCaseStatus(req.clientData, ['closed','pending'])) {
-  //   return res.redirect(`/cases/${caseReference}/client-details`);
-  // }
+  if (!hasAllowedCaseStatus(req.clientData, ['closed','pending'])) {
+    return res.redirect(`/cases/${caseReference}/client-details`);
+  }
 
   try {
     devLog(`Rendering "do you want to give feedback" form for case: ${caseReference}`);

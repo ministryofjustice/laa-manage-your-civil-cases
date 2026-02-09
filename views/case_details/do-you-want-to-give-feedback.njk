@@ -24,6 +24,7 @@
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
 
         {{ govukRadios({
+          id: "doYouWantToGiveFeedback",
           name: "doYouWantToGiveFeedback",
           errorMessage: errorState.fieldErrors.doYouWantToGiveFeedback if errorState.fieldErrors.doYouWantToGiveFeedback,
           fieldset: {
