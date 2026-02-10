@@ -265,7 +265,7 @@ describe('Client Details Controller', () => {
 
       // Assert
       expect(closeCaseStub.calledOnce).to.be.true;
-      expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
+      expect(redirectStub.calledWith('/cases/TEST123/do-you-want-to-give-feedback')).to.be.true;
     });
   });
 
@@ -282,7 +282,7 @@ describe('Client Details Controller', () => {
 
       // Assert
       expect(pendingCaseStub.calledOnce).to.be.true;
-      expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
+      expect(redirectStub.calledWith('/cases/TEST123/do-you-want-to-give-feedback')).to.be.true;
     });
   });
 

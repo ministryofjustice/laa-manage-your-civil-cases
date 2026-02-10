@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures/index.js';
 import { setupAuth, assertCaseDetailsHeaderPresent} from '../utils/index.js';
-import { ClientDetailsPage, PendingCaseFormPage, CloseCaseFormPage, ReopenCaseFormPage } from '../pages/index.js';
+import { ClientDetailsPage, PendingCaseFormPage, CloseCaseFormPage, ReopenCaseFormPage, GiveFeedbackFormPage } from '../pages/index.js';
 
 
 test.describe('Case Status Handling', () => {
@@ -117,9 +117,9 @@ test.describe('Case Status Handling', () => {
       await assertCaseDetailsHeaderPresent(page, false, "George Allen", "PC-9159-2337", "9 Jan 2025"); 
       await closePage.submitWithData('MIS-MEANS', 'Case successfully closed');
 
-      const clientDetails = ClientDetailsPage.forCase(page, 'PC-9159-2337');
-      await expect(page).toHaveURL(clientDetails.url);
-      await clientDetails.expectStatus('Closed');
+      const giveFeedback = GiveFeedbackFormPage.forCase(page, 'PC-9159-2337');
+      await expect(page).toHaveURL(giveFeedback.url);
+      await giveFeedback.expectStatus('Closed');
     });
 
     test('should validate required fields', async ({ page }) => {

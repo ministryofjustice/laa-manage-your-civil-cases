@@ -12,4 +12,5 @@ export { CloseCaseFormPage } from './CloseCaseFormPage.js';
 export { ReopenCaseFormPage } from './ReopenCaseFormPage.js';
 export { ClientDetailsPage } from './ClientDetailsPage.js';
 export { OperatorFeedbackFormPage } from './OperatorFeedbackFormPage.js';
+export { GiveFeedbackFormPage } from './GiveFeedbackFormPage.js';
 export * from './components/index.js';
