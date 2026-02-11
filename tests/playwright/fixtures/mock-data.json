@@ -90,6 +90,7 @@
     "refCode": "",
     "dateReceived": "2025-07-06T19:00:00-05:00",
     "caseStatus": "New",
+    "isUrgent": true,
     "dateOfBirth": "1981-08-18T00:00:00-05:00",
     "clientIsVulnerable": true,
     "phoneNumber": "0786442261",

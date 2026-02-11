@@ -13,7 +13,7 @@ test('viewing change email-address form, to see the expected elements', async ({
   await editEmailPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
 
   // Assert all main elements are visible
   await editEmailPage.assertMainElementsVisible();
@@ -26,7 +26,7 @@ test('change email address form displays validation errors correctly', async ({ 
   // Navigate to the change form and test validation
   await editEmailPage.navigate();
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
   
   await editEmailPage.assertInvalidEmailValidation('JackYoungs.com');
 });

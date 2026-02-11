@@ -17,7 +17,8 @@ test('viewing change address form, to see the expected elements', async ({ page,
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");  
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
+ 
 
   // Expect to see the following elements
   await expect(page.locator('h1').nth(1)).toContainText(t('forms.clientDetails.address.title'));
@@ -37,7 +38,8 @@ test('unchanged fields trigger change detection error', async ({ page, i18nSetup
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
+ 
 
   // Submit form
   await expect(saveButton).toBeVisible();
@@ -64,7 +66,7 @@ test('save button should redirect to client details when valid data submitted', 
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
 
   // Fill in valid address details (ensure they're different from any existing data)
   await addressInput.fill('123 New Street\nLondon');
@@ -87,7 +89,7 @@ test('should trigger postcode validation when 12 or more characters are entered'
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
 
   // Fill in invalid postcode filed with 13 characters
   await addressInput.fill('123 New Street\nLondon');

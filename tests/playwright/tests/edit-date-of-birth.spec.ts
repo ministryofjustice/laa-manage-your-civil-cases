@@ -15,7 +15,8 @@ test('viewing edit date of birth form should display expected elements', async (
   await editDateOfBirthPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
+ 
 
   // Assert all main elements are visible
   await editDateOfBirthPage.assertMainElementsVisible();
@@ -26,7 +27,7 @@ test('cancel link should navigate back to client details', async ({ page, i18nSe
   // Test cancel navigation functionality
   await editDateOfBirthPage.expectCancelNavigatesBack();
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(editDateOfBirthPage.getPage, true, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+  await assertCaseDetailsHeaderPresent(editDateOfBirthPage.getPage, { withMenuButtons: true, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
 
 
 });
@@ -44,8 +45,7 @@ test('save button should redirect to client details when no validation errors', 
   await expect(page).toHaveURL(clientDetailsUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(editDateOfBirthPage.getPage, true, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
-
+  await assertCaseDetailsHeaderPresent(editDateOfBirthPage.getPage, { withMenuButtons: true, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
 });
 
 test('date of birth edit page should be accessible', {

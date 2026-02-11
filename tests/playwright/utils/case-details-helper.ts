@@ -1,6 +1,25 @@
 import { expect, Locator, Page } from '@playwright/test';
 
-export async function assertCaseDetailsHeaderPresent(page: Page, withMenuButtons: boolean, expectedName: string, expectedCaseRef: string, dateReceived: string) {
+type CaseDetailsHeaderOptions = {
+  withMenuButtons?: boolean;
+  isUrgent?: boolean;
+  expectedName: string;
+  expectedCaseRef: string;
+  dateReceived: string;
+  urgentBadgeText?: string;
+};
+
+export async function assertCaseDetailsHeaderPresent(
+  page: Page,
+  {
+    withMenuButtons = false,
+    isUrgent = false,
+    expectedName,
+    expectedCaseRef,
+    dateReceived,
+    urgentBadgeText = 'Vulnerable',
+  }: CaseDetailsHeaderOptions
+) {
   const caseHeader = page.locator('.mcc-case-details-header');
   await expect(caseHeader).toBeVisible();
 
@@ -8,9 +27,18 @@ export async function assertCaseDetailsHeaderPresent(page: Page, withMenuButtons
   await assertH1Item(caseHeader, expectedName);
   await assertH2Item(caseHeader, 'Date received', dateReceived);
 
+  if (isUrgent) {
+    await assertIsUrgentBadgeToBeVisible(caseHeader, urgentBadgeText);
+  }
+
   if (withMenuButtons) {
     await assertMenuButtonVisible(caseHeader);
   }
+}
+
+async function assertIsUrgentBadgeToBeVisible(container: Locator, badgeText: string) {
+  const vulnerableBadge = container.locator('.moj-badge', { hasText: badgeText });
+  await expect(vulnerableBadge).toBeVisible();
 }
 
 async function assertMenuButtonVisible(container: Locator) {

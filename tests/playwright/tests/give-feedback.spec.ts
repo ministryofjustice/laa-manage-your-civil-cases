@@ -16,7 +16,7 @@ test('viewing "do you want to give feedback" form should display expected elemen
   await feedbackPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(feedbackPage.getPage, false, "Roronoa Zoro", "PC-6667-9089", "6 Jan 2025"); 
+  await assertCaseDetailsHeaderPresent(feedbackPage.getPage, { withMenuButtons: false, expectedName: "Roronoa Zoro", expectedCaseRef: "PC-6667-9089", dateReceived: "6 Jan 2025" }); 
 
   // Expect to see the main elements
   await feedbackPage.getExpectedHeading();
@@ -43,7 +43,7 @@ test('"do you want to give feedback" form displays validation errors correctly',
   await feedbackPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(feedbackPage.getPage, false, "Roronoa Zoro", "PC-6667-9089", "6 Jan 2025"); 
+  await assertCaseDetailsHeaderPresent(feedbackPage.getPage, { withMenuButtons: false, expectedName: "Roronoa Zoro", expectedCaseRef: "PC-6667-9089", dateReceived: "6 Jan 2025" });  
 
   // Submit form without selecting category or entering comment
   await feedbackPage.clickContinue();

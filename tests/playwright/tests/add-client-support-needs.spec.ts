@@ -14,7 +14,7 @@ test('add client support needs form should save valid data and redirect to clien
   await page.goto(addSupportNeedsUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");  
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
 
   // Expect to see the form heading
   await expect(page.locator('h1').nth(1)).toContainText('Add a client support need');
