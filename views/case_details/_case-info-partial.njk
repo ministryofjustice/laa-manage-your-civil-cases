@@ -102,7 +102,7 @@
   {# Urgent case #}
   {% if client.is_urgent === 'true' %} 
     {{ mojBadge({
-      text: "Vulnerable",
+      text: t('pages.caseDetails.vulnerable'),
       classes: "moj-badge--red govuk-!-margin-bottom-3"
     }) }}
   {% endif %}

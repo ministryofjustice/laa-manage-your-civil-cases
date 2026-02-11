@@ -179,6 +179,7 @@
       "laaReference": "LAA reference",
       "notProvided": "Not provided",
       "status": "Status",
+      "vulnerable": "Vulnerable",
       "tabs": {
         "clientDetails": "Client details",
         "caseDetails": "Case details",
