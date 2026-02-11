@@ -81,7 +81,7 @@ export function transformToApiFormat(caseItem: MockCase): object {
     // Adaptation details nested object
     adaptation_details: caseItem.clientSupportNeeds ? {
       bsl_webcam: caseItem.clientSupportNeeds.bslWebcam === 'Yes',
-      minicom: caseItem.clientSupportNeeds.textRelay === 'Yes',
+      minicom: caseItem.clientSupportNeeds.minicom === true,
       text_relay: caseItem.clientSupportNeeds.textRelay === 'Yes',
       skype_webcam: caseItem.clientSupportNeeds.skype === true,
       callback_preference: caseItem.clientSupportNeeds.callbackPreference === 'Yes',

@@ -21,7 +21,7 @@ test('viewing change phone-number form, to see the expected elements', async ({ 
   await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
 
   // Expect to see the following elements
-  await expect(page.locator('h1')).toContainText(t('forms.clientDetails.phoneNumber.title'));
+  await expect(page.locator('h1').nth(1)).toContainText(t('forms.clientDetails.phoneNumber.title'));
   await expect(phoneInput).toBeVisible();
   await expect(safeToCallInput).toBeVisible();
   await expect(announceCallInput).toBeVisible();

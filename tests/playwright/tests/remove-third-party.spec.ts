@@ -18,13 +18,7 @@ test('viewing remove third party confirmation should display expected elements',
   // Assert the case details header is present
   await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
 
-  // Header components 
-  const dateReceivedText = page.getByText('Date received', { exact: true });
-  const laaReferenceText = page.getByText('LAA reference', { exact: true });
-
-  await expect(dateReceivedText).toBeVisible();
-  await expect(laaReferenceText).toBeVisible();
-  await expect(page.locator('h1')).toContainText('Remove third party?');
+  await expect(page.locator('h1').nth(1)).toContainText('Remove third party?');
   await expect(page.getByRole('button', { name: 'Yes, remove' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'No, go back to client details' })).toBeVisible();
   await expect(page.getByText('This will permanently delete all information about the third party.')).toBeVisible();
@@ -60,7 +54,7 @@ test('confirmation page shows warning text about removing third party contact', 
   await page.goto(visitUrl);
   // Assert the case details header is present
   await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");
-  await expect(page.locator('h1')).toContainText('Remove third party?');
+  await expect(page.locator('h1').nth(1)).toContainText('Remove third party?');
   await expect(page.getByText('This will permanently delete all information about the third party.')).toBeVisible();
 });
 

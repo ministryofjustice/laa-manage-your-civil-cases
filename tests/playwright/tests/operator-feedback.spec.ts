@@ -19,7 +19,7 @@ test('viewing operator feedback form should display expected elements', async ({
   await assertCaseDetailsHeaderPresent(feedbackPage.getPage, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");
 
   // Expect to see the main elements
-  await feedbackPage.expectPageLoaded(feedbackPage.getExpectedHeading());
+  await expect(feedbackPage.headingH1Fieldset).toHaveText(feedbackPage.getExpectedHeading());
   await feedbackPage.expectFormElementsVisible();
 });
 

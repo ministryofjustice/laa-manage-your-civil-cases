@@ -27,6 +27,18 @@ test('client details selected from closed cases tab has correct page elements', 
   await expect(advisingMenuItem).toBeVisible();
 });
 
+test('client support needs card is not shown on new case when `minicom` is true and `skype` is false', async ({ page, i18nSetup }) => {
+  // Navigate to the client details
+  await page.goto(getClientDetailsUrlByStatus('closed'));
+
+  await assertCaseDetailsHeaderPresent(page, true, "Roronoa Zoro", "PC-6667-9089", "6 Jan 2025"); 
+
+  // 'Roronoa Zoro' clientSupportNeeds data in `tests/playwright/fixtures/mock-data.json`, has been adjusted to mock this scenario
+  const clientSupportNeedsButton = page.getByRole('button', { name: 'Add client support need' });
+  await expect(clientSupportNeedsButton).toBeVisible();
+});
+
+
 test('closed client details page should be accessible', {
   tag: '@accessibility',
 }, async ({ page, checkAccessibility }) => {

@@ -118,7 +118,7 @@ export class EditDateOfBirthPage extends BaseEditFormPage {
    * Asserts that the main date of birth elements are visible
    */
   async assertMainElementsVisible(): Promise<void> {
-    await expect(this.heading).toContainText(t('forms.clientDetails.dateOfBirth.legend'));
+    await expect(this.headingH1Fieldset).toContainText(t('forms.clientDetails.dateOfBirth.legend'));
     await expect(this.dayInput).toBeVisible();
     await expect(this.monthInput).toBeVisible();
     await expect(this.yearInput).toBeVisible();

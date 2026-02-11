@@ -42,6 +42,7 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
   const provider_closed = formatDate(safeOptionalString(item.provider_closed) ?? '');
   const outcome_code = safeOptionalString(item.outcome_code) ?? '';
   const state_note = safeOptionalString(item.state_note) ?? '';
+  const is_urgent = safeOptionalString(item.is_urgent) ?? '';
   const client_notes = safeOptionalString(item.client_notes) ?? '';
   const operatorNotes = safeOptionalString(item.notes) ?? '';
   // Transform contact details
@@ -78,6 +79,7 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
     providerClosedBanner,     
     outcome_code, 
     state_note,
+    is_urgent,
     client_notes,
     operatorNotes,
     ...contactDetails,

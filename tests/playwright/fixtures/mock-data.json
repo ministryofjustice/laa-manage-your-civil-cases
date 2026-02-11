@@ -116,6 +116,7 @@
     },
     "clientSupportNeeds": {
       "skype": true,
+      "minicom": false,
       "bslWebcam": "No",
       "textRelay": "No",
       "callbackPreference": "No",
@@ -296,6 +297,16 @@
         "selected": ["Yes"],
         "passphrase": "Warlord of the Sea"
       }
+    },
+    "clientSupportNeeds": {
+      "skype": false,
+      "minicom": true,
+      "bslWebcam": "No",
+      "textRelay": "No",
+      "callbackPreference": "No",
+      "languageSupportNeeds": "",
+      "notes": "",
+      "no_adaptations_required": false
     },
     "lastModified": "2025-01-05T19:00:00-05:00"
   },

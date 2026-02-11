@@ -178,6 +178,7 @@
       "dateReceived": "Date received",
       "laaReference": "LAA reference",
       "notProvided": "Not provided",
+      "status": "Status",
       "tabs": {
         "clientDetails": "Client details",
         "caseDetails": "Case details",
@@ -205,6 +206,7 @@
       },
       "buttons": {
         "label": "Change status",
+        "splitThisCase": "Split this case",
         "giveOperatorFeedback": "Give operator feedback",
         "actions": {
           "advising": "Advising",

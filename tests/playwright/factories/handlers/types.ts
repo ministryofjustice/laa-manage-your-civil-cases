@@ -62,6 +62,7 @@ export interface MockCase {
     bslWebcam?: string;
     textRelay?: string;
     skype?: boolean;
+    minicom?: boolean;
     callbackPreference?: string;
     languageSupportNeeds?: string;
     notes?: string;

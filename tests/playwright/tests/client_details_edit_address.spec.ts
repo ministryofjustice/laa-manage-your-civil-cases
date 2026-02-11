@@ -20,7 +20,7 @@ test('viewing change address form, to see the expected elements', async ({ page,
   await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");  
 
   // Expect to see the following elements
-  await expect(page.locator('h1')).toContainText(t('forms.clientDetails.address.title'));
+  await expect(page.locator('h1').nth(1)).toContainText(t('forms.clientDetails.address.title'));
   await expect(addressInput).toBeVisible();
   await expect(postcodeInput).toBeVisible();
   await expect(saveButton).toBeVisible();
