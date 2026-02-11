@@ -19,6 +19,13 @@ export interface SessionConfig {
   resave: boolean;
   saveUninitialized: boolean;
   encryptionKey: string;
+  cookie?: {
+    secure?: boolean;
+    httpOnly?: boolean;
+    sameSite?: 'strict' | 'lax' | 'none';
+    maxAge?: number;
+    path?: string;
+  };
 }
 
 export interface PathsConfig {
