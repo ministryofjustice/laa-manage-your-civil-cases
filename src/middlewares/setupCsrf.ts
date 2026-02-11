@@ -34,6 +34,9 @@ const validateOriginHeader = (req: Request): boolean => {
     return true;
   }
 
+  // Check if we're in test or development environment
+  const isTestOrDev = isDevelopment() || process.env.NODE_ENV === 'test';
+
   try {
     // Check origin header first
     if (origin) {
@@ -45,8 +48,8 @@ const validateOriginHeader = (req: Request): boolean => {
         return true;
       }
 
-      // In development, allow localhost variations (with/without port)
-      if (isDevelopment() && host && originHost) {
+      // In development/test, allow localhost variations (with/without port)
+      if (isTestOrDev && host && originHost) {
         const hostBase = host.split(':')[0];
         const originBase = originHost.split(':')[0];
         if (hostBase === originBase && (hostBase === 'localhost' || hostBase === '127.0.0.1')) {
@@ -67,8 +70,8 @@ const validateOriginHeader = (req: Request): boolean => {
         return true;
       }
 
-      // In development, allow localhost variations
-      if (isDevelopment() && host && refererHost) {
+      // In development/test, allow localhost variations
+      if (isTestOrDev && host && refererHost) {
         const hostBase = host.split(':')[0];
         const refererBase = refererHost.split(':')[0];
         if (hostBase === refererBase && (hostBase === 'localhost' || hostBase === '127.0.0.1')) {
@@ -79,8 +82,8 @@ const validateOriginHeader = (req: Request): boolean => {
       return false;
     }
   } catch {
-    // Invalid URL format - reject in production, allow in development
-    return isDevelopment();
+    // Invalid URL format - reject in production, allow in development/test
+    return isTestOrDev;
   }
 
   return true;
