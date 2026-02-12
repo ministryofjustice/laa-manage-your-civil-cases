@@ -17,7 +17,7 @@ export async function assertCaseDetailsHeaderPresent(
     expectedName,
     expectedCaseRef,
     dateReceived,
-    urgentBadgeText = 'Vulnerable',
+    urgentBadgeText = 'Urgent',
   }: CaseDetailsHeaderOptions
 ) {
   const caseHeader = page.locator('.mcc-case-details-header');
@@ -37,8 +37,8 @@ export async function assertCaseDetailsHeaderPresent(
 }
 
 async function assertIsUrgentBadgeToBeVisible(container: Locator, badgeText: string) {
-  const vulnerableBadge = container.locator('.moj-badge', { hasText: badgeText });
-  await expect(vulnerableBadge).toBeVisible();
+  const urgentBadge = container.locator('.moj-badge', { hasText: badgeText });
+  await expect(urgentBadge).toBeVisible();
 }
 
 async function assertMenuButtonVisible(container: Locator) {
