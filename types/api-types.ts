@@ -123,6 +123,7 @@ export interface ClientDetailsResponse {
   provider_closed?: string;
   outcome_code?: string;
   state_note?: string;
+  is_urgent?: string;
   client_notes?: string;
   operatorNotes?: string;
   

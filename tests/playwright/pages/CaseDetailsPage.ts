@@ -33,7 +33,7 @@ export class CaseDetailsTabPage {
    * @returns {Locator} The client name locator
    */
   get clientName(): Locator {
-    return this.page.locator('h2.govuk-heading-s').first();
+    return this.page.getByRole('heading', { level: 1 });
   }
 
   /**

@@ -14,20 +14,15 @@ test('viewing remove client support needs confirmation should display expected e
   const confirmButton = page.getByRole('button', { name: 'Yes, remove' });
   const cancelButton = page.getByRole('button', { name: 'No, go back to client details' }); // It's a button, not a link
 
-  // Header components 
-  const dateReceivedText = page.getByText('Date received', { exact: true });
-  const laaReferenceText = page.getByText('LAA reference', { exact: true });
-
   // Navigate to the remove client support needs confirmation
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");  
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
+  
 
   // Expect to see the main elements
-  await expect(dateReceivedText).toBeVisible();
-  await expect(laaReferenceText).toBeVisible();
-  await expect(page.locator('h1')).toContainText('Remove client support needs?'); // Use actual text
+  await expect(page.locator('h1').nth(1)).toContainText('Remove client support needs?'); // Use actual text
   await expect(confirmButton).toBeVisible();
   await expect(cancelButton).toBeVisible();
 
@@ -42,7 +37,7 @@ test('cancel link should navigate back to client details', async ({ page, i18nSe
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
 
   // Click cancel button
   await cancelButton.click();
@@ -58,7 +53,7 @@ test('confirm button should delete client support needs and redirect to client d
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
 
   // Click confirm button
   await expect(confirmButton).toBeVisible();
@@ -73,10 +68,10 @@ test('confirmation page shows warning text about removing client support needs',
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
 
   // Check the page heading
-  await expect(page.locator('h1')).toContainText('Remove client support needs?');
+  await expect(page.locator('h1').nth(1)).toContainText('Remove client support needs?');
   
   // Check the warning description text - using actual text from locales
   await expect(page.getByText('permanently delete all information about the clients\'s support needs')).toBeVisible();
@@ -104,7 +99,7 @@ test('should show 404 error when case has no client support needs', async ({ pag
   await page.goto(visitUrl);
   
   // If the case has support needs (which our mock does), page should load normally
-  await expect(page.locator('h1')).toContainText('Remove client support needs?');
+  await expect(page.locator('h1').nth(1)).toContainText('Remove client support needs?');
   
   // This test serves as documentation for the expected behavior
   // In a real scenario with varied mock data, some cases would not have support needs

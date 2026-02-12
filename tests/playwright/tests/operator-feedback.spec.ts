@@ -16,10 +16,10 @@ test('viewing operator feedback form should display expected elements', async ({
   await feedbackPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(feedbackPage.getPage, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");
+  await assertCaseDetailsHeaderPresent(feedbackPage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
 
   // Expect to see the main elements
-  await feedbackPage.expectPageLoaded(feedbackPage.getExpectedHeading());
+  await expect(feedbackPage.headingH1Fieldset).toHaveText(feedbackPage.getExpectedHeading());
   await feedbackPage.expectFormElementsVisible();
 });
 
@@ -30,7 +30,7 @@ test('cancel link should navigate back to client details', async ({ page, i18nSe
   await feedbackPage.expectCancelNavigatesBack();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(feedbackPage.getPage, true, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");
+  await assertCaseDetailsHeaderPresent(feedbackPage.getPage, { withMenuButtons: true, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
 });
 
 test('save button should redirect to client details when valid data submitted', async ({ page, i18nSetup }) => {
@@ -53,7 +53,7 @@ test('operator feedback form displays validation errors correctly', async ({ pag
   await feedbackPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(feedbackPage.getPage, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");
+  await assertCaseDetailsHeaderPresent(feedbackPage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
 
   // Submit form without selecting category or entering comment
   await feedbackPage.clickSave();
@@ -73,7 +73,7 @@ test('operator feedback form validates category is required', async ({ page, i18
   await feedbackPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(feedbackPage.getPage, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");
+  await assertCaseDetailsHeaderPresent(feedbackPage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
 
   // Submit form with comment but no category
   await feedbackPage.fillComment('This is a comment without category');
@@ -93,7 +93,7 @@ test('operator feedback form validates comment is required', async ({ page, i18n
   await feedbackPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(feedbackPage.getPage, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");
+  await assertCaseDetailsHeaderPresent(feedbackPage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
 
   // Submit form with category but no comment
   await feedbackPage.selectCategory('ADCO');
@@ -113,7 +113,7 @@ test('operator feedback form validates comment length', async ({ page, i18nSetup
   await feedbackPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(feedbackPage.getPage, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");
+  await assertCaseDetailsHeaderPresent(feedbackPage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
 
   // Submit form with comment exceeding 2500 characters
   const longComment = 'a'.repeat(2501);
@@ -135,7 +135,7 @@ test('character count component displays remaining characters', async ({ page, i
   await feedbackPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(feedbackPage.getPage, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");
+  await assertCaseDetailsHeaderPresent(feedbackPage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
 
   // Type enough text to pass the 85% threshold so the character count message appears
   // Threshold triggers at 2126 chars (85% of 2500), typing 2125 leaves 375 characters remaining

@@ -11,7 +11,7 @@ test('client details selected from opened cases tab has correct page elements', 
   await page.goto(getClientDetailsUrlByStatus('open'));
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, true, "Grace Baker", "PC-1869-9154", "8 Aug 2025"); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 Aug 2025" });  
 
   const open_tag = page.getByText('Opened', { exact: true });
   const accept_case_button = page.getByRole('button', { name: t('pages.caseDetails.buttons.acceptCase') })
