@@ -70,6 +70,8 @@ const externalModules: string[] = [
 	'http-errors',
 	'redis',
 	'connect-redis',
+	'socket.io',
+	'@socket.io/redis-adapter',
 	'*.node'
 ];
 
@@ -226,6 +228,37 @@ const buildFrontendPackages = async (watch = false): Promise<esbuild.BuildContex
 };
 
 /**
+ * Builds case viewer Socket.IO client with optional watch capability.
+ * @async
+ * @param {boolean} watch - Whether to enable watch mode
+ * @returns {Promise<esbuild.BuildContext | undefined>} Build context if watching, undefined otherwise
+ */
+const buildCaseViewerSocket = async (watch = false): Promise<esbuild.BuildContext | undefined> => {
+	const options: esbuild.BuildOptions = {
+		entryPoints: ['src/scripts/caseViewerSocket.ts'],
+		bundle: true,
+		platform: 'browser',
+		target: 'es2015',
+		format: 'iife',
+		sourcemap: process.env.NODE_ENV !== 'production',
+		minify: process.env.NODE_ENV === 'production',
+		outfile: `public/js/caseViewerSocket.${buildNumber}.min.js`
+	};
+
+	if (watch) {
+		const context = await esbuild.context(options);
+		await context.watch();
+		return context;
+	} else {
+		await esbuild.build(options).catch((error: unknown) => {
+			console.error('❌ caseViewerSocket.js build failed:', error);
+			process.exit(UNCAUGHT_FATAL_EXCEPTION);
+		});
+		return undefined;
+	}
+};
+
+/**
  * Main watch process that sets up watchers for all build tasks.
  * @async
  * @returns {Promise<void>} Resolves when all watchers are set up.
@@ -240,7 +273,8 @@ const watchBuild = async (): Promise<void> => {
 			buildScss(true),
 			buildAppJs(true),
 			buildCustomJs(true),
-			buildFrontendPackages(true)
+			buildFrontendPackages(true),
+			buildCaseViewerSocket(true)
 		]);
 
 		// Watch for asset changes and copy them
@@ -308,7 +342,8 @@ const build = async (): Promise<void> => {
 			buildScss(false),
 			buildAppJs(false),
 			buildCustomJs(false),
-			buildFrontendPackages(false)
+			buildFrontendPackages(false),
+			buildCaseViewerSocket(false)
 		]);
 
 		console.log('✅ Build completed successfully.');

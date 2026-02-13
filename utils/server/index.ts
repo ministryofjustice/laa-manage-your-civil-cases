@@ -10,6 +10,7 @@ import { axiosMiddleware } from './axiosSetup.js';
 import { displayAsciiBanner } from './displayAsciiBanner.js';
 import { encrypt, decrypt, isEncryptionConfigured } from './encryption.js';
 import { createRedisClient, type RedisClientType } from './redisClient.js';
+import { setupSocketIO } from './socketSetup.js';
 
 export {
     getBuildNumber,
@@ -23,5 +24,6 @@ export {
     decrypt,
     isEncryptionConfigured,
     createRedisClient,
+    setupSocketIO,
     type RedisClientType
 };

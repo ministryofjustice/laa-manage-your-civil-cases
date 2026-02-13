@@ -7,16 +7,20 @@ import express from 'express';
 import chalk from 'chalk';
 import morgan from 'morgan';
 import compression from 'compression';
+import { createServer } from 'http';
 import { setupCsrf, setupMiddlewares, setupConfig, setupLocaleMiddleware, setAuthStatus } from '#src/middlewares/indexSetUp.js';
 import session from 'express-session';
 import { RedisStore } from 'connect-redis';
-import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware, displayAsciiBanner, createRedisClient } from '#utils/server/index.js';
+import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware, displayAsciiBanner, createRedisClient, setupSocketIO, type RedisClientType } from '#utils/server/index.js';
 import { initializeI18nextSync } from '#src/scripts/helpers/index.js';
 import config from '#config.js';
 import indexRouter from '#routes/index.js';
 import livereload from 'connect-livereload';
 
 const TRUST_FIRST_PROXY = 1;
+
+// Store Redis client for Socket.IO
+let globalRedisClient: RedisClientType | null = null;
 
 /**
  * Creates and configures an Express application.
@@ -66,6 +70,7 @@ const createApp = async (): Promise<express.Application> => {
 	if (config.redis.enabled) {
 		try {
 			const redisClient = await createRedisClient();
+			globalRedisClient = redisClient; // Store for Socket.IO
 			sessionConfig.store = new RedisStore({
 				client: redisClient,
 				prefix: 'laa-manage-your-civil-cases:',
@@ -123,8 +128,21 @@ const createApp = async (): Promise<express.Application> => {
 	// Display ASCII Art banner
 	displayAsciiBanner(config);
 
-	// Starts the Express server on the configured port
-	app.listen(config.app.port, () => {
+	// Create HTTP server and attach Socket.IO
+	const httpServer = createServer(app);
+
+	// Set up Socket.IO if Redis is enabled
+	if (config.redis.enabled && globalRedisClient) {
+		try {
+			await setupSocketIO(httpServer, globalRedisClient, config.redis.url);
+			console.log(chalk.green('✓ Socket.IO real-time notifications enabled'));
+		} catch (error) {
+			console.error(chalk.red('❌ Failed to set up Socket.IO:'), error);
+		}
+	}
+
+	// Starts the HTTP server on the configured port
+	httpServer.listen(config.app.port, () => {
 		console.log(chalk.yellow(`Listening on port ${config.app.port}...`));
 	});
 
