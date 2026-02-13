@@ -1,3 +1,7 @@
+import dotenv from 'dotenv';
+// Load environment variables before any other imports
+dotenv.config();
+
 import type { Request, Response } from 'express';
 import express from 'express';
 import chalk from 'chalk';
@@ -5,7 +9,8 @@ import morgan from 'morgan';
 import compression from 'compression';
 import { setupCsrf, setupMiddlewares, setupConfig, setupLocaleMiddleware, setAuthStatus } from '#src/middlewares/indexSetUp.js';
 import session from 'express-session';
-import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware, displayAsciiBanner } from '#utils/server/index.js';
+import { RedisStore } from 'connect-redis';
+import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware, displayAsciiBanner, createRedisClient } from '#utils/server/index.js';
 import { initializeI18nextSync } from '#src/scripts/helpers/index.js';
 import config from '#config.js';
 import indexRouter from '#routes/index.js';
@@ -19,7 +24,7 @@ const TRUST_FIRST_PROXY = 1;
  *
  * @returns {Promise<import('express').Application>} The configured Express application
  */
-const createApp = (): express.Application => {
+const createApp = async (): Promise<express.Application> => {
 	// Initialize i18next synchronously before setting up the app
 	initializeI18nextSync();
 	
@@ -54,7 +59,28 @@ const createApp = (): express.Application => {
 
 	// Set up cookie security for sessions
 	app.set('trust proxy', TRUST_FIRST_PROXY);
-	app.use(session(config.session));
+
+	// Configure session store (Redis if enabled, in-memory otherwise)
+	const sessionConfig: session.SessionOptions = { ...config.session };
+
+	if (config.redis.enabled) {
+		try {
+			const redisClient = await createRedisClient();
+			sessionConfig.store = new RedisStore({
+				client: redisClient,
+				prefix: 'laa-manage-your-civil-cases:',
+				ttl: 86400 // 24 hours in seconds
+			});
+			console.log(chalk.green('✓ Using Redis session store'));
+		} catch (error) {
+			console.error(chalk.red('❌ Failed to connect to Redis, falling back to in-memory session store'));
+			console.error(error);
+		}
+	} else {
+		console.log(chalk.yellow('⚠️  Using in-memory session store (not suitable for production with multiple pods)'));
+	}
+
+	app.use(session(sessionConfig));
 
 	// Set up authentication status for templates
 	app.use(setAuthStatus);
@@ -97,7 +123,7 @@ const createApp = (): express.Application => {
 	// Display ASCII Art banner
 	displayAsciiBanner(config);
 
-	// Starts the Express server on the specified port
+	// Starts the Express server on the configured port
 	app.listen(config.app.port, () => {
 		console.log(chalk.yellow(`Listening on port ${config.app.port}...`));
 	});
@@ -106,7 +132,10 @@ const createApp = (): express.Application => {
 };
 
 // Self-execute the app directly to allow app.js to be executed directly
-void createApp();
+void createApp().catch((error) => {
+	console.error(chalk.red('Failed to start application:'), error);
+	process.exit(1);
+});
 
 // Export the createApp function for testing/import purposes
 export default createApp;

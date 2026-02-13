@@ -68,6 +68,8 @@ const externalModules: string[] = [
 	'figlet',
 	'csrf-sync',
 	'http-errors',
+	'redis',
+	'connect-redis',
 	'*.node'
 ];
 

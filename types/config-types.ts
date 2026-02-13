@@ -19,6 +19,12 @@ export interface SessionConfig {
   resave: boolean;
   saveUninitialized: boolean;
   encryptionKey: string;
+  cookie: {
+    secure: boolean;
+    httpOnly: boolean;
+    sameSite: 'strict' | 'lax' | 'none';
+    maxAge: number;
+  };
 }
 
 export interface PathsConfig {
@@ -37,6 +43,11 @@ export interface ApiConfig {
 export interface PaginationConfig {
   defaultPage: number;
   defaultLimit: number;
+}
+
+export interface RedisConfig {
+  url: string;
+  enabled: boolean;
 }
 
 export interface Config {
@@ -60,4 +71,5 @@ export interface Config {
   paths: PathsConfig;
   api: ApiConfig;
   pagination: PaginationConfig;
+  redis: RedisConfig;
 }
