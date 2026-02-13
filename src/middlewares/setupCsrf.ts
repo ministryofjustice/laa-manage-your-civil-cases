@@ -26,11 +26,25 @@ const hasCSRFToken = (body: unknown): body is { _csrf: unknown } =>
 const validateOriginHeader = (req: Request): boolean => {
   const origin = req.headers.origin;
   const referer = req.headers.referer;
-  const host = req.headers.host;
+  // Use X-Forwarded-Host if available (when behind proxy), otherwise fall back to Host
+  const forwardedHost = req.headers['x-forwarded-host'];
+  
+  // X-Forwarded-Host can be a string, string[], or undefined
+  // When multiple proxies add it, it can be comma-separated or an array
+  let effectiveHost: string | undefined;
+  if (Array.isArray(forwardedHost)) {
+    effectiveHost = forwardedHost[0];
+  } else if (typeof forwardedHost === 'string') {
+    // Split comma-separated values and take the first (closest proxy)
+    effectiveHost = forwardedHost.split(',')[0].trim();
+  } else {
+    effectiveHost = req.headers.host;
+  }
 
   // If no origin or referer, allow (will be caught by token validation)
   // This is common for same-origin requests in some browsers
-  if (!origin && !referer) {
+  // Note: origin can be the string 'null' for privacy/bookmark reasons - treat as no origin
+  if ((!origin || origin === 'null') && !referer) {
     return true;
   }
 
@@ -38,19 +52,19 @@ const validateOriginHeader = (req: Request): boolean => {
   const isTestOrDev = isDevelopment() || process.env.NODE_ENV === 'test';
 
   try {
-    // Check origin header first
-    if (origin) {
+    // Check origin header first (skip if origin is 'null')
+    if (origin && origin !== 'null') {
       const originUrl = new URL(origin);
       const originHost = originUrl.host;
 
       // Exact match
-      if (originHost === host) {
+      if (originHost === effectiveHost) {
         return true;
       }
 
       // In development/test, allow localhost variations (with/without port)
-      if (isTestOrDev && host && originHost) {
-        const hostBase = host.split(':')[0];
+      if (isTestOrDev && effectiveHost && originHost) {
+        const hostBase = effectiveHost.split(':')[0];
         const originBase = originHost.split(':')[0];
         if (hostBase === originBase && (hostBase === 'localhost' || hostBase === '127.0.0.1')) {
           return true;
@@ -66,13 +80,13 @@ const validateOriginHeader = (req: Request): boolean => {
       const refererHost = refererUrl.host;
 
       // Exact match
-      if (refererHost === host) {
+      if (refererHost === effectiveHost) {
         return true;
       }
 
       // In development/test, allow localhost variations
-      if (isTestOrDev && host && refererHost) {
-        const hostBase = host.split(':')[0];
+      if (isTestOrDev && effectiveHost && refererHost) {
+        const hostBase = effectiveHost.split(':')[0];
         const refererBase = refererHost.split(':')[0];
         if (hostBase === refererBase && (hostBase === 'localhost' || hostBase === '127.0.0.1')) {
           return true;
@@ -143,20 +157,37 @@ export const setupCsrf = (app: Application): void => {
   app.use((req: Request, res: Response, next: NextFunction): void => {
     // Only validate for state-changing methods
     if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(req.method)) {
-      // Debug logging in development
-      devLog(`[CSRF Debug] ${JSON.stringify({
+      // Extract effective host for logging
+      const forwardedHost = req.headers['x-forwarded-host'];
+      let effectiveHost: string | undefined;
+      if (Array.isArray(forwardedHost)) {
+        effectiveHost = forwardedHost[0];
+      } else if (typeof forwardedHost === 'string') {
+        effectiveHost = forwardedHost.split(',')[0].trim();
+      } else {
+        effectiveHost = req.headers.host;
+      }
+
+      // Debug logging (always log in UAT/production for troubleshooting)
+      console.log('[CSRF Debug]', JSON.stringify({
         method: req.method,
         path: req.path,
         origin: req.headers.origin,
         referer: req.headers.referer,
-        host: req.headers.host
-      })}`);
+        host: req.headers.host,
+        'x-forwarded-host': req.headers['x-forwarded-host'],
+        'x-forwarded-proto': req.headers['x-forwarded-proto'],
+        'effective-host': effectiveHost
+      }));
 
       if (!validateOriginHeader(req)) {
         console.error('[CSRF] Origin validation failed:', {
           origin: req.headers.origin,
           referer: req.headers.referer,
-          host: req.headers.host
+          host: req.headers.host,
+          'x-forwarded-host': req.headers['x-forwarded-host'],
+          'x-forwarded-proto': req.headers['x-forwarded-proto'],
+          'effective-host-used': effectiveHost
         });
         res.status(403).render('main/error', {
           status: '403 - Forbidden',
