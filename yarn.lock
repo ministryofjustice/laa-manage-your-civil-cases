@@ -5508,7 +5508,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:^6.14.2":
+"qs@npm:6.14.2":
   version: 6.14.2
   resolution: "qs@npm:6.14.2"
   dependencies:
