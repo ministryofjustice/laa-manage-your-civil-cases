@@ -90,13 +90,13 @@ export const setupSocketIO = async (
         // Join Socket.IO room for this case
         await socket.join(`case:${caseReference}`);
 
-        // Get viewer count and broadcast to room
-        const viewerCount = await getViewerCount(redisClient, caseReference, sessionId);
+        // Get total viewer count (use empty string to get all viewers)
+        const viewerCount = await getViewerCount(redisClient, caseReference, '');
 
         // Notify all users in the room
         io.to(`case:${caseReference}`).emit('viewers-updated', {
           caseReference,
-          viewerCount: viewerCount + 1 // Include all viewers
+          viewerCount // Total count of all viewers
         });
 
         console.log(chalk.blue(`👀 User ${userId} joined case ${caseReference}`));
@@ -136,8 +136,8 @@ export const setupSocketIO = async (
         // Leave Socket.IO room
         await socket.leave(`case:${caseReference}`);
 
-        // Get updated viewer count and broadcast
-        const viewerCount = await getViewerCount(redisClient, caseReference, sessionId);
+        // Get updated viewer count and broadcast (use empty string to get total count)
+        const viewerCount = await getViewerCount(redisClient, caseReference, '');
 
         io.to(`case:${caseReference}`).emit('viewers-updated', {
           caseReference,
@@ -158,7 +158,8 @@ export const setupSocketIO = async (
         if (caseReference && sessionId) {
           await removeCaseViewer(redisClient, caseReference, sessionId);
 
-          const viewerCount = await getViewerCount(redisClient, caseReference, sessionId);
+          // Get total viewer count (use empty string to get all viewers)
+          const viewerCount = await getViewerCount(redisClient, caseReference, '');
 
           io.to(`case:${caseReference}`).emit('viewers-updated', {
             caseReference,

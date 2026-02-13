@@ -219,13 +219,17 @@ declare const window: WindowWithIO;
     // viewerCount includes current user; we want to show "other" users
     const otherViewers = Math.max(0, viewerCount - 1);
     devLog(`[CaseViewer] Updating alert - total viewers: ${viewerCount}, other viewers: ${otherViewers}`);
+    
     if (otherViewers === 0) {
-      // No other viewers, keep everything hidden
-      return;
+      // No other viewers, hide all alerts
+      alertContainer.hidden = true;
+      singleViewerAlert.hidden = true;
+      multipleViewersAlert.hidden = true;
     } else if (otherViewers === 1) {
       // Show single viewer alert
       alertContainer.hidden = false;
       singleViewerAlert.hidden = false;
+      multipleViewersAlert.hidden = true;
     } else {
       // Show multiple viewers alert and update the text
       const alertText = multipleViewersAlert.querySelector('.moj-alert__paragraph');
@@ -233,6 +237,7 @@ declare const window: WindowWithIO;
         alertText.textContent = `${otherViewers} other users are currently viewing this case`;
       }
       alertContainer.hidden = false;
+      singleViewerAlert.hidden = true;
       multipleViewersAlert.hidden = false;
     }
   }
