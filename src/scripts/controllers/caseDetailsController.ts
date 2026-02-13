@@ -44,7 +44,8 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
       characterThreshold: CHARACTER_THRESHOLD,
       currentProviderNote: '',
       caseReference,
-      csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined
+      csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
+      sessionID: req.sessionID
     });
   } catch (error) {
     // Use the error processing utility

@@ -52,7 +52,8 @@ export async function handleCaseHistoryTab(req: Request, res: Response, next: Ne
         client: req.clientData,  //Client details already fetched by middleware, available at req.clientData
         timelineItems, 
         pagination: paginationMeta,
-        caseReference
+        caseReference,
+        sessionID: req.sessionID
       });
     } else {
       devError(`History not found for case: ${caseReference}. API response: ${historyResponse.message ?? 'Unknown error'}`);

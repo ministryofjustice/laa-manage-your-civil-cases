@@ -3,6 +3,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/tabComponent.njk" import tabComponent %}
 {% from "components/caseDetailsHeaderComponent.njk" import caseDetailsHeaderComponent %}
+{% from "moj/components/alert/macro.njk" import mojAlert %}
 
 {% block backLink %}
   {{ govukBackLink({
@@ -10,6 +11,32 @@
     href: "/cases/" + client.caseStatus,
     classes: "govuk-!-margin-bottom-2"
   }) }}
+{% endblock %}
+
+{% block alerts %}
+  {# Container for real-time viewer alert - populated by Socket.IO client #}
+  <div id="case-viewer-alert" class="govuk-!-margin-bottom-4" hidden>
+    {# Template for single viewer alert #}
+    <div id="viewer-alert-single" hidden>
+      {{ mojAlert({
+        variant: "warning",
+        text: "1 other user is currently viewing this case",
+        dismissible: false
+      }) }}
+    </div>
+
+    {# Template for multiple viewers alert - text will be updated by JS #}
+    <div id="viewer-alert-multiple" hidden>
+      {{ mojAlert({
+        variant: "warning",
+        text: "X other users are currently viewing this case",
+        dismissible: false
+      }) }}
+    </div>
+  </div>
+
+  {# Hidden data attributes for Socket.IO client #}
+  <div data-case-reference="{{ caseReference }}" data-session-id="{{ sessionID }}" hidden></div>
 {% endblock %}
 
 {% block pageContent %}

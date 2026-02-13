@@ -14,7 +14,13 @@
   {% if csrfToken %}
   <meta name="csrf-token" content="{{ csrfToken }}">
   {% endif %}
+  {% if userEmail %}
+  <meta name="user-email" content="{{ userEmail }}">
+  {% endif %}
   <script type="module" nonce="{{ cspNonce }}" src="/js/{{getAsset('custom','min.js')}}"></script>
+  {# Socket.IO client for real-time case viewer notifications #}
+  <script nonce="{{ cspNonce }}" src="/socket.io/socket.io.js"></script>
+  <script nonce="{{ cspNonce }}" src="/js/{{getAsset('caseViewerSocket','min.js')}}"></script>
 {% endblock %}
 
 {% block bodyStart %}
@@ -109,6 +115,7 @@
     html: t('components.phaseBanner.feedbackText') + "<a class='govuk-link' href='mailto:" + config.CONTACT_EMAIL + "'>" + t('components.phaseBanner.feedbackLinkTextHTML') + "</a>."
   }) }}
   {% block backLink %}{% endblock %}
+  {% block alerts %}{% endblock %}
 {% endblock %}
 
 {% block content %}
