@@ -3,13 +3,22 @@ import chalk from 'chalk';
 import type { RedisConfig } from '#types/config-types.js';
 
 /**
+ * Builds the Redis connection URL based on the configuration.
+ * @param {RedisConfig} config - Redis configuration object
+ * @returns {string} Redis connection URL
+ */
+export const buildConnectionUrl = (config: RedisConfig): string => {
+  const protocol = config.tls_enabled ? 'rediss://' : 'redis://';
+  return protocol + config.host + ':' + config.port;
+}
+
+/**
  * Create and configure Redis client
  * @param {RedisConfig} config - Redis configuration from environment variables
  * @returns {ReturnType<typeof createClient>} Configured Redis client
  */
 export const createRedisClient = (config: RedisConfig) => {
-  const protocol = config.tls_enabled ? 'rediss://' : 'redis://';
-  const redisUrl = protocol + config.host + ':' + config.port;
+  const redisUrl = buildConnectionUrl(config);
   console.log(chalk.green(`Connecting to Redis at ${redisUrl}`));
 
   const client = createClient({
