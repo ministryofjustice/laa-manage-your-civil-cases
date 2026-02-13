@@ -11,7 +11,7 @@ test('client details selected from advising cases tab has correct page elements'
   await page.goto(getClientDetailsUrlByStatus('accepted'));
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, true, "Ember Hamilton", "PC-3184-5962", "9 Jan 2025");  
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Ember Hamilton", expectedCaseRef: "PC-3184-5962", dateReceived: "9 Jan 2025" }); 
 
   const advising_tag = page.getByText('Advising', { exact: true });
   const changeStatusButton = page.getByRole('button', { name: 'Change status' });

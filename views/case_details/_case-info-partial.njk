@@ -1,6 +1,7 @@
 {% from "govuk/components/tag/macro.njk" import govukTag %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {%- from "moj/components/button-menu/macro.njk" import mojButtonMenu -%}
+{%- from "moj/components/badge/macro.njk" import mojBadge -%}
 
 {% set statusConfig = {
   "new": {
@@ -93,50 +94,60 @@
   ] %}
 {% endif %}
 
-<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6"/>
 <div class="govuk-!-display-block">
   {# Name and case reference #}
-  <div class="govuk-!-display-inline-block govuk-!-static-padding-right-6">
-    <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{ client.fullName }}</h2>
-    <p class="govuk-body">{{ client.caseReference }}</p>
-  </div>
-  {# Date received #}
-  <div class="govuk-!-display-inline-block govuk-!-static-padding-right-6">
-    <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{ t('pages.caseDetails.dateReceived') }}</h2>
-    <p class="govuk-body">{{ client.provider_assigned_at | formatDate }}</p>
-  </div>
-  {# LAA reference #}
-  <div class="govuk-!-display-inline-block">
-    <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{ t('pages.caseDetails.laaReference') }}</h2>
-    <p class="govuk-body">{{ client.laaReference }}</p>
-  </div>
-</div>
+  <p class="govuk-caption-l">{{ client.caseReference }}</p>
+  <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">{{ client.fullName }}</h1>
 
-<div class="case-status-wrapper govuk-!-display-inline-block">
-  {{ govukTag({
-    text: statusConfig[currentStatus].text,
-    classes: statusConfig[currentStatus].classes}) 
-  }}
-
-  <span class="pipe"></span>
-
-  {% if not hideStatusButton%}
-    {{ mojButtonMenu({
-      id: "change-case-status-menu",
-      button: {
-        text: t('pages.caseDetails.buttons.label'),
-        classes: "govuk-button--secondary govuk-!-display-inline-block govuk-!-margin-bottom-2"
-      },
-      preventDoubleClick: true,
-      items: menuItems
-      })
-    }}
-  <span class="pipe"></span>
-  {{ govukButton({
-    text: t('pages.caseDetails.buttons.giveOperatorFeedback'),
-    href: "/cases/" + client.caseReference + "/give-operator-feedback",
-    classes: "govuk-button--secondary govuk-!-margin-bottom-2"
-  }) }}
+  {# Urgent case #}
+  {% if client.is_urgent === 'true' %} 
+    {{ mojBadge({
+      text: t('pages.caseDetails.urgent'),
+      classes: "moj-badge--red govuk-!-margin-bottom-3"
+    }) }}
   {% endif %}
+
+  {# Date received #}
+  <h2 class="govuk-heading-s govuk-!-margin-bottom-1">{{ t('pages.caseDetails.dateReceived') }}: <span class="govuk-body">{{ client.provider_assigned_at | formatDate }}</span></h2>
+  {# LAA reference #}
+  <h2 class="govuk-heading-s govuk-!-margin-bottom-1">{{ t('pages.caseDetails.laaReference') }}: <span class="govuk-body">{{ client.laaReference }}</span></h2>
+
+  <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{ t('pages.caseDetails.status') }}: 
+    <span>
+      {{ govukTag({
+        text: statusConfig[currentStatus].text,
+        classes: statusConfig[currentStatus].classes}) 
+      }}
+    </span>
+  </h2>
+
+  {% if hideStatusButton %}
+    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-2"/>
+  {% endif %}
+
+  <div class="case-status-wrapper govuk-!-display-inline-block">
+    {% if not hideStatusButton %}
+      {{ mojButtonMenu({
+          id: "change-case-status-menu",
+          button: {
+            text: t('pages.caseDetails.buttons.label'),
+            classes: "govuk-!-margin-right-3"
+          },
+          preventDoubleClick: true,
+          items: menuItems
+      }) }}
+
+      {{ govukButton({
+        text: t('pages.caseDetails.buttons.splitThisCase'),
+        href: "#",
+        classes: "govuk-button--secondary govuk-!-margin-right-3"
+      }) }}
+
+      {{ govukButton({
+        text: t('pages.caseDetails.buttons.giveOperatorFeedback'),
+        href: "/cases/" + client.caseReference + "/give-operator-feedback",
+        classes: "govuk-button--secondary govuk-!-margin-right-3"
+      }) }}
+    {% endif %}
+  </div>
 </div>
-<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6"/>

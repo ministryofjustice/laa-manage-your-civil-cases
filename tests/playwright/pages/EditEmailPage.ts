@@ -47,7 +47,7 @@ export class EditEmailPage extends BaseEditFormPage {
    * Asserts that the main email elements are visible
    */
   async assertMainElementsVisible(): Promise<void> {
-    await expect(this.heading).toContainText(t('forms.clientDetails.email.title'));
+    await expect(this.headingH1Wrapper).toContainText(t('forms.clientDetails.email.title'));
     await expect(this.emailInput).toBeVisible();
     await expect(this.saveButton).toBeVisible();
   }

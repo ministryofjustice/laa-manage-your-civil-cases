@@ -10,14 +10,14 @@ test.describe('Edit Client Name', () => {
     const editNamePage = pages.editName;
     await editNamePage.navigate();
     // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(editNamePage.getPage, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
-    await editNamePage.expectPageLoaded(editNamePage.getExpectedHeading());
+    await assertCaseDetailsHeaderPresent(editNamePage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
+    await expect(editNamePage.headingH1Wrapper).toHaveText(editNamePage.getExpectedHeading());
   });
 
   test('cancel link should navigate back to client details', async ({ pages, i18nSetup }) => {
     await pages.editName.expectCancelNavigatesBack();
     // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(pages.editName.getPage, true, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");
+    await assertCaseDetailsHeaderPresent(pages.editName.getPage, { withMenuButtons: true, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
   });
 
   test('invalid data rejected by backend should not update client details', async ({ page, pages, i18nSetup }) => {
@@ -28,8 +28,8 @@ test.describe('Edit Client Name', () => {
 
     // First, get the original name from the client details page
     await page.goto('/cases/PC-1922-1879/client-details');
-        // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(editNamePage.getPage, true, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");
+    // Assert the case details header is present
+    await assertCaseDetailsHeaderPresent(editNamePage.getPage, { withMenuButtons: true, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
     const originalName = await page.locator('.govuk-summary-list__value').first().textContent();
     
     // Navigate to edit name page
@@ -58,11 +58,12 @@ test.describe('Edit Client Name', () => {
       const editNamePage = pages.editName;
       await editNamePage.navigate();
       // Assert the case details header is present
-      await assertCaseDetailsHeaderPresent(editNamePage.getPage, false, "Walter White", "PC-1854-6521", "8 Aug 2025");
+      await assertCaseDetailsHeaderPresent(editNamePage.getPage, { withMenuButtons: false, expectedName: "Walter White", expectedCaseRef: "PC-1854-6521", dateReceived: "8 Aug 2025" }); 
+
       await editNamePage.submitWithValidName('John Updated Smith');
       await editNamePage.expectSuccessfulSubmission();
       // Assert the case details header is present
-      await assertCaseDetailsHeaderPresent(editNamePage.getPage, false, "John Updated Smith", "PC-1854-6521", "8 Aug 2025");
+      await assertCaseDetailsHeaderPresent(editNamePage.getPage, { withMenuButtons: false, expectedName: "John Updated Smith", expectedCaseRef: "PC-1854-6521", dateReceived: "8 Aug 2025" }); 
     });
   });
 

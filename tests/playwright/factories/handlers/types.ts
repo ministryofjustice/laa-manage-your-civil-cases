@@ -12,6 +12,7 @@ export interface MockCase {
   caseStatus: string;
   provider_closed?: string;
   stateNote?: string;
+  isUrgent?: string;
   client_notes?: string;
   operatorNotes?: string;
   dateOfBirth: string;
@@ -62,6 +63,7 @@ export interface MockCase {
     bslWebcam?: string;
     textRelay?: string;
     skype?: boolean;
+    minicom?: boolean;
     callbackPreference?: string;
     languageSupportNeeds?: string;
     notes?: string;

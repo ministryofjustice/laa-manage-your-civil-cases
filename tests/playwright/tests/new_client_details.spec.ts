@@ -11,7 +11,7 @@ test('client details selected from new cases tab has correct page elements', asy
   await page.goto(getClientDetailsUrlByStatus('new'));
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, true, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
   
   const new_tag = page.getByText('New', { exact: true });
   const changeStatusButton = page.getByRole('button', { name: 'Change status' });
@@ -35,7 +35,7 @@ test('client support needs card is not shown on new case when `skype_webcam` is 
   await page.goto(getClientDetailsUrlByStatus('new'));
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, true, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+  await assertCaseDetailsHeaderPresent(page, {withMenuButtons: true, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025",}); 
 
   const new_tag = page.getByText('New', { exact: true });
   const changeStatusButton = page.getByRole('button', { name: 'Change status' });
