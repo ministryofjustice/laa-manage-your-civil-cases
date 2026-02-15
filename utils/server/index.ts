@@ -8,7 +8,8 @@ import { nunjucksSetup } from './nunjucksSetup.js';
 import { rateLimitSetUp } from './rateLimitSetUp.js';
 import { axiosMiddleware } from './axiosSetup.js';
 import { displayAsciiBanner } from './displayAsciiBanner.js';
-import { encrypt, decrypt, isEncryptionConfigured } from './encryption.js'
+import { encrypt, decrypt, isEncryptionConfigured } from './encryption.js';
+import { createRedisClient, type RedisClientType } from './redisClient.js';
 
 export {
     getBuildNumber,
@@ -20,5 +21,7 @@ export {
     displayAsciiBanner,
     encrypt,
     decrypt,
-    isEncryptionConfigured
+    isEncryptionConfigured,
+    createRedisClient,
+    type RedisClientType
 };

@@ -44,10 +44,10 @@ const config: Config = {
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: process.env.NODE_ENV === 'production',  // HTTPS only in production
-      httpOnly: true,                                  // Prevent XSS attacks
-      sameSite: 'strict' as const,                    // OWASP: Prevent CSRF via strict SameSite
-      maxAge: 1000 * 60 * 60 * 24                     // 24 hours session duration
+      secure: process.env.NODE_ENV === 'production',  // Only send over HTTPS in production
+      httpOnly: true,  // Prevents client-side JavaScript from accessing the cookie
+      sameSite: 'strict',  // CSRF protection - cookie only sent for same-site requests
+      maxAge: 24 * 60 * 60 * 1000  // 24 hours in milliseconds
     }
   },
   app: {
@@ -77,6 +77,11 @@ const config: Config = {
   pagination: {
     defaultPage: DEFAULT_PAGINATION_PAGE,
     defaultLimit: Number(process.env.PAGINATION_LIMIT ?? '20')
+  },
+  // Redis configuration for session storage
+  redis: {
+    url: process.env.REDIS_URL ?? 'redis://localhost:6379',
+    enabled: process.env.REDIS_ENABLED === 'true'
   }
 };
 
