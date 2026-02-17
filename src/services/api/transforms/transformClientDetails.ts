@@ -48,7 +48,7 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
   // Transform contact details
   const contactDetails = transformContactDetails(item.personal_details);
 
-  // Transform state notes
+  // Transform state note
   const state_note = transformStateNote(item.state_note);
 
   // Transform client support needs
