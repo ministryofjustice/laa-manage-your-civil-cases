@@ -37,7 +37,7 @@ export {
   extractPhoneNumber,
   isSafeToCall,
   transformContactDetails,
-  transformStateNotes,
+  transformStateNote,
   transformClientSupportNeeds,
   transformThirdParty,
   transformScopeTraversal,

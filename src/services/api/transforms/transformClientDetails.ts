@@ -11,7 +11,7 @@ import {
   formatDate,
   formatLongFormDate,
   transformContactDetails,
-  transformStateNotes,
+  transformStateNote,
   transformClientSupportNeeds,
   transformThirdParty,
   transformScopeTraversal,
@@ -49,7 +49,7 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
   const contactDetails = transformContactDetails(item.personal_details);
 
   // Transform state notes
-  const state_note = transformStateNotes(item.state_note);
+  const state_note = transformStateNote(item.state_note);
 
   // Transform client support needs
   const clientSupportNeeds = transformClientSupportNeeds(item.adaptation_details);

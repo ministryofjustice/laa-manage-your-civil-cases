@@ -374,10 +374,10 @@ export const transformContactDetails = (personalDetails: unknown): {
 
 /**
  * Transform notes from state_note
- * @param {unknown} stateNote - State notes from API
- * @returns {object} Transformed state notes
+ * @param {unknown} stateNote - State note from API
+ * @returns {object} Transformed state note
  */
-export const transformStateNotes = (stateNote: unknown): {
+export const transformStateNote = (stateNote: unknown): {
   code: string;
   created_by: string;
   created: string;
