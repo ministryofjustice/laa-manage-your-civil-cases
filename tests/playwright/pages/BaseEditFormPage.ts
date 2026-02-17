@@ -23,27 +23,27 @@ export abstract class BaseEditFormPage {
 
   // Common elements across all edit forms
   /**
-   * Gets the main heading element of the form, which has `govuk-heading-l'` class
+   * Gets the main heading element of the form, which has `govuk-heading-m'` class
    * @returns {Locator} The heading locator
    */
   get heading(): Locator {
-    return this.page.locator('h1.govuk-heading-l');
+    return this.page.locator('h2.govuk-heading-m').nth(0);
   }
   
   /**
-   * Gets the main heading element of the form, which has `govuk-fieldset__heading`class
-   * @returns {Locator} The heading locator
+   * Gets the legend element of the form, which has `govuk-fieldset__legend--m`class
+   * @returns {Locator} The legend locator
    */
-  get headingH1Fieldset(): Locator {
-    return this.page.locator('h1.govuk-fieldset__heading');
+  get legendFieldset(): Locator {
+    return this.page.locator('legend.govuk-fieldset__legend--m');
   }
 
   /**
-   * Gets the main heading element of the form, which is inside a wrapper
+   * Gets the heading element of the form, which is inside a label
    * @returns {Locator} The heading locator
    */
-  get headingH1Wrapper(): Locator {
-    return this.page.locator('h1.govuk-label-wrapper');
+  get labelWrapper(): Locator {
+    return this.page.locator('label.govuk-label--m');
   }
 
   /**

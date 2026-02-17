@@ -11,7 +11,7 @@ test.describe('Edit Client Name', () => {
     await editNamePage.navigate();
     // Assert the case details header is present
     await assertCaseDetailsHeaderPresent(editNamePage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
-    await expect(editNamePage.headingH1Wrapper).toHaveText(editNamePage.getExpectedHeading());
+    await expect(editNamePage.labelWrapper).toHaveText(editNamePage.getExpectedHeading());
   });
 
   test('cancel link should navigate back to client details', async ({ pages, i18nSetup }) => {

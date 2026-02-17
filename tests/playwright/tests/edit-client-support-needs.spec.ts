@@ -17,7 +17,7 @@ test('edit client support needs form should save valid data and redirect to clie
   await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 Aug 2025" }); 
 
   // Expect to see the form heading
-  await expect(page.locator('h1').nth(1)).toContainText('Change client support needs');
+  await expect(page.locator('h2.govuk-heading-m')).toContainText('Change client support needs');
 
   // Check that the checkboxes are present
   const bslWebcamCheckbox = page.locator('input[name="clientSupportNeeds"][value="bslWebcam"]');
