@@ -373,6 +373,37 @@ export const transformContactDetails = (personalDetails: unknown): {
 };
 
 /**
+ * Transform notes from state_note
+ * @param {unknown} stateNote - State notes from API
+ * @returns {object} Transformed state notes
+ */
+export const transformStateNotes = (stateNote: unknown): {
+  code: string;
+  created_by: string;
+  created: string;
+  notes: string;
+  type: string;
+} | null => {
+  if (!isRecord(stateNote)) {
+    return null;
+  }
+
+  const code = safeString(stateNote.code);
+  const created_by = safeString(stateNote.created_by);
+  const created = formatDate(safeString(stateNote.created));
+  const notes = safeString(stateNote.notes);
+  const type = safeString(stateNote.type);
+
+  return {
+    code,
+    created_by,
+    created,
+    notes,
+    type
+  };
+};
+
+/**
  * Transform client support needs from adaptation_details
  * @param {unknown} adaptationDetails - Adaptation details from API
  * @returns {object | null} Transformed support needs or null if not present
