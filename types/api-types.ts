@@ -50,6 +50,17 @@ export interface SearchApiParams {
 }
 
 /**
+ * State note (transformed from state_note)
+ */
+export interface StateNote {
+  code: string;
+  created_by: string;
+  created: string;
+  notes: string;
+  type: string;
+}
+
+/**
  * Client support needs (transformed from adaptation_details)
  */
 export interface ClientSupportNeeds {
@@ -122,7 +133,6 @@ export interface ClientDetailsResponse {
   provider_accepted?: string;
   provider_closed?: string;
   outcome_code?: string;
-  state_note?: string;
   is_urgent?: string;
   client_notes?: string;
   operatorNotes?: string;
@@ -134,6 +144,9 @@ export interface ClientDetailsResponse {
   emailAddress: string;
   address: string;
   postcode: string;
+
+  //State note (null if not present)
+  state_note: StateNote | null;
   
   //Client support needs (null if not present)
   clientSupportNeeds: ClientSupportNeeds | null;
