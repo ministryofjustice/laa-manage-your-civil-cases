@@ -11,15 +11,18 @@
   {# No back link for this page #}
 {% endblock %}
 
+{% block errorSummary %}
+  {% if errorState.hasErrors %}
+    {{ govukErrorSummary({
+      titleText: t('common.errorSummaryTitle'),
+      errorList: errorState.errors
+    }) }}
+  {% endif %}
+{% endblock %}
+
 {% block formContent %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      {% if errorState.hasErrors %}
-        {{ govukErrorSummary({
-          titleText: t('common.errorSummaryTitle'),
-          errorList: errorState.errors
-        }) }}
-      {% endif %}
       <form method="POST" action="/cases/{{ caseReference }}/do-you-want-to-give-feedback">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
 

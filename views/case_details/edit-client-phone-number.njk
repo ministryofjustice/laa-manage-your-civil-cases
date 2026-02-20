@@ -8,11 +8,16 @@
 
 {% block pageTitle %}{{ t('forms.clientDetails.phoneNumber.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}{% endblock %}
 
+{% block errorSummary %}
+  {% if error %}
+    {{ errorSummary(error.errorSummaryList) }}
+  {% endif %}
+{% endblock %}
+
 {% block formContent %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       {% if error %}
-        {{ errorSummary(error.errorSummaryList) }}
         {% set safeToCallErrorMessage = { text: error.inputErrors.safeToCall } if error.inputErrors.safeToCall %}
         {% set phoneNumberErrorMessage = { text: error.inputErrors.phoneNumber } if error.inputErrors.phoneNumber %}
         {% set announceCallErrorMessage = { text: error.inputErrors.announceCall } if error.inputErrors.announceCall %}

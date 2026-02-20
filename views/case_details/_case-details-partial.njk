@@ -7,7 +7,6 @@
   <a class="govuk-body govuk-link" href="#providerNote">{{ t('pages.caseDetails.caseDetailsSection.noteLabel') }}</a>
 </span>
 {% if error %}
-        {{ errorSummary(error.errorSummaryList) }}
         {% set errorMessages = {
           providerNote: {
             text: error.inputErrors.providerNote

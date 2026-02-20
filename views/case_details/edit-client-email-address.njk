@@ -6,11 +6,16 @@
 
 {% block pageTitle %}{{ t('forms.clientDetails.email.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}{% endblock %}
 
+{% block errorSummary %}
+  {% if error %}
+    {{ errorSummary(error.errorSummaryList) }}
+  {% endif %}
+{% endblock %}
+
 {% block formContent %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       {% if error %}
-        {{ errorSummary(error.errorSummaryList) }}
         {% set emailAddressErrorMessage = { text: error.inputErrors.emailAddress } if error.inputErrors.emailAddress %}
       {% endif %}
       <form method="post" action="/cases/{{ caseReference }}/client-details/change/email-address" autocomplete="off">
