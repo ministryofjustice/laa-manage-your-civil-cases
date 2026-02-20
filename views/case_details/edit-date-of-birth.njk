@@ -1,23 +1,22 @@
 {% extends "case_details/_base-case-change.njk" %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "components/errorSummaryComponent.njk" import errorSummary %}
 
 {% block pageTitle %}
   {% if errorState.hasErrors %}{{ t('common.error') }}: {% endif %}{{ t('forms.clientDetails.dateOfBirth.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
+{% endblock %}
+
+{% block errorSummary %}
+  {% if errorState.hasErrors %}
+    {{ errorSummary(errorState.errors, t('common.errorSummaryTitle')) }}
+  {% endif %}
 {% endblock %}
 
 {% block formContent %}
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-
-      {% if errorState.hasErrors %}
-        {{ govukErrorSummary({
-          titleText: t('common.errorSummaryTitle'),
-          errorList: errorState.errors
-        }) }}
-      {% endif %}
 
       <form method="POST" action="/cases/{{ caseReference }}/client-details/change/date-of-birth">
 

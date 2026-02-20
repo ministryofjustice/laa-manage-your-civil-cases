@@ -7,7 +7,6 @@
 {# - current* variables: Current form values #}
 
 {% if error %}
-  {{ errorSummary(error.errorSummaryList) }}
   {% set errorMessages = {
     thirdPartyFullName: { text: error.inputErrors.thirdPartyFullName } if error.inputErrors.thirdPartyFullName,
     thirdPartyEmailAddress: { text: error.inputErrors.thirdPartyEmailAddress } if error.inputErrors.thirdPartyEmailAddress,

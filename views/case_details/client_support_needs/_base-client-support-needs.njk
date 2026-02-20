@@ -10,6 +10,12 @@
 {% block pageTitle %}{{ t(pageTitleKey, { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
 {% endblock %}
 
+{% block errorSummary %}
+  {% if error %}
+    {{ errorSummary(error.errorSummaryList) }}
+  {% endif %}
+{% endblock %}
+
 {% block formContent %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">

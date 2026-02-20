@@ -6,11 +6,16 @@
 
 {% block pageTitle %}{{ t('pages.caseDetails.pendingCase.title') }} - {{ config.SERVICE_NAME }} - GOV.UK{% endblock %}
 
+{% block errorSummary %}
+  {% if error %}
+    {{ errorSummary(error.errorSummaryList) }}
+  {% endif %}
+{% endblock %}
+
 {% block formContent %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       {% if error %}
-        {{ errorSummary(error.errorSummaryList) }}
         {% set errorMessages = {
           pendingReason: {text: error.inputErrors.pendingReason } if error.inputErrors.pendingReason,
           otherNote: {text: error.inputErrors.otherNote } if error.inputErrors.otherNote

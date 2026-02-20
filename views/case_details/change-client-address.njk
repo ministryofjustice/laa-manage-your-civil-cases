@@ -8,6 +8,12 @@
 {% block pageTitle %}{{ t('forms.clientDetails.address.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
 {% endblock %}
 
+{% block errorSummary %}
+  {% if error %}
+    {{ errorSummary(error.errorSummaryList) }}
+  {% endif %}
+{% endblock %}
+
 {% block formContent %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -22,7 +28,6 @@
             text: error.inputErrors.postcode
           } %}
         {% endif %}
-        {{ errorSummary(error.errorSummaryList) }}
       {% endif %}
       <form method="post" action="/cases/{{ caseReference }}/client-details/change/address">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">

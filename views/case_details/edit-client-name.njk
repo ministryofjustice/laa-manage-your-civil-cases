@@ -6,11 +6,16 @@
 
 {% block pageTitle %}{{ t('forms.clientDetails.name.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}{% endblock %}
 
+{% block errorSummary %}
+  {% if error %}
+    {{ errorSummary(error.errorSummaryList) }}
+  {% endif %}
+{% endblock %}
+
 {% block formContent %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       {% if error %}
-        {{ errorSummary(error.errorSummaryList) }}
         {% set fullNameErrorMessage = { text: error.inputErrors.fullName } if error.inputErrors.fullName %}
       {% endif %}
       <form method="post" action="/cases/{{ caseReference }}/client-details/change/name" autocomplete="off">

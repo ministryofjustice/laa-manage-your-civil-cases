@@ -5,11 +5,16 @@
 
 {% block pageTitle %}{{ t('pages.caseDetails.reopenCase.title') }} - {{ config.SERVICE_NAME }} - GOV.UK{% endblock %}
 
+{% block errorSummary %}
+  {% if error %}
+    {{ errorSummary(error.errorSummaryList) }}
+  {% endif %}
+{% endblock %}
+
 {% block formContent %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       {% if error %}
-        {{ errorSummary(error.errorSummaryList) }}
         {% set errorMessages = {
           reopenNote: {text: error.inputErrors.reopenNote } if error.inputErrors.reopenNote
         } %}
