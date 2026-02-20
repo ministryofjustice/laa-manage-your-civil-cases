@@ -64,12 +64,15 @@
 <table class="govuk-table">
   <tbody class="govuk-table__body">
 
-    {% if data.diagnosis.category %}
-        <td class="govuk-table__cell">
-          {{ data.diagnosis.category | capitalize }}
-        </td>
-      </tr>
-    {% endif %}
+    {% if data.diagnosis.diagnosisNode %}
+      {% for node in data.diagnosis.diagnosisNode %}
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell">
+              {{ node.node }} 
+            </td>
+          </tr>
+        {% endfor %}
+      {% endif %}
 
   </tbody>
 </table>

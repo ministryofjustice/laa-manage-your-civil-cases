@@ -97,12 +97,15 @@ test.describe('Case details tab', () => {
     // `Operator scope diagnosis` title
     await expect(caseDetails.headingH3ByText(t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle'))).toBeVisible();
 
-    // Bullet list of onward question data
-    const diagnosisNodeBulletsList = [
-      'Debt'
+    // Table data of onward question data
+    const diagnosisNodeTableData = [
+      'Debt and housing - loss of home',
+      'Homeless or at risk of becoming homeless within 56 days',
+      'The landlord has unlawfully evicted the client without due process'
+
     ];
 
-    for (const text of diagnosisNodeBulletsList) {
+    for (const text of diagnosisNodeTableData) {
       await expect(page.getByText(text, { exact: true })).toBeVisible();
     }
   });
