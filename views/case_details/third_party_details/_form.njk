@@ -24,7 +24,7 @@
 <form method="post" action="{{ formAction }}" autocomplete="off">
   <input type="hidden" name="_csrf" value="{{ csrfToken }}">
 
-  <h2 class="govuk-heading-m">{{ t('pages.caseDetails.clientDetails.contactDetails') }}</h2>
+  <h3 class="govuk-heading-s">{{ t('pages.caseDetails.clientDetails.contactDetails') }}</h3>
   {{ govukInput({
     label: {
       text: t('forms.clientDetails.thirdParty.name'),
@@ -115,7 +115,7 @@
     fieldset: {
       legend: {
         text: t('forms.clientDetails.thirdParty.relationshipToClient.title'),
-        classes: "govuk-fieldset__legend--m"
+        classes: "govuk-fieldset__legend--s"
       }
     },
     items: [
@@ -163,7 +163,7 @@
     fieldset: {
       legend: {
         text: t('forms.clientDetails.thirdParty.passphrase.titleH2'),
-        classes: "govuk-fieldset__legend--m"
+        classes: "govuk-fieldset__legend--s"
       }
     },
     items: [

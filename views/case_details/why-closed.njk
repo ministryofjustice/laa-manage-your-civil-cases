@@ -4,7 +4,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
 
-{% block pageTitle %}{{ t('pages.caseDetails.closedCase.title') }} - {{ serviceName }} - GOV.UK{% endblock %}
+{% block pageTitle %}{{ t('pages.caseDetails.closedCase.title') }} - {{ config.SERVICE_NAME }} - GOV.UK{% endblock %}
 
 {% block formContent %}
   <div class="govuk-grid-row">
@@ -25,8 +25,8 @@
           fieldset: {
             legend: {
               text: t('pages.caseDetails.closedCase.legend'),
-              isPageHeading: true,
-              classes: "govuk-fieldset__legend--l"
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--m"
             }
           },
           errorMessage: errorMessages.eventCode if error,
