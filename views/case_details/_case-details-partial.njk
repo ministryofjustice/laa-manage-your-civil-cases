@@ -19,54 +19,64 @@
 {% if data.scopeTraversal or data.client_notes %}
   <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.clientProblemTitle') }}</h3>
 
+<table class="govuk-table">
+  <tbody class="govuk-table__body">
+
+    {# Category row #}
+    {% if data.scopeTraversal and data.scopeTraversal.category %}
+      <tr class="govuk-table__row">
+        <th scope="row" class="govuk-table__header">
+          {{ t('pages.caseDetails.caseDetailsSection.category') | replace(":", "") | capitalize }}
+        </th>
+        <td class="govuk-table__cell">
+          {{ data.scopeTraversal.category }}
+        </td>
+      </tr>
+    {% endif %}
+
+    {# Onward questions/answers rows #}
+      {% if data.scopeTraversal.onwardQuestion %}
+        {% for qa in data.scopeTraversal.onwardQuestion %}
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell">
+              <strong>{{ qa.question }}</strong>
+            </td>
+            <td class="govuk-table__cell">
+              {{ qa.answer }}
+            </td>
+          </tr>
+        {% endfor %}
+      {% endif %}
+
+  </tbody>
+</table>
+
   {% if data.scopeTraversal %}
-    <p class="govuk-hint">{{ data.scopeTraversal.created }}</p>
+    <p class="govuk-hint govuk-!-margin-bottom-8">{{ data.scopeTraversal.created }}</p>
   {% endif %}
 
-  <ul class="govuk-list govuk-list--bullet">
-    {% if data.scopeTraversal and data.scopeTraversal.category %}
-      <li>{{ t('pages.caseDetails.caseDetailsSection.category') }} {{ data.scopeTraversal.category }}</li>
-    {% endif %}
-
-    {% if data.scopeTraversal and data.scopeTraversal.subCategory %}
-      <li>{{ t('pages.caseDetails.caseDetailsSection.subCategory') }} {{ data.scopeTraversal.subCategory }}</li>
-    {% endif %}
-
-    {% if data.scopeTraversal and data.scopeTraversal.onwardQuestion %}
-      {% for qa in data.scopeTraversal.onwardQuestion %}
-        <li>{{ qa.question }} {{ qa.answer }}</li>
-      {% endfor %}
-    {% endif %}
-
-    {% if data.client_notes %}
-      <li>{{ t('pages.caseDetails.caseDetailsSection.tellUsMore') }} {{ data.client_notes }}</li>
-    {% endif %}
-
-    {% if data.scopeTraversal and data.scopeTraversal.financialAssessmentStatus %}
-      <li>{{ t('pages.caseDetails.caseDetailsSection.financialAssessmentStatus') }} {{ data.scopeTraversal.financialAssessmentStatus }}</li>
-    {% endif %}
-  </ul>
-
-  <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6"/>
 {% endif %}
 
 {# Operator diagnosis section #}
 {% if data.diagnosis %}
   <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle') }}</h3>
 
-  <ul class="govuk-list govuk-list--bullet">
-    {% if data.diagnosis.category %}
-      <li>{{ t('pages.caseDetails.caseDetailsSection.category') }} {{ data.diagnosis.category }}</li>
-    {% endif %}
+<table class="govuk-table">
+  <tbody class="govuk-table__body">
 
     {% if data.diagnosis.diagnosisNode %}
       {% for node in data.diagnosis.diagnosisNode %}
-        <li>{{ node.node }} </li>
-      {% endfor %}
-    {% endif %}
-  </ul>
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell">
+              {{ node.node }} 
+            </td>
+          </tr>
+        {% endfor %}
+      {% endif %}
 
-  <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6"/>
+  </tbody>
+</table>
+
 {% endif %}
 
 
@@ -83,8 +93,9 @@
 {% if data.notesHistory and data.notesHistory.length > 0 %}
   {% for note in data.notesHistory %}
     <div class="govuk-!-margin-bottom-4">
-      <p class="govuk-hint">{{ note.createdBy }} on {{ note.created }}</p>
       <p class="govuk-body">{{ note.providerNotes }}</p>
+      <p class="govuk-hint">{{ note.createdBy }} on {{ note.created }}</p>
+      <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6"/>
     </div>
   {% endfor %}
 {% else %}
