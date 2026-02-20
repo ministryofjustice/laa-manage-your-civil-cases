@@ -25,6 +25,6 @@
       title: "Case pending",
       showTitleAsHeading: true,
       dismissible: false,
-      html: client.state_note.notes + "<p>" + client.providerViewedBanner + "</p>"
+      html: (client.state_note.notes if client.state_note.notes else '')+ "<p>" + client.providerViewedBanner + "</p>"
     }) }}
 {% endif %}
