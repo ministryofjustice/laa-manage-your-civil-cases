@@ -7,7 +7,6 @@
 {# - current* variables: Current form values #}
 
 {% if error %}
-  {{ errorSummary(error.errorSummaryList) }}
   {% set errorMessages = {
     languageSupportNeeds: {text: error.inputErrors.languageSupportNeeds } if error.inputErrors.languageSupportNeeds,
     notes: {text: error.inputErrors.notes } if error.inputErrors.notes
