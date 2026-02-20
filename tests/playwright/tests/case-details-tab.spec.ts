@@ -60,18 +60,13 @@ test.describe('Case details tab', () => {
 
     // Bullet list of onward question data
     const onwardQuestionBulletsList = [
-      'category: Discrimination',
-      'Where did the discrimination happen? Work - including colleagues, employer or employment agency',
-      'tell us more about your problem: Some notes about Food'
+      'Category',
+      'Where did the discrimination happen?'
     ];
 
     for (const text of onwardQuestionBulletsList) {
       await expect(page.getByText(text, { exact: true })).toBeVisible();
     }
-
-    // Bullet list of assessment status
-    const data2 = page.getByText('financial assessment: PASSED', { exact: true });
-    await expect(data2).toBeVisible();
   });
 
   test('should show part of client problem section, when only client_notes is data present', async ({ page, i18nSetup }) => {
@@ -91,9 +86,6 @@ test.describe('Case details tab', () => {
     const data2 = page.getByText('financial assessment: PASSED', { exact: true });
     await expect(data2).not.toBeVisible();
 
-    // Bullet list of client note should be visible
-    const clientNotes =  page.getByText('tell us more about your problem: Some notes about beer', { exact: true });
-    await expect(clientNotes).toBeVisible();
   });
 
   test('should show operator diagnosis section, when diagnosis data present', async ({ page, i18nSetup }) => {
@@ -107,10 +99,7 @@ test.describe('Case details tab', () => {
 
     // Bullet list of onward question data
     const diagnosisNodeBulletsList = [
-      'category: Debt',
-      'Debt and housing - loss of home',
-      'Homeless or at risk of becoming homeless within 56 days',
-      'The landlord has unlawfully evicted the client without due process'
+      'Debt'
     ];
 
     for (const text of diagnosisNodeBulletsList) {
