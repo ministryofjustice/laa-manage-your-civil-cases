@@ -29,12 +29,12 @@
         <input type="hidden" name="existingAddress" value="{{ existingAddress }}">
         <input type="hidden" name="existingPostcode" value="{{ existingPostcode }}">
 
-        <h1 class="govuk-heading-l">{{ t('forms.clientDetails.address.title') }}</h1>
+        <h2 class="govuk-heading-m">{{ t('forms.clientDetails.address.title') }}</h2>
 
         {{ govukTextarea({
           label: {
             text: t('forms.clientDetails.address.label'),
-            classes: "govuk-label--m"
+            classes: "govuk-label"
           },
           id: "address",
           name: "address",
@@ -46,7 +46,7 @@
         {{ govukInput({
           label: {
             text: t('forms.clientDetails.address.postcode'),
-            classes: "govuk-label--m"
+            classes: "govuk-label"
           },
           id: "postcode",
           name: "postcode",

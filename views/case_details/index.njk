@@ -12,6 +12,17 @@
   }) }}
 {% endblock %}
 
+{% set tabMap = {
+  "client_details": "pages.caseDetails.tabs.clientDetails",
+  "case_details": "pages.caseDetails.tabs.caseDetails",
+  "financial_eligibility": "pages.caseDetails.tabs.financialEligibility",
+  "history": "pages.caseDetails.tabs.history"
+} %}
+
+{% block pageTitle %}
+  {{ t(tabMap[activeTab]) }} - {{ config.SERVICE_NAME }} – GOV.UK
+{% endblock %}
+
 {% block pageContent %}
   {{ caseDetailsHeaderComponent(client) }}
   {{ tabComponent({

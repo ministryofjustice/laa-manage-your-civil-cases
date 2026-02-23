@@ -409,8 +409,9 @@
       },
       "phoneNumber": {
         "label": "Phone number",
-        "title": "Client phone number",
-        "pageTitle": "Client phone number – {caseReference} – {serviceName} – GOV.UK",
+        "title": "Change client phone details",
+        "pageTitle": "Change client phone details – {caseReference} – {serviceName} – GOV.UK",
+        "phoneNumber": "Phone number",
         "safeToCall": "Is it safe to call this number?",
         "announceCall": "Can you say the call is from Civil Legal Advice?",
         "notSafeToCallWarning": "Not safe to call",
