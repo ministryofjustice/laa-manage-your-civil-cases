@@ -22,14 +22,13 @@
 
   {% if data.scopeTraversal and data.scopeTraversal.category %}
 
-    {% set rows = [] %}
     {% set label = t('pages.caseDetails.caseDetailsSection.category') | replace(":", "") | capitalize %}
 
     {# Category value #}
 
     {% set category = data.scopeTraversal.category %}
 
-    {% set rows = rows.concat([
+    {% set rows = ([
       [
         {
           text: label
@@ -74,8 +73,7 @@
 {# Operator diagnosis section #}
 {% if data.diagnosis %}
   <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle') }}</h3>
-  {% set rows = [] %}
-
+{% set rows = [] %}
   {% if data.diagnosis.diagnosisNode %}
     {% for node in data.diagnosis.diagnosisNode %}
       {% set rows = rows.concat([
