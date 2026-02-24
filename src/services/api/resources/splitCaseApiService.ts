@@ -4,42 +4,39 @@
  */
 
 import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
-import type { FeedbackChoicesApiResponse, FeedbackChoice } from '#types/api-types.js';
+import type { ProviderSplitChoicesApiResponse } from '#types/api-types.js';
 import { devLog, extractAndLogError } from '#src/scripts/helpers/index.js';
 import { configureAxiosInstance } from '../base/BaseApiService.js';
 import { API_PREFIX, JSON_INDENT } from '../base/constants.js';
 
 /**
  * Get radio choices to split case
- * Calls PROVIDER endpoint to retrieve provider name
+ * Calls provider endpoint to retrieve provider name
  * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
- * @param {string} providerId - Case reference number
- * @returns {Promise<FeedbackChoicesApiResponse>} API response with provider choices
+ * @param {string} providerId - Provider reference number
+ * @returns {Promise<ProviderSplitChoicesApiResponse>} API response with provider choices
  */
 export async function getProviderChoices(
   axiosMiddleware: AxiosInstanceWrapper,
   providerId: string
-): Promise<FeedbackChoicesApiResponse> {
+): Promise<ProviderSplitChoicesApiResponse> {
   try {
-    devLog(`API: PROVIDER ${API_PREFIX}/provider/${providerId}/`);
+    devLog(`API: GET ${API_PREFIX}/provider/${providerId}/`);
 
     const configuredAxios = configureAxiosInstance(axiosMiddleware);
 
-    // Call API PROVIDER endpoint to get form schema
-    const response = await configuredAxios.options(`${API_PREFIX}/provider/${providerId}/`);
+    // Call API provider endpoint to get form options
+    const response = await configuredAxios.get(`${API_PREFIX}/provider/${providerId}/`);
 
-    devLog(`API: Feedback choices response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
-
-    // Extract choices from the OPTIONS response
-    const choices: FeedbackChoice[] = response.data?.actions?.POST?.issue?.choices || [];
+    devLog(`API: Provider split choices response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
 
     return {
-      data: choices,
+      data: response.data,
       status: 'success'
     };
 
   } catch (error) {
-    const errorMessage = extractAndLogError(error, 'API error fetching feedback choices');
+    const errorMessage = extractAndLogError(error, 'API error fetching provider split choices');
 
     return {
       data: null,
