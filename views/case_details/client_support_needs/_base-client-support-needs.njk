@@ -6,13 +6,16 @@
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "x-govuk/components/autocomplete/macro.njk" import xGovukAutocomplete %}
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "components/alertBannerComponent.njk" import alertBannerComponent %}
 
 {% block pageTitle %}{{ t(pageTitleKey, { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
 {% endblock %}
 
-{% block errorSummary %}
+{% block errorSummaryOrAlert %}
   {% if error %}
     {{ errorSummary(error.errorSummaryList) }}
+  {% else %}
+    {{ alertBannerComponent(client) }}
   {% endif %}
 {% endblock %}
 

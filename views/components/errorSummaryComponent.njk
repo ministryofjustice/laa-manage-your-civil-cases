@@ -16,7 +16,7 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
 {% macro errorSummary(errorList, titleText= t('components.errorSummary.title')) %}
-  <div class="govuk-grid-row mcc-error-summary">
+  <div class="govuk-grid-row mcc-error-or-state-banner">
     <div class="govuk-grid-column-two-thirds">
       {{ govukErrorSummary({
         titleText: titleText,

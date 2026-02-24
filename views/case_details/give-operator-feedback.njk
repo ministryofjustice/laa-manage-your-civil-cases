@@ -4,6 +4,7 @@
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
+{% from "components/alertBannerComponent.njk" import alertBannerComponent %}
 
 {% block pageTitle %}
   {% if errorState.hasErrors %}{{ t('common.error') }}: {% endif %}{{ t('pages.caseDetails.operatorFeedback.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
@@ -13,9 +14,11 @@
   {# No back link for this page #}
 {% endblock %}
 
-{% block errorSummary %}
+{% block errorSummaryOrAlert %}
   {% if errorState.hasErrors %}
     {{ errorSummary(errorState.errors, t('common.errorSummaryTitle')) }}
+  {% else %}
+    {{ alertBannerComponent(client) }}
   {% endif %}
 {% endblock %}
 

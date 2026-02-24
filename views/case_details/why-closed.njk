@@ -3,12 +3,15 @@
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
+{% from "components/alertBannerComponent.njk" import alertBannerComponent %}
 
 {% block pageTitle %}{{ t('pages.caseDetails.closedCase.title') }} - {{ config.SERVICE_NAME }} - GOV.UK{% endblock %}
 
-{% block errorSummary %}
+{% block errorSummaryOrAlert %}
   {% if error %}
     {{ errorSummary(error.errorSummaryList) }}
+  {% else %}
+    {{ alertBannerComponent(client) }}
   {% endif %}
 {% endblock %}
 

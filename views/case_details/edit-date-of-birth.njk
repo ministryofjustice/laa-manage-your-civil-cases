@@ -2,14 +2,17 @@
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
+{% from "components/alertBannerComponent.njk" import alertBannerComponent %}
 
 {% block pageTitle %}
   {% if errorState.hasErrors %}{{ t('common.error') }}: {% endif %}{{ t('forms.clientDetails.dateOfBirth.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
 {% endblock %}
 
-{% block errorSummary %}
+{% block errorSummaryOrAlert %}
   {% if errorState.hasErrors %}
     {{ errorSummary(errorState.errors, t('common.errorSummaryTitle')) }}
+  {% else %}
+    {{ alertBannerComponent(client) }}
   {% endif %}
 {% endblock %}
 
