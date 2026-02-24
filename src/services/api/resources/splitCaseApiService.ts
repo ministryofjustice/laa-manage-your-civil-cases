@@ -5,6 +5,7 @@
 
 import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
 import type { ProviderSplitChoicesApiResponse } from '#types/api-types.js';
+import type { ProviderSplitChoicesApiResponse } from '#types/api-types.js';
 import { devLog, extractAndLogError } from '#src/scripts/helpers/index.js';
 import { configureAxiosInstance } from '../base/BaseApiService.js';
 import { API_PREFIX, JSON_INDENT } from '../base/constants.js';
@@ -12,7 +13,10 @@ import { API_PREFIX, JSON_INDENT } from '../base/constants.js';
 /**
  * Get radio choices to split case
  * Calls provider endpoint to retrieve provider name
+ * Calls provider endpoint to retrieve provider name
  * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+ * @param {string} providerId - Provider reference number
+ * @returns {Promise<ProviderSplitChoicesApiResponse>} API response with provider choices
  * @param {string} providerId - Provider reference number
  * @returns {Promise<ProviderSplitChoicesApiResponse>} API response with provider choices
  */

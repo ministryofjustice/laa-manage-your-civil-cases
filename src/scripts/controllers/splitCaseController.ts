@@ -41,6 +41,40 @@ async function fetchProviderNameAndDetail(req: Request, caseReference: string): 
 }
 
 /**
+ * Helper function to fetch Provider details
+ * @param {Request} req Express request object
+ * @param {string} caseReference Case reference number
+ * @returns {Promise<ProviderDetail>} Provider details from the API
+ * @throws {Error} If providerId is missing or the API call fails
+ */
+async function fetchProviderNameAndDetail(req: Request, caseReference: string): Promise<ProviderDetail> {
+  const { clientData } = req;
+
+  const providerId =
+    clientData && typeof clientData === 'object' && 'providerId' in clientData
+      ? safeString((clientData).providerId)
+      : '';
+
+  if (!providerId) {
+    throw createProcessedError(
+      new Error('Missing providerId in clientData'),
+      `fetching provider details, for case ${caseReference}`
+    );
+  }
+
+  const providerResponse: ProviderSplitChoicesApiResponse = await apiService.getProviderChoices(req.axiosMiddleware, providerId);
+
+  if (providerResponse.status === 'error' || providerResponse.data === null) {
+    throw createProcessedError(
+      new Error('Failed to fetch provider name'),
+      `fetching provider details, for case ${caseReference}`
+    );
+  }
+
+  return providerResponse.data;
+}
+
+/**
  * Render the "split this case" form
  * @param {Request} req Express request object
  * @param {Response} res Express response object
@@ -50,7 +84,7 @@ async function fetchProviderNameAndDetail(req: Request, caseReference: string): 
 export async function getSplitThisCaseForm(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
-  if (!validCaseReference(caseReference, res)) {
+    if (!validCaseReference(caseReference, res)) {
     return;
   }
 
@@ -58,9 +92,11 @@ export async function getSplitThisCaseForm(req: Request, res: Response, next: Ne
     devLog(`Rendering split this case form for case: ${caseReference}`);
 
     const provider = await fetchProviderNameAndDetail(req, caseReference);
+    const provider = await fetchProviderNameAndDetail(req, caseReference);
 
     res.render('case_details/split-this-case.njk', {
       caseReference,
+      provider,
       provider,
       client: req.clientData,
       errorState: {
