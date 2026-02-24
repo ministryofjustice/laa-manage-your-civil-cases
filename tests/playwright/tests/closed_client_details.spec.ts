@@ -16,11 +16,12 @@ test('client details selected from closed cases tab has correct page elements', 
   const closed_tag = page.getByText('Closed', { exact: true });
   const changeStatusButton = page.getByRole('button', { name: 'Change status' });
   const advisingMenuItem = page.getByRole('button', { name: 'Advising' });
+  const alertBanner = page.locator('.mcc-alert-banner');
 
   // expect to see the following elements
   await expect(closed_tag).toBeVisible();
   await expect(changeStatusButton).toBeVisible();
-
+  await expect(alertBanner).toBeVisible();
   
   // After opening the menu, the "Advising" option should be visible
   await changeStatusButton.click();
