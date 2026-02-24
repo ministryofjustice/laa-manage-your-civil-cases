@@ -12,7 +12,6 @@ import { API_PREFIX, JSON_INDENT } from '../base/constants.js';
 /**
  * Get radio choices to split case
  * Calls provider endpoint to retrieve provider name
- * Calls provider endpoint to retrieve provider name
  * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
  * @param {string} providerId - Provider reference number
  * @returns {Promise<ProviderSplitChoicesApiResponse>} API response with provider choices
