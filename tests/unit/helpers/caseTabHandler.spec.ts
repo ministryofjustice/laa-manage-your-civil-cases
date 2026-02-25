@@ -7,14 +7,16 @@ import { handleCaseTab } from '#src/scripts/helpers/caseTabHandler.js';
 describe('caseTabHandler', () => {
   let req: Partial<Request>;
   let res: any;
-  let next: sinon.SinonStub;
+  let next: NextFunction;
+  let nextStub: sinon.SinonStub;
   let renderStub: sinon.SinonStub;
   let statusStub: sinon.SinonStub;
 
   beforeEach(() => {
     renderStub = sinon.stub();
     statusStub = sinon.stub().returns({ render: renderStub });
-    next = sinon.stub();
+    nextStub = sinon.stub();
+    next = nextStub as unknown as NextFunction;
 
     req = {
       params: { caseReference: 'TEST123' },
@@ -37,7 +39,7 @@ describe('caseTabHandler', () => {
     await handleCaseTab(
       req as Request,
       res as Response,
-      next as unknown as NextFunction,
+      next,
       'client_details',
       'client details',
       handler
@@ -58,7 +60,7 @@ describe('caseTabHandler', () => {
     await handleCaseTab(
       req as Request,
       res as Response,
-      next as unknown as NextFunction,
+      next,
       'history',
       'case history details',
       handler
@@ -69,14 +71,14 @@ describe('caseTabHandler', () => {
     expect(req.session?.otherSessionKey).to.equal('keep-me');
   });
 
-  it('returns early and renders 400 when case reference is invalid', async () => {
-    req.params = {};
+  it('returns early and renders 400 when case reference is blank', async () => {
+    req.params = { caseReference: '   ' };
     const handler = sinon.stub().resolves();
 
     await handleCaseTab(
       req as Request,
       res as Response,
-      next as unknown as NextFunction,
+      next,
       'case_details',
       'case details',
       handler
@@ -93,7 +95,7 @@ describe('caseTabHandler', () => {
     await handleCaseTab(
       req as Request,
       res as Response,
-      next as unknown as NextFunction,
+      next,
       'history',
       'case history details',
       async () => {
@@ -101,8 +103,8 @@ describe('caseTabHandler', () => {
       }
     );
 
-    expect(next.calledOnce).to.be.true;
-    expect(next.firstCall.args[0]).to.be.instanceOf(Error);
-    expect(next.firstCall.args[0].message).to.include('An unexpected error occurred');
+    expect(nextStub.calledOnce).to.be.true;
+    expect(nextStub.firstCall.args[0]).to.be.instanceOf(Error);
+    expect(nextStub.firstCall.args[0].message).to.include('An unexpected error occurred');
   });
 });
