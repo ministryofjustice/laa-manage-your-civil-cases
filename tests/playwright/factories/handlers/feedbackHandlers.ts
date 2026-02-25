@@ -1,6 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import type { MockCase } from './types.js';
 import { findMockCase } from './utils.js';
+import { get } from '#node_modules/axios/index.cjs';
 
 export const createFeedbackHandlers = (
   apiBaseUrl: string,
@@ -10,6 +11,52 @@ export const createFeedbackHandlers = (
   const getFeedbackChoicesHandler = () => {
     return http.options(
       `${apiBaseUrl}${apiPrefix}/case/:caseReference/feedback/`,
+      async ({ params }) => {
+        const caseReference = params.caseReference as string;
+        const mockCase = findMockCase(caseReference, cases);
+
+        if (!mockCase) {
+          return new HttpResponse(null, { status: 404 });
+        }
+
+        // Return OPTIONS response with feedback choices
+        return HttpResponse.json({
+          name: 'Feedback',
+          description: 'Submit operator feedback',
+          actions: {
+            POST: {
+              issue: {
+                type: 'choice',
+                required: true,
+                read_only: false,
+                label: 'Issue',
+                choices: [
+                  { value: 'ADCO', display_name: 'Advice on call' },
+                  { value: 'CB', display_name: 'Call back' },
+                  { value: 'CASE', display_name: 'Case issue' },
+                  { value: 'CBCO', display_name: 'Callback comms' },
+                  { value: 'CACO', display_name: 'Case comms' },
+                  { value: 'TECH', display_name: 'Technical issue' },
+                  { value: 'OTH', display_name: 'Other' }
+                ]
+              },
+              comment: {
+                type: 'string',
+                required: true,
+                read_only: false,
+                label: 'Comment',
+                max_length: 2500
+              }
+            }
+          }
+        });
+      }
+    );
+  };
+
+   const getSplitCaseHandler = () => {
+    return http.options(
+      `${apiBaseUrl}${apiPrefix}/cases/:caseReference/split-this-case`,
       async ({ params }) => {
         const caseReference = params.caseReference as string;
         const mockCase = findMockCase(caseReference, cases);
@@ -111,6 +158,7 @@ export const createFeedbackHandlers = (
 
   return [
     getFeedbackChoicesHandler(),
-    submitFeedbackHandler()
+    submitFeedbackHandler(),
+    getSplitCaseHandler()
   ];
 };
