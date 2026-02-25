@@ -53,7 +53,7 @@ async function fetchProviderNameAndDetail(req: Request, caseReference: string): 
 export async function getSplitThisCaseForm(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
-    if (!validCaseReference(caseReference, res)) {
+  if (!validCaseReference(caseReference, res)) {
     return;
   }
 
@@ -310,4 +310,37 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
   });
 
   return res.redirect(`/cases/${caseReference}/about-new-case`);
+}
+
+/**
+ * Render the "check split case answers" form
+ * @param {Request} req Express request object
+ * @param {Response} res Express response object
+ * @param {NextFunction} next Express next function
+ * @returns {void} Rendered form page
+ */
+export async function getCheckSplitCaseAnswersForm(req: Request, res: Response, next: NextFunction): Promise<void> {
+  const caseReference = safeString(req.params.caseReference);
+
+  if (!validCaseReference(caseReference, res)) {
+    return;
+  }
+
+  try {
+    devLog(`Rendering check split case answers form for case: ${caseReference}`);
+
+    res.render('case_details/check-split-case-answers.njk', {
+      caseReference,
+      client: req.clientData,
+      errorState: {
+        hasErrors: false,
+        errors: [],
+        fieldErrors: {}
+      },
+      csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined
+    });
+  } catch (error) {
+    const processedError = createProcessedError(error, `rendering check split case answers form, for case ${caseReference}`);
+    next(processedError);
+  }
 }
