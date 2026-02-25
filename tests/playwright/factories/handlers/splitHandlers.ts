@@ -1,28 +1,29 @@
 import { http, HttpResponse } from 'msw';
-import type { MockCase } from './types.js';
 
 export const createSplitHandlers = (
   apiBaseUrl: string,
-  apiPrefix: string,
-  cases: MockCase[]
+  apiPrefix: string
 ) => {
   const getProviderChoicesHandler = () =>
-    http.get(`${apiBaseUrl}${apiPrefix}/provider/:providerId/`, ({ params }) => {
-      const providerId = String(params.providerId ?? '');
-      console.log(`[MSW] Intercepting GET ${apiPrefix}/provider/${providerId}/`);
+    http.get(`${apiBaseUrl}${apiPrefix}/provider/12/`, () => {
+      console.log(`[MSW] Intercepting GET ${apiPrefix}/provider/12/`);
 
-      // Find any case that uses this providerId
-      const mockCase = cases.find((c) => String(c.providerId) === providerId);
-
-      if (!mockCase) {
-        console.log(`[MSW] No mock case found for providerId=${providerId}`);
-        return new HttpResponse(null, { status: 404 });
-      }
-
-      // Return ProviderDetail (keep fields your template/type expects)
+      // Return name of Generic Provider
       return HttpResponse.json({
-        providerId,
-        providerName: 'Mock Provider',
+        id: "12",
+        name: "Generic Provider Public Law",
+        law_category: [
+          {
+            code: "housing",
+            name: "Housing, eviction and homelessness",
+            description: ""
+          },
+          {
+            code: "debt",
+            name: "Debt, money problems and bankruptcy",
+            description: ""
+          }
+        ]
       });
     });
 

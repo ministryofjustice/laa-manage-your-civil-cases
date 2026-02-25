@@ -34,7 +34,7 @@ const supportNeedsHandlers = createSupportNeedsHandlers(API_BASE_URL, API_PREFIX
 const thirdPartyHandlers = createThirdPartyHandlers(API_BASE_URL, API_PREFIX, cases);
 const caseStatusHandlers = createCaseStatusHandlers(API_BASE_URL, API_PREFIX, cases);
 const feedbackHandlers = createFeedbackHandlers(API_BASE_URL, API_PREFIX, cases);
-const splitHandlers = createSplitHandlers(API_BASE_URL, API_PREFIX, cases);
+const splitHandlers = createSplitHandlers(API_BASE_URL, API_PREFIX);
 
 // Combine all handlers into a single export
 export const handlers = [
