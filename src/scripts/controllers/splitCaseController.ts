@@ -84,7 +84,7 @@ async function fetchProviderNameAndDetail(req: Request, caseReference: string): 
 export async function getSplitThisCaseForm(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
-    if (!validCaseReference(caseReference, res)) {
+  if (!validCaseReference(caseReference, res)) {
     return;
   }
 

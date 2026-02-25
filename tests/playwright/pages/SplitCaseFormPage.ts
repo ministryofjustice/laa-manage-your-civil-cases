@@ -1,4 +1,4 @@
-import type { Page, Locator } from '@playwright/test';
+import type { Page } from '@playwright/test';
 import { BaseEditFormPage } from './BaseEditFormPage.js';
 import { t } from '../utils/index.js';
 
