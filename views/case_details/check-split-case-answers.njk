@@ -1,0 +1,115 @@
+{% extends "case_details/_base-case-change.njk" %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "components/errorSummaryComponent.njk" import errorSummary %}
+{% from "components/alertBannerComponent.njk" import alertBannerComponent %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% block pageTitle %}
+  {% if errorState.hasErrors %}{{ t('common.error') }}: {% endif %}{{ t('pages.caseDetails.splitCase.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
+{% endblock %}
+
+{% block backLink %}
+  {# No back link for this page #}
+{% endblock %}
+
+{% block errorSummaryOrAlert %}
+  {% if errorState.hasErrors %}
+    {{ errorSummary(errorState.errors, t('common.errorSummaryTitle')) }}
+  {% else %}
+    {{ alertBannerComponent(client) }}
+  {% endif %}
+{% endblock %}
+
+{% block formContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form method="POST" action="/cases/{{ caseReference }}/split-this-case">
+
+        <!-- CSRF Protection -->
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+
+        <h2 class="govuk-heading-m">{{ t('pages.caseDetails.splitCase.h2') }}</h2>
+
+        {{ govukSummaryList({
+          rows: [
+            {
+              key: {
+                text: "Name"
+              },
+              value: {
+                text: "Sarah Philips"
+              },
+              actions: {
+                items: [
+                  {
+                    href: "#",
+                    text: "Change",
+                    visuallyHiddenText: "name"
+                  }
+                ]
+              }
+            },
+            {
+              key: {
+                text: "Date of birth"
+              },
+              value: {
+                text: "5 January 1978"
+              },
+              actions: {
+                items: [
+                  {
+                    href: "#",
+                    text: "Change",
+                    visuallyHiddenText: "date of birth"
+                  }
+                ]
+              }
+            },
+            {
+              key: {
+                text: "Address"
+              },
+              value: {
+                html: "72 Guild Street<br>London<br>SE23 6FH"
+              },
+              actions: {
+                items: [
+                  {
+                    href: "#",
+                    text: "Change",
+                    visuallyHiddenText: "address"
+                  }
+                ]
+              }
+            },
+            {
+              key: {
+                text: "Contact details"
+              },
+              value: {
+                html: '<p class="govuk-body">07700 900457</p><p class="govuk-body">sarah.phillips@example.com</p>'
+              },
+              actions: {
+                items: [
+                  {
+                    href: "#",
+                    text: "Add",
+                    visuallyHiddenText: "contact details"
+                  },
+                  {
+                    href: "#",
+                    text: "Change",
+                    visuallyHiddenText: "contact details"
+                  }
+                ]
+              }
+            }
+          ]
+        }) }}
+
+      </form>
+    </div>
+  </div>
+{% endblock %}
