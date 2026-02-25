@@ -31,8 +31,8 @@
 {% block formContent %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-
-      <form method="POST" action="/cases/{{ caseReference }}/about-new-case">
+      
+      <form method="POST" action="/cases/{{ caseReference }}/split-this-case">
 
         <!-- CSRF Protection -->
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
