@@ -9,7 +9,6 @@ import { PendingCaseFormPage } from './PendingCaseFormPage.js';
 import { CloseCaseFormPage } from './CloseCaseFormPage.js';
 import { ReopenCaseFormPage } from './ReopenCaseFormPage.js';
 import { ClientDetailsPage } from './ClientDetailsPage.js';
-import { SplitCaseFormPage } from './SplitCaseFormPage.js';
 
 /**
  * Factory class for creating page objects for client detail edit forms
@@ -77,14 +76,6 @@ export class PageFactory {
    */
   get login(): LoginPage {
     return new LoginPage(this.page);
-  }
-
-   /**
-   * Gets an instance of the login page
-   * @returns {LoginPage} The login page object
-   */
-  get splitCase(): SplitCaseFormPage {
-    return new SplitCaseFormPage(this.page, this.getCaseReference());
   }
 
   /**

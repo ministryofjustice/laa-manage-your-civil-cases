@@ -37,6 +37,7 @@
 
         {{ govukRadios({
           name: "internal",
+          value: 'true' if (internal == true) else 'false',
           errorMessage: splitProviderErrorMessage,
           fieldset: {
             legend: {

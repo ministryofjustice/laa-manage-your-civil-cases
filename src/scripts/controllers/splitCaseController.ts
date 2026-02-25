@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
-import { devLog, createProcessedError, safeString, validCaseReference, formatValidationError } from '#src/scripts/helpers/index.js';
+import { devLog, createProcessedError, safeString, validCaseReference, formatValidationError, safeBodyString, storeSessionData } from '#src/scripts/helpers/index.js';
 import { validationResult } from 'express-validator';
 import type { ProviderDetail, ProviderSplitChoicesApiResponse } from '#types/api-types.js';
 
@@ -50,7 +50,7 @@ async function fetchProviderNameAndDetail(req: Request, caseReference: string): 
 export async function getSplitThisCaseForm(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
-    if (!validCaseReference(caseReference, res)) {
+  if (!validCaseReference(caseReference, res)) {
     return;
   }
 
@@ -120,6 +120,14 @@ export async function submitSplitThisCaseForm(req: Request, res: Response, next:
       csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
     });
   }
+
+  const internal = safeBodyString(req.body, 'internal');
+
+  storeSessionData(req, 'splitCaseCache', {
+    caseReference,
+    internal: String(internal),
+    cachedAt: String(Date.now())
+  });
 
   return res.redirect(`/cases/${caseReference}/about-new-case`);
 }
