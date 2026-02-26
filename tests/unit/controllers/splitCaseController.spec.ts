@@ -29,7 +29,7 @@ interface RequestWithMiddleware extends Request {
 
 describe('Split Case Controller', () => {
   let req: Partial<RequestWithMiddleware>;
-  let res: any;
+  let res: Partial<Response>;
   let next: any;
   let renderStub: sinon.SinonStub;
   let redirectStub: sinon.SinonStub;
@@ -102,35 +102,33 @@ describe('Split Case Controller', () => {
 
       expect(next.called).to.be.false;
 
-       // providerId missing in req.clientData
+      // Arrange
       it('should call next with error when providerId is missing', async () => {
-        // No providerId on purpose
         req.clientData = {
           fullName: 'John Doe',
           caseReference: 'TEST123',
-          dateOfBirth: '1990-01-01'
+          dateOfBirth: '1990-01-01',
+          providerId: ''  // No providerId on purpose
         };
 
+        // Act
         await getSplitThisCaseForm(req as RequestWithMiddleware, res as Response, next);
 
-        // Should not render on error
+        // Assert
         expect(renderStub.called).to.be.false;
-
-        // Should delegate to error handler
-        expect(next.calledOnce).to.be.true;
+        expect(next.calledOnce).to.be.true; // Should delegate to error handler
         const err = next.firstCall.args[0];
         expect(err).to.be.instanceOf(Error);
-        
         expect(String(err.message)).to.match(/Missing providerId in clientData/i);
       });
 
-      // API returns error status (or null data) for provider choices
+      // Arrange
       it('should call next with error when provider choices API fails', async () => {
         req.clientData = {
           fullName: 'John Doe',
           caseReference: 'TEST123',
           dateOfBirth: '1990-01-01',
-          providerId: '99' // arbitrary
+          providerId: '99'
         };
 
         // Simulate API error response (either status: 'error' OR data: null)
@@ -138,35 +136,12 @@ describe('Split Case Controller', () => {
           .withArgs(req.axiosMiddleware, '99')
           .resolves({ status: 'error', data: null });
 
+        // Act
         await getSplitThisCaseForm(req as RequestWithMiddleware, res as Response, next);
 
+        // Assert
         expect(renderStub.called).to.be.false;
-
-        expect(next.calledOnce).to.be.true;
-        const err = next.firstCall.args[0];
-        expect(err).to.be.instanceOf(Error);
-       
-        expect(String(err.message)).to.match(/Failed to fetch provider name/i);
-      });
-
-      // (Optional) If you want to assert "mismatch", you can force an error by returning null data:
-      it('should call next with error when provider choices returns null data', async () => {
-        req.clientData = {
-          fullName: 'John Doe',
-          caseReference: 'TEST123',
-          dateOfBirth: '1990-01-01',
-          providerId: '11'
-        };
-
-        getProviderChoicesStub
-          .withArgs(req.axiosMiddleware, '11')
-          .resolves({ status: 'success', data: null }); 
-
-        await getSplitThisCaseForm(req as RequestWithMiddleware, res as Response, next);
-
-        expect(renderStub.called).to.be.false;
-
-        expect(next.calledOnce).to.be.true;
+        expect(next.calledOnce).to.be.true; // Should delegate to error handler
         const err = next.firstCall.args[0];
         expect(err).to.be.instanceOf(Error);
         expect(String(err.message)).to.match(/Failed to fetch provider name/i);

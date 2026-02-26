@@ -20,11 +20,9 @@ export async function getProviderChoices(
   axiosMiddleware: AxiosInstanceWrapper,
   providerId: string
 ): Promise<ProviderSplitChoicesApiResponse> {
+  devLog(`API: GET ${API_PREFIX}/provider/${providerId}/`);
+  const configuredAxios = configureAxiosInstance(axiosMiddleware);
   try {
-    devLog(`API: GET ${API_PREFIX}/provider/${providerId}/`);
-
-    const configuredAxios = configureAxiosInstance(axiosMiddleware);
-
     // Call API provider endpoint to get form options
     const response = await configuredAxios.get(`${API_PREFIX}/provider/${providerId}/`);
 
