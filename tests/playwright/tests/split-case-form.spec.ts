@@ -56,10 +56,31 @@ test('viewing "split this case" form should display expected elements', async ({
 
   const radioInternalTrue = page.getByRole('radio', { name: 'Generic Provider Public Law' });
   await expect(radioInternalTrue).toBeVisible();
-  await expect(radioInternalTrue).not.toBeChecked();
+  await expect(radioInternalTrue).not.toBeChecked(); // Assert the radio button is not pre-selected
 
   const radioInternalFalse = page.getByRole('radio', { name: 'To operator for reassignment' });
   await expect(radioInternalFalse).toBeVisible();
-  await expect(radioInternalFalse).toBeChecked(); // Default selection
+  await expect(radioInternalFalse).not.toBeChecked(); // Assert the radio button is not pre-selected
 
+});
+
+test('continue button should hit post split case form end point', async ({ page, i18nSetup }) => {
+  const splitCasePage = SplitThisCaseFormPage.forCase(page, caseReference);
+
+  // Navigate to the operator feedback form
+  await splitCasePage.navigate();
+
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(splitCasePage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" });
+
+  // Select the "Generic Provider Public Law" radio option
+  const radioInternalTrue = page.getByRole('radio', { name: 'Generic Provider Public Law' });
+  await radioInternalTrue.check();
+
+  // Click the continue button
+  const continueButton = page.getByRole('button', { name: 'Continue' });
+  await continueButton.click();
+
+  // Assert we are redirected to the about a new case page (or appropriate next page)
+  await expect(page).toHaveURL(`/cases/${caseReference}/about-new-case`);
 });
