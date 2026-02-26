@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test';
+import type { Page, Locator } from '@playwright/test';
 import { BaseEditFormPage } from './BaseEditFormPage.js';
 import { t } from '../utils/index.js';
 
@@ -29,13 +29,22 @@ export class SplitThisCaseFormPage extends BaseEditFormPage {
     return `/cases/${this.caseReference}/split-this-case`;
   }
 
-  /**
-   * Gets the expected heading text for this form
-   * @returns {Locator} The expected heading text
+ /**
+   * Gets the heading locator for this form
+   * @returns {Locator} The locator for the `<h2 class="govuk-heading-m">` heading
+   */
+  getHeadingLocator(): Locator {
+    return this.page.locator('h2.govuk-heading-m').first();
+}
+
+ /**
+   * Gets the heading locator for this form
+   * @returns {Locator} The locator for the `<h2 class="govuk-heading-m">` heading
    */
   getExpectedHeading(): string {
     return t('pageTitle');
   }
+
 
   /**
    * Creates a SplitThisCaseFormPage instance for a specific case
