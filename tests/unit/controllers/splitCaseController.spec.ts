@@ -1,3 +1,17 @@
+/**
+ * Split Case Controller Tests
+ * 
+ * Tests the Express.js controller factory for case listing functionality.
+ * Covers HTTP request/response handling for form including:
+ * - GET route handler for form display with dynamic choices
+ * - POST route handler for form submission  
+ * - CSRF token management
+ * - Form data processing and validation integration
+ * 
+ * Testing Level: Unit (Controller Layer)
+ * Component: Express.js Dynamic Route Handlers
+ * Dependencies: apiService, case listing templates
+ */
 
 import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
@@ -51,23 +65,24 @@ describe('Split Case Controller', () => {
   });
 
   describe('handleSplitCase', () => {
-    it('should render split case page with correct template', async () => {
-    
+    it('should render "split this case" page with correct template', async () => {
+      // Arrange
       const mockClientData = {
         fullName: 'John Doe',
         caseReference: 'TEST123',
         dateOfBirth: '1990-01-01',
-        providerId: 'PROV-001' 
+        providerId: '12' 
       };
       req.clientData = mockClientData;
 
       getProviderChoicesStub
-        .withArgs(req.axiosMiddleware, 'PROV-001')
+        .withArgs(req.axiosMiddleware, '12')
         .resolves({
           status: 'success',
-          data: { id: 'PROV-001', name: 'General Provider' } 
+          data: { id: '12', name: 'General Provider' } 
         });
 
+      // Act
       await getSplitThisCaseForm(req as RequestWithMiddleware, res as Response, next);
 
       // Assert
@@ -78,14 +93,13 @@ describe('Split Case Controller', () => {
           sinon.match({
             caseReference: 'TEST123',
             client: mockClientData,
-            provider: sinon.match({ id: 'PROV-001' }),
+            provider: sinon.match({ id: '12' }),
             errorState: sinon.match({ hasErrors: false }),
             csrfToken: 'test-csrf-token'
           })
         )
       ).to.be.true;
 
-      // ensure we didn't fall into error path
       expect(next.called).to.be.false;
     });
   });

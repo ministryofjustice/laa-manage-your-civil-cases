@@ -4,7 +4,6 @@
  */
 
 import { strict as assert } from 'assert';
-import sinon from 'sinon';
 import { encrypt, decrypt, isEncryptionConfigured } from '#utils/server/index.js';
 import config from '#config.js';
 
@@ -129,30 +128,21 @@ describe('encryption', () => {
       );
     });
 
-    
-it('should throw error for tampered IV', () => {
-  const plaintext = 'secret message';
-
-  const encrypted = encrypt(plaintext);
-  const [ivB64, tagB64, cipherB64] = encrypted.split(':');
-
-  // Decode IV
-  const iv = Buffer.from(ivB64, 'base64');
-
-  // Tamper with IV bytes (flip 1 bit)
-  iv[0] ^= 1;
-
-  // Re‑encode modified IV
-  const tamperedEncrypted =
-    `${iv.toString('base64')}:${tagB64}:${cipherB64}`;
-
-  assert.throws(
-        () => decrypt(tamperedEncrypted),
+    it('should throw error for tampered IV', () => {
+      const plaintext = 'mySecretPassword123';
+      const encrypted = encrypt(plaintext);
+      
+      // Tamper with the IV
+      const parts = encrypted.split(':');
+      parts[0] = parts[0].slice(0, -1) + 'X';
+      const tampered = parts.join(':');
+      
+      assert.throws(
+        () => decrypt(tampered),
         /Failed to decrypt sensitive data/,
         'Should throw error for tampered IV'
       );
-});
-
+    });
 
     it('should throw error for invalid format (missing parts)', () => {
       assert.throws(
