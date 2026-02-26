@@ -801,13 +801,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ministryofjustice/frontend@npm:^8.0.0":
-  version: 8.0.0
-  resolution: "@ministryofjustice/frontend@npm:8.0.0"
+"@ministryofjustice/frontend@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "@ministryofjustice/frontend@npm:9.0.0"
   peerDependencies:
-    govuk-frontend: ^5.11.2
+    govuk-frontend: ^6.0.0
     moment: 2.30.1
-  checksum: 10c0/3b5bde977e14b39a919d4fbf1b4e2a97317823c07a33c8e99aa6b5f493acfb36e8f3de72ba769818be7f247ef513c6efd62e49ac64f2043b73b07c85ccabb452
+  checksum: 10c0/6b08112f34a564c516692ae14de2422decefdc6b26963b3922c47442a3a3ee18b8e034c3f3bedc15b881e017b0a3e8465ace50aa7526a5a90d4d56adf1e623f5
   languageName: node
   linkType: hard
 
@@ -4726,7 +4726,7 @@ __metadata:
   dependencies:
     "@axe-core/playwright": "npm:^4.11.1"
     "@eslint/js": "npm:^9.39.2"
-    "@ministryofjustice/frontend": "npm:^8.0.0"
+    "@ministryofjustice/frontend": "npm:^9.0.0"
     "@playwright/test": "npm:^1.58.2"
     "@types/chai": "npm:^5.2.3"
     "@types/compression": "npm:^1.7.5"
