@@ -53,7 +53,7 @@ describe('Case History Controller', () => {
       status: 'success',
       data: [
         {
-          code: 'ST_CLAIM',
+          code: 'SPOP',
           createdBy: 'caseworker@example.com',
           created: '2026-02-20T10:30:00Z',
           notes: 'Status changed to claim'
@@ -67,12 +67,19 @@ describe('Case History Controller', () => {
     expect(renderStub.calledOnce).to.be.true;
     expect(renderStub.firstCall.args[0]).to.equal('case_details/index.njk');
 
-    const viewModel = renderStub.firstCall.args[1] as Record<string, unknown>;
+    const viewModel = renderStub.firstCall.args[1] as {
+      activeTab: string;
+      caseReference: string;
+      client: unknown;
+      timelineItems: Array<{ label: { text: string } }>;
+      pagination: unknown;
+    };
     expect(viewModel.activeTab).to.equal('history');
     expect(viewModel.caseReference).to.equal('TEST123');
     expect(viewModel.client).to.deep.equal(req.clientData);
     expect(viewModel.timelineItems).to.be.an('array').with.length(1);
     expect(viewModel.pagination).to.be.an('object');
+    expect(viewModel.timelineItems[0].label.text).to.include('SPOP');
     expect(req.session?.thirdPartyOriginal).to.equal(undefined);
     expect(req.session?.someOtherKey).to.equal('keep-me');
   });
