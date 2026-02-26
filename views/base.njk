@@ -114,6 +114,7 @@
 {% block content %}
   <div class="govuk-width-container">
     <div class="govuk-body">
+      {% block errorSummaryOrAlert %}{% endblock %}
       {% block pageContent %}{% endblock %}
     </div>
   </div>

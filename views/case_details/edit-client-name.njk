@@ -3,14 +3,22 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
+{% from "components/alertBannerComponent.njk" import alertBannerComponent %}
 
 {% block pageTitle %}{{ t('forms.clientDetails.name.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}{% endblock %}
+
+{% block errorSummaryOrAlert %}
+  {% if error %}
+    {{ errorSummary(error.errorSummaryList) }}
+  {% else %}
+    {{ alertBannerComponent(client) }}
+  {% endif %}
+{% endblock %}
 
 {% block formContent %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       {% if error %}
-        {{ errorSummary(error.errorSummaryList) }}
         {% set fullNameErrorMessage = { text: error.inputErrors.fullName } if error.inputErrors.fullName %}
       {% endif %}
       <form method="post" action="/cases/{{ caseReference }}/client-details/change/name" autocomplete="off">

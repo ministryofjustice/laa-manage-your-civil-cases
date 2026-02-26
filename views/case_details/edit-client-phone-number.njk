@@ -3,16 +3,23 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
-{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "components/alertBannerComponent.njk" import alertBannerComponent %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 
 {% block pageTitle %}{{ t('forms.clientDetails.phoneNumber.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}{% endblock %}
+
+{% block errorSummaryOrAlert %}
+  {% if error %}
+    {{ errorSummary(error.errorSummaryList) }}
+  {% else %}
+    {{ alertBannerComponent(client) }}
+  {% endif %}
+{% endblock %}
 
 {% block formContent %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       {% if error %}
-        {{ errorSummary(error.errorSummaryList) }}
         {% set safeToCallErrorMessage = { text: error.inputErrors.safeToCall } if error.inputErrors.safeToCall %}
         {% set phoneNumberErrorMessage = { text: error.inputErrors.phoneNumber } if error.inputErrors.phoneNumber %}
         {% set announceCallErrorMessage = { text: error.inputErrors.announceCall } if error.inputErrors.announceCall %}

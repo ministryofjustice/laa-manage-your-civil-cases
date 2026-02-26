@@ -76,6 +76,15 @@ test.describe('Edit Client Name', () => {
     await expect(editNamePage.nameError).toBeVisible();
   });
 
+  test('name form does not display alert banner for validation errors', async ({ pages, i18nSetup }) => {
+    const editNamePage = pages.editName;
+    await editNamePage.submitWithEmptyName();
+    await editNamePage.expectErrorSummaryVisible();
+    
+    // Check alert banner is not present (as this is a validation error takes priority)
+    await expect(editNamePage.alertBanner).not.toBeVisible();
+  });
+
   test('unchanged name triggers change detection error', async ({ pages, i18nSetup }) => {
     const editNamePage = pages.editName;
     await editNamePage.submitWithoutChanges();
