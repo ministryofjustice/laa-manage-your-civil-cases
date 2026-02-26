@@ -2843,9 +2843,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-love@npm:^150.0.0":
-  version: 150.0.0
-  resolution: "eslint-config-love@npm:150.0.0"
+"eslint-config-love@npm:^151.0.0":
+  version: 151.0.0
+  resolution: "eslint-config-love@npm:151.0.0"
   dependencies:
     "@eslint-community/eslint-plugin-eslint-comments": "npm:^4.0.0"
     "@typescript-eslint/utils": "npm:^8.53.0"
@@ -2856,7 +2856,7 @@ __metadata:
   peerDependencies:
     eslint: ^9.35.0
     typescript: "*"
-  checksum: 10c0/70090c14e24be055ec713e4b118c7bf6c955bcbf78ea1cda6b65dccccd156eb9ec7ca33a8edb4c9c936c3983dbce81313bfe32e3cf89a9db49d7d6f9907c2fd3
+  checksum: 10c0/8f30618d091c61c41998b55e500dd823283d7e62a269f3a87bd136eebfffee7908a3c72827c2cf00642aab1556dd60cd1ca6e17341df5ab46ff99b09a5538f70
   languageName: node
   linkType: hard
 
@@ -4478,7 +4478,7 @@ __metadata:
     esbuild-plugin-copy: "npm:^2.1.1"
     esbuild-sass-plugin: "npm:^3.6.0"
     eslint: "npm:^10.0.1"
-    eslint-config-love: "npm:^150.0.0"
+    eslint-config-love: "npm:^151.0.0"
     eslint-config-prettier: "npm:^10.1.8"
     eslint-plugin-jsdoc: "npm:^62.7.0"
     express: "npm:^5.2.0"
