@@ -101,6 +101,76 @@ describe('Split Case Controller', () => {
       ).to.be.true;
 
       expect(next.called).to.be.false;
+
+       // providerId missing in req.clientData
+      it('should call next with error when providerId is missing', async () => {
+        // No providerId on purpose
+        req.clientData = {
+          fullName: 'John Doe',
+          caseReference: 'TEST123',
+          dateOfBirth: '1990-01-01'
+        };
+
+        await getSplitThisCaseForm(req as RequestWithMiddleware, res as Response, next);
+
+        // Should not render on error
+        expect(renderStub.called).to.be.false;
+
+        // Should delegate to error handler
+        expect(next.calledOnce).to.be.true;
+        const err = next.firstCall.args[0];
+        expect(err).to.be.instanceOf(Error);
+        
+        expect(String(err.message)).to.match(/Missing providerId in clientData/i);
+      });
+
+      // API returns error status (or null data) for provider choices
+      it('should call next with error when provider choices API fails', async () => {
+        req.clientData = {
+          fullName: 'John Doe',
+          caseReference: 'TEST123',
+          dateOfBirth: '1990-01-01',
+          providerId: '99' // arbitrary
+        };
+
+        // Simulate API error response (either status: 'error' OR data: null)
+        getProviderChoicesStub
+          .withArgs(req.axiosMiddleware, '99')
+          .resolves({ status: 'error', data: null });
+
+        await getSplitThisCaseForm(req as RequestWithMiddleware, res as Response, next);
+
+        expect(renderStub.called).to.be.false;
+
+        expect(next.calledOnce).to.be.true;
+        const err = next.firstCall.args[0];
+        expect(err).to.be.instanceOf(Error);
+       
+        expect(String(err.message)).to.match(/Failed to fetch provider name/i);
+      });
+
+      // (Optional) If you want to assert "mismatch", you can force an error by returning null data:
+      it('should call next with error when provider choices returns null data', async () => {
+        req.clientData = {
+          fullName: 'John Doe',
+          caseReference: 'TEST123',
+          dateOfBirth: '1990-01-01',
+          providerId: '11'
+        };
+
+        getProviderChoicesStub
+          .withArgs(req.axiosMiddleware, '11')
+          .resolves({ status: 'success', data: null }); 
+
+        await getSplitThisCaseForm(req as RequestWithMiddleware, res as Response, next);
+
+        expect(renderStub.called).to.be.false;
+
+        expect(next.calledOnce).to.be.true;
+        const err = next.firstCall.args[0];
+        expect(err).to.be.instanceOf(Error);
+        expect(String(err.message)).to.match(/Failed to fetch provider name/i);
+      });
     });
   });
 });
