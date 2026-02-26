@@ -3,14 +3,22 @@
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
+{% from "components/alertBannerComponent.njk" import alertBannerComponent %}
 
-{% block pageTitle %}{{ t('pages.caseDetails.pendingCase.title') }} - {{ serviceName }} - GOV.UK{% endblock %}
+{% block pageTitle %}{{ t('pages.caseDetails.pendingCase.title') }} - {{ config.SERVICE_NAME }} - GOV.UK{% endblock %}
+
+{% block errorSummaryOrAlert %}
+  {% if error %}
+    {{ errorSummary(error.errorSummaryList) }}
+  {% else %}
+    {{ alertBannerComponent(client) }}
+  {% endif %}
+{% endblock %}
 
 {% block formContent %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       {% if error %}
-        {{ errorSummary(error.errorSummaryList) }}
         {% set errorMessages = {
           pendingReason: {text: error.inputErrors.pendingReason } if error.inputErrors.pendingReason,
           otherNote: {text: error.inputErrors.otherNote } if error.inputErrors.otherNote
@@ -41,8 +49,8 @@
           fieldset: {
             legend: {
               text: t('pages.caseDetails.pendingCase.legend'),
-              isPageHeading: true,
-              classes: "govuk-fieldset__legend--l"
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--m"
             }
           },
           errorMessage: errorMessages.pendingReason if error,

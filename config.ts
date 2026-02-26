@@ -42,7 +42,13 @@ const config: Config = {
     name: process.env.SESSION_NAME,
     encryptionKey: process.env.SESSION_ENCRYPTION_KEY,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === 'production',  // HTTPS only in production
+      httpOnly: true,                                  // Prevent XSS attacks
+      sameSite: 'strict' as const,                    // OWASP: Prevent CSRF via strict SameSite
+      maxAge: 1000 * 60 * 60 * 24                     // 24 hours session duration
+    }
   },
   app: {
     port: Number(process.env.PORT ?? DEFAULT_PORT),

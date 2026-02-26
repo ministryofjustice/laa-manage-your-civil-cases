@@ -23,11 +23,27 @@ export abstract class BaseEditFormPage {
 
   // Common elements across all edit forms
   /**
-   * Gets the main heading element of the form
+   * Gets the main heading element of the form, which has `govuk-heading-m'` class
    * @returns {Locator} The heading locator
    */
   get heading(): Locator {
-    return this.page.locator('h1');
+    return this.page.locator('h2.govuk-heading-m').nth(0);
+  }
+  
+  /**
+   * Gets the legend element of the form, which has `govuk-fieldset__legend--m`class
+   * @returns {Locator} The legend locator
+   */
+  get legendFieldset(): Locator {
+    return this.page.locator('legend.govuk-fieldset__legend--m');
+  }
+
+  /**
+   * Gets the heading element of the form, which is inside a label
+   * @returns {Locator} The heading locator
+   */
+  get labelWrapper(): Locator {
+    return this.page.locator('label.govuk-label--m');
   }
 
   /**
@@ -68,6 +84,14 @@ export abstract class BaseEditFormPage {
    */
   get errorSummary(): Locator {
     return this.page.locator('.govuk-error-summary');
+  }
+
+  /**
+   * Gets the alert banner element
+   * @returns {Locator} The alert banner locator
+   */
+  get alertBanner(): Locator {
+    return this.page.locator('.mcc-alert-banner');
   }
 
   // Common actions
@@ -124,6 +148,27 @@ export abstract class BaseEditFormPage {
    */
   async expectErrorSummaryVisible(): Promise<void> {
     await expect(this.errorSummary).toBeVisible();
+  }
+
+  /**
+   * Asserts that the error summary is not visible
+  */
+  async expectErrorSummaryNotVisible(): Promise<void> {
+    await expect(this.errorSummary).not.toBeVisible();
+  }
+
+  /**
+   * Asserts that the alert banner is visible
+   */
+  async expectAlertBannerVisible(): Promise<void> {
+    await expect(this.alertBanner).toBeVisible();
+  }
+
+  /**
+   * Asserts that the alert banner is not visible
+   */
+  async expectAlertBannerNotVisible(): Promise<void> {
+    await expect(this.alertBanner).not.toBeVisible();
   }
 
   /**

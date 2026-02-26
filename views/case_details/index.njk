@@ -3,6 +3,8 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/tabComponent.njk" import tabComponent %}
 {% from "components/caseDetailsHeaderComponent.njk" import caseDetailsHeaderComponent %}
+{% from "components/errorSummaryComponent.njk" import errorSummary %}
+{% from "components/alertBannerComponent.njk" import alertBannerComponent %}
 
 {% block backLink %}
   {{ govukBackLink({
@@ -12,8 +14,28 @@
   }) }}
 {% endblock %}
 
+{% set tabMap = {
+  "client_details": "pages.caseDetails.tabs.clientDetails",
+  "case_details": "pages.caseDetails.tabs.caseDetails",
+  "financial_eligibility": "pages.caseDetails.tabs.financialEligibility",
+  "history": "pages.caseDetails.tabs.history"
+} %}
+
+{% block pageTitle %}
+  {{ t(tabMap[activeTab]) }} - {{ config.SERVICE_NAME }} – GOV.UK
+{% endblock %}
+
+{% block errorSummaryOrAlert %}
+  {% if error %}
+    {{ errorSummary(error.errorSummaryList) }}
+  {% else %}
+    {{ alertBannerComponent(client) }}
+  {% endif %}
+{% endblock %}
+
 {% block pageContent %}
   {{ caseDetailsHeaderComponent(client) }}
+  
   {{ tabComponent({
     activeTab: activeTab,
     containerId: "cases-tab-container",

@@ -10,14 +10,14 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('add client support needs form should save valid data and redirect to client details', async ({ page, i18nSetup }) => {
-  // Navigate to the add client support needs form
+  // Navigate to the add client support needs form\
   await page.goto(addSupportNeedsUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");  
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
 
   // Expect to see the form heading
-  await expect(page.locator('h1')).toContainText('Add a client support need');
+  await expect(page.locator('legend.govuk-fieldset__legend')).toContainText('Add a client support need');
 
   // Check that the checkboxes are present
   const bslWebcamCheckbox = page.locator('input[name="clientSupportNeeds"][value="bslWebcam"]');
@@ -35,4 +35,29 @@ test('add client support needs form should save valid data and redirect to clien
 
   // Should redirect to client details page
   await expect(page).toHaveURL(clientDetailsUrl);
+});
+
+test('add client support needs form should show validation error if no option selected', async ({ page, i18nSetup }) => {
+  // Navigate to the add client support needs form
+  await page.goto(addSupportNeedsUrl);
+
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
+
+  // Check the box for "Other support" but do not fill in the text to trigger validation error
+  const otherSupportCheckbox = page.locator('input[name="clientSupportNeeds"][value="otherSupport"]');
+  await expect(otherSupportCheckbox).toBeVisible();
+  await otherSupportCheckbox.check();
+
+  // Submit the form without selecting any options
+  const saveButton = page.getByRole('button', { name: 'Save' });
+  await saveButton.click();
+
+  // Check GOV.UK error summary appears
+  const errorSummary = page.locator('.govuk-error-summary');
+  await expect(errorSummary).toBeVisible();
+
+  // Check alert banner is not present (as this is a validation error takes priority)
+  const alertBanner = page.locator('.govuk-notification-banner');
+  await expect(alertBanner).not.toBeVisible();
 });

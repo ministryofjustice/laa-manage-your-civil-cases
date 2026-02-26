@@ -15,8 +15,7 @@ test('viewing edit third party form should display expected elements', async ({ 
   await thirdPartyPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
-  
+  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
   // Expect to see the main elements
   await thirdPartyPage.expectPageLoaded(thirdPartyPage.getExpectedHeading());
   await thirdPartyPage.expectFormElementsVisible();
@@ -32,8 +31,7 @@ test('cancel link should navigate back to client details', async ({ page, i18nSe
   await thirdPartyPage.expectCancelNavigatesBack();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, true, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
-  
+  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: true, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
 });
 
 test('save button should redirect to client details when valid data submitted', async ({ page, i18nSetup }) => {
@@ -69,7 +67,7 @@ test('edit third party form displays validation errors correctly', async ({ page
   await thirdPartyPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
   
   // Submit form with invalid data
   await thirdPartyPage.clearNameField();
@@ -77,6 +75,9 @@ test('edit third party form displays validation errors correctly', async ({ page
 
   // Check GOV.UK error summary appears
   await thirdPartyPage.expectErrorSummaryVisible();
+
+  // Check alert banner is not present (as this is a validation error takes priority)
+  await thirdPartyPage.expectAlertBannerNotVisible();
 
   // Check individual field errors appear
   await thirdPartyPage.expectNameFieldError();
@@ -89,7 +90,7 @@ test('edit third party form displays postcode validation errors correctly', asyn
   await thirdPartyPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
 
   // Update third party details
   await thirdPartyPage.fillValidThirdPartyData({
@@ -108,6 +109,9 @@ test('edit third party form displays postcode validation errors correctly', asyn
   // Check GOV.UK error summary appears
   await thirdPartyPage.expectErrorSummaryVisible();
 
+  // Check alert banner is not present (as this is a validation error takes priority)
+  await thirdPartyPage.expectAlertBannerNotVisible();
+
   // Check individual field errors appear
   await thirdPartyPage.expectPostcodeFieldError();
 });
@@ -119,7 +123,7 @@ test('unchanged fields trigger change detection error', async ({ page, i18nSetup
   await thirdPartyPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
 
   // Submit form without making any changes
   // (assuming the form loads with existing third party data)

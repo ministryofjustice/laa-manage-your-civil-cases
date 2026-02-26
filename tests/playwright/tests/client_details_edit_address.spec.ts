@@ -17,16 +17,35 @@ test('viewing change address form, to see the expected elements', async ({ page,
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");  
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
+ 
 
   // Expect to see the following elements
-  await expect(page.locator('h1')).toContainText(t('forms.clientDetails.address.title'));
+  await expect(page.locator('h2.govuk-heading-m')).toContainText(t('forms.clientDetails.address.title'));
   await expect(addressInput).toBeVisible();
   await expect(postcodeInput).toBeVisible();
   await expect(saveButton).toBeVisible();
 
   // Note: Form pre-population testing requires mock data service configuration
   // For now, we test the form structure without specific data expectations
+});
+
+test('viewing change address form for a closed case should display alert banner', async ({ page, i18nSetup }) => {
+  const alertBanner = page.locator('.mcc-alert-banner');
+
+  // Navigate to the change address form for a closed case
+  const closedCaseUrl = getClientDetailsUrlByStatus('closed') + '/change/address';
+  await page.goto(closedCaseUrl);
+
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: false, expectedName: "Roronoa Zoro", expectedCaseRef: "PC-6667-9089", dateReceived: "6 Jan 2025" }); 
+
+  // Expect alert banner to be visible with expected text
+  await expect(alertBanner).toBeVisible();
+
+  // Except error banner to not be visible
+  const errorSummary = page.locator('.govuk-error-summary');
+  await expect(errorSummary).not.toBeVisible();
 });
 
 test('unchanged fields trigger change detection error', async ({ page, i18nSetup }) => {
@@ -37,7 +56,8 @@ test('unchanged fields trigger change detection error', async ({ page, i18nSetup
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
+ 
 
   // Submit form
   await expect(saveButton).toBeVisible();
@@ -47,6 +67,10 @@ test('unchanged fields trigger change detection error', async ({ page, i18nSetup
   await expect(errorSummary).toBeVisible();
   await expect(errorSummary).toContainText(t('components.errorSummary.title'));
   await expect(errorSummary).toContainText(t('forms.clientDetails.address.validationError.notChanged'));
+
+  // Check alert banner is not present (as this is a validation error takes priority)
+  const alertBanner = page.locator('.mcc-alert-banner');
+  await expect(alertBanner).not.toBeVisible();
 
   // Change detection error should NOT have inline field error messages
   const addressErrorMessage = page.locator('#address-error');
@@ -64,7 +88,7 @@ test('save button should redirect to client details when valid data submitted', 
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
 
   // Fill in valid address details (ensure they're different from any existing data)
   await addressInput.fill('123 New Street\nLondon');
@@ -87,7 +111,7 @@ test('should trigger postcode validation when 12 or more characters are entered'
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025"); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
 
   // Fill in invalid postcode filed with 13 characters
   await addressInput.fill('123 New Street\nLondon');

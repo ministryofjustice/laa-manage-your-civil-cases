@@ -3,20 +3,29 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
-{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "components/alertBannerComponent.njk" import alertBannerComponent %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 
 {% block pageTitle %}{{ t('forms.clientDetails.phoneNumber.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}{% endblock %}
+
+{% block errorSummaryOrAlert %}
+  {% if error %}
+    {{ errorSummary(error.errorSummaryList) }}
+  {% else %}
+    {{ alertBannerComponent(client) }}
+  {% endif %}
+{% endblock %}
 
 {% block formContent %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       {% if error %}
-        {{ errorSummary(error.errorSummaryList) }}
         {% set safeToCallErrorMessage = { text: error.inputErrors.safeToCall } if error.inputErrors.safeToCall %}
         {% set phoneNumberErrorMessage = { text: error.inputErrors.phoneNumber } if error.inputErrors.phoneNumber %}
         {% set announceCallErrorMessage = { text: error.inputErrors.announceCall } if error.inputErrors.announceCall %}
       {% endif %}
+
+      <h2 class="govuk-heading-m">{{ t('forms.clientDetails.phoneNumber.title') }}</h2>
       <form method="post" action="/cases/{{ caseReference }}/client-details/change/phone-number">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
         <input type="hidden" name="existingSafeToCall" value="{{ existingSafeToCall }}">
@@ -24,9 +33,9 @@
         <input type="hidden" name="existingAnnounceCall" value="{{ existingAnnounceCall }}">
         {{ govukInput({
           label: {
-            text: t('forms.clientDetails.phoneNumber.title'),
-            classes: "govuk-label--l",
-            isPageHeading: true
+            text: t('forms.clientDetails.phoneNumber.phoneNumber'),
+            classes: "govuk-label",
+            isPageHeading: false
           },
           errorMessage: phoneNumberErrorMessage,
           id: "phoneNumber",
@@ -44,7 +53,7 @@
             legend: {
               text: t('forms.clientDetails.phoneNumber.safeToCall'),
               isPageHeading: false,
-              classes: "govuk-fieldset__legend--m"
+              classes: "govuk-fieldset__legend"
             }
           },
           items: [
@@ -66,7 +75,7 @@
             legend: {
               text: t('forms.clientDetails.phoneNumber.announceCall'),
               isPageHeading: false,
-              classes: "govuk-fieldset__legend--m"
+              classes: "govuk-fieldset__legend"
             }
           },
           items: [

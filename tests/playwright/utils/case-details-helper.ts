@@ -1,17 +1,44 @@
 import { expect, Locator, Page } from '@playwright/test';
 
-export async function assertCaseDetailsHeaderPresent(page: Page, withMenuButtons: boolean, expectedName: string,
-  expectedCaseRef: string, dateReceived: string) {
+type CaseDetailsHeaderOptions = {
+  withMenuButtons?: boolean;
+  isUrgent?: boolean;
+  expectedName: string;
+  expectedCaseRef: string;
+  dateReceived: string;
+  urgentBadgeText?: string;
+};
 
-  const caseHeader = page.locator('.mcc-case-details-header');
+export async function assertCaseDetailsHeaderPresent(
+  page: Page,
+  {
+    withMenuButtons = false,
+    isUrgent = false,
+    expectedName,
+    expectedCaseRef,
+    dateReceived,
+    urgentBadgeText = 'Urgent',
+  }: CaseDetailsHeaderOptions
+) {
+  const caseHeader = page.locator('#mcc-case-details-header');
   await expect(caseHeader).toBeVisible();
 
-  await assertHeaderItem(caseHeader, 'Date received', dateReceived);
-  await assertHeaderItem(caseHeader, expectedName, expectedCaseRef);
+  await assertCaptionItem(caseHeader, expectedCaseRef);
+  await assertH1Item(caseHeader, expectedName);
+  await assertH2Item(caseHeader, 'Date received', dateReceived);
+
+  if (isUrgent) {
+    await assertIsUrgentBadgeToBeVisible(caseHeader, urgentBadgeText);
+  }
 
   if (withMenuButtons) {
     await assertMenuButtonVisible(caseHeader);
   }
+}
+
+async function assertIsUrgentBadgeToBeVisible(container: Locator, badgeText: string) {
+  const urgentBadge = container.locator('.moj-badge', { hasText: badgeText });
+  await expect(urgentBadge).toBeVisible();
 }
 
 async function assertMenuButtonVisible(container: Locator) {
@@ -19,11 +46,18 @@ async function assertMenuButtonVisible(container: Locator) {
   await expect(toggle).toBeVisible();
 }
 
-async function assertHeaderItem(container: Locator,
-  headingText: string,
-  expectedValue: string) {
+async function assertCaptionItem(container: Locator, expectedValue: string) {
+  const caption = container.locator('p.govuk-caption-l');
+  await expect(caption).toHaveText(expectedValue);
+}
 
-  const item = container.getByRole('heading', { level: 2, name: headingText }).locator('..');
-  await expect(item.locator('p.govuk-body')).toHaveText(expectedValue);
+async function assertH1Item(container: Locator, expectedValue: string) {
+  const headingName = container.getByRole('heading', { level: 1 });
+  await expect(headingName).toHaveText(expectedValue);
+}
 
+async function assertH2Item(container: Locator, headingText: string, expectedValue: string) {
+  const heading = container.locator('h2', { hasText: headingText });
+  const value = heading.locator('.govuk-body');
+  await expect(value).toHaveText(expectedValue);
 }

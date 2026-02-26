@@ -6,14 +6,23 @@
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "x-govuk/components/autocomplete/macro.njk" import xGovukAutocomplete %}
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "components/alertBannerComponent.njk" import alertBannerComponent %}
 
 {% block pageTitle %}{{ t(pageTitleKey, { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
+{% endblock %}
+
+{% block errorSummaryOrAlert %}
+  {% if error %}
+    {{ errorSummary(error.errorSummaryList) }}
+  {% else %}
+    {{ alertBannerComponent(client) }}
+  {% endif %}
 {% endblock %}
 
 {% block formContent %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-l">{{ t(headingKey) }}</h1>
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">{{ t(headingKey) }}</legend>
 
       {# Set up variables for the form partial #}
       {% set formAction = formActionUrl %}

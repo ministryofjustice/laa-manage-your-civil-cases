@@ -3,14 +3,22 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
+{% from "components/alertBannerComponent.njk" import alertBannerComponent %}
 
 {% block pageTitle %}{{ t('forms.clientDetails.email.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}{% endblock %}
+
+{% block errorSummaryOrAlert %}
+  {% if error %}
+    {{ errorSummary(error.errorSummaryList) }}
+  {% else %}
+    {{ alertBannerComponent(client) }}
+  {% endif %}
+{% endblock %}
 
 {% block formContent %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       {% if error %}
-        {{ errorSummary(error.errorSummaryList) }}
         {% set emailAddressErrorMessage = { text: error.inputErrors.emailAddress } if error.inputErrors.emailAddress %}
       {% endif %}
       <form method="post" action="/cases/{{ caseReference }}/client-details/change/email-address" autocomplete="off">
@@ -19,8 +27,8 @@
         {{ govukInput({
           label: {
             text: t('forms.clientDetails.email.title'),
-            classes: "govuk-label--l",
-            isPageHeading: true
+            classes: "govuk-label--m",
+            isPageHeading: false
           },
           id: "emailAddress",
           name: "emailAddress",

@@ -63,6 +63,7 @@ export function transformToApiFormat(caseItem: MockCase): object {
     notes: caseItem.operatorNotes,
     // Real CLA API returns lowercase state names (e.g., "accepted", "opened", "closed")
     state: caseItem.caseStatus.toLowerCase(),
+    is_urgent: caseItem.isUrgent,
     provider_assigned_at: caseItem.dateReceived,
     modified: caseItem.lastModified || caseItem.dateReceived,
     provider_closed: caseItem.dateClosed || null,
@@ -81,7 +82,7 @@ export function transformToApiFormat(caseItem: MockCase): object {
     // Adaptation details nested object
     adaptation_details: caseItem.clientSupportNeeds ? {
       bsl_webcam: caseItem.clientSupportNeeds.bslWebcam === 'Yes',
-      minicom: caseItem.clientSupportNeeds.textRelay === 'Yes',
+      minicom: caseItem.clientSupportNeeds.minicom === true,
       text_relay: caseItem.clientSupportNeeds.textRelay === 'Yes',
       skype_webcam: caseItem.clientSupportNeeds.skype === true,
       callback_preference: caseItem.clientSupportNeeds.callbackPreference === 'Yes',

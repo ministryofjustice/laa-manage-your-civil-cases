@@ -373,12 +373,44 @@ export const transformContactDetails = (personalDetails: unknown): {
 };
 
 /**
+ * Transform notes from state_note
+ * @param {unknown} stateNote - State note from API
+ * @returns {object} Transformed state note
+ */
+export const transformStateNote = (stateNote: unknown): {
+  code: string;
+  created_by: string;
+  created: string;
+  notes: string;
+  type: string;
+} | null => {
+  if (!isRecord(stateNote)) {
+    return null;
+  }
+
+  const code = safeString(stateNote.code);
+  const created_by = safeString(stateNote.created_by);
+  const created = formatDate(safeString(stateNote.created));
+  const notes = safeString(stateNote.notes);
+  const type = safeString(stateNote.type);
+
+  return {
+    code,
+    created_by,
+    created,
+    notes,
+    type
+  };
+};
+
+/**
  * Transform client support needs from adaptation_details
  * @param {unknown} adaptationDetails - Adaptation details from API
  * @returns {object | null} Transformed support needs or null if not present
  */
 export const transformClientSupportNeeds = (adaptationDetails: unknown): {
   skype: boolean;
+  minicom: boolean;
   bslWebcam: string;
   textRelay: string;
   callbackPreference: string;
@@ -392,6 +424,7 @@ export const transformClientSupportNeeds = (adaptationDetails: unknown): {
 
   return {
     skype: adaptationDetails.skype_webcam === true,
+    minicom: adaptationDetails.minicom === true,
     bslWebcam: adaptationDetails.bsl_webcam === true ? 'Yes' : 'No',
     textRelay: adaptationDetails.text_relay === true ? 'Yes' : 'No',
     callbackPreference: adaptationDetails.callback_preference === true ? 'Yes' : 'No',

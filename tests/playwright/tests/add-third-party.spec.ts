@@ -16,7 +16,7 @@ test('viewing add third party form should display expected elements', async ({ p
   await thirdPartyPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");  
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
   
   // Expect to see the main elements
   await thirdPartyPage.expectPageLoaded(thirdPartyPage.getExpectedHeading());
@@ -30,7 +30,7 @@ test('cancel link should navigate back to client details', async ({ page, i18nSe
   await thirdPartyPage.expectCancelNavigatesBack();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");  
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
   
 });
 
@@ -41,7 +41,7 @@ test('save button should redirect to client details when valid data submitted', 
   await thirdPartyPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");  
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
 
   // Fill in valid third party details
   await thirdPartyPage.fillValidThirdPartyData({
@@ -67,7 +67,7 @@ test('add third party form displays validation errors correctly', async ({ page,
   await thirdPartyPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, false, "Jack Youngs", "PC-1922-1879", "7 Jul 2025");  
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
   
   // Submit form with missing required fields
   await thirdPartyPage.clearNameField();
@@ -75,6 +75,9 @@ test('add third party form displays validation errors correctly', async ({ page,
 
   // Check GOV.UK error summary appears
   await thirdPartyPage.expectErrorSummaryVisible();
+
+  // Check alert banner is not present (as this is a validation error takes priority)
+  await thirdPartyPage.expectAlertBannerNotVisible();
 
   // Check individual field errors appear
   await thirdPartyPage.expectNameFieldError();

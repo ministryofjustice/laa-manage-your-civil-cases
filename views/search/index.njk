@@ -6,6 +6,8 @@
 {%- from "components/sortableTableComponent.njk" import sortableTableComponent -%}
 {%- from "components/paginationComponent.njk" import paginationComponent -%}
 
+{% block pageTitle %}{{ t('pages.search.heading') }} - {{config.SERVICE_NAME}} – GOV.UK{% endblock %}
+
 {% block pageContent %}
   {% if error %}
     {{ errorSummary(error.errorSummaryList) }}

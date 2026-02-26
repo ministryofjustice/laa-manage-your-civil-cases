@@ -5,14 +5,23 @@
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "components/alertBannerComponent.njk" import alertBannerComponent %}
 
 {% block pageTitle %}{{ t(pageTitleKey, { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
+{% endblock %}
+
+{% block errorSummaryOrAlert %}
+  {% if error %}
+    {{ errorSummary(error.errorSummaryList) }}
+  {% else %}
+    {{ alertBannerComponent(client) }}
+  {% endif %}
 {% endblock %}
 
 {% block formContent %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-l">{{ t(headingKey) }}</h1>
+      <h2 class="govuk-heading-m">{{ t(headingKey) }}</h2>
 
       {# Set up variables for the form partial #}
       {% set formAction = formActionUrl %}
