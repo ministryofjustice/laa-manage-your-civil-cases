@@ -8,7 +8,6 @@
   <a class="govuk-body govuk-link" href="#providerNote">{{ t('pages.caseDetails.caseDetailsSection.noteLabel') }}</a>
 </span>
 {% if error %}
-  {{ errorSummary(error.errorSummaryList) }}
   {% set errorMessages = {
     providerNote: {
       text: error.inputErrors.providerNote
@@ -18,7 +17,7 @@
 {% endif %}
 {# Client problem section #}
 {% if data.scopeTraversal or data.client_notes %}
-  <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.clientProblemTitle') }}</h3>
+  <h3 class="govuk-heading-s govuk-!-margin-bottom-2">{{ t('pages.caseDetails.caseDetailsSection.clientProblemTitle') }}</h3>
 
   {% if data.scopeTraversal and data.scopeTraversal.category %}
 
@@ -58,6 +57,7 @@
 
     {{ govukTable({
     captionClasses: "govuk-table__caption--m",
+    classes: "govuk-!-margin-bottom-4",
     firstCellIsHeader: true,
     rows: rows
   }) }}
@@ -65,14 +65,14 @@
   {% endif %}
 
   {% if data.scopeTraversal %}
-    <p class="govuk-hint govuk-!-margin-bottom-8">{{ data.scopeTraversal.created }}</p>
+    <p class="govuk-hint govuk-!-margin-bottom-9 govuk-!-font-size-16">{{ data.scopeTraversal.created }}</p>
   {% endif %}
 
 {% endif %}
 
 {# Operator diagnosis section #}
 {% if data.diagnosis %}
-  <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle') }}</h3>
+  <h3 class="govuk-heading-s govuk-!-margin-bottom-2">{{ t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle') }}</h3>
 {% set rows = [] %}
   {% if data.diagnosis.diagnosisNode %}
     {% for node in data.diagnosis.diagnosisNode %}
@@ -88,6 +88,7 @@
 
   {{ govukTable({
     captionClasses: "govuk-table__caption--s",
+    classes: "govuk-!-margin-bottom-9",
     firstCellIsHeader: false,
     rows: rows
   }) }}
@@ -96,30 +97,30 @@
 
 {# Operator notes section #}
 {% if data.operatorNotes %}
-  <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.operatorNotesTitle') }}</h3>
+  <h3 class="govuk-heading-s govuk-!-margin-bottom-4">{{ t('pages.caseDetails.caseDetailsSection.operatorNotesTitle') }}</h3>
   <p class="govuk-body">{{ data.operatorNotes }}</p>
-  <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6"/>
+  <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-9"/>
 {% endif %}
 
 {# Providers notes section #}
 <h3 class="govuk-heading-s">{{ t('pages.caseDetails.caseDetailsSection.providerNotesTitle') }}</h3>
 {% if data.notesHistory and data.notesHistory.length > 0 %}
   {% for note in data.notesHistory %}
-    <div class="govuk-!-margin-bottom-4">
-      <p class="govuk-body">{{ note.providerNotes }}</p>
-      <p class="govuk-hint">{{ note.createdBy }} on {{ note.created }}</p>
-      <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-6"/>
+    <div class="govuk-!-margin-bottom-2">
+      <p class="govuk-body govuk-!-margin-bottom-2">{{ note.providerNotes }}</p>
+      <p class="govuk-hint govuk-!-margin-top-1">{{ note.createdBy }} on {{ note.created }}</p>
+      <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-top-1 govuk-!-margin-bottom-9"/>
     </div>
   {% endfor %}
 {% else %}
-  <p class="govuk-body">{{ t('pages.caseDetails.caseDetailsSection.noNotes') }}</p>
+  <p class="govuk-body govuk-!-margin-bottom-9">{{ t('pages.caseDetails.caseDetailsSection.noNotes') }}</p>
 {% endif %}
 
 {% block formContent %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-      <h3 class="govuk-heading-s govuk-!-margin-top-5">{{ t('pages.caseDetails.caseDetailsSection.noteLabel') }}</h3>
+      <h3 class="govuk-heading-s govuk-!-margin-bottom-5">{{ t('pages.caseDetails.caseDetailsSection.noteLabel') }}</h3>
 
       <form method="post" action="">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
