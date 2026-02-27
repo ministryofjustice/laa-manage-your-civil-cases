@@ -22,6 +22,11 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
   try {
     devLog(`Rendering about new case form for case: ${caseReference}`);
 
+    
+    // Make call to get provider case of law 
+    // use provider detail in src/types/api-types to get provider details and category of law. 
+    // add this to rendering 
+
 
     res.render('case_details/about-new-case.njk', {
       caseReference,
