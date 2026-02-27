@@ -269,6 +269,15 @@
       "doYouWantToGiveFeedback": {
         "pageTitle": "Do you want to give feedback about the operator service? – {caseReference} – {serviceName} – GOV.UK",
         "legend": "Do you want to give feedback about the operator service?"
+      },
+      "splitCase": {
+        "pageTitle": "Split this case – {caseReference} – {serviceName} – GOV.UK",
+        "h2": "Split this case",
+        "infoText": "You must not open more than one case for a client unless the client has more than one separate and distinct legal problem. ",
+        "linkText": "Check 5.20 of page 35 of the guidance (PDF, 599KB)",
+        "infoTextEnd": " for more information.",
+        "radioLegend": "Who should the new case be assigned to?",
+        "operatorReassignment": "To operator for reassignment"
       }
     },
     "error": {
@@ -358,6 +367,13 @@
         "validationError": {
           "doYouWantToGiveFeedback": {
             "notEmpty": "Select yes if you want to give feedback about the operator service"
+          }
+        }
+      },
+      "splitCase": {
+        "validationError": {
+          "splitCase": {
+            "notEmpty": "Select who the new case should be assigned to"
           }
         }
       }

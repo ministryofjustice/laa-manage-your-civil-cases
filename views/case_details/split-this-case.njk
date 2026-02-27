@@ -1,0 +1,71 @@
+{% extends "case_details/_base-case-change.njk" %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% block pageTitle %}
+  {% if errorState.hasErrors %}{{ t('common.error') }}: {% endif %}{{ t('pages.caseDetails.splitCase.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
+{% endblock %}
+
+{% block backLink %}
+  {# No back link for this page #}
+{% endblock %}
+
+{% block formContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      {% if errorState.hasErrors %}
+        {{ govukErrorSummary({
+          titleText: t('common.errorSummaryTitle'),
+          errorList: errorState.errors
+        }) }}
+      {% endif %}
+
+      <form method="POST" action="/cases/{{ caseReference }}/split-this-case">
+
+        <!-- CSRF Protection -->
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+
+        <h2 class="govuk-heading-m">{{ t('pages.caseDetails.splitCase.h2') }}</h2>
+
+        <p class="govuk-body">{{ t('pages.caseDetails.splitCase.infoText') }}
+          <a class="govuk-link" href="https://assets.publishing.service.gov.uk/media/679a1a75fe19800263dc7b86/2_2025_Civil_Legal_Advice_Contract_Annex_1_Specification.pdf#page=35" target="_blank" rel="noopener noreferrer">
+            {{ t('pages.caseDetails.splitCase.linkText') }}</a>
+          {{ t('pages.caseDetails.splitCase.infoTextEnd') }}
+        </p>
+
+        {{ govukRadios({
+          name: "internal",
+          errorMessage: splitProviderErrorMessage,
+          fieldset: {
+            legend: {
+              text: t('pages.caseDetails.splitCase.radioLegend'),
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--s"
+            }
+          },
+          items: [
+            {
+              value: "true",
+              text: provider.name
+            },
+            {
+              value: "false",
+              text: t('pages.caseDetails.splitCase.operatorReassignment')
+            }
+          ]
+        }) }}
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: t('common.continue')
+          }) }}
+          <a class="govuk-link" href="/cases/{{ caseReference }}/client-details">{{ t('common.cancel') }}</a>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+{% endblock %}

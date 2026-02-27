@@ -6,7 +6,8 @@ import { handleCaseHistoryTab } from '#src/scripts/controllers/caseHistoryContro
 import { handleCaseDetailsTab, saveProviderNote } from '#src/scripts/controllers/caseDetailsController.js';
 import { getRemoveThirdPartyConfirmation, deleteThirdParty, getRemoveSupportNeedsConfirmation, deleteClientSupportNeeds } from '#src/scripts/controllers/index.js';
 import { getOperatorFeedbackForm, submitOperatorFeedback, getDoYouWantToGiveFeedbackForm, submitDoYouWantToGiveFeedbackForm } from '#src/scripts/controllers/operatorFeedbackController.js';
-import { validateReopenCase, validateCloseCase, validatePendingCase, validateOperatorFeedback, validateProviderNote, fetchClientDetails, validateGiveFeedback } from '#src/middlewares/indexSchema.js';
+import { getSplitThisCaseForm, submitSplitThisCaseForm } from '#src/scripts/controllers/splitCaseController.js';
+import { validateReopenCase, validateCloseCase, validatePendingCase, validateOperatorFeedback, validateProviderNote, fetchClientDetails, validateGiveFeedback, validateSplitThisCase } from '#src/middlewares/indexSchema.js';
 
 // Create a new router for case details routes
 const router = express.Router();
@@ -125,5 +126,16 @@ router.get('/:caseReference/do-you-want-to-give-feedback', fetchClientDetails, a
 router.post('/:caseReference/do-you-want-to-give-feedback', validateGiveFeedback(), async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   await submitDoYouWantToGiveFeedbackForm(req, res, next);
 });
+
+/* GET split-this-case form. */
+router.get('/:caseReference/split-this-case', fetchClientDetails, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  await getSplitThisCaseForm(req, res, next);
+});
+
+/* POST split-this-case form. */
+router.post('/:caseReference/split-this-case', fetchClientDetails, validateSplitThisCase(), async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  await submitSplitThisCaseForm(req, res, next);
+});
+
 
 export default router;

@@ -5,6 +5,7 @@
 export interface MockCase {
   fullName: string;
   caseReference: string;
+  providerId: string;
   refCode: string;
   dateReceived: string;
   lastModified?: string;
