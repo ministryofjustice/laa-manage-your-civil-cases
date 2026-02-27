@@ -278,6 +278,13 @@
         "infoTextEnd": " for more information.",
         "radioLegend": "Who should the new case be assigned to?",
         "operatorReassignment": "To operator for reassignment"
+      }, 
+      "aboutNewCase": {
+        "pageTitle": "About the new case – {caseReference} – {serviceName} – GOV.UK",
+        "h2": "Split this case",
+        "infoText": "You must not open more than one case for a client unless the client has more than one separate and distinct legal problem. ",
+        "textEnd": " for more information.",
+        "radioLegend": "Who should the new case be assigned to?"
       }
     },
     "error": {
