@@ -127,11 +127,6 @@ router.post('/:caseReference/do-you-want-to-give-feedback', validateGiveFeedback
   await submitDoYouWantToGiveFeedbackForm(req, res, next);
 });
 
-/* GET about new case form. */
-router.get('/:caseReference/about-new-case', fetchClientDetails, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  await getAboutNewCaseForm(req, res, next);
-});
-
 /* GET split-this-case form. */
 router.get('/:caseReference/split-this-case', fetchClientDetails, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   await getSplitThisCaseForm(req, res, next);
@@ -142,5 +137,9 @@ router.post('/:caseReference/split-this-case', fetchClientDetails, validateSplit
   await submitSplitThisCaseForm(req, res, next);
 });
 
+/* GET about new case form. */
+router.get('/:caseReference/about-new-case', fetchClientDetails, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  await getAboutNewCaseForm(req, res, next);
+});
 
 export default router;
