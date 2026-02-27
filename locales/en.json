@@ -272,10 +272,11 @@
       }, 
       "aboutNewCase": {
         "pageTitle": "About the new case – {caseReference} – {serviceName} – GOV.UK",
-        "h2": "Split this case",
-        "infoText": "You must not open more than one case for a client unless the client has more than one separate and distinct legal problem. ",
-        "textEnd": " for more information.",
-        "radioLegend": "Who should the new case be assigned to?"
+        "h2": "About the new case",
+        "h3": "Category of law for new case",
+        "originalCaseInfo": "Original case category of law: ",
+        "newCaseInfo": "New case category of law: ",
+        "legend": "Why do you want to split this case?"
       }
     },
     "error": {

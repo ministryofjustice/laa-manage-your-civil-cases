@@ -1,10 +1,10 @@
 {% extends "case_details/_base-case-change.njk" %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "components/errorSummaryComponent.njk" import errorSummary %}
-{% from "components/alertBannerComponent.njk" import alertBannerComponent %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
 {% block pageTitle %}
   {% if errorState.hasErrors %}{{ t('common.error') }}: {% endif %}{{ t('pages.caseDetails.aboutNewCase.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
@@ -13,50 +13,40 @@
 {% block backLink %}
   {# No back link for this page #}
 {% endblock %}
-
-{% block errorSummaryOrAlert %}
-  {% if errorState.hasErrors %}
-    {{ errorSummary(errorState.errors, t('common.errorSummaryTitle')) }}
-  {% else %}
-    {{ alertBannerComponent(client) }}
-  {% endif %}
-{% endblock %}
-
 {% block formContent %}
+ <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-4"/>
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-      <form method="POST" action="/cases/{{ caseReference }}/give-operator-feedback">
+      {% if errorState.hasErrors %}
+        {{ govukErrorSummary({
+          titleText: t('common.errorSummaryTitle'),
+          errorList: errorState.errors
+        }) }}
+      {% endif %}
+
+      <form method="POST" action="/cases/{{ caseReference }}/split-this-case">
 
         <!-- CSRF Protection -->
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
 
+        <h2 class="govuk-heading-m">{{ t('pages.caseDetails.aboutNewCase.h2') }}</h2>
+
+        <p class="govuk-body">{{ t('pages.caseDetails.aboutNewCase.originalCaseInfo') }} {{ 'Debt, housing and family matters'}}</p>
+
+        <h3 class="govuk-heading-s">{{ t('pages.caseDetails.aboutNewCase.h3') }}</h3>
+
+        <p class="govuk-body">{{ t('pages.caseDetails.aboutNewCase.newCaseInfo') }} {{ 'Debt, housing and family matters'}}</p>
+
         {% call govukFieldset({
           legend: {
-            text: t('pages.caseDetails.operatorFeedback.legend'),
-            classes: "govuk-fieldset__legend--m",
+            text: t('pages.caseDetails.aboutNewCase.legend'),
+            classes: "govuk-fieldset__legend--s",
             isPageHeading: false
           }
         }) %}
 
-        <div class="govuk-hint govuk-!-margin-bottom-6">
-          {{ t('pages.caseDetails.operatorFeedback.hint') }}
-        </div>
-
-        {{ govukSelect({
-            id: "category",
-            name: "category",
-            label: {
-              text: t('pages.caseDetails.operatorFeedback.categoryLabel')
-            },
-            items: categoryItems,
-            errorMessage: errorState.fieldErrors.category if errorState.fieldErrors.category
-          }) }}
-
         {{ govukCharacterCount({
-            label: {
-              text: t('pages.caseDetails.operatorFeedback.commentLabel')
-            },
             id: "comment",
             name: "comment",
             value: formData.comment,
@@ -70,7 +60,7 @@
 
         <div class="govuk-button-group">
           {{ govukButton({
-            text: t('common.save')
+            text: t('common.continue')
           }) }}
           <a class="govuk-link" href="/cases/{{ caseReference }}/client-details">{{ t('common.cancel') }}</a>
         </div>
