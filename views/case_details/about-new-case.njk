@@ -38,6 +38,10 @@
 
         <p class="govuk-body">{{ t('pages.caseDetails.aboutNewCase.newCaseInfo') }} {{ 'Debt, housing and family matters'}}</p>
 
+        // TODO if category list is 1 display new case info as above. 
+        // if category list is more than 1 display select drop down with options.
+        // operator feedback has a similar layout for the drop down. 
+        
         {% call govukFieldset({
           legend: {
             text: t('pages.caseDetails.aboutNewCase.legend'),
