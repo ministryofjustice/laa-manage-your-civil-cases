@@ -1,15 +1,21 @@
+import dotenv from 'dotenv';
+// Load environment variables before any other imports
+dotenv.config();
+
 import type { Request, Response } from 'express';
 import express from 'express';
 import chalk from 'chalk';
 import morgan from 'morgan';
 import compression from 'compression';
 import { setupCsrf, setupMiddlewares, setupConfig, setupLocaleMiddleware, setAuthStatus } from '#src/middlewares/indexSetUp.js';
-import session from 'express-session';
+import session, { MemoryStore, Store } from 'express-session';
+import { RedisStore } from 'connect-redis';
 import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware, displayAsciiBanner } from '#utils/server/index.js';
 import { initializeI18nextSync } from '#src/scripts/helpers/index.js';
 import config from '#config.js';
 import indexRouter from '#routes/index.js';
 import livereload from 'connect-livereload';
+import { buildSessionConfig } from '#utils/server/redis.js';
 
 const TRUST_FIRST_PROXY = 1;
 
@@ -19,7 +25,7 @@ const TRUST_FIRST_PROXY = 1;
  *
  * @returns {Promise<import('express').Application>} The configured Express application
  */
-const createApp = (): express.Application => {
+const createApp = async (): Promise<express.Application> => {
 	// Initialize i18next synchronously before setting up the app
 	initializeI18nextSync();
 	
@@ -54,7 +60,8 @@ const createApp = (): express.Application => {
 
 	// Set up cookie security for sessions
 	app.set('trust proxy', TRUST_FIRST_PROXY);
-	app.use(session(config.session));
+	
+	app.use(session(await buildSessionConfig(config)));
 
 	// Set up authentication status for templates
 	app.use(setAuthStatus);
@@ -106,7 +113,10 @@ const createApp = (): express.Application => {
 };
 
 // Self-execute the app directly to allow app.js to be executed directly
-void createApp();
+createApp().catch((error) => {
+	console.error(chalk.red('Failed to start application:'), error);
+	process.exit(1);
+});
 
 // Export the createApp function for testing/import purposes
 export default createApp;

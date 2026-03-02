@@ -13,6 +13,9 @@ const MAX_PROVIDER_NOTE_LENGTH = 2500;
 const MAX_POSTCODE_LENGTH = 12;
 const DEFAULT_PAGINATION_PAGE = 1;
 
+console.log('Loading configuration from environment variables...');
+console.log('Redis Enabled:', process.env.REDIS_ENABLED);
+
 // Validate required session env vars
 if (process.env.SESSION_SECRET === undefined || process.env.SESSION_SECRET === '' ||
   process.env.SESSION_NAME === undefined || process.env.SESSION_NAME === '' ||
@@ -77,6 +80,14 @@ const config: Config = {
   pagination: {
     defaultPage: DEFAULT_PAGINATION_PAGE,
     defaultLimit: Number(process.env.PAGINATION_LIMIT ?? '20')
+  },
+  // Redis configuration for session storage
+  redis: {
+    host: process.env.REDIS_HOST ?? 'localhost',
+    port: Number(process.env.REDIS_PORT ?? '6379'),
+    enabled: process.env.REDIS_ENABLED === 'true',
+    auth_token: process.env.REDIS_AUTH_TOKEN,
+    tls_enabled: process.env.REDIS_TLS_ENABLED === 'true'
   }
 };
 

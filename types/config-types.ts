@@ -13,18 +13,25 @@ export interface CsrfConfig {
   httpOnly: boolean;
 }
 
+export interface RedisConfig {
+  host: string;
+  enabled: boolean;
+  auth_token?: string;
+  port?: number;
+  tls_enabled?: boolean;
+}
+
 export interface SessionConfig {
   secret: string;
   name: string;
   resave: boolean;
   saveUninitialized: boolean;
   encryptionKey: string;
-  cookie?: {
-    secure?: boolean;
-    httpOnly?: boolean;
-    sameSite?: 'strict' | 'lax' | 'none';
-    maxAge?: number;
-    path?: string;
+  cookie: {
+    secure: boolean;
+    httpOnly: boolean;
+    sameSite: 'strict' | 'lax' | 'none';
+    maxAge: number;
   };
 }
 
@@ -67,4 +74,5 @@ export interface Config {
   paths: PathsConfig;
   api: ApiConfig;
   pagination: PaginationConfig;
+  redis: RedisConfig;
 }

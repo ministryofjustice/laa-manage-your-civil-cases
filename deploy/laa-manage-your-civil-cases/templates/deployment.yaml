@@ -85,6 +85,20 @@ spec:
               value: "{{ .Values.env.API_CLIENT_ID }}"
             - name: API_CLIENT_SECRET
               value: "{{ .Values.env.API_CLIENT_SECRET }}"
+            - name: REDIS_ENABLED
+              value: "{{ .Values.env.REDIS_ENABLED }}"
+            - name: REDIS_TLS_ENABLED
+              value: "{{ .Values.env.REDIS_TLS_ENABLED }}"
+            - name: REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: elasticache-redis
+                  key: primary_endpoint_address
+            - name: REDIS_AUTH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: elasticache-redis
+                  key: auth_token
       {{- with .Values.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
