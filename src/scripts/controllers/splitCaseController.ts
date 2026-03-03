@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
-import { devLog, createProcessedError, safeString, validCaseReference, formatValidationError, safeBodyString, storeSessionData } from '#src/scripts/helpers/index.js';
+import { devLog, createProcessedError, safeString, validCaseReference, formatValidationError, safeBodyString, storeSessionData, t } from '#src/scripts/helpers/index.js';
 import { validationResult } from 'express-validator';
 import type { ProviderDetail, ProviderSplitChoicesApiResponse } from '#types/api-types.js';
 
@@ -149,8 +149,29 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
   try {
     devLog(`Rendering about new case form for case: ${caseReference}`);
 
+    const provider = await fetchProviderNameAndDetail(req, caseReference);
+
+    console.log('Provider details for about new case form:', provider); // Debug log to verify provider details
+
+     // Transform feedback choices into govukSelect items format
+        const categoryItems = [
+          {
+            value: '',
+            text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
+            selected: true
+          },
+          ...provider.law_category.map(choice => ({
+            value: choice.description,
+            text: choice.name,
+            selected: false
+          }))
+        ];
+    
+
     res.render('case_details/about-new-case.njk', {
       caseReference,
+      provider,
+      categoryItems,
       client: req.clientData,
       errorState: {
         hasErrors: false,

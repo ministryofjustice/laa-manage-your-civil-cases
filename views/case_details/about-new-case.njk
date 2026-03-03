@@ -32,12 +32,25 @@
 
         <h2 class="govuk-heading-m">{{ t('pages.caseDetails.aboutNewCase.h2') }}</h2>
 
-        <p class="govuk-body">{{ t('pages.caseDetails.aboutNewCase.originalCaseInfo') }} {{ 'Debt, housing and family matters'}}</p>
+        <p class="govuk-body">{{ t('pages.caseDetails.aboutNewCase.originalCaseInfo') }}  {{'Debt, housing and family matters'}}</p>
 
         <h3 class="govuk-heading-s">{{ t('pages.caseDetails.aboutNewCase.h3') }}</h3>
 
-        <p class="govuk-body">{{ t('pages.caseDetails.aboutNewCase.newCaseInfo') }} {{ 'Debt, housing and family matters'}}</p>
+        {% if provider.law_category.length === 1%}
+
+        <p class="govuk-body">{{ t('pages.caseDetails.aboutNewCase.newCaseInfo') }} {{ provider.law_category[0].name }}</p>
         
+        {% else %}
+
+             {{ govukSelect({
+            id: "category",
+            name: "category",
+            items: categoryItems,
+            errorMessage: errorState.fieldErrors.category if errorState.fieldErrors.category
+          }) }}
+
+        {% endif %}
+
         {% call govukFieldset({
           legend: {
             text: t('pages.caseDetails.aboutNewCase.legend'),
