@@ -18,7 +18,8 @@ import {
   deleteClientSupportNeeds
 } from './resources/supportNeedsApiService.js';
 import { getFeedbackChoices, submitOperatorFeedback } from './resources/operatorFeedbackApiService.js';
-import { getProviderChoices } from './resources/splitCaseApiService.js';
+import { getProviderChoices, getAllCategories } from './resources/splitCaseApiService.js';
+import { get } from '#node_modules/axios/index.cjs';
 
 export * from './resources/casesApiService.js';
 export * from './resources/clientDetailsApiService.js';
@@ -46,5 +47,6 @@ export const apiService = {
   getClientHistoryDetails,
   getFeedbackChoices,
   submitOperatorFeedback,
-  getProviderChoices
+  getProviderChoices,
+  getAllCategories
 };
