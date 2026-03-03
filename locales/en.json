@@ -285,7 +285,8 @@
         "h3": "Category of law for new case",
         "originalCaseInfo": "Original case category of law: ",
         "newCaseInfo": "New case category of law: ",
-        "legend": "Why do you want to split this case?"
+        "legend": "Why do you want to split this case?",
+        "categoryPlaceholder": "Choose a category of law"
       }
     },
     "error": {
