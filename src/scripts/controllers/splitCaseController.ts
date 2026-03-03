@@ -3,6 +3,7 @@ import { apiService } from '#src/services/apiService.js';
 import { devLog, createProcessedError, safeString, validCaseReference, formatValidationError, safeBodyString, storeSessionData, t } from '#src/scripts/helpers/index.js';
 import { validationResult } from 'express-validator';
 import type { ProviderDetail, ProviderSplitChoicesApiResponse } from '#types/api-types.js';
+import { request } from '#node_modules/@playwright/test/index.js';
 
 const BAD_REQUEST = 400;
 
@@ -108,7 +109,7 @@ export async function submitSplitThisCaseForm(req: Request, res: Response, next:
       text: summaryMessage,
       href: `#${field}`
     }));
-    
+
     // Fetch provider choices for validation error rendering too
     const provider = await fetchProviderNameAndDetail(req, caseReference);
 
@@ -151,23 +152,53 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
 
     const provider = await fetchProviderNameAndDetail(req, caseReference);
 
-    console.log('Provider details for about new case form:', provider); // Debug log to verify provider details
+    let categoryItems: any[] = [];
+    console.log('Provider details for about new case form:', req.session); // Debug log to verify provider details
 
-     // Transform feedback choices into govukSelect items format
-        const categoryItems = [
-          {
-            value: '',
-            text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
-            selected: true
-          },
-          ...provider.law_category.map(choice => ({
-            value: choice.description,
-            text: choice.name,
-            selected: false
-          }))
-        ];
-    
+    if (req.session.splitCaseCache.internal === 'false') {
 
+    const allCategoriesResponse = await apiService.getAllCategories(req.axiosMiddleware);
+
+
+    if (allCategoriesResponse.status === 'success' && Array.isArray(allCategoriesResponse.data)) {
+      // [{ name: string, code: string }, ...]
+      categoryItems =  [
+      {
+        value: '',
+        text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
+        selected: true
+      },
+      ...allCategoriesResponse.data.map(choice => ({
+        value: choice.description,
+        text: choice.name,
+        selected: false
+      }))
+    ];
+    categoryItems.push({
+      value: 'unknown',
+      text: 'I don\'t know',
+      selected: false
+    });
+      console.log('Fetched all categories for non-internal split:', categoryItems); // Debug log to verify categories
+
+    }
+  } else {
+    // Transform feedback choices into govukSelect items format
+
+    categoryItems = [
+      {
+        value: '',
+        text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
+        selected: true
+      },
+      ...provider.law_category.map(choice => ({
+        value: choice.description,
+        text: choice.name,
+        selected: false
+      }))
+    ];
+
+  }
     res.render('case_details/about-new-case.njk', {
       caseReference,
       provider,
@@ -218,7 +249,7 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
       text: summaryMessage,
       href: `#${field}`
     }));
-    
+
 
     return res.status(BAD_REQUEST).render('case_details/about-new-case.njk', {
       caseReference,
@@ -227,14 +258,6 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
       csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
     });
   }
-
-  const internal = safeBodyString(req.body, 'internal');
-
-  storeSessionData(req, 'splitCaseCache', {
-    caseReference,
-    internal: String(internal),
-    cachedAt: String(Date.now())
-  });
 
   return res.redirect(`/cases/${caseReference}/about-new-case`);
 }

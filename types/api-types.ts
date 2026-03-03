@@ -285,3 +285,14 @@ export interface ProviderSplitChoicesApiResponse {
   status: 'success' | 'error';
   message?: string;
 }
+
+/**
+ * All Categories response interface
+ */
+export interface GetAllCategoriesApiResponse {
+    code: string;
+    name: string;
+    description: string;
+    ecf_available: boolean;
+    mandatory: boolean;
+}

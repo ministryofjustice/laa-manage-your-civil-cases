@@ -43,3 +43,36 @@ export async function getProviderChoices(
     };
   }
 }
+
+/**
+ * Get all categories for split case
+ * Calls provider endpoint to retrieve all categories
+ * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+ * @returns {Promise<ProviderSplitChoicesApiResponse>} API response with provider choices
+ */
+export async function getAllCategories(
+  axiosMiddleware: AxiosInstanceWrapper,
+): Promise<ProviderSplitChoicesApiResponse> {
+  devLog(`API: GET ${API_PREFIX}/category/`);
+  const configuredAxios = configureAxiosInstance(axiosMiddleware);
+  try {
+    // Call API provider endpoint to get form options
+    const response = await configuredAxios.get(`${API_PREFIX}/category/`);
+
+    devLog(`API: All categories response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+
+    return {
+      data: response.data,
+      status: 'success'
+    };
+
+  } catch (error) {
+    const errorMessage = extractAndLogError(error, 'API error fetching all categories');
+
+    return {
+      data: null,
+      status: 'error',
+      message: errorMessage
+    };
+  }
+}
