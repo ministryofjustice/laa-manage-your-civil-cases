@@ -20,7 +20,7 @@ const mockDataPath = join(process.cwd(), 'tests/playwright/fixtures/mock-data.js
 const initialData: MockCase[] = JSON.parse(readFileSync(mockDataPath, 'utf-8'));
 
 // Base API URL that the application calls
-const API_BASE_URL = 'https://laa-cla-backend-uat.apps.live-1.cloud-platform.service.justice.gov.uk';
+const API_BASE_URL = 'https://el-2491-mcc-split-endpoint-laa-cla-backend-uat.apps.live-1.cloud-platform.service.justice.gov.uk';
 const API_PREFIX = '/cla_provider/api/v1';
 
 // Mutable runtime state
