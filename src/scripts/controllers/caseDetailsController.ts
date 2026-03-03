@@ -4,7 +4,7 @@ import { safeString } from '../helpers/dataTransformers.js';
 import { devLog } from '../helpers/devLogger.js';
 import { createProcessedError } from '../helpers/errorHandler.js';
 import { validCaseReference } from '../helpers/formControllerHelpers.js';
-import { clearAllOriginalFormData } from '../helpers/sessionHelpers.js';
+import { handleCaseTab } from '../helpers/caseTabHandler.js';
 import { safeBodyString, formatValidationError } from '../helpers/index.js';
 import { apiService } from '#src/services/apiService.js';
 import config from '#config.js';
@@ -21,19 +21,7 @@ const BAD_REQUEST = 400;
  * @returns {Promise<void>} Page to be returned
  */
 export async function handleCaseDetailsTab(req: Request, res: Response, next: NextFunction, activeTab: string): Promise<void> {
-
-  const caseReference = safeString(req.params.caseReference);
-
-  if (!validCaseReference(caseReference, res)) {
-    return;
-  }
-
-  // Clear any lingering form session data when users navigate to case details page
-  clearAllOriginalFormData(req);
-
-  try {
-    devLog(`Fetching case details for case: ${caseReference}, tab: ${activeTab}`);
-
+  await handleCaseTab(req, res, next, activeTab, 'case details', ({ req, res, caseReference, activeTab }) => {
     // Client details already fetched by middleware, available at req.clientData
     const { clientData } = req;
 
@@ -46,12 +34,7 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
       caseReference,
       csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined
     });
-  } catch (error) {
-    // Use the error processing utility
-    const processedError = createProcessedError(error, `fetching client details for case ${caseReference}`);
-    // Pass the processed error to the global error handler
-    next(processedError);
-  }
+  });
 }
 
 /**
