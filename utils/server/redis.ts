@@ -5,9 +5,9 @@ import type { RedisConfig } from '#types/config-types.js';
 /**
  * Create and configure Redis client
  * @param {RedisConfig} config - Redis configuration from environment variables
- * @returns {Promise<ReturnType<typeof createClient>>} Configured Redis client
+ * @returns {ReturnType<typeof createClient>} Configured Redis client
  */
-export const createRedisClient = async (config: RedisConfig) => {
+export const createRedisClient = (config: RedisConfig) => {
   const protocol = config.tls_enabled ? 'rediss://' : 'redis://';
   const redisUrl = protocol + config.host + ':' + config.port;
   console.log(chalk.green(`Connecting to Redis at ${redisUrl}`));
@@ -53,8 +53,6 @@ export const createRedisClient = async (config: RedisConfig) => {
   client.on('end', () => {
     console.log(chalk.yellow('⚠️  Redis client disconnected'));
   });
-
-  await client.connect();
 
   return client;
 };
