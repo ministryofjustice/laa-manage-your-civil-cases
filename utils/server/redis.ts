@@ -1,10 +1,6 @@
 import { createClient } from 'redis';
 import chalk from 'chalk';
-import { RedisStore } from 'connect-redis';
-import type session from 'express-session';
-import type { Config, RedisConfig } from '#types/config-types.js';
-import type { Store } from 'express-session';
-import { MemoryStore } from 'express-session';
+import type { RedisConfig } from '#types/config-types.js';
 
 /**
  * Create and configure Redis client
@@ -61,38 +57,4 @@ export const createRedisClient = async (config: RedisConfig) => {
   await client.connect();
 
   return client;
-};
-
-export type RedisClientType = Awaited<ReturnType<typeof createRedisClient>>;
-type RedisClientFactory = (config: RedisConfig) => Promise<RedisClientType>;
-
-/**
- * Build session configuration with Redis store
- * @param {Config} config - Base session configuration
- * @param {RedisClientFactory} redisClientFactory - Factory function to create Redis client (for testing/mocking)
- * @returns {Promise<session.SessionOptions>} Configured session options with Redis store
- */
-export const buildSessionConfig = async (
-  config: Config,
-  redisClientFactory: RedisClientFactory = createRedisClient
-): Promise<session.SessionOptions> => {
-  let store: Store;
-	if (config.redis.enabled) {
-		console.log(chalk.green('✓ Using Redis session store'));
-		const client = await redisClientFactory(config.redis);
-		store = new RedisStore({ client });
-	} else {
-		console.log(chalk.yellow('⚠️  Using in-memory session store (not suitable for production environments)'));
-		store = new MemoryStore();
-	}
-
-	return {
-		store,
-		name: 'manage-your-civil-cases.session',
-		cookie: { secure: config.session.cookie.secure, sameSite: 'strict', maxAge: config.session.cookie.maxAge },
-		secret: config.session.secret,
-		resave: false,
-		saveUninitialized: false,
-		rolling: true,
-  };
 };
