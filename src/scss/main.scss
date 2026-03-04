@@ -3,6 +3,7 @@
 @use "@x-govuk/govuk-prototype-components/src/x-govuk/components/autocomplete";
 
 // Custom components
+@use "components/error_or_state_banner";
 @use "components/tab-navigation";
 @use "components/pagination";
 @use "components/sortable-table";

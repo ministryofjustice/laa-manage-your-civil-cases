@@ -30,6 +30,24 @@ test('viewing change address form, to see the expected elements', async ({ page,
   // For now, we test the form structure without specific data expectations
 });
 
+test('viewing change address form for a closed case should display alert banner', async ({ page, i18nSetup }) => {
+  const alertBanner = page.locator('.mcc-alert-banner');
+
+  // Navigate to the change address form for a closed case
+  const closedCaseUrl = getClientDetailsUrlByStatus('closed') + '/change/address';
+  await page.goto(closedCaseUrl);
+
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: false, expectedName: "Roronoa Zoro", expectedCaseRef: "PC-6667-9089", dateReceived: "6 Jan 2025" }); 
+
+  // Expect alert banner to be visible with expected text
+  await expect(alertBanner).toBeVisible();
+
+  // Except error banner to not be visible
+  const errorSummary = page.locator('.govuk-error-summary');
+  await expect(errorSummary).not.toBeVisible();
+});
+
 test('unchanged fields trigger change detection error', async ({ page, i18nSetup }) => {
   const saveButton = page.getByRole('button', { name: t('common.save') });
   const errorSummary = page.locator('.govuk-error-summary');
@@ -49,6 +67,10 @@ test('unchanged fields trigger change detection error', async ({ page, i18nSetup
   await expect(errorSummary).toBeVisible();
   await expect(errorSummary).toContainText(t('components.errorSummary.title'));
   await expect(errorSummary).toContainText(t('forms.clientDetails.address.validationError.notChanged'));
+
+  // Check alert banner is not present (as this is a validation error takes priority)
+  const alertBanner = page.locator('.mcc-alert-banner');
+  await expect(alertBanner).not.toBeVisible();
 
   // Change detection error should NOT have inline field error messages
   const addressErrorMessage = page.locator('#address-error');

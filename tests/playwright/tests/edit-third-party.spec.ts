@@ -76,6 +76,9 @@ test('edit third party form displays validation errors correctly', async ({ page
   // Check GOV.UK error summary appears
   await thirdPartyPage.expectErrorSummaryVisible();
 
+  // Check alert banner is not present (as this is a validation error takes priority)
+  await thirdPartyPage.expectAlertBannerNotVisible();
+
   // Check individual field errors appear
   await thirdPartyPage.expectNameFieldError();
 });
@@ -105,6 +108,9 @@ test('edit third party form displays postcode validation errors correctly', asyn
 
   // Check GOV.UK error summary appears
   await thirdPartyPage.expectErrorSummaryVisible();
+
+  // Check alert banner is not present (as this is a validation error takes priority)
+  await thirdPartyPage.expectAlertBannerNotVisible();
 
   // Check individual field errors appear
   await thirdPartyPage.expectPostcodeFieldError();

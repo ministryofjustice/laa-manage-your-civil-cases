@@ -4,8 +4,17 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
+{% from "components/alertBannerComponent.njk" import alertBannerComponent %}
 
 {% block pageTitle %}{{ t('forms.clientDetails.address.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
+{% endblock %}
+
+{% block errorSummaryOrAlert %}
+  {% if error %}
+    {{ errorSummary(error.errorSummaryList) }}
+  {% else %}
+    {{ alertBannerComponent(client) }}
+  {% endif %}
 {% endblock %}
 
 {% block formContent %}
@@ -22,7 +31,6 @@
             text: error.inputErrors.postcode
           } %}
         {% endif %}
-        {{ errorSummary(error.errorSummaryList) }}
       {% endif %}
       <form method="post" action="/cases/{{ caseReference }}/client-details/change/address">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">

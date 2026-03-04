@@ -17,17 +17,8 @@ import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import type { Request, Response, NextFunction } from 'express';
-import {
-  handleClientDetailsTab,
-  acceptCase,
-  completeCase,
-  getPendingCaseForm,
-  getCloseCaseForm,
-  closeCase,
-  pendingCase,
-  getReopenCaseForm,
-  reopenCompletedCase
-} from '#src/scripts/controllers/clientDetailsController.js';
+import { handleClientDetailsTab } from '#src/scripts/controllers/clientDetailsController.js';
+import { acceptCase, completeCase, getPendingCaseForm, getCloseCaseForm, closeCase, pendingCase, getReopenCaseForm, reopenCompletedCase } from '#src/scripts/controllers/caseStateController.js';
 import { apiService } from '#src/services/apiService.js';
 import { changeCaseStateService } from '#src/services/changeCaseStateService.js';
 // Import to get global type declarations for axiosMiddleware

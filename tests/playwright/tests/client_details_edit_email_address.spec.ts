@@ -19,7 +19,6 @@ test('viewing change email-address form, to see the expected elements', async ({
   await editEmailPage.assertMainElementsVisible();
 });
 
-
 test('change email address form displays validation errors correctly', async ({ page, i18nSetup }) => {
   const editEmailPage = new EditEmailPage(page);
 

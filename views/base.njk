@@ -2,8 +2,6 @@
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
 
-{% set govukRebrand = true %}
-
 {% block pageTitle %}{{config.SERVICE_NAME}} – GOV.UK{% endblock %}
 
 {% block head %}
@@ -114,6 +112,7 @@
 {% block content %}
   <div class="govuk-width-container">
     <div class="govuk-body">
+      {% block errorSummaryOrAlert %}{% endblock %}
       {% block pageContent %}{% endblock %}
     </div>
   </div>
@@ -121,7 +120,6 @@
 
 {% block footer %}
   {{ govukFooter({
-    rebrand: govukRebrand,
     meta: {
       items: [
         {

@@ -40,3 +40,30 @@ test('edit client support needs form should save valid data and redirect to clie
   // Should redirect to client details page
   await expect(page).toHaveURL(clientDetailsUrl);
 });
+
+test('edit client support needs form should show validation error if no option selected', async ({ page, i18nSetup }) => {
+  // Navigate to the edit client support needs form
+  await page.goto(editSupportNeedsUrl);
+
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 Aug 2025" }); 
+
+ // Check the box for "Other support" but do not fill in the text to trigger validation error
+  const otherSupportCheckbox = page.locator('input[name="clientSupportNeeds"][value="otherSupport"]');
+  await expect(otherSupportCheckbox).toBeVisible();
+  await otherSupportCheckbox.check();
+  const otherSupportNotesInput = page.locator('textarea[name="notes"]');
+  await otherSupportNotesInput.fill('');
+
+  // Submit the form without selecting any options
+  const saveButton = page.getByRole('button', { name: 'Save' });
+  await saveButton.click();
+
+  // Check GOV.UK error summary appears
+  const errorSummary = page.locator('.govuk-error-summary');
+  await expect(errorSummary).toBeVisible();
+
+  // Check alert banner is not present (as this is a validation error takes priority)
+  const alertBanner = page.locator('.govuk-notification-banner');
+  await expect(alertBanner).not.toBeVisible();
+});

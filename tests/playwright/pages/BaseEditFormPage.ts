@@ -86,6 +86,14 @@ export abstract class BaseEditFormPage {
     return this.page.locator('.govuk-error-summary');
   }
 
+  /**
+   * Gets the alert banner element
+   * @returns {Locator} The alert banner locator
+   */
+  get alertBanner(): Locator {
+    return this.page.locator('.mcc-alert-banner');
+  }
+
   // Common actions
   /**
    * Navigates to the form URL
@@ -140,6 +148,27 @@ export abstract class BaseEditFormPage {
    */
   async expectErrorSummaryVisible(): Promise<void> {
     await expect(this.errorSummary).toBeVisible();
+  }
+
+  /**
+   * Asserts that the error summary is not visible
+  */
+  async expectErrorSummaryNotVisible(): Promise<void> {
+    await expect(this.errorSummary).not.toBeVisible();
+  }
+
+  /**
+   * Asserts that the alert banner is visible
+   */
+  async expectAlertBannerVisible(): Promise<void> {
+    await expect(this.alertBanner).toBeVisible();
+  }
+
+  /**
+   * Asserts that the alert banner is not visible
+   */
+  async expectAlertBannerNotVisible(): Promise<void> {
+    await expect(this.alertBanner).not.toBeVisible();
   }
 
   /**

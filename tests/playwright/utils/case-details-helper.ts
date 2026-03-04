@@ -20,7 +20,7 @@ export async function assertCaseDetailsHeaderPresent(
     urgentBadgeText = 'Urgent',
   }: CaseDetailsHeaderOptions
 ) {
-  const caseHeader = page.locator('.mcc-case-details-header');
+  const caseHeader = page.locator('#mcc-case-details-header');
   await expect(caseHeader).toBeVisible();
 
   await assertCaptionItem(caseHeader, expectedCaseRef);
