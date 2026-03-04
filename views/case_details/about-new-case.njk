@@ -32,13 +32,13 @@
 
         <h2 class="govuk-heading-m">{{ t('pages.caseDetails.aboutNewCase.h2') }}</h2>
 
-        <p class="govuk-body">{{ t('pages.caseDetails.aboutNewCase.originalCaseInfo') }}  {{'Debt, housing and family matters'}}</p>
+        <p class="govuk-body">{{ t('pages.caseDetails.aboutNewCase.originalCaseInfo') }}  {{currentCategory}}</p>
 
         <h3 class="govuk-heading-s">{{ t('pages.caseDetails.aboutNewCase.h3') }}</h3>
 
         {% if provider.law_category.length === 1%}
 
-        <p class="govuk-body">{{ t('pages.caseDetails.aboutNewCase.newCaseInfo') }} {{ currentCategory }}</p>
+        <p class="govuk-body">{{ t('pages.caseDetails.aboutNewCase.newCaseInfo') }} {{ provider.law_category[0] }}</p>
         
         {% else %}
 

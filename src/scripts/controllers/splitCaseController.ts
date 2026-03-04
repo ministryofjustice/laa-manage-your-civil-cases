@@ -210,6 +210,7 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
     const currentCategory = (req.clientData as ClientDetailsResponse | undefined)
       ?.scopeTraversal?.category;
 
+    console.log('Current category from client data:', currentCategory); // Debug log for current category
     // If internal is false, assign to operator was selected and the full list should be returned. 
     if (req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && req.session.splitCaseCache.internal === 'false') {
 
