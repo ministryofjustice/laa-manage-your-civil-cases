@@ -8,14 +8,13 @@ import chalk from 'chalk';
 import morgan from 'morgan';
 import compression from 'compression';
 import { setupCsrf, setupMiddlewares, setupConfig, setupLocaleMiddleware, setAuthStatus } from '#src/middlewares/indexSetUp.js';
-import session, { MemoryStore, Store } from 'express-session';
-import { RedisStore } from 'connect-redis';
+import session from 'express-session';
 import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware, displayAsciiBanner } from '#utils/server/index.js';
 import { initializeI18nextSync } from '#src/scripts/helpers/index.js';
 import config from '#config.js';
 import indexRouter from '#routes/index.js';
 import livereload from 'connect-livereload';
-import { buildSessionConfig } from '#utils/server/redis.js';
+import { buildSessionConfig } from '#utils/server/session.js';
 
 const TRUST_FIRST_PROXY = 1;
 
