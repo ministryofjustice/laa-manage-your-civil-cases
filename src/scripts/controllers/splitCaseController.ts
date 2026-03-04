@@ -133,6 +133,42 @@ export async function submitSplitThisCaseForm(req: Request, res: Response, next:
   return res.redirect(`/cases/${caseReference}/about-new-case`);
 }
 
+
+export function buildCodeNameItems<T>(
+  items: T[] | null | undefined,
+  t: (key: string) => string,
+  map: (item: T) => { code: string; name: string },
+  options?: { includeUnknown?: boolean; selectedCode?: string }
+) {
+  const { includeUnknown = false, selectedCode } = options ?? {};
+  const placeholder = {
+    value: '',
+    text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
+    selected: true
+  };
+
+  const mapped = (items ?? []).map((choice) => {
+    const { code, name } = map(choice);
+    return {
+      value: code,
+      text: name,
+      selected: false
+    };
+  });
+
+  const result = [placeholder, ...mapped];
+  if (includeUnknown) {
+    result.push({
+      value: 'unknown',
+      text: `I don't know`,
+      selected: false
+    });
+  }
+  return result;
+}
+
+
+
 /**
  * Render the "about new case" form
  * @param {Request} req Express request object
@@ -155,50 +191,35 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
     let categoryItems: any[] = [];
     console.log('Provider details for about new case form:', req.session); // Debug log to verify provider details
 
-    if (req.session.splitCaseCache.internal === 'false') {
+    if (req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && req.session.splitCaseCache.internal === 'false') {
 
-    const allCategoriesResponse = await apiService.getAllCategories(req.axiosMiddleware);
+      const allCategoriesResponse = await apiService.getAllCategories(req.axiosMiddleware);
 
 
-    if (allCategoriesResponse.status === 'success' && Array.isArray(allCategoriesResponse.data)) {
-      // [{ name: string, code: string }, ...]
-      categoryItems =  [
-      {
-        value: '',
-        text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
-        selected: true
-      },
-      ...allCategoriesResponse.data.map(choice => ({
-        value: choice.description,
-        text: choice.name,
-        selected: false
-      }))
-    ];
-    categoryItems.push({
-      value: 'unknown',
-      text: 'I don\'t know',
-      selected: false
-    });
-      console.log('Fetched all categories for non-internal split:', categoryItems); // Debug log to verify categories
+      if (allCategoriesResponse.status === 'success' && Array.isArray(allCategoriesResponse.data)) {
+        // [{ name: string, code: string }, ...]
+
+        categoryItems = buildCodeNameItems(
+          allCategoriesResponse.data,
+          t,
+          (c) => ({ code: c.code, name: c.name }),
+          { includeUnknown: true }
+        );
+
+        console.log('Fetched all categories for non-internal split:', categoryItems); // Debug log to verify categories
+
+      }
+    } else {
+      // Transform feedback choices into govukSelect items format
+
+      categoryItems = buildCodeNameItems(
+        provider.law_category,
+        t,
+        (c) => ({ code: c.code, name: c.name })
+      );
+
 
     }
-  } else {
-    // Transform feedback choices into govukSelect items format
-
-    categoryItems = [
-      {
-        value: '',
-        text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
-        selected: true
-      },
-      ...provider.law_category.map(choice => ({
-        value: choice.description,
-        text: choice.name,
-        selected: false
-      }))
-    ];
-
-  }
     res.render('case_details/about-new-case.njk', {
       caseReference,
       provider,
