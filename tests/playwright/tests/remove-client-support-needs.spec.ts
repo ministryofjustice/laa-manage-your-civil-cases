@@ -22,7 +22,7 @@ test('viewing remove client support needs confirmation should display expected e
   
 
   // Expect to see the main elements
-  await expect(page.locator('h1').nth(1)).toContainText('Remove client support needs?'); // Use actual text
+  await expect(page.locator('h2.govuk-heading-m')).toContainText('Remove client support needs?'); // Use actual text
   await expect(confirmButton).toBeVisible();
   await expect(cancelButton).toBeVisible();
 
@@ -71,7 +71,7 @@ test('confirmation page shows warning text about removing client support needs',
   await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" }); 
 
   // Check the page heading
-  await expect(page.locator('h1').nth(1)).toContainText('Remove client support needs?');
+  await expect(page.locator('h2.govuk-heading-m')).toContainText('Remove client support needs?');
   
   // Check the warning description text - using actual text from locales
   await expect(page.getByText('permanently delete all information about the clients\'s support needs')).toBeVisible();
@@ -99,7 +99,7 @@ test('should show 404 error when case has no client support needs', async ({ pag
   await page.goto(visitUrl);
   
   // If the case has support needs (which our mock does), page should load normally
-  await expect(page.locator('h1').nth(1)).toContainText('Remove client support needs?');
+  await expect(page.locator('h2.govuk-heading-m')).toContainText('Remove client support needs?');
   
   // This test serves as documentation for the expected behavior
   // In a real scenario with varied mock data, some cases would not have support needs

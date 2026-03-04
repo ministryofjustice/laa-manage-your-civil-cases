@@ -1,7 +1,17 @@
 {% extends "case_details/_base-case-change.njk" %}
 {% from "components/confirmationComponent.njk" import confirmationComponent %}
+{% from "components/alertBannerComponent.njk" import alertBannerComponent %}
 
 {% block pageTitle %}{{ t('pages.caseDetails.removeThirdParty.pageTitle', { serviceName: config.SERVICE_NAME }) }}
+{% endblock %}
+
+{# Although no errors would be shown on this page, adding as this will help with formatting #}
+{% block errorSummaryOrAlert %}
+  {% if error %}
+    {{ errorSummary(error.errorSummaryList) }}
+  {% else %}
+    {{ alertBannerComponent(client) }}
+  {% endif %}
 {% endblock %}
 
 {% block formContent %}
