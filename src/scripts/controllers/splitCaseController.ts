@@ -3,8 +3,9 @@ import { apiService } from '#src/services/apiService.js';
 import { devLog, createProcessedError, safeString, validCaseReference, formatValidationError, safeBodyString, storeSessionData, t } from '#src/scripts/helpers/index.js';
 import { validationResult } from 'express-validator';
 import type { ProviderDetail, ProviderSplitChoicesApiResponse, GetAllCategoriesApiResponse, ClientDetailsResponse } from '#types/api-types.js';
+import config from '#config.js';
 
-
+const { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH, CHARACTER_THRESHOLD }: { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH: number; CHARACTER_THRESHOLD: number } = config;
 const BAD_REQUEST = 400;
 
 /**
@@ -173,7 +174,7 @@ interface SelectItem {
   text: string;
   selected: boolean;
 }
- 
+
 /**
  * Helper function to build code-name items for select options
  *
@@ -196,7 +197,7 @@ export function buildCodeNameItems<T>(
   const placeholder: SelectItem = {
     value: '',
     text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
-    selected: selectedCode === undefined, // selected true when nothing selected
+    selected: selectedCode === undefined,
   };
 
   const mapped: SelectItem[] = (items ?? []).map((choice) => {
@@ -204,7 +205,7 @@ export function buildCodeNameItems<T>(
     return {
       value: code,
       text: name,
-      selected: false,
+      selected: selectedCode === code,
     };
   });
 
@@ -212,15 +213,14 @@ export function buildCodeNameItems<T>(
 
   if (includeUnknown) {
     result.push({
-      value: 'unknown',
+      value: 'none',
       text: `I don't know`,
-      selected: false,
+      selected: selectedCode === 'none'
     });
   }
 
   return result;
 }
-
 
 /**
  * Render the "about new case" form
@@ -243,17 +243,8 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
 
     let categoryItems: SelectItem[] = [];
 
-
-interface ClientData {
-  scopeTraversal?: { category?: unknown };
-}
-
-const currentCategory = (req.clientData as ClientData | undefined)
-  ?.scopeTraversal?.category;
-
-    
-//const currentCategory = req.clientData && typeof req.clientData === 'object' && 'scopeTraversal' in req.clientData ? (req.clientData as any).scopeTraversal?.category : undefined;
-
+    const currentCategory = (req.clientData as ClientDetailsResponse | undefined)
+      ?.scopeTraversal?.category;
 
     // If internal is false, assign to operator was selected and the full list should be returned. 
     if (req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && req.session.splitCaseCache.internal === 'false') {
@@ -289,6 +280,8 @@ const currentCategory = (req.clientData as ClientData | undefined)
         errors: [],
         fieldErrors: {}
       },
+      maxCommentLength: MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH,
+      characterThreshold: CHARACTER_THRESHOLD,
       csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined
     });
   } catch (error) {
@@ -296,7 +289,6 @@ const currentCategory = (req.clientData as ClientData | undefined)
     next(processedError);
   }
 }
-
 
 /**
  * Handle "about new case" form submission
@@ -307,6 +299,9 @@ const currentCategory = (req.clientData as ClientData | undefined)
  */
 export async function submitAboutNewCaseForm(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
+  const category = safeBodyString(req.body, 'category');
+  console.log('Category selected:', category); // Debug log for category value
+  const comment = safeBodyString(req.body, 'comment');
 
   // Check for validation errors
   const errors = validationResult(req);
@@ -330,14 +325,69 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
       href: `#${field}`
     }));
 
+    const provider = await fetchProviderNameAndDetail(req, caseReference);
+
+    let categoryItems: SelectItem[] = [];
+
+    const currentCategory = (req.clientData as ClientDetailsResponse | undefined)
+      ?.scopeTraversal?.category;
+
+
+    // Get the raw value
+    const categoryRaw = safeBodyString(req.body, 'category');
+
+    // Narrow it to string | undefined for use in buildCodeNameItems
+    const selectedCode: string | undefined =
+      typeof categoryRaw === 'string' && categoryRaw.length > 0 ? categoryRaw : undefined;
+
+
+    // If internal is false, assign to operator was selected and the full list should be returned. 
+    if (req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && req.session.splitCaseCache.internal === 'false') {
+
+      const allCategoriesResponse = await apiService.getAllCategories(req.axiosMiddleware);
+
+      if (allCategoriesResponse.status === 'success' && Array.isArray(allCategoriesResponse.data)) {
+
+        categoryItems = buildCodeNameItems(
+          allCategoriesResponse.data,
+          t,
+          (c) => ({ code: c.code, name: c.name }),
+          { includeUnknown: true, selectedCode }
+        );
+      }
+    } else {
+
+      categoryItems = buildCodeNameItems(
+        provider.law_category,
+        t,
+        (c) => ({ code: c.code, name: c.name }),
+        { selectedCode }
+      );
+    }
 
     return res.status(BAD_REQUEST).render('case_details/about-new-case.njk', {
       caseReference,
+      currentCategory,
+      provider,
+      categoryItems,
+      formData: {
+        category,
+        comment
+      },
       client: req.clientData,
+      maxCommentLength: MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH,
+      characterThreshold: CHARACTER_THRESHOLD,
       errorState: { hasErrors: true, errors: errorSummaryList, fieldErrors },
       csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
     });
   }
+
+  storeSessionData(req, 'aboutNewCaseCache', {
+    caseReference,
+    category: String(category),
+    comment: String(comment),
+    cachedAt: String(Date.now())
+  });
 
   return res.redirect(`/cases/${caseReference}/about-new-case`);
 }

@@ -25,7 +25,7 @@
         }) }}
       {% endif %}
 
-      <form method="POST" action="/cases/{{ caseReference }}/split-this-case">
+      <form method="POST" action="/cases/{{ caseReference }}/about-new-case">
 
         <!-- CSRF Protection -->
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>

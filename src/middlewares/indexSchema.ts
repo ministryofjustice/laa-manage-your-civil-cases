@@ -66,3 +66,7 @@ export {
 export {
   validateSplitThisCase
 } from './splitThisCaseSchema.js'
+
+export {
+  validateAboutNewCase
+} from './aboutNewCaseSchema.js'
