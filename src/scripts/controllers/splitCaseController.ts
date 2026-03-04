@@ -2,8 +2,8 @@ import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
 import { devLog, createProcessedError, safeString, validCaseReference, formatValidationError, safeBodyString, storeSessionData, t } from '#src/scripts/helpers/index.js';
 import { validationResult } from 'express-validator';
-import type { ProviderDetail, ProviderSplitChoicesApiResponse } from '#types/api-types.js';
-import { request } from '#node_modules/@playwright/test/index.js';
+import type { ProviderDetail, ProviderSplitChoicesApiResponse, GetAllCategoriesApiResponse, ClientDetailsResponse } from '#types/api-types.js';
+
 
 const BAD_REQUEST = 400;
 
@@ -77,7 +77,6 @@ export async function getSplitThisCaseForm(req: Request, res: Response, next: Ne
   }
 }
 
-
 /**
  * Handle "split this case" form submission
  * @param {Request} req Express request object
@@ -133,40 +132,58 @@ export async function submitSplitThisCaseForm(req: Request, res: Response, next:
   return res.redirect(`/cases/${caseReference}/about-new-case`);
 }
 
-
+interface SelectItem {
+  value: string;
+  text: string;
+  selected: boolean;
+}
+ 
+/**
+ * Helper function to build code-name items for select options
+ *
+ * @template T
+ * @param {T[] | null | undefined} items - Array of items to map
+ * @param {(key: string) => string} t - Translation function
+ * @param {(item: T) => { code: string; name: string }} map - Function to extract code and name
+ * @param {{ includeUnknown?: boolean; selectedCode?: string }} [options] - Optional configuration
+ * @param {boolean} [options.includeUnknown] - Whether to include an "unknown" choice
+ * @param {string} [options.selectedCode] - Code that should be marked as selected
+ * @returns {SelectItem[]} Array of select dropdown items
+ */
 export function buildCodeNameItems<T>(
   items: T[] | null | undefined,
   t: (key: string) => string,
   map: (item: T) => { code: string; name: string },
   options?: { includeUnknown?: boolean; selectedCode?: string }
-) {
+): SelectItem[] {
   const { includeUnknown = false, selectedCode } = options ?? {};
-  const placeholder = {
+  const placeholder: SelectItem = {
     value: '',
     text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
-    selected: true
+    selected: selectedCode === undefined, // selected true when nothing selected
   };
 
-  const mapped = (items ?? []).map((choice) => {
+  const mapped: SelectItem[] = (items ?? []).map((choice) => {
     const { code, name } = map(choice);
     return {
       value: code,
       text: name,
-      selected: false
+      selected: false,
     };
   });
 
-  const result = [placeholder, ...mapped];
+  const result: SelectItem[] = [placeholder, ...mapped];
+
   if (includeUnknown) {
     result.push({
       value: 'unknown',
       text: `I don't know`,
-      selected: false
+      selected: false,
     });
   }
+
   return result;
 }
-
 
 
 /**
@@ -188,16 +205,26 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
 
     const provider = await fetchProviderNameAndDetail(req, caseReference);
 
-    let categoryItems: any[] = [];
-    console.log('Provider details for about new case form:', req.session); // Debug log to verify provider details
+    let categoryItems: SelectItem[] = [];
 
+
+interface ClientData {
+  scopeTraversal?: { category?: unknown };
+}
+
+const currentCategory = (req.clientData as ClientData | undefined)
+  ?.scopeTraversal?.category;
+
+    
+//const currentCategory = req.clientData && typeof req.clientData === 'object' && 'scopeTraversal' in req.clientData ? (req.clientData as any).scopeTraversal?.category : undefined;
+
+
+    // If internal is false, assign to operator was selected and the full list should be returned. 
     if (req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && req.session.splitCaseCache.internal === 'false') {
 
       const allCategoriesResponse = await apiService.getAllCategories(req.axiosMiddleware);
 
-
       if (allCategoriesResponse.status === 'success' && Array.isArray(allCategoriesResponse.data)) {
-        // [{ name: string, code: string }, ...]
 
         categoryItems = buildCodeNameItems(
           allCategoriesResponse.data,
@@ -205,12 +232,8 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
           (c) => ({ code: c.code, name: c.name }),
           { includeUnknown: true }
         );
-
-        console.log('Fetched all categories for non-internal split:', categoryItems); // Debug log to verify categories
-
       }
     } else {
-      // Transform feedback choices into govukSelect items format
 
       categoryItems = buildCodeNameItems(
         provider.law_category,
@@ -218,10 +241,10 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
         (c) => ({ code: c.code, name: c.name })
       );
 
-
     }
     res.render('case_details/about-new-case.njk', {
       caseReference,
+      currentCategory,
       provider,
       categoryItems,
       client: req.clientData,

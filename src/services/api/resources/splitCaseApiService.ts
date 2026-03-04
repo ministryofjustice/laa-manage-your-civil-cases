@@ -4,7 +4,7 @@
  */
 
 import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
-import type { ProviderSplitChoicesApiResponse } from '#types/api-types.js';
+import type { ProviderSplitChoicesApiResponse, GetAllCategoriesApiResponse } from '#types/api-types.js';
 import { devLog, extractAndLogError } from '#src/scripts/helpers/index.js';
 import { configureAxiosInstance } from '../base/BaseApiService.js';
 import { API_PREFIX, JSON_INDENT } from '../base/constants.js';
@@ -52,7 +52,7 @@ export async function getProviderChoices(
  */
 export async function getAllCategories(
   axiosMiddleware: AxiosInstanceWrapper,
-): Promise<ProviderSplitChoicesApiResponse> {
+): Promise<GetAllCategoriesApiResponse> {
   devLog(`API: GET ${API_PREFIX}/category/`);
   const configuredAxios = configureAxiosInstance(axiosMiddleware);
   try {
