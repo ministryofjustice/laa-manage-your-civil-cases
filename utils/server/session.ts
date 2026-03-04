@@ -7,8 +7,8 @@ import { MemoryStore } from 'express-session';
 import type { RedisConfig } from '#types/config-types.js';
 import { createRedisClient } from '#utils/server/index.js';
 
-export type RedisClientType = Awaited<ReturnType<typeof createRedisClient>>;
-type RedisClientFactory = (config: RedisConfig) => Promise<RedisClientType>;
+export type RedisClientType = ReturnType<typeof createRedisClient>;
+type RedisClientFactory = (config: RedisConfig) => RedisClientType | Promise<RedisClientType>;
 
 
 /**
@@ -25,6 +25,9 @@ export const buildSessionConfig = async (
 	if (config.redis.enabled) {
 		console.log(chalk.green('✓ Using Redis session store'));
 		const client = await redisClientFactory(config.redis);
+		if (!client.isOpen) {
+			await client.connect();
+		}
 		store = new RedisStore({ client });
 	} else {
 		console.log(chalk.yellow('⚠️  Using in-memory session store (not suitable for production environments)'));
