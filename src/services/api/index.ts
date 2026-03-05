@@ -18,12 +18,14 @@ import {
   deleteClientSupportNeeds
 } from './resources/supportNeedsApiService.js';
 import { getFeedbackChoices, submitOperatorFeedback } from './resources/operatorFeedbackApiService.js';
+import { getProviderChoices } from './resources/splitCaseApiService.js';
 
 export * from './resources/casesApiService.js';
 export * from './resources/clientDetailsApiService.js';
 export * from './resources/thirdPartyApiService.js';
 export * from './resources/supportNeedsApiService.js';
 export * from './resources/operatorFeedbackApiService.js';
+export * from './resources/splitCaseApiService.js';
 
 /**
  * Combined API Service object for backward compatibility
@@ -43,5 +45,6 @@ export const apiService = {
   deleteClientSupportNeeds,
   getClientHistoryDetails,
   getFeedbackChoices,
-  submitOperatorFeedback
+  submitOperatorFeedback,
+  getProviderChoices
 };

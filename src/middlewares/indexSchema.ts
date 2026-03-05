@@ -62,3 +62,7 @@ export {
 export {
   validateGiveFeedback
 } from './giveFeedbackSchema.js'
+
+export {
+  validateSplitThisCase
+} from './splitThisCaseSchema.js'

@@ -4,7 +4,6 @@
  */
 
 import { strict as assert } from 'assert';
-import sinon from 'sinon';
 import { encrypt, decrypt, isEncryptionConfigured } from '#utils/server/index.js';
 import config from '#config.js';
 

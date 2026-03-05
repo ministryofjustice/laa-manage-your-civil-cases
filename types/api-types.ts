@@ -125,6 +125,7 @@ export interface NotesHistory {
 export interface ClientDetailsResponse {
   //About the client
   caseReference: string;
+  providerId: string;
   fullName: string;
   dateOfBirth: string;
   caseStatus: string;
@@ -259,6 +260,28 @@ export interface FeedbackSubmissionRequest {
  */
 export interface FeedbackSubmissionApiResponse {
   data: unknown | null;
+  status: 'success' | 'error';
+  message?: string;
+}
+
+/**
+ * Provider split choice interface from API PROVIDER response
+ */
+export interface ProviderDetail {
+  id: number;
+  name: string;
+  law_category: Array<{
+    code: string;
+    name: string;
+    description: string;
+  }>;
+}
+
+/**
+ * Provider split choices API PROVIDER response interface
+ */
+export interface ProviderSplitChoicesApiResponse {
+  data: ProviderDetail | null;
   status: 'success' | 'error';
   message?: string;
 }

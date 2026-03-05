@@ -33,6 +33,7 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
 
   // Extract top-level client information
   const caseReference = safeString(item.reference);
+  const providerId = safeString(item.provider);
   const laaReference = safeString(item.laa_reference);
   const apiState = safeString(item.state);
   const outcomeCode = safeOptionalString(item.outcome_code) ?? '';
@@ -72,6 +73,7 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
 
   return {
     caseReference,
+    providerId,
     laaReference,
     caseStatus,
     provider_assigned_at,

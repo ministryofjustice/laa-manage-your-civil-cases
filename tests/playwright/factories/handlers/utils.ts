@@ -56,6 +56,7 @@ const mapSafe = (booleanValueTrue?: boolean) => (booleanValueTrue ? 'SAFE' : 'DO
 export function transformToApiFormat(caseItem: MockCase): object {
   return {
     reference: caseItem.caseReference,
+    provider: caseItem.providerId,
     laa_reference: caseItem.laaReference,
     full_name: caseItem.fullName,
     date_of_birth: caseItem.dateOfBirth,
