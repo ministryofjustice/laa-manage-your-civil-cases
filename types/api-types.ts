@@ -285,7 +285,6 @@ export interface ProviderSplitChoicesApiResponse {
   status: 'success' | 'error';
   message?: string;
 }
-<<<<<<< HEAD
 
 /**
  * All Categories response interface
@@ -306,5 +305,3 @@ export interface GetAllCategoriesApiResponse {
   status: 'success' | 'error';
   message?: string;
 }
-=======
->>>>>>> main

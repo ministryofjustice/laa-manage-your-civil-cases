@@ -65,12 +65,8 @@ export {
 
 export {
   validateSplitThisCase
-<<<<<<< HEAD
 } from './splitThisCaseSchema.js'
 
 export {
   validateAboutNewCase
 } from './aboutNewCaseSchema.js'
-=======
-} from './splitThisCaseSchema.js'
->>>>>>> main

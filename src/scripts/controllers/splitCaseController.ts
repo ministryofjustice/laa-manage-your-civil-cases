@@ -1,18 +1,11 @@
 import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
-<<<<<<< HEAD
 import { devLog, createProcessedError, safeString, validCaseReference, formatValidationError, safeBodyString, storeSessionData, t } from '#src/scripts/helpers/index.js';
 import { validationResult } from 'express-validator';
 import type { ProviderDetail, ProviderSplitChoicesApiResponse, GetAllCategoriesApiResponse, ClientDetailsResponse } from '#types/api-types.js';
 import config from '#config.js';
 
 const { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH, CHARACTER_THRESHOLD }: { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH: number; CHARACTER_THRESHOLD: number } = config;
-=======
-import { devLog, createProcessedError, safeString, validCaseReference, formatValidationError, safeBodyString, storeSessionData } from '#src/scripts/helpers/index.js';
-import { validationResult } from 'express-validator';
-import type { ProviderDetail, ProviderSplitChoicesApiResponse } from '#types/api-types.js';
-
->>>>>>> main
 const BAD_REQUEST = 400;
 
 /**
@@ -85,10 +78,6 @@ export async function getSplitThisCaseForm(req: Request, res: Response, next: Ne
   }
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> main
 /**
  * Handle "split this case" form submission
  * @param {Request} req Express request object
@@ -120,11 +109,7 @@ export async function submitSplitThisCaseForm(req: Request, res: Response, next:
       text: summaryMessage,
       href: `#${field}`
     }));
-<<<<<<< HEAD
-
-=======
     
->>>>>>> main
     // Fetch provider choices for validation error rendering too
     const provider = await fetchProviderNameAndDetail(req, caseReference);
 
@@ -146,7 +131,6 @@ export async function submitSplitThisCaseForm(req: Request, res: Response, next:
   });
 
   return res.redirect(`/cases/${caseReference}/about-new-case`);
-<<<<<<< HEAD
 }
 
 interface SelectItem {
@@ -371,6 +355,4 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
   });
 
   return res.redirect(`/cases/${caseReference}/about-new-case`);
-=======
->>>>>>> main
 }

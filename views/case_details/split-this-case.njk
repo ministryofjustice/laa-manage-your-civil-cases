@@ -2,11 +2,8 @@
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
-<<<<<<< HEAD
-=======
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
 {% from "components/alertBannerComponent.njk" import alertBannerComponent %}
->>>>>>> main
 
 {% block pageTitle %}
   {% if errorState.hasErrors %}{{ t('common.error') }}: {% endif %}{{ t('pages.caseDetails.splitCase.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
@@ -16,8 +13,6 @@
   {# No back link for this page #}
 {% endblock %}
 
-<<<<<<< HEAD
-=======
 {% block errorSummaryOrAlert %}
   {% if errorState.hasErrors %}
     {{ errorSummary(errorState.errors, t('common.errorSummaryTitle')) }}
@@ -26,21 +21,10 @@
   {% endif %}
 {% endblock %}
 
->>>>>>> main
 {% block formContent %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-<<<<<<< HEAD
-      {% if errorState.hasErrors %}
-        {{ govukErrorSummary({
-          titleText: t('common.errorSummaryTitle'),
-          errorList: errorState.errors
-        }) }}
-      {% endif %}
-
-=======
->>>>>>> main
       <form method="POST" action="/cases/{{ caseReference }}/split-this-case">
 
         <!-- CSRF Protection -->
@@ -56,11 +40,7 @@
 
         {{ govukRadios({
           name: "internal",
-<<<<<<< HEAD
-          errorMessage: splitProviderErrorMessage,
-=======
           errorMessage: errorState.fieldErrors.internal,
->>>>>>> main
           fieldset: {
             legend: {
               text: t('pages.caseDetails.splitCase.radioLegend'),
