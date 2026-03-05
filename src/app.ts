@@ -1,6 +1,5 @@
-import dotenv from 'dotenv';
-// Load environment variables before any other imports
-dotenv.config();
+// Ensure config is loaded before other imports that depend on it
+import config from '#config.js';
 
 import type { Request, Response } from 'express';
 import express from 'express';
@@ -11,7 +10,6 @@ import { setupCsrf, setupMiddlewares, setupConfig, setupLocaleMiddleware, setAut
 import session from 'express-session';
 import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware, displayAsciiBanner } from '#utils/server/index.js';
 import { initializeI18nextSync } from '#src/scripts/helpers/index.js';
-import config from '#config.js';
 import indexRouter from '#routes/index.js';
 import livereload from 'connect-livereload';
 import { buildSessionConfig } from '#utils/server/session.js';
