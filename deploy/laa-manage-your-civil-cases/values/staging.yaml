@@ -81,6 +81,8 @@ env:
   # This need to be updated, when we go live
   API_URL: "https://laa-cla-backend-uat.apps.live-1.cloud-platform.service.justice.gov.uk"
   API_PREFIX: "/cla_provider/api/v1"
+  REDIS_ENABLED: true
+  REDIS_TLS_ENABLED: true
 
 livenessProbe:
   httpGet:
