@@ -13,9 +13,6 @@ const MAX_PROVIDER_NOTE_LENGTH = 2500;
 const MAX_POSTCODE_LENGTH = 12;
 const DEFAULT_PAGINATION_PAGE = 1;
 
-console.log('Loading configuration from environment variables...');
-console.log('Redis Enabled:', process.env.REDIS_ENABLED);
-
 // Validate required session env vars
 if (process.env.SESSION_SECRET === undefined || process.env.SESSION_SECRET === '' ||
   process.env.SESSION_NAME === undefined || process.env.SESSION_NAME === '' ||
