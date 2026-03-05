@@ -30,7 +30,7 @@ test('viewing "split this case" form should display expected elements', async ({
 
   // Link inside the paragraph: locate by accessible name
   const guidanceLink = page.getByRole('link', {
-    name: /Check 5\.20 of page 35 of the guidance \(PDF, 599KB\)/i,
+    name: /Check 5\.20 on page 35 of the guidance \(PDF, 599KB\)/i,
   });
 
   // Assert it’s visible
@@ -47,7 +47,7 @@ test('viewing "split this case" form should display expected elements', async ({
 
   // (Optional) assert the link’s accessible name
   await expect(guidanceLink).toHaveAccessibleName(
-    /Check 5\.20 of page 35 of the guidance \(PDF, 599KB\)/i
+    /Check 5\.20 on page 35 of the guidance \(PDF, 599KB\)/i
   );
 
   await expect(

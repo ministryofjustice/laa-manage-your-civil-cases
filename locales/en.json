@@ -274,7 +274,7 @@
         "pageTitle": "Split this case – {caseReference} – {serviceName} – GOV.UK",
         "h2": "Split this case",
         "infoText": "You must not open more than one case for a client unless the client has more than one separate and distinct legal problem. ",
-        "linkText": "Check 5.20 of page 35 of the guidance (PDF, 599KB)",
+        "linkText": "Check 5.20 on page 35 of the guidance (PDF, 599KB)",
         "infoTextEnd": " for more information.",
         "radioLegend": "Who should the new case be assigned to?",
         "operatorReassignment": "To operator for reassignment"
