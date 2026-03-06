@@ -46,6 +46,8 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
   const is_urgent = safeOptionalString(item.is_urgent) ?? '';
   const client_notes = safeOptionalString(item.client_notes) ?? '';
   const operatorNotes = safeOptionalString(item.notes) ?? '';
+  const category = safeString(item.category) ?? '';
+
   // Transform contact details
   const contactDetails = transformContactDetails(item.personal_details);
 
@@ -87,6 +89,7 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
     is_urgent,
     client_notes,
     operatorNotes,
+    category,
     ...contactDetails,
     clientSupportNeeds,
     thirdParty,
