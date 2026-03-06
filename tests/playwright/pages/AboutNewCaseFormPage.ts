@@ -29,38 +29,47 @@ export class AboutNewCaseFormPage extends BaseEditFormPage {
     return `/cases/${this.caseReference}/about-new-case`;
   }
 
- /**
-   * Gets the heading locator for this form
-   * @returns {Locator} The locator for the `<h2 class="govuk-heading-m">` heading
-   */
+  /**
+    * Gets the heading locator for this form
+    * @returns {Locator} The locator for the `<h2 class="govuk-heading-m">` heading
+    */
   getHeadingLocator(): Locator {
     return this.page.locator('h2.govuk-heading-m').first();
-}
+  }
 
-
-get originalCaseCategory() {
-  return this.page.getByText(/Original case category of law:/i);
-}
-
-get newCategoryHeader() {
-  return this.page.getByRole('heading', { name: 'Category of law for new case' });
-}
-
-
-get categorySelect(): Locator {
-  return this.page.locator('#category');
-}
-
-
-get newCaseCategoryText() {
-    return this.page.locator('text=New case category of law');
-}
-
-
- /**
-   * Gets the heading locator for this form
-   * @returns {Locator} The locator for the `<h2 class="govuk-heading-m">` heading
+  /**
+   * Gets the locator for the original case category text
    */
+  get originalCaseCategory() {
+    return this.page.getByText(/Original case category of law:/i);
+  }
+
+  /**
+   * Gets the locator for the new category header text
+   */
+  get newCategoryHeader() {
+    return this.page.getByRole('heading', { name: 'Category of law for new case' });
+  }
+
+  /**
+   * Gets the locator for the category select element
+   */
+  get categorySelect(): Locator {
+    return this.page.locator('#category');
+  }
+
+  /**
+   * Gets the locator for the new case category text (which shows the currently selected category or 'Select a category' if none selected)
+   */
+  get newCaseCategoryText() {
+    return this.page.locator('text=New case category of law');
+  }
+
+
+  /**
+    * Gets the heading locator for this form
+    * @returns {Locator} The locator for the `<h2 class="govuk-heading-m">` heading
+    */
   getExpectedHeading(): string {
     return t('pageTitle');
   }

@@ -1,7 +1,6 @@
 import { test, expect } from '../fixtures/index.js';
 import { setupAuth, assertCaseDetailsHeaderPresent, getClientDetailsUrlByStatus } from '../utils/index.js';
 import { AboutNewCaseFormPage } from '../pages/AboutNewCaseFormPage.js';
-import { assert } from 'node:console';
 
 const clientDetailsUrl = getClientDetailsUrlByStatus('default');
 const caseReference = clientDetailsUrl.split('/')[2]; // Extract case reference from URL
@@ -41,7 +40,7 @@ test('viewing "about new case" form should display expected elements', async ({ 
 
   //Expect the select to have the correct size
   const options = await aboutNewCasePage.categorySelect.locator('option').all();
-  expect(options.length).toBe(3); // Adjust the number based on expected options
+  expect(options.length).toBe(3);
 });
 
 test('when there is only one category assigned to the provider and provider radio is selected this is displayed correctly', async ({ page, pages, i18nSetup }) => {
@@ -60,6 +59,7 @@ test('when there is only one category assigned to the provider and provider radi
   // Expect to see the original case category 
   await expect(aboutNewCasePage.originalCaseCategory).toHaveText("Original case category of law: Housing, eviction and homelessness");
 
+  // Expect to see the new category of law header
   await expect(aboutNewCasePage.newCategoryHeader).toHaveText("Category of law for new case");
 
   // Expect the category to be displayed as text and not in a select
@@ -77,17 +77,19 @@ test('shows operator category list', async ({ page }) => {
   // Select the operator radio (internal = false)
   await page.check('input[name="internal"][value="false"]');
 
+  // Submit the split case form to about new case
   await page.click('button[type="submit"]');
 
+  // Assert we are on the about new case form
   await expect(page).toHaveURL(`/cases/${caseReference}/about-new-case`);
 
   // Expect operator categories (full list)
   await expect(aboutNewCasePage.categorySelect).toContainText('I don\'t know');
 
-      //Expect the select to have the correct size (17 categories on the list, plus placeholder, plus "I don't know" option)
+  //Expect the select to have the correct size (17 categories on the list, plus placeholder, plus "I don't know" option)
   const options = await aboutNewCasePage.categorySelect.locator('option').all();
-  expect(options.length).toBe(19); // Adjust the number based on expected options
-  // etc...
+  expect(options.length).toBe(19); 
+
 });
 
 test('selects a category and submits the about-new-case form', async ({ page }) => {

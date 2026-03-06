@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
 import { devLog, createProcessedError, safeString, validCaseReference, formatValidationError, safeBodyString, storeSessionData, t } from '#src/scripts/helpers/index.js';
 import { validationResult } from 'express-validator';
-import type { ProviderDetail, ProviderSplitChoicesApiResponse, GetAllCategoriesApiResponse, ClientDetailsResponse } from '#types/api-types.js';
+import type { ProviderDetail, ProviderSplitChoicesApiResponse } from '#types/api-types.js';
 import config from '#config.js';
 
 const { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH, CHARACTER_THRESHOLD }: { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH: number; CHARACTER_THRESHOLD: number } = config;
@@ -109,7 +109,7 @@ export async function submitSplitThisCaseForm(req: Request, res: Response, next:
       text: summaryMessage,
       href: `#${field}`
     }));
-    
+
     // Fetch provider choices for validation error rendering too
     const provider = await fetchProviderNameAndDetail(req, caseReference);
 
@@ -133,12 +133,6 @@ export async function submitSplitThisCaseForm(req: Request, res: Response, next:
   return res.redirect(`/cases/${caseReference}/about-new-case`);
 }
 
-interface SelectItem {
-  value: string;
-  text: string;
-  selected: boolean;
-}
-
 /**
  * Render the "about new case" form
  * @param {Request} req Express request object
@@ -158,7 +152,7 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
 
     const provider = await fetchProviderNameAndDetail(req, caseReference);
 
-    let categoryItems: SelectItem[] = [];
+    let categoryItems: { value: string; text: string; selected: boolean }[] = [];
 
     if (req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && req.session.splitCaseCache.internal === 'false') {
 
@@ -166,37 +160,37 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
 
       if (allCategoriesResponse.status === 'success' && Array.isArray(allCategoriesResponse.data)) {
 
-        categoryItems = [ {
-        value: '',
-        text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
-        selected: true
-      },
-      ...allCategoriesResponse.data.map(choice => ({
-        value: choice.code,
-        text: choice.name,
-        selected: false
-      }))
-    ];
-    categoryItems.push({
-      value: 'none',
-      text: 'I don\'t know',
-      selected: false
-    });
+        categoryItems = [{
+          value: '',
+          text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
+          selected: true
+        },
+        ...allCategoriesResponse.data.map(choice => ({
+          value: choice.code,
+          text: choice.name,
+          selected: false
+        }))
+        ];
+        categoryItems.push({
+          value: 'none',
+          text: 'I don\'t know',
+          selected: false
+        });
       }
     } else {
 
       categoryItems = [
-      {
-        value: '',
-        text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
-        selected: true
-      },
-      ...provider.law_category.map(choice => ({
-        value: choice.code,
-        text: choice.name,
-        selected: false
-      }))
-    ];
+        {
+          value: '',
+          text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
+          selected: true
+        },
+        ...provider.law_category.map(choice => ({
+          value: choice.code,
+          text: choice.name,
+          selected: false
+        }))
+      ];
     }
 
     res.render('case_details/about-new-case.njk', {
@@ -255,7 +249,7 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
 
     const provider = await fetchProviderNameAndDetail(req, caseReference);
 
-    let categoryItems: SelectItem[] = [];
+    let categoryItems: { value: string; text: string; selected: boolean }[] = [];
 
     // If internal is false, assign to operator was selected and the full list should be returned. 
     if (req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && req.session.splitCaseCache.internal === 'false') {
@@ -264,38 +258,38 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
 
       if (allCategoriesResponse.status === 'success' && Array.isArray(allCategoriesResponse.data)) {
 
-        categoryItems = [ {
-        value: '',
-        text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
-        selected: !category
-      },
-      ...allCategoriesResponse.data.map(choice => ({
-        value: choice.code,
-        text: choice.name,
-        selected: category === choice.name
-      }))
-    ];
-    categoryItems.push({
-      value: 'none',
-      text: 'I don\'t know',
-      selected: false
-    });
+        categoryItems = [{
+          value: '',
+          text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
+          selected: !category
+        },
+        ...allCategoriesResponse.data.map(choice => ({
+          value: choice.code,
+          text: choice.name,
+          selected: category === choice.name
+        }))
+        ];
+        categoryItems.push({
+          value: 'none',
+          text: 'I don\'t know',
+          selected: false
+        });
       }
     } else {
 
       categoryItems = [
-      {
-        value: '',
-        text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
-        selected: true
-      },
-      ...provider.law_category.map(choice => ({
-        value: choice.code,
-        text: choice.name,
-        selected: category === choice.name
-      }))
-    ];
-  }
+        {
+          value: '',
+          text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
+          selected: true
+        },
+        ...provider.law_category.map(choice => ({
+          value: choice.code,
+          text: choice.name,
+          selected: category === choice.name
+        }))
+      ];
+    }
 
     return res.status(BAD_REQUEST).render('case_details/about-new-case.njk', {
       caseReference,

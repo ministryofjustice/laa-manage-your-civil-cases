@@ -4,8 +4,8 @@ export const createSplitHandlers = (
   apiBaseUrl: string,
   apiPrefix: string
 ) => {
-  
-const getProviderChoicesHandler = () => {
+
+  const getProviderChoicesHandler = () => {
     return http.get(`${apiBaseUrl}${apiPrefix}/provider/:id/`, ({ params }) => {
       const { id } = params as { id?: string };
       console.log(`[MSW] Intercepting GET ${apiPrefix}/provider/${id}/`);
