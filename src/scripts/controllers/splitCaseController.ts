@@ -160,11 +160,6 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
 
     let categoryItems: SelectItem[] = [];
 
-    const currentCategory = (req.clientData as ClientDetailsResponse | undefined)
-      ?.scopeTraversal?.category;
-
-    console.log('Current category from client data:', currentCategory); // Debug log for current category
-    // If internal is false, assign to operator was selected and the full list should be returned. 
     if (req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && req.session.splitCaseCache.internal === 'false') {
 
       const allCategoriesResponse = await apiService.getAllCategories(req.axiosMiddleware);
@@ -206,7 +201,6 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
 
     res.render('case_details/about-new-case.njk', {
       caseReference,
-      currentCategory,
       provider,
       categoryItems,
       client: req.clientData,
@@ -235,8 +229,7 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
 export async function submitAboutNewCaseForm(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
   const category = safeBodyString(req.body, 'category');
-  console.log('Category selected:', category); // Debug log for category value
-  const comment = safeBodyString(req.body, 'comment');
+  const notes = safeBodyString(req.body, 'notes');
 
   // Check for validation errors
   const errors = validationResult(req);
@@ -263,18 +256,6 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
     const provider = await fetchProviderNameAndDetail(req, caseReference);
 
     let categoryItems: SelectItem[] = [];
-
-    const currentCategory = (req.clientData as ClientDetailsResponse | undefined)
-      ?.scopeTraversal?.category;
-
-
-    // Get the raw value
-    const categoryRaw = safeBodyString(req.body, 'category');
-
-    // Narrow it to string | undefined for use in buildCodeNameItems
-    const selectedCode: string | undefined =
-      typeof categoryRaw === 'string' && categoryRaw.length > 0 ? categoryRaw : undefined;
-
 
     // If internal is false, assign to operator was selected and the full list should be returned. 
     if (req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && req.session.splitCaseCache.internal === 'false') {
@@ -316,15 +297,13 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
     ];
   }
 
-
     return res.status(BAD_REQUEST).render('case_details/about-new-case.njk', {
       caseReference,
-      currentCategory,
       provider,
       categoryItems,
       formData: {
         category,
-        comment
+        notes
       },
       client: req.clientData,
       maxCommentLength: MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH,
@@ -334,10 +313,9 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
     });
   }
 
-  storeSessionData(req, 'aboutNewCaseCache', {
-    caseReference,
+  storeSessionData(req, 'splitCaseCache', {
     category: String(category),
-    comment: String(comment),
+    notes: String(notes),
     cachedAt: String(Date.now())
   });
 

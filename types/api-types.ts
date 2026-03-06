@@ -137,6 +137,7 @@ export interface ClientDetailsResponse {
   is_urgent?: string;
   client_notes?: string;
   operatorNotes?: string;
+  category?: string;
 
   //Contact details
   phoneNumber: string;

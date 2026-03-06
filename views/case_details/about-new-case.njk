@@ -31,13 +31,13 @@
 
         <h2 class="govuk-heading-m">{{ t('pages.caseDetails.aboutNewCase.h2') }}</h2>
 
-        <p class="govuk-body">{{ t('pages.caseDetails.aboutNewCase.originalCaseInfo') }}  {{currentCategory}}</p>
+        <p class="govuk-body">{{ t('pages.caseDetails.aboutNewCase.originalCaseInfo') }}  {{client.category}}</p>
 
         <h3 class="govuk-heading-s">{{ t('pages.caseDetails.aboutNewCase.h3') }}</h3>
 
-        {% if provider.law_category.length === 1%}
+        {% if (categoryItems | length) == 2 %}
 
-        <p class="govuk-body">{{ t('pages.caseDetails.aboutNewCase.newCaseInfo') }} {{ provider.law_category[0] }}</p>
+        <p class="govuk-body">{{ t('pages.caseDetails.aboutNewCase.newCaseInfo') }} {{ categoryItems[1].text }}</p>
         
         {% else %}
 
@@ -45,6 +45,7 @@
             id: "category",
             name: "category",
             items: categoryItems,
+            classes: "govuk-!-width-half", 
             errorMessage: errorState.fieldErrors.category if errorState.fieldErrors.category
           }) }}
 
@@ -59,11 +60,11 @@
         }) %}
 
         {{ govukCharacterCount({
-            id: "comment",
-            name: "comment",
-            value: formData.comment,
+            id: "notes",
+            name: "notes",
+            value: formData.notes,
             rows: 8,
-            errorMessage: errorState.fieldErrors.comment if errorState.fieldErrors.comment,
+            errorMessage: errorState.fieldErrors.notes if errorState.fieldErrors.notes,
             maxlength: maxCommentLength,
             threshold: characterThreshold
           }) }}
