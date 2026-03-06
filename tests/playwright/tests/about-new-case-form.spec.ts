@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures/index.js';
-import { setupAuth, assertCaseDetailsHeaderPresent, getClientDetailsUrlByStatus} from '../utils/index.js';
-import { AboutNewCaseFormPage } from '../pages/AboutNewCaseFormPage.js';  
+import { setupAuth, assertCaseDetailsHeaderPresent, getClientDetailsUrlByStatus } from '../utils/index.js';
+import { AboutNewCaseFormPage } from '../pages/AboutNewCaseFormPage.js';
 import { assert } from 'node:console';
 
 const clientDetailsUrl = getClientDetailsUrlByStatus('default');
@@ -34,11 +34,8 @@ test('viewing "about new case" form should display expected elements', async ({ 
 
   await expect(aboutNewCasePage.categorySelect).toBeEnabled();
 
-  // Expect the select to have the correct placeholder
-  //await expect(aboutNewCasePage.categorySelect).toHaveAttribute('placeholder', 'Select a category of law');   
-
   // Expect the select to have the correct options (example with a few options, adjust as needed)
-   await expect(aboutNewCasePage.categorySelect).toContainText('Select a category of law');
+  await expect(aboutNewCasePage.categorySelect).toContainText('Select a category of law');
   await expect(aboutNewCasePage.categorySelect).toContainText('Housing, eviction and homelessness');
   await expect(aboutNewCasePage.categorySelect).toContainText('Debt, money problems and bankruptcy');
 
@@ -65,8 +62,11 @@ test('when there is only one category assigned to the provider and provider radi
 
   await expect(aboutNewCasePage.newCategoryHeader).toHaveText("Category of law for new case");
 
-});
+  // Expect the category to be displayed as text and not in a select
+  expect(aboutNewCasePage.newCaseCategoryText)
+    .toHaveText("New case category of law: Housing, eviction and homelessness");
 
+});
 
 test('shows operator category list', async ({ page }) => {
   const aboutNewCasePage = AboutNewCaseFormPage.forCase(page, caseReference);
@@ -80,15 +80,35 @@ test('shows operator category list', async ({ page }) => {
   await page.click('button[type="submit"]');
 
   await expect(page).toHaveURL(`/cases/${caseReference}/about-new-case`);
-  // Now go to about-new-case
- // await aboutNewCasePage.navigate();
 
   // Expect operator categories (full list)
   await expect(aboutNewCasePage.categorySelect).toContainText('I don\'t know');
+
+      //Expect the select to have the correct size (17 categories on the list, plus placeholder, plus "I don't know" option)
+  const options = await aboutNewCasePage.categorySelect.locator('option').all();
+  expect(options.length).toBe(19); // Adjust the number based on expected options
   // etc...
 });
 
-test('continue button should hit post split case form end point', async ({ page, i18nSetup }) => {
+test('selects a category and submits the about-new-case form', async ({ page }) => {
+  const aboutNewCasePage = AboutNewCaseFormPage.forCase(page, caseReference);
+
+  await aboutNewCasePage.navigate();
+
+  // Select a category from the <select>
+  await page.selectOption('#category', { label: 'Debt, money problems and bankruptcy' });
+
+  // Fill the notes field
+  await page.fill('#notes', 'Splitting case because the issues differ');
+
+  // Click the submit button
+  await page.click('button.govuk-button');
+
+  // Assert POST redirect happened
+  await expect(page).toHaveURL(`/cases/${caseReference}/about-new-case`);
+});
+
+test('continue button should hit post about new case form end point', async ({ page, i18nSetup }) => {
   const aboutNewCasePage = AboutNewCaseFormPage.forCase(page, caseReference);
 
   // Navigate to the operator feedback form

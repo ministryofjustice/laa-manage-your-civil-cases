@@ -51,6 +51,12 @@ get categorySelect(): Locator {
   return this.page.locator('#category');
 }
 
+
+get newCaseCategoryText() {
+    return this.page.locator('text=New case category of law');
+}
+
+
  /**
    * Gets the heading locator for this form
    * @returns {Locator} The locator for the `<h2 class="govuk-heading-m">` heading
