@@ -140,53 +140,6 @@ interface SelectItem {
 }
 
 /**
- * Helper function to build code-name items for select options
- *
- * @template T
- * @param {T[] | null | undefined} items - Array of items to map
- * @param {(key: string) => string} t - Translation function
- * @param {(item: T) => { code: string; name: string }} map - Function to extract code and name
- * @param {{ includeUnknown?: boolean; selectedCode?: string }} [options] - Optional configuration
- * @param {boolean} [options.includeUnknown] - Whether to include an "unknown" choice
- * @param {string} [options.selectedCode] - Code that should be marked as selected
- * @returns {SelectItem[]} Array of select dropdown items
- */
-export function buildCodeNameItems<T>(
-  items: T[] | null | undefined,
-  t: (key: string) => string,
-  map: (item: T) => { code: string; name: string },
-  options?: { includeUnknown?: boolean; selectedCode?: string }
-): SelectItem[] {
-  const { includeUnknown = false, selectedCode } = options ?? {};
-  const placeholder: SelectItem = {
-    value: '',
-    text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
-    selected: selectedCode === undefined,
-  };
-
-  const mapped: SelectItem[] = (items ?? []).map((choice) => {
-    const { code, name } = map(choice);
-    return {
-      value: code,
-      text: name,
-      selected: selectedCode === code,
-    };
-  });
-
-  const result: SelectItem[] = [placeholder, ...mapped];
-
-  if (includeUnknown) {
-    result.push({
-      value: 'none',
-      text: `I don't know`,
-      selected: selectedCode === 'none'
-    });
-  }
-
-  return result;
-}
-
-/**
  * Render the "about new case" form
  * @param {Request} req Express request object
  * @param {Response} res Express response object
@@ -218,22 +171,39 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
 
       if (allCategoriesResponse.status === 'success' && Array.isArray(allCategoriesResponse.data)) {
 
-        categoryItems = buildCodeNameItems(
-          allCategoriesResponse.data,
-          t,
-          (c) => ({ code: c.code, name: c.name }),
-          { includeUnknown: true }
-        );
+        categoryItems = [ {
+        value: '',
+        text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
+        selected: true
+      },
+      ...allCategoriesResponse.data.map(choice => ({
+        value: choice.code,
+        text: choice.name,
+        selected: false
+      }))
+    ];
+    categoryItems.push({
+      value: 'none',
+      text: 'I don\'t know',
+      selected: false
+    });
       }
     } else {
 
-      categoryItems = buildCodeNameItems(
-        provider.law_category,
-        t,
-        (c) => ({ code: c.code, name: c.name })
-      );
-
+      categoryItems = [
+      {
+        value: '',
+        text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
+        selected: true
+      },
+      ...provider.law_category.map(choice => ({
+        value: choice.code,
+        text: choice.name,
+        selected: false
+      }))
+    ];
     }
+
     res.render('case_details/about-new-case.njk', {
       caseReference,
       currentCategory,
@@ -313,22 +283,39 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
 
       if (allCategoriesResponse.status === 'success' && Array.isArray(allCategoriesResponse.data)) {
 
-        categoryItems = buildCodeNameItems(
-          allCategoriesResponse.data,
-          t,
-          (c) => ({ code: c.code, name: c.name }),
-          { includeUnknown: true, selectedCode }
-        );
+        categoryItems = [ {
+        value: '',
+        text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
+        selected: !category
+      },
+      ...allCategoriesResponse.data.map(choice => ({
+        value: choice.code,
+        text: choice.name,
+        selected: category === choice.name
+      }))
+    ];
+    categoryItems.push({
+      value: 'none',
+      text: 'I don\'t know',
+      selected: false
+    });
       }
     } else {
 
-      categoryItems = buildCodeNameItems(
-        provider.law_category,
-        t,
-        (c) => ({ code: c.code, name: c.name }),
-        { selectedCode }
-      );
-    }
+      categoryItems = [
+      {
+        value: '',
+        text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
+        selected: true
+      },
+      ...provider.law_category.map(choice => ({
+        value: choice.code,
+        text: choice.name,
+        selected: category === choice.name
+      }))
+    ];
+  }
+
 
     return res.status(BAD_REQUEST).render('case_details/about-new-case.njk', {
       caseReference,
