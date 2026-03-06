@@ -15,7 +15,7 @@ import { createThirdPartyHandlers } from './thirdPartyHandlers.js';
 import { createCaseStatusHandlers } from './caseStatusHandlers.js';
 import { createFeedbackHandlers } from './feedbackHandlers.js';
 import { createSplitHandlers } from './splitHandlers.js';
-import { createSplitHandlers } from './splitHandlers.js';
+import { createNewCaseHandlers } from './newCaseHandlers.js';
 
 // Load official mock data from laa-civil-case-api (relative to project root)
 const mockDataPath = join(process.cwd(), 'tests/playwright/fixtures/mock-data.json');
@@ -36,6 +36,7 @@ const thirdPartyHandlers = createThirdPartyHandlers(API_BASE_URL, API_PREFIX, ca
 const caseStatusHandlers = createCaseStatusHandlers(API_BASE_URL, API_PREFIX, cases);
 const feedbackHandlers = createFeedbackHandlers(API_BASE_URL, API_PREFIX, cases);
 const splitHandlers = createSplitHandlers(API_BASE_URL, API_PREFIX);
+const newCaseHandlers = createNewCaseHandlers(API_BASE_URL, API_PREFIX);
 
 // Combine all handlers into a single export
 export const handlers = [
@@ -46,4 +47,5 @@ export const handlers = [
   ...caseStatusHandlers,
   ...feedbackHandlers,
   ...splitHandlers,
+  ...newCaseHandlers,
 ];

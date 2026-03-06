@@ -11,6 +11,7 @@ export interface MockCase {
   lastModified?: string;
   dateClosed?: string;
   caseStatus: string;
+  category: string;
   provider_closed?: string;
   stateNote?: string;
   isUrgent?: string;

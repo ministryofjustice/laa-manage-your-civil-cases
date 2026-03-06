@@ -37,6 +37,20 @@ export class AboutNewCaseFormPage extends BaseEditFormPage {
     return this.page.locator('h2.govuk-heading-m').first();
 }
 
+
+get originalCaseCategory() {
+  return this.page.getByText(/Original case category of law:/i);
+}
+
+get newCategoryHeader() {
+  return this.page.getByRole('heading', { name: 'Category of law for new case' });
+}
+
+
+get categorySelect(): Locator {
+  return this.page.locator('#category');
+}
+
  /**
    * Gets the heading locator for this form
    * @returns {Locator} The locator for the `<h2 class="govuk-heading-m">` heading
@@ -44,7 +58,6 @@ export class AboutNewCaseFormPage extends BaseEditFormPage {
   getExpectedHeading(): string {
     return t('pageTitle');
   }
-
 
   /**
    * Creates a SplitThisCaseFormPage instance for a specific case
