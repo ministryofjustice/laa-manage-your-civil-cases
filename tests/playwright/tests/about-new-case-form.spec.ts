@@ -1,6 +1,7 @@
 import { test, expect } from '../fixtures/index.js';
 import { setupAuth, assertCaseDetailsHeaderPresent, getClientDetailsUrlByStatus} from '../utils/index.js';
 import { AboutNewCaseFormPage } from '../pages/AboutNewCaseFormPage.js';  
+import { assert } from 'node:console';
 
 const clientDetailsUrl = getClientDetailsUrlByStatus('default');
 const caseReference = clientDetailsUrl.split('/')[2]; // Extract case reference from URL
@@ -25,12 +26,25 @@ test('viewing "about new case" form should display expected elements', async ({ 
   // Expect to see the original case category 
   await expect(aboutNewCasePage.originalCaseCategory).toHaveText("Original case category of law: Housing, eviction and homelessness");
 
+  // Expect to see the new category of law header 
   await expect(aboutNewCasePage.newCategoryHeader).toHaveText("Category of law for new case");
 
+  // Expect the select to be visible and enabled
   await expect(aboutNewCasePage.categorySelect).toBeVisible();
 
   await expect(aboutNewCasePage.categorySelect).toBeEnabled();
 
+  // Expect the select to have the correct placeholder
+  //await expect(aboutNewCasePage.categorySelect).toHaveAttribute('placeholder', 'Select a category of law');   
+
+  // Expect the select to have the correct options (example with a few options, adjust as needed)
+   await expect(aboutNewCasePage.categorySelect).toContainText('Select a category of law');
+  await expect(aboutNewCasePage.categorySelect).toContainText('Housing, eviction and homelessness');
+  await expect(aboutNewCasePage.categorySelect).toContainText('Debt, money problems and bankruptcy');
+
+  //Expect the select to have the correct size
+  const options = await aboutNewCasePage.categorySelect.locator('option').all();
+  expect(options.length).toBe(3); // Adjust the number based on expected options
 });
 
 test('when there is only one category assigned to the provider and provider radio is selected this is displayed correctly', async ({ page, pages, i18nSetup }) => {
