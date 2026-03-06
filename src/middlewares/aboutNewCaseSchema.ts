@@ -21,7 +21,7 @@ const aboutNewCaseSchema = {
       })
     }
   },
-  comment: {
+  notes: {
     trim: true,
     notEmpty: {
       /**
@@ -29,8 +29,8 @@ const aboutNewCaseSchema = {
        * @returns {TypedValidationError} Returns TypedValidationError with structured error data
        */
       errorMessage: () => new TypedValidationError({
-        summaryMessage: t('forms.caseDetails.aboutNewCase.validationError.comment.notEmpty'),
-        inlineMessage: t('forms.caseDetails.aboutNewCase.validationError.comment.notEmpty')
+        summaryMessage: t('forms.caseDetails.aboutNewCase.validationError.notes.notEmpty'),
+        inlineMessage: t('forms.caseDetails.aboutNewCase.validationError.notes.notEmpty')
       })
     },
     isLength: {
@@ -40,8 +40,8 @@ const aboutNewCaseSchema = {
        * @returns {TypedValidationError} Returns TypedValidationError with structured error data
        */
       errorMessage: () => new TypedValidationError({
-        summaryMessage: t('forms.caseDetails.aboutNewCase.validationError.comment.tooLong'),
-        inlineMessage: t('forms.caseDetails.aboutNewCase.validationError.comment.tooLong')
+        summaryMessage: t('forms.caseDetails.aboutNewCase.validationError.notes.tooLong'),
+        inlineMessage: t('forms.caseDetails.aboutNewCase.validationError.notes.tooLong')
       })
     }
   }

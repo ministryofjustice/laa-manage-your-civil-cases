@@ -391,7 +391,7 @@
           "category": {
             "notEmpty": "Select the category of law for the new case"
           },
-          "comment": {
+          "notes": {
             "notEmpty": "Enter why you want to split this case",
             "tooLong": "Why you want to split this case must be 2500 characters or less"
           }
