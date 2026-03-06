@@ -5,7 +5,10 @@ FROM node:25.6.1-alpine
 WORKDIR /app
 
 # Install build tools for native modules
-RUN apk add --no-cache build-base python3 make g++ pkgconfig
+
+RUN apk update && apk upgrade --no-cache && \
+    apk add --no-cache build-base python3 make g++ pkgconfig
+
 
 # Install corepack via npm (force to overwrite existing yarn), enable it, prepare Yarn 4.9.2, then remove npm entirely
 RUN npm install -g --force corepack && \
