@@ -151,3 +151,17 @@ docker-compose up -d
 ```
 
 This will start a Redis container that the application run by `yarn dev` can connect to for session storage.
+
+
+## Using Redis Insight for debugging, inspecting data visually, and monitoring Redis performance
+
+To use Redis Insight, ensure you have done the prerequisites for using Redis locally as described above. Redis Insight will automatically connect to the Redis instance running in the docker container.
+
+Steps:
+1. Open http://localhost:5540/ in your browser.
+2. Accept the Terms of Service (toggle at the bottom of the page).
+3. Click "Connect existing database".
+4. Click the button "Connection settings".
+5. Change the "Host" to: redis
+6. Ensure the port is set to: 6379
+7. Click "Add Redis Database".
