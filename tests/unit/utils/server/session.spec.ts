@@ -28,8 +28,7 @@ const createMockConfig = (redisEnabled: boolean): Config => ({
 } as Config);
 
 describe('buildSessionConfig', () => {
-
-    afterEach(() => {
+  afterEach(() => {
     sinon.restore();
   });
 
