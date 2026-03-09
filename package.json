@@ -29,7 +29,7 @@
     "coverage": "c8 yarn test:unit --check-coverage"
   },
   "engines": {
-    "node": "25.8.0"
+    "node": "25.6.1"
   },
   "dependencies": {
     "@ministryofjustice/frontend": "^9.0.0",
@@ -130,6 +130,7 @@
     "glob": ">=11.1.0",
     "tar": ">=7.5.10",
     "lodash": "4.17.23",
+    "c8/yargs": "^18.0.0",
     "@isaacs/brace-expansion": "5.0.1",
     "qs": "6.14.2"
   }
