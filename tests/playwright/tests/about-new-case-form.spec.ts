@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures/index.js';
-import { setupAuth, assertCaseDetailsHeaderPresent, getClientDetailsUrlByStatus } from '../utils/index.js';
+import { setupAuth, assertCaseDetailsHeaderPresent, getClientDetailsUrlByStatus, logout } from '../utils/index.js';
 import { AboutNewCaseFormPage } from '../pages/AboutNewCaseFormPage.js';
 
 const clientDetailsUrl = getClientDetailsUrlByStatus('default');
@@ -8,6 +8,10 @@ const caseReference = clientDetailsUrl.split('/')[2]; // Extract case reference 
 test.beforeEach(async ({ page }) => {
   await setupAuth(page);
 });
+
+test.afterEach(async ({ page }) => {
+  await logout(page);
+})
 
 test('viewing "about new case" form should display expected elements', async ({ page, pages, i18nSetup }) => {
   const aboutNewCasePage = AboutNewCaseFormPage.forCase(page, caseReference);

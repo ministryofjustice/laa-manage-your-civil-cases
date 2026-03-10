@@ -317,7 +317,7 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
         {
           value: '',
           text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
-          selected: true
+          selected: !category
         },
         ...provider.law_category.map(choice => ({
           value: choice.code,

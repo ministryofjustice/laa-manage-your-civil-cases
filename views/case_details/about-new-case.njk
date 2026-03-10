@@ -5,24 +5,28 @@
 {% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "components/errorSummaryComponent.njk" import errorSummary %}
+{% from "components/alertBannerComponent.njk" import alertBannerComponent %}
 
 {% block pageTitle %}
-  {% if errorState.hasErrors %}{{ t('common.error') }}: {% endif %}{{ t('pages.caseDetails.aboutNewCase.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
+    {% if errorState.hasErrors %}{{ t('common.error') }}: {% endif %}{{ t('pages.caseDetails.aboutNewCase.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
 {% endblock %}
 
 {% block backLink %}
   {# No back link for this page #}
 {% endblock %}
+
+{% block errorSummaryOrAlert %}
+  {% if errorState.hasErrors %}
+    {{ errorSummary(errorState.errors, t('common.errorSummaryTitle')) }}
+  {% else %}
+    {{ alertBannerComponent(client) }}
+  {% endif %}
+{% endblock %}
+
 {% block formContent %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-
-      {% if errorState.hasErrors %}
-        {{ govukErrorSummary({
-          titleText: t('common.errorSummaryTitle'),
-          errorList: errorState.errors
-        }) }}
-      {% endif %}
 
       <form method="POST" action="/cases/{{ caseReference }}/about-new-case">
 
