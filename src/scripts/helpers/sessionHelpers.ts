@@ -16,6 +16,14 @@ declare module 'express-session' {
     authCredentials?: AuthCredentials;
     authTokens?: SessionTokenStorage;
     user?: UserInfo;
+    splitCaseCache?: {
+      caseReference?: string;
+      providerName?: string;
+      internal?: string;
+      category?: string;
+      notes?: string;
+      cachedAt?: string;
+    };
   }
 }
 

@@ -111,27 +111,37 @@ export async function submitSplitThisCaseForm(req: Request, res: Response, next:
       href: `#${field}`
     }));
 
-    // Fetch provider choices for validation error rendering too
-    const provider = await fetchProviderNameAndDetail(req, caseReference);
+    try {
+      // Fetch provider choices for validation error rendering too
+      const provider = await fetchProviderNameAndDetail(req, caseReference);
 
-    return res.status(BAD_REQUEST).render('case_details/split-this-case.njk', {
-      caseReference,
-      client: req.clientData,
-      provider,
-      errorState: { hasErrors: true, errors: errorSummaryList, fieldErrors },
-      csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
-    });
+      return res.status(BAD_REQUEST).render('case_details/split-this-case.njk', {
+        caseReference,
+        client: req.clientData,
+        provider,
+        errorState: { hasErrors: true, errors: errorSummaryList, fieldErrors },
+        csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
+      });
+    } catch (error) {
+      return next(createProcessedError(error, `Rendering validation errors for split this case form, for case ${caseReference}`));
+    }
   }
 
-  const internal = safeBodyString(req.body, 'internal');
+  try {
+    const internal = safeBodyString(req.body, 'internal');
+    const provider = await fetchProviderNameAndDetail(req, caseReference);
 
-  storeSessionData(req, 'splitCaseCache', {
-    caseReference,
-    internal: String(internal),
-    cachedAt: String(Date.now())
-  });
+    storeSessionData(req, 'splitCaseCache', {
+      caseReference,
+      providerName: provider.name,
+      internal: String(internal),
+      cachedAt: String(Date.now())
+    });
 
-  return res.redirect(`/cases/${caseReference}/about-new-case`);
+    return res.redirect(`/cases/${caseReference}/about-new-case`);
+  } catch (error) {
+    return next(createProcessedError(error, `Submitting split this case form, for case ${caseReference}`));
+  }
 }
 
 /**
@@ -303,13 +313,16 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
     });
   }
 
+  const existingCache = (req.session.splitCaseCache ?? {});
+
   storeSessionData(req, 'splitCaseCache', {
+    ...existingCache,
     category: String(category),
     notes: String(notes),
     cachedAt: String(Date.now())
   });
 
-  return res.redirect(`/cases/${caseReference}/about-new-case`);
+  return res.redirect(`/cases/${caseReference}/check-split-case-answers`);
 }
 
 /**
@@ -321,6 +334,7 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
  */
 export async function getCheckSplitCaseAnswersForm(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
+  const splitCaseCache = req.session.splitCaseCache;
 
   if (!validCaseReference(caseReference, res)) {
     return;
@@ -331,6 +345,7 @@ export async function getCheckSplitCaseAnswersForm(req: Request, res: Response, 
 
     res.render('case_details/check-split-case-answers.njk', {
       caseReference,
+      splitCaseCache,
       client: req.clientData,
       errorState: {
         hasErrors: false,
