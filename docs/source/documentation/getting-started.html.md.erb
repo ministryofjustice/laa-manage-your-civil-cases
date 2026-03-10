@@ -13,6 +13,7 @@ This guide will help you set up and run Manage Your Civil Cases locally.
 - node stable version [25.6.1](https://nodejs.org/en/blog/release/v25.6.1/)
 - [Yarn 4.9.2](https://yarnpkg.com/) package manager (see installation instructions below)
 - TypeScript 5.8.3
+- docker-compose (optional)
 
 ### Installing Yarn
 
@@ -122,3 +123,45 @@ This template uses the built-in Express JS routing.
 A route is a section of Express code that associates an HTTP verb (`GET`, `POST`, `PUT`, `DELETE`, etc.), with a URL path/pattern, and a function that is called to handle that pattern.
 
 [You can find further documentation here](https://expressjs.com/en/guide/routing.html).
+
+
+## Using redis for session storage
+
+By default, the application uses in-memory session storage, which is not suitable for production environments with multiple instances of the application.
+
+To enable Redis locally for session storage, set the following environment variables in your `.env` file:
+
+```env
+REDIS_ENABLED=true
+REDIS_HOST='localhost'
+REDIS_PORT=6379
+REDIS_TLS_ENABLED=false
+```
+
+Make sure you have Docker installed and the docker-compose command available:
+
+```shell
+docker-compose --version
+```
+
+Then, start a Redis container using docker-compose:
+
+```shell
+docker-compose up -d
+```
+
+This will start a Redis container that the application run by `yarn dev` can connect to for session storage.
+
+
+## Using Redis Insight for debugging, inspecting data visually, and monitoring Redis performance
+
+To use Redis Insight, ensure you have done the prerequisites for using Redis locally as described above. Redis Insight will automatically connect to the Redis instance running in the docker container.
+
+Steps:
+1. Open http://localhost:5540/ in your browser.
+2. Accept the Terms of Service (toggle at the bottom of the page).
+3. Click "Connect existing database".
+4. Click the button "Connection settings".
+5. Change the "Host" to: redis
+6. Ensure the port is set to: 6379
+7. Click "Add Redis Database".
