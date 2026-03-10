@@ -400,7 +400,7 @@
           "category": {
             "notEmpty": "Select a feedback category"
           },
-          "notes": {
+          "comment": {
             "notEmpty": "Enter a feedback comment",
             "tooLong": "Comment must be 2500 characters or less"
           }
