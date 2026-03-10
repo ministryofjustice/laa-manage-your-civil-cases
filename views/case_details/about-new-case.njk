@@ -39,7 +39,7 @@
 
         <h2 class="govuk-heading-m">{{ t('pages.caseDetails.aboutNewCase.h2') }}</h2>
 
-        <p class="govuk-body">{{ t('pages.caseDetails.aboutNewCase.originalCaseInfo') }}  {{client.category}}</p>
+        <p class="govuk-body">{{ t('pages.caseDetails.aboutNewCase.originalCaseInfo') }}{{ client.category }}</p>
 
         <h3 class="govuk-heading-s">{{ t('pages.caseDetails.aboutNewCase.h3') }}</h3>
 
@@ -49,15 +49,13 @@
         <input type="hidden" name="category" value="{{ categoryItems[1].value }}"/>
         
         {% else %}
-
-             {{ govukSelect({
+          {{ govukSelect({
             id: "category",
             name: "category",
             items: categoryItems,
             classes: "govuk-!-width-half", 
             errorMessage: errorState.fieldErrors.category if errorState.fieldErrors.category
           }) }}
-
         {% endif %}
 
         // TODO if category list is 1 display new case info as above. 
@@ -65,22 +63,22 @@
         // operator feedback has a similar layout for the drop down. 
         
         {% call govukFieldset({
-          legend: {
-            text: t('pages.caseDetails.aboutNewCase.legend'),
-            classes: "govuk-fieldset__legend--s",
-            isPageHeading: false
-          }
-        }) %}
+            legend: {
+              text: t('pages.caseDetails.aboutNewCase.legend'),
+              classes: "govuk-fieldset__legend--s",
+              isPageHeading: false
+            }
+          }) %}
 
-        {{ govukCharacterCount({
-            id: "notes",
-            name: "notes",
-            value: formData.notes,
-            rows: 8,
-            errorMessage: errorState.fieldErrors.notes if errorState.fieldErrors.notes,
-            maxlength: maxCommentLength,
-            threshold: characterThreshold
-          }) }}
+          {{ govukCharacterCount({
+                id: "notes",
+                name: "notes",
+                value: formData.notes,
+                rows: 8,
+                errorMessage: errorState.fieldErrors.notes if errorState.fieldErrors.notes,
+                maxlength: maxCommentLength,
+                threshold: characterThreshold
+              }) }}
 
         {% endcall %}
 

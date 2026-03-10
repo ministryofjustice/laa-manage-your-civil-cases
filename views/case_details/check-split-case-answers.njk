@@ -85,7 +85,7 @@
                 text: t('pages.caseDetails.checkYourAnswers.categoryOfLaw')
               },
               value: {
-                html: splitCaseCache.category | default('')
+                html: t('common.categoryCode.' + splitCaseCache.category) | default('')
               }
             },
             {

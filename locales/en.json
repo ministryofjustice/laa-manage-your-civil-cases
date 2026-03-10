@@ -92,6 +92,25 @@
     "allCategoriesAdditions": {
       "none": "I don't know"
     },
+    "categoryCode": {
+      "housing": "Housing, eviction and homelessness",
+      "debt": "Debt, money problems and bankruptcy",
+      "family": "Family, marriage, separation and children",
+      "immigration": "Applying for asylum or permission to stay in the UK",
+      "benefits": "Welfare benefits appeals",
+      "education": "Education",
+      "discrimination": "Discrimination, disability and other issues",
+      "consumer": "Consumer Issues",
+      "pi": "Personal Injury",
+      "publiclaw": "Public Law",
+      "commcare": "Community Care",
+      "clinneg": "Clinical Negligence",
+      "mentalhealth": "Mental Health",
+      "aap": "Claims Against Public Authorities",
+      "crime": "Crime/Criminal Law",
+      "employment": "Employment",
+      "none": "None of the above"
+    },
     "thirdPartyRelationship": {
       "text": {
         "PARENT_GUARDIAN": "Parent or guardian",
