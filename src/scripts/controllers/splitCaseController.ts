@@ -111,37 +111,27 @@ export async function submitSplitThisCaseForm(req: Request, res: Response, next:
       href: `#${field}`
     }));
 
-    try {
-      // Fetch provider choices for validation error rendering too
-      const provider = await fetchProviderNameAndDetail(req, caseReference);
-
-      return res.status(BAD_REQUEST).render('case_details/split-this-case.njk', {
-        caseReference,
-        client: req.clientData,
-        provider,
-        errorState: { hasErrors: true, errors: errorSummaryList, fieldErrors },
-        csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
-      });
-    } catch (error) {
-      return next(createProcessedError(error, `Rendering validation errors for split this case form, for case ${caseReference}`));
-    }
-  }
-
-  try {
-    const internal = safeBodyString(req.body, 'internal');
+    // Fetch provider choices for validation error rendering too
     const provider = await fetchProviderNameAndDetail(req, caseReference);
 
-    storeSessionData(req, 'splitCaseCache', {
+    return res.status(BAD_REQUEST).render('case_details/split-this-case.njk', {
       caseReference,
-      providerName: provider.name,
-      internal: String(internal),
-      cachedAt: String(Date.now())
+      client: req.clientData,
+      provider,
+      errorState: { hasErrors: true, errors: errorSummaryList, fieldErrors },
+      csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
     });
-
-    return res.redirect(`/cases/${caseReference}/about-new-case`);
-  } catch (error) {
-    return next(createProcessedError(error, `Submitting split this case form, for case ${caseReference}`));
   }
+
+  const internal = safeBodyString(req.body, 'internal');
+
+  storeSessionData(req, 'splitCaseCache', {
+    caseReference,
+    internal: String(internal),
+    cachedAt: String(Date.now())
+  });
+
+  return res.redirect(`/cases/${caseReference}/about-new-case`);
 }
 
 /**
@@ -313,10 +303,7 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
     });
   }
 
-  const existingCache = (req.session.splitCaseCache ?? {});
-
   storeSessionData(req, 'splitCaseCache', {
-    ...existingCache,
     category: String(category),
     notes: String(notes),
     cachedAt: String(Date.now())
@@ -355,7 +342,49 @@ export async function getCheckSplitCaseAnswersForm(req: Request, res: Response, 
       csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined
     });
   } catch (error) {
-    const processedError = createProcessedError(error, `rendering check split case answers form, for case ${caseReference}`);
+    const processedError = createProcessedError(error, `Rendering check split case answers form, for case ${caseReference}`);
+    next(processedError);
+  }
+}
+
+/**
+ * Handle "check split case answers" form submission
+ * @param {Request} req Express request object
+ * @param {Response} res Express response object
+ * @param {NextFunction} next Express next function
+ * @returns {Promise<void>} Redirect to client details page
+ */
+export async function submitCheckSplitCaseAnswersForm(req: Request, res: Response, next: NextFunction): Promise<void> {
+  const caseReference = safeString(req.params.caseReference);
+  const splitCaseCache = req.session.splitCaseCache;
+
+  if (!validCaseReference(caseReference, res)) {
+    return;
+  }
+
+  try {
+    devLog(`Submitting the split case form for case: ${caseReference}`);
+
+    // // Submit operator feedback to API
+    // const response = await apiService.submitOperatorFeedback(
+    //   req.axiosMiddleware,
+    //   caseReference
+    // );
+
+    // if (response.status === 'error') {
+    //   const processedError = createProcessedError(
+    //     new Error(response.message || 'Failed to submit operator feedback'),
+    //     `submitting operator feedback for case ${caseReference}`
+    //   );
+    //   return next(processedError);
+    // }
+
+    devLog(`Operator feedback submitted successfully for case: ${caseReference}`);
+
+    // Redirect to client details page
+    res.redirect(`/cases/${caseReference}/client-details`);
+  } catch (error) {
+    const processedError = createProcessedError(error, `submitting operator feedback for case ${caseReference}`);
     next(processedError);
   }
 }
