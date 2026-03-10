@@ -1,15 +1,22 @@
 {% extends "case_details/_base-case-change.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
 {% from "components/alertBannerComponent.njk" import alertBannerComponent %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
 {% block pageTitle %}
-  {% if errorState.hasErrors %}{{ t('common.error') }}: {% endif %}{{ t('pages.caseDetails.splitCase.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
+  {% if errorState.hasErrors %}{{ t('common.error') }}: {% endif %}{{ t('pages.caseDetails.checkYourAnswers.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
 {% endblock %}
 
 {% block backLink %}
-  {# No back link for this page #}
+  {% set backLinkHref = "/cases/" + caseReference + "/about-new-case" %}
+
+  {{ govukBackLink({
+      text: t('common.back'),
+      href: backLinkHref,
+      classes: "govuk-!-margin-bottom-0"
+    }) }}
 {% endblock %}
 
 {% block errorSummaryOrAlert %}
@@ -29,85 +36,83 @@
         <!-- CSRF Protection -->
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
 
-        <h2 class="govuk-heading-m">{{ t('pages.caseDetails.splitCase.h2') }}</h2>
+        <h2 class="govuk-heading-m">{{ t('pages.caseDetails.checkYourAnswers.h2') }}</h2>
 
         {{ govukSummaryList({
+          card: {
+            title: {
+              text: t('pages.caseDetails.checkYourAnswers.originalCase')
+            }
+          },
           rows: [
             {
               key: {
-                text: "Name"
+                text: t('pages.caseDetails.checkYourAnswers.categoryOfLaw')
               },
               value: {
-                text: "Sarah Philips"
-              },
-              actions: {
-                items: [
-                  {
-                    href: "#",
-                    text: "Change",
-                    visuallyHiddenText: "name"
-                  }
-                ]
+                html: client.category | default('')
               }
             },
             {
               key: {
-                text: "Date of birth"
+                text: t('pages.caseDetails.checkYourAnswers.assignedTo')
               },
               value: {
-                text: "5 January 1978"
-              },
-              actions: {
-                items: [
-                  {
-                    href: "#",
-                    text: "Change",
-                    visuallyHiddenText: "date of birth"
-                  }
-                ]
-              }
-            },
-            {
-              key: {
-                text: "Address"
-              },
-              value: {
-                html: "72 Guild Street<br>London<br>SE23 6FH"
-              },
-              actions: {
-                items: [
-                  {
-                    href: "#",
-                    text: "Change",
-                    visuallyHiddenText: "address"
-                  }
-                ]
-              }
-            },
-            {
-              key: {
-                text: "Contact details"
-              },
-              value: {
-                html: '<p class="govuk-body">07700 900457</p><p class="govuk-body">sarah.phillips@example.com</p>'
-              },
-              actions: {
-                items: [
-                  {
-                    href: "#",
-                    text: "Add",
-                    visuallyHiddenText: "contact details"
-                  },
-                  {
-                    href: "#",
-                    text: "Change",
-                    visuallyHiddenText: "contact details"
-                  }
-                ]
+                html: splitCaseCache.providerName | default('')
               }
             }
           ]
         }) }}
+
+        {{ govukSummaryList({
+          card: {
+            title: {
+              text: t('pages.caseDetails.checkYourAnswers.newCase')
+            },
+            actions: {
+              items: [
+                {
+                  href: "/cases/" + caseReference + "/about-new-case",
+                  text: t('pages.caseDetails.checkYourAnswers.changeLink'),
+                  visuallyHiddenText: t('pages.caseDetails.checkYourAnswers.changeLinkHiddenText')
+                }
+              ]
+            }
+          },
+          rows: [
+            {
+              key: {
+                text: t('pages.caseDetails.checkYourAnswers.categoryOfLaw')
+              },
+              value: {
+                html: splitCaseCache.category | default('')
+              }
+            },
+            {
+              key: {
+                text: t('pages.caseDetails.checkYourAnswers.assignedTo')
+              },
+              value: {
+                html: (splitCaseCache.providerName if splitCaseCache.internal == "true" else t('pages.caseDetails.splitCase.operatorReassignment'))
+              }
+            },
+            {
+              key: {
+                text: t('pages.caseDetails.checkYourAnswers.whySplitCase')
+              },
+              value: {
+                html: splitCaseCache.notes | default('')
+              }
+            }
+          ]
+        }) }}
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: t('pages.caseDetails.checkYourAnswers.confirmSplitButton')
+          }) }}
+          <a class="govuk-link" href="/cases/{{ caseReference }}/client-details">{{ t('common.cancel') }}</a>
+        </div>
 
       </form>
     </div>

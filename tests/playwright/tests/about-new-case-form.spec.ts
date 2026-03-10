@@ -111,7 +111,7 @@ test('selects a category and submits the about-new-case form', async ({ page }) 
   await page.click('button.govuk-button');
 
   // Assert POST redirect happened
-  await expect(page).toHaveURL(`/cases/${caseReference}/about-new-case`);
+  await expect(page).toHaveURL(`/cases/${caseReference}/check-split-case-answers`);
 });
 
 test('continue button should hit post about new case form end point', async ({ page, i18nSetup }) => {

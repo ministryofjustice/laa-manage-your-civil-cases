@@ -290,6 +290,18 @@
         "newCaseInfo": "New case category of law: ",
         "legend": "Why do you want to split this case?",
         "categoryPlaceholder": "Select a category of law"
+      },
+      "checkYourAnswers": {
+        "pageTitle": "Check your answers – {caseReference} – {serviceName} – GOV.UK",
+        "h2": "Check your answers",
+        "originalCase": "Original Case",
+        "categoryOfLaw": "Category of law",
+        "assignedTo": "Assigned to",
+        "newCase": "New case",
+        "whySplitCase": "Why do you want to split this case?",
+        "changeLink": "Change",
+        "changeLinkHiddenText": "Change new case details",
+        "confirmSplitButton": "Confirm split case"
       }
     },
     "error": {
