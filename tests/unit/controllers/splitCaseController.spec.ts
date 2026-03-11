@@ -810,4 +810,3 @@ describe('Split Case Controller', () => {
     });
   });
 });
-

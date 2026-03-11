@@ -313,7 +313,7 @@
       "checkYourAnswers": {
         "pageTitle": "Check your answers – {caseReference} – {serviceName} – GOV.UK",
         "h2": "Check your answers",
-        "originalCase": "Original Case",
+        "originalCase": "Original case",
         "categoryOfLaw": "Category of law",
         "assignedTo": "Assigned to",
         "newCase": "New case",
