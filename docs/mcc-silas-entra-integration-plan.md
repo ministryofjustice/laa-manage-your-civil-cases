@@ -33,6 +33,22 @@ Use **Authorization Code flow** for MCC (server-side web app) with SILAS/Entra.
 
 ---
 
+## Local developer setup
+
+Use two modes locally so developer experience stays practical while runtime auth remains realistic.
+
+### Mode A — Run MCC locally with real SILAS/Entra login
+- Use a non-production Entra/SILAS app registration for local development.
+- Ensure local redirect URI is registered (for example: `http://localhost:3000/login/callback`).
+- Sign in with valid user accounts in the correct tenant.
+- Set local environment values for the SILAS/Entra variables listed below.
+
+### Mode B — Run unit tests without SILAS secrets
+- Unit tests should not require live SILAS/Entra credentials.
+- SILAS config validation is skipped during test execution (`NODE_ENV=test`).
+
+---
+
 ## Progress tracker (remaining work only)
 
 ### Remaining tasks (only applied to UAT for now):

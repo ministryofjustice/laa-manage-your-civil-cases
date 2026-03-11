@@ -3,13 +3,21 @@ import config from '#config.js';
 
 const LOGIN_RESPONSE_MODE = 'query';
 
-const msalClient = new ConfidentialClientApplication({
-  auth: {
-    clientId: config.silas.clientId,
-    authority: config.silas.authority,
-    clientSecret: config.silas.clientSecret,
+let msalClient: ConfidentialClientApplication | undefined;
+
+function getMsalClient(): ConfidentialClientApplication {
+  if (msalClient === undefined) {
+    msalClient = new ConfidentialClientApplication({
+      auth: {
+        clientId: config.silas.clientId,
+        authority: config.silas.authority,
+        clientSecret: config.silas.clientSecret,
+      }
+    });
   }
-});
+
+  return msalClient;
+}
 
 export interface SilasTokenExchangeResult {
   accessToken: string;
@@ -138,7 +146,7 @@ function validateOboAccessTokenClaims(claims: AccessTokenClaims): void {
 }
 
 export async function getSilasLoginUrl(state: string): Promise<string> {
-  return await msalClient.getAuthCodeUrl({
+  return await getMsalClient().getAuthCodeUrl({
     scopes: config.silas.scopes,
     redirectUri: config.silas.redirectUri,
     state,
@@ -147,7 +155,7 @@ export async function getSilasLoginUrl(state: string): Promise<string> {
 }
 
 export async function exchangeSilasCodeForToken(code: string): Promise<SilasTokenExchangeResult> {
-  const tokenResult = await msalClient.acquireTokenByCode({
+  const tokenResult = await getMsalClient().acquireTokenByCode({
     code,
     scopes: config.silas.scopes,
     redirectUri: config.silas.redirectUri,
@@ -181,7 +189,7 @@ export async function exchangeSilasCodeForToken(code: string): Promise<SilasToke
 export async function exchangeSilasTokenOnBehalfOf(userAccessToken: string): Promise<SilasOboTokenResult> {
   const oboScopes = configuredOboScopes();
 
-  const tokenResult = await msalClient.acquireTokenOnBehalfOf({
+  const tokenResult = await getMsalClient().acquireTokenOnBehalfOf({
     oboAssertion: userAccessToken,
     scopes: oboScopes,
   });

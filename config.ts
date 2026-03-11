@@ -129,6 +129,10 @@ export function validateSilasConfig(): void {
   }
 }
 
-validateSilasConfig();
+const isTestExecution = process.env.NODE_ENV === 'test';
+
+if (!isTestExecution) {
+  validateSilasConfig();
+}
 
 export default config;
