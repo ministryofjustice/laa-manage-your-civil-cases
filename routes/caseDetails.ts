@@ -136,7 +136,6 @@ router.get('/:caseReference/split-this-case', fetchClientDetails, async (req: Re
 router.post('/:caseReference/split-this-case', fetchClientDetails, validateSplitThisCase(), async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   await submitSplitThisCaseForm(req, res, next);
 });
-
 /* GET about new case form. */
 router.get('/:caseReference/about-new-case', fetchClientDetails, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   await getAboutNewCaseForm(req, res, next);

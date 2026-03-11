@@ -160,6 +160,7 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
       const allCategoriesResponse = await apiService.getAllCategories(req.axiosMiddleware);
 
       if (allCategoriesResponse.status === 'success' && Array.isArray(allCategoriesResponse.data)) {
+
         categoryItems = [{
           value: '',
           text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
@@ -173,6 +174,7 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
         ];
       }
     } else {
+
       categoryItems = [
         {
           value: '',
@@ -219,7 +221,6 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
   const category = safeBodyString(req.body, 'category');
   const notes = safeBodyString(req.body, 'notes');
 
-   console.log("category of law selected: " + category);
   // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -252,27 +253,23 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
       const allCategoriesResponse = await apiService.getAllCategories(req.axiosMiddleware);
 
       if (allCategoriesResponse.status === 'success' && Array.isArray(allCategoriesResponse.data)) {
+
         categoryItems = [{
           value: '',
           text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
           selected: !category
         },
-        ...allCategoriesResponse.data.map(choice => {
-            // Replace "None of the above"
-            if (choice.name === 'None of the above') {
-              return {
-                value: 'none',
-                text: t('common.categoryCode.none'),
-                selected: category === 'none'
-              };
-            }
-            return {
-              value: choice.code,
-              text: choice.name,
-              selected: category === choice.code
-            };
-          })
+        ...allCategoriesResponse.data.map(choice => ({
+          value: choice.code,
+          text: choice.name,
+          selected: category === choice.code
+        }))
         ];
+        categoryItems.push({
+          value: 'none',
+          text: t('allCategoriesAdditions.none'),
+          selected: false
+        });
       }
     } else {
       categoryItems = [
