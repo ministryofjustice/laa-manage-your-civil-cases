@@ -1,21 +1,13 @@
 import type { Request } from 'express';
-import type { AuthCredentials, UserInfo } from '#types/auth-types.js';
+import type { SilasSessionAuth, SilasUserInfo } from '#types/auth-types.js';
 import { safeString, isRecord, hasProperty } from '#src/scripts/helpers/dataTransformers.js';
-
-// Session token storage interface
-export interface SessionTokenStorage {
-  accessToken: string;
-  username: string;
-  loginTime: number;
-}
 
 // Extend the Express session interface to support dynamic namespaces
 declare module 'express-session' {
-  interface SessionData extends Record<string, Record<string, string> | string | undefined> {
-    // This allows both specific properties and dynamic namespace access
-    authCredentials?: AuthCredentials;
-    authTokens?: SessionTokenStorage;
-    user?: UserInfo;
+  interface SessionData extends Record<string, unknown> {
+    silasLoginState?: string;
+    silasAuth?: SilasSessionAuth;
+    user?: SilasUserInfo;
   }
 }
 
@@ -39,8 +31,14 @@ export function storeSessionData(req: Request, namespace: string, data: Record<s
 export function getSessionData(req: Request, namespace: string): Record<string, string> | null {
   const { session } = req;
   const { [namespace]: data } = session;
-  // Return the data if it's a Record, otherwise null for undefined or string
-  return (typeof data === 'object') ? data : null;
+
+  if (!isRecord(data)) {
+    return null;
+  }
+
+  const values = Object.values(data);
+  const hasOnlyStringValues = values.every((value) => typeof value === 'string');
+  return hasOnlyStringValues ? (data as Record<string, string>) : null;
 }
 
 /**

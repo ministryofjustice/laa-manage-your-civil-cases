@@ -2,13 +2,13 @@ import { create } from 'middleware-axios';
 import type { Request, Response, NextFunction } from 'express';
 import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
 import type { InternalAxiosRequestConfig } from 'axios';
-import { createAuthServiceWithCredentials } from '#src/services/authService.js';
 import { devLog, devError } from '#src/scripts/helpers/index.js';
-import { decrypt } from '#utils/server/index.js';
+import { exchangeSilasTokenOnBehalfOf } from '#src/services/silasAuthService.js';
 import '#src/scripts/helpers/sessionHelpers.js';
 
 const DEFAULT_TIMEOUT = 5000;
 const HTTP_UNAUTHORIZED = 401;
+const OBO_TOKEN_REFRESH_BUFFER_MS = 60_000;
 
 // Extend Express Request to include our axiosMiddleware
 declare global {
@@ -60,77 +60,58 @@ export const axiosMiddleware = (req: Request, res: Response, next: NextFunction)
     },
   });
 
-  // Get AuthService from session credentials (recreate from stored credentials)
-  let authService = null;
+  const silasAuth = req.session.silasAuth;
+  const userAccessToken = silasAuth?.accessToken;
 
-  // Check if user is authenticated via session
-  if (req.session.authCredentials !== undefined) {
-    try {
-      // Decrypt sensitive credentials from session before using them
-      const decryptedCredentials = {
-        ...req.session.authCredentials,
-        password: decrypt(req.session.authCredentials.password),
-        client_secret: decrypt(req.session.authCredentials.client_secret)
-      };
-      
-      // Recreate AuthService from decrypted session credentials
-      authService = createAuthServiceWithCredentials(decryptedCredentials);
-      if (authService !== null) {
-        devLog('Using session-based authentication for API requests');
-      } else {
-        devError('Failed to create AuthService from session credentials');
-      }
-    } catch (error) {
-      devError(`Failed to decrypt session credentials: ${toError(error).message}`);
-      // Clear corrupted session and redirect to login
-      req.session.destroy((destroyErr) => {
-        if (destroyErr !== null && destroyErr !== undefined) {
-          devError(`Error destroying session: ${destroyErr instanceof Error ? destroyErr.message : String(destroyErr)}`);
-        }
-      });
-    }
+  if (userAccessToken === undefined || userAccessToken.trim() === '') {
+    devLog('No SILAS access token found in session - request will proceed without Authorization header');
   } else {
-    devLog('No session credentials found - user must login to access API');
-  }
-
-  // Add JWT authentication interceptor for API calls if user is authenticated
-  if (authService !== null) {
-    // Request interceptor for JWT auth
     axiosWrapper.axiosInstance.interceptors.request.use(
       async (config: InternalAxiosRequestConfig) => {
-        try {
-          config.headers.Authorization = await authService.getAuthHeader();
-          devLog('Added JWT authorization header to API request');
-        } catch (error) {
-          devError(`Failed to add JWT authorization header: ${toError(error).message}`);
-          // Continue without auth header - API will handle 401 response
+        const now = Date.now();
+        const hasValidCachedObo =
+          silasAuth?.oboAccessToken !== undefined &&
+          silasAuth.oboAccessToken.trim() !== '' &&
+          silasAuth.oboExpiresAt !== undefined &&
+          silasAuth.oboExpiresAt > now + OBO_TOKEN_REFRESH_BUFFER_MS;
+
+        let downstreamToken = silasAuth?.oboAccessToken;
+
+        if (!hasValidCachedObo) {
+          const oboToken = await exchangeSilasTokenOnBehalfOf(userAccessToken);
+
+          if (req.session.silasAuth !== undefined) {
+            req.session.silasAuth.oboAccessToken = oboToken.accessToken;
+            req.session.silasAuth.oboExpiresAt = oboToken.expiresAt;
+          }
+
+          downstreamToken = oboToken.accessToken;
+          devLog('Refreshed OBO token for backend API request');
         }
+
+        config.headers.Authorization = `Bearer ${downstreamToken ?? ''}`;
+        devLog('Added OBO bearer token to API request');
         return config;
       },
       async (error: unknown) => await Promise.reject(toError(error))
     );
-
-    // Response interceptor for 401 error handling
-    axiosWrapper.axiosInstance.interceptors.response.use(
-      (response) => response,
-      async (error: unknown) => {
-        if (isAxiosErrorWithResponse(error) && error.response.status === HTTP_UNAUTHORIZED) {
-          devError('API returned 401 Unauthorized - clearing cached tokens');
-          authService.clearTokens();
-
-          // If using session auth, clear session credentials and redirect to login
-          if (req.session.authCredentials !== undefined) {
-            req.session.destroy((destroyErr) => {
-              if (destroyErr !== null && destroyErr !== undefined) {
-                devError(`Error destroying session: ${destroyErr instanceof Error ? destroyErr.message : String(destroyErr)}`);
-              }
-            });
-          }
-        }
-        return await Promise.reject(toError(error));
-      }
-    );
   }
+
+  // Response interceptor for 401 error handling
+  axiosWrapper.axiosInstance.interceptors.response.use(
+    (response) => response,
+    async (error: unknown) => {
+      if (isAxiosErrorWithResponse(error) && error.response.status === HTTP_UNAUTHORIZED) {
+        devError('API returned 401 Unauthorized - clearing SILAS session');
+        req.session.destroy((destroyErr) => {
+          if (destroyErr !== null && destroyErr !== undefined) {
+            devError(`Error destroying session: ${destroyErr instanceof Error ? destroyErr.message : String(destroyErr)}`);
+          }
+        });
+      }
+      return await Promise.reject(toError(error));
+    }
+  );
 
   req.axiosMiddleware = axiosWrapper;
   next();

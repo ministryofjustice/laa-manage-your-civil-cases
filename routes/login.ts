@@ -1,17 +1,23 @@
 import express from 'express';
-import { processLogin, processLogout } from '#src/scripts/controllers/loginController.js';
-import { validateLoginDetails } from '#src/middlewares/loginInputSchema.js';
+import type { Request, Response } from 'express';
+import { startSilasLogin, handleSilasCallback, handleSilasLogout } from '#src/scripts/controllers/loginController.js';
 
 // Create a new router for search routes
 const router = express.Router();
 
 /* GET login page */
-router.get('/', processLogin);
+router.get('/', (req: Request, res: Response) => {
+	void startSilasLogin(req, res);
+});
 
-/* POST login page submission */
-router.post('/', validateLoginDetails(), processLogin);
+/* GET SILAS callback */
+router.get('/callback', (req: Request, res: Response) => {
+	void handleSilasCallback(req, res);
+});
 
 /* GET logout, clear session and redirect to login page */
-router.get('/logout', processLogout);
+router.get('/logout', (req: Request, res: Response) => {
+	handleSilasLogout(req, res);
+});
 
 export default router

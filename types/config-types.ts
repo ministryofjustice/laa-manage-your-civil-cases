@@ -48,6 +48,18 @@ export interface ApiConfig {
   };
 }
 
+export interface SilasConfig {
+  authority: string;
+  tenantId: string;
+  clientId: string;
+  clientSecret: string;
+  redirectUri: string;
+  postLogoutRedirectUri: string;
+  scopes: string[];
+  oboScopes: string[];
+  expectedAudience: string;
+}
+
 export interface PaginationConfig {
   defaultPage: number;
   defaultLimit: number;
@@ -73,6 +85,7 @@ export interface Config {
   session: SessionConfig;
   paths: PathsConfig;
   api: ApiConfig;
+  silas: SilasConfig;
   pagination: PaginationConfig;
   redis: RedisConfig;
 }

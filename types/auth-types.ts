@@ -37,6 +37,30 @@ export interface UserInfo {
 }
 
 /**
+ * SILAS user information stored in session
+ */
+export interface SilasUserInfo {
+  email: string;
+  name?: string;
+  oid?: string;
+  roles?: string[];
+  providerId?: number;
+}
+
+/**
+ * SILAS token data stored in session
+ */
+export interface SilasSessionAuth {
+  accessToken: string;
+  idToken?: string;
+  expiresAt: number;
+  oboAccessToken?: string;
+  oboExpiresAt?: number;
+  refreshToken?: string;
+  scopes: string[];
+}
+
+/**
  * Token storage with expiration tracking
  */
 export interface TokenStorage {
