@@ -16,8 +16,6 @@ import { API_PREFIX, JSON_INDENT } from '../base/constants.js';
  * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
  * @param {string} providerId - Provider reference number
  * @returns {Promise<ProviderSplitChoicesApiResponse>} API response with provider choices
- * @param {string} providerId - Provider reference number
- * @returns {Promise<ProviderSplitChoicesApiResponse>} API response with provider choices
  */
 export async function getProviderChoices(
   axiosMiddleware: AxiosInstanceWrapper,
@@ -51,7 +49,7 @@ export async function getProviderChoices(
  * Get all categories for split case
  * Calls provider endpoint to retrieve all categories
  * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
- * @returns {Promise<ProviderSplitChoicesApiResponse>} API response with provider choices
+ * @returns {Promise<GetAllCategoriesApiResponse>} API response with provider choices
  */
 export async function getAllCategories(
   axiosMiddleware: AxiosInstanceWrapper,

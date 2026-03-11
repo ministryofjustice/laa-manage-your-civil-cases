@@ -4,43 +4,10 @@ import { devLog, createProcessedError, safeString, validCaseReference, formatVal
 import { validationResult } from 'express-validator';
 import type { ProviderDetail, ProviderSplitChoicesApiResponse } from '#types/api-types.js';
 import config from '#config.js';
+import { validateAboutNewCase } from '#src/middlewares/aboutNewCaseSchema.js';
 
 const { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH, CHARACTER_THRESHOLD }: { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH: number; CHARACTER_THRESHOLD: number } = config;
 const BAD_REQUEST = 400;
-
-/**
- * Helper function to fetch Provider details
- * @param {Request} req Express request object
- * @param {string} caseReference Case reference number
- * @returns {Promise<ProviderDetail>} Provider details from the API
- * @throws {Error} If providerId is missing or the API call fails
- */
-async function fetchProviderNameAndDetail(req: Request, caseReference: string): Promise<ProviderDetail> {
-  const { clientData } = req;
-
-  const providerId =
-    clientData && typeof clientData === 'object' && 'providerId' in clientData
-      ? safeString((clientData).providerId)
-      : '';
-
-  if (!providerId) {
-    throw createProcessedError(
-      new Error('Missing providerId in clientData'),
-      `fetching provider details, for case ${caseReference}`
-    );
-  }
-
-  const providerResponse: ProviderSplitChoicesApiResponse = await apiService.getProviderChoices(req.axiosMiddleware, providerId);
-
-  if (providerResponse.status === 'error' || providerResponse.data === null) {
-    throw createProcessedError(
-      new Error('Failed to fetch provider name'),
-      `fetching provider details, for case ${caseReference}`
-    );
-  }
-
-  return providerResponse.data;
-}
 
 /**
  * Helper function to fetch Provider details
@@ -94,11 +61,9 @@ export async function getSplitThisCaseForm(req: Request, res: Response, next: Ne
     devLog(`Rendering split this case form for case: ${caseReference}`);
 
     const provider = await fetchProviderNameAndDetail(req, caseReference);
-    const provider = await fetchProviderNameAndDetail(req, caseReference);
 
     res.render('case_details/split-this-case.njk', {
       caseReference,
-      provider,
       provider,
       client: req.clientData,
       errorState: {
@@ -208,7 +173,7 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
         })),
         {
           value: 'none',
-          text: "I don't know",
+          text: t('allCategoriesAdditions.none'),
           selected: false
         }
         ];
@@ -261,6 +226,7 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
   const category = safeBodyString(req.body, 'category');
   const notes = safeBodyString(req.body, 'notes');
 
+   console.log(validateAboutNewCase());
   // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -302,12 +268,12 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
         ...allCategoriesResponse.data.map(choice => ({
           value: choice.code,
           text: choice.name,
-          selected: category === choice.name
+          selected: category === choice.code
         }))
         ];
         categoryItems.push({
           value: 'none',
-          text: 'I don\'t know',
+          text: t('allCategoriesAdditions.none'),
           selected: false
         });
       }
@@ -322,7 +288,7 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
         ...provider.law_category.map(choice => ({
           value: choice.code,
           text: choice.name,
-          selected: category === choice.name
+          selected: category === choice.code
         }))
       ];
     }

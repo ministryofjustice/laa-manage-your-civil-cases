@@ -33,8 +33,6 @@ async function runMiddleware(
   }
 }
 
-
-
 // Define the RequestWithMiddleware interface for testing
 interface RequestWithMiddleware extends Request {
   axiosMiddleware: any;
@@ -331,8 +329,6 @@ describe('Split Case Controller', () => {
     let res: any;
     let next: sinon.SinonStub;
 
-    let getAllCategoriesStub: sinon.SinonStub;
-
     beforeEach(() => {
       req = {
         params: { caseReference: 'TEST123' },
@@ -354,7 +350,7 @@ describe('Split Case Controller', () => {
 
       next = sinon.stub();
 
-      getAllCategoriesStub = sinon.stub(apiService, 'getAllCategories');
+      let getAllCategoriesStub = sinon.stub(apiService, 'getAllCategories');
     });
 
     afterEach(() => sinon.restore());
@@ -365,12 +361,16 @@ describe('Split Case Controller', () => {
       req.session.splitCaseCache = { internal: 'true' };
 
       req.body = {
-        category: 'Housing, eviction and homelessness',
+        category: 'housing',
         notes: '',
       };
 
-      const validators = validateAboutNewCase();
-      await runMiddleware(validators, req);
+ 
+      for (const validator of validateAboutNewCase()) {
+        await runMiddleware([validator], req);
+      }
+
+      console.log(require('express-validator').validationResult(req).array());
 
       getProviderChoicesStub.resolves({
         status: 'success',
@@ -425,8 +425,10 @@ describe('Split Case Controller', () => {
         notes: 'Split required due to change of circumstances',
       };
 
-      const validators = validateAboutNewCase();
-      await runMiddleware(validators, req);
+
+      for (const validator of validateAboutNewCase()) {
+        await runMiddleware([validator], req);
+      }
 
       getProviderChoicesStub.resolves({
         status: 'success',
@@ -531,7 +533,7 @@ describe('Split Case Controller', () => {
       req.session.splitCaseCache = { internal: 'true' };
       const longComment = 'a'.repeat(2501); // Exceeds MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH
       req.body = {
-        category: 'Housing, eviction and homelessness',
+        category: 'housing',
         notes: longComment,
       };
       const validators = validateAboutNewCase();
