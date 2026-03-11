@@ -17,13 +17,12 @@ import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import type { Request, Response } from 'express';
-import { getSplitThisCaseForm, getAboutNewCaseForm, submitAboutNewCaseForm } from '#src/scripts/controllers/splitCaseController.js';
+import { getSplitThisCaseForm, getAboutNewCaseForm, submitAboutNewCaseForm, getCheckSplitCaseAnswersForm, submitCheckSplitCaseAnswersForm } from '#src/scripts/controllers/splitCaseController.js';
 import { apiService } from '#src/services/apiService.js';
 import { validateAboutNewCase } from '#src/middlewares/aboutNewCaseSchema.js';
 import type { ValidationChain } from 'express-validator';
 
 // helper: run validator middleware
-
 async function runMiddleware(
   middlewares: ValidationChain[],
   req: Request
@@ -618,4 +617,197 @@ describe('Split Case Controller', () => {
       expect(res.redirect.calledWith('/cases/TEST123/check-split-case-answers')).to.be.true;
     });
   });
+
+  describe('getCheckSplitCaseAnswersForm', () => {
+    // Arrange
+    let req: any;
+    let res: any;
+    let next: sinon.SinonStub;
+
+    beforeEach(() => {
+      req = {
+        params: { caseReference: 'TEST123' },
+        axiosMiddleware: {},
+        session: {
+          splitCaseCache: {
+            category: 'housing',
+            internal: 'true',
+            notes: 'Split required due to change in circumstances'
+          }
+        },
+        csrfToken: () => 'test-token',
+        clientData: {
+          caseReference: 'TEST123',
+          providerId: '20'
+        }
+      };
+
+      res = {
+        render: sinon.stub(),
+        redirect: sinon.stub(),
+        status: sinon.stub().returnsThis()
+      };
+
+      next = sinon.stub();
+    });
+
+    afterEach(() => sinon.restore());
+
+    it('should render check split case answers page with correct template and view model', async () => {
+      // Act
+      await getCheckSplitCaseAnswersForm(req, res, next);
+
+      // Assert
+      expect(res.render.calledOnce).to.be.true;
+      expect(
+        res.render.calledWith(
+          'case_details/check-split-case-answers.njk',
+          sinon.match({
+            caseReference: 'TEST123',
+            splitCaseCache: sinon.match({
+              category: 'housing',
+              internal: 'true',
+              notes: 'Split required due to change in circumstances'
+            }),
+            client: sinon.match({
+              caseReference: 'TEST123',
+              providerId: '20'
+            }),
+            errorState: sinon.match({
+              hasErrors: false,
+              errors: [],
+              fieldErrors: {}
+            }),
+            csrfToken: 'test-token'
+          })
+        )
+      ).to.be.true;
+
+      expect(next.called).to.be.false;
+    });
+
+    it('should call next with error when render throws', async () => {
+      // Arrange
+      const renderError = new Error('Template rendering failed');
+      res.render = sinon.stub().throws(renderError);
+
+      // Act
+      await getCheckSplitCaseAnswersForm(req, res, next);
+
+      // Assert
+      expect(next.calledOnce).to.be.true;
+      const err = next.firstCall.args[0];
+      expect(err).to.be.instanceOf(Error);
+    });
+  });
+
+  describe('submitCheckSplitCaseAnswersForm', () => {
+    // Arrange
+    let req: any;
+    let res: any;
+    let next: sinon.SinonStub;
+    let submitSplitCaseStub: sinon.SinonStub;
+
+    beforeEach(() => {
+      req = {
+        params: { caseReference: 'TEST123' },
+        axiosMiddleware: {},
+        session: {
+          splitCaseCache: {
+            category: 'housing',
+            internal: 'true',
+            notes: 'Split required due to change in circumstances'
+          }
+        },
+        csrfToken: () => 'test-token',
+        clientData: {
+          caseReference: 'TEST123',
+          providerId: '20'
+        }
+      };
+
+      res = {
+        render: sinon.stub(),
+        redirect: sinon.stub(),
+        status: sinon.stub().returnsThis()
+      };
+
+      next = sinon.stub();
+
+      submitSplitCaseStub = sinon.stub(apiService, 'submitSplitCase');
+    });
+
+    afterEach(() => sinon.restore());
+
+    it('should submit split case and redirect to client details page', async () => {
+      // Arrange
+      submitSplitCaseStub.resolves({
+        status: 'success',
+        data: {}
+      });
+
+      // Act
+      await submitCheckSplitCaseAnswersForm(req, res, next);
+
+      // Assert
+      expect(submitSplitCaseStub.calledOnceWithExactly(
+        req.axiosMiddleware,
+        'TEST123',
+        {
+          category: 'housing',
+          internal: true,
+          notes: 'Split required due to change in circumstances'
+        }
+      )).to.be.true;
+
+      expect(res.redirect.calledOnceWithExactly('/cases/TEST123/client-details')).to.be.true;
+      expect(next.called).to.be.false;
+    });
+
+    it('should call next with error when API returns error status', async () => {
+      // Arrange
+      submitSplitCaseStub.resolves({
+        status: 'error',
+        message: 'API submission failed'
+      });
+
+      // Act
+      await submitCheckSplitCaseAnswersForm(req, res, next);
+
+      // Assert
+      expect(res.redirect.called).to.be.false;
+      expect(next.calledOnce).to.be.true;
+      const err = next.firstCall.args[0];
+      expect(err).to.be.instanceOf(Error);
+    });
+
+    it('should call next with error when API throws', async () => {
+      // Arrange
+      submitSplitCaseStub.rejects(new Error('Network error'));
+
+      // Act
+      await submitCheckSplitCaseAnswersForm(req, res, next);
+
+      // Assert
+      expect(res.redirect.called).to.be.false;
+      expect(next.calledOnce).to.be.true;
+      const err = next.firstCall.args[0];
+      expect(err).to.be.instanceOf(Error);
+    });
+
+    it('should call next with error when splitCaseCache is missing required values', async () => {
+      // Arrange
+      req.session.splitCaseCache = undefined;
+
+      // Act
+      await submitCheckSplitCaseAnswersForm(req, res, next);
+
+      // Assert
+      expect(submitSplitCaseStub.called).to.be.false;
+      expect(res.redirect.called).to.be.false;
+      expect(next.calledOnce).to.be.true;
+      expect(next.firstCall.args[0]).to.be.instanceOf(Error);
+    });
+  });
 });
+
