@@ -160,7 +160,6 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
       const allCategoriesResponse = await apiService.getAllCategories(req.axiosMiddleware);
 
       if (allCategoriesResponse.status === 'success' && Array.isArray(allCategoriesResponse.data)) {
-
         categoryItems = [{
           value: '',
           text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
@@ -174,7 +173,6 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
         ];
       }
     } else {
-
       categoryItems = [
         {
           value: '',
@@ -254,23 +252,27 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
       const allCategoriesResponse = await apiService.getAllCategories(req.axiosMiddleware);
 
       if (allCategoriesResponse.status === 'success' && Array.isArray(allCategoriesResponse.data)) {
-
         categoryItems = [{
           value: '',
           text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
           selected: !category
         },
-        ...allCategoriesResponse.data.map(choice => ({
-          value: choice.code,
-          text: choice.name,
-          selected: category === choice.code
-        }))
+        ...allCategoriesResponse.data.map(choice => {
+            // Replace "None of the above"
+            if (choice.name === 'None of the above') {
+              return {
+                value: 'none',
+                text: t('common.categoryCode.none'),
+                selected: category === 'none'
+              };
+            }
+            return {
+              value: choice.code,
+              text: choice.name,
+              selected: category === choice.code
+            };
+          })
         ];
-        categoryItems.push({
-          value: 'none',
-          text: t('allCategoriesAdditions.none'),
-          selected: false
-        });
       }
     } else {
       categoryItems = [
@@ -363,28 +365,47 @@ export async function submitCheckSplitCaseAnswersForm(req: Request, res: Respons
   }
 
   try {
-    devLog(`Submitting the split case form for case: ${caseReference}`);
+    devLog(`Submitting the "check split case answers" form for case: ${caseReference}`);
 
-    // // Submit operator feedback to API
-    // const response = await apiService.submitOperatorFeedback(
-    //   req.axiosMiddleware,
-    //   caseReference
-    // );
+    const category = splitCaseCache && typeof splitCaseCache.category === 'string' ? splitCaseCache.category.trim() : '';
+    const notes = splitCaseCache && typeof splitCaseCache.notes === 'string' ? splitCaseCache.notes.trim() : '';
+    const internal = splitCaseCache?.internal === 'true';
 
-    // if (response.status === 'error') {
-    //   const processedError = createProcessedError(
-    //     new Error(response.message || 'Failed to submit operator feedback'),
-    //     `submitting operator feedback for case ${caseReference}`
-    //   );
-    //   return next(processedError);
-    // }
+    if (!category || !notes) {
+      const processedError = createProcessedError(
+        new Error('Split case session data is missing required values'),
+        `Submitting "check split case answers" form, for case ${caseReference}`
+      );
+      return next(processedError);
+    }
 
-    devLog(`Operator feedback submitted successfully for case: ${caseReference}`);
+    devLog(`Category: ${category}, Internal:${internal}, Notes: ${notes}`);
+
+    // Submit operator feedback to API
+    const response = await apiService.submitSplitCase(
+      req.axiosMiddleware,
+      caseReference,
+      {
+        category,
+        internal,
+        notes
+      }
+    );
+
+    if (response.status === 'error') {
+      const processedError = createProcessedError(
+        new Error(response.message || 'Failed to submit "check split case answers" form'),
+        `Submitting "check split case answers" form, for case ${caseReference}`
+      );
+      return next(processedError);
+    }
+
+    devLog(`"check split case answers" form, submitted successfully for case: ${caseReference}`);
 
     // Redirect to client details page
     res.redirect(`/cases/${caseReference}/client-details`);
   } catch (error) {
-    const processedError = createProcessedError(error, `submitting operator feedback for case ${caseReference}`);
+    const processedError = createProcessedError(error, `Submitting the "check split case answers" form for case: ${caseReference}`);
     next(processedError);
   }
 }

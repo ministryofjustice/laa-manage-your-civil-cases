@@ -4,7 +4,7 @@
  */
 
 import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
-import type { ProviderSplitChoicesApiResponse, GetAllCategoriesApiResponse } from '#types/api-types.js';
+import type { ProviderSplitChoicesApiResponse, GetAllCategoriesApiResponse, SplitCaseSubmissionRequest, SplitCaseSubmissionApiResponse } from '#types/api-types.js';
 import { devLog, extractAndLogError } from '#src/scripts/helpers/index.js';
 import { configureAxiosInstance } from '../base/BaseApiService.js';
 import { API_PREFIX, JSON_INDENT } from '../base/constants.js';
@@ -68,6 +68,45 @@ export async function getAllCategories(
 
   } catch (error) {
     const errorMessage = extractAndLogError(error, 'API error fetching all categories');
+
+    return {
+      data: null,
+      status: 'error',
+      message: errorMessage
+    };
+  }
+}
+
+/**
+ * Submit operator feedback for a case
+ * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+ * @param {string} caseReference - Case reference number
+ * @param {SplitCaseSubmissionRequest} splitData - Feedback data to submit
+ * @returns {Promise<SplitCaseSubmissionApiResponse>} API response
+ */
+export async function submitSplitCase(
+  axiosMiddleware: AxiosInstanceWrapper,
+  caseReference: string,
+  splitData: SplitCaseSubmissionRequest
+): Promise<SplitCaseSubmissionApiResponse> {
+  try {
+    devLog(`API: POST ${API_PREFIX}/case/${caseReference}/mcc_split/`);
+    devLog(`Split case data: ${JSON.stringify(splitData, null, JSON_INDENT)}`);
+
+    const configuredAxios = configureAxiosInstance(axiosMiddleware);
+
+    // Call API POST endpoint to submit split case details 
+    const response = await configuredAxios.post(`${API_PREFIX}/case/${caseReference}/mcc_split/`, splitData);
+
+    devLog(`API: Split case submission response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+
+    return {
+      data: response.data,
+      status: 'success'
+    };
+
+  } catch (error) {
+    const errorMessage = extractAndLogError(error, 'API error submitting the split case');
 
     return {
       data: null,
