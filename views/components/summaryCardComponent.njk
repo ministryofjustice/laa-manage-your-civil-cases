@@ -84,7 +84,9 @@
     {# Apply filter if specified #}
     {% set processedValue = rawValue %}
     {% if rawValue and row.filter %}
-      {% if row.filter == "formatDate" %}
+      {% if row.filter == "formatDateLongMonth" %}
+        {% set processedValue = rawValue | formatDateLongMonth %}
+      {% elif row.filter == "formatDate" %}
         {% set processedValue = rawValue | formatDate %}
       {% elif row.filter == "upper" %}
         {% set processedValue = rawValue | upper %}

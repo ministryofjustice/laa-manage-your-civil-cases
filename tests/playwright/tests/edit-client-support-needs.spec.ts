@@ -14,7 +14,7 @@ test('edit client support needs form should save valid data and redirect to clie
   await page.goto(editSupportNeedsUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 Aug 2025" }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 August 2025" }); 
 
   // Expect to see the form heading
   await expect(page.locator('legend.govuk-fieldset__legend')).toContainText('Change client support needs');
@@ -46,7 +46,7 @@ test('edit client support needs form should show validation error if no option s
   await page.goto(editSupportNeedsUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 Aug 2025" }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 August 2025" }); 
 
  // Check the box for "Other support" but do not fill in the text to trigger validation error
   const otherSupportCheckbox = page.locator('input[name="clientSupportNeeds"][value="otherSupport"]');
