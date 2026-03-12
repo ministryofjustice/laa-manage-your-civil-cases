@@ -82,5 +82,5 @@ test('continue button should hit post split case form end point', async ({ page,
   await continueButton.click();
 
   // Assert we are redirected to the about a new case page (or appropriate next page)
-  await expect(page).toHaveURL(`/cases/${caseReference}/about-new-case`);
+  await expect(page).toHaveURL(`/cases/${caseReference}/about-new-split-case`);
 });
