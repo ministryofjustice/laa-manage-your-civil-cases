@@ -46,9 +46,9 @@ export async function getProviderChoices(
 
 /**
  * Get all categories for split case
- * Calls provider endpoint to retrieve all categories
+ * Calls category endpoint to retrieve all categories
  * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
- * @returns {Promise<GetAllCategoriesApiResponse>} API response with provider choices
+ * @returns {Promise<GetAllCategoriesApiResponse>} API response with category choices
  */
 export async function getAllCategories(
   axiosMiddleware: AxiosInstanceWrapper,
@@ -56,7 +56,7 @@ export async function getAllCategories(
   devLog(`API: GET ${API_PREFIX}/category/`);
   const configuredAxios = configureAxiosInstance(axiosMiddleware);
   try {
-    // Call API provider endpoint to get form options
+    // Call API category endpoint to get form options
     const response = await configuredAxios.get(`${API_PREFIX}/category/`);
 
     devLog(`API: All categories response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
@@ -78,10 +78,10 @@ export async function getAllCategories(
 }
 
 /**
- * Submit operator feedback for a case
+ * Submit split case form for a case
  * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
  * @param {string} caseReference - Case reference number
- * @param {SplitCaseSubmissionRequest} splitData - Feedback data to submit
+ * @param {SplitCaseSubmissionRequest} splitData - Spilt data to submit
  * @returns {Promise<SplitCaseSubmissionApiResponse>} API response
  */
 export async function submitSplitCase(

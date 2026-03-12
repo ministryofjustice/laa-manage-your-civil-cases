@@ -141,7 +141,7 @@ router.get('/:caseReference/about-new-case', fetchClientDetails, async (req: Req
   await getAboutNewCaseForm(req, res, next);
 });
 
-/* POST about new case form. */
+/* POST about new split case form. */
 router.post('/:caseReference/about-new-case', fetchClientDetails, validateAboutNewCase(), async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   await submitAboutNewCaseForm(req, res, next);
 });
