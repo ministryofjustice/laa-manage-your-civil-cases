@@ -107,6 +107,7 @@ export function handleSilasLogout(req: Request, res: Response): void {
     if (err !== null && err !== undefined) {
       devError(`Error destroying session: ${err instanceof Error ? err.message : String(err)}`);
     }
+
     res.redirect(getSilasLogoutUrl());
   });
 }
