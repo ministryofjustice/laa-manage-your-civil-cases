@@ -37,7 +37,7 @@ runs:
     - name: Docker Build & Push with Cache
       id: build_and_push
       run: |
-        docker build \
+        docker buildx build \
           --push \
           --cache-from=type=local,src=/tmp/.buildx-cache \
           --cache-to=type=local,dest=/tmp/.buildx-cache \
