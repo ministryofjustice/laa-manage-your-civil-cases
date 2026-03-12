@@ -29,5 +29,5 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-        # Custom Configuration - CodeQL wants to upload SARIF file and so does this workflow. Keeping CodeQL behaviour.
-        codeql-upload-findings: "never"
+          # Custom Configuration - CodeQL wants to upload SARIF file and so does this workflow. Keeping CodeQL behaviour.
+          codeql-upload-findings: "never"
