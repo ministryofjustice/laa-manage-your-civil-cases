@@ -101,7 +101,7 @@ describe('Split Case Controller', () => {
       expect(renderStub.called).to.be.true;
       expect(
         renderStub.calledWith(
-          'case_details/split-this-case.njk',
+          'case_details/split_case/split-this-case.njk',
           sinon.match({
             caseReference: 'TEST123',
             client: mockClientData,
@@ -661,7 +661,7 @@ describe('Split Case Controller', () => {
       expect(res.render.calledOnce).to.be.true;
       expect(
         res.render.calledWith(
-          'case_details/check-split-case-answers.njk',
+          'case_details/split_case/check-split-case-answers.njk',
           sinon.match({
             caseReference: 'TEST123',
             splitCaseCache: sinon.match({

@@ -54,7 +54,7 @@ test('change link should navigate back to the about new case form', async ({ pag
   await checkSplitCaseAnswersPage.changeLink.click();
 
   // Expect
-  await expect(page).toHaveURL(`/cases/${caseReference}/about-new-case`);
+  await expect(page).toHaveURL(`/cases/${caseReference}/about-new-split-case`);
 });
 
 test('cancel link should navigate back to client details', async ({ page }) => {
@@ -71,9 +71,9 @@ test('cancel link should navigate back to client details', async ({ page }) => {
 });
 
 test('confirm split button should submit the form', async ({ page }) => {
-  // Navigate by starting from the about new case page (can't submit without actual values)
+  // Navigate by starting from the about new split case page (can't submit without actual values)
   const checkSplitCaseAnswersPage = CheckSplitCaseAnswersPage.forCase(page, caseReference);
-  await page.goto(`/cases/${caseReference}/about-new-case`);
+  await page.goto(`/cases/${caseReference}/about-new-split-case`);
 
   // Assert by filling out the form
   await page.selectOption('#category', { label: 'Debt, money problems and bankruptcy' });
@@ -87,6 +87,27 @@ test('confirm split button should submit the form', async ({ page }) => {
   await expect(checkSplitCaseAnswersPage.confirmSplitButton).toBeVisible();
   await checkSplitCaseAnswersPage.confirmSplitButton.click();
   await expect(page).toHaveURL(`/cases/${caseReference}/client-details`);
+});
+
+test('confirm correct `operatorReassignment` text shown when selecting `operatorReassignment` radio button', async ({ page }) => {
+  // Navigate by starting from the about split case page 
+  const checkSplitCaseAnswersPage = CheckSplitCaseAnswersPage.forCase(page, caseReference);
+  await page.goto(`/cases/${caseReference}/split-this-case`);
+
+  // Navigate & Assert by selecting 2nd radio button on the form and submitting 
+  const radioInternalFalse = page.getByRole('radio', { name: 'To operator for reassignment' });
+  await expect(radioInternalFalse).toBeVisible();
+  await radioInternalFalse.check();
+  await page.click('button.govuk-button');
+
+  // Navigate & Assert by filling out the about new split case page, then submitting
+  await page.selectOption('#category', { label: 'Debt, money problems and bankruptcy' });
+  await page.fill('#notes', 'Splitting case because the issues differ');
+  await page.click('button.govuk-button');
+
+  // Expect text to be on page
+  await expect(page).toHaveURL(checkSplitCaseAnswersPage.url);
+  await expect(page.getByText('To operator for reassignment')).toBeVisible();
 });
 
 test('check split case answers page should display change, confirm and cancel controls', async ({ page }) => {

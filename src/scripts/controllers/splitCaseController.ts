@@ -134,6 +134,7 @@ export async function submitSplitThisCaseForm(req: Request, res: Response, next:
   return res.redirect(`/cases/${caseReference}/about-new-case`);
 }
 
+
 /**
  * Render the "about new case" form
  * @param {Request} req Express request object
@@ -189,7 +190,7 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
       ];
     }
 
-    res.render('case_details/about-new-case.njk', {
+    res.render('case_details/split_case/about-new-split-case.njk', {
       caseReference,
       provider,
       categoryItems,
@@ -286,7 +287,7 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
       ];
     }
 
-    return res.status(BAD_REQUEST).render('case_details/about-new-case.njk', {
+    return res.status(BAD_REQUEST).render('case_details/split_case/about-new-split-case.njk', {
       caseReference,
       provider,
       categoryItems,
@@ -329,7 +330,7 @@ export async function getCheckSplitCaseAnswersForm(req: Request, res: Response, 
   try {
     devLog(`Rendering check split case answers form for case: ${caseReference}`);
 
-    res.render('case_details/check-split-case-answers.njk', {
+    res.render('case_details/split_case/check-split-case-answers.njk', {
       caseReference,
       splitCaseCache,
       client: req.clientData,

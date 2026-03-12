@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block backLink %}
-  {% set backLinkHref = "/cases/" + caseReference + "/about-new-case" %}
+  {% set backLinkHref = "/cases/" + caseReference + "/about-new-split-case" %}
 
   {{ govukBackLink({
       text: t('common.back'),
@@ -72,7 +72,7 @@
             actions: {
               items: [
                 {
-                  href: "/cases/" + caseReference + "/about-new-case",
+                  href: "/cases/" + caseReference + "/about-new-split-case",
                   text: t('pages.caseDetails.checkYourAnswers.changeLink'),
                   visuallyHiddenText: t('pages.caseDetails.checkYourAnswers.changeLinkHiddenText')
                 }
