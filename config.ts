@@ -113,10 +113,20 @@ const REQUIRED_SILAS_CONFIG_FIELDS = [
 
 type SilasRequiredField = (typeof REQUIRED_SILAS_CONFIG_FIELDS)[number];
 
+/**
+ * Returns the list of required SILAS config fields that are currently empty.
+ *
+ * @returns {SilasRequiredField[]} Missing required SILAS field names.
+ */
 export function getMissingSilasConfigValues(): SilasRequiredField[] {
   return REQUIRED_SILAS_CONFIG_FIELDS.filter((field) => config.silas[field].trim() === '');
 }
 
+/**
+ * Validates SILAS runtime configuration and throws if any required value is missing.
+ *
+ * @returns {void}
+ */
 export function validateSilasConfig(): void {
   const missingFields = getMissingSilasConfigValues();
   const oboScopes = config.silas.oboScopes;

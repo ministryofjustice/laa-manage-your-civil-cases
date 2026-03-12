@@ -16,10 +16,23 @@ import {
 const BAD_REQUEST = 400;
 const LOGIN_REDIRECT_TARGET = '/cases/new';
 
+/**
+ * Generates a random CSRF-style state value for the SILAS auth redirect flow.
+ *
+ * @returns {string} Generated unique state value.
+ */
 function generateState(): string {
   return randomUUID();
 }
 
+/**
+ * Renders a standard login error page.
+ *
+ * @param {Response} res Express response object.
+ * @param {string} error User-facing error message.
+ * @param {number} [status=500] HTTP status code for the error response.
+ * @returns {void}
+ */
 function renderLoginError(res: Response, error: string, status = 500): void {
   res.status(status).render('main/error.njk', {
     status: String(status),
@@ -27,6 +40,13 @@ function renderLoginError(res: Response, error: string, status = 500): void {
   });
 }
 
+/**
+ * Starts SILAS login by storing state and redirecting to Entra auth URL.
+ *
+ * @param {Request} req Express request object.
+ * @param {Response} res Express response object.
+ * @returns {Promise<void>}
+ */
 export async function startSilasLogin(req: Request, res: Response): Promise<void> {
   const state = generateState();
   req.session.silasLoginState = state;
@@ -40,6 +60,14 @@ export async function startSilasLogin(req: Request, res: Response): Promise<void
   }
 }
 
+/**
+ * Handles the SILAS callback, exchanges tokens, verifies provider identity and
+ * establishes the authenticated MCC session.
+ *
+ * @param {Request} req Express request object.
+ * @param {Response} res Express response object.
+ * @returns {Promise<void>}
+ */
 export async function handleSilasCallback(req: Request, res: Response): Promise<void> {
   const code = typeof req.query.code === 'string' ? req.query.code : '';
   const state = typeof req.query.state === 'string' ? req.query.state : '';
@@ -102,6 +130,13 @@ export async function handleSilasCallback(req: Request, res: Response): Promise<
   }
 }
 
+/**
+ * Destroys the current session and redirects to SILAS logout endpoint.
+ *
+ * @param {Request} req Express request object.
+ * @param {Response} res Express response object.
+ * @returns {void}
+ */
 export function handleSilasLogout(req: Request, res: Response): void {
   req.session.destroy((err) => {
     if (err !== null && err !== undefined) {

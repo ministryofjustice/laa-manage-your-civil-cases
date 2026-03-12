@@ -5,6 +5,11 @@ const LOGIN_RESPONSE_MODE = 'query';
 
 let msalClient: ConfidentialClientApplication | undefined;
 
+/**
+ * Returns a lazily initialized MSAL confidential client instance.
+ *
+ * @returns {ConfidentialClientApplication} Configured MSAL client.
+ */
 function getMsalClient(): ConfidentialClientApplication {
   if (msalClient === undefined) {
     msalClient = new ConfidentialClientApplication({
@@ -45,6 +50,11 @@ interface AccessTokenClaims {
 const OIDC_SCOPES = new Set(['openid', 'profile', 'offline_access']);
 const PROVIDER_IDENTITY_CHECK_PATH = `${process.env.API_PREFIX ?? '/cla_provider/api/v1'}/case?only=new&page=1&page_size=1`;
 
+/**
+ * Returns the configured downstream API scopes for OBO token exchange.
+ *
+ * @returns {string[]} OBO scopes from configuration.
+ */
 function configuredOboScopes(): string[] {
   // `oboScopes` is for downstream OBO exchange (token used to call CLA backend).
   // This is intentionally separate from `scopes`, which is used for initial login token acquisition.
@@ -62,6 +72,12 @@ function configuredOboScopes(): string[] {
  */
 export class SilasIdentityMappingError extends Error {}
 
+/**
+ * Decodes JWT payload claims from an access token.
+ *
+ * @param {string} token JWT access token.
+ * @returns {AccessTokenClaims} Parsed token claims.
+ */
 function decodeJwtPayload(token: string): AccessTokenClaims {
   const parts = token.split('.');
   if (parts.length !== 3) {
@@ -77,10 +93,21 @@ function decodeJwtPayload(token: string): AccessTokenClaims {
   }
 }
 
+/**
+ * Builds the expected Entra token issuer URL from configured tenant.
+ *
+ * @returns {string} Expected issuer URL.
+ */
 function expectedIssuer(): string {
   return `https://login.microsoftonline.com/${config.silas.tenantId}/v2.0`;
 }
 
+/**
+ * Normalizes scope values by reducing URI-style scopes to their final segment.
+ *
+ * @param {string} scope Scope string to normalize.
+ * @returns {string} Normalized scope value.
+ */
 function normalizeScope(scope: string): string {
   if (!scope.includes('/')) {
     return scope;
@@ -89,6 +116,12 @@ function normalizeScope(scope: string): string {
   return segments[segments.length - 1] ?? scope;
 }
 
+/**
+ * Validates core claims in the SILAS login access token.
+ *
+ * @param {AccessTokenClaims} claims Claims extracted from access token.
+ * @returns {void}
+ */
 function validateAccessTokenClaims(claims: AccessTokenClaims): void {
   const expectedIss = expectedIssuer();
   if (claims.iss !== expectedIss) {
@@ -120,6 +153,12 @@ function validateAccessTokenClaims(claims: AccessTokenClaims): void {
   }
 }
 
+/**
+ * Validates core claims in OBO access token for downstream API calls.
+ *
+ * @param {AccessTokenClaims} claims Claims extracted from OBO token.
+ * @returns {void}
+ */
 function validateOboAccessTokenClaims(claims: AccessTokenClaims): void {
   const expectedIss = expectedIssuer();
   if (claims.iss !== expectedIss) {
@@ -145,6 +184,12 @@ function validateOboAccessTokenClaims(claims: AccessTokenClaims): void {
   }
 }
 
+/**
+ * Generates SILAS/Entra authorization URL for interactive login.
+ *
+ * @param {string} state Request state value for callback validation.
+ * @returns {Promise<string>} Login URL.
+ */
 export async function getSilasLoginUrl(state: string): Promise<string> {
   return await getMsalClient().getAuthCodeUrl({
     scopes: config.silas.scopes,
@@ -154,6 +199,12 @@ export async function getSilasLoginUrl(state: string): Promise<string> {
   });
 }
 
+/**
+ * Exchanges authorization code for SILAS tokens and mapped user identity.
+ *
+ * @param {string} code Authorization code received in callback.
+ * @returns {Promise<SilasTokenExchangeResult>} Token exchange result.
+ */
 export async function exchangeSilasCodeForToken(code: string): Promise<SilasTokenExchangeResult> {
   const tokenResult = await getMsalClient().acquireTokenByCode({
     code,
@@ -186,6 +237,12 @@ export async function exchangeSilasCodeForToken(code: string): Promise<SilasToke
   };
 }
 
+/**
+ * Exchanges a user access token for a downstream OBO token.
+ *
+ * @param {string} userAccessToken User access token from login flow.
+ * @returns {Promise<SilasOboTokenResult>} OBO access token data.
+ */
 export async function exchangeSilasTokenOnBehalfOf(userAccessToken: string): Promise<SilasOboTokenResult> {
   const oboScopes = configuredOboScopes();
 
@@ -207,6 +264,11 @@ export async function exchangeSilasTokenOnBehalfOf(userAccessToken: string): Pro
   };
 }
 
+/**
+ * Builds SILAS logout URL with post-logout redirect URI.
+ *
+ * @returns {string} Fully qualified logout URL.
+ */
 export function getSilasLogoutUrl(): string {
   const authority = config.silas.authority.replace(/\/$/, '');
   const logoutEndpoint = `${authority}/oauth2/v2.0/logout`;
@@ -226,6 +288,9 @@ export function getSilasLogoutUrl(): string {
  * Why this endpoint:
  * - Uses an existing low-cost provider API request with minimal pagination.
  * - 401/403 is treated as a mapping/authorization failure.
+ *
+ * @param {string} accessToken Access token used for provider identity verification.
+ * @returns {Promise<void>}
  */
 export async function verifySilasProviderIdentity(accessToken: string): Promise<void> {
   const endpoint = `${config.api.baseUrl}${PROVIDER_IDENTITY_CHECK_PATH}`;
