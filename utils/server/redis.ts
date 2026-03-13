@@ -12,16 +12,32 @@ export const buildConnectionUrl = (config: RedisConfig): string => {
   return protocol + config.host + ':' + config.port;
 }
 
+let globalRedisClient: ReturnType<typeof createClient> | null = null;
+
+/**
+ * Recycle the global Redis client by quitting the connection and clearing the reference.
+ */
+export const recycleRedisClient = () => {
+  if (globalRedisClient) {
+    globalRedisClient.quit();
+    globalRedisClient = null;
+  }
+}
+
 /**
  * Create and configure Redis client
  * @param {RedisConfig} config - Redis configuration from environment variables
  * @returns {ReturnType<typeof createClient>} Configured Redis client
  */
 export const createRedisClient = (config: RedisConfig) => {
+  if (globalRedisClient) {
+    return globalRedisClient;
+  }
+
   const redisUrl = buildConnectionUrl(config);
   console.log(chalk.green(`Connecting to Redis at ${redisUrl}`));
 
-  const client = createClient({
+  globalRedisClient = createClient({
     url: redisUrl,
     password: config.auth_token,
     socket: {
@@ -43,25 +59,25 @@ export const createRedisClient = (config: RedisConfig) => {
     }
   });
 
-  client.on('error', (err) => {
+  globalRedisClient.on('error', (err) => {
     console.error(chalk.red('Redis Client Error:'), err);
   });
 
-  client.on('connect', () => {
+  globalRedisClient.on('connect', () => {
     console.log(chalk.green('✓ Redis client connecting...'));
   });
 
-  client.on('ready', () => {
+  globalRedisClient.on('ready', () => {
     console.log(chalk.green('✓ Redis client ready'));
   });
 
-  client.on('reconnecting', () => {
+  globalRedisClient.on('reconnecting', () => {
     console.log(chalk.yellow('⚠️  Redis client reconnecting...'));
   });
 
-  client.on('end', () => {
+  globalRedisClient.on('end', () => {
     console.log(chalk.yellow('⚠️  Redis client disconnected'));
   });
 
-  return client;
+  return globalRedisClient;
 };

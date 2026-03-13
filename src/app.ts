@@ -69,24 +69,10 @@ const createApp = async (): Promise<express.Application> => {
 	const sessionConfig: session.SessionOptions = { ...config.session };
 
 	if (config.redis.enabled) {
-		try {
-			const redisClient = await createRedisClient(config.redis);
-			globalRedisClient = redisClient; // Store for Socket.IO
-			sessionConfig.store = new RedisStore({
-				client: redisClient,
-				prefix: 'laa-manage-your-civil-cases:',
-				ttl: 86400 // 24 hours in seconds
-			});
-			console.log(chalk.green('✓ Using Redis session store'));
-		} catch (error) {
-			console.error(chalk.red('❌ Failed to connect to Redis, falling back to in-memory session store'));
-			console.error(error);
-		}
+		globalRedisClient = await createRedisClient(config.redis); // Store for Socket.IOß
 	} else {
 		console.log(chalk.yellow('⚠️  Using in-memory session store (not suitable for production with multiple pods)'));
 	}
-
-	app.use(session(sessionConfig));
 
 	// Set up authentication status for templates
 	app.use(setAuthStatus);
