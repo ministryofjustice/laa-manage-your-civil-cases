@@ -10,6 +10,7 @@ import { axiosMiddleware } from './axiosSetup.js';
 import { displayAsciiBanner } from './displayAsciiBanner.js';
 import { encrypt, decrypt, isEncryptionConfigured } from './encryption.js';
 import { createRedisClient } from './redis.js';
+import { setupSocketIO } from './socketSetup.js';
 import { type RedisClientType } from './session.js';
 
 export {
@@ -24,5 +25,6 @@ export {
     decrypt,
     isEncryptionConfigured,
     createRedisClient,
+    setupSocketIO,
     type RedisClientType
 };

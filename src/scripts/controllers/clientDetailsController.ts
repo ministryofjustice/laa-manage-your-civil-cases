@@ -31,7 +31,8 @@ export function handleClientDetailsTab(req: Request, res: Response, next: NextFu
     res.render('case_details/index.njk', {
       activeTab,
       client: clientData,
-      caseReference
+      caseReference,
+      sessionID: req.sessionID
     });
   });
 }
