@@ -3134,9 +3134,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsdoc@npm:^62.7.1":
-  version: 62.7.1
-  resolution: "eslint-plugin-jsdoc@npm:62.7.1"
+"eslint-plugin-jsdoc@npm:^62.8.0":
+  version: 62.8.0
+  resolution: "eslint-plugin-jsdoc@npm:62.8.0"
   dependencies:
     "@es-joy/jsdoccomment": "npm:~0.84.0"
     "@es-joy/resolve.exports": "npm:1.2.0"
@@ -3154,7 +3154,7 @@ __metadata:
     to-valid-identifier: "npm:^1.0.0"
   peerDependencies:
     eslint: ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
-  checksum: 10c0/949c1f11ed86ddac0903ffe65e5e30d36766badea2e42ceeaf85168ec6f540f94a9974896600410ce1fcbbf34809b39236cc9614411c15d05b93be166c21ec3c
+  checksum: 10c0/57dc7d297f514c1f89112386d701e7ef4a2af44d3a385eb9f140b5eed29eea762651b5459546208a4b9bf55d22cd3b78eb73aa39f32adb17821eee76377d9ebd
   languageName: node
   linkType: hard
 
@@ -4041,9 +4041,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next@npm:^25.8.17":
-  version: 25.8.17
-  resolution: "i18next@npm:25.8.17"
+"i18next@npm:^25.8.18":
+  version: 25.8.18
+  resolution: "i18next@npm:25.8.18"
   dependencies:
     "@babel/runtime": "npm:^7.28.6"
   peerDependencies:
@@ -4051,7 +4051,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10c0/865cb242ee70262e6af2e6b8f2760ad776bb60671bd2b27a317c95cdbf756f3ca381d15c3a8043bd9e7c3c589df9253d509e773d1f011a2ec76bdded3becdfd3
+  checksum: 10c0/a5b68b12a8de7db59c6253f6c714616e0a687f1543300cbcfdc847bf6199aef2e3d3645756e3c36a261fdbdde127ad42f4bd1d25571cfe0519849fcbe7665724
   languageName: node
   linkType: hard
 
@@ -4643,7 +4643,7 @@ __metadata:
     eslint: "npm:^10.0.3"
     eslint-config-love: "npm:^151.0.0"
     eslint-config-prettier: "npm:^10.1.8"
-    eslint-plugin-jsdoc: "npm:^62.7.1"
+    eslint-plugin-jsdoc: "npm:^62.8.0"
     express: "npm:^5.2.0"
     express-rate-limit: "npm:^8.3.1"
     express-session: "npm:^1.19.0"
@@ -4655,7 +4655,7 @@ __metadata:
     helmet: "npm:^8.1.0"
     http-errors: "npm:~2.0.0"
     husky: "npm:^9.1.7"
-    i18next: "npm:^25.8.17"
+    i18next: "npm:^25.8.18"
     jsdom: "npm:^28.1.0"
     libphonenumber-js: "npm:^1.12.39"
     lint-staged: "npm:^16.3.3"
