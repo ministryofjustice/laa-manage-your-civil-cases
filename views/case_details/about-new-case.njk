@@ -13,7 +13,11 @@
 {% endblock %}
 
 {% block backLink %}
-  {# No back link for this page #}
+  {{ govukBackLink({
+    text: t('common.back'),
+    href: "/cases/" + caseReference + "/split-this-case",
+    classes: "govuk-!-margin-bottom-0"
+  }) }}
 {% endblock %}
 
 {% block errorSummaryOrAlert %}
@@ -42,6 +46,7 @@
         {% if (categoryItems | length) == 2 %}
 
         <p class="govuk-body">{{ t('pages.caseDetails.aboutNewCase.newCaseInfo') }} {{ categoryItems[1].text }}</p>
+        <input type="hidden" name="category" value="{{ categoryItems[1].value }}"/>
         
         {% else %}
 

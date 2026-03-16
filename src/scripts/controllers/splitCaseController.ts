@@ -226,7 +226,7 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
   const category = safeBodyString(req.body, 'category');
   const notes = safeBodyString(req.body, 'notes');
 
-   console.log(validateAboutNewCase());
+   console.log("category of law selected: " + category);
   // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -278,7 +278,6 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
         });
       }
     } else {
-
       categoryItems = [
         {
           value: '',
