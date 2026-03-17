@@ -92,7 +92,7 @@ test('shows operator category list', async ({ page }) => {
 
   //Expect the select to have the correct size (17 categories on the list, plus placeholder, plus "I don't know" option)
   const options = await aboutNewCasePage.categorySelect.locator('option').all();
-  expect(options.length).toBe(19); 
+  expect(options.length).toBe(18); 
 
 });
 

@@ -225,6 +225,13 @@ describe('Split Case Controller', () => {
           description: "",
           ecf_available: true,
           mandatory: true
+        },
+         {
+          code: "none",
+          name: "None of the above",
+          description: "",
+          ecf_available: false,
+          mandatory: false
         }
       ];
 

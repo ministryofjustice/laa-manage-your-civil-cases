@@ -168,14 +168,9 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
         },
         ...allCategoriesResponse.data.map(choice => ({
           value: choice.code,
-          text: choice.name,
+          text: choice.code === 'none' ? t('allCategoriesAdditions.none') : choice.name,
           selected: false
-        })),
-        {
-          value: 'none',
-          text: t('allCategoriesAdditions.none'),
-          selected: false
-        }
+        }))
         ];
       }
     } else {
