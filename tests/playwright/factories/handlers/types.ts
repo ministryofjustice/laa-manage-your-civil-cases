@@ -16,6 +16,7 @@ export interface MockCase {
   isUrgent?: string;
   client_notes?: string;
   operatorNotes?: string;
+  category: string;
   dateOfBirth: string;
   clientIsVulnerable: boolean;
   language: string;
@@ -41,7 +42,7 @@ export interface MockCase {
       passphrase?: string;
     };
   } | null;
-  scopeTraversal?:{
+  scopeTraversal?: {
     category?: string;
     subCategory?: string;
     onwardQuestion?: Array<{
@@ -51,11 +52,11 @@ export interface MockCase {
     financialAssessmentStatus?: string;
     created?: string;
   }
-  diagnosis?:{
-    category?:string;
+  diagnosis?: {
+    category?: string;
     diagnosisNode?: Array<{ node: string; }>;
   }
-  notesHistory?:Array <{
+  notesHistory?: Array<{
     createdBy?: string;
     created?: string;
     providerNotes?: string;

@@ -62,6 +62,7 @@ export function transformToApiFormat(caseItem: MockCase): object {
     date_of_birth: caseItem.dateOfBirth,
     client_notes: caseItem.client_notes,
     notes: caseItem.operatorNotes,
+    category: caseItem.category,
     // Real CLA API returns lowercase state names (e.g., "accepted", "opened", "closed")
     state: caseItem.caseStatus.toLowerCase(),
     is_urgent: caseItem.isUrgent,

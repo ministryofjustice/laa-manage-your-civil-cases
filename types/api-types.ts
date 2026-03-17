@@ -107,7 +107,7 @@ export interface ScopeTraversal {
  */
 export interface Diagnosis {
   category: string;
-  diagnosisNode: Array<{node: string;}>;
+  diagnosisNode: Array<{ node: string; }>;
 }
 
 /**
@@ -137,7 +137,8 @@ export interface ClientDetailsResponse {
   is_urgent?: string;
   client_notes?: string;
   operatorNotes?: string;
-  
+  category?: string;
+
   //Contact details
   phoneNumber: string;
   safeToCall: boolean;
@@ -148,10 +149,10 @@ export interface ClientDetailsResponse {
 
   //State note (null if not present)
   state_note: StateNote | null;
-  
+
   //Client support needs (null if not present)
   clientSupportNeeds: ClientSupportNeeds | null;
-  
+
   //Third party contact (null if not present)
   thirdParty: ThirdPartyContact | null;
 
@@ -163,7 +164,7 @@ export interface ClientDetailsResponse {
 
   //Notes history (null if not present)
   notesHistory: NotesHistory[];
-  
+
   // Allow additional fields for debugging
   [key: string]: unknown;
 }
@@ -282,6 +283,26 @@ export interface ProviderDetail {
  */
 export interface ProviderSplitChoicesApiResponse {
   data: ProviderDetail | null;
+  status: 'success' | 'error';
+  message?: string;
+}
+
+/**
+ * All Categories response interface
+ */
+export interface GetAllCategoriesDetail {
+  code: string;
+  name: string;
+  description: string;
+  ecf_available: boolean;
+  mandatory: boolean;
+}
+
+/**
+ * All Categories response interface
+ */
+export interface GetAllCategoriesApiResponse {
+  data: GetAllCategoriesDetail[] | null;
   status: 'success' | 'error';
   message?: string;
 }

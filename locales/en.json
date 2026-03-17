@@ -89,6 +89,9 @@
       "REF-INT": "Referred internally",
       "REF-EXT": "Referred externally"
     },
+    "allCategoriesAdditions": {
+      "none": "I don't know"
+    },
     "thirdPartyRelationship": {
       "text": {
         "PARENT_GUARDIAN": "Parent or guardian",
@@ -269,7 +272,7 @@
       "doYouWantToGiveFeedback": {
         "pageTitle": "Do you want to give feedback about the operator service? – {caseReference} – {serviceName} – GOV.UK",
         "legend": "Do you want to give feedback about the operator service?"
-      },
+      }, 
       "splitCase": {
         "pageTitle": "Split this case – {caseReference} – {serviceName} – GOV.UK",
         "h2": "Split this case",
@@ -278,6 +281,15 @@
         "infoTextEnd": " for more information.",
         "radioLegend": "Who should the new case be assigned to?",
         "operatorReassignment": "To operator for reassignment"
+      }, 
+      "aboutNewCase": {
+        "pageTitle": "About the new case – {caseReference} – {serviceName} – GOV.UK",
+        "h2": "About the new case",
+        "h3": "Category of law for new case",
+        "originalCaseInfo": "Original case category of law: ",
+        "newCaseInfo": "New case category of law: ",
+        "legend": "Why do you want to split this case?",
+        "categoryPlaceholder": "Select a category of law"
       }
     },
     "error": {
@@ -374,6 +386,17 @@
         "validationError": {
           "splitCase": {
             "notEmpty": "Select who the new case should be assigned to"
+          }
+        }
+      },
+      "aboutNewCase": {
+        "validationError": {
+          "category": {
+            "notEmpty": "Select the category of law for the new case"
+          },
+          "notes": {
+            "notEmpty": "Enter why you want to split this case",
+            "tooLong": "Why you want to split this case must be 2500 characters or less"
           }
         }
       }
