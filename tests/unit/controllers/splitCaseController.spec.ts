@@ -23,6 +23,7 @@ import { validateAboutNewCase } from '#src/middlewares/aboutNewCaseSchema.js';
 import type { ValidationChain } from 'express-validator';
 
 // helper: run validator middleware
+
 async function runMiddleware(
   middlewares: ValidationChain[],
   req: Request
@@ -113,49 +114,51 @@ describe('Split Case Controller', () => {
       ).to.be.true;
 
       expect(next.called).to.be.false;
-    });
 
-    // Arrange
-    it('should call next with error when providerId is missing', async () => {
-      req.clientData = {
-        fullName: 'John Doe',
-        caseReference: 'TEST123',
-        dateOfBirth: '1990-01-01',
-        providerId: ''  // No providerId on purpose
-      };
+      // Arrange
+      it('should call next with error when providerId is missing', async () => {
+        req.clientData = {
+          fullName: 'John Doe',
+          caseReference: 'TEST123',
+          dateOfBirth: '1990-01-01',
+          providerId: ''  // No providerId on purpose
+        };
 
-      // Act
-      await getSplitThisCaseForm(req as RequestWithMiddleware, res as Response, next);
+        // Act
+        await getSplitThisCaseForm(req as RequestWithMiddleware, res as Response, next);
 
-      // Assert
-      expect(renderStub.called).to.be.false;
-      expect(next.calledOnce).to.be.true; // Should delegate to error handler
-      const err = next.firstCall.args[0];
-      expect(err).to.be.instanceOf(Error);
-    });
+        // Assert
+        expect(renderStub.called).to.be.false;
+        expect(next.calledOnce).to.be.true; // Should delegate to error handler
+        const err = next.firstCall.args[0];
+        expect(err).to.be.instanceOf(Error);
+        expect(String(err.message)).to.match(/Missing providerId in clientData/i);
+      });
 
-    // Arrange
-    it('should call next with error when provider choices API fails', async () => {
-      req.clientData = {
-        fullName: 'John Doe',
-        caseReference: 'TEST123',
-        dateOfBirth: '1990-01-01',
-        providerId: '99'
-      };
+      // Arrange
+      it('should call next with error when provider choices API fails', async () => {
+        req.clientData = {
+          fullName: 'John Doe',
+          caseReference: 'TEST123',
+          dateOfBirth: '1990-01-01',
+          providerId: '99'
+        };
 
-      // Simulate API error response (either status: 'error' OR data: null)
-      getProviderChoicesStub
-        .withArgs(req.axiosMiddleware, '99')
-        .resolves({ status: 'error', data: null });
+        // Simulate API error response (either status: 'error' OR data: null)
+        getProviderChoicesStub
+          .withArgs(req.axiosMiddleware, '99')
+          .resolves({ status: 'error', data: null });
 
-      // Act
-      await getSplitThisCaseForm(req as RequestWithMiddleware, res as Response, next);
+        // Act
+        await getSplitThisCaseForm(req as RequestWithMiddleware, res as Response, next);
 
-      // Assert
-      expect(renderStub.called).to.be.false;
-      expect(next.calledOnce).to.be.true; // Should delegate to error handler
-      const err = next.firstCall.args[0];
-      expect(err).to.be.instanceOf(Error);
+        // Assert
+        expect(renderStub.called).to.be.false;
+        expect(next.calledOnce).to.be.true; // Should delegate to error handler
+        const err = next.firstCall.args[0];
+        expect(err).to.be.instanceOf(Error);
+        expect(String(err.message)).to.match(/Failed to fetch provider name/i);
+      });
     });
   });
 

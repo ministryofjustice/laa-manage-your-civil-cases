@@ -4,7 +4,7 @@
  */
 
 import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
-import type { ProviderSplitChoicesApiResponse, GetAllCategoriesApiResponse } from '#types/api-types.js';
+import type { ProviderSplitChoicesApiResponse, GetAllCategoriesApiResponse, SplitCaseSubmissionApiResponse, SplitCaseSubmissionRequest } from '#types/api-types.js';
 import { devLog, extractAndLogError } from '#src/scripts/helpers/index.js';
 import { configureAxiosInstance } from '../base/BaseApiService.js';
 import { API_PREFIX, JSON_INDENT } from '../base/constants.js';

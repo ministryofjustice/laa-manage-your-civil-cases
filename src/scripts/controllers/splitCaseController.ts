@@ -62,7 +62,7 @@ export async function getSplitThisCaseForm(req: Request, res: Response, next: Ne
 
     const provider = await fetchProviderNameAndDetail(req, caseReference);
 
-    res.render('case_details/split-this-case.njk', {
+    res.render('case_details/split_case/split-this-case.njk', {
       caseReference,
       provider,
       client: req.clientData,
@@ -114,7 +114,7 @@ export async function submitSplitThisCaseForm(req: Request, res: Response, next:
     // Fetch provider choices for validation error rendering too
     const provider = await fetchProviderNameAndDetail(req, caseReference);
 
-    return res.status(BAD_REQUEST).render('case_details/split-this-case.njk', {
+    return res.status(BAD_REQUEST).render('case_details/split_case/split-this-case.njk', {
       caseReference,
       client: req.clientData,
       provider,
@@ -133,7 +133,6 @@ export async function submitSplitThisCaseForm(req: Request, res: Response, next:
 
   return res.redirect(`/cases/${caseReference}/about-new-case`);
 }
-
 
 /**
  * Render the "about new case" form
@@ -190,7 +189,7 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
       ];
     }
 
-    res.render('case_details/split_case/about-new-split-case.njk', {
+    res.render('case_details/split_case/about-new-case.njk', {
       caseReference,
       provider,
       categoryItems,
@@ -222,6 +221,7 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
   const category = safeBodyString(req.body, 'category');
   const notes = safeBodyString(req.body, 'notes');
 
+   console.log("category of law selected: " + category);
   // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -287,7 +287,7 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
       ];
     }
 
-    return res.status(BAD_REQUEST).render('case_details/split_case/about-new-split-case.njk', {
+    return res.status(BAD_REQUEST).render('case_details/split_case/about-new-case.njk', {
       caseReference,
       provider,
       categoryItems,
