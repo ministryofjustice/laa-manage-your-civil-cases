@@ -155,4 +155,13 @@ router.get('/:caseReference/check-split-case-answers', fetchClientDetails, async
 router.post('/:caseReference/check-split-case-answers', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   await submitCheckSplitCaseAnswersForm(req, res, next);
 });
+
+/* GET route to set from change flag to true */
+router.get('/:caseReference/change', (req, res) => {
+  req.session.splitCaseCache = req.session.splitCaseCache || {};
+  req.session.splitCaseCache.fromChange = true;
+
+  res.redirect(`/cases/${req.params.caseReference}/split-this-case`);
+});
+
 export default router;

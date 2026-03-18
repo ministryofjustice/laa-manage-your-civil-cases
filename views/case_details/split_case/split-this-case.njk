@@ -64,7 +64,13 @@
           {{ govukButton({
             text: t('common.continue')
           }) }}
-          <a class="govuk-link" href="/cases/{{ caseReference }}/client-details">{{ t('common.cancel') }}</a>
+
+          {% if splitCaseCache and splitCaseCache.fromChange %}
+            <a class="govuk-link" href="/cases/{{ caseReference }}/check-split-case-answers">{{ t('common.cancel') }}</a>
+          {% else %}
+            <a class="govuk-link" href="/cases/{{ caseReference }}/client-details">{{ t('common.cancel') }}</a>
+          {% endif %}
+
         </div>
 
       </form>

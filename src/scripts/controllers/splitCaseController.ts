@@ -4,7 +4,6 @@ import { devLog, createProcessedError, safeString, validCaseReference, formatVal
 import { validationResult } from 'express-validator';
 import type { ProviderDetail, ProviderSplitChoicesApiResponse } from '#types/api-types.js';
 import config from '#config.js';
-import { validateAboutNewCase } from '#src/middlewares/aboutNewCaseSchema.js';
 
 const { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH, CHARACTER_THRESHOLD }: { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH: number; CHARACTER_THRESHOLD: number } = config;
 const BAD_REQUEST = 400;
@@ -66,6 +65,7 @@ export async function getSplitThisCaseForm(req: Request, res: Response, next: Ne
       caseReference,
       provider,
       client: req.clientData,
+      splitCaseCache: req.session.splitCaseCache || {},
       errorState: {
         hasErrors: false,
         errors: [],
@@ -194,6 +194,7 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
       provider,
       categoryItems,
       client: req.clientData,
+      splitCaseCache: req.session.splitCaseCache || {},
       errorState: {
         hasErrors: false,
         errors: [],
@@ -221,7 +222,7 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
   const category = safeBodyString(req.body, 'category');
   const notes = safeBodyString(req.body, 'notes');
 
-   console.log("category of law selected: " + category);
+  console.log("category of law selected: " + category);
   // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {

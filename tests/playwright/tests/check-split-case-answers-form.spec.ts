@@ -1,6 +1,7 @@
 import { test, expect } from '../fixtures/index.js';
 import { setupAuth, assertCaseDetailsHeaderPresent, getClientDetailsUrlByStatus, logout } from '../utils/index.js';
 import { CheckSplitCaseAnswersPage } from '../pages/CheckSplitCaseAnswersFormPage.js';
+import { SplitThisCaseFormPage } from '../pages/SplitCaseFormPage.js';
 
 const clientDetailsUrl = getClientDetailsUrlByStatus('default');
 const caseReference = clientDetailsUrl.split('/')[2]; // Extract case reference from URL
@@ -54,7 +55,7 @@ test('change link should navigate back to the about new case form', async ({ pag
   await checkSplitCaseAnswersPage.changeLink.click();
 
   // Expect
-  await expect(page).toHaveURL(`/cases/${caseReference}/about-new-split-case`);
+  await expect(page).toHaveURL(`/cases/${caseReference}/split-this-case`);
 });
 
 test('cancel link should navigate back to client details', async ({ page }) => {
@@ -68,6 +69,30 @@ test('cancel link should navigate back to client details', async ({ page }) => {
 
   // Expect
   await expect(page).toHaveURL(`/cases/${caseReference}/client-details`);
+
+});
+
+test('cancel link after clicking change link should navigate back to the check your answers form', async ({ page }) => {
+  // Navigate
+  const checkSplitCaseAnswersPage = CheckSplitCaseAnswersPage.forCase(page, caseReference);
+  await checkSplitCaseAnswersPage.navigate();
+
+  // Assert
+  await expect(checkSplitCaseAnswersPage.changeLink).toBeVisible();
+  await checkSplitCaseAnswersPage.changeLink.click();
+
+ // We should now be on the split-this-case page
+  const splitThisCaseFormPage = SplitThisCaseFormPage.forCase(page, caseReference);
+  await expect(page).toHaveURL(splitThisCaseFormPage.url);
+
+  // Assert: Cancel link should navigate back to check-your-answers
+  await expect(splitThisCaseFormPage.cancelLink).toBeVisible();
+  await splitThisCaseFormPage.cancelLink.click();
+
+  // Final expected page
+  await expect(page).toHaveURL(checkSplitCaseAnswersPage.url);
+
+
 });
 
 test('confirm split button should submit the form', async ({ page }) => {

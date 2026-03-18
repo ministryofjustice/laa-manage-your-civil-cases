@@ -9,7 +9,7 @@
 {% from "components/alertBannerComponent.njk" import alertBannerComponent %}
 
 {% block pageTitle %}
-    {% if errorState.hasErrors %}{{ t('common.error') }}: {% endif %}{{ t('pages.caseDetails.aboutNewCase.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
+  {% if errorState.hasErrors %}{{ t('common.error') }}: {% endif %}{{ t('pages.caseDetails.aboutNewCase.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
 {% endblock %}
 
 {% block backLink %}
@@ -39,18 +39,20 @@
 
         <h2 class="govuk-heading-m">{{ t('pages.caseDetails.aboutNewCase.h2') }}</h2>
 
-        <p class="govuk-body">{{ t('pages.caseDetails.aboutNewCase.originalCaseInfo') }}  {{client.category}}</p>
+        <p class="govuk-body">{{ t('pages.caseDetails.aboutNewCase.originalCaseInfo') }}
+          {{client.category}}</p>
 
         <h3 class="govuk-heading-s">{{ t('pages.caseDetails.aboutNewCase.h3') }}</h3>
 
         {% if (categoryItems | length) == 2 %}
 
-        <p class="govuk-body">{{ t('pages.caseDetails.aboutNewCase.newCaseInfo') }} {{ categoryItems[1].text }}</p>
-        <input type="hidden" name="category" value="{{ categoryItems[1].value }}"/>
-        
+          <p class="govuk-body">{{ t('pages.caseDetails.aboutNewCase.newCaseInfo') }}
+            {{ categoryItems[1].text }}</p>
+          <input type="hidden" name="category" value="{{ categoryItems[1].value }}"/>
+
         {% else %}
 
-             {{ govukSelect({
+          {{ govukSelect({
             id: "category",
             name: "category",
             items: categoryItems,
@@ -84,7 +86,11 @@
           {{ govukButton({
             text: t('common.continue')
           }) }}
-          <a class="govuk-link" href="/cases/{{ caseReference }}/client-details">{{ t('common.cancel') }}</a>
+          {% if splitCaseCache and splitCaseCache.fromChange %}
+            <a class="govuk-link" href="/cases/{{ caseReference }}/check-split-case-answers">{{ t('common.cancel') }}</a>
+          {% else %}
+            <a class="govuk-link" href="/cases/{{ caseReference }}/client-details">{{ t('common.cancel') }}</a>
+          {% endif %}
         </div>
 
       </form>
