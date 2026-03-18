@@ -55,6 +55,7 @@ describe('Split Case Controller', () => {
       body: {},
       session: {} as any,
       axiosMiddleware: {} as any,
+      query: {},
       csrfToken: () => 'test-csrf-token'
     } as Partial<RequestWithMiddleware>;
 
@@ -175,6 +176,8 @@ describe('Split Case Controller', () => {
         axiosMiddleware: {},
         session: {},
         csrfToken: () => 'test-token',
+        query: {},
+        // Extend the Express session interface to support dynamic namespaces
         clientData: {
           fullName: 'John Doe',
           caseReference: 'TEST123',
@@ -341,6 +344,7 @@ describe('Split Case Controller', () => {
         params: { caseReference: 'TEST123' },
         axiosMiddleware: {},
         session: {},
+        query: {},
         csrfToken: () => 'test-token',
         clientData: {
           fullName: 'John Doe',
@@ -631,6 +635,7 @@ describe('Split Case Controller', () => {
       req = {
         params: { caseReference: 'TEST123' },
         axiosMiddleware: {},
+        query: {},
         session: {
           splitCaseCache: {
             category: 'housing',

@@ -23,6 +23,7 @@ declare module 'express-session' {
       category?: string;
       notes?: string;
       cachedAt?: string;
+      fromChange?: boolean;
     };
   }
 }
