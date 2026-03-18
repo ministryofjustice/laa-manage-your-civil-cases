@@ -85,7 +85,7 @@ test('shows operator category list', async ({ page }) => {
   await page.click('button[type="submit"]');
 
   // Assert we are on the about new case form
-  await expect(page).toHaveURL(`/cases/${caseReference}/about-new-split-case`);
+  await expect(page).toHaveURL(`/cases/${caseReference}/about-new-case`);
 
   // Expect operator categories (full list)
   await expect(aboutNewCasePage.categorySelect).toContainText('I don\'t know');
@@ -96,7 +96,7 @@ test('shows operator category list', async ({ page }) => {
 
 });
 
-test('selects a category and submits the about-new-split-case form', async ({ page }) => {
+test('selects a category and submits the about-new-case form', async ({ page }) => {
   const aboutNewCasePage = AboutNewSplitCaseFormPage.forCase(page, caseReference);
 
   await aboutNewCasePage.navigate();
@@ -111,7 +111,7 @@ test('selects a category and submits the about-new-split-case form', async ({ pa
   await page.click('button.govuk-button');
 
   // Assert POST redirect happened
-  await expect(page).toHaveURL(`/cases/${caseReference}/about-new-case`);
+  await expect(page).toHaveURL(`/cases/${caseReference}/check-split-case-answers`);
 });
 
 test('continue button should hit post about new case form end point', async ({ page, i18nSetup }) => {
@@ -124,5 +124,5 @@ test('continue button should hit post about new case form end point', async ({ p
   await assertCaseDetailsHeaderPresent(aboutNewCasePage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025" });
 
   // Assert we are redirected to the about a new case page (or appropriate next page)
-  await expect(page).toHaveURL(`/cases/${caseReference}/about-new-split-case`);
+  await expect(page).toHaveURL(`/cases/${caseReference}/about-new-case`);
 });

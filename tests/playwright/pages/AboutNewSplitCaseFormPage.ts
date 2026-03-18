@@ -14,7 +14,7 @@ export class AboutNewSplitCaseFormPage extends BaseEditFormPage {
    * @param {string} caseReference - The case reference number
    */
   constructor(page: Page, caseReference: string) {
-    const aboutNewCaseFormUrl = `/cases/${caseReference}/about-new-split-case`;
+    const aboutNewCaseFormUrl = `/cases/${caseReference}/about-new-case`;
     const clientDetailsUrl = `/cases/${caseReference}/client-details`;
     super(page, aboutNewCaseFormUrl, clientDetailsUrl);
 
@@ -26,7 +26,7 @@ export class AboutNewSplitCaseFormPage extends BaseEditFormPage {
    * @returns {string} The about new case URL
    */
   get url(): string {
-    return `/cases/${this.caseReference}/about-new-split-case`;
+    return `/cases/${this.caseReference}/about-new-case`;
   }
 
   /**

@@ -73,7 +73,7 @@ test('cancel link should navigate back to client details', async ({ page }) => {
 test('confirm split button should submit the form', async ({ page }) => {
   // Navigate by starting from the about new split case page (can't submit without actual values)
   const checkSplitCaseAnswersPage = CheckSplitCaseAnswersPage.forCase(page, caseReference);
-  await page.goto(`/cases/${caseReference}/about-new-split-case`);
+  await page.goto(`/cases/${caseReference}/about-new-case`);
 
   // Assert by filling out the form
   await page.selectOption('#category', { label: 'Debt, money problems and bankruptcy' });
