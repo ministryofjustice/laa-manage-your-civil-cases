@@ -53,7 +53,15 @@ export async function startSilasLogin(req: Request, res: Response): Promise<void
 
   try {
     const loginUrl = await getSilasLoginUrl(state);
-    res.redirect(loginUrl);
+    req.session.save((err) => {
+      if (err !== null && err !== undefined) {
+        devError(`Session save failed: ${err instanceof Error ? err.message : String(err)}`);
+        renderLoginError(res, 'Unable to start sign-in right now. Please try again.');
+        return;
+      }
+
+      res.redirect(loginUrl);
+    });
   } catch (error) {
     devError(`Failed to create SILAS login URL: ${error instanceof Error ? error.message : String(error)}`);
     renderLoginError(res, 'Unable to start sign-in right now. Please try again.');

@@ -26,6 +26,7 @@ router.get('/', (req: Request, res: Response) => {
 	void startSilasLogin(req, res);
 });
 
+
 /* POST test login handler (active in NODE_ENV=test only) */
 router.post('/', (req: Request, res: Response) => {
 	if (isTestEnvironment) {
