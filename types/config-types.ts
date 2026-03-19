@@ -26,6 +26,7 @@ export interface SessionConfig {
   name: string;
   resave: boolean;
   saveUninitialized: boolean;
+  rolling: boolean;
   encryptionKey: string;
   cookie: {
     secure: boolean;
@@ -57,7 +58,6 @@ export interface SilasConfig {
   redirectUri: string;
   postLogoutRedirectUri: string;
   scopes: string[];
-  oboScopes: string[];
   expectedAudience: string;
 }
 

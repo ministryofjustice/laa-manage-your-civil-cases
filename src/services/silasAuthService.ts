@@ -6,6 +6,7 @@ const LOGIN_RESPONSE_MODE = 'query';
 /**
  * Returns a lazily initialized MSAL confidential client instance.
  *
+ * @param clientId
  * @returns {ConfidentialClientApplication} Configured MSAL client.
  */
 function getMsalClient(clientId: string): ConfidentialClientApplication {
@@ -19,10 +20,16 @@ function getMsalClient(clientId: string): ConfidentialClientApplication {
 }
 
 
+/**
+ *
+ */
 function getMsalAppClient(): ConfidentialClientApplication {
   return getMsalClient(config.silas.appId);
 }
 
+/**
+ *
+ */
 function getMsalWebClient(): ConfidentialClientApplication {
   return getMsalClient(config.silas.clientId);
 }
@@ -53,17 +60,6 @@ interface AccessTokenClaims {
 const OIDC_SCOPES = new Set(['openid', 'profile', 'offline_access']);
 const PROVIDER_IDENTITY_CHECK_PATH = `${process.env.API_PREFIX ?? '/cla_provider/api/v1'}/case?only=new&page=1&page_size=1`;
 
-/**
- * Returns the configured downstream API scopes for OBO token exchange.
- *
- * @returns {string[]} OBO scopes from configuration.
- */
-function configuredOboScopes(): string[] {
-  // `oboScopes` is for downstream OBO exchange (token used to call CLA backend).
-  // This is intentionally separate from `scopes`, which is used for initial login token acquisition.
-  // Required by configuration: no fallback to login scopes.
-  return config.silas.oboScopes;
-}
 
 /**
  * Raised when SILAS authentication succeeds but the identity is not authorized
@@ -157,37 +153,6 @@ function validateAccessTokenClaims(claims: AccessTokenClaims): void {
 }
 
 /**
- * Validates core claims in OBO access token for downstream API calls.
- *
- * @param {AccessTokenClaims} claims Claims extracted from OBO token.
- * @returns {void}
- */
-function validateOboAccessTokenClaims(claims: AccessTokenClaims): void {
-  const expectedIss = expectedIssuer();
-  if (claims.iss !== expectedIss) {
-    throw new Error(`Unexpected OBO token issuer. Expected '${expectedIss}', got '${claims.iss ?? 'undefined'}'`);
-  }
-
-  if (claims.aud !== config.silas.expectedAudience) {
-    throw new Error(`Unexpected OBO token audience. Expected '${config.silas.expectedAudience}', got '${claims.aud ?? 'undefined'}'`);
-  }
-
-  const requiredScopes = configuredOboScopes().map(normalizeScope);
-  if (requiredScopes.length === 0) {
-    return;
-  }
-
-  const tokenScopes = typeof claims.scp === 'string'
-    ? claims.scp.split(' ').map((scope) => scope.trim()).filter(Boolean)
-    : [];
-
-  const hasRequiredScope = requiredScopes.some((scope) => tokenScopes.includes(scope));
-  if (!hasRequiredScope) {
-    throw new Error(`OBO token missing expected delegated scope. Expected one of: ${requiredScopes.join(', ')}`);
-  }
-}
-
-/**
  * Generates SILAS/Entra authorization URL for interactive login.
  *
  * @param {string} state Request state value for callback validation.
@@ -242,33 +207,6 @@ export async function exchangeSilasCodeForToken(code: string): Promise<SilasToke
     email,
     name: tokenResult.account?.name,
     oid: typeof claims.oid === 'string' ? claims.oid : tokenResult.account?.localAccountId,
-  };
-}
-
-/**
- * Exchanges a user access token for a downstream OBO token.
- *
- * @param {string} userAccessToken User access token from login flow.
- * @returns {Promise<SilasOboTokenResult>} OBO access token data.
- */
-export async function exchangeSilasTokenOnBehalfOf(userAccessToken: string): Promise<SilasOboTokenResult> {
-  const oboScopes = configuredOboScopes();
-
-  const tokenResult = await getMsalWebClient().acquireTokenOnBehalfOf({
-    oboAssertion: userAccessToken,
-    scopes: oboScopes,
-  });
-
-  if (tokenResult?.accessToken === undefined || tokenResult.accessToken === '') {
-    throw new Error('No OBO access token returned from SILAS/Entra');
-  }
-
-  const claims = decodeJwtPayload(tokenResult.accessToken);
-  validateOboAccessTokenClaims(claims);
-
-  return {
-    accessToken: tokenResult.accessToken,
-    expiresAt: tokenResult.expiresOn?.getTime() ?? Date.now() + (30 * 60 * 1000),
   };
 }
 

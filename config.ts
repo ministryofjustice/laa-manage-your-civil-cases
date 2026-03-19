@@ -43,6 +43,7 @@ const config: Config = {
     encryptionKey: process.env.SESSION_ENCRYPTION_KEY,
     resave: false,
     saveUninitialized: false,
+    rolling: true,                                      // Refresh session expiry on each request
     cookie: {
       secure: process.env.NODE_ENV === 'production',  // HTTPS only in production
       httpOnly: true,                                  // Prevent XSS attacks
@@ -84,8 +85,6 @@ const config: Config = {
     postLogoutRedirectUri: process.env.ENTRA_POST_LOGOUT_REDIRECT_URI ?? '',
     // Scopes used for the initial auth code exchange at user sign-in.
     scopes: (process.env.SILAS_SCOPES ?? '').split(' ').filter(Boolean),
-    // Scopes used for downstream On-Behalf-Of (OBO) token exchange.
-    oboScopes: (process.env.SILAS_OBO_SCOPES ?? '').split(' ').filter(Boolean),
     expectedAudience: process.env.SILAS_EXPECTED_AUDIENCE ?? ''
   },
   // Pagination configuration
@@ -130,12 +129,10 @@ export function getMissingSilasConfigValues(): SilasRequiredField[] {
  */
 export function validateSilasConfig(): void {
   const missingFields = getMissingSilasConfigValues();
-  const oboScopes = config.silas.oboScopes;
 
-  if (missingFields.length > 0 || config.silas.scopes.length === 0 || oboScopes.length === 0) {
+  if (missingFields.length > 0 || config.silas.scopes.length === 0) {
     const missingScopes = config.silas.scopes.length === 0 ? 'scopes' : '';
-    const missingOboScopes = oboScopes.length === 0 ? 'oboScopes' : '';
-    const missing = [...missingFields, ...(missingScopes !== '' ? [missingScopes] : []), ...(missingOboScopes !== '' ? [missingOboScopes] : [])].join(', ');
+    const missing = [...missingFields, ...(missingScopes !== '' ? [missingScopes] : [])].join(', ');
     throw new Error(`SILAS configuration is missing required values: ${missing}`);
   }
 }

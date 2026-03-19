@@ -65,7 +65,6 @@ Use two modes locally so developer experience stays practical while runtime auth
    - `ENTRA_POST_LOGOUT_REDIRECT_URI`
    - `ENTRA_AUTHORITY` (or derive from tenant)
    - `SILAS_SCOPES` (space-separated)
-   - `SILAS_OBO_SCOPES` (space-separated)
    - `SILAS_EXPECTED_AUDIENCE` (if needed for validation checks)
 
 

@@ -3,12 +3,10 @@ import type { Request, Response, NextFunction } from 'express';
 import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
 import type { InternalAxiosRequestConfig } from 'axios';
 import { devLog, devError } from '#src/scripts/helpers/index.js';
-import { exchangeSilasTokenOnBehalfOf } from '#src/services/silasAuthService.js';
 import '#src/scripts/helpers/sessionHelpers.js';
 
 const DEFAULT_TIMEOUT = 5000;
 const HTTP_UNAUTHORIZED = 401;
-const OBO_TOKEN_REFRESH_BUFFER_MS = 60_000;
 
 // Extend Express Request to include our axiosMiddleware
 declare global {
@@ -67,30 +65,9 @@ export const axiosMiddleware = (req: Request, res: Response, next: NextFunction)
     devLog('No SILAS access token found in session - request will proceed without Authorization header');
   } else {
     axiosWrapper.axiosInstance.interceptors.request.use(
-      async (config: InternalAxiosRequestConfig) => {
-        const now = Date.now();
-        const hasValidCachedObo =
-          silasAuth?.oboAccessToken !== undefined &&
-          silasAuth.oboAccessToken.trim() !== '' &&
-          silasAuth.oboExpiresAt !== undefined &&
-          silasAuth.oboExpiresAt > now + OBO_TOKEN_REFRESH_BUFFER_MS;
-
-        let downstreamToken = silasAuth?.oboAccessToken;
-
-        if (!hasValidCachedObo) {
-          const oboToken = await exchangeSilasTokenOnBehalfOf(userAccessToken);
-
-          if (req.session.silasAuth !== undefined) {
-            req.session.silasAuth.oboAccessToken = oboToken.accessToken;
-            req.session.silasAuth.oboExpiresAt = oboToken.expiresAt;
-          }
-
-          downstreamToken = oboToken.accessToken;
-          devLog('Refreshed OBO token for backend API request');
-        }
-
-        config.headers.Authorization = `Bearer ${downstreamToken ?? ''}`;
-        devLog('Added OBO bearer token to API request');
+      (config: InternalAxiosRequestConfig) => {
+        config.headers.Authorization = `Bearer ${silasAuth?.accessToken}`;
+        devLog('Added SILAS bearer token to API request');
         return config;
       },
       async (error: unknown) => await Promise.reject(toError(error))
@@ -102,12 +79,7 @@ export const axiosMiddleware = (req: Request, res: Response, next: NextFunction)
     (response) => response,
     async (error: unknown) => {
       if (isAxiosErrorWithResponse(error) && error.response.status === HTTP_UNAUTHORIZED) {
-        devError('API returned 401 Unauthorized - clearing SILAS session');
-        req.session.destroy((destroyErr) => {
-          if (destroyErr !== null && destroyErr !== undefined) {
-            devError(`Error destroying session: ${destroyErr instanceof Error ? destroyErr.message : String(destroyErr)}`);
-          }
-        });
+        devError('API returned 401 Unauthorized');
       }
       return await Promise.reject(toError(error));
     }
