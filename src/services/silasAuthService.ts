@@ -6,7 +6,7 @@ const LOGIN_RESPONSE_MODE = 'query';
 /**
  * Returns a lazily initialized MSAL confidential client instance.
  *
- * @param clientId
+ * @param {string} clientId - The client identifier for authentication.
  * @returns {ConfidentialClientApplication} Configured MSAL client.
  */
 function getMsalClient(clientId: string): ConfidentialClientApplication {
@@ -21,14 +21,16 @@ function getMsalClient(clientId: string): ConfidentialClientApplication {
 
 
 /**
- *
+ * Returns a lazily initialized MSAL confidential client instance for the app.
+ * @returns {ConfidentialClientApplication} Configured MSAL client for app.
  */
 function getMsalAppClient(): ConfidentialClientApplication {
   return getMsalClient(config.silas.appId);
 }
 
 /**
- *
+ * Returns a lazily initialized MSAL confidential client instance for the web.
+ * @returns {ConfidentialClientApplication} Configured MSAL client for web.
  */
 function getMsalWebClient(): ConfidentialClientApplication {
   return getMsalClient(config.silas.clientId);
