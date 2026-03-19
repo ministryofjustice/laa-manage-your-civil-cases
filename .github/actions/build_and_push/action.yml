@@ -38,6 +38,7 @@ runs:
       id: build_and_push
       run: |
         docker build \
+          --driver=docker-container \
           --push \
           --cache-from=type=local,src=/tmp/.buildx-cache \
           --cache-to=type=local,dest=/tmp/.buildx-cache \
