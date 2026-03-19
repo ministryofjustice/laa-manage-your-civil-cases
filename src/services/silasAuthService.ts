@@ -3,25 +3,28 @@ import config from '#config.js';
 
 const LOGIN_RESPONSE_MODE = 'query';
 
-let msalClient: ConfidentialClientApplication | undefined;
-
 /**
  * Returns a lazily initialized MSAL confidential client instance.
  *
  * @returns {ConfidentialClientApplication} Configured MSAL client.
  */
-function getMsalClient(): ConfidentialClientApplication {
-  if (msalClient === undefined) {
-    msalClient = new ConfidentialClientApplication({
+function getMsalClient(clientId: string): ConfidentialClientApplication {
+  return new ConfidentialClientApplication({
       auth: {
-        clientId: config.silas.clientId,
+        clientId: clientId,
         authority: config.silas.authority,
         clientSecret: config.silas.clientSecret,
       }
     });
-  }
+}
 
-  return msalClient;
+
+function getMsalAppClient(): ConfidentialClientApplication {
+  return getMsalClient(config.silas.appId);
+}
+
+function getMsalWebClient(): ConfidentialClientApplication {
+  return getMsalClient(config.silas.clientId);
 }
 
 export interface SilasTokenExchangeResult {
@@ -191,7 +194,7 @@ function validateOboAccessTokenClaims(claims: AccessTokenClaims): void {
  * @returns {Promise<string>} Login URL.
  */
 export async function getSilasLoginUrl(state: string): Promise<string> {
-  return await getMsalClient().getAuthCodeUrl({
+  return await getMsalAppClient().getAuthCodeUrl({
     scopes: config.silas.scopes,
     redirectUri: config.silas.redirectUri,
     state,
@@ -206,11 +209,16 @@ export async function getSilasLoginUrl(state: string): Promise<string> {
  * @returns {Promise<SilasTokenExchangeResult>} Token exchange result.
  */
 export async function exchangeSilasCodeForToken(code: string): Promise<SilasTokenExchangeResult> {
-  const tokenResult = await getMsalClient().acquireTokenByCode({
-    code,
-    scopes: config.silas.scopes,
-    redirectUri: config.silas.redirectUri,
-  });
+  const tokenResult = await getMsalAppClient().acquireTokenByCode(
+    {
+      code,
+      scopes: config.silas.scopes,
+      redirectUri: config.silas.redirectUri,
+    },
+    {
+      code  
+    }
+);
 
   if (tokenResult?.accessToken === undefined || tokenResult.accessToken === '') {
     throw new Error('No access token returned from SILAS/Entra');
@@ -246,7 +254,7 @@ export async function exchangeSilasCodeForToken(code: string): Promise<SilasToke
 export async function exchangeSilasTokenOnBehalfOf(userAccessToken: string): Promise<SilasOboTokenResult> {
   const oboScopes = configuredOboScopes();
 
-  const tokenResult = await getMsalClient().acquireTokenOnBehalfOf({
+  const tokenResult = await getMsalWebClient().acquireTokenOnBehalfOf({
     oboAssertion: userAccessToken,
     scopes: oboScopes,
   });

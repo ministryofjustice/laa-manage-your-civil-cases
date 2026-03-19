@@ -51,6 +51,7 @@ export interface ApiConfig {
 export interface SilasConfig {
   authority: string;
   tenantId: string;
+  appId: string;
   clientId: string;
   clientSecret: string;
   redirectUri: string;

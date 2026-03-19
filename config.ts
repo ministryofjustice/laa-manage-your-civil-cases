@@ -77,6 +77,7 @@ const config: Config = {
   silas: {
     authority: process.env.ENTRA_AUTHORITY ?? `https://login.microsoftonline.com/${process.env.ENTRA_TENANT_ID ?? ''}`,
     tenantId: process.env.ENTRA_TENANT_ID ?? '',
+    appId: process.env.ENTRA_APP_ID ?? '',
     clientId: process.env.ENTRA_CLIENT_ID ?? '',
     clientSecret: process.env.ENTRA_CLIENT_SECRET ?? '',
     redirectUri: process.env.ENTRA_REDIRECT_URI ?? '',
