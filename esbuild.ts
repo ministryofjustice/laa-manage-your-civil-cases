@@ -131,6 +131,9 @@ const buildAppJs = async (watch = false): Promise<esbuild.BuildContext | undefin
 		platform: 'node',
 		target: 'esnext',
 		format: 'esm',
+		banner: {
+			js: 'import { createRequire as __createRequire } from "node:module"; const require = __createRequire(import.meta.url);'
+		},
 		sourcemap: process.env.NODE_ENV !== 'production',
 		minify: process.env.NODE_ENV === 'production',
 		loader: {

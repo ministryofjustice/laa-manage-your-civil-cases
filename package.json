@@ -18,20 +18,21 @@
     "prepare": "husky",
     "tsc": "tsc --noEmit",
     "build:ts": "tsc",
-    "test": "yarn test:unit && yarn test:e2e",
-    "test:unit": "./node_modules/.bin/mocha",
-    "test:server": "node public/src/test-server.js",
-    "test:e2e": "yarn playwright test --config=tests/playwright/playwright.config.ts",
-    "test:e2e:headed": "yarn playwright test --config=tests/playwright/playwright.config.ts --headed",
-    "test:e2e:debug": "yarn playwright test --config=tests/playwright/playwright.config.ts --debug",
-    "test:accessibility": "yarn playwright test --config=tests/playwright/playwright.config.ts --grep @accessibility",
-    "test:specific": "yarn playwright test --config=tests/playwright/playwright.config.ts --grep",
-    "coverage": "c8 yarn test:unit --check-coverage"
+    "test": "NODE_ENV=test yarn test:unit && NODE_ENV=test yarn test:e2e",
+    "test:unit": "NODE_ENV=test ./node_modules/.bin/mocha",
+    "test:server": "NODE_ENV=test node public/src/test-server.js",
+    "test:e2e": "NODE_ENV=test yarn playwright test --config=tests/playwright/playwright.config.ts",
+    "test:e2e:headed": "NODE_ENV=test yarn playwright test --config=tests/playwright/playwright.config.ts --headed",
+    "test:e2e:debug": "NODE_ENV=test yarn playwright test --config=tests/playwright/playwright.config.ts --debug",
+    "test:accessibility": "NODE_ENV=test yarn playwright test --config=tests/playwright/playwright.config.ts --grep @accessibility",
+    "test:specific": "NODE_ENV=test yarn playwright test --config=tests/playwright/playwright.config.ts --grep",
+    "coverage": "NODE_ENV=test c8 yarn test:unit --check-coverage"
   },
   "engines": {
     "node": "25.6.1"
   },
   "dependencies": {
+    "@azure/msal-node": "^5.0.6",
     "@ministryofjustice/frontend": "^9.0.0",
     "@x-govuk/govuk-prototype-components": "^5.0.2",
     "axios": "1.13.6",

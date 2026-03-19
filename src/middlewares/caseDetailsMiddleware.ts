@@ -25,6 +25,7 @@ declare global {
  * @returns {Promise<void>} Calls next() or renders error page
  */
 export async function fetchClientDetails(req: Request, res: Response, next: NextFunction): Promise<void> {
+  console.log('fetchClientDetails middleware called'); // Debug log to confirm middleware is being hit
   const caseReference = safeString(req.params.caseReference);
   
   if (!validCaseReference(caseReference, res)) {

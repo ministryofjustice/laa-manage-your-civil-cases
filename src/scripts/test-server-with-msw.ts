@@ -51,9 +51,9 @@ void (async () => {
     process.env.API_URL = API_URL;
     process.env.API_PREFIX = API_PREFIX;
 
-    // Import and start Express app
-    // Path is relative to this script location (src/ scripts/ directory)
-    const appModulePath = '../../public/app.js';
+    // Import and start Express app.
+    // Use transpiled source entrypoint instead of bundled app artifact.
+    const appModulePath = '../../public/src/app.js';
 
     import(appModulePath)
       .then(() => {
@@ -61,7 +61,6 @@ void (async () => {
       })
       .catch((error: unknown) => {
         console.error('💥 Failed to start Express application:', error);
-        console.log('📝 Make sure to run "yarn build" first');
         process.exit(ERROR_EXIT_CODE);
       });
 

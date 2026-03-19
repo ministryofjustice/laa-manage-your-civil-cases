@@ -23,6 +23,14 @@ router.use('/login', loginRouter);
 // Logout route at root level (no auth required)
 router.get('/logout', loginRouter);
 
+// New auth route - deprecates /logout and /login
+router.use('/auth', loginRouter);
+
+router.get('/test', (req: Request, res: Response) => {
+	console.log('Test login route hit');
+  return res.status(SUCCESSFUL_REQUEST).send('Test route is working');
+});
+
 // Mount the cases routes (auth required)
 router.use('/cases', requireAuth, yourCasesRouter);
 
