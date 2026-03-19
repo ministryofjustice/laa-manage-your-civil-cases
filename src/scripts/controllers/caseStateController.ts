@@ -21,7 +21,6 @@ function safeRedirectPath(referer: string | undefined, fallback: string): string
 
   // Allow internal relative paths
   if (referer.startsWith('/')) return referer;
-
   try {
     const { pathname, search, hash } = new URL(referer);
 
@@ -37,7 +36,6 @@ function safeRedirectPath(referer: string | undefined, fallback: string): string
     return fallback;
   }
 }
-
 
 /**
  * Handle accepting a case (change status to advising)
