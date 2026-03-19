@@ -94,6 +94,7 @@ jobs:
           image_repo: ${{ vars.ECR_REPOSITORY }}
           dockerfile_path: Dockerfile
           image_tag: ${{ github.sha }}
+          builder: docker-builder
 
   mocha-unit-tests:
     name: Mocha Unit Tests

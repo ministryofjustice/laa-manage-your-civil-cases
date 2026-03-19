@@ -39,7 +39,7 @@ runs:
       run: |
         docker build \
           --push \
-          --builder docker-builder \
+          --builder ${{ inputs.builder }} \
           --cache-from=type=local,src=/tmp/.buildx-cache \
           --cache-to=type=local,dest=/tmp/.buildx-cache \
           -t ${{ inputs.image_registry }}/${{ inputs.image_repo }}:${{ inputs.image_tag }} \
