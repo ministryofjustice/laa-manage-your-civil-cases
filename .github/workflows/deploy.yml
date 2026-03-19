@@ -91,6 +91,7 @@ jobs:
           image_repo: ${{ vars.ECR_REPOSITORY }}
           dockerfile_path: Dockerfile
           image_tag: ${{ github.sha }}
+          driver: docker-container
 
   mocha-unit-tests:
     name: Mocha Unit Tests
