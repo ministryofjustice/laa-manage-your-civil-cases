@@ -87,8 +87,8 @@ export async function handleSilasCallback(req: Request, res: Response): Promise<
 
   try {
     const silasToken = await exchangeSilasCodeForToken(code);
-    const oboToken = await exchangeSilasTokenOnBehalfOf(silasToken.accessToken);
-    await verifySilasProviderIdentity(oboToken.accessToken);
+    // const oboToken = await exchangeSilasTokenOnBehalfOf(silasToken.accessToken);
+    // await verifySilasProviderIdentity(oboToken.accessToken);
 
     req.session.regenerate((regenErr) => {
       if (regenErr !== null && regenErr !== undefined) {
@@ -102,8 +102,8 @@ export async function handleSilasCallback(req: Request, res: Response): Promise<
         idToken: silasToken.idToken,
         expiresAt: silasToken.expiresAt,
         scopes: config.silas.scopes,
-        oboAccessToken: oboToken.accessToken,
-        oboExpiresAt: oboToken.expiresAt,
+        // oboAccessToken: oboToken.accessToken,
+        // oboExpiresAt: oboToken.expiresAt,
       };
 
       req.session.user = {
