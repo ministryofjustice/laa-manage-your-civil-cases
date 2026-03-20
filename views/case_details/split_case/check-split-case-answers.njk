@@ -58,7 +58,7 @@
                 text: t('pages.caseDetails.checkYourAnswers.assignedTo')
               },
               value: {
-                html: splitCaseCache.providerName | default('')
+                html: splitCaseCache.currentProvider
               }
             }
           ]
@@ -93,7 +93,7 @@
                 text: t('pages.caseDetails.checkYourAnswers.assignedTo')
               },
               value: {
-                html: (splitCaseCache.providerName if splitCaseCache.internal == "true" else t('pages.caseDetails.splitCase.operatorReassignment'))
+                html: splitCaseCache.providerName
               }
             },
             {

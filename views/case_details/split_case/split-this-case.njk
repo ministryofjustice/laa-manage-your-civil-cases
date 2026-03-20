@@ -51,11 +51,13 @@
           items: [
             {
               value: "true",
-              text: provider.name
+              text: provider.name,
+              checked: splitCaseCache.internal == "true"
             },
             {
               value: "false",
-              text: t('pages.caseDetails.splitCase.operatorReassignment')
+              text: t('pages.caseDetails.splitCase.operatorReassignment'),
+              checked: splitCaseCache.internal == "false"
             }
           ]
         }) }}
