@@ -25,8 +25,7 @@ declare module 'express-session' {
       cachedAt?: string;
       fromChange?: boolean;
       internalChange?: string;
-      categoryChange?: string;
-      notesChange?: string;
+      providerNameChange?: string;
     };
   }
 }

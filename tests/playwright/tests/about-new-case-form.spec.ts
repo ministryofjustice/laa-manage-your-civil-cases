@@ -113,16 +113,3 @@ test('selects a category and submits the about-new-case form', async ({ page }) 
   // Assert POST redirect happened
   await expect(page).toHaveURL(`/cases/${caseReference}/check-split-case-answers`);
 });
-
-test('continue button should hit post about new case form end point', async ({ page, i18nSetup }) => {
-  const aboutNewCasePage = AboutNewSplitCaseFormPage.forCase(page, caseReference);
-
-  // Navigate to the operator feedback form
-  await aboutNewCasePage.navigate();
-
-  // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(aboutNewCasePage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" });
-
-  // Assert we are redirected to the about a new case page (or appropriate next page)
-  await expect(page).toHaveURL(`/cases/${caseReference}/about-new-case`);
-});

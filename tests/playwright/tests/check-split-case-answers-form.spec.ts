@@ -2,6 +2,7 @@ import { test, expect } from '../fixtures/index.js';
 import { setupAuth, assertCaseDetailsHeaderPresent, getClientDetailsUrlByStatus, logout } from '../utils/index.js';
 import { CheckSplitCaseAnswersPage } from '../pages/CheckSplitCaseAnswersFormPage.js';
 import { SplitThisCaseFormPage } from '../pages/SplitCaseFormPage.js';
+import { AboutNewSplitCaseFormPage } from '../pages/AboutNewSplitCaseFormPage.js';
 
 const clientDetailsUrl = getClientDetailsUrlByStatus('default');
 const caseReference = clientDetailsUrl.split('/')[2]; // Extract case reference from URL
@@ -92,6 +93,92 @@ test('cancel link after clicking change link should navigate back to the check y
   // Final expected page
   await expect(page).toHaveURL(checkSplitCaseAnswersPage.url);
 
+});
+
+test('cancel link after clicking change link should navigate back to the check your answers form from about new case page', async ({ page }) => {
+  // Navigate
+  const checkSplitCaseAnswersPage = CheckSplitCaseAnswersPage.forCase(page, caseReference);
+  await checkSplitCaseAnswersPage.navigate();
+
+  // Assert
+  await expect(checkSplitCaseAnswersPage.changeLink).toBeVisible();
+  await checkSplitCaseAnswersPage.changeLink.click();
+
+ // We should now be on the split-this-case page
+  const splitThisCaseFormPage = SplitThisCaseFormPage.forCase(page, caseReference);
+  await expect(page).toHaveURL(splitThisCaseFormPage.url);
+
+ // Select the "Generic Provider Public Law" radio option
+  const radioInternalTrue = page.getByRole('radio', { name: 'Generic Provider Public Law' });
+  await radioInternalTrue.check();
+
+  // Click the continue button
+  const continueButton = page.getByRole('button', { name: 'Continue' });
+  await continueButton.click();
+
+  const aboutNewCasePage = AboutNewSplitCaseFormPage.forCase(page, caseReference);
+  await expect(page).toHaveURL(aboutNewCasePage.url);
+
+  await aboutNewCasePage.cancelLink.click();
+  // Final expected page
+  await expect(page).toHaveURL(checkSplitCaseAnswersPage.url);
+
+});
+
+test('if the same provider radio button is selected the about ', async ({ page }) => {
+   // Set up test so we have completed one pass through the flow. 
+    const initialSplitThisCaseFormPage = SplitThisCaseFormPage.forCase(page, caseReference);
+    await initialSplitThisCaseFormPage.navigate();
+  await expect(page).toHaveURL(initialSplitThisCaseFormPage.url);
+
+ // Select the "Generic Provider Public Law" radio option
+  const initialRadioInternalTrue = page.getByRole('radio', { name: 'Generic Provider Public Law' });
+  await initialRadioInternalTrue.check();
+
+  // Click the continue button
+  const initialContinueButton = page.getByRole('button', { name: 'Continue' });
+  await initialContinueButton.click();
+
+  const initialAboutNewCasePage = AboutNewSplitCaseFormPage.forCase(page, caseReference);
+  await expect(page).toHaveURL(initialAboutNewCasePage.url);
+
+  await page.selectOption('#category', { label: 'Debt, money problems and bankruptcy' });
+
+  // Fill the notes field
+  await page.fill('#notes', 'Splitting case because the issues differ');
+
+  // Click the submit button to the check your answers page
+  await page.click('button.govuk-button');
+  
+  // Navigate to check your answers
+  const checkSplitCaseAnswersPage = CheckSplitCaseAnswersPage.forCase(page, caseReference);
+
+  // Check the change link is available and click it.
+  await expect(checkSplitCaseAnswersPage.changeLink).toBeVisible();
+  await checkSplitCaseAnswersPage.changeLink.click();
+
+ // We should now be on the split-this-case page for the second time. 
+  const splitThisCaseFormPage = SplitThisCaseFormPage.forCase(page, caseReference);
+  await expect(page).toHaveURL(splitThisCaseFormPage.url);
+
+ // Select the "Generic Provider Public Law" radio option
+  
+await expect(page.getByRole('radio', { name: 'Generic Provider Public Law' }))
+  .toBeChecked();
+
+
+  // Click the continue button
+  const continueButton = page.getByRole('button', { name: 'Continue' });
+  await continueButton.click();
+
+  const aboutNewCasePage = AboutNewSplitCaseFormPage.forCase(page, caseReference);
+  await expect(page).toHaveURL(aboutNewCasePage.url);
+
+  const categorySelection = aboutNewCasePage.newCaseCategoryText;
+  await expect(aboutNewCasePage.categorySelect).toHaveValue("debt");
+  await aboutNewCasePage.cancelLink.click();
+  // Final expected page
+  await expect(page).toHaveURL(checkSplitCaseAnswersPage.url);
 
 });
 
