@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures/index.js';
 import { setupAuth, assertCaseDetailsHeaderPresent, getClientDetailsUrlByStatus, logout } from '../utils/index.js';
-import { AboutNewCaseFormPage } from '../pages/AboutNewCaseFormPage.js';
+import { AboutNewSplitCaseFormPage } from '../pages/AboutNewSplitCaseFormPage.js';
 
 const clientDetailsUrl = getClientDetailsUrlByStatus('default');
 const caseReference = clientDetailsUrl.split('/')[2]; // Extract case reference from URL
@@ -14,7 +14,7 @@ test.afterEach(async ({ page }) => {
 })
 
 test('viewing "about new case" form should display expected elements', async ({ page, pages, i18nSetup }) => {
-  const aboutNewCasePage = AboutNewCaseFormPage.forCase(page, caseReference);
+  const aboutNewCasePage = AboutNewSplitCaseFormPage.forCase(page, caseReference);
 
   // Navigate to the operator feedback form
   await aboutNewCasePage.navigate();
@@ -48,7 +48,7 @@ test('viewing "about new case" form should display expected elements', async ({ 
 });
 
 test('when there is only one category assigned to the provider and provider radio is selected this is displayed correctly', async ({ page, pages, i18nSetup }) => {
-  const aboutNewCasePage = AboutNewCaseFormPage.forCase(page, 'PC-1122-1349');
+  const aboutNewCasePage = AboutNewSplitCaseFormPage.forCase(page, 'PC-1122-1349');
 
   // Navigate to the operator feedback form
   await aboutNewCasePage.navigate();
@@ -73,7 +73,7 @@ test('when there is only one category assigned to the provider and provider radi
 });
 
 test('shows operator category list', async ({ page }) => {
-  const aboutNewCasePage = AboutNewCaseFormPage.forCase(page, caseReference);
+  const aboutNewCasePage = AboutNewSplitCaseFormPage.forCase(page, caseReference);
 
   // Go to the split-this-case form first
   await page.goto(`/cases/${caseReference}/split-this-case`);
@@ -97,7 +97,7 @@ test('shows operator category list', async ({ page }) => {
 });
 
 test('selects a category and submits the about-new-case form', async ({ page }) => {
-  const aboutNewCasePage = AboutNewCaseFormPage.forCase(page, caseReference);
+  const aboutNewCasePage = AboutNewSplitCaseFormPage.forCase(page, caseReference);
 
   await aboutNewCasePage.navigate();
 
@@ -111,18 +111,5 @@ test('selects a category and submits the about-new-case form', async ({ page }) 
   await page.click('button.govuk-button');
 
   // Assert POST redirect happened
-  await expect(page).toHaveURL(`/cases/${caseReference}/about-new-case`);
-});
-
-test('continue button should hit post about new case form end point', async ({ page, i18nSetup }) => {
-  const aboutNewCasePage = AboutNewCaseFormPage.forCase(page, caseReference);
-
-  // Navigate to the operator feedback form
-  await aboutNewCasePage.navigate();
-
-  // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(aboutNewCasePage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025" });
-
-  // Assert we are redirected to the about a new case page (or appropriate next page)
-  await expect(page).toHaveURL(`/cases/${caseReference}/about-new-case`);
+  await expect(page).toHaveURL(`/cases/${caseReference}/check-split-case-answers`);
 });

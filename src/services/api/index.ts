@@ -18,7 +18,7 @@ import {
   deleteClientSupportNeeds
 } from './resources/supportNeedsApiService.js';
 import { getFeedbackChoices, submitOperatorFeedback } from './resources/operatorFeedbackApiService.js';
-import { getProviderChoices, getAllCategories } from './resources/splitCaseApiService.js';
+import { getProviderChoices, getAllCategories, submitSplitCase } from './resources/splitCaseApiService.js';
 
 export * from './resources/casesApiService.js';
 export * from './resources/clientDetailsApiService.js';
@@ -47,5 +47,6 @@ export const apiService = {
   getFeedbackChoices,
   submitOperatorFeedback,
   getProviderChoices,
-  getAllCategories
+  getAllCategories,
+  submitSplitCase
 };
