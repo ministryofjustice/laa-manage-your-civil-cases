@@ -37,8 +37,9 @@ runs:
     - name: Docker Build & Push with Cache
       id: build_and_push
       run: |
-        docker buildx build \
+        docker build \
           --push \
+          --builder ${{ inputs.builder }} \
           --cache-from=type=local,src=/tmp/.buildx-cache \
           --cache-to=type=local,dest=/tmp/.buildx-cache \
           -t ${{ inputs.image_registry }}/${{ inputs.image_repo }}:${{ inputs.image_tag }} \
