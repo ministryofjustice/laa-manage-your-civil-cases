@@ -125,8 +125,6 @@ export async function submitSplitThisCaseForm(req: Request, res: Response, next:
 
   const internal = safeBodyString(req.body, 'internal');
 
-
-
 if (!req.session.splitCaseCache?.fromChange) {
     // normal journey — save immediately
     storeSessionData(req, 'splitCaseCache', {
@@ -136,14 +134,8 @@ if (!req.session.splitCaseCache?.fromChange) {
     });
 } else {
     // do NOT overwrite the original yet — store in a temp key
-    req.session.splitCaseCache.internal_temp = String(internal);
+    req.session.splitCaseCache.internalChange = String(internal);
 }
-
-  storeSessionData(req, 'splitCaseCache', {
-    caseReference,
-    internal: String(internal),
-    cachedAt: String(Date.now())
-  });
 
   return res.redirect(`/cases/${caseReference}/about-new-case`);
 }
@@ -157,6 +149,13 @@ if (!req.session.splitCaseCache?.fromChange) {
  */
 export async function getAboutNewCaseForm(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
+  let category = null;
+  let notes = null;
+  if (req.session.splitCaseCache?.internal === req.session.splitCaseCache?.internalChange) {
+    category = req.session.splitCaseCache?.category
+    notes = req.session.splitCaseCache?.notes
+  }
+
   let assignedToName;
   let currentProvider;
   if (!validCaseReference(caseReference, res)) {
@@ -182,12 +181,12 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
         categoryItems = [{
           value: '',
           text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
-          selected: true
+          selected: !category
         },
         ...allCategoriesResponse.data.map(choice => ({
           value: choice.code,
           text: choice.code === 'none' ? t('allCategoriesAdditions.none') : choice.name,
-          selected: false
+          selected: category === choice.code
         }))
         ];
       }
@@ -198,12 +197,12 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
         {
           value: '',
           text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
-          selected: true
+          selected: !category
         },
         ...provider.law_category.map(choice => ({
           value: choice.code,
           text: choice.name,
-          selected: false
+          selected: category === choice.code
         }))
       ];
     }
@@ -212,6 +211,7 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
       caseReference,
       provider,
       categoryItems,
+      notes,
       client: req.clientData,
       splitCaseCache: req.session.splitCaseCache || {},
       errorState: {
@@ -227,11 +227,18 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
     const processedError = createProcessedError(error, `rendering about new case form, for case ${caseReference}`);
     next(processedError);
   }
+
+if (!req.session.splitCaseCache?.fromChange) {
+    // normal journey — save immediately
     storeSessionData(req, 'splitCaseCache', {
       currentProvider: String(currentProvider),
       providerName: String(assignedToName),
       cachedAt: String(Date.now())
     });
+} else {
+    // do NOT overwrite the original yet — store in a temp key
+    req.session.splitCaseCache.providerNameChange = String(assignedToName);
+}
 }
 
 /**
@@ -328,11 +335,24 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
     });
   }
 
-  storeSessionData(req, 'splitCaseCache', {
+    storeSessionData(req, 'splitCaseCache', {
     category: String(category),
     notes: String(notes),
     cachedAt: String(Date.now())
-  });
+    });
+
+
+if (!req.session.splitCaseCache) {
+  req.session.splitCaseCache = {};
+}
+
+if (req.session.splitCaseCache.internalChange) {
+    req.session.splitCaseCache.internal = req.session.splitCaseCache.internalChange;
+}
+
+if (req.session.splitCaseCache.providerNameChange) {
+    req.session.splitCaseCache.providerName = req.session.splitCaseCache.providerNameChange;
+}
 
   return res.redirect(`/cases/${caseReference}/check-split-case-answers`);
 }
@@ -347,6 +367,12 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
 export async function getCheckSplitCaseAnswersForm(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
   const splitCaseCache = req.session.splitCaseCache;
+  
+if (req.session.splitCaseCache) {
+  req.session.splitCaseCache.fromChange = false;
+  req.session.splitCaseCache.internalChange = "";
+}
+
 
   if (!validCaseReference(caseReference, res)) {
     return;

@@ -73,7 +73,7 @@
         {{ govukCharacterCount({
             id: "notes",
             name: "notes",
-            value: formData.notes,
+            value: formData.notes or notes,
             rows: 8,
             errorMessage: errorState.fieldErrors.notes if errorState.fieldErrors.notes,
             maxlength: maxCommentLength,
