@@ -125,7 +125,7 @@ test('cancel link after clicking change link should navigate back to the check y
 
 });
 
-test('if the same provider radio button is selected the about ', async ({ page }) => {
+test('if the same provider radio button is selected the about new case details should have data populated', async ({ page }) => {
    // Set up test so we have completed one pass through the flow. 
     const initialSplitThisCaseFormPage = SplitThisCaseFormPage.forCase(page, caseReference);
     await initialSplitThisCaseFormPage.navigate();
@@ -166,11 +166,11 @@ test('if the same provider radio button is selected the about ', async ({ page }
 await expect(page.getByRole('radio', { name: 'Generic Provider Public Law' }))
   .toBeChecked();
 
-
   // Click the continue button
   const continueButton = page.getByRole('button', { name: 'Continue' });
   await continueButton.click();
 
+  // Arrive at the new case details page 
   const aboutNewCasePage = AboutNewSplitCaseFormPage.forCase(page, caseReference);
   await expect(page).toHaveURL(aboutNewCasePage.url);
 
