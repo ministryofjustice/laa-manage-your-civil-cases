@@ -10,6 +10,34 @@ const BAD_REQUEST = 400;
 const NOT_FOUND = 404;
 
 /**
+ * Function to sanitise URL redirect 
+ * 
+ * @param {string} referer referred
+ * @param {string} fallback fallback 
+ * @returns {string} fallback 
+ */
+function safeRedirectPath(referer: string | undefined, fallback: string): string {
+  if (!referer) return fallback;
+
+  // Allow internal relative paths
+  if (referer.startsWith('/')) return referer;
+  try {
+    const { pathname, search, hash } = new URL(referer);
+
+    // If external URL has only `/` (i.e., no meaningful path),
+    // treat it as unsafe and fallback
+    if (pathname === '/' || pathname.trim() === '') {
+      return fallback;
+    }
+
+    // Otherwise return only the path portion
+    return `${pathname}${search}${hash}`;
+  } catch {
+    return fallback;
+  }
+}
+
+/**
  * Handle accepting a case (change status to advising)
  * @param {Request} req Express request object
  * @param {Response} res Express response object
@@ -26,9 +54,9 @@ export async function acceptCase(req: Request, res: Response, next: NextFunction
   try {
     devLog(`Accepting case: ${caseReference}`);
     await changeCaseStateService.acceptCase(req.axiosMiddleware, caseReference);
-
     // Redirect back to the referring page (stays on current tab)
-    const referer = req.get('Referer') ?? `/cases/${caseReference}/client-details`;
+    const fallback = `/cases/${caseReference}/client-details`;
+    const referer = safeRedirectPath(req.get('Referer'), fallback);
     res.redirect(referer);
   } catch (error) {
     const processedError = createProcessedError(error, `accepting case ${caseReference}`);
@@ -55,7 +83,8 @@ export async function completeCase(req: Request, res: Response, next: NextFuncti
     await changeCaseStateService.completeCase(req.axiosMiddleware, caseReference);
 
     // Redirect back to the referring page (stays on current tab)
-    const referer = req.get('Referer') ?? `/cases/${caseReference}/client-details`;
+    const fallback = `/cases/${caseReference}/client-details`;
+    const referer = safeRedirectPath(req.get('Referer'), fallback);
     res.redirect(referer);
   } catch (error) {
     const processedError = createProcessedError(error, `completing case ${caseReference}`);
