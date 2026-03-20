@@ -24,6 +24,9 @@ declare module 'express-session' {
       notes?: string;
       cachedAt?: string;
       fromChange?: boolean;
+      internalChange?: string;
+      categoryChange?: string;
+      notesChange?: string;
     };
   }
 }
@@ -36,7 +39,12 @@ declare module 'express-session' {
  */
 export function storeSessionData(req: Request, namespace: string, data: Record<string, string>): void {
   // Store our typed data directly in the session
-  req.session[namespace] = data;
+  
+req.session[namespace] = {
+  ...(req.session[namespace] as Record<string, string> || {}),
+  ...data
+};
+
 }
 
 /**
