@@ -54,13 +54,10 @@ export async function acceptCase(req: Request, res: Response, next: NextFunction
   try {
     devLog(`Accepting case: ${caseReference}`);
     await changeCaseStateService.acceptCase(req.axiosMiddleware, caseReference);
-
     // Redirect back to the referring page (stays on current tab)
     const fallback = `/cases/${caseReference}/client-details`;
     const referer = safeRedirectPath(req.get('Referer'), fallback);
     res.redirect(referer);
-
-
   } catch (error) {
     const processedError = createProcessedError(error, `accepting case ${caseReference}`);
     next(processedError);
@@ -85,7 +82,7 @@ export async function completeCase(req: Request, res: Response, next: NextFuncti
     devLog(`Completing case: ${caseReference}`);
     await changeCaseStateService.completeCase(req.axiosMiddleware, caseReference);
 
-     // Redirect back to the referring page (stays on current tab)
+    // Redirect back to the referring page (stays on current tab)
     const fallback = `/cases/${caseReference}/client-details`;
     const referer = safeRedirectPath(req.get('Referer'), fallback);
     res.redirect(referer);

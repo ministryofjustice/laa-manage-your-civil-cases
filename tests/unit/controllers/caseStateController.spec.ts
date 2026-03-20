@@ -62,7 +62,7 @@ describe('caseStateController.acceptCase – redirect safety', () => {
   it('External host → fallback', async () => {
     (req.get as sinon.SinonStub).returns('https://evil.com');
 
-    await acceptCase(req as Request, res as Response, next as unknown as NextFunction);
+    await acceptCase(req as Request, res as Response, next as NextFunction);
 
     expect(redirectStub.calledWith(fallback)).to.be.true;
   });
@@ -72,7 +72,7 @@ describe('caseStateController.acceptCase – redirect safety', () => {
       'https://evil.com/cases/123/client-details'
     );
 
-    await acceptCase(req as Request, res as Response, next as unknown as NextFunction);
+    await acceptCase(req as Request, res as Response, next as NextFunction);
 
     expect(redirectStub.calledWith('/cases/123/client-details')).to.be.true;
   });
@@ -82,7 +82,7 @@ describe('caseStateController.acceptCase – redirect safety', () => {
       'https://service.gov.uk/cases/123/client-details'
     );
 
-    await acceptCase(req as Request, res as Response, next as unknown as NextFunction);
+    await acceptCase(req as Request, res as Response, next as NextFunction);
 
     expect(redirectStub.calledWith('/cases/123/client-details')).to.be.true;
   });
@@ -90,7 +90,7 @@ describe('caseStateController.acceptCase – redirect safety', () => {
   it('Relative path → preserved as-is', async () => {
     (req.get as sinon.SinonStub).returns('/cases/123/case-details');
 
-    await acceptCase(req as Request, res as Response, next as unknown as NextFunction);
+    await acceptCase(req as Request, res as Response, next as NextFunction);
 
     expect(redirectStub.calledWith('/cases/123/case-details')).to.be.true;
   });
@@ -98,7 +98,7 @@ describe('caseStateController.acceptCase – redirect safety', () => {
   it('Absent header → fallback', async () => {
     (req.get as sinon.SinonStub).returns(undefined);
 
-    await acceptCase(req as Request, res as Response, next as unknown as NextFunction);
+    await acceptCase(req as Request, res as Response, next as NextFunction);
 
     expect(redirectStub.calledWith(fallback)).to.be.true;
   });
@@ -106,7 +106,7 @@ describe('caseStateController.acceptCase – redirect safety', () => {
   it('Malformed value → fallback', async () => {
     (req.get as sinon.SinonStub).returns('not a url');
 
-    await acceptCase(req as Request, res as Response, next as unknown as NextFunction);
+    await acceptCase(req as Request, res as Response, next as NextFunction);
 
     expect(redirectStub.calledWith(fallback)).to.be.true;
   });
@@ -114,7 +114,7 @@ describe('caseStateController.acceptCase – redirect safety', () => {
 
 describe('caseStateController.completeCase – method calls + redirect safety', () => {
   let req: Partial<Request>;
-  let res: any;
+  let res: Partial<Response>;
   let next: sinon.SinonStub;
 
   let redirectStub: sinon.SinonStub;
