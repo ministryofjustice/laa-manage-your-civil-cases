@@ -286,7 +286,7 @@ describe('Split Case Controller', () => {
           name: 'Provider X',
           law_category: [
             { code: 'family', name: 'Family' },
-            { code: 'crime', name: 'Crime/Criminal Law' }
+            { code: 'crime', name: 'Crime/Criminal law' }
           ]
         }
       });
@@ -390,7 +390,7 @@ describe('Split Case Controller', () => {
           name: 'Provider X',
           law_category: [
             { code: 'housing', name: 'Housing, eviction and homelessness' },
-            { code: 'crime', name: 'Crime/Criminal Law' }
+            { code: 'crime', name: 'Crime/criminal law' }
           ]
         }
       });
@@ -419,7 +419,7 @@ describe('Split Case Controller', () => {
       // Expect crime category
       const debt = renderData.categoryItems.find((i: any) => i.value === 'crime');
       expect(debt).to.exist;
-      expect(debt.text).to.equal('Crime/Criminal Law');
+      expect(debt.text).to.equal('Crime/criminal law');
       expect(debt.selected).to.equal(false);
 
       expect(renderData.categoryItems).to.have.length(3);
@@ -448,7 +448,7 @@ describe('Split Case Controller', () => {
           name: 'Provider X',
           law_category: [
             { code: 'housing', name: 'Housing, eviction and homelessness' },
-            { code: 'crime', name: 'Crime/Criminal Law' }
+            { code: 'crime', name: 'Crime/criminal law' }
           ]
         }
       });
@@ -476,7 +476,7 @@ describe('Split Case Controller', () => {
       // Expect crime category
       const debt = renderData.categoryItems.find((i: any) => i.value === 'crime');
       expect(debt).to.exist;
-      expect(debt.text).to.equal('Crime/Criminal Law');
+      expect(debt.text).to.equal('Crime/criminal law');
       expect(debt.selected).to.equal(false);
       expect(renderData.categoryItems).to.have.length(3);
 
@@ -503,7 +503,7 @@ describe('Split Case Controller', () => {
           name: 'Provider X',
           law_category: [
             { code: 'housing', name: 'Housing, eviction and homelessness' },
-            { code: 'crime', name: 'Crime/Criminal Law' }
+            { code: 'crime', name: 'Crime/criminal law' }
           ]
         }
       });
@@ -532,7 +532,7 @@ describe('Split Case Controller', () => {
       // Expect crime category
       const debt = renderData.categoryItems.find((i: any) => i.value === 'crime');
       expect(debt).to.exist;
-      expect(debt.text).to.equal('Crime/Criminal Law');
+      expect(debt.text).to.equal('Crime/criminal law');
       expect(debt.selected).to.equal(false);
       expect(renderData.categoryItems).to.have.length(3);
 
@@ -557,7 +557,7 @@ describe('Split Case Controller', () => {
           name: 'Provider X',
           law_category: [
             { code: 'housing', name: 'Housing, eviction and homelessness' },
-            { code: 'crime', name: 'Crime/Criminal Law' }
+            { code: 'crime', name: 'Crime/criminal law' }
           ]
         }
       });
@@ -585,7 +585,7 @@ describe('Split Case Controller', () => {
       // Expect crime category
       const debt = renderData.categoryItems.find((i: any) => i.value === 'crime');
       expect(debt).to.exist;
-      expect(debt.text).to.equal('Crime/Criminal Law');
+      expect(debt.text).to.equal('Crime/criminal law');
       expect(debt.selected).to.equal(false);
       expect(renderData.categoryItems).to.have.length(3);
 
@@ -612,7 +612,7 @@ describe('Split Case Controller', () => {
           name: 'Provider X',
           law_category: [
             { code: 'housing', name: 'Housing, eviction and homelessness' },
-            { code: 'crime', name: 'Crime/Criminal Law' }
+            { code: 'crime', name: 'Crime/criminal law' }
           ]
         }
       });
