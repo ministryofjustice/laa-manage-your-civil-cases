@@ -8,7 +8,7 @@ import { acceptCase, completeCase } from '#src/scripts/controllers/caseStateCont
 import { changeCaseStateService } from '#src/services/changeCaseStateService.js';
 
 describe('caseStateController.acceptCase – redirect safety', () => {
-  let req: Partial<Request>;
+  let req: Partial<Request> & { get: sinon.SinonStub };
   let res: any;
   let next: sinon.SinonStub;
 
@@ -28,7 +28,7 @@ describe('caseStateController.acceptCase – redirect safety', () => {
 
     req = {
       params: { caseReference },
-      get: sinon.stub() as any
+      get: sinon.stub()
     };
 
 
@@ -60,7 +60,7 @@ describe('caseStateController.acceptCase – redirect safety', () => {
   // ALL REFERER SCENARIOS BELOW
 
   it('External host → fallback', async () => {
-    (req.get as sinon.SinonStub).returns('https://evil.com');
+    req.get.returns('https://evil.com');
 
     await acceptCase(req as Request, res as Response, next as NextFunction);
 
@@ -78,7 +78,7 @@ describe('caseStateController.acceptCase – redirect safety', () => {
   });
 
   it('Same-origin absolute → keep path', async () => {
-    (req.get as sinon.SinonStub).returns(
+    req.get.returns(
       'https://service.gov.uk/cases/123/client-details'
     );
 
@@ -88,7 +88,7 @@ describe('caseStateController.acceptCase – redirect safety', () => {
   });
 
   it('Relative path → preserved as-is', async () => {
-    (req.get as sinon.SinonStub).returns('/cases/123/case-details');
+    req.get.returns('/cases/123/case-details');
 
     await acceptCase(req as Request, res as Response, next as NextFunction);
 
@@ -96,7 +96,7 @@ describe('caseStateController.acceptCase – redirect safety', () => {
   });
 
   it('Absent header → fallback', async () => {
-    (req.get as sinon.SinonStub).returns(undefined);
+    req.get.returns(undefined);
 
     await acceptCase(req as Request, res as Response, next as NextFunction);
 
@@ -104,7 +104,7 @@ describe('caseStateController.acceptCase – redirect safety', () => {
   });
 
   it('Malformed value → fallback', async () => {
-    (req.get as sinon.SinonStub).returns('not a url');
+    req.get.returns('not a url');
 
     await acceptCase(req as Request, res as Response, next as NextFunction);
 
@@ -113,7 +113,7 @@ describe('caseStateController.acceptCase – redirect safety', () => {
 });
 
 describe('caseStateController.completeCase – method calls + redirect safety', () => {
-  let req: Partial<Request>;
+  let req: Partial<Request> & { get: sinon.SinonStub };
   let res: Partial<Response>;
   let next: sinon.SinonStub;
 
@@ -133,7 +133,7 @@ describe('caseStateController.completeCase – method calls + redirect safety', 
 
     req = {
       params: { caseReference },
-      get: sinon.stub() as any
+      get: sinon.stub()
     };
 
     // axiosMiddleware required by service call
@@ -162,7 +162,7 @@ describe('caseStateController.completeCase – method calls + redirect safety', 
   // SERVICE CALL VALIDATION
 
   it('calls changeCaseStateService.completeCase with correct args', async () => {
-    (req.get as sinon.SinonStub).returns(undefined); // force fallback
+    req.get.returns(undefined); // force fallback
 
     await completeCase(req as Request, res as Response, next as NextFunction);
 
@@ -174,7 +174,7 @@ describe('caseStateController.completeCase – method calls + redirect safety', 
   // REDIRECT SCENARIOS
 
   it('External host → fallback', async () => {
-    (req.get as sinon.SinonStub).returns('https://evil.com');
+    req.get.returns('https://evil.com');
 
     await completeCase(req as Request, res as Response, next as NextFunction);
 
@@ -182,7 +182,7 @@ describe('caseStateController.completeCase – method calls + redirect safety', 
   });
 
   it('External host with valid path → uses only the path', async () => {
-    (req.get as sinon.SinonStub).returns(
+    req.get.returns(
       'https://evil.com/cases/123/client-details'
     );
 
@@ -200,7 +200,7 @@ describe('caseStateController.completeCase – method calls + redirect safety', 
   });
 
   it('No referer → fallback', async () => {
-    (req.get as sinon.SinonStub).returns(undefined);
+    req.get.returns(undefined);
 
     await completeCase(req as Request, res as Response, next as NextFunction);
 
