@@ -163,6 +163,11 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
   const caseReference = safeString(req.params.caseReference);
   let category = null;
   let notes = null;
+
+const effectiveInternal =
+  req.session.splitCaseCache?.internalChange ??
+  req.session.splitCaseCache?.internal;
+
   if (req.session.splitCaseCache?.internal === req.session.splitCaseCache?.internalChange) {
     category = req.session.splitCaseCache?.category
     notes = req.session.splitCaseCache?.notes
@@ -182,7 +187,7 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
 
     let categoryItems: { value: string; text: string; selected: boolean }[] = [];
 
-    if (req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && req.session.splitCaseCache.internal === 'false') {
+    if (req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && effectiveInternal === 'false') {
 
       assignedToName = t('pages.caseDetails.splitCase.operatorReassignment');
 
@@ -270,6 +275,10 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
   const category = safeBodyString(req.body, 'category');
   const notes = safeBodyString(req.body, 'notes');
 
+  const effectiveInternal =
+  req.session.splitCaseCache?.internalChange ??
+  req.session.splitCaseCache?.internal;
+
   console.log("category of law selected: " + category);
   // Check for validation errors
   const errors = validationResult(req);
@@ -298,7 +307,7 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
     let categoryItems: { value: string; text: string; selected: boolean }[] = [];
 
     // If internal is false, assign to operator was selected and the full list should be returned. 
-    if (req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && req.session.splitCaseCache.internal === 'false') {
+    if (req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && effectiveInternal === 'false') {
 
       const allCategoriesResponse = await apiService.getAllCategories(req.axiosMiddleware);
 
