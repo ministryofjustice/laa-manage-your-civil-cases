@@ -43,6 +43,18 @@ async function fetchProviderNameAndDetail(req: Request, caseReference: string): 
 }
 
 /**
+ * Function to format categories list. 
+ * 
+ * @param {string} str category to be capitalised. 
+ * @returns {Promise<string>} String with only one capital at the start of the string. 
+ */
+async function capitaliseFirstLowerRest(str: string): Promise<string> {
+  if (!str) return "";
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
+
+/**
  * Render the "split this case" form
  * @param {Request} req Express request object
  * @param {Response} res Express response object
@@ -125,17 +137,17 @@ export async function submitSplitThisCaseForm(req: Request, res: Response, next:
 
   const internal = safeBodyString(req.body, 'internal');
 
-if (!req.session.splitCaseCache?.fromChange) {
+  if (!req.session.splitCaseCache?.fromChange) {
     // normal journey — save immediately
     storeSessionData(req, 'splitCaseCache', {
       caseReference,
-        internal: String(internal),
-        cachedAt: String(Date.now())
+      internal: String(internal),
+      cachedAt: String(Date.now())
     });
-} else {
+  } else {
     // do NOT overwrite the original yet — store in a temp key
     req.session.splitCaseCache.internalChange = String(internal);
-}
+  }
 
   return res.redirect(`/cases/${caseReference}/about-new-case`);
 }
@@ -171,24 +183,28 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
     let categoryItems: { value: string; text: string; selected: boolean }[] = [];
 
     if (req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && req.session.splitCaseCache.internal === 'false') {
-      
+
       assignedToName = t('pages.caseDetails.splitCase.operatorReassignment');
 
       const allCategoriesResponse = await apiService.getAllCategories(req.axiosMiddleware);
 
       if (allCategoriesResponse.status === 'success' && Array.isArray(allCategoriesResponse.data)) {
 
+
         categoryItems = [{
           value: '',
           text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
           selected: !category
         },
-        ...allCategoriesResponse.data.map(choice => ({
-          value: choice.code,
-          text: choice.code === 'none' ? t('allCategoriesAdditions.none') : choice.name,
-          selected: category === choice.code
-        }))
-        ];
+        ...(await Promise.all(
+          allCategoriesResponse.data.map(async choice => ({
+            value: choice.code,
+            text: await capitaliseFirstLowerRest(
+              choice.code === "none" ? t("allCategoriesAdditions.none") : choice.name
+            ),
+            selected: category === choice.code
+          }))
+        ))];
       }
     } else {
 
@@ -199,12 +215,13 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
           text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
           selected: !category
         },
-        ...provider.law_category.map(choice => ({
-          value: choice.code,
-          text: choice.name,
-          selected: category === choice.code
-        }))
-      ];
+        ...(await Promise.all(
+          provider.law_category.map(async choice => ({
+            value: choice.code,
+            text: await capitaliseFirstLowerRest(choice.name),
+            selected: category === choice.code
+          }))
+        ))];
     }
 
     res.render('case_details/split_case/about-new-case.njk', {
@@ -228,17 +245,17 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
     next(processedError);
   }
 
-if (!req.session.splitCaseCache?.fromChange) {
+  if (!req.session.splitCaseCache?.fromChange) {
     // normal journey — save immediately
     storeSessionData(req, 'splitCaseCache', {
       currentProvider: String(currentProvider),
       providerName: String(assignedToName),
       cachedAt: String(Date.now())
     });
-} else {
+  } else {
     // do NOT overwrite the original yet — store in a temp key
     req.session.splitCaseCache.providerNameChange = String(assignedToName);
-}
+  }
 }
 
 /**
@@ -292,17 +309,15 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
           text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
           selected: !category
         },
-        ...allCategoriesResponse.data.map(choice => ({
-          value: choice.code,
-          text: choice.name,
-          selected: category === choice.code
-        }))
-        ];
-        categoryItems.push({
-          value: 'none',
-          text: t('allCategoriesAdditions.none'),
-          selected: false
-        });
+        ...(await Promise.all(
+          allCategoriesResponse.data.map(async choice => ({
+            value: choice.code,
+            text: await capitaliseFirstLowerRest(
+              choice.code === "none" ? t("allCategoriesAdditions.none") : choice.name
+            ),
+            selected: category === choice.code
+          }))
+        ))];
       }
     } else {
       categoryItems = [
@@ -311,12 +326,13 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
           text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
           selected: !category
         },
-        ...provider.law_category.map(choice => ({
-          value: choice.code,
-          text: choice.name,
-          selected: category === choice.code
-        }))
-      ];
+        ...(await Promise.all(
+          provider.law_category.map(async choice => ({
+            value: choice.code,
+            text: await capitaliseFirstLowerRest(choice.name),
+            selected: category === choice.code
+          }))
+        ))];
     }
 
     return res.status(BAD_REQUEST).render('case_details/split_case/about-new-case.njk', {
@@ -335,24 +351,24 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
     });
   }
 
-    storeSessionData(req, 'splitCaseCache', {
+  storeSessionData(req, 'splitCaseCache', {
     category: String(category),
     notes: String(notes),
     cachedAt: String(Date.now())
-    });
+  });
 
 
-if (!req.session.splitCaseCache) {
-  req.session.splitCaseCache = {};
-}
+  if (!req.session.splitCaseCache) {
+    req.session.splitCaseCache = {};
+  }
 
-if (req.session.splitCaseCache.internalChange) {
+  if (req.session.splitCaseCache.internalChange) {
     req.session.splitCaseCache.internal = req.session.splitCaseCache.internalChange;
-}
+  }
 
-if (req.session.splitCaseCache.providerNameChange) {
+  if (req.session.splitCaseCache.providerNameChange) {
     req.session.splitCaseCache.providerName = req.session.splitCaseCache.providerNameChange;
-}
+  }
 
   return res.redirect(`/cases/${caseReference}/check-split-case-answers`);
 }
@@ -367,11 +383,11 @@ if (req.session.splitCaseCache.providerNameChange) {
 export async function getCheckSplitCaseAnswersForm(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
   const splitCaseCache = req.session.splitCaseCache;
-  
-if (req.session.splitCaseCache) {
-  req.session.splitCaseCache.fromChange = false;
-  req.session.splitCaseCache.internalChange = "";
-}
+
+  if (req.session.splitCaseCache) {
+    req.session.splitCaseCache.fromChange = false;
+    req.session.splitCaseCache.internalChange = "";
+  }
 
 
   if (!validCaseReference(caseReference, res)) {
