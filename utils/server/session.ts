@@ -35,7 +35,7 @@ export const buildSessionConfig = async (
 	}
 
 	return {
-    ...config.session,
+    	...config.session,
 		store: store,
   };
 };

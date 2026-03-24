@@ -43,10 +43,11 @@ const config: Config = {
     encryptionKey: process.env.SESSION_ENCRYPTION_KEY,
     resave: false,
     saveUninitialized: false,
+    rolling: true,                                      // Refresh session expiry on each request
     cookie: {
       secure: process.env.NODE_ENV === 'production',  // HTTPS only in production
       httpOnly: true,                                  // Prevent XSS attacks
-      sameSite: 'strict' as const,                    // OWASP: Prevent CSRF via strict SameSite
+      sameSite: 'lax' as const,                    // OAuth2: allow POST from SILAS but protect against CSRF in other contexts
       maxAge: 1000 * 60 * 60 * 24                     // 24 hours session duration
     }
   },
@@ -73,6 +74,19 @@ const config: Config = {
       clientSecret: process.env.API_CLIENT_SECRET ?? ''
     }
   },
+  // SILAS / Microsoft Entra configuration
+  silas: {
+    authority: process.env.ENTRA_AUTHORITY ?? `https://login.microsoftonline.com/${process.env.ENTRA_TENANT_ID ?? ''}`,
+    tenantId: process.env.ENTRA_TENANT_ID ?? '',
+    appId: process.env.ENTRA_APP_ID ?? '',
+    clientId: process.env.ENTRA_CLIENT_ID ?? '',
+    clientSecret: process.env.ENTRA_CLIENT_SECRET ?? '',
+    redirectUri: process.env.ENTRA_REDIRECT_URI ?? '',
+    postLogoutRedirectUri: process.env.ENTRA_POST_LOGOUT_REDIRECT_URI ?? '',
+    // Scopes used for the initial auth code exchange at user sign-in.
+    scopes: (process.env.SILAS_SCOPES ?? '').split(' ').filter(Boolean),
+    expectedAudience: process.env.SILAS_EXPECTED_AUDIENCE ?? ''
+  },
   // Pagination configuration
   pagination: {
     defaultPage: DEFAULT_PAGINATION_PAGE,
@@ -87,5 +101,46 @@ const config: Config = {
     tls_enabled: process.env.REDIS_TLS_ENABLED === 'true'
   }
 };
+
+const REQUIRED_SILAS_CONFIG_FIELDS = [
+  'tenantId',
+  'clientId',
+  'clientSecret',
+  'redirectUri',
+  'postLogoutRedirectUri',
+  'expectedAudience'
+] as const;
+
+type SilasRequiredField = (typeof REQUIRED_SILAS_CONFIG_FIELDS)[number];
+
+/**
+ * Returns the list of required SILAS config fields that are currently empty.
+ *
+ * @returns {SilasRequiredField[]} Missing required SILAS field names.
+ */
+export function getMissingSilasConfigValues(): SilasRequiredField[] {
+  return REQUIRED_SILAS_CONFIG_FIELDS.filter((field) => config.silas[field].trim() === '');
+}
+
+/**
+ * Validates SILAS runtime configuration and throws if any required value is missing.
+ *
+ * @returns {void}
+ */
+export function validateSilasConfig(): void {
+  const missingFields = getMissingSilasConfigValues();
+
+  if (missingFields.length > 0 || config.silas.scopes.length === 0) {
+    const missingScopes = config.silas.scopes.length === 0 ? 'scopes' : '';
+    const missing = [...missingFields, ...(missingScopes !== '' ? [missingScopes] : [])].join(', ');
+    throw new Error(`SILAS configuration is missing required values: ${missing}`);
+  }
+}
+
+const isTestExecution = process.env.NODE_ENV === 'test';
+
+if (!isTestExecution) {
+  validateSilasConfig();
+}
 
 export default config;

@@ -3,15 +3,17 @@ import '#src/scripts/helpers/sessionHelpers.js';
 
 /**
  * Authentication middleware to check if user is logged in
- * Redirects to login page if no session credentials are found
+ * Redirects to login page if no SILAS session token is found or token is expired
  * 
  * @param {Request} req Express request object
  * @param {Response} res Express response object
  * @param {NextFunction} next Express next function
  */
 export function requireAuth(req: Request, res: Response, next: NextFunction): void {
-  // Check if user has auth credentials in session
-  if (req.session.authCredentials === undefined) {
+  const silasAuth = req.session.silasAuth;
+  const hasValidToken = silasAuth !== undefined && silasAuth.expiresAt > Date.now();
+
+  if (!hasValidToken) {
     // User is not authenticated - redirect to login
     res.redirect('/login');
     return;
@@ -29,7 +31,8 @@ export function requireAuth(req: Request, res: Response, next: NextFunction): vo
  * @param {NextFunction} next - Express next function
  */
 export const setAuthStatus = (req: Request, res: Response, next: NextFunction): void => {
-  res.locals.isAuthenticated = req.session.authCredentials !== undefined;
+  const silasAuth = req.session.silasAuth;
+  res.locals.isAuthenticated = silasAuth !== undefined && silasAuth.expiresAt > Date.now();
   res.locals.userEmail = req.session.user?.email ?? null;
   next();
 };
