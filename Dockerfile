@@ -1,50 +1,53 @@
-# Use the official Node.js image as the base image
+
+# Use Debian-based Node.js 25.8.2
 FROM node:25.8.2
 
-# Set the working directory inside the container
+# Set the working directory
 WORKDIR /app
 
-# Install build tools for native modules
+# Install build tools for native modules (Debian/Bookworm)
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        python3 \
+        make \
+        g++ \
+        pkg-config && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN apk update && apk upgrade --no-cache && \
-    apk add --no-cache build-base python3 make g++ pkgconfig
-
-
-# Install corepack via npm (force to overwrite existing yarn), enable it, prepare Yarn 4.9.2, then remove npm entirely
+# Install corepack and configure yarn
 RUN npm install -g --force corepack && \
     corepack enable && \
     corepack prepare yarn@4.9.2 --activate && \
     rm -rf /usr/local/lib/node_modules/npm && \
     rm -f /usr/local/bin/npm /usr/local/bin/npx
 
-# Copy package.json and yarn.lock to the working directory
+# Copy package files
 COPY package*.json yarn.lock .yarnrc.yml ./
 
-# Install dependencies with inline builds for native modules
+# Install dependencies
 RUN yarn install --immutable --inline-builds
 
-# Create a non-root user
-RUN addgroup -g 1001 -S appuser && \
-    adduser -u 1001 -G appuser -S appuser
+# Add non-root user
+RUN groupadd -g 1001 appuser && \
+    useradd -u 1001 -g 1001 -m appuser
 
-# Copy the rest of the application code to the working directory
-# and set ownership to the non-root user
+# Copy application code
 COPY --chown=1001:1001 . .
 
-# Build the application
+# Build the app
 RUN yarn build
 
-# Set ownership of all generated files to the non-root user
-RUN chown -R 1001:1001 /app
-
-# Switch to the non-root user by ID (not name)
+# Switch to non-root user
 USER 1001
 
-# Set HOME environment variable to fix corepack cache issues
+# Fix corepack cache issues
 ENV HOME=/app
 
-# Expose the port the app runs on
+# Expose port
 EXPOSE 3000
 
-# Define the command to run the application
+# Run the app
 CMD ["node", "public/app.js"]
+
