@@ -5,7 +5,7 @@ import { t } from '../utils/index.js';
 /**
  * Page object for 'about new case' form
  */
-export class AboutNewCaseFormPage extends BaseEditFormPage {
+export class AboutNewSplitCaseFormPage extends BaseEditFormPage {
   private readonly caseReference: string;
 
   /**
@@ -78,9 +78,9 @@ export class AboutNewCaseFormPage extends BaseEditFormPage {
    * Creates a SplitThisCaseFormPage instance for a specific case
    * @param {Page} page - The Playwright page instance
    * @param {string} caseReference - The case reference number
-   * @returns {AboutNewCaseFormPage} New 'about new case' form page instance
+   * @returns {AboutNewSplitCaseFormPage} New 'about new case' form page instance
    */
-  static forCase(page: Page, caseReference: string): AboutNewCaseFormPage {
-    return new AboutNewCaseFormPage(page, caseReference);
+  static forCase(page: Page, caseReference: string): AboutNewSplitCaseFormPage {
+    return new AboutNewSplitCaseFormPage(page, caseReference);
   }
 }

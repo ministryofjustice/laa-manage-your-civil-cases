@@ -306,3 +306,21 @@ export interface GetAllCategoriesApiResponse {
   status: 'success' | 'error';
   message?: string;
 }
+
+/**
+ * Split case submission request body
+ */
+export interface SplitCaseSubmissionRequest {
+  category: string;
+  internal: boolean;
+  notes: string;
+}
+
+/**
+ * Split case submission API response interface
+ */
+export interface SplitCaseSubmissionApiResponse {
+  data: unknown | null;
+  status: 'success' | 'error';
+  message?: string;
+}
