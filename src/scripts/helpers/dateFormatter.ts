@@ -28,6 +28,25 @@ export function formatDate(dateString: string): string {
 }
 
 /**
+ * Format date for display in table cells and UI components, where it needs to be have the month displayed in full
+ * @param {string} dateString ISO date string
+ * @returns {string} Formatted date in D MMMM YYYY format (e.g., "6 January 1986")
+ */
+export function formatDateLongMonth(dateString: string): string {
+  const date = new Date(dateString);
+
+  if (isNaN(date.getTime())) {
+    return dateString;
+  }
+
+  const day = date.getDate();
+  const month = date.toLocaleString('en-GB', { month: 'long' });
+  const year = date.getFullYear();
+
+  return `${day} ${month} ${year}`;
+}
+
+/**
  * Format date in long format
  * @param {string} dateString ISO date string
  * @returns {string} Formatted date in D MMM YYYY H:MMam/pm format (e.g., "6 January 1986 at 2:01pm")
