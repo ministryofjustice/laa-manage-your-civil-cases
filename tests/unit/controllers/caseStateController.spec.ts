@@ -32,21 +32,21 @@ describe('caseStateController.acceptCase – redirect safety', () => {
     };
 
 
-// Now attach axiosMiddleware so it is not overwritten
-  req.axiosMiddleware = {
-    request: sinon.stub(),
-    get: sinon.stub(),
-    delete: sinon.stub(),
-    head: sinon.stub(),
-    options: sinon.stub(),
-    post: sinon.stub(),
-    put: sinon.stub(),
-    patch: sinon.stub(),
-    interceptors: {
-      request: { use: sinon.stub() },
-      response: { use: sinon.stub() }
-    }
-  } as any;
+    // Now attach axiosMiddleware so it is not overwritten
+    req.axiosMiddleware = {
+      request: sinon.stub(),
+      get: sinon.stub(),
+      delete: sinon.stub(),
+      head: sinon.stub(),
+      options: sinon.stub(),
+      post: sinon.stub(),
+      put: sinon.stub(),
+      patch: sinon.stub(),
+      interceptors: {
+        request: { use: sinon.stub() },
+        response: { use: sinon.stub() }
+      }
+    } as any;
 
     acceptCaseServiceStub = sinon
       .stub(changeCaseStateService, 'acceptCase')
