@@ -1,6 +1,6 @@
 
 # Use Debian-based Node.js 25.8.2
-FROM node:25.8.2
+FROM node:25.8.2-slim
 
 # Set the working directory
 WORKDIR /app
