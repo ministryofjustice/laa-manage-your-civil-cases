@@ -162,9 +162,6 @@ router.post('/:caseReference/check-split-case-answers', async (req: Request, res
 router.get('/:caseReference/change', (req, res) => {
   req.session.splitCaseCache = req.session.splitCaseCache || {};
   req.session.splitCaseCache.fromChange = true;
-  if (req.session.splitCaseCache) {
-        req.session.splitCaseCache.internal = req.session.splitCaseCache.internal;
-    }
 
   res.redirect(`/cases/${req.params.caseReference}/split-this-case`);
 });
