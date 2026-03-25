@@ -1,0 +1,10 @@
+[allowlist]
+description = "Ignore test encryption keys"
+
+paths = [
+  '''.github/workflows/mocha.yml''',
+  '''.github/workflows/playwright.yml''',
+  '''tests/playwright/playwright.config.ts''',
+  '''tests/unit/utils/server/session.spec.ts''',
+  '''tests/unit/utils/server/encryption.spec.ts'''
+]

@@ -1,0 +1,33 @@
+# Taken from https://github.com/ministryofjustice/devsecops-actions/tree/main/sca#quick-start---minimal-configuration
+name: SCA
+run-name: SCA - Software Composition Analysis
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # Daily at midnight UTC
+
+  pull_request:
+    branches: ["main"]
+
+permissions: {}
+
+jobs:
+  sca:
+    name: SCA - Software Composition Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      security-events: read
+
+    steps:
+      - name: Run, SCA - Software Composition Analysis
+        uses: ministryofjustice/devsecops-actions/sca@f965eb1771ec66cfc41d7d57dc607fa6dfbc10ed # v1.4.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+          # Custom Configuration - CodeQL wants to upload SARIF file and so does this workflow. Keeping CodeQL behaviour.
+          codeql-upload-findings: "never"
