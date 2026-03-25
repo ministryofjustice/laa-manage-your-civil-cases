@@ -1,5 +1,5 @@
 # Use the official Node.js image as the base image
-FROM node:25.8.1-alpine
+FROM node:25-alpine
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -48,3 +48,4 @@ EXPOSE 3000
 
 # Define the command to run the application
 CMD ["node", "public/app.js"]
+
