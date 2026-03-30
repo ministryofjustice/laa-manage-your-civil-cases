@@ -4314,9 +4314,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next@npm:^25.10.9":
-  version: 25.10.9
-  resolution: "i18next@npm:25.10.9"
+"i18next@npm:^26.0.2":
+  version: 26.0.2
+  resolution: "i18next@npm:26.0.2"
   dependencies:
     "@babel/runtime": "npm:^7.29.2"
   peerDependencies:
@@ -4324,7 +4324,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10c0/6e7cccca6575e05a4165bfddc3ca6f3fa111d4db6ec70740ad08004ad1b7af593916cc3575c5a42838b505f42b8ddd4332b9e6e58081e0483134405aece03dd2
+  checksum: 10c0/9a396b559a5e7eed56c9c31d56efbee760069ee55f371864e2730b76cbb65fd7fbea19d63f9406a2db1ce232f9d0f11b94b9c0c7a5b9294e0fec681b192c79b3
   languageName: node
   linkType: hard
 
@@ -4921,7 +4921,7 @@ __metadata:
     helmet: "npm:^8.1.0"
     http-errors: "npm:~2.0.0"
     husky: "npm:^9.1.7"
-    i18next: "npm:^25.10.9"
+    i18next: "npm:^26.0.2"
     jsdom: "npm:^28.1.0"
     libphonenumber-js: "npm:^1.12.40"
     lint-staged: "npm:^16.4.0"
