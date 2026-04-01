@@ -136,7 +136,6 @@
     "immutable": "^5.1.5",
     "qs": "6.14.2",
     "flatted": "^3.4.2",
-    "picomatch": "^2.3.2",
-    "path-to-regexp": "^8.4.0"
+    "picomatch": "^2.3.2"
   }
 }
