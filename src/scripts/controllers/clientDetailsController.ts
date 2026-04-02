@@ -11,7 +11,7 @@ import { handleCaseTab } from '#src/scripts/helpers/caseTabHandler.js';
  * @returns {void} Page to be returned
  */
 export function handleClientDetailsTab(req: Request, res: Response, next: NextFunction, activeTab: string): void {
-  void handleCaseTab(req, res, next, activeTab, 'client details', ({ req, res, caseReference, activeTab }) => {
+  handleCaseTab(req, res, next, activeTab, 'client details', ({ req, res, caseReference, activeTab }) => {
     // Client details already fetched by middleware, available at req.clientData
     const { clientData } = req;
 
@@ -28,6 +28,7 @@ export function handleClientDetailsTab(req: Request, res: Response, next: NextFu
       });
     }
 
+    console.log('Rendering template case_details/index.njk  with clientData:', clientData, 'activeTab:', activeTab, 'caseReference:', caseReference);
     res.render('case_details/index.njk', {
       activeTab,
       client: clientData,

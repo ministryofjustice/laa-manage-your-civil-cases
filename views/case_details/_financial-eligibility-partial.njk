@@ -1,0 +1,54 @@
+{% from "components/summaryCardComponent.njk" import summaryCardComponent %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{{ govukWarningText({
+      text: t('forms.clientDetails.phoneNumber.notSafeToCallWarning'),
+      iconFallbackText: t.common.warning
+    }) }}
+
+{{ govukWarningText({
+        text: t('forms.clientDetails.phoneNumber.notSafeToCallWarning'),
+        iconFallbackText: t.common.warning
+      }) }}
+
+<h2 class="govuk-heading-m">{{ t('pages.caseDetails.tabs.clientDetails') }}</h2>
+
+{% set constructedData = {
+    onPassportedBenefits: "No",
+    onNassBenefits: "No"
+} %}
+
+{{ summaryCardComponent({
+  data: constructedData,
+  card: {
+    title: {
+      text: 'Benefits'
+    },
+    actions: {
+        items: [
+          {
+            href: "/cases/" + data.caseReference + "/financial-eligibility/change/benefits",
+            text: t('common.change'),
+            visuallyHiddenText: t('accessibility.visuallyHiddenText.changeSupportNeeds')
+          }
+        ]
+    }
+  },
+  rows: [
+    {
+      label: 'On Passported Benefits',
+      html: true,
+      key: "onPassportedBenefits"
+    },
+    {
+      label: 'On Nass Benefits',
+      html: true,
+      key: "onNassBenefits"
+    }
+  ]
+}) }}
+
+
+
+yada
