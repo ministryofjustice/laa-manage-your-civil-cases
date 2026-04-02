@@ -169,7 +169,12 @@ export async function postEditClientThirdParty(req: Request, res: Response, next
 
 
 /**
+ * Render the edit financial eligibility benefits page for a case.
  *
+ * @param {Request} req - The incoming HTTP request containing the case reference.
+ * @param {Response} res - The HTTP response used to render the page or return an error.
+ * @param {NextFunction} next - Express callback used to forward processed errors.
+ * @returns {Promise<void>} Resolves when the request has been handled.
  */
 export async function getEditFinancialEligibilityBenefits(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
@@ -221,7 +226,12 @@ export async function getEditFinancialEligibilityBenefits(req: Request, res: Res
 
 
 /**
+ * Handle submission from the edit financial eligibility benefits page.
  *
+ * @param {Request} req - The incoming HTTP request containing submitted form data.
+ * @param {Response} res - The HTTP response used to return the placeholder result.
+ * @param {NextFunction} next - Express callback for middleware chaining.
+ * @returns {Promise<void>} Resolves when the request has been handled.
  */
 export async function postEditFinancialEligibilityBenefits(req: Request, res: Response, next: NextFunction): Promise<void> {
   console.log('dummy page handler for edit financial eligibility benefits, value:', req.body);
