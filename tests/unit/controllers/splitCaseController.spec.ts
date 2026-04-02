@@ -17,7 +17,7 @@ import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import type { Request, Response } from 'express';
-import { getSplitThisCaseForm, getAboutNewCaseForm, submitAboutNewCaseForm } from '#src/scripts/controllers/splitCaseController.js';
+import { getSplitThisCaseForm, getAboutNewCaseForm, submitAboutNewCaseForm, getCheckSplitCaseAnswersForm, submitCheckSplitCaseAnswersForm } from '#src/scripts/controllers/splitCaseController.js';
 import { apiService } from '#src/services/apiService.js';
 import { validateAboutNewCase } from '#src/middlewares/aboutNewCaseSchema.js';
 import type { ValidationChain } from 'express-validator';
@@ -55,6 +55,7 @@ describe('Split Case Controller', () => {
       body: {},
       session: {} as any,
       axiosMiddleware: {} as any,
+      query: {},
       csrfToken: () => 'test-csrf-token'
     } as Partial<RequestWithMiddleware>;
 
@@ -102,7 +103,7 @@ describe('Split Case Controller', () => {
       expect(renderStub.called).to.be.true;
       expect(
         renderStub.calledWith(
-          'case_details/split-this-case.njk',
+          'case_details/split_case/split-this-case.njk',
           sinon.match({
             caseReference: 'TEST123',
             client: mockClientData,
@@ -175,6 +176,8 @@ describe('Split Case Controller', () => {
         axiosMiddleware: {},
         session: {},
         csrfToken: () => 'test-token',
+        query: {},
+        // Extend the Express session interface to support dynamic namespaces
         clientData: {
           fullName: 'John Doe',
           caseReference: 'TEST123',
@@ -283,7 +286,7 @@ describe('Split Case Controller', () => {
           name: 'Provider X',
           law_category: [
             { code: 'family', name: 'Family' },
-            { code: 'crime', name: 'Crime/Criminal Law' }
+            { code: 'crime', name: 'Crime/Criminal law' }
           ]
         }
       });
@@ -341,6 +344,7 @@ describe('Split Case Controller', () => {
         params: { caseReference: 'TEST123' },
         axiosMiddleware: {},
         session: {},
+        query: {},
         csrfToken: () => 'test-token',
         clientData: {
           fullName: 'John Doe',
@@ -386,7 +390,7 @@ describe('Split Case Controller', () => {
           name: 'Provider X',
           law_category: [
             { code: 'housing', name: 'Housing, eviction and homelessness' },
-            { code: 'crime', name: 'Crime/Criminal Law' }
+            { code: 'crime', name: 'Crime/criminal law' }
           ]
         }
       });
@@ -415,7 +419,7 @@ describe('Split Case Controller', () => {
       // Expect crime category
       const debt = renderData.categoryItems.find((i: any) => i.value === 'crime');
       expect(debt).to.exist;
-      expect(debt.text).to.equal('Crime/Criminal Law');
+      expect(debt.text).to.equal('Crime/criminal law');
       expect(debt.selected).to.equal(false);
 
       expect(renderData.categoryItems).to.have.length(3);
@@ -444,7 +448,7 @@ describe('Split Case Controller', () => {
           name: 'Provider X',
           law_category: [
             { code: 'housing', name: 'Housing, eviction and homelessness' },
-            { code: 'crime', name: 'Crime/Criminal Law' }
+            { code: 'crime', name: 'Crime/criminal law' }
           ]
         }
       });
@@ -472,7 +476,7 @@ describe('Split Case Controller', () => {
       // Expect crime category
       const debt = renderData.categoryItems.find((i: any) => i.value === 'crime');
       expect(debt).to.exist;
-      expect(debt.text).to.equal('Crime/Criminal Law');
+      expect(debt.text).to.equal('Crime/criminal law');
       expect(debt.selected).to.equal(false);
       expect(renderData.categoryItems).to.have.length(3);
 
@@ -499,7 +503,7 @@ describe('Split Case Controller', () => {
           name: 'Provider X',
           law_category: [
             { code: 'housing', name: 'Housing, eviction and homelessness' },
-            { code: 'crime', name: 'Crime/Criminal Law' }
+            { code: 'crime', name: 'Crime/criminal law' }
           ]
         }
       });
@@ -528,7 +532,7 @@ describe('Split Case Controller', () => {
       // Expect crime category
       const debt = renderData.categoryItems.find((i: any) => i.value === 'crime');
       expect(debt).to.exist;
-      expect(debt.text).to.equal('Crime/Criminal Law');
+      expect(debt.text).to.equal('Crime/criminal law');
       expect(debt.selected).to.equal(false);
       expect(renderData.categoryItems).to.have.length(3);
 
@@ -553,7 +557,7 @@ describe('Split Case Controller', () => {
           name: 'Provider X',
           law_category: [
             { code: 'housing', name: 'Housing, eviction and homelessness' },
-            { code: 'crime', name: 'Crime/Criminal Law' }
+            { code: 'crime', name: 'Crime/criminal law' }
           ]
         }
       });
@@ -581,7 +585,7 @@ describe('Split Case Controller', () => {
       // Expect crime category
       const debt = renderData.categoryItems.find((i: any) => i.value === 'crime');
       expect(debt).to.exist;
-      expect(debt.text).to.equal('Crime/Criminal Law');
+      expect(debt.text).to.equal('Crime/criminal law');
       expect(debt.selected).to.equal(false);
       expect(renderData.categoryItems).to.have.length(3);
 
@@ -608,7 +612,7 @@ describe('Split Case Controller', () => {
           name: 'Provider X',
           law_category: [
             { code: 'housing', name: 'Housing, eviction and homelessness' },
-            { code: 'crime', name: 'Crime/Criminal Law' }
+            { code: 'crime', name: 'Crime/criminal law' }
           ]
         }
       });
@@ -617,7 +621,200 @@ describe('Split Case Controller', () => {
       res.redirect = redirectStub;
 
       await submitAboutNewCaseForm(req, res, next);
-      expect(res.redirect.calledWith('/cases/TEST123/about-new-case')).to.be.true;
+      expect(res.redirect.calledWith('/cases/TEST123/check-split-case-answers')).to.be.true;
+    });
+  });
+
+  describe('getCheckSplitCaseAnswersForm', () => {
+    // Arrange
+    let req: any;
+    let res: any;
+    let next: sinon.SinonStub;
+
+    beforeEach(() => {
+      req = {
+        params: { caseReference: 'TEST123' },
+        axiosMiddleware: {},
+        query: {},
+        session: {
+          splitCaseCache: {
+            category: 'housing',
+            internal: 'true',
+            notes: 'Split required due to change in circumstances'
+          }
+        },
+        csrfToken: () => 'test-token',
+        clientData: {
+          caseReference: 'TEST123',
+          providerId: '20'
+        }
+      };
+
+      res = {
+        render: sinon.stub(),
+        redirect: sinon.stub(),
+        status: sinon.stub().returnsThis()
+      };
+
+      next = sinon.stub();
+    });
+
+    afterEach(() => sinon.restore());
+
+    it('should render check split case answers page with correct template and view model', async () => {
+      // Act
+      await getCheckSplitCaseAnswersForm(req, res, next);
+
+      // Assert
+      expect(res.render.calledOnce).to.be.true;
+      expect(
+        res.render.calledWith(
+          'case_details/split_case/check-split-case-answers.njk',
+          sinon.match({
+            caseReference: 'TEST123',
+            splitCaseCache: sinon.match({
+              category: 'housing',
+              internal: 'true',
+              notes: 'Split required due to change in circumstances'
+            }),
+            client: sinon.match({
+              caseReference: 'TEST123',
+              providerId: '20'
+            }),
+            errorState: sinon.match({
+              hasErrors: false,
+              errors: [],
+              fieldErrors: {}
+            }),
+            csrfToken: 'test-token'
+          })
+        )
+      ).to.be.true;
+
+      expect(next.called).to.be.false;
+    });
+
+    it('should call next with error when render throws', async () => {
+      // Arrange
+      const renderError = new Error('Template rendering failed');
+      res.render = sinon.stub().throws(renderError);
+
+      // Act
+      await getCheckSplitCaseAnswersForm(req, res, next);
+
+      // Assert
+      expect(next.calledOnce).to.be.true;
+      const err = next.firstCall.args[0];
+      expect(err).to.be.instanceOf(Error);
+    });
+  });
+
+  describe('submitCheckSplitCaseAnswersForm', () => {
+    // Arrange
+    let req: any;
+    let res: any;
+    let next: sinon.SinonStub;
+    let submitSplitCaseStub: sinon.SinonStub;
+
+    beforeEach(() => {
+      req = {
+        params: { caseReference: 'TEST123' },
+        axiosMiddleware: {},
+        session: {
+          splitCaseCache: {
+            category: 'housing',
+            internal: 'true',
+            notes: 'Split required due to change in circumstances'
+          }
+        },
+        csrfToken: () => 'test-token',
+        clientData: {
+          caseReference: 'TEST123',
+          providerId: '20'
+        }
+      };
+
+      res = {
+        render: sinon.stub(),
+        redirect: sinon.stub(),
+        status: sinon.stub().returnsThis()
+      };
+
+      next = sinon.stub();
+
+      submitSplitCaseStub = sinon.stub(apiService, 'submitSplitCase');
+    });
+
+    afterEach(() => sinon.restore());
+
+    it('should submit split case and redirect to client details page', async () => {
+      // Arrange
+      submitSplitCaseStub.resolves({
+        status: 'success',
+        data: {}
+      });
+
+      // Act
+      await submitCheckSplitCaseAnswersForm(req, res, next);
+
+      // Assert
+      expect(submitSplitCaseStub.calledOnceWithExactly(
+        req.axiosMiddleware,
+        'TEST123',
+        {
+          category: 'housing',
+          internal: true,
+          notes: 'Split required due to change in circumstances'
+        }
+      )).to.be.true;
+
+      expect(res.redirect.calledOnceWithExactly('/cases/TEST123/client-details')).to.be.true;
+      expect(next.called).to.be.false;
+    });
+
+    it('should call next with error when API returns error status', async () => {
+      // Arrange
+      submitSplitCaseStub.resolves({
+        status: 'error',
+        message: 'API submission failed'
+      });
+
+      // Act
+      await submitCheckSplitCaseAnswersForm(req, res, next);
+
+      // Assert
+      expect(res.redirect.called).to.be.false;
+      expect(next.calledOnce).to.be.true;
+      const err = next.firstCall.args[0];
+      expect(err).to.be.instanceOf(Error);
+    });
+
+    it('should call next with error when API throws', async () => {
+      // Arrange
+      submitSplitCaseStub.rejects(new Error('Network error'));
+
+      // Act
+      await submitCheckSplitCaseAnswersForm(req, res, next);
+
+      // Assert
+      expect(res.redirect.called).to.be.false;
+      expect(next.calledOnce).to.be.true;
+      const err = next.firstCall.args[0];
+      expect(err).to.be.instanceOf(Error);
+    });
+
+    it('should call next with error when splitCaseCache is missing required values', async () => {
+      // Arrange
+      req.session.splitCaseCache = undefined;
+
+      // Act
+      await submitCheckSplitCaseAnswersForm(req, res, next);
+
+      // Assert
+      expect(submitSplitCaseStub.called).to.be.false;
+      expect(res.redirect.called).to.be.false;
+      expect(next.calledOnce).to.be.true;
+      expect(next.firstCall.args[0]).to.be.instanceOf(Error);
     });
   });
 });
