@@ -1,0 +1,15 @@
+name: test workflow three
+
+on:
+  push:
+    branches: ["**"]
+
+permissions: {}
+
+jobs:
+  test-three:
+    name: Test Workflow 3
+    runs-on: ubuntu-latest
+    steps:
+      - name: Simple echo
+        run: echo "This is a test workflow triggered on push to any branch."
