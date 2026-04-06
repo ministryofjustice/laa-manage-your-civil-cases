@@ -58,7 +58,7 @@ test('viewing "split this case" form should display expected elements', async ({
   await expect(radioInternalTrue).toBeVisible();
   await expect(radioInternalTrue).not.toBeChecked(); // Assert the radio button is not pre-selected
 
-  const radioInternalFalse = page.getByRole('radio', { name: 'To operator for reassignment' });
+  const radioInternalFalse = page.getByRole('radio', { name: 'The operator service' });
   await expect(radioInternalFalse).toBeVisible();
   await expect(radioInternalFalse).not.toBeChecked(); // Assert the radio button is not pre-selected
 
