@@ -2,9 +2,6 @@ name: Deploy with Helm
 
 on:
   push:
-    branches:
-      - "**"
-  workflow_dispatch: # Allows manual triggering of the workflow
 
 jobs:
   code-linting:
