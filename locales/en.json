@@ -239,7 +239,8 @@
         "aboutClient": "About the client",
         "contactDetails": "Contact details",
         "thirdPartyContact": "Third party contact",
-        "clientSupportNeeds": "Client support needs"
+        "clientSupportNeeds": "Client support needs",
+        "clientAbuseRisk": "Risk of abuse"
       },
       "buttons": {
         "label": "Change status",
@@ -544,6 +545,11 @@
           "tooLongNotes": "Notes must be 255 characters or less"
         }
       },
+      "riskOfAbuse": {
+        "pageTitleChange": "Change client risk of abuse – {caseReference} – {serviceName} – GOV.UK",
+        "h1": "Is the client at risk of abuse?",
+        "textInfo": "Guidance on abuse is in the Civil Legal Advice: Protection of Children, Young People & Adults at Risk of Abuse Policy, Guidance & Procedures."
+      },
       "thirdParty": {
         "addPage": {
           "pageTitleAdd": "Add a third party contact – {caseReference} – {serviceName} – GOV.UK",
@@ -607,7 +613,8 @@
       "changeThirdPartyContact": "Change Third party contact details",
       "removeThirdPartyContact": "Remove Third party contact details",
       "changeSupportNeeds": "Change Client support needs",
-      "removeSupportNeeds": "Remove Client support needs"
+      "removeSupportNeeds": "Remove Client support needs",
+      "changeRiskOfAbuse": "Change Client risk of abuse"
     }
   }
 }

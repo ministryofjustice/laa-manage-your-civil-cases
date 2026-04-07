@@ -18,7 +18,9 @@ import {
   getAddClientSupportNeeds,
   postAddClientSupportNeeds,
   getEditClientSupportNeeds,
-  postEditClientSupportNeeds
+  postEditClientSupportNeeds,
+  getEditRiskOfAbuse,
+  postEditRiskOfAbuse
 } from '#src/scripts/controllers/index.js';
 
 import {
@@ -61,4 +63,11 @@ router.post('/:caseReference/client-details/add/support-need', validateAddClient
 
 router.get('/:caseReference/client-details/change/support-need', getEditClientSupportNeeds);
 router.post('/:caseReference/client-details/change/support-need', validateEditClientSupportNeeds(), postEditClientSupportNeeds);
+
+router.get('/:caseReference/client-details/change/support-need', getEditClientSupportNeeds);
+router.post('/:caseReference/client-details/change/support-need', validateEditClientSupportNeeds(), postEditClientSupportNeeds);
+
+router.get('/:caseReference/client-details/change/risk-of-abuse', getEditRiskOfAbuse);
+router.post('/:caseReference/client-details/change/risk-of-abuse', postEditRiskOfAbuse);
+
 export default router;
