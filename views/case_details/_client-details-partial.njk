@@ -69,9 +69,12 @@
   {% endif %}
 {% endset %}
 
+{% set clientRiskOfAbuse = t('common.yes') if data.vulnerableUser else t('common.no') %}
+
 {# Create enhanced data object with computed phone content #}
 {% set constructedData = {
   fullName: data.fullName,
+  clientRiskOfAbuse: clientRiskOfAbuse,
   dateOfBirth: data.dateOfBirth,
   email: data.emailAddress,
   phoneNumber: data.phoneNumber,
@@ -133,6 +136,32 @@
   ]
 }) }}
 
+{# Client risk of abuse summary card #}
+  {{ summaryCardComponent({
+    data: constructedData,
+    card: {
+      id: "client-risk-of-abuse",
+      title: {
+        text: t('pages.caseDetails.clientDetails.clientAbuseRisk')
+      },
+      actions: {
+        items: [
+          {
+            href: "/cases/" + data.caseReference + "/client-details/change/risk-of-abuse",
+            text: t('common.change'),
+            visuallyHiddenText: t('accessibility.visuallyHiddenText.changeRiskOfAbuse')
+          }
+        ]
+      }
+    },
+    rows: [
+      {
+        label: t('forms.clientDetails.riskOfAbuse.h1'),
+        key: "clientRiskOfAbuse"
+      }
+    ]
+  }) }}
+
 {# Contact Details summary card #}
 {{ summaryCardComponent({
   data: constructedData,
@@ -186,7 +215,7 @@
   ]
 }) }}
 
-{% if (not data.clientSupportNeeds.no_adaptations_required or data.clientSupportNeeds.notes or data.clientSupportNeeds.languageSupportNeeds) and (not data.clientSupportNeeds.skype and not data.clientSupportNeeds.minicom) %}
+{% if showClientSupportNeeds %}
   {# Client support needs summary card #}
   {{ summaryCardComponent({
     data: constructedData,

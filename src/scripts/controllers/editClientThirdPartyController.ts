@@ -19,9 +19,7 @@ import {
   validCaseReference
 } from '#src/scripts/helpers/index.js';
 import { apiService } from '#src/services/apiService.js';
-
-// HTTP Status codes
-const INTERNAL_SERVER_ERROR = 500;
+import { HTTP } from '#src/services/api/base/constants.js';
 
 /**
  * Extracts and formats third-party client data from a record object
@@ -153,8 +151,8 @@ export async function postEditClientThirdParty(req: Request, res: Response, next
       res.redirect(`/cases/${caseReference}/client-details`);
     } else {
       devError(`Failed to update third party contact for case: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);
-      res.status(INTERNAL_SERVER_ERROR).render('main/error.njk', {
-        status: '500',
+      res.status(HTTP.INTERNAL_SERVER_ERROR).render('main/error.njk', {
+        status: String(HTTP.INTERNAL_SERVER_ERROR),
         error: response.message ?? 'Failed to update third party contact'
       });
     }

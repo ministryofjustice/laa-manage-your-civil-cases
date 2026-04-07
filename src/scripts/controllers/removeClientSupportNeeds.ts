@@ -3,8 +3,6 @@ import { apiService } from '#src/services/apiService.js';
 import { devLog, devError, createProcessedError, safeString, validCaseReference, isRecord, hasProperty } from '#src/scripts/helpers/index.js';
 import { HTTP } from '#src/services/api/base/constants.js';
 
-const INTERNAL_SERVER_ERROR = 500;
-
 /**
  * Handle GET request for remove client support needs confirmation page
  * @param {Request} req Express request object
@@ -73,8 +71,8 @@ export async function deleteClientSupportNeeds(req: Request, res: Response, next
       res.redirect(`/cases/${caseReference}/client-details`);
     } else {
       devError(`Failed to remove client support needs for case: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);
-      res.status(INTERNAL_SERVER_ERROR).render('main/error.njk', {
-        status: '500',
+      res.status(HTTP.INTERNAL_SERVER_ERROR).render('main/error.njk', {
+        status: String(HTTP.INTERNAL_SERVER_ERROR),
         error: response.message ?? 'Failed to remove client support needs'
       });
     }

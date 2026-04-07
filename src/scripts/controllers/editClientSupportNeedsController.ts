@@ -21,9 +21,7 @@ import {
 } from '#src/scripts/helpers/index.js';
 import { apiService } from '#src/services/apiService.js';
 import languages from '#views/case_details/client_support_needs/languages.json' with { type: 'json' };
-
-// HTTP Status codes
-const INTERNAL_SERVER_ERROR = 500;
+import { HTTP } from '#src/services/api/base/constants.js';
 
 /**
  * Renders the edit client support needs form for a given case reference.
@@ -125,8 +123,8 @@ export async function postEditClientSupportNeeds(req: Request, res: Response, ne
       res.redirect(`/cases/${caseReference}/client-details`);
     } else {
       devError(`Failed to update client support needs for case: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);
-      res.status(INTERNAL_SERVER_ERROR).render('main/error.njk', {
-        status: '500',
+      res.status(HTTP.INTERNAL_SERVER_ERROR).render('main/error.njk', {
+        status: String(HTTP.INTERNAL_SERVER_ERROR),
         error: response.message ?? 'Failed to update client support needs'
       });
     }

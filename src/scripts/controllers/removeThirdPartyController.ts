@@ -42,13 +42,12 @@ function handleCachedThirdPartyCheck(
 
   // Case 3: Cache miss → render 500 (expired session or server issue)
   devError(`Cache miss for case: ${caseReference} - session expired or invalid`);
-  res.status(INTERNAL_SERVER_ERROR).render('main/error.njk', {
-    status: '500',
+  res.status(HTTP.INTERNAL_SERVER_ERROR).render('main/error.njk', {
+    status: String(HTTP.INTERNAL_SERVER_ERROR),
     error: 'Session expired or invalid. Please reload the case details page.'
   });
 }
 
-const INTERNAL_SERVER_ERROR = 500;
 
 /**
  * Render the remove third party confirmation page
@@ -109,8 +108,8 @@ export async function deleteThirdParty(req: Request, res: Response, next: NextFu
       res.redirect(`/cases/${caseReference}/client-details`);
     } else {
       devError(`Failed to remove third party contact for case: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);
-      res.status(INTERNAL_SERVER_ERROR).render('main/error.njk', {
-        status: '500',
+      res.status(HTTP.INTERNAL_SERVER_ERROR).render('main/error.njk', {
+        status: String(HTTP.INTERNAL_SERVER_ERROR),
         error: response.message ?? 'Failed to remove third party contact'
       });
     }

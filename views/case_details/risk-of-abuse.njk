@@ -1,0 +1,71 @@
+{% extends "case_details/_base-case-change.njk" %}
+
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "components/errorSummaryComponent.njk" import errorSummary %}
+{% from "components/alertBannerComponent.njk" import alertBannerComponent %}
+
+{% block pageTitle %}{{ t('forms.clientDetails.riskOfAbuse.pageTitleChange', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
+{% endblock %}
+
+{% block errorSummaryOrAlert %}
+  {% if errorState.hasErrors %}
+    {{ errorSummary(errorState.errors, t('common.errorSummaryTitle')) }}
+  {% else %}
+    {{ alertBannerComponent(client) }}
+  {% endif %}
+{% endblock %}
+
+{% set clientRiskOfAbuse = 'true' if client.vulnerableUser else 
+  'false' %}
+
+{% block formContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form method="POST" action="/cases/{{ caseReference }}/client-details/change/risk-of-abuse" autocomplete="off">
+
+        <!-- CSRF Protection -->
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+        <input type="hidden" name="existingRiskOfAbuse" value="{{ clientRiskOfAbuse }}">
+
+        <h2 class="govuk-heading-l">{{ t('forms.clientDetails.riskOfAbuse.h1') }}</h2>
+
+        <p class="govuk-body">{{ t('forms.clientDetails.riskOfAbuse.textInfo') }}
+        </p>
+
+        {{ govukRadios({
+          name: "clientRiskOfAbuse",
+          errorMessage: errorState.fieldErrors.internal,
+          fieldset: {
+            legend: {
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--s"
+            }
+          },
+          items: [
+            {
+              value: "true",
+              text: t('common.yes'),
+              checked: riskOfAbuse.internal == "true"
+            },
+            {
+              value: "false",
+              text: t('common.no'),
+              checked: riskOfAbuse.internal == "false"
+            }
+          ]
+        }) }}
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: t('common.save')
+          }) }}
+          <a class="govuk-link" href="/cases/{{ caseReference }}/client-details">{{ t('common.cancel') }}</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
