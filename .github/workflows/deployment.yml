@@ -1,15 +1,194 @@
-name: test workflow three
+name: Deploy with Helm
 
 on:
   push:
     branches: ["**"]
 
-permissions: {}
-
 jobs:
-  test-three:
-    name: Test Workflow 3
+  code-linting:
+    name: Code Linting
     runs-on: ubuntu-latest
     steps:
-      - name: Simple echo
-        run: echo "This is a test workflow triggered on push to any branch."
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Reuseable Set up app
+        uses: ./.github/actions/set_up_app
+
+      - name: Run ESLint
+        run: yarn lint
+
+  code-security-audit:
+    name: Code Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        
+      - name: Reuseable Set up app
+        uses: ./.github/actions/set_up_app
+
+      - name: Run security audit
+        run: yarn npm audit
+
+  snyk:
+    name: Snyk Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Build local Docker image
+        working-directory: ${{ github.workspace }}
+        run: |
+          docker build -t laa-manage-your-civil-cases ./
+          docker save laa-manage-your-civil-cases -o image.tar
+
+      - name: Run Snyk to scan Docker image from tarball
+        uses: snyk/actions/docker@master
+        with:
+          image: image.tar
+          args: --docker --severity-threshold=high
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+  build-image:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Set up AWS credentials for ECR and Kubernetes
+        uses: aws-actions/configure-aws-credentials@8df5847569e6427dd6c4fb1cf565c83acfa8afa7 # v6.0.0
+        with:
+          role-to-assume: ${{ secrets.ECR_ROLE_TO_ASSUME }}
+          aws-region: ${{ vars.ECR_REGION }}
+
+      - uses: aws-actions/amazon-ecr-login@261fc3d4806db1fa66a15cc11113c456db8870a7 # v2.1.0
+        id: login-ecr
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4.0.0
+        with:
+          driver: docker-container
+          name: docker-builder
+
+      - name: Cache Docker layers
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Build and push image with local action
+        uses: ./.github/actions/build_and_push
+        with:
+          image_registry: ${{ secrets.ECR_REGISTRY_URL }}
+          image_repo: ${{ vars.ECR_REPOSITORY }}
+          dockerfile_path: Dockerfile
+          image_tag: ${{ github.sha }}
+          builder: docker-builder
+
+  mocha-unit-tests:
+    name: Mocha Unit Tests
+    uses: ./.github/workflows/mocha.yml
+    needs:
+      - build-image
+    # Only run tests when deploying to UAT
+    if: success() && github.event_name != 'workflow_dispatch' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'uat' || github.event.inputs.environment == null)
+
+  playwright:
+    name: Playwright Tests
+    uses: ./.github/workflows/playwright.yml
+    needs:
+      - build-image
+    # Only run tests when deploying to UAT
+    if: success() && github.event_name != 'workflow_dispatch' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'uat' || github.event.inputs.environment == null)
+
+  deploy-uat:
+    environment: uat
+    runs-on: ubuntu-latest
+    needs:
+      - code-linting
+      - code-security-audit
+      - snyk
+      - build-image
+      - mocha-unit-tests
+      - playwright
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Deploy to UAT
+        uses: ./.github/actions/deploy
+        with:
+          app-environment: uat
+          ecr-repository: ${{ vars.ECR_REPOSITORY }}
+          ecr-registry_url: ${{ secrets.ECR_REGISTRY_URL }}
+          kube-cert: ${{ secrets.KUBE_CERT }}
+          kube-token: ${{ secrets.KUBE_TOKEN }}
+          kube-cluster: ${{ secrets.KUBE_CLUSTER }}
+          kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
+          session_secret: ${{ secrets.SESSION_SECRET }}
+          session_encryption_key: ${{ secrets.SESSION_ENCRYPTION_KEY }}
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          api_client_id: ${{ secrets.API_CLIENT_ID }}
+          api_client_secret: ${{ secrets.API_CLIENT_SECRET }}
+  
+  deploy-staging:
+    environment: staging
+    runs-on: ubuntu-latest
+    needs: deploy-uat
+    if: github.ref_name == 'main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Deploy to staging
+        uses: ./.github/actions/deploy
+        with:
+          app-environment: staging
+          ecr-repository: ${{ vars.ECR_REPOSITORY }}
+          ecr-registry_url: ${{ secrets.ECR_REGISTRY_URL }}
+          kube-cert: ${{ secrets.KUBE_CERT }}
+          kube-token: ${{ secrets.KUBE_TOKEN }}
+          kube-cluster: ${{ secrets.KUBE_CLUSTER }}
+          kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
+          session_secret: ${{ secrets.SESSION_SECRET }}
+          session_encryption_key: ${{ secrets.SESSION_ENCRYPTION_KEY }}
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          api_client_id: ${{ secrets.API_CLIENT_ID }}
+          api_client_secret: ${{ secrets.API_CLIENT_SECRET }}
+
+  deploy-production:
+    environment: production
+    runs-on: ubuntu-latest
+    needs: deploy-staging
+    if: github.ref_name == 'main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Deploy to production
+        uses: ./.github/actions/deploy
+        with:
+          app-environment: production
+          ecr-repository: ${{ vars.ECR_REPOSITORY }}
+          ecr-registry_url: ${{ secrets.ECR_REGISTRY_URL }}
+          kube-cert: ${{ secrets.KUBE_CERT }}
+          kube-token: ${{ secrets.KUBE_TOKEN }}
+          kube-cluster: ${{ secrets.KUBE_CLUSTER }}
+          kube-namespace: ${{ secrets.KUBE_NAMESPACE }}
+          session_secret: ${{ secrets.SESSION_SECRET }}
+          session_encryption_key: ${{ secrets.SESSION_ENCRYPTION_KEY }}
+          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          api_client_id: ${{ secrets.API_CLIENT_ID }}
+          api_client_secret: ${{ secrets.API_CLIENT_SECRET }}
