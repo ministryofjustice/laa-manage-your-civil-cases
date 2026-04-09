@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.get('/:caseReference/financial-eligibility', getFinancialEligibilityDetailsTab);
 
-router.get('/:caseReference/financial-eligibility/:question', getFinancialEligibilityFieldsForm)
+router.get('/:caseReference/financial-eligibility/:page', getFinancialEligibilityFieldsForm)
 router.post('/:caseReference/financial-eligibility/form', postFinancialEligibilityFieldsForm);
 
 export default router;

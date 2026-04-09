@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
 import { handleGetEditForm, handlePostEditForm, extractFormFields } from '#src/scripts/helpers/index.js';
 import { format } from 'node:path';
-import { getFormQuestion, getNextFormForEligibilityCheck } from '../helpers/financialEligibility.js';
+import { getQuestionsForPage, getNextFormForEligibilityCheck } from '../helpers/financialEligibility.js';
 import type { EligibilityCheck } from '#types/case-types.js';
 
 
@@ -30,7 +30,13 @@ export async function getFinancialEligibilityDetailsTab(req: Request, res: Respo
  * @returns {Promise<void>} A promise that resolves when the form is rendered
  */
 export async function getFinancialEligibilityFieldsForm(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const question = req.params.question as string;
+    const page = req.params.page as string;
+
+    const questions = getQuestionsForPage(page);
+    if (!questions) {
+        res.status(404).send('Page not found');
+        return;
+    }
 
     await handleGetEditForm(req, res, next, {
         templatePath: `case_details/financial_eligibility/form.njk`,
@@ -42,13 +48,11 @@ export async function getFinancialEligibilityFieldsForm(req: Request, res: Respo
         dataExtractor: (apiData: unknown): Record<string, unknown> => {
             return {
                 apiData,
-                ...{questions: [
-                    {
-                        fieldName: getFormQuestion(question).fieldName,
-                        legendText: getFormQuestion(question).legendText,
-                        type: getFormQuestion(question).type
-                    }
-                ]},
+                ...{questions: questions.map(question => ({
+                    fieldName: question.fieldName,
+                    legendText: question.legendText,
+                    type: question.type
+                }))},
                 formAction: '/cases/' + req.params.caseReference + '/financial-eligibility/form',
             };
         }
@@ -82,7 +86,7 @@ export async function postFinancialEligibilityFieldsForm(req: Request, res: Resp
             dependants_young: 0,
             dependants_old: 0,
             is_you_or_your_partner_over_60: false,
-            has_partner: false,
+            has_partner: true,
             on_passported_benefits: false,
             on_nass_benefits: false,
             state: 'in_progress',
@@ -90,7 +94,7 @@ export async function postFinancialEligibilityFieldsForm(req: Request, res: Resp
             disregards: {} as EligibilityCheck['disregards'],
             has_passported_proceedings_letter: false,
             under_18_passported: false,
-            is_you_under_18: true,
+            is_you_under_18: false,
             under_18_receive_regular_payment: false,
             under_18_has_valuables: false
         } as EligibilityCheck

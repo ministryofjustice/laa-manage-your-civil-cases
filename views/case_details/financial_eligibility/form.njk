@@ -60,10 +60,47 @@
                         ]
                         })
                     }}
-                {% elseif question.type == "checkboxes" %}
-                    {{ govukCheckboxes(question) }}
-                {% elseif question.type == "input" %}
-                    {{ govukInput(question) }}
+                {% elseif question.type == "value_per_interval" %}
+                    {{ govukInput({
+                        name: question.fieldName,
+                        label: {
+                            text: question.legendText,
+                            classes: "govuk-label--l"
+                        },
+                        hint: {
+                            text: "Enter an amount in pounds"
+                        },
+                        prefix: "£",
+                        type: "number",
+                        attributes: {
+                            step: "0.01",
+                            min: "0"
+                        }
+                    }) }}
+                    {{ govukRadios({
+                        name: question.fieldName + "_interval",
+                        fieldset: {
+                            legend: {
+                                text: "Select the interval for this amount",
+                                classes: "govuk-fieldset__legend--l"
+                            }
+                        },
+                        items: [
+                            {
+                                value: "per_week",
+                                text: "Per week"
+                            },
+                            {
+                                value: "per_month",
+                                text: "Per month"
+                            },
+                            {
+                                value: "per_year",
+                                text: "Per year"
+                            }
+                        ]
+                        })
+                     }}
                 {% endif %}
             {% endfor%}
             
