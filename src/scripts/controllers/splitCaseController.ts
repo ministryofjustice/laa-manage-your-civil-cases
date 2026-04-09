@@ -173,7 +173,7 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
 
     let categoryItems: { value: string; text: string; selected: boolean }[] = [];
 
-    const operatorSelection = req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && req.session.splitCaseCache.internal === 'false';
+    const operatorSelection = req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && effectiveInternal === 'false';
 
     if (operatorSelection) {
 
@@ -366,7 +366,6 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
   } else {
     req.session.splitCaseCache = {};
   }
-
 
   return res.redirect(`/cases/${caseReference}/check-split-case-answers`);
 }
