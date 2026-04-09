@@ -3,6 +3,7 @@ import type { Request, Response, NextFunction } from 'express';
 import yourCasesRouter from './yourCases.js';
 import caseDetailsRouter from './caseDetails.js';
 import editClientDetailsRouter from './editClientDetails.js';
+import financialEligibilityRouter from './financialEligibility.js';
 import searchRouter from './search.js';
 import loginRouter from './login.js';
 import { requireAuth } from '#src/middlewares/indexSetUp.js';
@@ -32,9 +33,11 @@ router.use('/cases', requireAuth, caseDetailsRouter);
 // Mount the edit client details routes (auth required)
 router.use('/cases', requireAuth, editClientDetailsRouter);
 
+router.use('/cases', requireAuth, financialEligibilityRouter);
+
+
 // Mount the search routes (auth required)
 router.use('/search', requireAuth, searchRouter);
-
 /* GET liveness and readiness probes for Helm deployments */
 router.get('/status', (req: Request, res: Response): void => {
   res.status(SUCCESSFUL_REQUEST).send('OK');

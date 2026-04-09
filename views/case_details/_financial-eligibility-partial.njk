@@ -1,54 +1,93 @@
 {% from "components/summaryCardComponent.njk" import summaryCardComponent %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/tabs/macro.njk" import govukTabs %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
 
-{{ govukWarningText({
-      text: t('forms.clientDetails.phoneNumber.notSafeToCallWarning'),
-      iconFallbackText: t.common.warning
-    }) }}
 
-{{ govukWarningText({
-        text: t('forms.clientDetails.phoneNumber.notSafeToCallWarning'),
-        iconFallbackText: t.common.warning
-      }) }}
+{% set changeHtml %}
+  <a href="/cases/{{ caseReference }}/financial-eligibility/form">Change</a>
+{% endset %}
 
-<h2 class="govuk-heading-m">{{ t('pages.caseDetails.tabs.clientDetails') }}</h2>
+{% set detailsHtml %}
+  {{ govukTable({
+    caption: "About you",
+    captionClasses: "govuk-table__caption--m",
+    firstCellIsHeader: false,
+    rows: [
+      [
+        {
+          text: "Around you aged 17 or under?"
+        },
+        {
+          text: "No"
+        },
+        {
+          html: changeHtml
+        }
+      ],
+      [
+        {
+          text: "Do you have a partner?"
+        },
+        {
+          text: "No"
+        }
+      ],
+      [
+        {
+          text: "Are you  aged 60 or over?"
+        },
+        {
+          text: "No"
+        }
+      ]
+    ]
+  }) }}
+{% endset -%}
 
-{% set constructedData = {
-    onPassportedBenefits: "No",
-    onNassBenefits: "No"
-} %}
+{% set financesHtml %}
+  yada
+{% endset -%}
 
-{{ summaryCardComponent({
-  data: constructedData,
-  card: {
-    title: {
-      text: 'Benefits'
-    },
-    actions: {
-        items: [
-          {
-            href: "/cases/" + data.caseReference + "/financial-eligibility/change/benefits",
-            text: t('common.change'),
-            visuallyHiddenText: t('accessibility.visuallyHiddenText.changeSupportNeeds')
+{% set incomeHtml %}
+  yada
+{% endset -%}
+
+{% set expensesHtml %}
+  yada
+{% endset -%}
+
+{{ govukTabs({
+    id: "about-you-tabs",
+    items: [
+      {
+          label: "Details",
+          id: "details",
+          panel: {
+              html: detailsHtml
           }
-        ]
-    }
-  },
-  rows: [
-    {
-      label: 'On Passported Benefits',
-      html: true,
-      key: "onPassportedBenefits"
-    },
-    {
-      label: 'On Nass Benefits',
-      html: true,
-      key: "onNassBenefits"
-    }
-  ]
+      },
+      {
+          label: "Finances",
+          id: "finances",
+          panel: {
+              html: financesHtml
+          }
+      },
+      {
+          label: "Income",
+          id: "income",
+          panel: {
+              html: incomeHtml
+          }
+      },
+      {
+          label: "Expenses",
+          id: "expenses",
+          panel: {
+              html: expensesHtml
+          }
+      }
+    ]
 }) }}
-
-
-
-yada

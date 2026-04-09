@@ -1,0 +1,94 @@
+{% extends "base.njk" %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/tag/macro.njk" import govukTag %}
+{% from "moj/components/button-menu/macro.njk" import mojButtonMenu %}
+{% from "components/caseDetailsHeaderComponent.njk" import caseDetailsHeaderComponent %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "components/errorSummaryComponent.njk" import errorSummary %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "x-govuk/components/autocomplete/macro.njk" import xGovukAutocomplete %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "components/alertBannerComponent.njk" import alertBannerComponent %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+
+{% set backLinkHref = "/cases/" + caseReference + "/client-details" %}
+
+{% block backLink %}
+  {{ govukBackLink({
+      text: t('common.back'),
+      href: backLinkHref,
+      classes: "govuk-!-margin-bottom-0"
+    }) }}
+{% endblock %}
+
+{% block pageContent %}
+  {{ caseDetailsHeaderComponent(client, hideStatusButton = true) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">{{ t(headingKey) }}</legend>
+
+        <form method="post" action="{{ formAction }}">
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+
+            {% for question in questions %}
+                {% if question.type == "yes_or_no" %}
+                    {{ govukRadios({
+                        name: question.fieldName,
+                        fieldset: {
+                            legend: {
+                            text: question.legendText,
+                            classes: "govuk-fieldset__legend--l"
+                            }
+                        },
+                        hint: {
+                            text: "Select one option"
+                        },
+                        items: [
+                            {
+                                value: "yes",
+                                text: "Yes"
+                            },
+                            {
+                                value: "no",
+                                text: "No"
+                            }
+                        ]
+                        })
+                    }}
+                {% elseif question.type == "checkboxes" %}
+                    {{ govukCheckboxes(question) }}
+                {% elseif question.type == "input" %}
+                    {{ govukInput(question) }}
+                {% endif %}
+            {% endfor%}
+
+            {% set onPassportedBenefitsYesHtml %}
+                {{ govukButton({
+                    text: "Save and continue",
+                    name: "saveAndContinue",
+                    value: "true"
+                    }) }}
+            {% endset -%}
+            
+            <div class="govuk-button-group">
+                    {{ govukButton({
+                    text: "Save",
+                    name: "saveAndContinue",
+                    value: "false"
+                    }) }}
+                    <a class="govuk-link" href="{{ backLinkHref }}">{{ t('common.cancel') }}</a>
+                </div>
+        </form>
+    </div>
+  </div>
+
+
+    
+{% endblock %}
+
+
