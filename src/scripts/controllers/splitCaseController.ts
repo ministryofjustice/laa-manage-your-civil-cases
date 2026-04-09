@@ -158,7 +158,6 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
   const effectiveInternal =
     splitCaseCache.internalChange ?? splitCaseCache.internal;
 
-
   if (splitCaseCache.internal === splitCaseCache.internalChange) {
     category = splitCaseCache.category
     notes = splitCaseCache.notes
@@ -268,7 +267,6 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
   const effectiveInternal =
     splitCaseCache.internalChange ?? splitCaseCache.internal;
 
-
   // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -354,8 +352,6 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
     category: String(category),
     notes: String(notes)
   });
-
-
 
   if (hasSplitCaseCache(req)) {
     if (req.session.splitCaseCache.internalChange) {
