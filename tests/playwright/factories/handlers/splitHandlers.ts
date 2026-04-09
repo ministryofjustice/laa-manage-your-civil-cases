@@ -179,9 +179,9 @@ export const createSplitHandlers = (
     return http.post(`${apiBaseUrl}${apiPrefix}/case/:caseReference/mcc_split/`, async ({ params, request }) => {
       const { caseReference } = params;
       const body = (await request.json()) as {
-        category?: string;
-        internal?: boolean;
-        notes?: string;
+        category: string;
+        internal: boolean;
+        notes: string;
       };
 
       console.log(`[MSW] Intercepting POST ${apiPrefix}/case/${caseReference}/mcc_split/`);
