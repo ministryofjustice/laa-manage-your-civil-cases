@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
-import { devLog, createProcessedError, safeString, validCaseReference, formatValidationError, safeBodyString, storeSessionData, clearSessionData, t } from '#src/scripts/helpers/index.js';
+import { devLog, createProcessedError, safeString, validCaseReference, formatValidationError, safeBodyString, storeSessionData, clearSessionData, t, capitaliseFirstLetter } from '#src/scripts/helpers/index.js';
 import { validationResult } from 'express-validator';
 import type { ProviderDetail, ProviderSplitChoicesApiResponse } from '#types/api-types.js';
 import config from '#config.js';
@@ -41,17 +41,6 @@ async function fetchProviderNameAndDetail(req: Request, caseReference: string): 
   }
 
   return providerResponse.data;
-}
-
-/**
- * Function to format categories list. 
- * 
- * @param {string} str category to be capitalised. 
- * @returns {Promise<string>} String with only one capital at the start of the string. 
- */
-async function capitaliseFirstLowerRest(str: string): Promise<string> {
-  if (!str) return "";
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
 /**
@@ -142,8 +131,7 @@ export async function submitSplitThisCaseForm(req: Request, res: Response, next:
     // normal journey — save immediately
     storeSessionData(req, 'splitCaseCache', {
       caseReference,
-      internal: String(internal),
-      cachedAt: String(Date.now())
+      internal: String(internal)
     });
   } else {
     // do NOT overwrite the original yet — store in a temp key
@@ -166,37 +154,35 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
   let notes = null;
 
   const splitCaseCache = ensureSplitCaseCache(req);
-  const effectiveInternal =
-    req.session.splitCaseCache?.internalChange ??
-    req.session.splitCaseCache?.internal;
 
-  if (req.session.splitCaseCache?.internal === req.session.splitCaseCache?.internalChange) {
-    category = req.session.splitCaseCache?.category
-    notes = req.session.splitCaseCache?.notes
+  const effectiveInternal =
+    splitCaseCache.internalChange ?? splitCaseCache.internal;
+
+
+  if (splitCaseCache.internal === splitCaseCache.internalChange) {
+    category = splitCaseCache.category
+    notes = splitCaseCache.notes
   }
 
-  let assignedToName;
-  let currentProvider;
   if (!validCaseReference(caseReference, res)) {
     return;
   }
-
+  const provider = await fetchProviderNameAndDetail(req, caseReference);
+  let assignedToName;
   try {
     devLog(`Rendering about new case form for case: ${caseReference}`);
 
-    const provider = await fetchProviderNameAndDetail(req, caseReference);
-    currentProvider = provider.name
-
     let categoryItems: { value: string; text: string; selected: boolean }[] = [];
 
-    if (hasSplitCaseCache(req) && effectiveInternal === 'false') {
+    const operatorSelection = req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && req.session.splitCaseCache.internal === 'false';
+
+    if (operatorSelection) {
 
       assignedToName = t('pages.caseDetails.splitCase.operatorReassignment');
 
       const allCategoriesResponse = await apiService.getAllCategories(req.axiosMiddleware);
 
       if (allCategoriesResponse.status === 'success' && Array.isArray(allCategoriesResponse.data)) {
-
 
         categoryItems = [{
           value: '',
@@ -206,7 +192,7 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
         ...(await Promise.all(
           allCategoriesResponse.data.map(async choice => ({
             value: choice.code,
-            text: await capitaliseFirstLowerRest(
+            text: capitaliseFirstLetter(
               choice.code === "none" ? t("allCategoriesAdditions.none") : choice.name
             ),
             selected: category === choice.code
@@ -225,7 +211,7 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
         ...(await Promise.all(
           provider.law_category.map(async choice => ({
             value: choice.code,
-            text: await capitaliseFirstLowerRest(choice.name),
+            text: capitaliseFirstLetter(choice.name),
             selected: category === choice.code
           }))
         ))];
@@ -255,9 +241,8 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
   if (!hasSplitCaseCache(req)) {
     // normal journey — save immediately
     storeSessionData(req, 'splitCaseCache', {
-      currentProvider: String(currentProvider),
-      providerName: String(assignedToName),
-      cachedAt: String(Date.now())
+      currentProvider: String(provider.name),
+      providerName: String(assignedToName)
     });
   } else {
     // do NOT overwrite the original yet — store in a temp key
@@ -277,9 +262,12 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
   const category = safeBodyString(req.body, 'category');
   const notes = safeBodyString(req.body, 'notes');
 
+
+  const splitCaseCache = ensureSplitCaseCache(req);
+
   const effectiveInternal =
-    req.session.splitCaseCache?.internalChange ??
-    req.session.splitCaseCache?.internal;
+    splitCaseCache.internalChange ?? splitCaseCache.internal;
+
 
   // Check for validation errors
   const errors = validationResult(req);
@@ -307,8 +295,9 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
 
     let categoryItems: { value: string; text: string; selected: boolean }[] = [];
 
+    const operatorSelection = req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && effectiveInternal === 'false';
     // If internal is false, assign to operator was selected and the full list should be returned. 
-    if (req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && effectiveInternal === 'false') {
+    if (operatorSelection) {
 
       const allCategoriesResponse = await apiService.getAllCategories(req.axiosMiddleware);
 
@@ -322,7 +311,7 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
         ...(await Promise.all(
           allCategoriesResponse.data.map(async choice => ({
             value: choice.code,
-            text: await capitaliseFirstLowerRest(
+            text: capitaliseFirstLetter(
               choice.code === "none" ? t("allCategoriesAdditions.none") : choice.name
             ),
             selected: category === choice.code
@@ -339,7 +328,7 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
         ...(await Promise.all(
           provider.law_category.map(async choice => ({
             value: choice.code,
-            text: await capitaliseFirstLowerRest(choice.name),
+            text: capitaliseFirstLetter(choice.name),
             selected: category === choice.code
           }))
         ))];
@@ -363,25 +352,24 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
 
   storeSessionData(req, 'splitCaseCache', {
     category: String(category),
-    notes: String(notes),
-    cachedAt: String(Date.now())
+    notes: String(notes)
   });
 
 
-  
-if (hasSplitCaseCache(req)) {
-  if (req.session.splitCaseCache.internalChange) {
-    req.session.splitCaseCache.internal =
-      req.session.splitCaseCache.internalChange;
-  }
 
-  if (req.session.splitCaseCache.providerNameChange) {
-    req.session.splitCaseCache.providerName =
-      req.session.splitCaseCache.providerNameChange;
+  if (hasSplitCaseCache(req)) {
+    if (req.session.splitCaseCache.internalChange) {
+      req.session.splitCaseCache.internal =
+        req.session.splitCaseCache.internalChange;
+    }
+
+    if (req.session.splitCaseCache.providerNameChange) {
+      req.session.splitCaseCache.providerName =
+        req.session.splitCaseCache.providerNameChange;
+    }
+  } else {
+    req.session.splitCaseCache = {};
   }
-} else {
-  req.session.splitCaseCache = {};
-}
 
 
   return res.redirect(`/cases/${caseReference}/check-split-case-answers`);
