@@ -160,14 +160,22 @@ export function deleteSessionKeys(req: Request, keys: string[]): void {
   });
 }
 
-// Function to check if split case cache exists in session
+/**
+ * Boolean value if split case cache exists in session
+ * @param {Request} req - Express request object
+ * @returns {boolean} - True if split case cache exists, false otherwise
+ */
 export function hasSplitCaseCache(
   req: Request
 ): req is Request & { session: { splitCaseCache: SplitCaseCache } } {
   return Boolean(req.session && req.session.splitCaseCache);
 }
 
-
+/**
+ * Checks split case cache exists in session
+ * @param {Request} req - Express request object
+ * @returns {SplitCaseCache} - The split case cache
+ */
 export function ensureSplitCaseCache(req: Request): SplitCaseCache {
   if (!req.session) {
     throw new Error('Session is not initialised');

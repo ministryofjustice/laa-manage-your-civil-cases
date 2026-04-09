@@ -498,7 +498,6 @@ export async function submitCheckSplitCaseAnswersForm(req: Request, res: Respons
  * @returns {void} Rendered form pageIf providerId is missing or the API call fails
  */
 export async function setSplitCaseCacheSettings(req: Request, res: Response, next: NextFunction): Promise<void> {
-  const splitCaseCache = ensureSplitCaseCache(req);
   if (hasSplitCaseCache(req)) {
     req.session.splitCaseCache.fromChange = true;
   }
