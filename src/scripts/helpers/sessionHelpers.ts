@@ -9,15 +9,9 @@ export interface SessionTokenStorage {
   loginTime: number;
 }
 
-// Extend the Express session interface to support dynamic namespaces
-declare module 'express-session' {
-  interface SessionData extends Record<string, Record<string, string> | string | undefined> {
-    // This allows both specific properties and dynamic namespace access
-    authCredentials?: AuthCredentials;
-    authTokens?: SessionTokenStorage;
-    user?: UserInfo;
-    splitCaseCache?: {
-      caseReference?: string;
+// Interface for split case cache data
+export interface SplitCaseCache {
+  caseReference?: string;
       providerName?: string;
       internal?: string;
       category?: string;
@@ -26,7 +20,16 @@ declare module 'express-session' {
       fromChange?: boolean;
       internalChange?: string;
       providerNameChange?: string;
-    };
+}
+
+// Extend the Express session interface to support dynamic namespaces
+declare module 'express-session' {
+  interface SessionData extends Record<string, Record<string, string> | string | undefined> {
+    // This allows both specific properties and dynamic namespace access
+    authCredentials?: AuthCredentials;
+    authTokens?: SessionTokenStorage;
+    user?: UserInfo;
+    splitCaseCache?: SplitCaseCache;
   }
 }
 
@@ -156,3 +159,24 @@ export function deleteSessionKeys(req: Request, keys: string[]): void {
     }
   });
 }
+
+// Function to check if split case cache exists in session
+export function hasSplitCaseCache(
+  req: Request
+): req is Request & { session: { splitCaseCache: SplitCaseCache } } {
+  return Boolean(req.session && req.session.splitCaseCache);
+}
+
+
+export function ensureSplitCaseCache(req: Request): SplitCaseCache {
+  if (!req.session) {
+    throw new Error('Session is not initialised');
+  }
+
+  if (!req.session.splitCaseCache) {
+    req.session.splitCaseCache = {};
+  }
+
+  return req.session.splitCaseCache as SplitCaseCache;
+}
+

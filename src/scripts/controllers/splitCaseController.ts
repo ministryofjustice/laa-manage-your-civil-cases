@@ -4,6 +4,7 @@ import { devLog, createProcessedError, safeString, validCaseReference, formatVal
 import { validationResult } from 'express-validator';
 import type { ProviderDetail, ProviderSplitChoicesApiResponse } from '#types/api-types.js';
 import config from '#config.js';
+import { ensureSplitCaseCache, hasSplitCaseCache } from '#src/scripts/helpers/sessionHelpers.js';
 
 const { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH, CHARACTER_THRESHOLD }: { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH: number; CHARACTER_THRESHOLD: number } = config;
 const BAD_REQUEST = 400;
@@ -63,6 +64,7 @@ async function capitaliseFirstLowerRest(str: string): Promise<string> {
 export async function getSplitThisCaseForm(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
+  const splitCaseCache = ensureSplitCaseCache(req);
   if (!validCaseReference(caseReference, res)) {
     return;
   }
@@ -76,7 +78,7 @@ export async function getSplitThisCaseForm(req: Request, res: Response, next: Ne
       caseReference,
       provider,
       client: req.clientData,
-      splitCaseCache: req.session.splitCaseCache || {},
+      splitCaseCache,
       errorState: {
         hasErrors: false,
         errors: [],
@@ -136,7 +138,7 @@ export async function submitSplitThisCaseForm(req: Request, res: Response, next:
 
   const internal = safeBodyString(req.body, 'internal');
 
-  if (!req.session.splitCaseCache?.fromChange) {
+  if (!hasSplitCaseCache(req)) {
     // normal journey — save immediately
     storeSessionData(req, 'splitCaseCache', {
       caseReference,
@@ -163,9 +165,10 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
   let category = null;
   let notes = null;
 
-const effectiveInternal =
-  req.session.splitCaseCache?.internalChange ??
-  req.session.splitCaseCache?.internal;
+  const splitCaseCache = ensureSplitCaseCache(req);
+  const effectiveInternal =
+    req.session.splitCaseCache?.internalChange ??
+    req.session.splitCaseCache?.internal;
 
   if (req.session.splitCaseCache?.internal === req.session.splitCaseCache?.internalChange) {
     category = req.session.splitCaseCache?.category
@@ -186,7 +189,7 @@ const effectiveInternal =
 
     let categoryItems: { value: string; text: string; selected: boolean }[] = [];
 
-    if (req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && effectiveInternal === 'false') {
+    if (hasSplitCaseCache(req) && effectiveInternal === 'false') {
 
       assignedToName = t('pages.caseDetails.splitCase.operatorReassignment');
 
@@ -234,7 +237,7 @@ const effectiveInternal =
       categoryItems,
       notes,
       client: req.clientData,
-      splitCaseCache: req.session.splitCaseCache || {},
+      splitCaseCache,
       errorState: {
         hasErrors: false,
         errors: [],
@@ -249,7 +252,7 @@ const effectiveInternal =
     next(processedError);
   }
 
-  if (!req.session.splitCaseCache?.fromChange) {
+  if (!hasSplitCaseCache(req)) {
     // normal journey — save immediately
     storeSessionData(req, 'splitCaseCache', {
       currentProvider: String(currentProvider),
@@ -275,8 +278,8 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
   const notes = safeBodyString(req.body, 'notes');
 
   const effectiveInternal =
-  req.session.splitCaseCache?.internalChange ??
-  req.session.splitCaseCache?.internal;
+    req.session.splitCaseCache?.internalChange ??
+    req.session.splitCaseCache?.internal;
 
   // Check for validation errors
   const errors = validationResult(req);
@@ -365,17 +368,21 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
   });
 
 
-  if (!req.session.splitCaseCache) {
-    req.session.splitCaseCache = {};
-  }
-
+  
+if (hasSplitCaseCache(req)) {
   if (req.session.splitCaseCache.internalChange) {
-    req.session.splitCaseCache.internal = req.session.splitCaseCache.internalChange;
+    req.session.splitCaseCache.internal =
+      req.session.splitCaseCache.internalChange;
   }
 
   if (req.session.splitCaseCache.providerNameChange) {
-    req.session.splitCaseCache.providerName = req.session.splitCaseCache.providerNameChange;
+    req.session.splitCaseCache.providerName =
+      req.session.splitCaseCache.providerNameChange;
   }
+} else {
+  req.session.splitCaseCache = {};
+}
+
 
   return res.redirect(`/cases/${caseReference}/check-split-case-answers`);
 }
@@ -389,9 +396,9 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
  */
 export async function getCheckSplitCaseAnswersForm(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
-  const splitCaseCache = req.session.splitCaseCache;
+  const splitCaseCache = ensureSplitCaseCache(req);
 
-  if (req.session.splitCaseCache) {
+  if (hasSplitCaseCache(req)) {
     req.session.splitCaseCache.fromChange = false;
     req.session.splitCaseCache.internalChange = "";
   }
@@ -430,7 +437,7 @@ export async function getCheckSplitCaseAnswersForm(req: Request, res: Response, 
  */
 export async function submitCheckSplitCaseAnswersForm(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
-  const splitCaseCache = req.session.splitCaseCache;
+  const splitCaseCache = ensureSplitCaseCache(req);
 
   if (!validCaseReference(caseReference, res)) {
     return;
@@ -481,4 +488,19 @@ export async function submitCheckSplitCaseAnswersForm(req: Request, res: Respons
     const processedError = createProcessedError(error, `Submitting the "check split case answers" form for case: ${caseReference}`);
     next(processedError);
   }
+}
+
+/**
+ * Helper function for cache settings when customer wants to change details
+ * @param {Request} req Express request object
+ * @param {Response} res Express response object
+ * @param {NextFunction} next Express next function
+ * @returns {void} Rendered form pageIf providerId is missing or the API call fails
+ */
+export async function setSplitCaseCacheSettings(req: Request, res: Response, next: NextFunction): Promise<void> {
+  const splitCaseCache = ensureSplitCaseCache(req);
+  if (hasSplitCaseCache(req)) {
+    req.session.splitCaseCache.fromChange = true;
+  }
+  res.redirect(`/cases/${req.params.caseReference}/split-this-case`);
 }

@@ -6,9 +6,8 @@ import { handleCaseHistoryTab } from '#src/scripts/controllers/caseHistoryContro
 import { handleCaseDetailsTab, saveProviderNote } from '#src/scripts/controllers/caseDetailsController.js';
 import { getRemoveThirdPartyConfirmation, deleteThirdParty, getRemoveSupportNeedsConfirmation, deleteClientSupportNeeds } from '#src/scripts/controllers/index.js';
 import { getOperatorFeedbackForm, submitOperatorFeedback, getDoYouWantToGiveFeedbackForm, submitDoYouWantToGiveFeedbackForm } from '#src/scripts/controllers/operatorFeedbackController.js';
-import { getSplitThisCaseForm, submitSplitThisCaseForm, getAboutNewCaseForm, submitAboutNewCaseForm, getCheckSplitCaseAnswersForm, submitCheckSplitCaseAnswersForm } from '#src/scripts/controllers/splitCaseController.js';
+import { getSplitThisCaseForm, submitSplitThisCaseForm, getAboutNewCaseForm, submitAboutNewCaseForm, getCheckSplitCaseAnswersForm, submitCheckSplitCaseAnswersForm, setSplitCaseCacheSettings } from '#src/scripts/controllers/splitCaseController.js';
 import { validateReopenCase, validateCloseCase, validatePendingCase, validateOperatorFeedback, validateProviderNote, fetchClientDetails, validateGiveFeedback, validateSplitThisCase, validateAboutNewCase } from '#src/middlewares/indexSchema.js';
-import { setSplitCaseCacheSettings } from '#src/scripts/controllers/spltCaseChangeController.js';
 
 
 // Create a new router for case details routes
@@ -161,7 +160,6 @@ router.post('/:caseReference/check-split-case-answers', async (req: Request, res
 /* GET route to set from change flag to true */
 router.get('/:caseReference/change', async (req: Request, res: Response, next: NextFunction): Promise<void> => {  
   await setSplitCaseCacheSettings(req, res, next);
-
 });
 
 export default router;
