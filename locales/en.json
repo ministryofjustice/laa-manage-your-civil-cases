@@ -80,7 +80,7 @@
       "SPOR": "Operator recommends second opinion",
       "MIS-OOS": "Client signposted to other help – not in scope",
       "MIS-MEANS": "Not financially eligible",
-      "MIS": "Refer back to CLA helpline – not in scope",
+      "MIS": "Refer back to the operator service – not in scope",
       "COI": "Conflict of interest",
       "REOPEN": "Case re-opened",
       "SPOP": "Advising on case",
@@ -244,8 +244,8 @@
         "legend": "Why is this case closed?",
         "noteLabel": "Add a note",
         "reasons": {
-          "misHint": "The case will be sent to the CLA helpline",
-          "coiHint": "The case will be sent to the CLA helpline"
+          "misHint": "The case will be sent to the operator service",
+          "coiHint": "The case will be sent to the operator service"
         }
       },
       "pendingCase": {
@@ -280,7 +280,7 @@
         "linkText": "Check 5.20 on page 35 of the guidance (PDF, 599KB)",
         "infoTextEnd": " for more information.",
         "radioLegend": "Who should the new case be assigned to?",
-        "operatorReassignment": "To operator for reassignment"
+        "operatorReassignment": "The operator service"
       }, 
       "aboutNewCase": {
         "pageTitle": "About the new case – {caseReference} – {serviceName} – GOV.UK",
