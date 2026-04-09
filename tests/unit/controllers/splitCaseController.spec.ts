@@ -23,7 +23,6 @@ import { validateAboutNewCase } from '#src/middlewares/aboutNewCaseSchema.js';
 import type { ValidationChain } from 'express-validator';
 
 // helper: run validator middleware
-
 async function runMiddleware(
   middlewares: ValidationChain[],
   req: Request
@@ -31,6 +30,24 @@ async function runMiddleware(
   for (const mw of middlewares) {
     await mw.run(req);
   }
+}
+
+
+function mockReq(
+  overrides: Partial<RequestWithMiddleware> = {}
+): RequestWithMiddleware {
+  return {
+    params: {},
+    body: {},
+    query: {},
+    cookies: {},
+    headers: {},
+    session: {} as any,
+    axiosMiddleware: {},
+    csrfToken: () => 'test-csrf-token',
+    clientData: {},
+    ...overrides
+  } as unknown as RequestWithMiddleware;
 }
 
 // Define the RequestWithMiddleware interface for testing
@@ -164,9 +181,12 @@ describe('Split Case Controller', () => {
   });
 
   describe('getAboutNewCaseForm', () => {
-    let req: any;
-    let res: any;
-    let next: sinon.SinonStub;
+    let req: Partial<RequestWithMiddleware>;
+    let res: Partial<Response>;
+    let next: any;
+    let renderStub: sinon.SinonStub;
+    let redirectStub: sinon.SinonStub;
+    let statusStub: sinon.SinonStub;
 
     let getAllCategoriesStub: sinon.SinonStub;
 
@@ -174,7 +194,7 @@ describe('Split Case Controller', () => {
       req = {
         params: { caseReference: 'TEST123' },
         axiosMiddleware: {},
-        session: {},
+        session: {} as any,
         csrfToken: () => 'test-token',
         query: {},
         // Extend the Express session interface to support dynamic namespaces
@@ -185,10 +205,14 @@ describe('Split Case Controller', () => {
         }
       };
 
+      renderStub = sinon.stub();
+      redirectStub = sinon.stub();
+      statusStub = sinon.stub().returns({ render: renderStub });
+
       res = {
-        render: sinon.stub(),
-        redirect: sinon.stub(),
-        status: sinon.stub().returnsThis()
+        render: renderStub,
+        redirect: redirectStub,
+        status: statusStub
       };
 
       next = sinon.stub();
@@ -201,7 +225,9 @@ describe('Split Case Controller', () => {
     // INTERNAL === FALSE (operator handling)
 
     it('should fetch all categories when internal=false and render list', async () => {
-      req.session.splitCaseCache = { internal: 'false' };
+
+      req.session!.splitCaseCache = { internal: 'false' };
+
 
       getProviderChoicesStub.resolves({
         status: 'success',
@@ -229,7 +255,7 @@ describe('Split Case Controller', () => {
           ecf_available: true,
           mandatory: true
         },
-         {
+        {
           code: "none",
           name: "None of the above",
           description: "",
@@ -243,10 +269,10 @@ describe('Split Case Controller', () => {
         data: mockCategories
       });
 
-      await getAboutNewCaseForm(req, res, next);
+      await getAboutNewCaseForm(req as RequestWithMiddleware, res as Response, next);
 
-      expect(res.render.calledOnce).to.be.true;
-      const [, renderData] = res.render.firstCall.args;
+      expect(renderStub.calledOnce).to.be.true;
+      const [, renderData] = renderStub.firstCall.args;
 
       // Expect the placeholder exists
       const placeholder = renderData.categoryItems.find((i: any) => i.value === '');
@@ -277,7 +303,7 @@ describe('Split Case Controller', () => {
     // INTERNAL TRUE (Multiple categories) → USE provider.law_category
 
     it('should use provider.law_category when internal not false', async () => {
-      req.session.splitCaseCache = { internal: 'true' };
+      req.session!.splitCaseCache = { internal: 'true' };
 
       getProviderChoicesStub.resolves({
         status: 'success',
@@ -291,9 +317,9 @@ describe('Split Case Controller', () => {
         }
       });
 
-      await getAboutNewCaseForm(req, res, next);
+      await getAboutNewCaseForm(req as RequestWithMiddleware, res as Response, next);
 
-      const [, viewModel] = res.render.firstCall.args;
+      const [, viewModel] = renderStub.firstCall.args;
 
       expect(viewModel.categoryItems).to.have.length(3); // placeholder + 2 items
 
@@ -307,7 +333,7 @@ describe('Split Case Controller', () => {
     // INTERNAL TRUE (Single category) → USE provider.law_category
 
     it('should use provider.law_category when internal not false', async () => {
-      req.session.splitCaseCache = { internal: 'true' };
+      req.session!.splitCaseCache = { internal: 'true' };
 
       getProviderChoicesStub.resolves({
         status: 'success',
@@ -320,9 +346,9 @@ describe('Split Case Controller', () => {
         }
       });
 
-      await getAboutNewCaseForm(req, res, next);
+      await getAboutNewCaseForm(req as RequestWithMiddleware, res as Response, next);
 
-      const [, viewModel] = res.render.firstCall.args;
+      const [, viewModel] = renderStub.firstCall.args;
 
       expect(viewModel.categoryItems).to.have.length(2); // placeholder + 1 items
 
@@ -335,15 +361,19 @@ describe('Split Case Controller', () => {
   });
 
   describe('submitAboutNewCaseForm', () => {
-    let req: any;
-    let res: any;
-    let next: sinon.SinonStub;
+    let req: Partial<RequestWithMiddleware>;
+    let res: Partial<Response>;
+    let next: any;
+    let renderStub: sinon.SinonStub;
+    let redirectStub: sinon.SinonStub;
+    let statusStub: sinon.SinonStub;
+
 
     beforeEach(() => {
       req = {
         params: { caseReference: 'TEST123' },
         axiosMiddleware: {},
-        session: {},
+        session: {} as any,
         query: {},
         csrfToken: () => 'test-token',
         clientData: {
@@ -353,15 +383,18 @@ describe('Split Case Controller', () => {
         }
       };
 
+      renderStub = sinon.stub();
+      redirectStub = sinon.stub();
+      statusStub = sinon.stub().returns({ render: renderStub });
+
       res = {
-        render: sinon.stub(),
-        redirect: sinon.stub(),
-        status: sinon.stub().returnsThis()
+        render: renderStub,
+        redirect: redirectStub,
+        status: statusStub
       };
 
       next = sinon.stub();
 
-      let getAllCategoriesStub = sinon.stub(apiService, 'getAllCategories');
     });
 
     afterEach(() => sinon.restore());
@@ -369,16 +402,16 @@ describe('Split Case Controller', () => {
     // Category is selected but notes box is empty
 
     it('when a category is selected but notes are empty the page is displayed with the selected category', async () => {
-      req.session.splitCaseCache = { internal: 'true' };
+      req.session!.splitCaseCache = { internal: 'true' };
 
       req.body = {
         category: 'housing',
         notes: '',
       };
 
- 
+
       for (const validator of validateAboutNewCase()) {
-        await runMiddleware([validator], req);
+        await runMiddleware([validator], req as RequestWithMiddleware);
       }
 
       console.log(require('express-validator').validationResult(req).array());
@@ -395,10 +428,10 @@ describe('Split Case Controller', () => {
         }
       });
 
-      await submitAboutNewCaseForm(req, res, next);
+      await submitAboutNewCaseForm(req as RequestWithMiddleware, res as Response, next);
 
-      expect(res.render.called).to.be.true;
-      const [, renderData] = res.render.firstCall.args;
+      expect(renderStub.called).to.be.true;
+      const [, renderData] = renderStub.firstCall.args;
 
 
       expect(renderData.errorState.hasErrors).to.equal(true);
@@ -429,7 +462,7 @@ describe('Split Case Controller', () => {
     // Notes are added but there is no category selected.
 
     it('when no category is selected but notes are provided the page is displayed with the notes', async () => {
-      req.session.splitCaseCache = { internal: 'true' };
+      req.session!.splitCaseCache = { internal: 'true' };
 
       req.body = {
         category: '',
@@ -438,7 +471,7 @@ describe('Split Case Controller', () => {
 
 
       for (const validator of validateAboutNewCase()) {
-        await runMiddleware([validator], req);
+        await runMiddleware([validator], req as RequestWithMiddleware);
       }
 
       getProviderChoicesStub.resolves({
@@ -453,10 +486,10 @@ describe('Split Case Controller', () => {
         }
       });
 
-      await submitAboutNewCaseForm(req, res, next);
+      await submitAboutNewCaseForm(req as RequestWithMiddleware, res as Response, next);
 
-      expect(res.render.called).to.be.true;
-      const [, renderData] = res.render.firstCall.args;
+      expect(renderStub.called).to.be.true;
+      const [, renderData] = renderStub.firstCall.args;
 
       expect(renderData.errorState.hasErrors).to.equal(true);
       expect(renderData.errorState.fieldErrors.category.text).to.equal('Select the category of law for the new case');
@@ -485,7 +518,7 @@ describe('Split Case Controller', () => {
     // When both category and notes are empty both are displayed as an error. 
 
     it('when both category and notes are empty both are displayed as an error', async () => {
-      req.session.splitCaseCache = { internal: 'true' };
+      req.session!.splitCaseCache = { internal: 'true' };
 
       req.body = {
         category: '',
@@ -494,7 +527,7 @@ describe('Split Case Controller', () => {
 
 
       const validators = validateAboutNewCase();
-      await runMiddleware(validators, req);
+      await runMiddleware(validators, req as RequestWithMiddleware);
 
       getProviderChoicesStub.resolves({
         status: 'success',
@@ -508,10 +541,10 @@ describe('Split Case Controller', () => {
         }
       });
 
-      await submitAboutNewCaseForm(req, res, next);
+      await submitAboutNewCaseForm(req as RequestWithMiddleware, res as Response, next);
 
-      expect(res.render.called).to.be.true;
-      const [, renderData] = res.render.firstCall.args;
+      expect(renderStub.called).to.be.true;
+      const [, renderData] = renderStub.firstCall.args;
 
       expect(renderData.errorState.hasErrors).to.equal(true);
       expect(renderData.errorState.fieldErrors.category.text).to.equal('Select the category of law for the new case');
@@ -541,14 +574,14 @@ describe('Split Case Controller', () => {
     // When the notes length exceeds 2500 words an error is displayed. 
 
     it('When the notes length exceeds 2500 words an error is displayed', async () => {
-      req.session.splitCaseCache = { internal: 'true' };
+      req.session!.splitCaseCache = { internal: 'true' };
       const longComment = 'a'.repeat(2501); // Exceeds MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH
       req.body = {
         category: 'housing',
         notes: longComment,
       };
       const validators = validateAboutNewCase();
-      await runMiddleware(validators, req);
+      await runMiddleware(validators, req as RequestWithMiddleware);
 
       getProviderChoicesStub.resolves({
         status: 'success',
@@ -562,10 +595,10 @@ describe('Split Case Controller', () => {
         }
       });
 
-      await submitAboutNewCaseForm(req, res, next);
+      await submitAboutNewCaseForm(req as RequestWithMiddleware, res as Response, next);
 
-      expect(res.render.called).to.be.true;
-      const [, renderData] = res.render.firstCall.args;
+      expect(renderStub.called).to.be.true;
+      const [, renderData] = renderStub.firstCall.args;
 
       expect(renderData.errorState.hasErrors).to.equal(true);
       expect(renderData.errorState.fieldErrors.notes.text).to.equal('Why you want to split this case must be 2500 characters or less');
@@ -594,7 +627,7 @@ describe('Split Case Controller', () => {
     // When everything is correct the page is redirected. 
 
     it('When everything is correct the page is redirected', async () => {
-      req.session.splitCaseCache = { internal: 'true' };
+      req.session!.splitCaseCache = { internal: 'true' };
 
       req.body = {
         category: 'Housing, eviction and homelessness',
@@ -603,7 +636,7 @@ describe('Split Case Controller', () => {
 
 
       const validators = validateAboutNewCase();
-      await runMiddleware(validators, req);
+      await runMiddleware(validators, req as RequestWithMiddleware);
 
       getProviderChoicesStub.resolves({
         status: 'success',
@@ -620,16 +653,19 @@ describe('Split Case Controller', () => {
       const redirectStub = sinon.stub();
       res.redirect = redirectStub;
 
-      await submitAboutNewCaseForm(req, res, next);
-      expect(res.redirect.calledWith('/cases/TEST123/check-split-case-answers')).to.be.true;
+      await submitAboutNewCaseForm(req as RequestWithMiddleware, res as Response, next);
+      expect(redirectStub.calledWith('/cases/TEST123/check-split-case-answers')).to.be.true;
     });
   });
 
   describe('getCheckSplitCaseAnswersForm', () => {
     // Arrange
-    let req: any;
-    let res: any;
-    let next: sinon.SinonStub;
+    let req: Partial<RequestWithMiddleware>;
+    let res: Partial<Response>;
+    let next: any;
+    let renderStub: sinon.SinonStub;
+    let redirectStub: sinon.SinonStub;
+    let statusStub: sinon.SinonStub;
 
     beforeEach(() => {
       req = {
@@ -642,7 +678,7 @@ describe('Split Case Controller', () => {
             internal: 'true',
             notes: 'Split required due to change in circumstances'
           }
-        },
+        } as any,
         csrfToken: () => 'test-token',
         clientData: {
           caseReference: 'TEST123',
@@ -650,10 +686,14 @@ describe('Split Case Controller', () => {
         }
       };
 
+      renderStub = sinon.stub();
+      redirectStub = sinon.stub();
+      statusStub = sinon.stub().returns({ render: renderStub });
+
       res = {
-        render: sinon.stub(),
-        redirect: sinon.stub(),
-        status: sinon.stub().returnsThis()
+        render: renderStub,
+        redirect: redirectStub,
+        status: statusStub
       };
 
       next = sinon.stub();
@@ -663,12 +703,12 @@ describe('Split Case Controller', () => {
 
     it('should render check split case answers page with correct template and view model', async () => {
       // Act
-      await getCheckSplitCaseAnswersForm(req, res, next);
+      await getCheckSplitCaseAnswersForm(req as RequestWithMiddleware, res as Response, next);
 
       // Assert
-      expect(res.render.calledOnce).to.be.true;
+      expect(renderStub.calledOnce).to.be.true;
       expect(
-        res.render.calledWith(
+        renderStub.calledWith(
           'case_details/split_case/check-split-case-answers.njk',
           sinon.match({
             caseReference: 'TEST123',
@@ -700,7 +740,7 @@ describe('Split Case Controller', () => {
       res.render = sinon.stub().throws(renderError);
 
       // Act
-      await getCheckSplitCaseAnswersForm(req, res, next);
+      await getCheckSplitCaseAnswersForm(req as RequestWithMiddleware, res as Response, next);
 
       // Assert
       expect(next.calledOnce).to.be.true;
@@ -711,9 +751,12 @@ describe('Split Case Controller', () => {
 
   describe('submitCheckSplitCaseAnswersForm', () => {
     // Arrange
-    let req: any;
-    let res: any;
-    let next: sinon.SinonStub;
+    let req: Partial<RequestWithMiddleware>;
+    let res: Partial<Response>;
+    let next: any;
+    let renderStub: sinon.SinonStub;
+    let redirectStub: sinon.SinonStub;
+    let statusStub: sinon.SinonStub;
     let submitSplitCaseStub: sinon.SinonStub;
 
     beforeEach(() => {
@@ -726,7 +769,7 @@ describe('Split Case Controller', () => {
             internal: 'true',
             notes: 'Split required due to change in circumstances'
           }
-        },
+        } as any,
         csrfToken: () => 'test-token',
         clientData: {
           caseReference: 'TEST123',
@@ -734,10 +777,14 @@ describe('Split Case Controller', () => {
         }
       };
 
+      renderStub = sinon.stub();
+      redirectStub = sinon.stub();
+      statusStub = sinon.stub().returns({ render: renderStub });
+
       res = {
-        render: sinon.stub(),
-        redirect: sinon.stub(),
-        status: sinon.stub().returnsThis()
+        render: renderStub,
+        redirect: redirectStub,
+        status: statusStub
       };
 
       next = sinon.stub();
@@ -755,7 +802,7 @@ describe('Split Case Controller', () => {
       });
 
       // Act
-      await submitCheckSplitCaseAnswersForm(req, res, next);
+      await submitCheckSplitCaseAnswersForm(req as RequestWithMiddleware, res as Response, next);
 
       // Assert
       expect(submitSplitCaseStub.calledOnceWithExactly(
@@ -768,7 +815,7 @@ describe('Split Case Controller', () => {
         }
       )).to.be.true;
 
-      expect(res.redirect.calledOnceWithExactly('/cases/TEST123/client-details')).to.be.true;
+      expect(redirectStub.calledOnceWithExactly('/cases/TEST123/client-details')).to.be.true;
       expect(next.called).to.be.false;
     });
 
@@ -780,10 +827,10 @@ describe('Split Case Controller', () => {
       });
 
       // Act
-      await submitCheckSplitCaseAnswersForm(req, res, next);
+      await submitCheckSplitCaseAnswersForm(req as RequestWithMiddleware, res as Response, next);
 
       // Assert
-      expect(res.redirect.called).to.be.false;
+      expect(redirectStub.called).to.be.false;
       expect(next.calledOnce).to.be.true;
       const err = next.firstCall.args[0];
       expect(err).to.be.instanceOf(Error);
@@ -794,10 +841,10 @@ describe('Split Case Controller', () => {
       submitSplitCaseStub.rejects(new Error('Network error'));
 
       // Act
-      await submitCheckSplitCaseAnswersForm(req, res, next);
+      await submitCheckSplitCaseAnswersForm(req as RequestWithMiddleware, res as Response, next);
 
       // Assert
-      expect(res.redirect.called).to.be.false;
+      expect(redirectStub.called).to.be.false;
       expect(next.calledOnce).to.be.true;
       const err = next.firstCall.args[0];
       expect(err).to.be.instanceOf(Error);
@@ -805,14 +852,14 @@ describe('Split Case Controller', () => {
 
     it('should call next with error when splitCaseCache is missing required values', async () => {
       // Arrange
-      req.session.splitCaseCache = undefined;
+      req.session!.splitCaseCache = undefined;
 
       // Act
-      await submitCheckSplitCaseAnswersForm(req, res, next);
+      await submitCheckSplitCaseAnswersForm(req as RequestWithMiddleware, res as Response, next);
 
       // Assert
       expect(submitSplitCaseStub.called).to.be.false;
-      expect(res.redirect.called).to.be.false;
+      expect(redirectStub.called).to.be.false;
       expect(next.calledOnce).to.be.true;
       expect(next.firstCall.args[0]).to.be.instanceOf(Error);
     });

@@ -8,14 +8,14 @@ import { getRemoveThirdPartyConfirmation, deleteThirdParty, getRemoveSupportNeed
 import { getOperatorFeedbackForm, submitOperatorFeedback, getDoYouWantToGiveFeedbackForm, submitDoYouWantToGiveFeedbackForm } from '#src/scripts/controllers/operatorFeedbackController.js';
 import { getSplitThisCaseForm, submitSplitThisCaseForm, getAboutNewCaseForm, submitAboutNewCaseForm, getCheckSplitCaseAnswersForm, submitCheckSplitCaseAnswersForm } from '#src/scripts/controllers/splitCaseController.js';
 import { validateReopenCase, validateCloseCase, validatePendingCase, validateOperatorFeedback, validateProviderNote, fetchClientDetails, validateGiveFeedback, validateSplitThisCase, validateAboutNewCase } from '#src/middlewares/indexSchema.js';
-import { clearSessionData } from '#src/scripts/helpers/sessionHelpers.js';
+import { setSplitCaseCacheSettings } from '#src/scripts/controllers/spltCaseChangeController.js';
+
 
 // Create a new router for case details routes
 const router = express.Router();
 
 /* GET client details for a specific case. */
 router.get('/:caseReference/client-details', fetchClientDetails, (req: Request, res: Response, next: NextFunction): void => {
-  clearSessionData(req, "splitCaseCache");
   handleClientDetailsTab(req, res, next, 'client_details');
 });
 
@@ -159,11 +159,9 @@ router.post('/:caseReference/check-split-case-answers', async (req: Request, res
 });
 
 /* GET route to set from change flag to true */
-router.get('/:caseReference/change', (req, res) => {
-  req.session.splitCaseCache = req.session.splitCaseCache || {};
-  req.session.splitCaseCache.fromChange = true;
+router.get('/:caseReference/change', async (req: Request, res: Response, next: NextFunction): Promise<void> => {  
+  await setSplitCaseCacheSettings(req, res, next);
 
-  res.redirect(`/cases/${req.params.caseReference}/split-this-case`);
 });
 
 export default router;

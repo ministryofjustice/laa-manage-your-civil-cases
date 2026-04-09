@@ -50,7 +50,7 @@
                 text: t('pages.caseDetails.checkYourAnswers.categoryOfLaw')
               },
               value: {
-                html: client.category | default('')
+                html: client.category 
               }
             },
             {
@@ -85,7 +85,7 @@
                 text: t('pages.caseDetails.checkYourAnswers.categoryOfLaw')
               },
               value: {
-                html: t('common.categoryCode.' + splitCaseCache.category) | default('')
+                html: t('common.categoryCode.' + splitCaseCache.category) 
               }
             },
             {
@@ -101,7 +101,7 @@
                 text: t('pages.caseDetails.checkYourAnswers.whySplitCase')
               },
               value: {
-                html: splitCaseCache.notes | default('')
+                html: splitCaseCache.notes 
               }
             }
           ]

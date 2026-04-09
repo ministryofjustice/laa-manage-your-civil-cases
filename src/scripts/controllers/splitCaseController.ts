@@ -53,7 +53,6 @@ async function capitaliseFirstLowerRest(str: string): Promise<string> {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
-
 /**
  * Render the "split this case" form
  * @param {Request} req Express request object
@@ -279,7 +278,6 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
   req.session.splitCaseCache?.internalChange ??
   req.session.splitCaseCache?.internal;
 
-  console.log("category of law selected: " + category);
   // Check for validation errors
   const errors = validationResult(req);
   if (!errors.isEmpty()) {

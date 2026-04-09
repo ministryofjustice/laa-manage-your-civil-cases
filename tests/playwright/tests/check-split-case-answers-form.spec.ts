@@ -82,7 +82,7 @@ test('cancel link after clicking change link should navigate back to the check y
   await expect(checkSplitCaseAnswersPage.changeLink).toBeVisible();
   await checkSplitCaseAnswersPage.changeLink.click();
 
- // We should now be on the split-this-case page
+  // We should now be on the split-this-case page
   const splitThisCaseFormPage = SplitThisCaseFormPage.forCase(page, caseReference);
   await expect(page).toHaveURL(splitThisCaseFormPage.url);
 
@@ -104,11 +104,11 @@ test('cancel link after clicking change link should navigate back to the check y
   await expect(checkSplitCaseAnswersPage.changeLink).toBeVisible();
   await checkSplitCaseAnswersPage.changeLink.click();
 
- // We should now be on the split-this-case page
+  // We should now be on the split-this-case page
   const splitThisCaseFormPage = SplitThisCaseFormPage.forCase(page, caseReference);
   await expect(page).toHaveURL(splitThisCaseFormPage.url);
 
- // Select the "Generic Provider Public Law" radio option
+  // Select the "Generic Provider Public Law" radio option
   const radioInternalTrue = page.getByRole('radio', { name: 'Generic Provider Public Law' });
   await radioInternalTrue.check();
 
@@ -126,12 +126,12 @@ test('cancel link after clicking change link should navigate back to the check y
 });
 
 test('if the same provider radio button is selected the about new case details should have data populated', async ({ page }) => {
-   // Set up test so we have completed one pass through the flow. 
-    const initialSplitThisCaseFormPage = SplitThisCaseFormPage.forCase(page, caseReference);
-    await initialSplitThisCaseFormPage.navigate();
+  // Set up test so we have completed one pass through the flow. 
+  const initialSplitThisCaseFormPage = SplitThisCaseFormPage.forCase(page, caseReference);
+  await initialSplitThisCaseFormPage.navigate();
   await expect(page).toHaveURL(initialSplitThisCaseFormPage.url);
 
- // Select the "Generic Provider Public Law" radio option
+  // Select the "Generic Provider Public Law" radio option
   const initialRadioInternalTrue = page.getByRole('radio', { name: 'Generic Provider Public Law' });
   await initialRadioInternalTrue.check();
 
@@ -149,7 +149,7 @@ test('if the same provider radio button is selected the about new case details s
 
   // Click the submit button to the check your answers page
   await page.click('button.govuk-button');
-  
+
   // Navigate to check your answers
   const checkSplitCaseAnswersPage = CheckSplitCaseAnswersPage.forCase(page, caseReference);
 
@@ -157,14 +157,14 @@ test('if the same provider radio button is selected the about new case details s
   await expect(checkSplitCaseAnswersPage.changeLink).toBeVisible();
   await checkSplitCaseAnswersPage.changeLink.click();
 
- // We should now be on the split-this-case page for the second time. 
+  // We should now be on the split-this-case page for the second time. 
   const splitThisCaseFormPage = SplitThisCaseFormPage.forCase(page, caseReference);
   await expect(page).toHaveURL(splitThisCaseFormPage.url);
 
- // Select the "Generic Provider Public Law" radio option
-  
-await expect(page.getByRole('radio', { name: 'Generic Provider Public Law' }))
-  .toBeChecked();
+  // Select the "Generic Provider Public Law" radio option
+
+  await expect(page.getByRole('radio', { name: 'Generic Provider Public Law' }))
+    .toBeChecked();
 
   // Click the continue button
   const continueButton = page.getByRole('button', { name: 'Continue' });

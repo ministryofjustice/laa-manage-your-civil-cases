@@ -7,6 +7,7 @@ import { validCaseReference } from '../helpers/formControllerHelpers.js';
 import { handleCaseTab } from '../helpers/caseTabHandler.js';
 import { safeBodyString, formatValidationError } from '../helpers/index.js';
 import { apiService } from '#src/services/apiService.js';
+import { clearSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 import config from '#config.js';
 
 const { MAX_PROVIDER_NOTE_LENGTH, CHARACTER_THRESHOLD }: { MAX_PROVIDER_NOTE_LENGTH: number; CHARACTER_THRESHOLD: number } = config;
@@ -22,6 +23,8 @@ const BAD_REQUEST = 400;
  */
 export async function handleCaseDetailsTab(req: Request, res: Response, next: NextFunction, activeTab: string): Promise<void> {
   await handleCaseTab(req, res, next, activeTab, 'case details', ({ req, res, caseReference, activeTab }) => {
+    // Clear split case cache as we have returned to the main case details page.
+    clearSessionData(req, "splitCaseCache");
     // Client details already fetched by middleware, available at req.clientData
     const { clientData } = req;
 
