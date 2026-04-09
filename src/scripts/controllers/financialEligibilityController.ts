@@ -2,8 +2,8 @@ import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
 import { handleGetEditForm, handlePostEditForm, extractFormFields } from '#src/scripts/helpers/index.js';
 import { format } from 'node:path';
-import { getNextFormForEligibilityCheck } from '../helpers/financialEligibility.js';
-import { EligibilityCheck } from '#types/case-types.js';
+import { getFormQuestion, getNextFormForEligibilityCheck } from '../helpers/financialEligibility.js';
+import type { EligibilityCheck } from '#types/case-types.js';
 
 
 /**
@@ -30,7 +30,7 @@ export async function getFinancialEligibilityDetailsTab(req: Request, res: Respo
  * @returns {Promise<void>} A promise that resolves when the form is rendered
  */
 export async function getFinancialEligibilityFieldsForm(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const question = req.params.question;
+    const question = req.params.question as string;
 
     await handleGetEditForm(req, res, next, {
         templatePath: `case_details/financial_eligibility/form.njk`,
@@ -44,9 +44,9 @@ export async function getFinancialEligibilityFieldsForm(req: Request, res: Respo
                 apiData,
                 ...{questions: [
                     {
-                        fieldName: 'madeupFieldName',
-                        legendText: "Really cool question, right?",
-                        type: 'yes_or_no'
+                        fieldName: getFormQuestion(question).fieldName,
+                        legendText: getFormQuestion(question).legendText,
+                        type: getFormQuestion(question).type
                     }
                 ]},
                 formAction: '/cases/' + req.params.caseReference + '/financial-eligibility/form',
@@ -69,6 +69,7 @@ export async function postFinancialEligibilityFieldsForm(req: Request, res: Resp
     console.log('Form fields to save:', formFields);
 
     const formRedirection = getNextFormForEligibilityCheck(
+        req.params.caseReference as string,
         {
             reference: '',
             category: '',
@@ -84,12 +85,12 @@ export async function postFinancialEligibilityFieldsForm(req: Request, res: Resp
             has_partner: false,
             on_passported_benefits: false,
             on_nass_benefits: false,
-            state: '',
+            state: 'in_progress',
             specific_benefits: {} as EligibilityCheck['specific_benefits'],
             disregards: {} as EligibilityCheck['disregards'],
             has_passported_proceedings_letter: false,
             under_18_passported: false,
-            is_you_under_18: false,
+            is_you_under_18: true,
             under_18_receive_regular_payment: false,
             under_18_has_valuables: false
         } as EligibilityCheck

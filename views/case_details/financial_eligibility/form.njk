@@ -41,8 +41,8 @@
                         name: question.fieldName,
                         fieldset: {
                             legend: {
-                            text: question.legendText,
-                            classes: "govuk-fieldset__legend--l"
+                                text: question.legendText,
+                                classes: "govuk-fieldset__legend--l"
                             }
                         },
                         hint: {
@@ -66,23 +66,15 @@
                     {{ govukInput(question) }}
                 {% endif %}
             {% endfor%}
-
-            {% set onPassportedBenefitsYesHtml %}
-                {{ govukButton({
-                    text: "Save and continue",
-                    name: "saveAndContinue",
-                    value: "true"
-                    }) }}
-            {% endset -%}
             
             <div class="govuk-button-group">
-                    {{ govukButton({
+                {{ govukButton({
                     text: "Save",
                     name: "saveAndContinue",
                     value: "false"
-                    }) }}
-                    <a class="govuk-link" href="{{ backLinkHref }}">{{ t('common.cancel') }}</a>
-                </div>
+                }) }}
+                <a class="govuk-link" href="{{ backLinkHref }}">{{ t('common.cancel') }}</a>
+            </div>
         </form>
     </div>
   </div>
