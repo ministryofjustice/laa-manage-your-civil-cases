@@ -174,9 +174,9 @@ export async function processLogin(req: Request, res: Response, _next: NextFunct
         // Store credentials with encrypted sensitive fields
         req.session.authCredentials = {
           username,
-          password: encrypt(password), // Encrypted password
+          password,
           client_id: config.api.auth.clientId,
-          client_secret: encrypt(config.api.auth.clientSecret) // Encrypted client secret
+          client_secret: config.api.auth.clientSecret
         };
 
         if (userInfo !== null) {

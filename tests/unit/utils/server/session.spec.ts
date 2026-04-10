@@ -10,7 +10,6 @@ const createMockConfig = (redisEnabled: boolean): Config => ({
     name: 'session-id',
     resave: false,
     saveUninitialized: false,
-    encryptionKey: '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef',
     cookie: {
       secure: false,
       httpOnly: true,

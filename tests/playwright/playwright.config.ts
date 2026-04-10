@@ -50,7 +50,6 @@ export default defineConfig({
       NODE_ENV: 'test',
       PORT: '3001',
       // Add encryption key for testing (matches test key in unit tests)
-      SESSION_ENCRYPTION_KEY: '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef',
       API_URL: 'https://laa-cla-backend-uat.apps.live-1.cloud-platform.service.justice.gov.uk',
       API_PREFIX: '/cla_provider/api/v1',
       // API client credentials for OAuth2 authentication (required for tests)
