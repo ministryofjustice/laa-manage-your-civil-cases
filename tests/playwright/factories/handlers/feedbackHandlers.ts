@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import type { MockCase } from './types.js';
 import { findMockCase } from './utils.js';
-import { BAD_REQUEST, NOT_FOUND } from '#src/services/api/base/constants.js';
+import { HTTP_BAD_REQUEST, HTTP_NOT_FOUND } from '#src/services/api/base/constants.js';
 
 export const createFeedbackHandlers = (
   apiBaseUrl: string,
@@ -16,7 +16,7 @@ export const createFeedbackHandlers = (
         const mockCase = findMockCase(caseReference, cases);
 
         if (!mockCase) {
-          return new HttpResponse(null, { status: NOT_FOUND });
+          return new HttpResponse(null, { status: HTTP_NOT_FOUND });
         }
 
         // Return OPTIONS response with feedback choices
@@ -74,7 +74,7 @@ export const createFeedbackHandlers = (
                 comment: !comment ? ['This field is required.'] : undefined
               }
             }),
-            { status: BAD_REQUEST }
+            { status: HTTP_BAD_REQUEST }
           );
         }
 
@@ -87,7 +87,7 @@ export const createFeedbackHandlers = (
                 comment: ['Ensure this field has no more than 2500 characters.']
               }
             }),
-            { status: BAD_REQUEST
+            { status: HTTP_BAD_REQUEST
              }
           );
         }
@@ -95,7 +95,7 @@ export const createFeedbackHandlers = (
         const mockCase = findMockCase(caseReference, cases);
 
         if (!mockCase) {
-          return new HttpResponse(null, { status: NOT_FOUND });
+          return new HttpResponse(null, { status: HTTP_NOT_FOUND });
         }
 
         // In a real scenario, feedback would be stored

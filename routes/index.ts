@@ -7,7 +7,7 @@ import searchRouter from './search.js';
 import loginRouter from './login.js';
 import { requireAuth } from '#src/middlewares/indexSetUp.js';
 import { devError, extractErrorMessage } from '#src/scripts/helpers/index.js';
-import { NOT_FOUND } from '#src/services/api/base/constants.js';
+import { HTTP_NOT_FOUND } from '#src/services/api/base/constants.js';
 
 // Create a new router
 const router = express.Router();
@@ -67,8 +67,8 @@ router.use((req: Request, res: Response): void => {
     errorMessage = 'Page not found. The requested cases page does not exist.';
   }
 
-  res.status(NOT_FOUND).render('main/error.njk', {
-    status: NOT_FOUND,
+  res.status(HTTP_NOT_FOUND).render('main/error.njk', {
+    status: HTTP_NOT_FOUND,
     error: errorMessage
   });
 });

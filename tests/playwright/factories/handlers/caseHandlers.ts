@@ -5,7 +5,7 @@
 import { http, HttpResponse } from 'msw';
 import type { MockCase } from './types.js';
 import { transformToApiFormat, filterCasesByStatus, paginateResults, findMockCase, updateCaseState } from './utils.js';
-import { NOT_FOUND } from '#src/services/api/base/constants.js';
+import { HTTP_NOT_FOUND } from '#src/services/api/base/constants.js';
 
 /**
  * Authentication token handler
@@ -32,7 +32,7 @@ function createGetCaseHandler(
     const caseItem = findMockCase(caseReference as string, cases);
     
     if (!caseItem) {
-      return HttpResponse.json({ error: 'Case not found' }, { status: NOT_FOUND });
+      return HttpResponse.json({ error: 'Case not found' }, { status: HTTP_NOT_FOUND });
     }
     
     return HttpResponse.json(transformToApiFormat(caseItem));
@@ -55,7 +55,7 @@ function createPatchCaseHandler(
     
     if (!caseItem) {
       console.log(`[MSW] Case ${caseReference} not found in mock data (PATCH)`);
-      return HttpResponse.json({ error: 'Case not found' }, { status: NOT_FOUND });
+      return HttpResponse.json({ error: 'Case not found' }, { status: HTTP_NOT_FOUND });
     }
     
     // Parse the request body to get the updated provider notes
@@ -105,7 +105,7 @@ function createGetCaseDetailedHandler(
     
     if (!caseItem) {
       console.log(`[MSW] Case ${caseReference} not found in mock data`);
-      return HttpResponse.json({ error: 'Case not found' }, { status: NOT_FOUND });
+      return HttpResponse.json({ error: 'Case not found' }, { status: HTTP_NOT_FOUND });
     }
     
     console.log(`[MSW] Returning case data for ${caseReference}`);
@@ -131,7 +131,7 @@ function createGetCaseHistoryHandler(
 
       if (!caseItem) {
         console.log(`[MSW] Case ${caseReference} not found in mock data (logs)`);
-        return HttpResponse.json({ error: 'Case not found' }, { status: NOT_FOUND });
+        return HttpResponse.json({ error: 'Case not found' }, { status: HTTP_NOT_FOUND });
       }
 
       // Minimal set of logs

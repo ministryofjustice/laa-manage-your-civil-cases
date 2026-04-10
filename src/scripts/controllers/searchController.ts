@@ -5,7 +5,7 @@ import { safeString, safeOptionalString, hasProperty, buildOrderingParamFields }
 import { validationResult } from 'express-validator';
 import { formatValidationError, type ValidationErrorData } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 import { storeSessionData, getSessionData, clearSessionData } from '#src/scripts/helpers/sessionHelpers.js';
-import { BAD_REQUEST } from '#src/services/api/base/constants.js';
+import { HTTP_BAD_REQUEST } from '#src/services/api/base/constants.js';
 import config from '../../../config.js';
 const { pagination: { defaultPage: DEFAULT_PAGE, defaultLimit: DEFAULT_LIMIT } } = config;
 
@@ -183,7 +183,7 @@ function handleValidationErrors(req: Request, res: Response): boolean {
 
     const { keyword, status } = getSearchParameters(req);
 
-    res.status(BAD_REQUEST).render('search/index.njk', {
+    res.status(HTTP_BAD_REQUEST).render('search/index.njk', {
       searchKeyword: keyword,
       statusSelect: status,
       searchPerformed: false,

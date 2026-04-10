@@ -9,7 +9,7 @@
  */
 
 import { devError } from './index.js';
-import { BAD_REQUEST, NOT_FOUND } from '../../services/api/base/constants.js';
+import { HTTP_BAD_REQUEST, HTTP_NOT_FOUND } from '../../services/api/base/constants.js';
 
 // HTTP Status Code Constants
 const HTTP_UNAUTHORIZED = 401;
@@ -61,13 +61,13 @@ function isNetworkError(error: unknown): error is { code: string; message?: stri
  */
 function getHttpErrorMessage(status: number): string {
   switch (status) {
-    case BAD_REQUEST:
+    case HTTP_BAD_REQUEST:
       return 'Invalid request. Please check your input and try again.';
     case HTTP_UNAUTHORIZED:
       return 'Authentication failed. Please log in again.';
     case HTTP_FORBIDDEN:
       return 'You do not have permission to access this resource.';
-    case NOT_FOUND:
+    case HTTP_NOT_FOUND:
       return 'The requested information could not be found.';
     case HTTP_REQUEST_TIMEOUT:
       return 'Request timed out. Please try again.';
@@ -196,7 +196,7 @@ export function isForbiddenError(error: unknown): boolean {
  * @returns {boolean} True if error is a 404 not found error
  */
 export function isNotFoundError(error: unknown): boolean {
-  return isHttpError(error, NOT_FOUND);
+  return isHttpError(error, HTTP_NOT_FOUND);
 }
 
 /**

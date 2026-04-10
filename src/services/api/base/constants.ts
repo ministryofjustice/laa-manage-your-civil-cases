@@ -24,7 +24,7 @@ export const API_PREFIX = process.env.API_PREFIX ?? '/cla_provider/api/v1';
 export const SEARCH_TIMEOUT_MS = 10000;
 
 /** Error code value for Bad Request */
-export const BAD_REQUEST = 400;
+export const HTTP_BAD_REQUEST = 400;
 
 /** Error code value for Not Found */
-export const NOT_FOUND = 404;
+export const HTTP_NOT_FOUND = 404;

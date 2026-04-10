@@ -3,7 +3,7 @@ import { apiService } from '#src/services/apiService.js';
 import { devLog, createProcessedError, safeString, validCaseReference, formatValidationError, safeBodyString, storeSessionData, clearSessionData, t, capitaliseFirstLetter } from '#src/scripts/helpers/index.js';
 import { validationResult } from 'express-validator';
 import type { ProviderDetail, ProviderSplitChoicesApiResponse } from '#types/api-types.js';
-import { BAD_REQUEST } from '#src/services/api/base/constants.js';
+import { HTTP_BAD_REQUEST } from '#src/services/api/base/constants.js';
 import config from '#config.js';
 import { ensureSplitCaseCache, hasSplitCaseCache } from '#src/scripts/helpers/sessionHelpers.js';
 
@@ -117,7 +117,7 @@ export async function submitSplitThisCaseForm(req: Request, res: Response, next:
     // Fetch provider choices for validation error rendering too
     const provider = await fetchProviderNameAndDetail(req, caseReference);
 
-    return res.status(BAD_REQUEST).render('case_details/split_case/split-this-case.njk', {
+    return res.status(HTTP_BAD_REQUEST).render('case_details/split-this-case.njk', {
       caseReference,
       client: req.clientData,
       provider,
@@ -327,7 +327,7 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
         ))];
     }
 
-    return res.status(BAD_REQUEST).render('case_details/split_case/about-new-case.njk', {
+    return res.status(HTTP_BAD_REQUEST).render('case_details/about-new-case.njk', {
       caseReference,
       provider,
       categoryItems,

@@ -10,7 +10,7 @@ import type {
   PostFormOptions,
 } from '#types/form-controller-types.js';
 import type { CaseStatusLabels } from '#types/case-types.js';
-import { BAD_REQUEST } from '#src/services/api/base/constants.js';
+import { HTTP_BAD_REQUEST } from '#src/services/api/base/constants.js';
 
 /**
  * Generic function to handle GET requests for edit forms
@@ -131,7 +131,7 @@ export async function handlePostEditForm(
       }
     });
 
-    res.status(BAD_REQUEST).render(templatePath, renderData);
+    res.status(HTTP_BAD_REQUEST).render(templatePath, renderData);
     return;
   }
 
@@ -256,7 +256,7 @@ abstract class ThirdPartyValidator {
       currentThirdPartyPassphrase: formFields.thirdPartyPassphrase
     };
 
-    res.status(BAD_REQUEST).render(this.templatePath, renderData);
+    res.status(HTTP_BAD_REQUEST).render(this.templatePath, renderData);
     return true;
   }
 }
@@ -424,7 +424,7 @@ abstract class ClientSupportNeedsValidator {
       currentNotes: formFields.notes
     };
 
-    res.status(BAD_REQUEST).render(this.templatePath, renderData);
+    res.status(HTTP_BAD_REQUEST).render(this.templatePath, renderData);
     return true;
   }
 }
@@ -489,8 +489,8 @@ export async function handleEditClientSupportNeedsErrors(
  */
 export function validCaseReference(caseReference: unknown, res: Response): boolean {
   if (typeof caseReference !== 'string' || caseReference.trim() === '') {
-    res.status(BAD_REQUEST).render('main/error.njk', {
-      status: String(BAD_REQUEST),
+    res.status(HTTP_BAD_REQUEST).render('main/error.njk', {
+      status: String(HTTP_BAD_REQUEST),
       error: 'Invalid case reference'
     });
     return false;
