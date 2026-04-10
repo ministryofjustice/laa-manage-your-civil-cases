@@ -7,9 +7,9 @@ import config from '#config.js';
 import { validationResult, matchedData } from 'express-validator';
 import { formatValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 import { encrypt } from '#utils/server/index.js';
+import { BAD_REQUEST } from '#src/services/api/base/constants.js';
 
 // HTTP Status codes
-const BAD_REQUEST = 400;
 const NOT_EMPTY = 0;
 
 interface LoginErrorDetails {

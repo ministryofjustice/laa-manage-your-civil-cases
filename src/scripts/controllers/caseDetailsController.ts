@@ -9,9 +9,9 @@ import { safeBodyString, formatValidationError } from '../helpers/index.js';
 import { apiService } from '#src/services/apiService.js';
 import { clearSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 import config from '#config.js';
+import { BAD_REQUEST } from '#src/services/api/base/constants.js';
 
 const { MAX_PROVIDER_NOTE_LENGTH, CHARACTER_THRESHOLD }: { MAX_PROVIDER_NOTE_LENGTH: number; CHARACTER_THRESHOLD: number } = config;
-const BAD_REQUEST = 400;
 
 /**
  * Handle case details with API data

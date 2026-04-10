@@ -1,3 +1,4 @@
+import { NOT_FOUND } from '#src/services/api/base/constants.js';
 import { http, HttpResponse } from 'msw';
 
 export const createSplitHandlers = (
@@ -43,7 +44,7 @@ export const createSplitHandlers = (
         });
       }
 
-      return HttpResponse.json({ detail: "Provider not found" }, { status: 404 });
+      return HttpResponse.json({ detail: "Provider not found" }, { status: NOT_FOUND });
     });
   };
 

@@ -3,9 +3,9 @@ import { validationResult } from 'express-validator';
 import { apiService } from '#src/services/apiService.js';
 import { devLog, createProcessedError, safeString, safeBodyString, formatValidationError, validCaseReference, t, hasAllowedCaseStatus } from '#src/scripts/helpers/index.js';
 import config from '#config.js';
+import { BAD_REQUEST } from '#src/services/api/base/constants.js';
 
 const { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH, CHARACTER_THRESHOLD }: { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH: number; CHARACTER_THRESHOLD: number } = config;
-const BAD_REQUEST = 400;
 
 /**
  * Render the operator feedback form

@@ -10,6 +10,7 @@ import {
   validateNullableBooleanField,
   validateChoiceField
 } from './validationHelpers.js';
+import { BAD_REQUEST, NOT_FOUND } from '#src/services/api/base/constants.js';
 
 export function createPersonalDetailsHandlers(
   API_BASE_URL: string,
@@ -25,18 +26,18 @@ export function createPersonalDetailsHandlers(
       const caseItem = cases.find(c => c.caseReference === caseReference);
       
       if (!caseItem) {
-        return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
+        return HttpResponse.json({ error: 'Case not found' }, { status: NOT_FOUND });
       }
 
       // Validate request data structure
       const validationErrors: Record<string, string[]> = {};
 
       if (typeof updateData !== 'object' || updateData === null || Array.isArray(updateData)) {
-        return HttpResponse.json({ detail: 'Invalid request body format' }, { status: 400 });
+        return HttpResponse.json({ detail: 'Invalid request body format' }, { status: BAD_REQUEST });
       }
 
       // Validate string fields with max length
-      validateStringField(updateData, 'full_name', 400, validationErrors);
+      validateStringField(updateData, 'full_name', BAD_REQUEST, validationErrors);
       validateStringField(updateData, 'postcode', 12, validationErrors);
       validateStringField(updateData, 'street', 255, validationErrors);
       validateStringField(updateData, 'mobile_phone', 20, validationErrors);
@@ -73,7 +74,7 @@ export function createPersonalDetailsHandlers(
       }
 
       if (Object.keys(validationErrors).length > 0) {
-        return HttpResponse.json(validationErrors, { status: 400 });
+        return HttpResponse.json(validationErrors, { status: BAD_REQUEST });
       }
 
       if ('full_name' in updateData) {

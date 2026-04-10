@@ -10,8 +10,7 @@ import type {
   PostFormOptions,
 } from '#types/form-controller-types.js';
 import type { CaseStatusLabels } from '#types/case-types.js';
-
-const BAD_REQUEST = 400;
+import { BAD_REQUEST } from '#src/services/api/base/constants.js';
 
 /**
  * Generic function to handle GET requests for edit forms
@@ -491,7 +490,7 @@ export async function handleEditClientSupportNeedsErrors(
 export function validCaseReference(caseReference: unknown, res: Response): boolean {
   if (typeof caseReference !== 'string' || caseReference.trim() === '') {
     res.status(BAD_REQUEST).render('main/error.njk', {
-      status: '400',
+      status: String(BAD_REQUEST),
       error: 'Invalid case reference'
     });
     return false;

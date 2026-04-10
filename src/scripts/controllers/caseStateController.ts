@@ -4,10 +4,9 @@ import { apiService } from '#src/services/apiService.js';
 import { changeCaseStateService } from '#src/services/changeCaseStateService.js';
 import { devLog, createProcessedError, safeString, safeBodyString, formatValidationError, trimOrUndefined, validCaseReference, hasAllowedCaseStatus } from '#src/scripts/helpers/index.js';
 import config from '#config.js';
+import { BAD_REQUEST, NOT_FOUND } from '#src/services/api/base/constants.js';
 
 const { MAX_NOTE_LENGTH, CHARACTER_THRESHOLD }: { MAX_NOTE_LENGTH: number; CHARACTER_THRESHOLD: number } = config;
-const BAD_REQUEST = 400;
-const NOT_FOUND = 404;
 
 /**
  * Function to sanitise URL redirect 
@@ -219,7 +218,7 @@ export async function closeCase(req: Request, res: Response, next: NextFunction)
       });
     } else {
       res.status(NOT_FOUND).render('main/error.njk', {
-        status: '404',
+        status: NOT_FOUND,
         error: response.message ?? 'Case not found'
       });
     }
@@ -299,7 +298,7 @@ export async function pendingCase(req: Request, res: Response, next: NextFunctio
       });
     } else {
       res.status(NOT_FOUND).render('main/error.njk', {
-        status: '404',
+        status: NOT_FOUND,
         error: response.message ?? 'Case not found'
       });
     }
@@ -430,7 +429,7 @@ export async function reopenCompletedCase(req: Request, res: Response, next: Nex
       });
     } else {
       res.status(NOT_FOUND).render('main/error.njk', {
-        status: '404',
+        status: NOT_FOUND,
         error: response.message ?? 'Case not found'
       });
     }
@@ -505,7 +504,7 @@ export async function reopenClosedCase(req: Request, res: Response, next: NextFu
       });
     } else {
       res.status(NOT_FOUND).render('main/error.njk', {
-        status: '404',
+        status: NOT_FOUND,
         error: response.message ?? 'Case not found'
       });
     }

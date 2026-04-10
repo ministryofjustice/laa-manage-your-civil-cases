@@ -5,10 +5,10 @@ import { t } from './i18nLoader.js';
 import type { ValidationErrorData } from './ValidationErrorHelpers.js';
 import type { Request, Response } from 'express';
 import type { Result } from 'express-validator';
+import { BAD_REQUEST } from '#src/services/api/base/constants.js';
 
 // Constants for magic numbers
 const MINIMUM_YEAR = 1;
-const BAD_REQUEST = 400;
 const NO_EMPTY_FIELDS = 0;
 const ONE_FIELD = 1;
 const TWO_FIELDS = 2;
