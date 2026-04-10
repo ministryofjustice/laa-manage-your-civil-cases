@@ -6,8 +6,9 @@ import { handleCaseHistoryTab } from '#src/scripts/controllers/caseHistoryContro
 import { handleCaseDetailsTab, saveProviderNote } from '#src/scripts/controllers/caseDetailsController.js';
 import { getRemoveThirdPartyConfirmation, deleteThirdParty, getRemoveSupportNeedsConfirmation, deleteClientSupportNeeds } from '#src/scripts/controllers/index.js';
 import { getOperatorFeedbackForm, submitOperatorFeedback, getDoYouWantToGiveFeedbackForm, submitDoYouWantToGiveFeedbackForm } from '#src/scripts/controllers/operatorFeedbackController.js';
-import { getSplitThisCaseForm, submitSplitThisCaseForm, getAboutNewCaseForm, submitAboutNewCaseForm } from '#src/scripts/controllers/splitCaseController.js';
+import { getSplitThisCaseForm, submitSplitThisCaseForm, getAboutNewCaseForm, submitAboutNewCaseForm, getCheckSplitCaseAnswersForm, submitCheckSplitCaseAnswersForm, setSplitCaseCacheSettings } from '#src/scripts/controllers/splitCaseController.js';
 import { validateReopenCase, validateCloseCase, validatePendingCase, validateOperatorFeedback, validateProviderNote, fetchClientDetails, validateGiveFeedback, validateSplitThisCase, validateAboutNewCase } from '#src/middlewares/indexSchema.js';
+
 
 // Create a new router for case details routes
 const router = express.Router();
@@ -136,14 +137,29 @@ router.get('/:caseReference/split-this-case', fetchClientDetails, async (req: Re
 router.post('/:caseReference/split-this-case', fetchClientDetails, validateSplitThisCase(), async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   await submitSplitThisCaseForm(req, res, next);
 });
-
 /* GET about new case form. */
 router.get('/:caseReference/about-new-case', fetchClientDetails, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   await getAboutNewCaseForm(req, res, next);
 });
 
-/* POST about new case form. */
+/* POST about new split case form. */
 router.post('/:caseReference/about-new-case', fetchClientDetails, validateAboutNewCase(), async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   await submitAboutNewCaseForm(req, res, next);
 });
+
+/* GET check-split-case-answers form. */
+router.get('/:caseReference/check-split-case-answers', fetchClientDetails, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  await getCheckSplitCaseAnswersForm(req, res, next);
+});
+
+/* POST check-split-case-answers form. */
+router.post('/:caseReference/check-split-case-answers', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  await submitCheckSplitCaseAnswersForm(req, res, next);
+});
+
+/* GET route to set from change flag to true */
+router.get('/:caseReference/change', async (req: Request, res: Response, next: NextFunction): Promise<void> => {  
+  await setSplitCaseCacheSettings(req, res, next);
+});
+
 export default router;

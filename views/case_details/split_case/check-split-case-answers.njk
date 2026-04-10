@@ -1,0 +1,120 @@
+{% extends "case_details/_base-case-change.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "components/errorSummaryComponent.njk" import errorSummary %}
+{% from "components/alertBannerComponent.njk" import alertBannerComponent %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% block pageTitle %}
+  {% if errorState.hasErrors %}{{ t('common.error') }}: {% endif %}{{ t('pages.caseDetails.checkYourAnswers.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
+{% endblock %}
+
+{% block backLink %}
+  {% set backLinkHref = "/cases/" + caseReference + "/about-new-case" %}
+
+  {{ govukBackLink({
+      text: t('common.back'),
+      href: backLinkHref,
+      classes: "govuk-!-margin-bottom-0"
+    }) }}
+{% endblock %}
+
+{% block errorSummaryOrAlert %}
+  {% if errorState.hasErrors %}
+    {{ errorSummary(errorState.errors, t('common.errorSummaryTitle')) }}
+  {% else %}
+    {{ alertBannerComponent(client) }}
+  {% endif %}
+{% endblock %}
+
+{% block formContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form method="POST" action="/cases/{{ caseReference }}/check-split-case-answers">
+
+        <!-- CSRF Protection -->
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+
+        <h2 class="govuk-heading-m">{{ t('pages.caseDetails.checkYourAnswers.h2') }}</h2>
+
+        {{ govukSummaryList({
+          card: {
+            title: {
+              text: t('pages.caseDetails.checkYourAnswers.originalCase')
+            }
+          },
+          rows: [
+            {
+              key: {
+                text: t('pages.caseDetails.checkYourAnswers.categoryOfLaw')
+              },
+              value: {
+                html: client.category 
+              }
+            },
+            {
+              key: {
+                text: t('pages.caseDetails.checkYourAnswers.assignedTo')
+              },
+              value: {
+                html: splitCaseCache.currentProvider
+              }
+            }
+          ]
+        }) }}
+
+        {{ govukSummaryList({
+          card: {
+            title: {
+              text: t('pages.caseDetails.checkYourAnswers.newCase')
+            },
+            actions: {
+              items: [
+                {
+                  href: "/cases/" + caseReference + "/change",
+                  text: t('pages.caseDetails.checkYourAnswers.changeLink'),
+                  visuallyHiddenText: t('pages.caseDetails.checkYourAnswers.changeLinkHiddenText')
+                }
+              ]
+            }
+          },
+          rows: [
+            {
+              key: {
+                text: t('pages.caseDetails.checkYourAnswers.categoryOfLaw')
+              },
+              value: {
+                html: t('common.categoryCode.' + splitCaseCache.category) 
+              }
+            },
+            {
+              key: {
+                text: t('pages.caseDetails.checkYourAnswers.assignedTo')
+              },
+              value: {
+                html: splitCaseCache.providerName
+              }
+            },
+            {
+              key: {
+                text: t('pages.caseDetails.checkYourAnswers.whySplitCase')
+              },
+              value: {
+                html: splitCaseCache.notes 
+              }
+            }
+          ]
+        }) }}
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: t('pages.caseDetails.checkYourAnswers.confirmSplitButton')
+          }) }}
+          <a class="govuk-link" href="/cases/{{ caseReference }}/client-details">{{ t('common.cancel') }}</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+{% endblock %}

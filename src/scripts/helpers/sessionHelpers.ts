@@ -9,6 +9,18 @@ export interface SessionTokenStorage {
   loginTime: number;
 }
 
+// Interface for split case cache data
+export interface SplitCaseCache {
+  caseReference?: string;
+      providerName?: string;
+      internal?: string;
+      category?: string;
+      notes?: string;
+      fromChange?: boolean;
+      internalChange?: string;
+      providerNameChange?: string;
+}
+
 // Extend the Express session interface to support dynamic namespaces
 declare module 'express-session' {
   interface SessionData extends Record<string, Record<string, string> | string | undefined> {
@@ -16,6 +28,7 @@ declare module 'express-session' {
     authCredentials?: AuthCredentials;
     authTokens?: SessionTokenStorage;
     user?: UserInfo;
+    splitCaseCache?: SplitCaseCache;
   }
 }
 
@@ -27,7 +40,12 @@ declare module 'express-session' {
  */
 export function storeSessionData(req: Request, namespace: string, data: Record<string, string>): void {
   // Store our typed data directly in the session
-  req.session[namespace] = data;
+  
+req.session[namespace] = {
+  ...(req.session[namespace] as Record<string, string> || {}),
+  ...data
+};
+
 }
 
 /**
@@ -140,3 +158,32 @@ export function deleteSessionKeys(req: Request, keys: string[]): void {
     }
   });
 }
+
+/**
+ * Boolean value if split case cache exists in session
+ * @param {Request} req - Express request object
+ * @returns {boolean} - True if split case cache exists, false otherwise
+ */
+export function hasSplitCaseCache(
+  req: Request
+): req is Request & { session: { splitCaseCache: SplitCaseCache } } {
+  return Boolean(req.session && req.session.splitCaseCache);
+}
+
+/**
+ * Checks split case cache exists in session
+ * @param {Request} req - Express request object
+ * @returns {SplitCaseCache} - The split case cache
+ */
+export function ensureSplitCaseCache(req: Request): SplitCaseCache {
+  if (!req.session) {
+    throw new Error('Session is not initialised');
+  }
+
+  if (!req.session.splitCaseCache) {
+    req.session.splitCaseCache = {};
+  }
+
+  return req.session.splitCaseCache as SplitCaseCache;
+}
+
