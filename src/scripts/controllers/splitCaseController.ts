@@ -167,17 +167,13 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
     return;
   }
   const provider = await fetchProviderNameAndDetail(req, caseReference);
-  let assignedToName;
+  const operatorSelection = req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && effectiveInternal === 'false';
   try {
     devLog(`Rendering about new case form for case: ${caseReference}`);
 
     let categoryItems: { value: string; text: string; selected: boolean }[] = [];
 
-    const operatorSelection = req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && effectiveInternal === 'false';
-
     if (operatorSelection) {
-
-      assignedToName = t('pages.caseDetails.splitCase.operatorReassignment');
 
       const allCategoriesResponse = await apiService.getAllCategories(req.axiosMiddleware);
 
@@ -199,8 +195,6 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
         ))];
       }
     } else {
-
-      assignedToName = provider.name;
       categoryItems = [
         {
           value: '',
@@ -241,11 +235,11 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
     // normal journey — save immediately
     storeSessionData(req, 'splitCaseCache', {
       currentProvider: String(provider.name),
-      providerName: String(assignedToName)
+      providerName: String(operatorSelection ? t('pages.caseDetails.splitCase.operatorReassignment') : provider.name),
     });
   } else {
     // do NOT overwrite the original yet — store in a temp key
-    req.session.splitCaseCache.providerNameChange = String(assignedToName);
+    req.session.splitCaseCache.providerNameChange = String(operatorSelection ? t('pages.caseDetails.splitCase.operatorReassignment') : provider.name);
   }
 }
 
