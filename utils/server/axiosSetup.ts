@@ -4,7 +4,6 @@ import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
 import type { InternalAxiosRequestConfig } from 'axios';
 import { createAuthServiceWithCredentials } from '#src/services/authService.js';
 import { devLog, devError } from '#src/scripts/helpers/index.js';
-import { decrypt } from '#utils/server/index.js';
 import '#src/scripts/helpers/sessionHelpers.js';
 
 const DEFAULT_TIMEOUT = 5000;
@@ -65,29 +64,12 @@ export const axiosMiddleware = (req: Request, res: Response, next: NextFunction)
 
   // Check if user is authenticated via session
   if (req.session.authCredentials !== undefined) {
-    try {
-      // Decrypt sensitive credentials from session before using them
-      const decryptedCredentials = {
-        ...req.session.authCredentials,
-        password: decrypt(req.session.authCredentials.password),
-        client_secret: decrypt(req.session.authCredentials.client_secret)
-      };
-      
-      // Recreate AuthService from decrypted session credentials
-      authService = createAuthServiceWithCredentials(decryptedCredentials);
-      if (authService !== null) {
-        devLog('Using session-based authentication for API requests');
-      } else {
-        devError('Failed to create AuthService from session credentials');
-      }
-    } catch (error) {
-      devError(`Failed to decrypt session credentials: ${toError(error).message}`);
-      // Clear corrupted session and redirect to login
-      req.session.destroy((destroyErr) => {
-        if (destroyErr !== null && destroyErr !== undefined) {
-          devError(`Error destroying session: ${destroyErr instanceof Error ? destroyErr.message : String(destroyErr)}`);
-        }
-      });
+    // Recreate AuthService from session credentials
+    authService = createAuthServiceWithCredentials(req.session.authCredentials);
+    if (authService !== null) {
+      devLog('Using session-based authentication for API requests');
+    } else {
+      devError('Failed to create AuthService from session credentials');
     }
   } else {
     devLog('No session credentials found - user must login to access API');
