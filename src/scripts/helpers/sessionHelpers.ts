@@ -16,7 +16,6 @@ export interface SplitCaseCache {
       internal?: string;
       category?: string;
       notes?: string;
-      cachedAt?: string;
       fromChange?: boolean;
       internalChange?: string;
       providerNameChange?: string;
