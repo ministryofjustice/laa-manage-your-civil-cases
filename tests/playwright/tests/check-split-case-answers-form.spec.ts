@@ -207,7 +207,7 @@ test('confirm correct `operatorReassignment` text shown when selecting `operator
   await page.goto(`/cases/${caseReference}/split-this-case`);
 
   // Navigate & Assert by selecting 2nd radio button on the form and submitting 
-  const radioInternalFalse = page.getByRole('radio', { name: 'To operator for reassignment' });
+  const radioInternalFalse = page.getByRole('radio', { name: 'The operator service' });
   await expect(radioInternalFalse).toBeVisible();
   await radioInternalFalse.check();
   await page.click('button.govuk-button');
@@ -219,7 +219,7 @@ test('confirm correct `operatorReassignment` text shown when selecting `operator
 
   // Expect text to be on page
   await expect(page).toHaveURL(checkSplitCaseAnswersPage.url);
-  await expect(page.getByText('To operator for reassignment')).toBeVisible();
+  await expect(page.getByText('The operator service')).toBeVisible();
 });
 
 test('check split case answers page should display change, confirm and cancel controls', async ({ page }) => {
