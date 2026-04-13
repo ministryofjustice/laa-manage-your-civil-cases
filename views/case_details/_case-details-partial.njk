@@ -3,9 +3,10 @@
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 
-<span class="case-details-tab-heading-alignment govuk-!-margin-top-7 govuk-!-margin-bottom-7">
-  <h2 class="govuk-heading-m govuk-!-margin-bottom-0">{{ t('pages.caseDetails.tabs.caseDetails') }}</h2>
-  <a class="govuk-body govuk-link govuk-!-margin-bottom-0" href="#providerNote">{{ t('pages.caseDetails.caseDetailsSection.noteLabel') }}</a>
+<span class="case-details-tab-heading-alignment govuk-!-margin-bottom-4">
+
+  <h2 class="govuk-heading-m">{{ t('pages.caseDetails.tabs.caseDetails') }}</h2>
+  <a class="govuk-body govuk-link" href="#providerNote">{{ t('pages.caseDetails.caseDetailsSection.noteLabel') }}</a>
 </span>
 {% if error %}
   {% set errorMessages = {
@@ -15,6 +16,7 @@
     if error.inputErrors.providerNote
   } %}
 {% endif %}
+
 {# Client problem section #}
 {% if data.scopeTraversal or data.client_notes %}
   <h3 class="govuk-heading-s govuk-!-margin-bottom-3">{{ t('pages.caseDetails.caseDetailsSection.clientProblemTitle') }}</h3>
@@ -72,8 +74,8 @@
 
 {# Operator diagnosis section #}
 {% if data.diagnosis %}
-  <h3 class="govuk-heading-s govuk-!-margin-bottom-3">{{ t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle') }}</h3>
-{% set rows = [] %}
+  <h3 class="govuk-heading-s govuk-!-margin-bottom-2">{{ t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle') }}</h3>
+  {% set rows = [] %}
   {% if data.diagnosis.diagnosisNode and data.diagnosis.diagnosisNode.length > 0 %}
     {% for node in data.diagnosis.diagnosisNode %}
       {% set rows = rows.concat([
@@ -118,14 +120,12 @@
 {% endif %}
 
 {% block formContent %}
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
 
-      <h3 class="govuk-heading-s govuk-!-margin-bottom-3 govuk-!-margin-top-6">{{ t('pages.caseDetails.caseDetailsSection.noteLabel') }}</h3>
+  <h3 class="govuk-heading-s govuk-!-margin-bottom-3 govuk-!-margin-top-6">{{ t('pages.caseDetails.caseDetailsSection.noteLabel') }}</h3>
 
-      <form method="post" action="">
-        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-        {{ govukCharacterCount({
+  <form method="post" action="">
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+    {{ govukCharacterCount({
         id: "providerNote",
         name: "providerNote",
         value: currentProviderNote,
@@ -135,10 +135,8 @@
         formGroup: { classes: "govuk-!-margin-bottom-0" }
       }) }}
 
-        {{ govukButton({
+    {{ govukButton({
         text: t('common.save')
       }) }}
-      </form>
-    </div>
-  </div>
+  </form>
 {% endblock %}

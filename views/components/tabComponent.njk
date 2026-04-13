@@ -76,11 +76,18 @@
     }), navItems) %}
   {% endfor %}
 
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+
   {# Render the MOJ sub-navigation #}
   {{ mojSubNavigation({
     label: "Sub navigation",
     items: navItems
   }) }}
+
+  </div>
+</div>
 
   {# Render only the active tab content container with data attributes for JavaScript #}
   <div id="{{ options.containerId }}" class="tab-content-container" data-active-tab="{{ activeId }}">
@@ -118,3 +125,4 @@
     {% endfor %}
   </div>
 {% endmacro %}
+</div>
