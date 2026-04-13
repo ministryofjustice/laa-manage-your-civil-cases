@@ -35,7 +35,11 @@
 
 {% block pageContent %}
   {{ caseDetailsHeaderComponent(client) }}
-  
+
+<div id="cases-tab-container" class="tab-content-container">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
   {{ tabComponent({
     activeTab: activeTab,
     containerId: "cases-tab-container",
@@ -76,4 +80,6 @@
       }
     ]
   }) }}
+</div>
+  </div>
 {% endblock %}
