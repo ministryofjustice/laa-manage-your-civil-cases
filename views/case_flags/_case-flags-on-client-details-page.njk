@@ -1,0 +1,57 @@
+{%- from "moj/components/badge/macro.njk" import mojBadge -%}
+
+{% if client.is_urgent === 'true' and client.caseStatus in ["new", "pending"] %}
+  {{ mojBadge({
+    text: t('pages.caseDetails.urgent'),
+    classes: "moj-badge--red govuk-!-margin-bottom-3"
+  }) }}
+{% endif %}
+
+{% if client.vulnerable_user === "true" %}
+  {{ mojBadge({
+    text: t('pages.caseDetails.atRiskOfAbuse'),
+    classes: "moj-badge--red govuk-!-margin-bottom-3"
+  }) }}
+{% endif %}
+
+{% if client.outcome_code === "SPOR" and client.caseStatus in ["new", "pending"] %}
+  {{ mojBadge({
+    text: t('pages.caseDetails.secondOpinion'),
+    classes: "moj-badge--blue govuk-!-margin-bottom-3"
+  }) }}
+{% endif %}
+
+{% if client.outcome_code === "MANALC" and client.caseStatus in ["new", "pending"] %}
+  {{ mojBadge({
+    text: t('pages.caseDetails.manuallyAssigned'),
+    classes: "moj-badge--blue govuk-!-margin-bottom-3"
+  }) }}
+{% endif %}
+
+{% if client.thirdParty %}
+  {{ mojBadge({
+    text: t('pages.caseDetails.thirdParty'),
+    classes: "moj-badge--purple govuk-!-margin-bottom-3"
+  }) }}
+{% endif %}
+  
+{% if client.clientSupportNeeds.languageSupportNeeds %}
+  {{ mojBadge({
+    text: t('pages.caseDetails.translation'),
+    classes: "moj-badge--green govuk-!-margin-bottom-3"
+  }) }}
+{% endif %}
+
+{% if client.clientSupportNeeds.textRelay === "Yes"%}
+  {{ mojBadge({
+    text: t('pages.caseDetails.textRelay'),
+    classes: "moj-badge--green govuk-!-margin-bottom-3"
+  }) }}
+{% endif %}
+
+{% if client.clientSupportNeeds.bslWebcam  === "Yes" %}
+  {{ mojBadge({
+    text: t('pages.caseDetails.bsl'),
+    classes: "moj-badge--green govuk-!-margin-bottom-3"
+  }) }}
+{% endif %}

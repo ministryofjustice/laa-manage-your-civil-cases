@@ -1,0 +1,57 @@
+{%- from "moj/components/badge/macro.njk" import mojBadge -%}
+
+{% if row.isUrgent and row.caseStatus in ["New", "Pending"]%}
+  {{ mojBadge({
+    text: t('pages.caseDetails.urgent'),
+    classes: "moj-badge--red"
+  }) }}
+{% endif %}
+
+{% if row.vulnerableUser %}
+  {{ mojBadge({
+    text: t('pages.caseDetails.atRiskOfAbuse'),
+    classes: "moj-badge--red"
+  }) }}
+{% endif %}
+
+{% if row.outcome_code === "SPOR" and row.caseStatus in ["New", "Pending"] %}
+  {{ mojBadge({
+    text: t('pages.caseDetails.secondOpinion'),
+    classes: "moj-badge--blue"
+  }) }}
+{% endif %}
+
+{% if row.outcome_code === "MANALC" and row.caseStatus in ["New", "Pending"] %}
+  {{ mojBadge({
+    text: t('pages.caseDetails.manuallyAssigned'),
+    classes: "moj-badge--blue"
+  }) }}
+{% endif %}
+
+{% if row.thirdpartyDetails %}
+  {{ mojBadge({
+    text: t('pages.caseDetails.thirdParty'),
+    classes: "moj-badge--purple"
+  }) }}
+{% endif %}
+  
+{% if row.language %}
+  {{ mojBadge({
+    text: t('pages.caseDetails.translation'),
+    classes: "moj-badge--green"
+  }) }}
+{% endif %}
+
+{% if row.textRelay %}
+  {{ mojBadge({
+    text: t('pages.caseDetails.textRelay'),
+    classes: "moj-badge--green"
+  }) }}
+{% endif %}
+
+{% if row.bslWebcam %}
+  {{ mojBadge({
+    text: t('pages.caseDetails.bsl'),
+    classes: "moj-badge--green"
+  }) }}
+{% endif %}

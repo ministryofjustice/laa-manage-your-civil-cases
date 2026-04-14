@@ -58,6 +58,8 @@ export function transformToApiFormat(caseItem: MockCase): object {
     reference: caseItem.caseReference,
     provider: caseItem.providerId,
     laa_reference: caseItem.laaReference,
+    vulnerable_user: caseItem.clientIsVulnerable,
+    outcome_code: caseItem.outcomeCode,
     full_name: caseItem.fullName,
     date_of_birth: caseItem.dateOfBirth,
     client_notes: caseItem.client_notes,
@@ -80,6 +82,14 @@ export function transformToApiFormat(caseItem: MockCase): object {
       email: caseItem.emailAddress,
       street: caseItem.address,
       postcode: caseItem.postcode
+    },
+    // Match the case flags format
+    mcc_case_flags: {
+      text_relay: caseItem.clientSupportNeeds?.textRelay === 'Yes',
+      bsl_webcam: caseItem.clientSupportNeeds?.bslWebcam === 'Yes',
+      thirdparty_details: Boolean(caseItem.thirdParty),
+      vulnerable_user: caseItem.clientIsVulnerable ? 'Yes' : '',
+      language: caseItem.clientSupportNeeds?.languageSupportNeeds || null
     },
     // Adaptation details nested object
     adaptation_details: caseItem.clientSupportNeeds ? {

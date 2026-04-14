@@ -126,7 +126,7 @@ test.describe('Case Status Handling', () => {
       const closePage = CloseCaseFormPage.forCase(page, 'PC-2211-4466');
       await closePage.navigate();
       // Assert the case details header is present
-      await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Vinsmoke Sanj", expectedCaseRef: "PC-2211-4466", dateReceived: "8 August 2025" }); 
+      await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Vinsmoke Sanji", expectedCaseRef: "PC-2211-4466", dateReceived: "8 August 2025" }); 
       await closePage.clickSave();
 
       await closePage.expectErrorSummaryVisible();

@@ -18,7 +18,6 @@ export interface MockCase {
   operatorNotes?: string;
   category: string;
   dateOfBirth: string;
-  clientIsVulnerable: boolean;
   language: string;
   phoneNumber: string;
   safeToCall: boolean;
@@ -27,6 +26,8 @@ export interface MockCase {
   address: string;
   postcode: string;
   laaReference: string;
+  outcomeCode: string;
+  clientIsVulnerable: string;
   thirdParty?: {
     fullName: string;
     emailAddress: string;

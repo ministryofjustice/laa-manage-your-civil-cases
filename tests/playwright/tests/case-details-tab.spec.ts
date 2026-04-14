@@ -48,7 +48,7 @@ test.describe('Case details tab', () => {
   test('should show client problem section, when scopeTraversal data present', async ({ page, i18nSetup }) => {
     const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-2211-4466'); // This case has some mock data
     await caseDetails.navigate();
-    await caseDetails.expectClientName('Vinsmoke Sanj');
+    await caseDetails.expectClientName('Vinsmoke Sanji');
     await caseDetails.expectStatus('New');
 
     // `Client problem from check if you can get legal aid` title
@@ -91,7 +91,7 @@ test.describe('Case details tab', () => {
   test('should show operator diagnosis section, when diagnosis data present', async ({ page, i18nSetup }) => {
     const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-2211-4466'); // This case has some mock data
     await caseDetails.navigate();
-    await caseDetails.expectClientName('Vinsmoke Sanj');
+    await caseDetails.expectClientName('Vinsmoke Sanji');
     await caseDetails.expectStatus('New');
 
     // `Operator scope diagnosis` title
@@ -113,7 +113,7 @@ test.describe('Case details tab', () => {
   test('should show operator notes section, when notes data is present', async ({ page, i18nSetup }) => {
     const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-2211-4466'); // This case has some mock data
     await caseDetails.navigate();
-    await caseDetails.expectClientName('Vinsmoke Sanj');
+    await caseDetails.expectClientName('Vinsmoke Sanji');
     await caseDetails.expectStatus('New');
 
     // `Operator scope diagnosis` title
@@ -127,7 +127,7 @@ test.describe('Case details tab', () => {
   test('should show provider notes section, when notesHistory & provider_notes are present', async ({ page, i18nSetup }) => {
     const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-2211-4466'); // This case has some mock data
     await caseDetails.navigate();
-    await caseDetails.expectClientName('Vinsmoke Sanj');
+    await caseDetails.expectClientName('Vinsmoke Sanji');
     await caseDetails.expectStatus('New');
 
     // `Operator scope diagnosis` title

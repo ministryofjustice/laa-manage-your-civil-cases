@@ -202,6 +202,13 @@
       "notProvided": "Not provided",
       "status": "Status",
       "urgent": "Urgent",
+      "atRiskOfAbuse": "At risk of abuse",
+      "secondOpinion": "Second opinion",
+      "manuallyAssigned": "Manually assigned",
+      "thirdParty": "Third party",
+      "translation": "Translation",
+      "textRelay": "Text relay",
+      "bsl": "BSL",
       "tabs": {
         "clientDetails": "Client details",
         "caseDetails": "Case details",

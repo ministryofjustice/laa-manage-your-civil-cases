@@ -22,6 +22,8 @@ export function transformCaseItem(item: unknown): CaseData {
     throw new Error('Invalid case item: expected object');
   }
 
+  const mcc_case_flags = isRecord(item.mcc_case_flags) ? item.mcc_case_flags : {};
+
   return {
     fullName: safeString(item.full_name),
     caseReference: safeString(item.reference),
@@ -31,17 +33,20 @@ export function transformCaseItem(item: unknown): CaseData {
     provider_viewed: formatDate(safeOptionalString(item.provider_viewed) ?? ''),
     provider_accepted: formatDate(safeOptionalString(item.provider_accepted) ?? ''),
     outcome_code: safeOptionalString(item.outcome_code) ?? '',
-    caseStatus: safeString(item.caseStatus),
+    caseStatus: determineCaseStatus(item),
     dateOfBirth: formatDate(safeString(item.date_of_birth)),
     modified: formatDate(safeOptionalString(item.modified) ?? ''),
     provider_closed: formatDate(safeOptionalString(item.provider_closed) ?? ''),
     phoneNumber: safeOptionalString(item.phone_number),
-    safeToCall: Boolean(item.safe_to_call),
+    safeToCall: Boolean(item.safe_to_contact),
     announceCall: Boolean(item.announce_call),
-    emailAddress: safeOptionalString(item.email_address),
-    clientIsVulnerable: Boolean(item.client_is_vulnerable),
-    address: safeOptionalString(item.address),
-    postcode: safeOptionalString(item.postcode)
+    postcode: safeOptionalString(item.postcode),
+    isUrgent: Boolean(item.is_urgent),
+    textRelay: Boolean(mcc_case_flags.text_relay),
+    bslWebcam: Boolean(mcc_case_flags.bsl_webcam),
+    thirdpartyDetails: Boolean(mcc_case_flags.thirdparty_details),
+    vulnerableUser: safeOptionalString(mcc_case_flags.vulnerable_user),
+    language: safeOptionalString(mcc_case_flags.language)
   };
 }
 
@@ -53,30 +58,6 @@ export function transformCaseItem(item: unknown): CaseData {
 export function transformCaseItemForSearch(item: unknown): CaseData {
   if (!isRecord(item)) {
     throw new Error('Invalid case item: expected object');
-  }
-
-  // TODO add state to the Search endpoint response, so we can remove `determineCaseStatus` and maybe even `transformCaseItemForSearch`
-  /**
-   * Determine case status from CLA API fields for the Search endpoint
-   * @param {Record<string, unknown>} item - Case item from API
-   * @returns {string} Readable case status
-   */
-  function determineCaseStatus(item: Record<string, unknown>): string {
-    const viewed = Boolean(item.provider_viewed);
-    const accepted = Boolean(item.provider_accepted);
-    const closed = Boolean(item.provider_closed);
-    const outcomeCode = item.outcome_code === "CLSP";
-
-    if (closed) {
-      return outcomeCode ? "Completed" : "Closed";
-    }
-    if (accepted) {
-      return 'Advising';
-    }
-    if (viewed) {
-      return 'Pending';
-    }
-    return 'New';
   }
 
   return {
@@ -91,4 +72,28 @@ export function transformCaseItemForSearch(item: unknown): CaseData {
     modified: formatDate(safeOptionalString(item.modified) ?? ''),
     safeToCall: isSafeToCall({ safe_to_contact: item.safe_to_contact}),
   };
+}
+
+// TODO add state to the Search & `\case` endpoint response, so we can remove `determineCaseStatus` and maybe even `transformCaseItemForSearch`
+/**
+ * Determine case status from CLA API fields for the Search endpoint
+ * @param {Record<string, unknown>} item - Case item from API
+ * @returns {string} Readable case status
+ */
+function determineCaseStatus(item: Record<string, unknown>): string {
+  const viewed = Boolean(item.provider_viewed);
+  const accepted = Boolean(item.provider_accepted);
+  const closed = Boolean(item.provider_closed);
+  const outcomeCode = item.outcome_code === "CLSP";
+
+  if (closed) {
+    return outcomeCode ? "Completed" : "Closed";
+  }
+  if (accepted) {
+    return 'Advising';
+  }
+  if (viewed) {
+    return 'Pending';
+  }
+  return 'New';
 }

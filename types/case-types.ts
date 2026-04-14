@@ -27,11 +27,16 @@ export interface CaseData {
   announceCall?: boolean;
   emailAddress?: string;
   // Client information
-  clientIsVulnerable?: boolean;
   address?: string;
   postcode?: string;
-  specialNotes?: string;
   outcomeDescription?: string;
+  // Case flags
+  isUrgent?: boolean,
+  textRelay?: boolean,
+  bslWebcam?: boolean,
+  thirdpartyDetails?: boolean,
+  vulnerableUser?: string,
+  language?: string
 }
 
 /**

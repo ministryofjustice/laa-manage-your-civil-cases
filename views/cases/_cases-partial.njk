@@ -11,30 +11,32 @@
 {# Configure table based on caseType parameter #}
 {% if caseType == 'new' %}
   {% set tableId = 'new-cases-table' %}
-  {% set dateColumn = { key: "provider_assigned_at", text: t('components.table.columns.dateReceived'), sortable: true, classes: "govuk-table__header--numeric", cellClasses: "govuk-table__cell--numeric" } %}
+  {% set dateColumn = { key: "provider_assigned_at", text: t('components.table.columns.dateReceived'), sortable: true } %}
   {% set defaultSortBy = "provider_assigned_at" %}
   {% set emptyMessage = "There are no new cases." %}
 {% elif caseType == 'pending' %}
   {% set tableId = 'pending-cases-table' %}
-  {% set dateColumn = { key: "modified", text: t('components.table.columns.dateModified'), sortable: true, classes: "govuk-table__header--numeric", cellClasses: "govuk-table__cell--numeric" } %}
+  {% set dateColumn = { key: "modified", text: t('components.table.columns.dateModified'), sortable: true } %}
   {% set defaultSortBy = "modified" %}
   {% set emptyMessage = "There are no pending cases." %}
 {% elif caseType == 'advising' %}
   {% set tableId = 'advising-cases-table' %}
-  {% set dateColumn = { key: "modified", text: t('components.table.columns.dateModified'), sortable: true, classes: "govuk-table__header--numeric", cellClasses: "govuk-table__cell--numeric" } %}
+  {% set dateColumn = { key: "modified", text: t('components.table.columns.dateModified'), sortable: true } %}
   {% set defaultSortBy = "modified" %}
   {% set emptyMessage = "There are no advising cases." %}
 {% elif caseType == 'closed' %}
   {% set tableId = 'closed-cases-table' %}
-  {% set dateColumn = { key: "provider_closed", text: t('components.table.columns.dateClosed'), sortable: true, classes: "govuk-table__header--numeric", cellClasses: "govuk-table__cell--numeric" } %}
+  {% set dateColumn = { key: "provider_closed", text: t('components.table.columns.dateClosed'), sortable: true } %}
   {% set defaultSortBy = "provider_closed" %}
   {% set emptyMessage = "There are no closed cases." %}
 {% elif caseType == 'completed' %}
   {% set tableId = 'completed-cases-table' %}
-  {% set dateColumn = { key: "provider_closed", text: t('components.table.columns.dateClosed'), sortable: true, classes: "govuk-table__header--numeric", cellClasses: "govuk-table__cell--numeric" } %}
+  {% set dateColumn = { key: "provider_closed", text: t('components.table.columns.dateClosed'), sortable: true } %}
   {% set defaultSortBy = "provider_closed" %}
   {% set emptyMessage = "There are no completed cases." %}
 {% endif %}
+
+<pre>{{ data | dump }}</pre>
 
 {% if data and data.length > 0 %}
   {# Render the sortable table with dynamic configuration #}
@@ -45,8 +47,8 @@
         { key: "fullName", text: t('components.table.columns.name'), link: "/cases/{{caseReference}}/client-details" },
         { key: "caseReference", text: t('components.table.columns.caseId') },
         { key: "dateOfBirth", text: t('components.table.columns.dateOfBirth') },
-        { key: "refCode", text: t('components.table.columns.details') },
-        dateColumn
+        dateColumn,
+        { key: "case_flags", text: t('components.table.columns.details') }
       ],
       sortBy: sortBy or defaultSortBy,
       sortOrder: sortOrder or "desc",

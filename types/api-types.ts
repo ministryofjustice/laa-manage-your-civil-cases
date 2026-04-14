@@ -126,6 +126,8 @@ export interface ClientDetailsResponse {
   //About the client
   caseReference: string;
   providerId: string;
+  laaReference: string;
+  vulnerableUser: string;
   fullName: string;
   dateOfBirth: string;
   caseStatus: string;

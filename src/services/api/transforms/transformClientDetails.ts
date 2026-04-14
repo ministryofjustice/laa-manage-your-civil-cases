@@ -35,6 +35,7 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
   const caseReference = safeString(item.reference);
   const providerId = safeString(item.provider);
   const laaReference = safeString(item.laa_reference);
+  const vulnerableUser = safeString(item.vulnerable_user);
   const apiState = safeString(item.state);
   const outcomeCode = safeOptionalString(item.outcome_code) ?? '';
   const caseStatus = translateCaseStatus(apiState, outcomeCode);
@@ -77,6 +78,7 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
     caseReference,
     providerId,
     laaReference,
+    vulnerableUser,
     caseStatus,
     provider_assigned_at,
     provider_viewed,

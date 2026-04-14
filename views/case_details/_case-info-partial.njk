@@ -99,13 +99,8 @@
   <p class="govuk-caption-l mcc-case-details-header">{{ client.caseReference }}</p>
   <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">{{ client.fullName }}</h1>
 
-  {# Urgent case #}
-  {% if client.is_urgent === 'true' %} 
-    {{ mojBadge({
-      text: t('pages.caseDetails.urgent'),
-      classes: "moj-badge--red govuk-!-margin-bottom-3"
-    }) }}
-  {% endif %}
+  {# Case flags #}
+  {% include "case_flags/_case-flags-on-client-details-page.njk" %}
 
   {# Date received #}
   <h2 class="govuk-heading-s govuk-!-margin-bottom-1">{{ t('pages.caseDetails.dateReceived') }}: <span class="govuk-body">{{ client.provider_assigned_at | formatDateLongMonth }}</span></h2>
