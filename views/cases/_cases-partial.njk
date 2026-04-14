@@ -36,8 +36,6 @@
   {% set emptyMessage = "There are no completed cases." %}
 {% endif %}
 
-<pre>{{ data | dump }}</pre>
-
 {% if data and data.length > 0 %}
   {# Render the sortable table with dynamic configuration #}
   {{ sortableTableComponent({

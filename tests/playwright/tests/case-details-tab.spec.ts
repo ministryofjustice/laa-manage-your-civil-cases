@@ -13,7 +13,7 @@ test.describe('Case details tab', () => {
     await caseDetails.expectClientName('Jack Youngs');
     await caseDetails.expectStatus('New');
     // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025" }); 
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
 
     // Check for page heading
     await expect(caseDetails.tabHeading).toBeVisible();
