@@ -67,11 +67,12 @@ export async function getFinancialEligibilityFieldsForm(req: Request, res: Respo
  * @param {NextFunction} _next - Express next middleware function
  */
 export async function postFinancialEligibilityFieldsForm(req: Request, res: Response, _next: NextFunction): Promise<void> {
-    const formFields = extractFormFields(req.body, ['madeupFieldName', 'existingMadeupFieldName']);
+    const formFields = extractFormFields(req.body, ['madeupFieldName', 'existingMadeupFieldName', 'continue', 'saveAndComeBackLater']);
 
     // TODO: perform save
     console.log('Form fields to save:', formFields);
 
+    // formRedirection being hardcoded. It needs to be the result of calling the CLA API.
     const formRedirection = getNextFormForEligibilityCheck(
         req.params.caseReference as string,
         {
@@ -97,7 +98,8 @@ export async function postFinancialEligibilityFieldsForm(req: Request, res: Resp
             is_you_under_18: false,
             under_18_receive_regular_payment: false,
             under_18_has_valuables: false
-        } as EligibilityCheck
+        } as EligibilityCheck,
+        formFields.saveAndComeBackLater === 'true'
     );
 
     if (formRedirection.redirect) {

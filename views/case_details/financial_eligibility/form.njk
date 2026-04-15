@@ -106,9 +106,15 @@
             
             <div class="govuk-button-group">
                 {{ govukButton({
-                    text: "Save",
-                    name: "saveAndContinue",
-                    value: "false"
+                    text: "Continue",
+                    name: "continue",
+                    value: "true"
+                }) }}
+                {{ govukButton({
+                    text: "Save and come back later",
+                    name: "saveAndComeBackLater",
+                    classes: "govuk-button--secondary",
+                    value: "true"
                 }) }}
                 <a class="govuk-link" href="{{ backLinkHref }}">{{ t('common.cancel') }}</a>
             </div>

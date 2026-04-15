@@ -47,9 +47,17 @@ const FORM_PAGES: Record<string, FinancialEligibilityFormQuestion[]> = {
  * Determines the next form redirection based on the eligibility check state.
  * @param {string} caseReference - The case reference to use in the redirection URL
  * @param {EligibilityCheck} eligibilityCheck - The eligibility check object to evaluate
+ * @param {boolean} saveAndComeBackLater - Flag indicating if the user chose to save and come back later
  * @returns {FormRedirection} A FormRedirection object indicating whether to redirect and where
  */
-export function getNextFormForEligibilityCheck(caseReference: string, eligibilityCheck: EligibilityCheck): FormRedirection {
+export function getNextFormForEligibilityCheck(caseReference: string, eligibilityCheck: EligibilityCheck, saveAndComeBackLater: boolean): FormRedirection {
+    if (saveAndComeBackLater) {
+        return {
+            redirect: true,
+            redirectTo: `/cases/${caseReference}/financial-eligibility`
+        };
+    }
+
     if (eligibilityCheck.state === 'in_progress') {
         if (eligibilityCheck.is_you_under_18 === false) {
             if (eligibilityCheck.has_partner === true) {
