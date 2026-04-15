@@ -28,7 +28,7 @@ describe('errorHandler', () => {
   describe('extractErrorMessage', () => {
     it('returns user-friendly message for axios-like error with status', () => {
       const axiosError = {
-        response: { status: 404, data: {}, statusText: 'Not Found' }
+        response: { status: HTTP.NOT_FOUND, data: {}, statusText: 'Not Found' }
       };
       const result = extractErrorMessage(axiosError);
       assert.strictEqual(result, 'The requested information could not be found.');
@@ -37,7 +37,7 @@ describe('errorHandler', () => {
     it('extracts message from response.data.message if available', () => {
       const axiosError = {
         response: {
-          status: 400,
+          status: HTTP.BAD_REQUEST,
           data: { message: 'Invalid input field' },
           statusText: 'Bad Request',
         }

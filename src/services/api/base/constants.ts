@@ -24,6 +24,7 @@ export const API_PREFIX = process.env.API_PREFIX ?? '/cla_provider/api/v1';
 /** Timeout in milliseconds for search API calls to prevent hanging requests (used in casesApiService.searchCases) */
 export const SEARCH_TIMEOUT_MS = 10000;
 
+// Enum for http status codes 
 export enum HTTP {
     BAD_REQUEST = 400,
     NOT_FOUND = 404,
