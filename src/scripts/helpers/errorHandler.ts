@@ -9,17 +9,7 @@
  */
 
 import { devError } from './index.js';
-import { HTTP_BAD_REQUEST, HTTP_NOT_FOUND } from '../../services/api/base/constants.js';
-
-// HTTP Status Code Constants
-const HTTP_UNAUTHORIZED = 401;
-const HTTP_FORBIDDEN = 403;
-const HTTP_REQUEST_TIMEOUT = 408;
-const HTTP_TOO_MANY_REQUESTS = 429;
-const HTTP_INTERNAL_SERVER_ERROR = 500;
-const HTTP_BAD_GATEWAY = 502;
-const HTTP_SERVICE_UNAVAILABLE = 503;
-const HTTP_GATEWAY_TIMEOUT = 504;
+import { HTTP } from '../../services/api/base/constants.js';
 
 /**
  * Type guard for Axios error with response
@@ -61,25 +51,25 @@ function isNetworkError(error: unknown): error is { code: string; message?: stri
  */
 function getHttpErrorMessage(status: number): string {
   switch (status) {
-    case HTTP_BAD_REQUEST:
+    case HTTP.BAD_REQUEST:
       return 'Invalid request. Please check your input and try again.';
-    case HTTP_UNAUTHORIZED:
+    case HTTP.UNAUTHORIZED:
       return 'Authentication failed. Please log in again.';
-    case HTTP_FORBIDDEN:
+    case HTTP.FORBIDDEN:
       return 'You do not have permission to access this resource.';
-    case HTTP_NOT_FOUND:
+    case HTTP.NOT_FOUND:
       return 'The requested information could not be found.';
-    case HTTP_REQUEST_TIMEOUT:
+    case HTTP.REQUEST_TIMEOUT:
       return 'Request timed out. Please try again.';
-    case HTTP_TOO_MANY_REQUESTS:
+    case HTTP.TOO_MANY_REQUESTS:
       return 'Too many requests. Please wait a moment and try again.';
-    case HTTP_INTERNAL_SERVER_ERROR:
+    case HTTP.INTERNAL_SERVER_ERROR:
       return 'Internal server error. Please try again later.';
-    case HTTP_BAD_GATEWAY:
+    case HTTP.BAD_GATEWAY:
       return 'Service temporarily unavailable. Please try again later.';
-    case HTTP_SERVICE_UNAVAILABLE:
+    case HTTP.SERVICE_UNAVAILABLE:
       return 'Service unavailable. Please try again later.';
-    case HTTP_GATEWAY_TIMEOUT:
+    case HTTP.GATEWAY_TIMEOUT:
       return 'Request timed out. Please try again later.';
     default:
       return `Service error (${status}). Please try again later.`;
@@ -178,7 +168,7 @@ export function isHttpError(error: unknown, status: number): boolean {
  * @returns {boolean} True if error is a 401 authentication error
  */
 export function isAuthError(error: unknown): boolean {
-  return isHttpError(error, HTTP_UNAUTHORIZED);
+  return isHttpError(error, HTTP.UNAUTHORIZED);
 }
 
 /**
@@ -187,7 +177,7 @@ export function isAuthError(error: unknown): boolean {
  * @returns {boolean} True if error is a 403 forbidden error
  */
 export function isForbiddenError(error: unknown): boolean {
-  return isHttpError(error, HTTP_FORBIDDEN);
+  return isHttpError(error, HTTP.FORBIDDEN);
 }
 
 /**
@@ -196,7 +186,7 @@ export function isForbiddenError(error: unknown): boolean {
  * @returns {boolean} True if error is a 404 not found error
  */
 export function isNotFoundError(error: unknown): boolean {
-  return isHttpError(error, HTTP_NOT_FOUND);
+  return isHttpError(error, HTTP.NOT_FOUND);
 }
 
 /**
@@ -205,7 +195,7 @@ export function isNotFoundError(error: unknown): boolean {
  * @returns {boolean} True if error is a server error
  */
 export function isServerError(error: unknown): boolean {
-  return isAxiosError(error) && error.response.status >= HTTP_INTERNAL_SERVER_ERROR;
+  return isAxiosError(error) && error.response.status >= HTTP.INTERNAL_SERVER_ERROR;
 }
 
 /**

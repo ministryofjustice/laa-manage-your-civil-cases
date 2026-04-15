@@ -5,7 +5,7 @@ import { t } from './i18nLoader.js';
 import type { ValidationErrorData } from './ValidationErrorHelpers.js';
 import type { Request, Response } from 'express';
 import type { Result } from 'express-validator';
-import { HTTP_BAD_REQUEST } from '#src/services/api/base/constants.js';
+import { HTTP } from '#src/services/api/base/constants.js';
 
 // Constants for magic numbers
 const MINIMUM_YEAR = 1;
@@ -258,7 +258,7 @@ export async function handleDateOfBirthValidationErrors(
   const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
 
   // Re-render the form with errors and preserve user input
-  res.status(HTTP_BAD_REQUEST).render('case_details/edit-date-of-birth.njk', {
+  res.status(HTTP.BAD_REQUEST).render('case_details/edit-date-of-birth.njk', {
     caseReference,
     client: response.data,
     formData,

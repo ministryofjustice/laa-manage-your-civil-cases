@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
 import { devLog, devError, createProcessedError, safeString, validCaseReference, isRecord, hasProperty } from '#src/scripts/helpers/index.js';
-import { HTTP_NOT_FOUND } from '#src/services/api/base/constants.js';
+import { HTTP } from '#src/services/api/base/constants.js';
 
 const INTERNAL_SERVER_ERROR = 500;
 
@@ -31,8 +31,8 @@ export function getRemoveSupportNeedsConfirmation(req: Request, res: Response, n
     req.clientData.clientSupportNeeds === null
   ) {
     devError(`No client support needs to remove for case: ${caseReference}`);
-    res.status(HTTP_NOT_FOUND).render('main/error.njk', {
-      status: String(HTTP_NOT_FOUND),
+    res.status(HTTP.NOT_FOUND).render('main/error.njk', {
+      status: String(HTTP.NOT_FOUND),
       error: 'No client support needs data found for this case'
     });
     return;
@@ -67,7 +67,7 @@ export async function deleteClientSupportNeeds(req: Request, res: Response, next
       devLog(`Client support needs successfully removed for case: ${caseReference}`);
       // Redirect back to client details page
       res.redirect(`/cases/${caseReference}/client-details`);
-    } else if (response.message?.includes(String(HTTP_NOT_FOUND)) === true) {
+    } else if (response.message?.includes(String(HTTP.NOT_FOUND)) === true) {
       // Client support needs already removed or doesn't exist - treat as success (idempotent)
       devLog(`Client support needs already removed or not found for case: ${caseReference}. Treating as success.`);
       res.redirect(`/cases/${caseReference}/client-details`);

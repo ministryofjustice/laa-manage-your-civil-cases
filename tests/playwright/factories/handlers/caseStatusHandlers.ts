@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import type { MockCase } from './types.js';
 import { transformToApiFormat, findMockCase } from './utils.js';
-import { HTTP_BAD_REQUEST, HTTP_NOT_FOUND } from '#src/services/api/base/constants.js';
+import { HTTP } from '#src/services/api/base/constants.js';
 
 export const createCaseStatusHandlers = (
   apiBaseUrl: string,
@@ -25,7 +25,7 @@ export const createCaseStatusHandlers = (
         const mockCase = findMockCase(caseReference, cases);
 
         if (!mockCase) {
-          return new HttpResponse(null, { status: HTTP_NOT_FOUND });
+          return new HttpResponse(null, { status: HTTP.NOT_FOUND });
         }
 
         mockCase.caseStatus = 'Advising';
@@ -45,7 +45,7 @@ export const createCaseStatusHandlers = (
         const mockCase = findMockCase(caseReference, cases);
 
         if (!mockCase) {
-          return new HttpResponse(null, { status: HTTP_NOT_FOUND });
+          return new HttpResponse(null, { status: HTTP.NOT_FOUND });
         }
 
         mockCase.caseStatus = 'Completed';
@@ -68,14 +68,14 @@ export const createCaseStatusHandlers = (
         if (!eventCode) {
           return new HttpResponse(
             JSON.stringify({ error: 'Missing required field: event_code' }),
-            { status: HTTP_BAD_REQUEST }
+            { status: HTTP.BAD_REQUEST }
           );
         }
 
         const mockCase = findMockCase(caseReference, cases);
 
         if (!mockCase) {
-          return new HttpResponse(null, { status: HTTP_NOT_FOUND });
+          return new HttpResponse(null, { status: HTTP.NOT_FOUND });
         }
 
         mockCase.caseStatus = 'Closed';
@@ -100,14 +100,14 @@ export const createCaseStatusHandlers = (
         if (!notes) {
           return new HttpResponse(
             JSON.stringify({ error: 'Missing required field: notes' }),
-            { status: HTTP_BAD_REQUEST }
+            { status: HTTP.BAD_REQUEST }
           );
         }
 
         const mockCase = findMockCase(caseReference, cases);
 
         if (!mockCase) {
-          return new HttpResponse(null, { status: HTTP_NOT_FOUND });
+          return new HttpResponse(null, { status: HTTP.NOT_FOUND });
         }
 
         const updates = {
@@ -135,14 +135,14 @@ export const createCaseStatusHandlers = (
         if (!notes) {
           return new HttpResponse(
             JSON.stringify({ error: 'Missing required field: notes' }),
-            { status: HTTP_BAD_REQUEST }
+            { status: HTTP.BAD_REQUEST }
           );
         }
 
         const mockCase = findMockCase(caseReference, cases);
 
         if (!mockCase) {
-          return new HttpResponse(null, { status: HTTP_NOT_FOUND });
+          return new HttpResponse(null, { status: HTTP.NOT_FOUND });
         }
 
         mockCase.caseStatus = 'Advising';

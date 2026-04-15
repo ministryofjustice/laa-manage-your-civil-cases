@@ -1,4 +1,4 @@
-import { HTTP_NOT_FOUND } from '#src/services/api/base/constants.js';
+import { HTTP } from '#src/services/api/base/constants.js';
 import { http, HttpResponse } from 'msw';
 
 export const createSplitHandlers = (
@@ -44,7 +44,7 @@ export const createSplitHandlers = (
         });
       }
 
-      return HttpResponse.json({ detail: "Provider not found" }, { status: HTTP_NOT_FOUND });
+      return HttpResponse.json({ detail: "Provider not found" }, { status: HTTP.NOT_FOUND });
     });
   };
 
@@ -191,14 +191,14 @@ export const createSplitHandlers = (
       if (!caseReference) {
         return HttpResponse.json(
           { detail: 'Case reference missing' },
-          { status: 400 }
+          { status: HTTP.BAD_REQUEST }
         );
       }
 
       if (!body.category || typeof body.internal !== 'boolean' || !body.notes) {
         return HttpResponse.json(
           { detail: 'Invalid split case payload' },
-          { status: 400 }
+          { status: HTTP.BAD_REQUEST }
         );
       }
 

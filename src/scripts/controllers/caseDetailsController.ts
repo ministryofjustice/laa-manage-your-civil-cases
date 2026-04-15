@@ -9,7 +9,7 @@ import { safeBodyString, formatValidationError } from '../helpers/index.js';
 import { apiService } from '#src/services/apiService.js';
 import { clearSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 import config from '#config.js';
-import { HTTP_BAD_REQUEST } from '#src/services/api/base/constants.js';
+import { HTTP } from '#src/services/api/base/constants.js';
 
 const { MAX_PROVIDER_NOTE_LENGTH, CHARACTER_THRESHOLD }: { MAX_PROVIDER_NOTE_LENGTH: number; CHARACTER_THRESHOLD: number } = config;
 
@@ -84,7 +84,7 @@ export async function saveProviderNote(req: Request, res: Response, next: NextFu
       const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
 
       if (response.status === 'success' && response.data !== null) {
-        res.status(HTTP_BAD_REQUEST).render('case_details/index.njk', {
+        res.status(HTTP.BAD_REQUEST).render('case_details/index.njk', {
           activeTab: 'case_details',
           client: response.data,
           currentProviderNote,
