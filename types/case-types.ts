@@ -139,7 +139,7 @@ export interface EligibilityCheck {
   dependants_young: number;
   dependants_old: number;
   is_you_or_your_partner_over_60: boolean;
-  has_partner: boolean;
+  has_partner: boolean | null;
   on_passported_benefits: boolean;
   on_nass_benefits: boolean;
   state: string;

@@ -2,8 +2,8 @@ import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
 import { handleGetEditForm, handlePostEditForm, extractFormFields, safeString, validCaseReference } from '#src/scripts/helpers/index.js';
 import { format } from 'node:path';
-import { getQuestionsForPage, getNextFormForEligibilityCheck } from '../helpers/financialEligibility.js';
-import type { EligibilityCheck } from '#types/case-types.js';
+import { getQuestionsForPage, getNextPageForEligibilityCheck, getEligibilityCheckSectionsStatus, getAllIncompletePages } from '../helpers/financialEligibility.js';
+import type { EligibilityCheck, EligibilityPerson } from '#types/case-types.js';
 
 
 /**
@@ -73,7 +73,7 @@ export async function postFinancialEligibilityFieldsForm(req: Request, res: Resp
     console.log('Form fields to save:', formFields);
 
     // formRedirection being hardcoded. It needs to be the result of calling the CLA API.
-    const formRedirection = getNextFormForEligibilityCheck(
+    const formRedirection = getNextPageForEligibilityCheck(
         req.params.caseReference as string,
         {
             reference: '',
@@ -124,9 +124,22 @@ export async function getFinancialEligibilityEditAssessmentSteps(req: Request, r
         return;
     }
 
+    const sectionsStatus = getEligibilityCheckSectionsStatus(caseReference, {
+        is_you_under_18: false,
+        has_partner: true,
+        partner: {
+            income: {
+                earnings: null,
+            }
+        } as EligibilityPerson
+    } as EligibilityCheck);
+
+    console.log('Sections status:', sectionsStatus);
+
     res.render('case_details/financial_eligibility/edit-assessment-steps.njk', {
         caseReference,
-        client: req.clientData
+        client: req.clientData,
+        sectionsStatus
     });
 
 }
