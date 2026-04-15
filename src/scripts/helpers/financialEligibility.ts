@@ -13,6 +13,13 @@ export interface FinancialEligibilityFormQuestion {
 }
 
 
+// This file's code is what drives all the logic of
+// - which questions go in which page
+// - which page is next based on the answers given and the eligibility check state
+//
+// This is defined with the combination of the FORM_PAGES constant and the getNextFormForEligibilityCheck function.
+
+
 const FORM_PAGES: Record<string, FinancialEligibilityFormQuestion[]> = {
     'about-you-aged-17-or-under': [
         {

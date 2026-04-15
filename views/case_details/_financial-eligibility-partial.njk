@@ -5,12 +5,13 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
 
 
-{% set changeAged17OrUnderHtml %}
-  <a href="/cases/{{ caseReference }}/financial-eligibility/about-you-aged-17-or-under">Change</a>
-{% endset %}
-
-{% set changeDoYouHaveAPartnerHtml %}
-  <a href="/cases/{{ caseReference }}/financial-eligibility/do-you-have-a-partner">Change</a>
+{% set editAssessmentButtonHtml %}
+  {{
+    govukButton({
+      text: "Edit assessment",
+      href: "/cases/" + caseReference + "/financial-eligibility/edit-assessment-steps"
+    })
+  }}
 {% endset %}
 
 {% set detailsHtml %}
@@ -25,9 +26,6 @@
         },
         {
           text: "No"
-        },
-        {
-          html: changeAged17OrUnderHtml
         }
       ],
       [
@@ -36,9 +34,6 @@
         },
         {
           text: "No"
-        },
-        {
-          html: changeDoYouHaveAPartnerHtml
         }
       ],
       [
@@ -47,6 +42,11 @@
         },
         {
           text: "No"
+        }
+      ],
+      [
+        {
+          html: editAssessmentButtonHtml
         }
       ]
     ]

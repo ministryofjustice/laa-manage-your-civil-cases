@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
-import { handleGetEditForm, handlePostEditForm, extractFormFields } from '#src/scripts/helpers/index.js';
+import { handleGetEditForm, handlePostEditForm, extractFormFields, safeString, validCaseReference } from '#src/scripts/helpers/index.js';
 import { format } from 'node:path';
 import { getQuestionsForPage, getNextFormForEligibilityCheck } from '../helpers/financialEligibility.js';
 import type { EligibilityCheck } from '#types/case-types.js';
@@ -107,4 +107,26 @@ export async function postFinancialEligibilityFieldsForm(req: Request, res: Resp
     } else {
         res.redirect('/cases/' + req.params.caseReference + '/financial-eligibility');
     }
+}
+
+
+/**
+ * Renders the financial eligibility edit assessment form for a given case reference.
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ * @param {NextFunction} next - Express next middleware function
+ * @returns {Promise<void>}
+ */
+export async function getFinancialEligibilityEditAssessmentSteps(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const caseReference = safeString(req.params.caseReference);
+
+    if (!validCaseReference(caseReference, res)) {
+        return;
+    }
+
+    res.render('case_details/financial_eligibility/edit-assessment-steps.njk', {
+        caseReference,
+        client: req.clientData
+    });
+
 }
