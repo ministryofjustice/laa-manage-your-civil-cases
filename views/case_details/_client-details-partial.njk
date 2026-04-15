@@ -95,8 +95,8 @@
 
   <h2 class="govuk-heading-m">{{ t('pages.caseDetails.tabs.clientDetails') }}</h2>
 
-      {# Client info summary card #}
-      {{ summaryCardComponent({
+  {# Client info summary card #}
+  {{ summaryCardComponent({
        data: constructedData,
        card: {
         title: {
@@ -134,8 +134,8 @@
   ]
 }) }}
 
-      {# Contact Details summary card #}
-      {{ summaryCardComponent({
+  {# Contact Details summary card #}
+  {{ summaryCardComponent({
   data: constructedData,
   card: {
     title: {
@@ -187,9 +187,9 @@
   ]
 }) }}
 
-      {% if (not data.clientSupportNeeds.no_adaptations_required or data.clientSupportNeeds.notes or data.clientSupportNeeds.languageSupportNeeds) and (not data.clientSupportNeeds.skype and not data.clientSupportNeeds.minicom) %}
-        {# Client support needs summary card #}
-        {{ summaryCardComponent({
+  {% if (not data.clientSupportNeeds.no_adaptations_required or data.clientSupportNeeds.notes or data.clientSupportNeeds.languageSupportNeeds) and (not data.clientSupportNeeds.skype and not data.clientSupportNeeds.minicom) %}
+    {# Client support needs summary card #}
+    {{ summaryCardComponent({
     data: constructedData,
     card: {
       id: "client-support-needs",
@@ -234,19 +234,19 @@
       }
     ]
   }) }}
-      {% else %}
-        <div class="govuk-width-container govuk-!-margin-top-8 govuk-!-margin-bottom-5">
-          {{ govukButton({
+  {% else %}
+    <div class="govuk-width-container govuk-!-margin-top-8 govuk-!-margin-bottom-5">
+      {{ govukButton({
       href: "/cases/" + data.caseReference + "/client-details/add/support-need",
       text: t('pages.caseDetails.buttons.addClientSupportNeed'),
       classes: "govuk-button--secondary"
     }) }}
-        </div>
-      {% endif %}
+    </div>
+  {% endif %}
 
-      {% if data.thirdParty and(data.thirdParty.relationshipToClient != 'OTHER' or data.thirdParty.fullName) %}
-        {# Third party info summary card #}
-        {{ summaryCardComponent({
+  {% if data.thirdParty and(data.thirdParty.relationshipToClient != 'OTHER' or data.thirdParty.fullName) %}
+    {# Third party info summary card #}
+    {{ summaryCardComponent({
     data: constructedData,
     card: {
       title: {
@@ -297,12 +297,12 @@
       }
     ]
   }) }}
-      {% else %}
-        <div class="govuk-width-container">
-          {{ govukButton({
+  {% else %}
+    <div class="govuk-width-container">
+      {{ govukButton({
       href: "/cases/" + data.caseReference + "/client-details/add/third-party",
       text: t('pages.caseDetails.buttons.addThirdPartyContact'),
       classes: "govuk-button--secondary"
     }) }}
-        </div>
-      {% endif %}
+    </div>
+  {% endif %}
