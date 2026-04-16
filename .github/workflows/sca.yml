@@ -25,9 +25,10 @@ jobs:
 
     steps:
       - name: Run, SCA - Software Composition Analysis
-        uses: ministryofjustice/devsecops-actions/sca@f965eb1771ec66cfc41d7d57dc607fa6dfbc10ed # v1.4.0
+        uses: ministryofjustice/devsecops-actions/sca@86248cec9a6bb1fd4dabc08a05178e0650d3af4f # Feature branch
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
           # Custom Configuration - CodeQL wants to upload SARIF file and so does this workflow. Keeping CodeQL behaviour.
           codeql-upload-findings: "never"
+          disable-yarn-audit: "true"
