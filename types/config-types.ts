@@ -26,7 +26,6 @@ export interface SessionConfig {
   name: string;
   resave: boolean;
   saveUninitialized: boolean;
-  encryptionKey: string;
   cookie: {
     secure: boolean;
     httpOnly: boolean;
