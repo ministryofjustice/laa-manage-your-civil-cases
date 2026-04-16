@@ -103,10 +103,10 @@
   {# Case flags #}
   {% set supportNeeds = client.clientSupportNeeds %}
   {% set isUrgent = client.is_urgent == "true" %}
-  {% set vulnerableUser = client.vulnerableUser == "true" %}
+  {% set vulnerableUser = client.vulnerableUser %}
   {% set outcomeCode = client.outcome_code %}
   {% set caseStatus = client.caseStatus | lower %}
-  {% set thirdParty = client.thirdParty %}
+  {% set thirdParty = client.thirdParty and not client.thirdParty.isSoftDeleted and client.thirdParty %}
   {% set language = supportNeeds and supportNeeds.languageSupportNeeds %}
   {% set textRelay = supportNeeds and supportNeeds.textRelay == "Yes" %}
   {% set bslWebcam = supportNeeds and supportNeeds.bslWebcam == "Yes" %}

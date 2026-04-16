@@ -58,7 +58,6 @@ export function transformToApiFormat(caseItem: MockCase): object {
     reference: caseItem.caseReference,
     provider: caseItem.providerId,
     laa_reference: caseItem.laaReference,
-    vulnerable_user: caseItem.clientIsVulnerable,
     outcome_code: caseItem.outcomeCode,
     full_name: caseItem.fullName,
     date_of_birth: caseItem.dateOfBirth,
@@ -74,6 +73,7 @@ export function transformToApiFormat(caseItem: MockCase): object {
     // Personal details nested object
     personal_details: {
       full_name: caseItem.fullName,
+      vulnerable_user: caseItem.clientIsVulnerable,
       date_of_birth: caseItem.dateOfBirth,
       home_phone: caseItem.phoneNumber,
       mobile_phone: caseItem.phoneNumber,
