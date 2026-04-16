@@ -90,7 +90,7 @@ env:
   RATE_LIMIT_MAX: 100
   RATE_WINDOW_MS: 900000
   NODE_ENV: "uat"
-  API_URL: "http://el-2491-mcc-split-endpoint-app.laa-cla-backend-uat.svc.cluster.local"
+  API_URL: "http://cla-backend-app.laa-cla-backend-uat.svc.cluster.local"
   API_PREFIX: "/cla_provider/api/v1"
   REDIS_ENABLED: true
   REDIS_TLS_ENABLED: true
