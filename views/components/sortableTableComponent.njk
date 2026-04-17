@@ -65,6 +65,7 @@
 #}
 
 {%- from "govuk/components/table/macro.njk" import govukTable -%}
+{% from "components/caseFlagComponent.njk" import caseFlagComponent %}
 
 {% macro sortableTableComponent(options) %}
   {# Build the head array for govukTable #}
@@ -131,19 +132,33 @@
     {% for column in options.columns %}
       {# Format cell content based on column type #}
       {% set cellContent %}
-      {% if column.key == "phoneNumber" %}
-        {% if row.safeToCall %}
-          {{ row[column.key] }}
+        {% if column.key == "phoneNumber" %}
+          {% if row.safeToCall %}
+            {{ row[column.key] }}
+          {% else %}
+            Not safe to call
+          {% endif %}
+        {% elif column.key == "case_flags" %}
+          <div class="stack-case-flags">
+            {{ caseFlagComponent(
+              row.isUrgent,
+              row.vulnerableUser,
+              row.outcome_code,
+              row.caseStatus | lower,
+              row.thirdpartyDetails,
+              row.language,
+              row.textRelay,
+              row.bslWebcam,
+              false
+            ) }}
+          </div>
         {% else %}
-          Not safe to call
+          {% if row[column.key] %}
+            {{ row[column.key] | safe }}
+          {% else %}
+            <span class="govuk-visually-hidden">{{ t('components.table.noData') }}</span>
+          {% endif %}
         {% endif %}
-      {% else %}
-        {% if row[column.key] %}
-          {{ row[column.key] | safe }}
-        {% else %}
-          <span class="govuk-visually-hidden">{{ t.components.table.noData }}</span>
-        {% endif %}
-      {% endif %}
       {% endset %}
 
       {# Create cell with or without link #}
