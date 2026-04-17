@@ -94,40 +94,39 @@
   ] %}
 {% endif %}
 
-<div class="govuk-!-display-block">
-  {# Name and case reference #}
-  <p class="govuk-caption-l mcc-case-details-header">{{ client.caseReference }}</p>
-  <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">{{ client.fullName }}</h1>
+<div class="govuk-grid-row govuk-!-margin-top-4">
+  <div class="govuk-grid-column-full">
+    {# Name and case reference #}
+    <p class="govuk-caption-l mcc-case-details-header govuk-!-margin-top-0">{{ client.caseReference }}</p>
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">{{ client.fullName }}</h1>
 
-  {# Urgent case #}
-  {% if client.is_urgent === 'true' %} 
-    {{ mojBadge({
+    {# Urgent case #}
+    {% if client.is_urgent === 'true' %}
+      {{ mojBadge({
       text: t('pages.caseDetails.urgent'),
       classes: "moj-badge--red govuk-!-margin-bottom-3"
     }) }}
-  {% endif %}
+    {% endif %}
 
-  {# Date received #}
-  <h2 class="govuk-heading-s govuk-!-margin-bottom-1">{{ t('pages.caseDetails.dateReceived') }}: <span class="govuk-body">{{ client.provider_assigned_at | formatDateLongMonth }}</span></h2>
-  {# LAA reference #}
-  <h2 class="govuk-heading-s govuk-!-margin-bottom-1">{{ t('pages.caseDetails.laaReference') }}: <span class="govuk-body">{{ client.laaReference }}</span></h2>
+    {# Date received #}
+    <h2 class="govuk-heading-s govuk-!-margin-bottom-1">{{ t('pages.caseDetails.dateReceived') }}: <span class="govuk-body">{{ client.provider_assigned_at | formatDateLongMonth }}</span></h2>
+    {# LAA reference #}
+    <h2 class="govuk-heading-s govuk-!-margin-bottom-1">{{ t('pages.caseDetails.laaReference') }}: <span class="govuk-body">{{ client.laaReference }}</span></h2>
 
-  <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{ t('pages.caseDetails.status') }}: 
+    <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{ t('pages.caseDetails.status') }}: 
     <span>
       {{ govukTag({
         text: statusConfig[currentStatus].text,
         classes: statusConfig[currentStatus].classes}) 
       }}
-    </span>
-  </h2>
-
-  {% if hideStatusButton %}
-    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-2"/>
-  {% endif %}
-
-  <div class="case-status-wrapper govuk-!-display-inline-block">
-    {% if not hideStatusButton %}
-      {{ mojButtonMenu({
+      </span>
+    </h2>
+    {% if hideStatusButton %}
+      <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-2"/>
+    {% endif %}
+    <div class="case-status-wrapper govuk-!-display-inline-block">
+      {% if not hideStatusButton %}
+        {{ mojButtonMenu({
           id: "change-case-status-menu",
           button: {
             text: t('pages.caseDetails.buttons.label'),
@@ -137,17 +136,18 @@
           items: menuItems
       }) }}
 
-      {{ govukButton({
+        {{ govukButton({
         text: t('pages.caseDetails.buttons.splitThisCase'),
         href: "/cases/" + client.caseReference + "/split-this-case",
         classes: "govuk-button--secondary govuk-!-margin-right-3"
       }) }}
 
-      {{ govukButton({
+        {{ govukButton({
         text: t('pages.caseDetails.buttons.giveOperatorFeedback'),
         href: "/cases/" + client.caseReference + "/give-operator-feedback",
         classes: "govuk-button--secondary govuk-!-margin-right-3"
       }) }}
-    {% endif %}
-  </div>
+      {% endif %}
+    </div>
+    </div>
 </div>
