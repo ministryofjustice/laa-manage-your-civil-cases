@@ -7,9 +7,9 @@ import config from '#config.js';
 import { validationResult, matchedData } from 'express-validator';
 import { formatValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 import { encrypt } from '#utils/server/index.js';
+import { HTTP } from '#src/services/api/base/constants.js';
 
 // HTTP Status codes
-const BAD_REQUEST = 400;
 const NOT_EMPTY = 0;
 
 interface LoginErrorDetails {
@@ -117,7 +117,7 @@ export async function processLogin(req: Request, res: Response, _next: NextFunct
 
       const formValues = matchedData<AuthCredentials>(req, { locations: ['body'], onlyValidData: false });
 
-      res.status(BAD_REQUEST).render('login/index.njk', {
+      res.status(HTTP.BAD_REQUEST).render('login/index.njk', {
         error: {
           inputErrors,
           errorSummaryList

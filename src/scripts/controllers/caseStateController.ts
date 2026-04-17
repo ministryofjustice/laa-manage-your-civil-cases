@@ -4,10 +4,9 @@ import { apiService } from '#src/services/apiService.js';
 import { changeCaseStateService } from '#src/services/changeCaseStateService.js';
 import { devLog, createProcessedError, safeString, safeBodyString, formatValidationError, trimOrUndefined, validCaseReference, hasAllowedCaseStatus } from '#src/scripts/helpers/index.js';
 import config from '#config.js';
+import { HTTP } from '#src/services/api/base/constants.js';
 
 const { MAX_NOTE_LENGTH, CHARACTER_THRESHOLD }: { MAX_NOTE_LENGTH: number; CHARACTER_THRESHOLD: number } = config;
-const BAD_REQUEST = 400;
-const NOT_FOUND = 404;
 
 /**
  * Function to sanitise URL redirect 
@@ -204,7 +203,7 @@ export async function closeCase(req: Request, res: Response, next: NextFunction)
     const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
 
     if (response.status === 'success' && response.data !== null) {
-      res.status(BAD_REQUEST).render('case_details/why-closed.njk', {
+      res.status(HTTP.BAD_REQUEST).render('case_details/why-closed.njk', {
         caseReference,
         client: response.data,
         currentEventCode,
@@ -218,8 +217,8 @@ export async function closeCase(req: Request, res: Response, next: NextFunction)
         }
       });
     } else {
-      res.status(NOT_FOUND).render('main/error.njk', {
-        status: '404',
+      res.status(HTTP.NOT_FOUND).render('main/error.njk', {
+        status: HTTP.NOT_FOUND,
         error: response.message ?? 'Case not found'
       });
     }
@@ -284,7 +283,7 @@ export async function pendingCase(req: Request, res: Response, next: NextFunctio
     const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
 
     if (response.status === 'success' && response.data !== null) {
-      res.status(BAD_REQUEST).render('case_details/why-pending.njk', {
+      res.status(HTTP.BAD_REQUEST).render('case_details/why-pending.njk', {
         caseReference,
         client: response.data,
         currentPendingReason,
@@ -298,8 +297,8 @@ export async function pendingCase(req: Request, res: Response, next: NextFunctio
         }
       });
     } else {
-      res.status(NOT_FOUND).render('main/error.njk', {
-        status: '404',
+      res.status(HTTP.NOT_FOUND).render('main/error.njk', {
+        status: HTTP.NOT_FOUND,
         error: response.message ?? 'Case not found'
       });
     }
@@ -418,7 +417,7 @@ export async function reopenCompletedCase(req: Request, res: Response, next: Nex
     const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
 
     if (response.status === 'success' && response.data !== null) {
-      res.status(BAD_REQUEST).render('case_details/why-reopen-completed-case.njk', {
+      res.status(HTTP.BAD_REQUEST).render('case_details/why-reopen-completed-case.njk', {
         caseReference,
         client: response.data,
         currentReopenNote,
@@ -429,8 +428,8 @@ export async function reopenCompletedCase(req: Request, res: Response, next: Nex
         }
       });
     } else {
-      res.status(NOT_FOUND).render('main/error.njk', {
-        status: '404',
+      res.status(HTTP.NOT_FOUND).render('main/error.njk', {
+        status: HTTP.NOT_FOUND,
         error: response.message ?? 'Case not found'
       });
     }
@@ -493,7 +492,7 @@ export async function reopenClosedCase(req: Request, res: Response, next: NextFu
     const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
 
     if (response.status === 'success' && response.data !== null) {
-      res.status(BAD_REQUEST).render('case_details/why-reopen-closed-case.njk', {
+      res.status(HTTP.BAD_REQUEST).render('case_details/why-reopen-closed-case.njk', {
         caseReference,
         client: response.data,
         currentReopenNote,
@@ -504,8 +503,8 @@ export async function reopenClosedCase(req: Request, res: Response, next: NextFu
         }
       });
     } else {
-      res.status(NOT_FOUND).render('main/error.njk', {
-        status: '404',
+      res.status(HTTP.NOT_FOUND).render('main/error.njk', {
+        status: HTTP.NOT_FOUND,
         error: response.message ?? 'Case not found'
       });
     }

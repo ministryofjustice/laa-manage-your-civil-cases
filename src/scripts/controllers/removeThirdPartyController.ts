@@ -2,6 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
 import { devLog, devError, createProcessedError, safeString, validCaseReference } from '#src/scripts/helpers/index.js';
 import { getSessionData, clearSessionData } from '#src/scripts/helpers/sessionHelpers.js';
+import { HTTP } from '#src/services/api/base/constants.js';
 
 /**
  * Handle third party removal confirmation using cached session data
@@ -22,8 +23,8 @@ function handleCachedThirdPartyCheck(
   // Case 1: Soft-deleted third party in cache → render 404
   if (hasSoftDeletedThirdParty) {
     devError(`No active third party to remove for case: ${caseReference} (soft-deleted found in cache)`);
-    res.status(NOT_FOUND).render('main/error.njk', {
-      status: '404',
+    res.status(HTTP.NOT_FOUND).render('main/error.njk', {
+      status: String(HTTP.NOT_FOUND),
       error: 'No third party contact found for this case'
     });
     return;
@@ -47,7 +48,6 @@ function handleCachedThirdPartyCheck(
   });
 }
 
-const NOT_FOUND = 404;
 const INTERNAL_SERVER_ERROR = 500;
 
 /**
@@ -101,7 +101,7 @@ export async function deleteThirdParty(req: Request, res: Response, next: NextFu
       clearSessionData(req, 'thirdPartyCache');
       // Redirect back to client details page
       res.redirect(`/cases/${caseReference}/client-details`);
-    } else if (response.message?.includes('404') === true) {
+    } else if (response.message?.includes(String(HTTP.NOT_FOUND)) === true) {
       // Third party already removed or doesn't exist - treat as success (idempotent)
       devLog(`Third party contact already removed or not found for case: ${caseReference}. Treating as success.`);
       // Clear the cache

@@ -6,6 +6,7 @@ import { http, HttpResponse } from 'msw';
 import type { MockCase } from './types.js';
 import { transformToApiFormat } from './utils.js';
 import { validatePersonalDetails, validateThirdPartyFields } from './validationHelpers.js';
+import { HTTP } from '#src/services/api/base/constants.js';
 
 export function createThirdPartyHandlers(
   API_BASE_URL: string,
@@ -21,7 +22,7 @@ export function createThirdPartyHandlers(
       const caseItem = cases.find(c => c.caseReference === caseReference);
       
       if (!caseItem) {
-        return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
+        return HttpResponse.json({ error: 'Case not found' }, { status: HTTP.NOT_FOUND });
       }
 
       // Detect soft delete: personal_relationship = 'OTHER' with nested personal_details.full_name null and pass_phrase null
@@ -38,7 +39,7 @@ export function createThirdPartyHandlers(
       const validationErrors: Record<string, any> = {};
 
       if (typeof updateData !== 'object' || updateData === null || Array.isArray(updateData)) {
-        return HttpResponse.json({ detail: 'Invalid request body format' }, { status: 400 });
+        return HttpResponse.json({ detail: 'Invalid request body format' }, { status: HTTP.BAD_REQUEST });
       }
 
       // Validate top-level third party fields
@@ -57,7 +58,7 @@ export function createThirdPartyHandlers(
       }
 
       if (Object.keys(validationErrors).length > 0) {
-        return HttpResponse.json(validationErrors, { status: 400 });
+        return HttpResponse.json(validationErrors, { status: HTTP.BAD_REQUEST });
       }
       
       return HttpResponse.json(transformToApiFormat(caseItem));
@@ -73,13 +74,14 @@ export function createThirdPartyHandlers(
       
       if (!caseItem) {
         console.log(`[MSW] Case ${caseReference} not found in mock data (POST thirdparty_details)`);
-        return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
+        return HttpResponse.json({ error: 'Case not found' }, { status: HTTP.NOT_FOUND });
       }
 
       const validationErrors: Record<string, any> = {};
 
       if (typeof thirdPartyData !== 'object' || thirdPartyData === null || Array.isArray(thirdPartyData)) {
-        return HttpResponse.json({ detail: 'Invalid request body format' }, { status: 400 });
+        return HttpResponse.json({ detail: 'Invalid request body format' }, { status: HTTP.BAD_REQUEST
+         });
       }
 
       // Validate top-level third party fields
@@ -98,7 +100,7 @@ export function createThirdPartyHandlers(
       }
 
       if (Object.keys(validationErrors).length > 0) {
-        return HttpResponse.json(validationErrors, { status: 400 });
+        return HttpResponse.json(validationErrors, { status: HTTP.BAD_REQUEST });
       }
       console.log(`[MSW] Returning updated case data for ${caseReference} (POST thirdparty_details)`);
       return HttpResponse.json(transformToApiFormat(caseItem), { status: 201 });
@@ -112,13 +114,13 @@ export function createThirdPartyHandlers(
       const caseItem = cases.find(c => c.caseReference === caseReference);
       
       if (!caseItem) {
-        return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
+        return HttpResponse.json({ error: 'Case not found' }, { status: HTTP.NOT_FOUND });
       }
 
       const validationErrors: Record<string, any> = {};
 
       if (typeof thirdPartyData !== 'object' || thirdPartyData === null || Array.isArray(thirdPartyData)) {
-        return HttpResponse.json({ detail: 'Invalid request body format' }, { status: 400 });
+        return HttpResponse.json({ detail: 'Invalid request body format' }, { status: HTTP.BAD_REQUEST });
       }
 
       // Validate top-level third party fields
@@ -137,7 +139,7 @@ export function createThirdPartyHandlers(
       }
 
       if (Object.keys(validationErrors).length > 0) {
-        return HttpResponse.json(validationErrors, { status: 400 });
+        return HttpResponse.json(validationErrors, { status: HTTP.BAD_REQUEST });
       }
       return HttpResponse.json(transformToApiFormat(caseItem));
     })

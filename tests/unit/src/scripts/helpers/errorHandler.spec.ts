@@ -13,6 +13,7 @@ import {
   createProcessedError,
   extractAndLogError,
 } from '#src/scripts/helpers/errorHandler.js';
+import { HTTP } from '#src/services/api/base/constants.js';
 
 describe('errorHandler', () => {
   beforeEach(() => {
@@ -27,7 +28,7 @@ describe('errorHandler', () => {
   describe('extractErrorMessage', () => {
     it('returns user-friendly message for axios-like error with status', () => {
       const axiosError = {
-        response: { status: 404, data: {}, statusText: 'Not Found' }
+        response: { status: HTTP.NOT_FOUND, data: {}, statusText: 'Not Found' }
       };
       const result = extractErrorMessage(axiosError);
       assert.strictEqual(result, 'The requested information could not be found.');
@@ -36,7 +37,7 @@ describe('errorHandler', () => {
     it('extracts message from response.data.message if available', () => {
       const axiosError = {
         response: {
-          status: 400,
+          status: HTTP.BAD_REQUEST,
           data: { message: 'Invalid input field' },
           statusText: 'Bad Request',
         }
@@ -69,22 +70,22 @@ describe('errorHandler', () => {
 
   describe('status code helpers', () => {
     it('isAuthError returns true for 401', () => {
-      const error = { response: { status: 401 } };
+      const error = { response: { status: HTTP.UNAUTHORIZED } };
       assert.strictEqual(isAuthError(error), true);
     });
 
     it('isForbiddenError returns true for 403', () => {
-      const error = { response: { status: 403 } };
+      const error = { response: { status: HTTP.FORBIDDEN } };
       assert.strictEqual(isForbiddenError(error), true);
     });
 
     it('isNotFoundError returns true for 404', () => {
-      const error = { response: { status: 404 } };
+      const error = { response: { status: HTTP.NOT_FOUND } };
       assert.strictEqual(isNotFoundError(error), true);
     });
 
     it('isServerError returns true for 500', () => {
-      const error = { response: { status: 500 } };
+      const error = { response: { status: HTTP.INTERNAL_SERVER_ERROR } };
       assert.strictEqual(isServerError(error), true);
     });
   });
@@ -101,7 +102,7 @@ describe('errorHandler', () => {
 
   describe('extractAndLogError', () => {
     it('returns message and logs context (no assertion on devError)', () => {
-      const error = { response: { status: 403 } };
+      const error = { response: { status: HTTP.FORBIDDEN } };
       const result = extractAndLogError(error, 'testing context');
       assert.strictEqual(result, 'You do not have permission to access this resource.');
     });
