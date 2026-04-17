@@ -1,5 +1,18 @@
 import type { EligibilityCheck } from "#types/case-types.js";
 
+
+// This file's code is what drives all the logic of
+// - which questions go in which page
+// - which page is next based on the answers given and the eligibility check state
+//
+// This is defined with the combination of FE_PAGES, FE_SECTIONS and getEligibilityCheckCompletion.
+// The rest of functions are wrapper helpers to make it easier to make use of the core function
+// getEligibilityCheckCompletion.
+//
+// TODO: Consider whether all the individual checks for each page inside getEligibilityCheckCompletion
+// should be moved to separate functions for better readability and testability.
+
+
 export interface FormRedirection {
     redirect: boolean;
     redirectTo: string;
@@ -9,6 +22,8 @@ export interface FormRedirection {
 export interface FormPage {
     questions: FinancialEligibilityFormQuestion[];
 }
+
+
 export interface FinancialEligibilityFormQuestion {
     fieldName: string;
     legendText: string;
@@ -16,19 +31,19 @@ export interface FinancialEligibilityFormQuestion {
 }
 
 
+export enum FinancialEligibilityPageCompletionStatus {
+    COMPLETED = 'completed',
+    INCOMPLETE = 'incomplete',
+    NOT_REQUIRED = 'not-required'
+}
+
 export enum FinancialEligibilityPageId {
     ABOUT_YOU_AGED_17_OR_UNDER = 'about-you-aged-17-or-under',
     DO_YOU_HAVE_A_PARTNER = 'do-you-have-a-partner',
     ARE_YOU_AGED_60_OR_OVER = 'are-you-aged-60-or-over',
-    PARTNER_INCOME = 'partner-income'
+    PARTNER_INCOME = 'partner-income',
+    BENEFITS = 'benefits'
 }
-
-
-// This file's code is what drives all the logic of
-// - which questions go in which page
-// - which page is next based on the answers given and the eligibility check state
-//
-// This is defined with the combination of the FORM_PAGES constant and the function getAllIncompletePages.
 
 
 const FE_PAGES: Record<string, FormPage> = {
@@ -71,12 +86,21 @@ const FE_PAGES: Record<string, FormPage> = {
             legendText: 'What is your partner’s self-employment drawings before tax?',
             type: 'value_per_interval',
         }
-    ]
+        ]
+    },
+    [FinancialEligibilityPageId.BENEFITS]: {
+        questions: [
+            {
+                fieldName: 'universal_credit',
+                legendText: 'Are you in receipt of Universal Credit?',
+                type: 'yes_or_no',
+            }
+        ],
     }
 };
 
 const FE_SECTIONS: Record<string, FinancialEligibilityPageId[]> = {
-    'about_you': [
+    'about-you': [
         FinancialEligibilityPageId.ABOUT_YOU_AGED_17_OR_UNDER,
         FinancialEligibilityPageId.DO_YOU_HAVE_A_PARTNER,
         FinancialEligibilityPageId.ARE_YOU_AGED_60_OR_OVER,
@@ -84,6 +108,9 @@ const FE_SECTIONS: Record<string, FinancialEligibilityPageId[]> = {
     'partner': [
         FinancialEligibilityPageId.PARTNER_INCOME
     ],
+    'benefits': [
+        FinancialEligibilityPageId.BENEFITS
+    ]
 };
 
 
@@ -148,41 +175,33 @@ export function getNextPageForEligibilityCheck(caseReference: string, comingFrom
 }
 
 
-/** 
- * Determines whether a given page should be skipped based on the eligibility check state.
- * @param {FinancialEligibilityPageId} page - The page to evaluate
- * @param {EligibilityCheck} eligibilityCheck - The eligibility check object to evaluate
- * @returns {boolean} True if the page should be skipped, false otherwise
- */
-function pageIsNotRequired(page: FinancialEligibilityPageId, eligibilityCheck: EligibilityCheck): boolean {
-    if (page === FinancialEligibilityPageId.DO_YOU_HAVE_A_PARTNER) {
-        return eligibilityCheck.is_you_under_18;
-    }
-
-    if (page === FinancialEligibilityPageId.ARE_YOU_AGED_60_OR_OVER) {
-        return eligibilityCheck.is_you_under_18;
-    }
-
-    return false;
-}
-
-
 /**
  * Retrieves the eligibility check steps status for the given case.
- * @param {string} caseReference - The case reference
  * @param {EligibilityCheck} eligibilityCheck - The eligibility check object to evaluate
  * @returns {Record<string, 'completed' | 'incomplete' | 'not-required'>} A record of step statuses
  */
-export function getEligibilityCheckSectionsStatus(caseReference: string, eligibilityCheck: EligibilityCheck): Record<string, 'completed' | 'incomplete' | 'not-required'> {
-    const sectionsStatus: Record<string, 'completed' | 'incomplete' | 'not-required'> = {};
+export function getEligibilityCheckSectionsCompletion(eligibilityCheck: EligibilityCheck): Record<string, FinancialEligibilityPageCompletionStatus> {
+    const sectionsStatus: Record<string, FinancialEligibilityPageCompletionStatus> = {};
+    const pagesCompletion = getEligibilityCheckPagesCompletion(eligibilityCheck);
 
-    const incompletePages = getAllIncompletePages(eligibilityCheck);
+    for (const [section, pages] of Object.entries(FE_SECTIONS)) {
+        let sectionStatus: FinancialEligibilityPageCompletionStatus | undefined = undefined;
+        for (const page of pages) {
+            const pageCompletionStatus = pagesCompletion[page];
 
-    console.log('Incomplete pages for case reference', caseReference, ':', incompletePages);
+            if (pageCompletionStatus === FinancialEligibilityPageCompletionStatus.NOT_REQUIRED) {
+                sectionStatus = FinancialEligibilityPageCompletionStatus.NOT_REQUIRED;
+            } else if (pageCompletionStatus === FinancialEligibilityPageCompletionStatus.INCOMPLETE) {
+                sectionStatus = FinancialEligibilityPageCompletionStatus.INCOMPLETE;
+                break;
+            }
+        }
 
-    for (const incompletePage of incompletePages) {
-        const section = getSectionForPage(incompletePage);
-        sectionsStatus[section] = 'incomplete';
+        if (sectionStatus === undefined) {
+            sectionStatus = FinancialEligibilityPageCompletionStatus.COMPLETED;
+        }
+
+        sectionsStatus[section] = sectionStatus;
     }
 
     return sectionsStatus;
@@ -224,6 +243,7 @@ export function getQuestionsForPage(pageName: string): FinancialEligibilityFormQ
     return page.questions;
 }
 
+
 /**
  * Retrieves the section name for the given page name.
  * @param {string} pageName - The page name key to look up
@@ -238,4 +258,51 @@ export function getSectionForPage(pageName: string): string {
     }
 
     throw new Error(`No section found for page: ${pageName}`);
+}
+
+
+
+/** 
+ * Determines whether a given page should be skipped based on the eligibility check state.
+ * @param {FinancialEligibilityPageId} page - The page to evaluate
+ * @param {EligibilityCheck} eligibilityCheck - The eligibility check object to evaluate
+ * @returns {boolean} True if the page should be skipped, false otherwise
+ */
+function pageIsNotRequired(page: FinancialEligibilityPageId, eligibilityCheck: EligibilityCheck): boolean {
+    const completionStatus = getEligibilityCheckPagesCompletion(eligibilityCheck)[page];
+    return completionStatus === FinancialEligibilityPageCompletionStatus.NOT_REQUIRED;
+}
+
+
+/**
+ * Gets the completion status of each eligibility check page.
+ * @param {EligibilityCheck} eligibilityCheck - The eligibility check object to evaluate
+ * @returns {Record<FinancialEligibilityPageId, FinancialEligibilityPageCompletionStatus>} A record mapping page IDs to their completion status
+ */
+export function getEligibilityCheckPagesCompletion(eligibilityCheck: EligibilityCheck): Record<FinancialEligibilityPageId, FinancialEligibilityPageCompletionStatus> {
+    const completionStatus = {} as Record<FinancialEligibilityPageId, FinancialEligibilityPageCompletionStatus>;
+    
+    for (const pageId in FE_PAGES) {
+        let statusForPage: FinancialEligibilityPageCompletionStatus;
+        if (pageId === FinancialEligibilityPageId.DO_YOU_HAVE_A_PARTNER) {
+            statusForPage = eligibilityCheck.is_you_under_18 ? FinancialEligibilityPageCompletionStatus.NOT_REQUIRED : (
+                eligibilityCheck.has_partner !== undefined ? FinancialEligibilityPageCompletionStatus.COMPLETED : FinancialEligibilityPageCompletionStatus.INCOMPLETE
+            );
+        } else if (pageId === FinancialEligibilityPageId.ARE_YOU_AGED_60_OR_OVER) {
+            statusForPage = eligibilityCheck.is_you_under_18 ? FinancialEligibilityPageCompletionStatus.NOT_REQUIRED : (
+                eligibilityCheck.is_you_or_your_partner_over_60 !== null ? FinancialEligibilityPageCompletionStatus.COMPLETED : FinancialEligibilityPageCompletionStatus.INCOMPLETE);
+        } else if (pageId === FinancialEligibilityPageId.PARTNER_INCOME) {
+            statusForPage = eligibilityCheck.has_partner ? (
+                eligibilityCheck.partner.income.earnings !== null ? FinancialEligibilityPageCompletionStatus.COMPLETED : FinancialEligibilityPageCompletionStatus.INCOMPLETE
+            ) : FinancialEligibilityPageCompletionStatus.NOT_REQUIRED;
+        } else {
+            statusForPage = FinancialEligibilityPageCompletionStatus.COMPLETED;
+        }
+
+        completionStatus[pageId as FinancialEligibilityPageId] = statusForPage;
+    }
+
+    console.log('Eligibility check pages completion status:', completionStatus);
+
+    return completionStatus;
 }

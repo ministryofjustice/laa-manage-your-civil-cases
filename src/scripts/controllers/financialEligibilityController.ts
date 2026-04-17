@@ -2,9 +2,41 @@ import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
 import { handleGetEditForm, handlePostEditForm, extractFormFields, safeString, validCaseReference } from '#src/scripts/helpers/index.js';
 import { format } from 'node:path';
-import { getQuestionsForPage, getNextPageForEligibilityCheck, getEligibilityCheckSectionsStatus, getAllIncompletePages } from '../helpers/financialEligibility.js';
+import { getQuestionsForPage, getNextPageForEligibilityCheck, getEligibilityCheckSectionsCompletion, getEligibilityCheckPagesCompletion } from '../helpers/financialEligibility.js';
 import type { EligibilityCheck, EligibilityPerson } from '#types/case-types.js';
 
+
+// Defining hardcoded eligibility check data to be used in the financial eligibility forms until
+// the API integration is done. Change the values in this object to test different scenarios in
+// the forms and the logic that drives them.
+const FAKE_ELIGIBILITY_CHECK: EligibilityCheck = {
+    reference: '',
+    category: '',
+    your_problem_notes: '',
+    notes: '',
+    property_set: [],
+    you: {} as EligibilityCheck['you'],
+    partner: {
+        income: {
+            earnings: null,
+        }
+    } as EligibilityCheck['partner'],
+    disputed_savings: {} as EligibilityCheck['disputed_savings'],
+    dependants_young: 0,
+    dependants_old: 0,
+    is_you_or_your_partner_over_60: null,
+    has_partner: true,
+    on_passported_benefits: false,
+    on_nass_benefits: false,
+    state: 'in_progress',
+    specific_benefits: {} as EligibilityCheck['specific_benefits'],
+    disregards: {} as EligibilityCheck['disregards'],
+    has_passported_proceedings_letter: false,
+    under_18_passported: false,
+    is_you_under_18: false,
+    under_18_receive_regular_payment: false,
+    under_18_has_valuables: false
+};
 
 /**
  * Retrieves the financial eligibility details tab form.
@@ -78,30 +110,7 @@ export async function postFinancialEligibilityFieldsForm(req: Request, res: Resp
     const formRedirection = getNextPageForEligibilityCheck(
         req.params.caseReference as string,
         req.body.pageId as string,
-        {
-            reference: '',
-            category: '',
-            your_problem_notes: '',
-            notes: '',
-            property_set: [],
-            you: {} as EligibilityCheck['you'],
-            partner: {} as EligibilityCheck['partner'],
-            disputed_savings: {} as EligibilityCheck['disputed_savings'],
-            dependants_young: 0,
-            dependants_old: 0,
-            is_you_or_your_partner_over_60: false,
-            has_partner: true,
-            on_passported_benefits: false,
-            on_nass_benefits: false,
-            state: 'in_progress',
-            specific_benefits: {} as EligibilityCheck['specific_benefits'],
-            disregards: {} as EligibilityCheck['disregards'],
-            has_passported_proceedings_letter: false,
-            under_18_passported: false,
-            is_you_under_18: true,
-            under_18_receive_regular_payment: false,
-            under_18_has_valuables: false
-        } as EligibilityCheck,
+        FAKE_ELIGIBILITY_CHECK,
         formFields.saveAndComeBackLater === 'true'
     );
 
@@ -127,15 +136,7 @@ export async function getFinancialEligibilityEditAssessmentSteps(req: Request, r
         return;
     }
 
-    const sectionsStatus = getEligibilityCheckSectionsStatus(caseReference, {
-        is_you_under_18: false,
-        has_partner: true,
-        partner: {
-            income: {
-                earnings: null,
-            }
-        } as EligibilityPerson
-    } as EligibilityCheck);
+    const sectionsStatus = getEligibilityCheckSectionsCompletion(FAKE_ELIGIBILITY_CHECK);
 
     console.log('Sections status:', sectionsStatus);
 

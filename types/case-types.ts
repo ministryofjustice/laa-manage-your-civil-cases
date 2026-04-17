@@ -138,7 +138,7 @@ export interface EligibilityCheck {
   disputed_savings: EligibilitySavings;
   dependants_young: number;
   dependants_old: number;
-  is_you_or_your_partner_over_60: boolean;
+  is_you_or_your_partner_over_60: boolean | null;
   has_partner: boolean | null;
   on_passported_benefits: boolean;
   on_nass_benefits: boolean;
