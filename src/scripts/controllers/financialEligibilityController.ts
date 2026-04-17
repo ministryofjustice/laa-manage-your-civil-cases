@@ -54,6 +54,7 @@ export async function getFinancialEligibilityFieldsForm(req: Request, res: Respo
                     type: question.type
                 }))},
                 formAction: '/cases/' + req.params.caseReference + '/financial-eligibility/form',
+                pageId: page
             };
         }
     });
@@ -71,10 +72,12 @@ export async function postFinancialEligibilityFieldsForm(req: Request, res: Resp
 
     // TODO: perform save
     console.log('Form fields to save:', formFields);
+    console.log('Coming from:', req.body.pageId);
 
     // formRedirection being hardcoded. It needs to be the result of calling the CLA API.
     const formRedirection = getNextPageForEligibilityCheck(
         req.params.caseReference as string,
+        req.body.pageId as string,
         {
             reference: '',
             category: '',
@@ -95,7 +98,7 @@ export async function postFinancialEligibilityFieldsForm(req: Request, res: Resp
             disregards: {} as EligibilityCheck['disregards'],
             has_passported_proceedings_letter: false,
             under_18_passported: false,
-            is_you_under_18: false,
+            is_you_under_18: true,
             under_18_receive_regular_payment: false,
             under_18_has_valuables: false
         } as EligibilityCheck,

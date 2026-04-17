@@ -33,7 +33,7 @@
 
         <form method="post" action="{{ formAction }}">
             <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-
+            <input type="hidden" name="pageId" value="{{ pageId }}">
 
             {% for question in questions %}
                 {% if question.type == "yes_or_no" %}
@@ -102,7 +102,7 @@
                         })
                      }}
                 {% endif %}
-            {% endfor%}
+             {% endfor%}
             
             <div class="govuk-button-group">
                 {{ govukButton({

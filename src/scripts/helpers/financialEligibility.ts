@@ -8,12 +8,19 @@ export interface FormRedirection {
 
 export interface FormPage {
     questions: FinancialEligibilityFormQuestion[];
-    section: string;
 }
 export interface FinancialEligibilityFormQuestion {
     fieldName: string;
     legendText: string;
     type: string;
+}
+
+
+export enum FinancialEligibilityPageId {
+    ABOUT_YOU_AGED_17_OR_UNDER = 'about-you-aged-17-or-under',
+    DO_YOU_HAVE_A_PARTNER = 'do-you-have-a-partner',
+    ARE_YOU_AGED_60_OR_OVER = 'are-you-aged-60-or-over',
+    PARTNER_INCOME = 'partner-income'
 }
 
 
@@ -23,8 +30,9 @@ export interface FinancialEligibilityFormQuestion {
 //
 // This is defined with the combination of the FORM_PAGES constant and the function getAllIncompletePages.
 
-const FORM_PAGES: Record<string, FormPage> = {
-    'about-you-aged-17-or-under': {
+
+const FE_PAGES: Record<string, FormPage> = {
+    [FinancialEligibilityPageId.ABOUT_YOU_AGED_17_OR_UNDER]: {
         questions: [
             {
                 fieldName: 'is_you_under_18',
@@ -32,9 +40,8 @@ const FORM_PAGES: Record<string, FormPage> = {
                 type: 'yes_or_no',
             }
         ],
-        section: 'about-you'
     },
-    'do-you-have-a-partner': {
+    [FinancialEligibilityPageId.DO_YOU_HAVE_A_PARTNER]: {
         questions: [
             {
                 fieldName: 'has_partner',
@@ -42,10 +49,17 @@ const FORM_PAGES: Record<string, FormPage> = {
                 type: 'yes_or_no',
             }
         ],
-        section: 'about-you'
     },
-    'partner-income': {
-        section: 'about-you',
+    [FinancialEligibilityPageId.ARE_YOU_AGED_60_OR_OVER]: {
+        questions: [
+            {
+                fieldName: 'are_you_aged_60_or_over',
+                legendText: 'Are you aged 60 or over?',
+                type: 'yes_or_no',
+            }
+        ],
+    },
+    [FinancialEligibilityPageId.PARTNER_INCOME]: {
         questions: [
         {
             fieldName: 'partner_income',
@@ -61,15 +75,27 @@ const FORM_PAGES: Record<string, FormPage> = {
     }
 };
 
+const FE_SECTIONS: Record<string, FinancialEligibilityPageId[]> = {
+    'about_you': [
+        FinancialEligibilityPageId.ABOUT_YOU_AGED_17_OR_UNDER,
+        FinancialEligibilityPageId.DO_YOU_HAVE_A_PARTNER,
+        FinancialEligibilityPageId.ARE_YOU_AGED_60_OR_OVER,
+    ],
+    'partner': [
+        FinancialEligibilityPageId.PARTNER_INCOME
+    ],
+};
+
 
 /**
  * Determines the next form redirection based on the eligibility check state.
  * @param {string} caseReference - The case reference to use in the redirection URL
+ * @param {string} comingFromPage - The page the user is coming from
  * @param {EligibilityCheck} eligibilityCheck - The eligibility check object to evaluate
  * @param {boolean} saveAndComeBackLater - Flag indicating if the user chose to save and come back later
  * @returns {FormRedirection} A FormRedirection object indicating whether to redirect and where
  */
-export function getNextPageForEligibilityCheck(caseReference: string, eligibilityCheck: EligibilityCheck, saveAndComeBackLater: boolean): FormRedirection {
+export function getNextPageForEligibilityCheck(caseReference: string, comingFromPage: string, eligibilityCheck: EligibilityCheck, saveAndComeBackLater: boolean): FormRedirection {
     if (saveAndComeBackLater) {
         return {
             redirect: true,
@@ -77,20 +103,69 @@ export function getNextPageForEligibilityCheck(caseReference: string, eligibilit
         };
     }
 
-    const incompletePages = getAllIncompletePages(eligibilityCheck);
-
-    if (incompletePages.length > 0) {
-        return {
-            redirect: true,
-            redirectTo: `/cases/${caseReference}/financial-eligibility/${incompletePages[0]}`
-        };
+    let pagesForSection: FinancialEligibilityPageId[] = [];
+    for (const [section, pages] of Object.entries(FE_SECTIONS)) {
+        for (const page of pages) {
+            if (pages.includes(comingFromPage as FinancialEligibilityPageId)) {
+                pagesForSection = pages;
+                break;
+            }
+        }
     }
 
-    return {
-        redirect: false,
-        redirectTo: ''
-    };
+    console.log('Pages for section for comingFromPage', comingFromPage, ':', pagesForSection);
+
+    if (pagesForSection.length === 0) {
+        throw new Error(`No section found for comingFromPage: ${comingFromPage}`);
+    }
+
+    const pageFromIndex = pagesForSection.findIndex(page => page === comingFromPage);
+
+    let nextPageIdx = pageFromIndex + 1;
+    let nextPage: FinancialEligibilityPageId | undefined;
+    let nextPageFound = false;
+    while (nextPageIdx < pagesForSection.length) {
+        nextPage = pagesForSection[nextPageIdx];
+        if (pageIsNotRequired(nextPage, eligibilityCheck)) {
+            nextPageIdx++;
+        } else {
+            nextPageFound = true;
+            break;
+        }
+    }
+
+    if (nextPageFound && nextPage) {
+        return {
+            redirect: true,
+            redirectTo: `/cases/${caseReference}/financial-eligibility/${nextPage}`
+        };
+    } else {
+        return {
+            redirect: true,
+            redirectTo: `/cases/${caseReference}/financial-eligibility`
+        };
+    }
 }
+
+
+/** 
+ * Determines whether a given page should be skipped based on the eligibility check state.
+ * @param {FinancialEligibilityPageId} page - The page to evaluate
+ * @param {EligibilityCheck} eligibilityCheck - The eligibility check object to evaluate
+ * @returns {boolean} True if the page should be skipped, false otherwise
+ */
+function pageIsNotRequired(page: FinancialEligibilityPageId, eligibilityCheck: EligibilityCheck): boolean {
+    if (page === FinancialEligibilityPageId.DO_YOU_HAVE_A_PARTNER) {
+        return eligibilityCheck.is_you_under_18;
+    }
+
+    if (page === FinancialEligibilityPageId.ARE_YOU_AGED_60_OR_OVER) {
+        return eligibilityCheck.is_you_under_18;
+    }
+
+    return false;
+}
+
 
 /**
  * Retrieves the eligibility check steps status for the given case.
@@ -140,7 +215,7 @@ export function getAllIncompletePages(eligibilityCheck: EligibilityCheck): strin
  * @throws {Error} If no form question is found for the given page name
  */
 export function getQuestionsForPage(pageName: string): FinancialEligibilityFormQuestion[] {
-    const page = FORM_PAGES[pageName];
+    const page = FE_PAGES[pageName];
 
     if (!page) {
         throw new Error(`No form question found for parameter: ${pageName}`);
@@ -156,11 +231,11 @@ export function getQuestionsForPage(pageName: string): FinancialEligibilityFormQ
  * @throws {Error} If no form question is found for the given page name
  */
 export function getSectionForPage(pageName: string): string {
-    const page = FORM_PAGES[pageName];
-
-    if (!page) {
-        throw new Error(`No form question found for parameter: ${pageName}`);
+    for (const [section, pages] of Object.entries(FE_SECTIONS)) {
+        if (pages.includes(pageName as FinancialEligibilityPageId)) {
+            return section;
+        }
     }
 
-    return page.section;
+    throw new Error(`No section found for page: ${pageName}`);
 }
