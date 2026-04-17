@@ -22,7 +22,7 @@ test('viewing "check split case answers" form should display expected elements',
   await checkSplitCaseAnswersPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(checkSplitCaseAnswersPage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: 'Jack Youngs', expectedCaseRef: 'PC-1922-1879', dateReceived: '7 July 2025', });
+  await assertCaseDetailsHeaderPresent(checkSplitCaseAnswersPage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: 'Jack Youngs', expectedCaseRef: 'PC-1922-1879', dateReceived: '7 July 2025 at 1:00am', });
 
   // Assert the page heading is correct
   const heading = checkSplitCaseAnswersPage.getHeadingLocator();

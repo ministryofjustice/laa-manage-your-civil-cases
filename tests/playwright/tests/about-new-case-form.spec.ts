@@ -20,7 +20,7 @@ test('viewing "about new case" form should display expected elements', async ({ 
   await aboutNewCasePage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(aboutNewCasePage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025" });
+  await assertCaseDetailsHeaderPresent(aboutNewCasePage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025 at 1:00am" });
 
   // Assert the page heading is correct 
   const heading = aboutNewCasePage.getHeadingLocator();
@@ -54,7 +54,7 @@ test('when there is only one category assigned to the provider and provider radi
   await aboutNewCasePage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(aboutNewCasePage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Barbra white", expectedCaseRef: "PC-1122-1349", dateReceived: "7 July 2025" });
+  await assertCaseDetailsHeaderPresent(aboutNewCasePage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Barbra white", expectedCaseRef: "PC-1122-1349", dateReceived: "7 July 2025 at 1:00am" });
 
   // Assert the page heading is correct 
   const heading = aboutNewCasePage.getHeadingLocator();
@@ -121,7 +121,7 @@ test('continue button should hit post about new case form end point', async ({ p
   await aboutNewCasePage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(aboutNewCasePage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025" });
+  await assertCaseDetailsHeaderPresent(aboutNewCasePage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025 at 1:00am" });
 
   // Assert we are redirected to the about a new case page (or appropriate next page)
   await expect(page).toHaveURL(`/cases/${caseReference}/about-new-case`);
