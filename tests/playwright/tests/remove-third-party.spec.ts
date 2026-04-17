@@ -12,11 +12,11 @@ test.beforeEach(async ({ page }) => {
 test('viewing remove third party confirmation should display expected elements', async ({ page, i18nSetup }) => {
   await page.goto(clientDetailsUrl);
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025 at 1:00am" }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025" }); 
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025 at 1:00am" }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025" }); 
 
   await expect(page.locator('h2.govuk-heading-m')).toContainText('Remove third party?');
   await expect(page.getByRole('button', { name: 'Yes, remove' })).toBeVisible();
@@ -27,10 +27,10 @@ test('viewing remove third party confirmation should display expected elements',
 test('cancel link should navigate back to client details', async ({ page, i18nSetup }) => {
   await page.goto(clientDetailsUrl);
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025 at 1:00am" }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025" }); 
   await page.goto(visitUrl);
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025 at 1:00am" }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025" }); 
 
   await page.getByRole('button', { name: 'No, go back to client details' }).click();
   await expect(page).toHaveURL(clientDetailsUrl);
@@ -39,10 +39,10 @@ test('cancel link should navigate back to client details', async ({ page, i18nSe
 test('confirm button should delete third party contact and redirect to client details', async ({ page, i18nSetup }) => {
   await page.goto(clientDetailsUrl);
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025 at 1:00am" }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025" }); 
   await page.goto(visitUrl);
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025 at 1:00am" }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025" }); 
   await page.getByRole('button', { name: 'Yes, remove' }).click();
   await expect(page).toHaveURL(clientDetailsUrl);
 });
@@ -50,10 +50,10 @@ test('confirm button should delete third party contact and redirect to client de
 test('confirmation page shows warning text about removing third party contact', async ({ page, i18nSetup }) => {
   await page.goto(clientDetailsUrl);
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025 at 1:00am" }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025" }); 
   await page.goto(visitUrl);
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025 at 1:00am" }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025" }); 
   await expect(page.locator('h2.govuk-heading-m')).toContainText('Remove third party?');
   await expect(page.getByText('This will permanently delete all information about the third party.')).toBeVisible();
 });

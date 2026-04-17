@@ -18,7 +18,7 @@ test('viewing remove client support needs confirmation should display expected e
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025 at 1:00am" }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025" }); 
   
 
   // Expect to see the main elements
@@ -37,7 +37,7 @@ test('cancel link should navigate back to client details', async ({ page, i18nSe
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025 at 1:00am" }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025" }); 
 
   // Click cancel button
   await cancelButton.click();
@@ -53,7 +53,7 @@ test('confirm button should delete client support needs and redirect to client d
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025 at 1:00am" }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025" }); 
 
   // Click confirm button
   await expect(confirmButton).toBeVisible();
@@ -68,7 +68,7 @@ test('confirmation page shows warning text about removing client support needs',
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025 at 1:00am" }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025" }); 
 
   // Check the page heading
   await expect(page.locator('h2.govuk-heading-m')).toContainText('Remove client support needs?');

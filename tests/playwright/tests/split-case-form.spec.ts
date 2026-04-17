@@ -16,7 +16,7 @@ test('viewing "split this case" form should display expected elements', async ({
   await splitCasePage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(splitCasePage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025 at 1:00am" });
+  await assertCaseDetailsHeaderPresent(splitCasePage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025" });
 
   // Assert the page heading is correct 
   const heading = splitCasePage.getHeadingLocator();
@@ -71,7 +71,7 @@ test('continue button should hit post split case form end point', async ({ page,
   await splitCasePage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(splitCasePage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025 at 1:00am" });
+  await assertCaseDetailsHeaderPresent(splitCasePage.getPage, { withMenuButtons: false, isUrgent: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025" });
 
   // Select the "Generic Provider Public Law" radio option
   const radioInternalTrue = page.getByRole('radio', { name: 'Generic Provider Public Law' });
