@@ -1,0 +1,129 @@
+{% extends "base.njk" %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/tag/macro.njk" import govukTag %}
+{% from "moj/components/button-menu/macro.njk" import mojButtonMenu %}
+{% from "components/caseDetailsHeaderComponent.njk" import caseDetailsHeaderComponent %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "components/errorSummaryComponent.njk" import errorSummary %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "x-govuk/components/autocomplete/macro.njk" import xGovukAutocomplete %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "components/alertBannerComponent.njk" import alertBannerComponent %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+
+{% set backLinkHref = "/cases/" + caseReference + "/client-details" %}
+
+{% block backLink %}
+  {{ govukBackLink({
+      text: t('common.back'),
+      href: backLinkHref,
+      classes: "govuk-!-margin-bottom-0"
+    }) }}
+{% endblock %}
+
+{% block pageContent %}
+  {{ caseDetailsHeaderComponent(client, hideStatusButton = true) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">{{ t(headingKey) }}</legend>
+
+        <form method="post" action="{{ formAction }}">
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+
+            {% for question in questions %}
+                {% if question.type == "yes_or_no" %}
+                    {{ govukRadios({
+                        name: question.fieldName,
+                        fieldset: {
+                            legend: {
+                                text: question.legendText,
+                                classes: "govuk-fieldset__legend--l"
+                            }
+                        },
+                        hint: {
+                            text: "Select one option"
+                        },
+                        items: [
+                            {
+                                value: "yes",
+                                text: "Yes"
+                            },
+                            {
+                                value: "no",
+                                text: "No"
+                            }
+                        ]
+                        })
+                    }}
+                {% elseif question.type == "value_per_interval" %}
+                    {{ govukInput({
+                        name: question.fieldName,
+                        label: {
+                            text: question.legendText,
+                            classes: "govuk-label--l"
+                        },
+                        hint: {
+                            text: "Enter an amount in pounds"
+                        },
+                        prefix: "£",
+                        type: "number",
+                        attributes: {
+                            step: "0.01",
+                            min: "0"
+                        }
+                    }) }}
+                    {{ govukRadios({
+                        name: question.fieldName + "_interval",
+                        fieldset: {
+                            legend: {
+                                text: "Select the interval for this amount",
+                                classes: "govuk-fieldset__legend--l"
+                            }
+                        },
+                        items: [
+                            {
+                                value: "per_week",
+                                text: "Per week"
+                            },
+                            {
+                                value: "per_month",
+                                text: "Per month"
+                            },
+                            {
+                                value: "per_year",
+                                text: "Per year"
+                            }
+                        ]
+                        })
+                     }}
+                {% endif %}
+            {% endfor%}
+            
+            <div class="govuk-button-group">
+                {{ govukButton({
+                    text: "Continue",
+                    name: "continue",
+                    value: "true"
+                }) }}
+                {{ govukButton({
+                    text: "Save and come back later",
+                    name: "saveAndComeBackLater",
+                    classes: "govuk-button--secondary",
+                    value: "true"
+                }) }}
+                <a class="govuk-link" href="{{ backLinkHref }}">{{ t('common.cancel') }}</a>
+            </div>
+        </form>
+    </div>
+  </div>
+
+
+    
+{% endblock %}
+
+

@@ -16,5 +16,5 @@ export * from './removeThirdPartyController.js';
 export * from './addClientSupportNeedsController.js';
 export * from './editClientSupportNeedsController.js';
 export * from './removeClientSupportNeeds.js';
-
+export * from './financialEligibilityController.js';
 
