@@ -3,9 +3,9 @@ import { validationResult } from 'express-validator';
 import { apiService } from '#src/services/apiService.js';
 import { devLog, createProcessedError, safeString, safeBodyString, formatValidationError, validCaseReference, t, hasAllowedCaseStatus } from '#src/scripts/helpers/index.js';
 import config from '#config.js';
+import { HTTP } from '#src/services/api/base/constants.js';
 
 const { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH, CHARACTER_THRESHOLD }: { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH: number; CHARACTER_THRESHOLD: number } = config;
-const BAD_REQUEST = 400;
 
 /**
  * Render the operator feedback form
@@ -132,7 +132,7 @@ export async function submitOperatorFeedback(req: Request, res: Response, next: 
         }))
       ];
 
-      return res.status(BAD_REQUEST).render('case_details/give-operator-feedback.njk', {
+      return res.status(HTTP.BAD_REQUEST).render('case_details/give-operator-feedback.njk', {
         caseReference,
         client: response.data,
         categoryItems,
@@ -263,7 +263,7 @@ export async function submitDoYouWantToGiveFeedbackForm(req: Request, res: Respo
     // POST handlers don't have middleware, so fetch client details for validation error rendering
     const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
 
-    return res.status(BAD_REQUEST).render('case_details/do-you-want-to-give-feedback.njk', {
+    return res.status(HTTP.BAD_REQUEST).render('case_details/do-you-want-to-give-feedback.njk', {
       caseReference,
       client: response.data,
       errorState: { hasErrors: true, errors: errorSummaryList, fieldErrors },

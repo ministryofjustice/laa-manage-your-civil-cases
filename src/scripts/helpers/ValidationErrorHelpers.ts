@@ -2,6 +2,7 @@ import type { ValidationError, Result, Meta, Location } from 'express-validator'
 import type { Request, Response } from 'express';
 import { isRecord, hasProperty, safeString } from './dataTransformers.js';
 import { i18next } from './i18nLoader.js';
+import { HTTP } from '../../services/api/base/constants.js';
 
 /**
  * Interface for validation error data structure
@@ -283,7 +284,6 @@ export function handleValidationErrors(
   res: Response,
   caseReference: string
 ): void {
-  const BAD_REQUEST = 400;
 
   // Map validation errors to field names following phone number pattern
   const resultingErrors = validationErrors.array().map((errorData: ValidationErrorData) => {
@@ -320,7 +320,7 @@ export function handleValidationErrors(
   }));
 
   // Re-render the form with errors and preserve user input
-  res.status(BAD_REQUEST).render('case_details/change-client-address.njk', {
+  res.status(HTTP.BAD_REQUEST).render('case_details/change-client-address.njk', {
     caseReference,
     currentAddress: hasProperty(req.body, 'address') ? safeString(req.body.address) : '',
     currentPostcode: hasProperty(req.body, 'postcode') ? safeString(req.body.postcode) : '',

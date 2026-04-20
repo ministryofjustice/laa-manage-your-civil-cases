@@ -5,8 +5,8 @@ import { createPaginationForGivenDataSet, safeString } from '../helpers/dataTran
 import { transformHistoryLogToTimelineItem } from '#src/services/api/transforms/transformClientHistoryLogs.js';
 import { devError } from '../helpers/devLogger.js';
 import { handleCaseTab } from '../helpers/caseTabHandler.js';
+import { HTTP } from '#src/services/api/base/constants.js';
 
-const NOT_FOUND = 404;
 const PAGE_SIZE = 10;
 
 /**
@@ -42,8 +42,8 @@ export async function handleCaseHistoryTab(req: Request, res: Response, next: Ne
       });
     } else {
       devError(`History not found for case: ${caseReference}. API response: ${historyResponse.message ?? 'Unknown error'}`);
-      res.status(NOT_FOUND).render('main/error.njk', {
-        status: '404',
+      res.status(HTTP.NOT_FOUND).render('main/error.njk', {
+        status: HTTP.NOT_FOUND,
         error: historyResponse.message ?? 'History not found'
       });
     }

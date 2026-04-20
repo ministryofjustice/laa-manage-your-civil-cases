@@ -21,6 +21,7 @@ import { getRemoveThirdPartyConfirmation, deleteThirdParty } from '#src/scripts/
 import { apiService } from '#src/services/apiService.js';
 // Import to get global type declarations for axiosMiddleware
 import '#utils/server/axiosSetup.js';
+import { HTTP } from '#src/services/api/base/constants.js';
 
 describe('Remove Third Party Controller', () => {
   let req: Partial<Request>;
@@ -225,7 +226,7 @@ describe('Remove Third Party Controller', () => {
       deleteThirdPartyContactStub.resolves({
         status: 'error',
         data: null,
-        message: 'Third party not found (404)'
+        message: `Third party not found ${HTTP.NOT_FOUND}`
       });
 
       // Act

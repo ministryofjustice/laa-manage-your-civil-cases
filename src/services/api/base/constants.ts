@@ -2,6 +2,7 @@
  * API Service Constants
  */
 
+import e from '#node_modules/@types/express/index.js';
 import config from '../../../../config.js';
 const { pagination: { defaultPage, defaultLimit } } = config;
 
@@ -22,3 +23,18 @@ export const API_PREFIX = process.env.API_PREFIX ?? '/cla_provider/api/v1';
 
 /** Timeout in milliseconds for search API calls to prevent hanging requests (used in casesApiService.searchCases) */
 export const SEARCH_TIMEOUT_MS = 10000;
+
+// Enum for http status codes 
+export enum HTTP {
+    BAD_REQUEST = 400,
+    NOT_FOUND = 404,
+    UNAUTHORIZED = 401,
+    FORBIDDEN = 403,
+    REQUEST_TIMEOUT = 408,
+    TOO_MANY_REQUESTS = 429,
+    INTERNAL_SERVER_ERROR = 500,
+    BAD_GATEWAY = 502,
+    SERVICE_UNAVAILABLE = 503,
+    GATEWAY_TIMEOUT = 504,
+    SUCCESSFUL_REQUEST = 200
+}

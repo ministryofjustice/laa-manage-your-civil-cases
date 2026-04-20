@@ -5,12 +5,12 @@ import { safeString, safeOptionalString, hasProperty, buildOrderingParamFields }
 import { validationResult } from 'express-validator';
 import { formatValidationError, type ValidationErrorData } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 import { storeSessionData, getSessionData, clearSessionData } from '#src/scripts/helpers/sessionHelpers.js';
+import { HTTP } from '#src/services/api/base/constants.js';
 import config from '../../../config.js';
 const { pagination: { defaultPage: DEFAULT_PAGE, defaultLimit: DEFAULT_LIMIT } } = config;
 
 // Constants
 const DEFAULT_SORT_BY = 'modified';
-const BAD_REQUEST = 400;
 
 /**
  * Helper function to extract pagination and sort parameters
@@ -183,7 +183,7 @@ function handleValidationErrors(req: Request, res: Response): boolean {
 
     const { keyword, status } = getSearchParameters(req);
 
-    res.status(BAD_REQUEST).render('search/index.njk', {
+    res.status(HTTP.BAD_REQUEST).render('search/index.njk', {
       searchKeyword: keyword,
       statusSelect: status,
       searchPerformed: false,
