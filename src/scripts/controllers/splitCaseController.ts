@@ -53,10 +53,11 @@ async function fetchProviderNameAndDetail(req: Request, caseReference: string): 
 export async function getSplitThisCaseForm(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
-  const splitCaseCache = ensureSplitCaseCache(req);
   if (!validCaseReference(caseReference, res)) {
     return;
   }
+
+  const splitCaseCache = ensureSplitCaseCache(req);
 
   try {
     devLog(`Rendering split this case form for case: ${caseReference}`);
@@ -150,24 +151,26 @@ export async function submitSplitThisCaseForm(req: Request, res: Response, next:
  */
 export async function getAboutNewCaseForm(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
+
+  if (!validCaseReference(caseReference, res)) {
+    return;
+  }
+
   let category = null;
   let notes = null;
 
   const splitCaseCache = ensureSplitCaseCache(req);
 
-  const effectiveInternal =
-    splitCaseCache.internalChange ?? splitCaseCache.internal;
+  const effectiveInternal = splitCaseCache.internalChange ?? splitCaseCache.internal;
 
   if (splitCaseCache.internal === splitCaseCache.internalChange) {
     category = splitCaseCache.category
     notes = splitCaseCache.notes
   }
 
-  if (!validCaseReference(caseReference, res)) {
-    return;
-  }
   const provider = await fetchProviderNameAndDetail(req, caseReference);
   const operatorSelection = req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && effectiveInternal === 'false';
+
   try {
     devLog(`Rendering about new case form for case: ${caseReference}`);
 
@@ -255,11 +258,9 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
   const category = safeBodyString(req.body, 'category');
   const notes = safeBodyString(req.body, 'notes');
 
-
   const splitCaseCache = ensureSplitCaseCache(req);
 
-  const effectiveInternal =
-    splitCaseCache.internalChange ?? splitCaseCache.internal;
+  const effectiveInternal = splitCaseCache.internalChange ?? splitCaseCache.internal;
 
   // Check for validation errors
   const errors = validationResult(req);
@@ -373,16 +374,16 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
  */
 export async function getCheckSplitCaseAnswersForm(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
+
+  if (!validCaseReference(caseReference, res)) {
+    return;
+  }
+
   const splitCaseCache = ensureSplitCaseCache(req);
 
   if (hasSplitCaseCache(req)) {
     req.session.splitCaseCache.fromChange = false;
     req.session.splitCaseCache.internalChange = "";
-  }
-
-
-  if (!validCaseReference(caseReference, res)) {
-    return;
   }
 
   try {
