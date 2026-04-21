@@ -74,9 +74,6 @@ const createApp = async (): Promise<express.Application> => {
 
 	// Set up locale middleware for internationalisation
 	app.use(setupLocaleMiddleware);
-
-	// Set up rate limiting
-	rateLimitSetUp(app, config);
 	
 	// Set up Nunjucks as the template engine
 	nunjucksSetup(app);

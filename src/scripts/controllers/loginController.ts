@@ -6,7 +6,6 @@ import '#src/scripts/helpers/sessionHelpers.js';
 import config from '#config.js';
 import { validationResult, matchedData } from 'express-validator';
 import { formatValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
-import { encrypt } from '#utils/server/index.js';
 import { HTTP } from '#src/services/api/base/constants.js';
 
 // HTTP Status codes
