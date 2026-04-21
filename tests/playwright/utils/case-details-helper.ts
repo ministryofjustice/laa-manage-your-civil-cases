@@ -2,22 +2,20 @@ import { expect, Locator, Page } from '@playwright/test';
 
 type CaseDetailsHeaderOptions = {
   withMenuButtons?: boolean;
-  isUrgent?: boolean;
   expectedName: string;
   expectedCaseRef: string;
   dateReceived: string;
-  urgentBadgeText?: string;
+  badgeTexts?: string[];
 };
 
 export async function assertCaseDetailsHeaderPresent(
   page: Page,
   {
     withMenuButtons = false,
-    isUrgent = false,
     expectedName,
     expectedCaseRef,
     dateReceived,
-    urgentBadgeText = 'Urgent',
+    badgeTexts,
   }: CaseDetailsHeaderOptions
 ) {
   const caseHeader = page.locator('#mcc-case-details-header');
@@ -27,8 +25,8 @@ export async function assertCaseDetailsHeaderPresent(
   await assertH1Item(caseHeader, expectedName);
   await assertH2Item(caseHeader, 'Date received', dateReceived);
 
-  if (isUrgent) {
-    await assertIsUrgentBadgeToBeVisible(caseHeader, urgentBadgeText);
+  if (badgeTexts && badgeTexts.length > 0) {
+    await assertCaseFlagsBadgesToBeVisible(caseHeader, badgeTexts);
   }
 
   if (withMenuButtons) {
@@ -36,9 +34,11 @@ export async function assertCaseDetailsHeaderPresent(
   }
 }
 
-async function assertIsUrgentBadgeToBeVisible(container: Locator, badgeText: string) {
-  const urgentBadge = container.locator('.moj-badge', { hasText: badgeText });
-  await expect(urgentBadge).toBeVisible();
+async function assertCaseFlagsBadgesToBeVisible(container: Locator,badgeTexts: string[]) {
+  for (const badgeText of badgeTexts) {
+    const badge = container.locator('.moj-badge').filter({ hasText: badgeText });
+    await expect(badge).toBeVisible();
+  }
 }
 
 async function assertMenuButtonVisible(container: Locator) {

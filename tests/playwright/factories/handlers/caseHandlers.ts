@@ -210,7 +210,7 @@ function createGetCasesListHandler(
     const result = paginateResults(filteredCases, page, page_size);
     
     return HttpResponse.json({
-      results: result.data,
+      results: result.data.map(transformToApiFormat),
       count: result.pagination.total,
       pagination: {
         page: result.pagination.page,
