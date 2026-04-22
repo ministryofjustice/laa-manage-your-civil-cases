@@ -66,6 +66,7 @@ export async function getSplitThisCaseForm(req: Request, res: Response, next: Ne
       caseReference,
       provider,
       client: req.clientData,
+      splitCaseCache: req.session.splitCaseCache,
       errorState: {
         hasErrors: false,
         errors: [],
