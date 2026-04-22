@@ -21,6 +21,7 @@ import { getRemoveSupportNeedsConfirmation, deleteClientSupportNeeds } from '#sr
 import { apiService } from '#src/services/apiService.js';
 // Import to get global type declarations for axiosMiddleware
 import '#utils/server/axiosSetup.js';
+import { HTTP } from '#src/services/api/base/constants.js';
 
 describe('Remove Client Support Needs Controller', () => {
   let req: Partial<Request>;
@@ -85,7 +86,7 @@ describe('Remove Client Support Needs Controller', () => {
 
       // Assert
       expect(statusStub.calledWith(400)).to.be.true;
-      expect(renderStub.calledWith('main/error.njk', { status: '400', error: 'Invalid case reference' })).to.be.true;
+      expect(renderStub.calledWith('main/error.njk', { status: HTTP.BAD_REQUEST, error: 'Invalid case reference' })).to.be.true;
     });
 
     it('should return 404 when case has no client support needs data', () => {
@@ -100,7 +101,7 @@ describe('Remove Client Support Needs Controller', () => {
 
       // Assert
       expect(statusStub.calledWith(404)).to.be.true;
-      expect(renderStub.calledWith('main/error.njk', { status: '404', error: 'No client support needs data found for this case' })).to.be.true;
+      expect(renderStub.calledWith('main/error.njk', { status: HTTP.NOT_FOUND, error: 'No client support needs data found for this case' })).to.be.true;
     });
   });
 
@@ -126,7 +127,7 @@ describe('Remove Client Support Needs Controller', () => {
 
       // Assert
       expect(statusStub.calledWith(400)).to.be.true;
-      expect(renderStub.calledWith('main/error.njk', { status: '400', error: 'Invalid case reference' })).to.be.true;
+      expect(renderStub.calledWith('main/error.njk', { status: HTTP.BAD_REQUEST, error: 'Invalid case reference' })).to.be.true;
     });
 
     const deleteErrorScenarios = [
@@ -152,7 +153,7 @@ describe('Remove Client Support Needs Controller', () => {
           expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
         } else {
           expect(statusStub.calledWith(500)).to.be.true;
-          expect(renderStub.calledWith('main/error.njk', { status: '500', error: expectedError })).to.be.true;
+          expect(renderStub.calledWith('main/error.njk', { status: HTTP.INTERNAL_SERVER_ERROR, error: expectedError })).to.be.true;
         }
       });
     });

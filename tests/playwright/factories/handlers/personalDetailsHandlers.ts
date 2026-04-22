@@ -80,6 +80,11 @@ export function createPersonalDetailsHandlers(
       if ('full_name' in updateData) {
         caseItem.fullName = updateData.full_name;
       }
+
+      // Update the vulnerable user flag for this case
+      if (caseReference === 'PC-1977-1241') {
+        caseItem.vulnerableUser = updateData.vulnerable_user === 'true' || updateData.vulnerable_user === true;
+      }
       
       return HttpResponse.json(transformToApiFormat(caseItem));
     })

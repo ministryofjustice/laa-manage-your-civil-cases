@@ -24,7 +24,7 @@ function handleCachedThirdPartyCheck(
   if (hasSoftDeletedThirdParty) {
     devError(`No active third party to remove for case: ${caseReference} (soft-deleted found in cache)`);
     res.status(HTTP.NOT_FOUND).render('main/error.njk', {
-      status: String(HTTP.NOT_FOUND),
+      status: HTTP.NOT_FOUND,
       error: 'No third party contact found for this case'
     });
     return;
@@ -43,7 +43,7 @@ function handleCachedThirdPartyCheck(
   // Case 3: Cache miss → render 500 (expired session or server issue)
   devError(`Cache miss for case: ${caseReference} - session expired or invalid`);
   res.status(HTTP.INTERNAL_SERVER_ERROR).render('main/error.njk', {
-    status: String(HTTP.INTERNAL_SERVER_ERROR),
+    status: HTTP.INTERNAL_SERVER_ERROR,
     error: 'Session expired or invalid. Please reload the case details page.'
   });
 }
@@ -109,7 +109,7 @@ export async function deleteThirdParty(req: Request, res: Response, next: NextFu
     } else {
       devError(`Failed to remove third party contact for case: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);
       res.status(HTTP.INTERNAL_SERVER_ERROR).render('main/error.njk', {
-        status: String(HTTP.INTERNAL_SERVER_ERROR),
+        status: HTTP.INTERNAL_SERVER_ERROR,
         error: response.message ?? 'Failed to remove third party contact'
       });
     }

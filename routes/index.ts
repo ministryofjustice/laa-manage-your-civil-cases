@@ -84,7 +84,7 @@ router.use((err: Error, req: Request, res: Response, next: NextFunction): void =
   devError(`Global error handler - URL: ${originalUrl}, Error: ${originalError.message}`);
 
   res.status(HTTP.INTERNAL_SERVER_ERROR).render('main/error.njk', {
-    status: '500',
+    status: HTTP.INTERNAL_SERVER_ERROR,
     error: userFriendlyMessage
   });
 });

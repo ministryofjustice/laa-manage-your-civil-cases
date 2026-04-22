@@ -124,7 +124,7 @@ export async function postEditClientSupportNeeds(req: Request, res: Response, ne
     } else {
       devError(`Failed to update client support needs for case: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);
       res.status(HTTP.INTERNAL_SERVER_ERROR).render('main/error.njk', {
-        status: String(HTTP.INTERNAL_SERVER_ERROR),
+        status: HTTP.INTERNAL_SERVER_ERROR,
         error: response.message ?? 'Failed to update client support needs'
       });
     }

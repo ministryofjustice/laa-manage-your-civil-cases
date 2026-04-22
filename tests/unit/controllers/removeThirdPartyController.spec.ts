@@ -98,7 +98,7 @@ describe('Remove Third Party Controller', () => {
       expect(getClientDetailsStub.called).to.be.false; // No API call made
       expect(statusStub.calledWith(404)).to.be.true;
       expect(renderStub.calledWith('main/error.njk', { 
-        status: '404', 
+        status: HTTP.NOT_FOUND, 
         error: 'No third party contact found for this case' 
       })).to.be.true;
     });
@@ -115,7 +115,7 @@ describe('Remove Third Party Controller', () => {
       expect(getClientDetailsStub.called).to.be.false; // No API fallback
       expect(statusStub.calledWith(500)).to.be.true;
       expect(renderStub.calledWith('main/error.njk', { 
-        status: '500', 
+        status: HTTP.INTERNAL_SERVER_ERROR, 
         error: 'Session expired or invalid. Please reload the case details page.' 
       })).to.be.true;
     });
@@ -136,7 +136,7 @@ describe('Remove Third Party Controller', () => {
       expect(getClientDetailsStub.called).to.be.false; // No API fallback
       expect(statusStub.calledWith(500)).to.be.true;
       expect(renderStub.calledWith('main/error.njk', { 
-        status: '500', 
+        status: HTTP.INTERNAL_SERVER_ERROR, 
         error: 'Session expired or invalid. Please reload the case details page.' 
       })).to.be.true;
     });
@@ -150,7 +150,7 @@ describe('Remove Third Party Controller', () => {
 
       // Assert
       expect(statusStub.calledWith(400)).to.be.true;
-      expect(renderStub.calledWith('main/error.njk', { status: '400', error: 'Invalid case reference' })).to.be.true;
+      expect(renderStub.calledWith('main/error.njk', { status: HTTP.BAD_REQUEST, error: 'Invalid case reference' })).to.be.true;
     });
 
     it('should delegate exceptions to error middleware', () => {
@@ -190,7 +190,7 @@ describe('Remove Third Party Controller', () => {
 
       // Assert
       expect(statusStub.calledWith(400)).to.be.true;
-      expect(renderStub.calledWith('main/error.njk', { status: '400', error: 'Invalid case reference' })).to.be.true;
+      expect(renderStub.calledWith('main/error.njk', { status: HTTP.BAD_REQUEST, error: 'Invalid case reference' })).to.be.true;
     });
 
     const deleteErrorScenarios = [
@@ -216,7 +216,7 @@ describe('Remove Third Party Controller', () => {
           expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
         } else {
           expect(statusStub.calledWith(500)).to.be.true;
-          expect(renderStub.calledWith('main/error.njk', { status: '500', error: expectedError })).to.be.true;
+          expect(renderStub.calledWith('main/error.njk', { status: HTTP.INTERNAL_SERVER_ERROR, error: expectedError })).to.be.true;
         }
       });
     });
