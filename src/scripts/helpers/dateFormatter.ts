@@ -77,6 +77,36 @@ export function formatLongFormDate(dateString: string): string {
 }
 
 /**
+ * Format date in long format, but short Month
+ * @param {string} dateString ISO date string
+ * @returns {string} Formatted date in D MM YYYY H:MMam/pm format (e.g., "6 Jan 1986 at 2:01pm")
+ */
+export function formatLongFormDateWithShortMonth(dateString: string): string {
+  const date = new Date(dateString);
+  const AM_HOURS = 12;
+  const PADDING = 2;
+  const ZERO = 0;
+
+  if (isNaN(date.getTime())) {
+    return dateString;
+  }
+
+  const day = date.getDate();
+  const month = date.toLocaleString('en-GB', { month: 'short' });
+  const year = date.getFullYear();
+    
+  // Convert to 12-hour format
+  let hours = date.getHours();
+  const noonOrNot = hours >= AM_HOURS ? "pm" : "am";
+  const remainder = hours % AM_HOURS;
+  hours = remainder === ZERO ? AM_HOURS : remainder;
+
+  const minutes = date.getMinutes().toString().padStart(PADDING, "0");
+
+  return `${day} ${month} ${year} at ${hours}:${minutes}${noonOrNot}`;
+}
+
+/**
  * Constructs a date string in the format 'YYYY-MM-DD' from separate day, month, and year fields.
  * Pads the day and month values to ensure two digits using predefined padding width and character.
  *
