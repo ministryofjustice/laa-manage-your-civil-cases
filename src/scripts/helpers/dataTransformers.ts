@@ -352,7 +352,7 @@ export const transformContactDetails = (personalDetails: unknown): {
   }
 
   const fullName = safeString(personalDetails.full_name);
-  const vulnerableUser = Boolean(personalDetails.vulnerable_user);
+  const vulnerableUser = personalDetails.vulnerable_user === true || personalDetails.vulnerable_user === 'true';
   const dateOfBirth = formatDate(safeString(personalDetails.date_of_birth));
   const phoneNumber = extractPhoneNumber(personalDetails);
   const safeToCall = isSafeToCall(personalDetails);

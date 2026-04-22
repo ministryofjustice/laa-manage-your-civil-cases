@@ -152,7 +152,7 @@ export async function postEditClientThirdParty(req: Request, res: Response, next
     } else {
       devError(`Failed to update third party contact for case: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);
       res.status(HTTP.INTERNAL_SERVER_ERROR).render('main/error.njk', {
-        status: String(HTTP.INTERNAL_SERVER_ERROR),
+        status: HTTP.INTERNAL_SERVER_ERROR,
         error: response.message ?? 'Failed to update third party contact'
       });
     }

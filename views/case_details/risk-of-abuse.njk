@@ -38,6 +38,7 @@
 
         {{ govukRadios({
           name: "clientRiskOfAbuse",
+          value: clientRiskOfAbuse,
           errorMessage: errorState.fieldErrors.internal,
           fieldset: {
             legend: {
@@ -48,13 +49,11 @@
           items: [
             {
               value: "true",
-              text: t('common.yes'),
-              checked: riskOfAbuse.internal == "true"
+              text: t('common.yes')
             },
             {
               value: "false",
-              text: t('common.no'),
-              checked: riskOfAbuse.internal == "false"
+              text: t('common.no')
             }
           ]
         }) }}

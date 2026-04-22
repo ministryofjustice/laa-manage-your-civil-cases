@@ -541,7 +541,11 @@
       "riskOfAbuse": {
         "pageTitleChange": "Change client risk of abuse – {caseReference} – {serviceName} – GOV.UK",
         "h1": "Is the client at risk of abuse?",
-        "textInfo": "Guidance on abuse is in the Civil Legal Advice: Protection of Children, Young People & Adults at Risk of Abuse Policy, Guidance & Procedures."
+        "textInfo": "Guidance on abuse is in the Civil Legal Advice: Protection of Children, Young People & Adults at Risk of Abuse Policy, Guidance & Procedures.",
+        "validationError": {
+          "notEmpty": "Select a client risk of abuse or select 'Cancel'",
+          "notChanged": "Change the client risk of abuse or select 'Cancel'"
+        }
       },
       "thirdParty": {
         "addPage": {

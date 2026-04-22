@@ -43,7 +43,7 @@ export async function fetchClientDetails(req: Request, res: Response, next: Next
     } else {
       devError(`[Middleware] Client details not found for case: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);
       res.status(HTTP.NOT_FOUND).render('main/error.njk', {
-        status: String(HTTP.NOT_FOUND),
+        status: HTTP.NOT_FOUND,
         error: response.message ?? 'Case not found'
       });
     }

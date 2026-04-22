@@ -5,6 +5,8 @@
  * import { validateEditClientName } from '#src/middlewares/index.js';
  */
 
+import { validateClientRiskOfAbuse } from './clientRiskOfAbuseSchema.js';
+
 export {
   validateEditClientName
 } from './clientNameSchema.js';
@@ -70,3 +72,7 @@ export {
 export {
   validateAboutNewCase
 } from './aboutNewCaseSchema.js'
+
+export {
+  validateClientRiskOfAbuse
+} from './clientRiskOfAbuseSchema.js'

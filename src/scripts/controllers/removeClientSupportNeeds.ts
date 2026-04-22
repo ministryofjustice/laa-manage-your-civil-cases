@@ -30,7 +30,7 @@ export function getRemoveSupportNeedsConfirmation(req: Request, res: Response, n
   ) {
     devError(`No client support needs to remove for case: ${caseReference}`);
     res.status(HTTP.NOT_FOUND).render('main/error.njk', {
-      status: String(HTTP.NOT_FOUND),
+      status: HTTP.NOT_FOUND,
       error: 'No client support needs data found for this case'
     });
     return;
@@ -72,7 +72,7 @@ export async function deleteClientSupportNeeds(req: Request, res: Response, next
     } else {
       devError(`Failed to remove client support needs for case: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);
       res.status(HTTP.INTERNAL_SERVER_ERROR).render('main/error.njk', {
-        status: String(HTTP.INTERNAL_SERVER_ERROR),
+        status: HTTP.INTERNAL_SERVER_ERROR,
         error: response.message ?? 'Failed to remove client support needs'
       });
     }
