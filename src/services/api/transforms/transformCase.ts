@@ -9,7 +9,6 @@ import {
   safeOptionalString,
   isRecord,
   formatDate,
-  formatLongFormDate,
   isSafeToCall
 } from '#src/scripts/helpers/index.js';
 
@@ -28,14 +27,14 @@ export function transformCaseItem(item: unknown): CaseData {
     caseReference: safeString(item.reference),
     laaReference: safeString(item.laa_reference),
     refCode: safeString(item.reference),
-    provider_assigned_at: formatLongFormDate(safeString(item.provider_assigned_at)),
-    provider_viewed: formatLongFormDate(safeOptionalString(item.provider_viewed) ?? ''),
-    provider_accepted: formatLongFormDate(safeOptionalString(item.provider_accepted) ?? ''),
+    provider_assigned_at: formatDate(safeString(item.provider_assigned_at)),
+    provider_viewed: formatDate(safeOptionalString(item.provider_viewed) ?? ''),
+    provider_accepted: formatDate(safeOptionalString(item.provider_accepted) ?? ''),
     outcome_code: safeOptionalString(item.outcome_code) ?? '',
     caseStatus: safeString(item.caseStatus),
     dateOfBirth: formatDate(safeString(item.date_of_birth)),
-    modified: formatLongFormDate(safeOptionalString(item.modified) ?? ''),
-    provider_closed: formatLongFormDate(safeOptionalString(item.provider_closed) ?? ''),
+    modified: formatDate(safeOptionalString(item.modified) ?? ''),
+    provider_closed: formatDate(safeOptionalString(item.provider_closed) ?? ''),
     phoneNumber: safeOptionalString(item.phone_number),
     safeToCall: Boolean(item.safe_to_call),
     announceCall: Boolean(item.announce_call),
@@ -88,8 +87,8 @@ export function transformCaseItemForSearch(item: unknown): CaseData {
     phoneNumber: safeOptionalString(item.phone_number),
     dateOfBirth: formatDate(safeString(item.date_of_birth)),
     caseStatus: determineCaseStatus(item),
-    provider_assigned_at: formatLongFormDate(safeString(item.provider_assigned_at)),
-    modified: formatLongFormDate(safeOptionalString(item.modified) ?? ''),
+    provider_assigned_at: formatDate(safeString(item.provider_assigned_at)),
+    modified: formatDate(safeOptionalString(item.modified) ?? ''),
     safeToCall: isSafeToCall({ safe_to_contact: item.safe_to_contact}),
   };
 }
