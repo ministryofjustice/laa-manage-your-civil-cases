@@ -6,7 +6,6 @@ import '#src/scripts/helpers/sessionHelpers.js';
 import config from '#config.js';
 import { validationResult, matchedData } from 'express-validator';
 import { formatValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
-import { encrypt } from '#utils/server/index.js';
 import { HTTP } from '#src/services/api/base/constants.js';
 
 // HTTP Status codes
@@ -174,9 +173,9 @@ export async function processLogin(req: Request, res: Response, _next: NextFunct
         // Store credentials with encrypted sensitive fields
         req.session.authCredentials = {
           username,
-          password: encrypt(password), // Encrypted password
+          password,
           client_id: config.api.auth.clientId,
-          client_secret: encrypt(config.api.auth.clientSecret) // Encrypted client secret
+          client_secret: config.api.auth.clientSecret
         };
 
         if (userInfo !== null) {

@@ -60,6 +60,9 @@ const createApp = async (): Promise<express.Application> => {
 	
 	app.use(session(await buildSessionConfig(config)));
 
+	// Set up rate limiting
+	rateLimitSetUp(app, config);
+	
 	// Set up authentication status for templates
 	app.use(setAuthStatus);
 
@@ -71,12 +74,9 @@ const createApp = async (): Promise<express.Application> => {
 
 	// Set up locale middleware for internationalisation
 	app.use(setupLocaleMiddleware);
-
+	
 	// Set up Nunjucks as the template engine
 	nunjucksSetup(app);
-
-	// Set up rate limiting
-	rateLimitSetUp(app, config);
 
 	// Set up application-specific configurations
 	setupConfig(app);

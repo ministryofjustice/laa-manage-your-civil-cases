@@ -8,7 +8,6 @@ import { nunjucksSetup } from './nunjucksSetup.js';
 import { rateLimitSetUp } from './rateLimitSetUp.js';
 import { axiosMiddleware } from './axiosSetup.js';
 import { displayAsciiBanner } from './displayAsciiBanner.js';
-import { encrypt, decrypt, isEncryptionConfigured } from './encryption.js';
 import { createRedisClient } from './redis.js';
 import { type RedisClientType } from './session.js';
 
@@ -20,9 +19,6 @@ export {
     rateLimitSetUp,
     axiosMiddleware,
     displayAsciiBanner,
-    encrypt,
-    decrypt,
-    isEncryptionConfigured,
     createRedisClient,
     type RedisClientType
 };
