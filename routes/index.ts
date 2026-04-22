@@ -7,10 +7,10 @@ import searchRouter from './search.js';
 import loginRouter from './login.js';
 import { requireAuth } from '#src/middlewares/indexSetUp.js';
 import { devError, extractErrorMessage } from '#src/scripts/helpers/index.js';
+import { HTTP } from '#src/services/api/base/constants.js';
 
 // Create a new router
 const router = express.Router();
-const SUCCESSFUL_REQUEST = 200;
 
 /* GET home page (no auth required) - redirect to cases once authorised. */
 router.get('/', requireAuth, (req: Request, res: Response): void => {
@@ -37,12 +37,12 @@ router.use('/search', requireAuth, searchRouter);
 
 /* GET liveness and readiness probes for Helm deployments */
 router.get('/status', (req: Request, res: Response): void => {
-  res.status(SUCCESSFUL_REQUEST).send('OK');
+  res.status(HTTP.SUCCESSFUL_REQUEST).send('OK');
 });
 
 /* GET health checks for monitoring */
 router.get('/health', (req: Request, res: Response): void => {
-  res.status(SUCCESSFUL_REQUEST).send('Healthy');
+  res.status(HTTP.SUCCESSFUL_REQUEST).send('Healthy');
 });
 
 // Global 404 handler - must be after all other routes
@@ -66,9 +66,8 @@ router.use((req: Request, res: Response): void => {
     errorMessage = 'Page not found. The requested cases page does not exist.';
   }
 
-  const httpNotFound = 404;
-  res.status(httpNotFound).render('main/error.njk', {
-    status: '404',
+  res.status(HTTP.NOT_FOUND).render('main/error.njk', {
+    status: HTTP.NOT_FOUND,
     error: errorMessage
   });
 });

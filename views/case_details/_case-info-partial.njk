@@ -2,6 +2,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {%- from "moj/components/button-menu/macro.njk" import mojButtonMenu -%}
 {%- from "moj/components/badge/macro.njk" import mojBadge -%}
+{% from "components/caseFlagComponent.njk" import caseFlagComponent %}
 
 {% set statusConfig = {
   "new": {
@@ -99,13 +100,28 @@
   <p class="govuk-caption-l mcc-case-details-header">{{ client.caseReference }}</p>
   <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">{{ client.fullName }}</h1>
 
-  {# Urgent case #}
-  {% if client.is_urgent === 'true' %} 
-    {{ mojBadge({
-      text: t('pages.caseDetails.urgent'),
-      classes: "moj-badge--red govuk-!-margin-bottom-3"
-    }) }}
-  {% endif %}
+  {# Case flags #}
+  {% set supportNeeds = client.clientSupportNeeds %}
+  {% set isUrgent = client.is_urgent == "true" %}
+  {% set vulnerableUser = client.vulnerableUser %}
+  {% set outcomeCode = client.outcome_code %}
+  {% set caseStatus = client.caseStatus | lower %}
+  {% set thirdParty = client.thirdParty and not client.thirdParty.isSoftDeleted and client.thirdParty %}
+  {% set language = supportNeeds and supportNeeds.languageSupportNeeds %}
+  {% set textRelay = supportNeeds and supportNeeds.textRelay == "Yes" %}
+  {% set bslWebcam = supportNeeds and supportNeeds.bslWebcam == "Yes" %}
+
+  {{ caseFlagComponent(
+    isUrgent,
+    vulnerableUser,
+    outcomeCode,
+    caseStatus,
+    thirdParty,
+    language,
+    textRelay,
+    bslWebcam,
+    true
+  ) }}
 
   {# Date received #}
   <h2 class="govuk-heading-s govuk-!-margin-bottom-1">{{ t('pages.caseDetails.dateReceived') }}: <span class="govuk-body">{{ client.provider_assigned_at }}</span></h2>

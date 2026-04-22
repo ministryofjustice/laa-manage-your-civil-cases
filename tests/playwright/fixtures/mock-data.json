@@ -147,6 +147,7 @@
     "address": "108 bull head road, Sheffield",
     "postcode": "G1 2LQ",
     "laaReference":"1731666",
+    "outcomeCode": "SPOR",
     "thirdParty": {
       "fullName": "Sarah Johnson",
       "emailAddress": "sarah@johnson.com",
@@ -263,6 +264,7 @@
     "address": "647 King Street, Cardiff",
     "postcode": "ST1 5QU",
     "laaReference": "1731666",
+    "outcomeCode": "MANALC",
     "thirdParty": {
       "fullName": "Alex Rivers",
       "emailAddress": "alex@rivers.com",
@@ -331,6 +333,7 @@
     "address": "88 Wano, Tokyo",
     "postcode": "JE1 5QU",
     "laaReference": "1731666",
+    "outcomeCode": "SPOR",
     "thirdParty": {
       "fullName": "Nami Rivers",
       "emailAddress": "nami@rivers.com",
@@ -375,6 +378,7 @@
     "address": "38 Oak Avenue, Sheffield",
     "postcode": "NE1 8DR",
     "laaReference": "3767316",
+    "outcomeCode": "MANALC",
     "thirdParty": {
       "fullName": "Samira Patel",
       "emailAddress": "samira@patel.com",
@@ -470,7 +474,7 @@
     }
   },
   {
-    "fullName": "Vinsmoke Sanj",
+    "fullName": "Vinsmoke Sanji",
     "caseReference": "PC-2211-4466",
     "refCode": "",
     "dateReceived": "2025-08-07T19:00:00-05:00",
@@ -531,7 +535,7 @@
     ],
     "clientSupportNeeds": {
       "bslWebcam": "Yes",
-      "textRelay": "No",
+      "textRelay": "Yes",
       "callbackPreference": "No",
       "languageSupportNeeds": "English",
       "notes": "Client becomes flustered when speaking; may require calm communication approach."

@@ -6,6 +6,7 @@ import { http, HttpResponse } from 'msw';
 import type { MockCase } from './types.js';
 import { transformToApiFormat } from './utils.js';
 import { validateBooleanField, validateNullableBooleanField } from './validationHelpers.js';
+import { HTTP } from '#src/services/api/base/constants.js';
 
 export function createSupportNeedsHandlers(
   API_BASE_URL: string,
@@ -21,13 +22,13 @@ export function createSupportNeedsHandlers(
       const caseItem = cases.find(c => c.caseReference === caseReference);
       
       if (!caseItem) {
-        return HttpResponse.json({ error: 'Case not found' }, { status: 404 });
+        return HttpResponse.json({ error: 'Case not found' }, { status: HTTP.NOT_FOUND });
       }
 
       const validationErrors: Record<string, string[]> = {};
 
       if (typeof updateData !== 'object' || updateData === null || Array.isArray(updateData)) {
-        return HttpResponse.json({ detail: 'Invalid request body format' }, { status: 400 });
+        return HttpResponse.json({ detail: 'Invalid request body format' }, { status: HTTP.BAD_REQUEST });
       }
 
       // Validate boolean fields
@@ -86,7 +87,7 @@ export function createSupportNeedsHandlers(
       }
 
       if (Object.keys(validationErrors).length > 0) {
-        return HttpResponse.json(validationErrors, { status: 400 });
+        return HttpResponse.json(validationErrors, { status: HTTP.BAD_REQUEST });
       }
       
       return HttpResponse.json(transformToApiFormat(caseItem));

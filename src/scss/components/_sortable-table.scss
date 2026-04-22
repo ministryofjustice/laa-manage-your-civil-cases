@@ -11,10 +11,18 @@
   right: -15px;
   top: 2px;
 }
+
 [aria-sort="ascending"] a:after {
   content: " ▲";
   font-size: 0.8em;
   position: absolute;
   right: -15px;
   top: 2px;
+}
+
+.stack-case-flags {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
 }

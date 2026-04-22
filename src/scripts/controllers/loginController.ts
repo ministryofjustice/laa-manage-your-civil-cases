@@ -6,10 +6,9 @@ import '#src/scripts/helpers/sessionHelpers.js';
 import config from '#config.js';
 import { validationResult, matchedData } from 'express-validator';
 import { formatValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
-import { encrypt } from '#utils/server/index.js';
+import { HTTP } from '#src/services/api/base/constants.js';
 
 // HTTP Status codes
-const BAD_REQUEST = 400;
 const NOT_EMPTY = 0;
 
 interface LoginErrorDetails {
@@ -117,7 +116,7 @@ export async function processLogin(req: Request, res: Response, _next: NextFunct
 
       const formValues = matchedData<AuthCredentials>(req, { locations: ['body'], onlyValidData: false });
 
-      res.status(BAD_REQUEST).render('login/index.njk', {
+      res.status(HTTP.BAD_REQUEST).render('login/index.njk', {
         error: {
           inputErrors,
           errorSummaryList
@@ -174,9 +173,9 @@ export async function processLogin(req: Request, res: Response, _next: NextFunct
         // Store credentials with encrypted sensitive fields
         req.session.authCredentials = {
           username,
-          password: encrypt(password), // Encrypted password
+          password,
           client_id: config.api.auth.clientId,
-          client_secret: encrypt(config.api.auth.clientSecret) // Encrypted client secret
+          client_secret: config.api.auth.clientSecret
         };
 
         if (userInfo !== null) {

@@ -4,8 +4,7 @@ import { devLog, devError } from '#src/scripts/helpers/devLogger.js';
 import { createProcessedError } from '#src/scripts/helpers/errorHandler.js';
 import { safeString } from '#src/scripts/helpers/dataTransformers.js';
 import { validCaseReference } from '#src/scripts/helpers/formControllerHelpers.js';
-
-const NOT_FOUND = 404;
+import { HTTP } from '#src/services/api/base/constants.js';
 
 // Extend Express Request type to include clientData
 declare global {
@@ -43,8 +42,8 @@ export async function fetchClientDetails(req: Request, res: Response, next: Next
       next();
     } else {
       devError(`[Middleware] Client details not found for case: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);
-      res.status(NOT_FOUND).render('main/error.njk', {
-        status: '404',
+      res.status(HTTP.NOT_FOUND).render('main/error.njk', {
+        status: String(HTTP.NOT_FOUND),
         error: response.message ?? 'Case not found'
       });
     }
