@@ -6,7 +6,9 @@ import { createProcessedError } from '../helpers/errorHandler.js';
 import { validCaseReference } from '../helpers/formControllerHelpers.js';
 import { handleCaseTab } from '../helpers/caseTabHandler.js';
 import { safeBodyString, formatValidationError } from '../helpers/index.js';
+import type { CaseLogsApiResponse } from '#types/api-types.js';
 import { apiService } from '#src/services/apiService.js';
+import { devError } from '../helpers/devLogger.js';
 import { clearSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 import config from '#config.js';
 import { HTTP } from '#src/services/api/base/constants.js';
@@ -22,21 +24,32 @@ const { MAX_PROVIDER_NOTE_LENGTH, CHARACTER_THRESHOLD }: { MAX_PROVIDER_NOTE_LEN
  * @returns {Promise<void>} Page to be returned
  */
 export async function handleCaseDetailsTab(req: Request, res: Response, next: NextFunction, activeTab: string): Promise<void> {
-  await handleCaseTab(req, res, next, activeTab, 'case details', ({ req, res, caseReference, activeTab }) => {
+  await handleCaseTab(req, res, next, activeTab, 'case details', async ({ req, res, caseReference, activeTab }) => {
     // Clear split case cache as we have returned to the main case details page.
     clearSessionData(req, "splitCaseCache");
+
     // Client details already fetched by middleware, available at req.clientData
     const { clientData } = req;
 
-    res.render('case_details/index.njk', {
-      activeTab,
-      client: clientData,
-      maxProviderNoteLength: MAX_PROVIDER_NOTE_LENGTH,
-      characterThreshold: CHARACTER_THRESHOLD,
-      currentProviderNote: '',
-      caseReference,
-      csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined
-    });
+    const caseLogsResponse: CaseLogsApiResponse = await apiService.getClientCaseLogs(req.axiosMiddleware, caseReference);
+    
+    if (caseLogsResponse.status === 'success' && caseLogsResponse.data !== null) {
+      res.render('case_details/index.njk', {
+        activeTab,
+        client: clientData,
+        maxProviderNoteLength: MAX_PROVIDER_NOTE_LENGTH,
+        characterThreshold: CHARACTER_THRESHOLD,
+        currentProviderNote: '',
+        caseReference,
+        csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined
+      });
+    } else {
+      devError(`Case logs not found for case: ${caseReference}. API response: ${caseLogsResponse.message ?? 'Unknown error'}`);
+      res.status(HTTP.NOT_FOUND).render('main/error.njk', {
+        status: HTTP.NOT_FOUND,
+        error: caseLogsResponse.message ?? 'Case logs not found'
+      });
+    }
   });
 }
 

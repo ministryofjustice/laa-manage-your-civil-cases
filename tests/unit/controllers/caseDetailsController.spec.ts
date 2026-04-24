@@ -49,6 +49,7 @@ describe('Case Details Controller', () => {
   let statusStub: sinon.SinonStub;
   let apiServiceStub: sinon.SinonStub;
   let updateProviderNotesStub: sinon.SinonStub;
+  let getClientCaseLogsStub: sinon.SinonStub;
 
   beforeEach(() => {
     req = {
@@ -74,6 +75,12 @@ describe('Case Details Controller', () => {
     // Stub the API service
     apiServiceStub = sinon.stub(apiService, 'getClientDetails');
     updateProviderNotesStub = sinon.stub(apiService, 'updateProviderNotes');
+
+    getClientCaseLogsStub = sinon.stub(apiService, 'getClientCaseLogs').resolves({
+    status: 'success',
+    data: []
+  });
+
   });
 
   afterEach(() => {
@@ -93,7 +100,7 @@ describe('Case Details Controller', () => {
       req.clientData = mockClientData;
 
       // Act
-      handleCaseDetailsTab(
+      await handleCaseDetailsTab(
         req as RequestWithMiddleware,
         res as Response,
         next,
@@ -102,6 +109,7 @@ describe('Case Details Controller', () => {
 
       // Assert - API service should not be called (middleware handles it)
       expect(apiServiceStub.called).to.be.false;
+      expect(getClientCaseLogsStub.calledOnce).to.be.true;
       expect(renderStub.calledWith('case_details/index.njk')).to.be.true;
     });
 
@@ -119,6 +127,7 @@ describe('Case Details Controller', () => {
 
       // Assert
       expect(apiServiceStub.called).to.be.false;
+      expect(getClientCaseLogsStub.calledOnce).to.be.false;
       expect(statusStub.calledWith(400)).to.be.true;
     });
 
@@ -131,7 +140,7 @@ describe('Case Details Controller', () => {
       renderStub.throws(new Error('Render error'));
 
       // Act
-      handleCaseDetailsTab(
+      await handleCaseDetailsTab(
         req as RequestWithMiddleware,
         res as Response,
         next,
