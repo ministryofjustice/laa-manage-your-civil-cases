@@ -164,13 +164,13 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
   // Which version of the values do we want to use
   const effectiveInternal = splitCaseCache.internalChange ?? splitCaseCache.internal;
 
-  if (effectiveInternal == splitCaseCache.internal) {
+  if (effectiveInternal === splitCaseCache.internal) {
     category = splitCaseCache.category
     notes = splitCaseCache.notes
   }
 
   const provider = await fetchProviderNameAndDetail(req, caseReference);
-  const operatorSelection = req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && effectiveInternal === 'false';
+  const operatorSelection = effectiveInternal === 'false';
 
   storeSessionData(req, 'splitCaseCache', {
     currentProvider: String(provider.name),
@@ -363,10 +363,8 @@ export async function getCheckSplitCaseAnswersForm(req: Request, res: Response, 
 
   const splitCaseCache = ensureSplitCaseCache(req);
 
-  if (hasSplitCaseCache(req)) {
-    req.session.splitCaseCache.fromChange = false;
-    req.session.splitCaseCache.internalChange = "";
-  }
+  splitCaseCache.fromChange = false;
+  splitCaseCache.internalChange = "";
 
   try {
     devLog(`Rendering check split case answers form for case: ${caseReference}`);
