@@ -127,8 +127,9 @@ export async function submitSplitThisCaseForm(req: Request, res: Response, next:
   const internal = safeBodyString(req.body, 'internal');
 
   const splitCaseCache = ensureSplitCaseCache(req);
+  const isNewJourney = !splitCaseCache.caseReference && !splitCaseCache.internal;
 
-  if (!splitCaseCache.caseReference && !splitCaseCache.internal) {
+  if (isNewJourney) {
     // normal journey — save immediately
     storeSessionData(req, 'splitCaseCache', {
       caseReference,
