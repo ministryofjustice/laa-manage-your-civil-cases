@@ -84,15 +84,31 @@ export async function updateClientDetails(
  */
 export async function getClientCaseLogs(axiosMiddleware: AxiosInstanceWrapper, caseReference: string): Promise<CaseLogsApiResponse> {
   try {
-    devLog(`API: GET ${API_PREFIX}/case/${caseReference}/logs/`);
-
     const configuredAxios = configureAxiosInstance(axiosMiddleware);
 
+    const eventCodes = [
+      'CASE_VIEWED',
+      'MIS',
+      'MIS-OOS',
+      'MIS-MEANS',
+      'COI',
+      'SPOP',
+      'REOPEN',
+      'REF-INT',
+      'CLSP',
+      'MERI',
+      'DUPL',
+      'CLOT'
+    ];
+
+    const query = eventCodes.map(code => `codes=${encodeURIComponent(code)}`).join('&');
+    const url = `${API_PREFIX}/case/${encodeURIComponent(caseReference)}/logs?${query}`;
+
     // Call API endpoint
-    const response = await configuredAxios.get(`${API_PREFIX}/case/${caseReference}/logs/`);
+    devLog(`API: GET ${url}`);
+    const response = await configuredAxios.get(`${url}`);
 
     devLog(`API: Client case logs response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
-
     const logs = Array.isArray(response.data) ? response.data.map(transformClientCaseLogs) : [];
 
     return {

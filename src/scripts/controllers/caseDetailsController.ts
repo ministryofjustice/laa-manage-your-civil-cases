@@ -34,9 +34,37 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
     const caseLogsResponse: CaseLogsApiResponse = await apiService.getClientCaseLogs(req.axiosMiddleware, caseReference);
     
     if (caseLogsResponse.status === 'success' && caseLogsResponse.data !== null) {
+
+      const notesFromProvider = clientData && typeof clientData === 'object' && 'notesHistory' in clientData && Array.isArray(clientData.notesHistory) ? clientData.notesHistory : [];
+      const caseLogs = caseLogsResponse.data ?? [];
+
+      const combinedHistoryAndCaseLogNotes = [
+        ...notesFromProvider.map((note: { providerNotes: string; createdBy: string; created: string; createdIso: string; }) => ({
+          type: 'notesFromProvider',
+          notes: note.providerNotes,
+          createdBy: note.createdBy,
+          created: note.created,
+          createdISO: note.createdIso,
+          sortDate: new Date(note.createdIso).getTime()
+        })),
+        ...caseLogs
+          // only show the casLogs which have a note
+          .filter(log => log.notes?.trim()) 
+          .map(log => ({
+            type: 'caseLog',
+            code: log.code,
+            notes: log.notes,
+            createdBy: log.createdBy,
+            created: log.created,
+            createdISO: log.createdIso,
+            sortDate: new Date(log.createdIso).getTime()
+          }))
+      ].sort((a, b) => a.sortDate - b.sortDate);
+
       res.render('case_details/index.njk', {
         activeTab,
         client: clientData,
+        combinedHistoryAndCaseLogNotes,
         maxProviderNoteLength: MAX_PROVIDER_NOTE_LENGTH,
         characterThreshold: CHARACTER_THRESHOLD,
         currentProviderNote: '',
@@ -62,6 +90,9 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
  */
 export async function saveProviderNote(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
+
+  // Client details already fetched by middleware, available at req.clientData
+  const { clientData } = req;
 
   if (!validCaseReference(caseReference, res)) {
     return;
@@ -93,13 +124,41 @@ export async function saveProviderNote(req: Request, res: Response, next: NextFu
 
       const currentProviderNote = safeBodyString(req.body, 'providerNote');
 
-      // POST handlers don't have middleware, so fetch client details for validation error rendering
-      const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
 
-      if (response.status === 'success' && response.data !== null) {
+
+      const caseLogsResponse: CaseLogsApiResponse = await apiService.getClientCaseLogs(req.axiosMiddleware, caseReference);
+      
+      if (caseLogsResponse.status === 'success' && caseLogsResponse.data !== null) {
+        const notesFromProvider = clientData && typeof clientData === 'object' && 'notesHistory' in clientData && Array.isArray(clientData.notesHistory) ? clientData.notesHistory : [];
+        const caseLogs = caseLogsResponse.data ?? [];
+
+        const combinedHistoryAndCaseLogNotes = [
+          ...notesFromProvider.map((note: { providerNotes: string; createdBy: string; created: string; createdIso: string; }) => ({
+            type: 'notesFromProvider',
+            notes: note.providerNotes,
+            createdBy: note.createdBy,
+            created: note.created,
+            createdISO: note.createdIso,
+            sortDate: new Date(note.createdIso).getTime()
+          })),
+          ...caseLogs
+            // only show the casLogs which have a note
+            .filter(log => log.notes?.trim()) 
+            .map(log => ({
+              type: 'caseLog',
+              code: log.code,
+              notes: log.notes,
+              createdBy: log.createdBy,
+              created: log.created,
+              createdISO: log.createdIso,
+              sortDate: new Date(log.createdIso).getTime()
+            }))
+        ].sort((a, b) => a.sortDate - b.sortDate);
+
         res.status(HTTP.BAD_REQUEST).render('case_details/index.njk', {
           activeTab: 'case_details',
-          client: response.data,
+          client: clientData,
+          combinedHistoryAndCaseLogNotes,
           currentProviderNote,
           maxProviderNoteLength: MAX_PROVIDER_NOTE_LENGTH,
           characterThreshold: CHARACTER_THRESHOLD,

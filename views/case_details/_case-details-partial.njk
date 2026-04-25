@@ -2,6 +2,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/tag/macro.njk" import govukTag %}
 
 <span class="case-details-tab-heading-alignment govuk-!-margin-top-7 govuk-!-margin-bottom-7">
   <h2 class="govuk-heading-m govuk-!-margin-bottom-0">{{ t('pages.caseDetails.tabs.caseDetails') }}</h2>
@@ -107,11 +108,20 @@
 
 {# Providers notes section #}
 <h3 class="govuk-heading-s govuk-!-margin-top-6 govuk-!-margin-bottom-0">{{ t('pages.caseDetails.caseDetailsSection.providerNotesTitle') }}</h3>
-{% if data.notesHistory and data.notesHistory.length > 0 %}
-  {% for note in data.notesHistory %}
-      <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-margin-top-3 ">{{ note.providerNotes }}</p>
-      <p class="govuk-hint govuk-!-margin-bottom-3 govuk-!-margin-top-1 govuk-!-font-size-16">{{ note.createdBy }} on {{ note.created }}</p>
-      <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-top-1 govuk-!-margin-bottom-0"/>
+<pre>{{ combinedHistoryAndCaseLogNotes | dump }}</pre>
+<pre>{{ data.notesHistory | dump }}</pre>
+{% if combinedHistoryAndCaseLogNotes and combinedHistoryAndCaseLogNotes.length > 0 %}
+  {% for item in combinedHistoryAndCaseLogNotes %}
+    {% if item.type == 'caseLog' %}
+      {{ govukTag({
+        text: item.code,
+        classes: "govuk-tag--purple govuk-!-margin-top-4 govuk-!-margin-bottom-0 tag-padding"
+      }) }}
+    {% endif %}
+
+    <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-margin-top-3">{{ item.notes }}</p>
+    <p class="govuk-hint govuk-!-margin-bottom-3 govuk-!-margin-top-1 govuk-!-font-size-16">{{ item.createdBy }} on {{ item.created }}</p>
+    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-top-1 govuk-!-margin-bottom-0"/>
   {% endfor %}
 {% else %}
   <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-3">{{ t('pages.caseDetails.caseDetailsSection.noNotes') }}</p>

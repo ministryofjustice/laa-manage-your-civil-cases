@@ -239,8 +239,8 @@ export interface CaseLogItem {
   code: string;
   createdBy: string;
   created: string;
+  createdIso: string;
   notes: string;
-  event: string;
 }
 
 /**

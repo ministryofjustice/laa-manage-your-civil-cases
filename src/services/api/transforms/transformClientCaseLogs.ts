@@ -24,14 +24,14 @@ export function transformClientCaseLogs(item: unknown): CaseLogItem {
   const code = safeString(item.code);
   const createdBy = safeString(item.created_by);
   const created = formatLongFormDate(safeString(item.created));
+  const createdIso = safeString(item.created);
   const notes = safeOptionalString(item.notes) ?? '';
-  const event = safeOptionalString(item.notes) ?? '';
 
   return {
     code,
     createdBy,
     created,
-    notes,
-    event
+    createdIso,
+    notes
   };
 }
