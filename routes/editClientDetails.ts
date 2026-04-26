@@ -18,7 +18,9 @@ import {
   getAddClientSupportNeeds,
   postAddClientSupportNeeds,
   getEditClientSupportNeeds,
-  postEditClientSupportNeeds
+  postEditClientSupportNeeds,
+  getEditFinancialEligibilityBenefits,
+  postEditFinancialEligibilityBenefits
 } from '#src/scripts/controllers/index.js';
 
 import {
@@ -61,4 +63,8 @@ router.post('/:caseReference/client-details/add/support-need', validateAddClient
 
 router.get('/:caseReference/client-details/change/support-need', getEditClientSupportNeeds);
 router.post('/:caseReference/client-details/change/support-need', validateEditClientSupportNeeds(), postEditClientSupportNeeds);
+
+router.get('/:caseReference/financial-eligibility/change/benefits', getEditFinancialEligibilityBenefits);
+router.post('/:caseReference/financial-eligibility/change/benefits', postEditFinancialEligibilityBenefits);
+
 export default router;

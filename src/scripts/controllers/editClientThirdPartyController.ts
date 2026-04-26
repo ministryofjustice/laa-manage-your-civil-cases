@@ -166,3 +166,75 @@ export async function postEditClientThirdParty(req: Request, res: Response, next
     next(processedError);
   }
 }
+
+
+/**
+ * Render the edit financial eligibility benefits page for a case.
+ *
+ * @param {Request} req - The incoming HTTP request containing the case reference.
+ * @param {Response} res - The HTTP response used to render the page or return an error.
+ * @param {NextFunction} next - Express callback used to forward processed errors.
+ * @returns {Promise<void>} Resolves when the request has been handled.
+ */
+export async function getEditFinancialEligibilityBenefits(req: Request, res: Response, next: NextFunction): Promise<void> {
+  const caseReference = safeString(req.params.caseReference);
+
+  if (!validCaseReference(caseReference, res)) {
+    return;
+  }
+
+  try {
+    devLog(`Rendering edit financial eligibility benefits form for case: ${caseReference}`);
+
+    // Call the API to get financial eligibility details
+    // const response = await apiService.getFinancialEligibilityDetails(req.axiosMiddleware, caseReference);
+    const response = {
+      data: {
+        benefits: [
+          {
+            "onPassportedBenefits": false,
+            "onNassBenefits": false
+          }
+        ]
+      },
+      status: 'success',
+      message: ''
+    };
+
+    if (response.status === 'success' && isRecord(response.data)) {
+      const financialEligibilityData = response.data;
+
+      res.render('case_details/financial_eligibility/change-benefits.njk', {
+        caseReference,
+        benefits: financialEligibilityData.benefits ?? []
+      });
+    } else {
+      devError(`Failed to fetch financial eligibility details for case: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);
+      res.status(INTERNAL_SERVER_ERROR).render('main/error.njk', {
+        status: '500',
+        error: response.message ?? 'Failed to fetch financial eligibility details'
+      });
+    }
+  } catch (error) {
+    // Use the error processing utility
+    const processedError = createProcessedError(error, `fetching financial eligibility details for case ${caseReference}`);
+
+    // Pass the processed error to the global error handler
+    next(processedError);
+  }
+}
+
+
+/**
+ * Handle submission from the edit financial eligibility benefits page.
+ *
+ * @param {Request} req - The incoming HTTP request containing submitted form data.
+ * @param {Response} res - The HTTP response used to return the placeholder result.
+ * @param {NextFunction} next - Express callback for middleware chaining.
+ * @returns {Promise<void>} Resolves when the request has been handled.
+ */
+export async function postEditFinancialEligibilityBenefits(req: Request, res: Response, next: NextFunction): Promise<void> {
+  console.log('dummy page handler for edit financial eligibility benefits, value:', req.body);
+  const url = req?.body?.saveAndContinue === 'true' ? `/cases/${req.params.caseReference}/financial-eligibility/related-field-redirect` : `/cases/${req.params.caseReference}/client-details`; 
+  res.send('received request to edit financial eligibility benefits, but this page is not implemented yet. This page would direct the user to: ' + url); // Placeholder response
+}
