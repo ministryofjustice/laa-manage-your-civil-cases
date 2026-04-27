@@ -215,11 +215,6 @@ function createGetCaseHistoryHandler(
         return HttpResponse.json({ error: 'Case not found' }, { status: HTTP.NOT_FOUND });
       }
 
-      // This case will have no provider notes when viewing `Case details` tab
-      if (caseReference === 'PC-1924-9560') {
-        return HttpResponse.json([]);
-      }
-
       // Minimal set of logs
       const logs = [
         {
