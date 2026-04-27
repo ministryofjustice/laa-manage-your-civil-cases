@@ -113,100 +113,24 @@ function createGetCaseDetailedHandler(
   });
 }
 
-// /**
-//  * GET /case/:caseReference/logs/ - Get case history logs 
-//  * &
-//  * GET /case/:caseReference/logs?codes=CASE_VIEWED&codes=MIS&codes=MIS-OOS&codes=MIS-MEANS&codes=COI&codes=SPOP&codes=REOPEN&codes=REF-INT&codes=CLSP&codes=MERI&codes=DUPL&codes=CLOT - Get client case logs
-//  */
-// function createGetCaseHistoryAndLogsHandler(
-//   API_BASE_URL: string,
-//   API_PREFIX: string,
-//   cases: MockCase[]
-// ) {
-//   return http.get(
-//     `${API_BASE_URL}${API_PREFIX}/case/:caseReference/logs/`,
-//     ({ params, request }) => {
-//       const { caseReference } = params;
-//       const url = new URL(request.url);
-//       const codes = url.searchParams.getAll('codes');
-
-//       console.log(`[MSW] Intercepting GET /case/${caseReference}logs/`, codes);
-
-//       const caseItem = findMockCase(caseReference as string, cases);
-
-//       if (!caseItem) {
-//         console.log(`[MSW] Case ${caseReference} not found in mock data (logs)`);
-//         return HttpResponse.json({ error: 'Case not found' }, { status: HTTP.NOT_FOUND });
-//       }
-
-//       // This case will have no provider notes when viewing `Case details` tab
-//       if (caseReference === 'PC-1924-9560') {
-//         return HttpResponse.json([]);
-//       }
-
-//       // This will check that the url has `codes` as part of the query parameter
-//       const isClientCaseLogsRequest = codes.length > 0;
-
-//       if (isClientCaseLogsRequest) {
-//         return HttpResponse.json([
-//           {
-//             code: 'MIS-MEANS',
-//             created_by: 'test_operator',
-//             created: '2026-03-08T17:14:45.428Z',
-//             notes: 'Has too much money',
-//             type: 'outcome',
-//           },
-//           {
-//             code: 'REOPEN',
-//             created_by: 'test_operator',
-//             created: '2026-04-08T17:10:11.530Z',
-//             notes: 'Actually, has no money',
-//             type: 'system',
-//           }
-//         ]);
-//       }
-
-//       // Minimal set of logs
-//       return HttpResponse.json([
-//         {
-//           code: 'MANALC',
-//           created_by: 'test_operator',
-//           created: '2025-12-08T17:14:45.428Z',
-//           notes: 'Assigned to Howells. ',
-//           type: 'outcome',
-//           level: '29',
-//           timer: 1746,
-//           patch: null
-//         },
-//         {
-//           code: 'CASE_CREATED',
-//           created_by: 'test_operator',
-//           created: '2025-12-08T17:10:11.530Z',
-//           notes: 'Case Created',
-//           type: 'system',
-//           level: '29',
-//           timer: null,
-//           patch: null
-//         }
-//       ]);
-//     }
-//   );
-// }
-
-
 /**
- * GET /case/:caseReference/logs/ - Get case history logs
+ * GET /case/:caseReference/logs/ - Get case history logs 
+ * &
+ * GET /case/:caseReference/logs?codes=CASE_VIEWED&codes=MIS&codes=MIS-OOS&codes=MIS-MEANS&codes=COI&codes=SPOP&codes=REOPEN&codes=REF-INT&codes=CLSP&codes=MERI&codes=DUPL&codes=CLOT - Get client case logs
  */
-function createGetCaseHistoryHandler(
+function createGetCaseHistoryAndLogsHandler(
   API_BASE_URL: string,
   API_PREFIX: string,
   cases: MockCase[]
 ) {
   return http.get(
     `${API_BASE_URL}${API_PREFIX}/case/:caseReference/logs/`,
-    ({ params }) => {
+    ({ params, request }) => {
       const { caseReference } = params;
-      console.log(`[MSW] Intercepting GET /case/${caseReference}/logs/`);
+      const url = new URL(request.url);
+      const codes = url.searchParams.getAll('codes');
+
+      console.log(`[MSW] Intercepting GET /case/${caseReference}logs/`, codes);
 
       const caseItem = findMockCase(caseReference as string, cases);
 
@@ -215,8 +139,35 @@ function createGetCaseHistoryHandler(
         return HttpResponse.json({ error: 'Case not found' }, { status: HTTP.NOT_FOUND });
       }
 
+      // This case will have no provider notes when viewing `Case details` tab
+      if (caseReference === 'PC-1924-9560') {
+        return HttpResponse.json([]);
+      }
+
+      // This will check that the url has `codes` as part of the query parameter
+      const isClientCaseLogsRequest = codes.length > 0;
+
+      if (isClientCaseLogsRequest) {
+        return HttpResponse.json([
+          {
+            code: 'MIS-MEANS',
+            created_by: 'test_operator',
+            created: '2026-03-08T17:14:45.428Z',
+            notes: 'Has too much money',
+            type: 'outcome',
+          },
+          {
+            code: 'REOPEN',
+            created_by: 'test_operator',
+            created: '2026-04-08T17:10:11.530Z',
+            notes: 'Actually, has no money',
+            type: 'system',
+          }
+        ]);
+      }
+
       // Minimal set of logs
-      const logs = [
+      return HttpResponse.json([
         {
           code: 'MANALC',
           created_by: 'test_operator',
@@ -237,9 +188,7 @@ function createGetCaseHistoryHandler(
           timer: null,
           patch: null
         }
-      ];
-
-      return HttpResponse.json(logs);
+      ]);
     }
   );
 }
@@ -317,7 +266,6 @@ export function createCaseHandlers(
     createPatchCaseHandler(API_BASE_URL, API_PREFIX, cases),
     createGetCaseDetailedHandler(API_BASE_URL, API_PREFIX, cases),
     createGetCasesListHandler(API_BASE_URL, API_PREFIX, cases),
-    createGetCaseHistoryHandler(API_BASE_URL, API_PREFIX, cases)
-    // createGetCaseHistoryAndLogsHandler(API_BASE_URL, API_PREFIX, cases)
+    createGetCaseHistoryAndLogsHandler(API_BASE_URL, API_PREFIX, cases)
   ];
 }
