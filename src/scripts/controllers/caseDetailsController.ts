@@ -124,8 +124,6 @@ export async function saveProviderNote(req: Request, res: Response, next: NextFu
 
       const currentProviderNote = safeBodyString(req.body, 'providerNote');
 
-
-
       const caseLogsResponse: CaseLogsApiResponse = await apiService.getClientCaseLogs(req.axiosMiddleware, caseReference);
       
       if (caseLogsResponse.status === 'success' && caseLogsResponse.data !== null) {

@@ -4,6 +4,57 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/tag/macro.njk" import govukTag %}
 
+{% set eventTagConfig = {
+  "CASE_VIEWED": {
+    text: t('common.eventCode.casePending'),
+    classes: "govuk-tag--blue event-tag-spacing tag-padding"
+  },
+  "MIS": {
+    text: t('common.eventCode.caseClosed'),
+    classes: "govuk-tag--grey event-tag-spacing tag-padding"
+  },
+  "MIS-OOS": {
+    text: t('common.eventCode.caseClosed'),
+    classes: "govuk-tag--grey event-tag-spacing tag-padding"
+  },
+  "MIS-MEANS": {
+    text: t('common.eventCode.caseClosed'),
+    classes: "govuk-tag--grey event-tag-spacing tag-padding"
+  },
+  "COI": {
+    text: t('common.eventCode.caseClosed'),
+    classes: "govuk-tag--grey event-tag-spacing tag-padding"
+  },
+  "SPOP": {
+    text: t('common.eventCode.caseReOpened'),
+    classes: "govuk-tag--teal event-tag-spacing tag-padding"
+  },
+  "REOPEN": {
+    text: t('common.eventCode.caseReOpened'),
+    classes: "govuk-tag--teal event-tag-spacing tag-padding"
+  },
+  "REF-INT": {
+    text: t('common.eventCode.caseSplit'),
+    classes: "govuk-tag--yellow event-tag-spacing tag-padding"
+  },
+  "CLSP": {
+    text: t('common.eventCode.caseCompleted'),
+    classes: "govuk-tag--red event-tag-spacing tag-padding"
+  },
+  "MERI": {
+    text: t('common.eventCode.caseClosed'),
+    classes: "govuk-tag--grey event-tag-spacing tag-padding"
+  },
+  "DUPL": {
+    text: t('common.eventCode.caseClosed'),
+    classes: "govuk-tag--grey event-tag-spacing tag-padding"
+  },
+  "CLOT": {
+    text: t('common.eventCode.caseClosed'),
+    classes: "govuk-tag--grey event-tag-spacing tag-padding"
+  }
+} %}
+
 <span class="case-details-tab-heading-alignment govuk-!-margin-top-7 govuk-!-margin-bottom-7">
   <h2 class="govuk-heading-m govuk-!-margin-bottom-0">{{ t('pages.caseDetails.tabs.caseDetails') }}</h2>
   <a class="govuk-body govuk-link govuk-!-margin-bottom-0" href="#providerNote">{{ t('pages.caseDetails.caseDetailsSection.noteLabel') }}</a>
@@ -107,15 +158,13 @@
 {% endif %}
 
 {# Providers notes section #}
-<h3 class="govuk-heading-s govuk-!-margin-top-6 govuk-!-margin-bottom-0">{{ t('pages.caseDetails.caseDetailsSection.providerNotesTitle') }}</h3>
-<pre>{{ combinedHistoryAndCaseLogNotes | dump }}</pre>
-<pre>{{ data.notesHistory | dump }}</pre>
+<h3 class="govuk-heading-s case-details-tab-provider-notes-section">{{ t('pages.caseDetails.caseDetailsSection.providerNotesTitle') }}</h3>
 {% if combinedHistoryAndCaseLogNotes and combinedHistoryAndCaseLogNotes.length > 0 %}
   {% for item in combinedHistoryAndCaseLogNotes %}
     {% if item.type == 'caseLog' %}
       {{ govukTag({
-        text: item.code,
-        classes: "govuk-tag--purple govuk-!-margin-top-4 govuk-!-margin-bottom-0 tag-padding"
+        text: eventTagConfig[item.code].text,
+        classes: eventTagConfig[item.code].classes
       }) }}
     {% endif %}
 

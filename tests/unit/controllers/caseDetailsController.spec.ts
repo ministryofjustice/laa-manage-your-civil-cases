@@ -75,12 +75,10 @@ describe('Case Details Controller', () => {
     // Stub the API service
     apiServiceStub = sinon.stub(apiService, 'getClientDetails');
     updateProviderNotesStub = sinon.stub(apiService, 'updateProviderNotes');
-
     getClientCaseLogsStub = sinon.stub(apiService, 'getClientCaseLogs').resolves({
-    status: 'success',
-    data: []
-  });
-
+      status: 'success',
+      data: []
+    });
   });
 
   afterEach(() => {
@@ -255,10 +253,14 @@ describe('Case Details Controller', () => {
 
       await runSchema(req as any, validateProviderNote());
 
-      apiServiceStub.resolves({
+      updateProviderNotesStub.resolves({
         status: 'error',
-        data: null,
-        message: 'Case not found'
+        data: { providerNotes: '' }
+      });
+
+      getClientCaseLogsStub.resolves({
+        status: 'error',
+        data: []
       });
 
       // Act
@@ -275,6 +277,16 @@ describe('Case Details Controller', () => {
       req.body = { providerNote: '' };
 
       await runSchema(req as any, validateProviderNote());
+
+      updateProviderNotesStub.resolves({
+        status: 'error',
+        data: { providerNotes: '' }
+      });
+
+      getClientCaseLogsStub.resolves({
+        status: 'error',
+        data: []
+      });
 
       const error = new Error('Network error');
       apiServiceStub.rejects(error);

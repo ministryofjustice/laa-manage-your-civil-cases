@@ -89,6 +89,13 @@
       "REF-INT": "Referred internally",
       "REF-EXT": "Referred externally"
     },
+    "eventCode":{
+      "casePending": "Case pending",
+      "caseClosed": "Case closed",
+      "caseReOpened": "Case re-opened",
+      "caseSplit": "Case split",
+      "caseCompleted": "Case completed"
+    },
     "allCategoriesAdditions": {
       "none": "I don't know"
     },
