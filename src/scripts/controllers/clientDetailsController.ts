@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import { storeSessionData } from '#src/scripts/helpers/sessionHelpers.js';
+import { storeSessionData, clearSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 import { handleCaseTab } from '#src/scripts/helpers/caseTabHandler.js';
 
 /**
@@ -14,6 +14,9 @@ export function handleClientDetailsTab(req: Request, res: Response, next: NextFu
   void handleCaseTab(req, res, next, activeTab, 'client details', ({ req, res, caseReference, activeTab }) => {
     // Client details already fetched by middleware, available at req.clientData
     const { clientData } = req;
+
+    // Clear splitCaseCache
+    clearSessionData(req, "splitCaseCache");
 
     if (clientData !== null && typeof clientData === 'object' && 'thirdParty' in clientData) {
       // Cache soft-deleted third party state in session to optimize add/remove operations
