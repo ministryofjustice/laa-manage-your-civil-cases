@@ -186,7 +186,7 @@
   ]
 }) }}
 
-{% if data.clientSupportNeeds.bslWebcam == "Yes" or data.clientSupportNeeds.textRelay == "Yes" or data.clientSupportNeeds.callbackPreference == "Yes" or data.clientSupportNeeds.languageSupportNeeds or data.clientSupportNeeds.notes %}
+{% if data.clientSupportNeeds.bslWebcam === "Yes" or data.clientSupportNeeds.textRelay === "Yes" or data.clientSupportNeeds.callbackPreference === "Yes" or data.clientSupportNeeds.languageSupportNeeds or data.clientSupportNeeds.notes %}
   {# Client support needs summary card #}
   {{ summaryCardComponent({
     data: constructedData,
