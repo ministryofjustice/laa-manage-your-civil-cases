@@ -61,3 +61,20 @@ test('add client support needs form should show validation error if no option se
   const alertBanner = page.locator('.govuk-notification-banner');
   await expect(alertBanner).not.toBeVisible();
 });
+
+test('add client support button should show on client details, when skype or minicom are true', async ({ page, i18nSetup }) => {
+  const clientDetailsUrl = `/cases/PC-1924-9560/client-details`;
+  
+  // Navigate to client details screen
+  await page.goto(clientDetailsUrl);
+
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Lisa Chen", expectedCaseRef: "PC-1924-9560", dateReceived: "15 January 2025", badgeTexts: ['Third Party'] }); 
+
+  // Expect to see Add client support need button
+  const addClientSupportNeedButton = page.getByRole('button', { name: 'Add client support need' })
+  await expect(addClientSupportNeedButton).toBeVisible();
+
+  // Should redirect to client details page
+  await expect(page).toHaveURL(clientDetailsUrl);
+});
