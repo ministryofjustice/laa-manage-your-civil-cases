@@ -102,7 +102,7 @@ export async function getClientCaseLogs(axiosMiddleware: AxiosInstanceWrapper, c
     ];
 
     const query = eventCodes.map(code => `codes=${encodeURIComponent(code)}`).join('&');
-    const url = `${API_PREFIX}/case/${encodeURIComponent(caseReference)}/logs?${query}`;
+    const url = `${API_PREFIX}/case/${encodeURIComponent(caseReference)}/logs/?${query}`;
 
     // Call API endpoint
     devLog(`API: GET ${url}`);
