@@ -9,16 +9,16 @@ export interface SessionTokenStorage {
   loginTime: number;
 }
 
-// Interface for split case cache data
+// Interface for SplitCaseCache data
 export interface SplitCaseCache {
   caseReference?: string;
-      providerName?: string;
-      internal?: string;
-      category?: string;
-      notes?: string;
-      fromChange?: boolean;
-      internalChange?: string;
-      providerNameChange?: string;
+  internalChange?: string;
+  assignedProviderName?: string;
+  category?: string;
+  notes?: string;
+  internal?: string;
+  fromChange?: boolean;
+  currentProvider?: string;
 }
 
 // Extend the Express session interface to support dynamic namespaces
@@ -39,13 +39,11 @@ declare module 'express-session' {
  * @param {Record<string, string>} data Hash of key-value pairs where values are strings
  */
 export function storeSessionData(req: Request, namespace: string, data: Record<string, string>): void {
-  // Store our typed data directly in the session
-  
-req.session[namespace] = {
-  ...(req.session[namespace] as Record<string, string> || {}),
-  ...data
-};
-
+  // Store our typed data directly in the session  
+  req.session[namespace] = {
+    ...(req.session[namespace] as Record<string, string> || {}),
+    ...data
+  };
 }
 
 /**
@@ -164,9 +162,7 @@ export function deleteSessionKeys(req: Request, keys: string[]): void {
  * @param {Request} req - Express request object
  * @returns {boolean} - True if split case cache exists, false otherwise
  */
-export function hasSplitCaseCache(
-  req: Request
-): req is Request & { session: { splitCaseCache: SplitCaseCache } } {
+export function hasSplitCaseCache(req: Request): req is Request & { session: { splitCaseCache: SplitCaseCache } } {
   return Boolean(req.session && req.session.splitCaseCache);
 }
 

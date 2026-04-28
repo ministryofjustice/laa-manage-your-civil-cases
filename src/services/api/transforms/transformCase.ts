@@ -9,6 +9,7 @@ import {
   safeOptionalString,
   isRecord,
   formatDate,
+  formatLongFormDateWithShortMonth,
   isSafeToCall
 } from '#src/scripts/helpers/index.js';
 
@@ -29,14 +30,14 @@ export function transformCaseItem(item: unknown): CaseData {
     caseReference: safeString(item.reference),
     laaReference: safeString(item.laa_reference),
     refCode: safeString(item.reference),
-    provider_assigned_at: formatDate(safeString(item.provider_assigned_at)),
-    provider_viewed: formatDate(safeOptionalString(item.provider_viewed) ?? ''),
-    provider_accepted: formatDate(safeOptionalString(item.provider_accepted) ?? ''),
+    provider_assigned_at: formatLongFormDateWithShortMonth(safeString(item.provider_assigned_at)),
+    provider_viewed: formatLongFormDateWithShortMonth(safeOptionalString(item.provider_viewed) ?? ''),
+    provider_accepted: formatLongFormDateWithShortMonth(safeOptionalString(item.provider_accepted) ?? ''),
     outcome_code: safeOptionalString(item.outcome_code) ?? '',
     caseStatus: determineCaseStatus(item),
     dateOfBirth: formatDate(safeString(item.date_of_birth)),
-    modified: formatDate(safeOptionalString(item.modified) ?? ''),
-    provider_closed: formatDate(safeOptionalString(item.provider_closed) ?? ''),
+    modified: formatLongFormDateWithShortMonth(safeOptionalString(item.modified) ?? ''),
+    provider_closed: formatLongFormDateWithShortMonth(safeOptionalString(item.provider_closed) ?? ''),
     phoneNumber: safeOptionalString(item.phone_number),
     safeToCall: Boolean(item.safe_to_contact),
     announceCall: Boolean(item.announce_call),
@@ -68,8 +69,8 @@ export function transformCaseItemForSearch(item: unknown): CaseData {
     phoneNumber: safeOptionalString(item.phone_number),
     dateOfBirth: formatDate(safeString(item.date_of_birth)),
     caseStatus: determineCaseStatus(item),
-    provider_assigned_at: formatDate(safeString(item.provider_assigned_at)),
-    modified: formatDate(safeOptionalString(item.modified) ?? ''),
+    provider_assigned_at: formatLongFormDateWithShortMonth(safeString(item.provider_assigned_at)),
+    modified: formatLongFormDateWithShortMonth(safeOptionalString(item.modified) ?? ''),
     safeToCall: isSafeToCall({ safe_to_contact: item.safe_to_contact}),
   };
 }

@@ -64,7 +64,7 @@ export function formatLongFormDate(dateString: string): string {
   const day = date.getDate();
   const month = date.toLocaleString('en-GB', { month: 'long' });
   const year = date.getFullYear();
-    
+
   // Convert to 12-hour format
   let hours = date.getHours();
   const noonOrNot = hours >= AM_HOURS ? "pm" : "am";
@@ -74,6 +74,50 @@ export function formatLongFormDate(dateString: string): string {
   const minutes = date.getMinutes().toString().padStart(PADDING, "0");
 
   return `${day} ${month} ${year} at ${hours}:${minutes}${noonOrNot}`;
+}
+
+/**
+ * Format date in long format, but short Month
+ * @param {string} dateString ISO date string
+ * @returns {string} Formatted date in D MM YYYY H:MMam/pm format (e.g., "6 Jan 1986 at 2:01pm")
+ */
+export function formatLongFormDateWithShortMonth(dateString: string): string {
+  const date = new Date(dateString);
+
+  if (isNaN(date.getTime())) {
+    return dateString;
+  }
+
+  // Intl.DateTimeFormat handles BST for us
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  }).formatToParts(date);
+
+  const result = parts.reduce((formattedDate, part) => {
+    // remove comma literals
+    if (part.type === 'literal' && part.value.includes(',')) {
+      return formattedDate;
+    }
+
+    // insert "at" before the hour value
+    if (part.type === 'hour') {
+      return formattedDate + ' at ' + part.value;
+    }
+
+    return formattedDate + part.value;
+  }, '');
+
+  // remove both normal space and narrow no-break space before am/pm
+  return result
+    .replace(' am', 'am')
+    .replace(' pm', 'pm')
+    .replace('\u202Fam', 'am')
+    .replace('\u202Fpm', 'pm');
 }
 
 /**

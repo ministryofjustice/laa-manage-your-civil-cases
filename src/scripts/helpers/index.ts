@@ -53,6 +53,7 @@ export {
   formatDate,
   formatDateLongMonth,
   formatLongFormDate,
+  formatLongFormDateWithShortMonth,
   dateStringFromThreeFields
 } from './dateFormatter.js';
 
