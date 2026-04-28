@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { storeSessionData, clearSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 import { handleCaseTab } from '#src/scripts/helpers/caseTabHandler.js';
+import { ClientSupportNeeds } from '#types/api-types.js';
 
 /**
  * Handle client details view with API data
@@ -31,9 +32,13 @@ export function handleClientDetailsTab(req: Request, res: Response, next: NextFu
       });
     }
 
+    const { clientSupportNeeds } = clientData as { clientSupportNeeds?: ClientSupportNeeds; };
+    const showClientSupportNeeds = clientSupportNeeds?.bslWebcam === 'Yes' || clientSupportNeeds?.textRelay === 'Yes' || clientSupportNeeds?.callbackPreference === 'Yes' || clientSupportNeeds?.languageSupportNeeds !== '' || clientSupportNeeds?.notes !== '';
+
     res.render('case_details/index.njk', {
       activeTab,
       client: clientData,
+      showClientSupportNeeds,
       caseReference
     });
   });
