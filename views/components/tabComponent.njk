@@ -92,6 +92,7 @@
         {% if activeId == tab.id %}
           {# Set context variables for the partial #}
           {% set data = options.data %}
+          {% set showClientSupportNeeds = options.showClientSupportNeeds %}
           {% set history = options.history %} 
           {% set sortOrder = options.sortOrder %}
           {% set pagination = options.pagination %}
