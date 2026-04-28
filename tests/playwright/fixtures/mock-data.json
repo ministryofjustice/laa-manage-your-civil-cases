@@ -82,6 +82,16 @@
         "selected": ["Yes"],
         "passphrase": "LetMeIn"
       }
+    },
+      "clientSupportNeeds": {
+      "skype": true,
+      "minicom": true,
+      "bslWebcam": "No",
+      "textRelay": "No",
+      "callbackPreference": "No",
+      "languageSupportNeeds": "",
+      "notes": "",
+      "no_adaptations_required": false
     }
   },
   {
@@ -573,14 +583,11 @@
       }
     },
     "clientSupportNeeds": {
-      "skype": true,
-      "minicom": true,
-      "bslWebcam": "No",
+      "bslWebcam": "Yes",
       "textRelay": "No",
       "callbackPreference": "No",
-      "languageSupportNeeds": "",
-      "notes": "",
-      "no_adaptations_required": false
+      "languageSupportNeeds": "English",
+      "notes": "Here are some notes from the operator!"
     }
   }
 ]

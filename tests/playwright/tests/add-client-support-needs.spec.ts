@@ -63,13 +63,13 @@ test('add client support needs form should show validation error if no option se
 });
 
 test('add client support button should show on client details, when skype or minicom are true', async ({ page, i18nSetup }) => {
-  const clientDetailsUrl = `/cases/PC-1854-6521/client-details`;
+  const clientDetailsUrl = `/cases/PC-1924-9560/client-details`;
   
   // Navigate to client details screen
   await page.goto(clientDetailsUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Walter White", expectedCaseRef: "PC-1854-6521", dateReceived: "8 August 2025", badgeTexts: ['At risk of abuse', 'Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Lisa Chen", expectedCaseRef: "PC-1924-9560", dateReceived: "15 January 2025", badgeTexts: ['Third Party'] }); 
 
   // Expect to see Add client support need button
   const addClientSupportNeedButton = page.getByRole('button', { name: 'Add client support need' })
