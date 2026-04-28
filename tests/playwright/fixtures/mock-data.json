@@ -573,11 +573,14 @@
       }
     },
     "clientSupportNeeds": {
-      "bslWebcam": "Yes",
+      "skype": true,
+      "minicom": true,
+      "bslWebcam": "No",
       "textRelay": "No",
       "callbackPreference": "No",
-      "languageSupportNeeds": "English",
-      "notes": "Here are some notes from the operator!"
+      "languageSupportNeeds": "",
+      "notes": "",
+      "no_adaptations_required": false
     }
   }
 ]
