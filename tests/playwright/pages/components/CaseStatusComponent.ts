@@ -11,11 +11,11 @@ export class CaseStatusComponent {
    * Mapping of status names to GOV.UK Design System tag modifier classes
    */
   private readonly tagClasses = {
-    'New': '.govuk-tag--green',
-    'Advising': '.govuk-tag--light-blue',
-    'Closed': '.govuk-tag--grey',
-    'Pending': '.govuk-tag--blue',
-    'Completed': '.govuk-tag--pink'
+    'New': '.govuk-tag--green.govuk-\\!-margin-bottom-2',
+    'Advising': '.govuk-tag--orange.govuk-\\!-margin-bottom-2',
+    'Closed': '.govuk-tag--grey.govuk-\\!-margin-bottom-2',
+    'Pending': '.govuk-tag--blue.govuk-\\!-margin-bottom-2',
+    'Completed': '.govuk-tag--pink.govuk-\\!-margin-bottom-2'
   } as const;
 
   /**

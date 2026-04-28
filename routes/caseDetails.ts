@@ -24,7 +24,7 @@ router.get('/:caseReference/case-details', fetchClientDetails, (req: Request, re
 });
 
 /* POST save provider note for a case. */
-router.post('/:caseReference/case-details', validateProviderNote(), async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+router.post('/:caseReference/case-details', fetchClientDetails, validateProviderNote(), async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   await saveProviderNote(req, res, next);
 });
 

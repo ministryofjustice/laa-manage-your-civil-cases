@@ -693,6 +693,7 @@ export const transformNotesHistory = (
     .map((item) => ({
       createdBy: safeOptionalString(item.created_by) ?? '',
       created: formatLongFormDate(safeOptionalString(item.created) ?? ''),
+      createdIso: safeOptionalString(item.created) ?? '',
       providerNotes: safeOptionalString(item.provider_notes) ?? ''
     }))
     .reverse();

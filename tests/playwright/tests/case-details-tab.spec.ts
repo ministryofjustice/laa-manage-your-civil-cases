@@ -139,9 +139,9 @@ test.describe('Case details tab', () => {
   });
 
   test('should show provider notes section title and "no notes" text, when notesHistory & provider_notes DO NOT exist', async ({ page, i18nSetup }) => {
-    const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-1922-1879');
+    const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-1924-9560');
     await caseDetails.navigate();
-    await caseDetails.expectClientName('Jack Youngs');
+    await caseDetails.expectClientName('Lisa NO NOTES Chen');
     await caseDetails.expectStatus('New');
 
     // `Notes from provider` title
