@@ -95,55 +95,54 @@
   ] %}
 {% endif %}
 
-<div class="govuk-!-display-block">
-  {# Name and case reference #}
-  <p class="govuk-caption-l mcc-case-details-header">{{ client.caseReference }}</p>
-  <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">{{ client.fullName }}</h1>
+<div class="govuk-grid-row govuk-!-margin-top-4">
+  <div class="govuk-grid-column-full">
+    {# Name and case reference #}
+    <p class="govuk-caption-l mcc-case-details-header govuk-!-margin-top-0">{{ client.caseReference }}</p>
+    <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">{{ client.fullName }}</h1>
 
-  {# Case flags #}
-  {% set supportNeeds = client.clientSupportNeeds %}
-  {% set isUrgent = client.is_urgent == "true" %}
-  {% set vulnerableUser = client.vulnerableUser %}
-  {% set outcomeCode = client.outcome_code %}
-  {% set caseStatus = client.caseStatus | lower %}
-  {% set thirdParty = client.thirdParty and not client.thirdParty.isSoftDeleted and client.thirdParty %}
-  {% set language = supportNeeds and supportNeeds.languageSupportNeeds %}
-  {% set textRelay = supportNeeds and supportNeeds.textRelay == "Yes" %}
-  {% set bslWebcam = supportNeeds and supportNeeds.bslWebcam == "Yes" %}
+    {# Case flags #}
+    {% set supportNeeds = client.clientSupportNeeds %}
+    {% set isUrgent = client.is_urgent == "true" %}
+    {% set vulnerableUser = client.vulnerableUser %}
+    {% set outcomeCode = client.outcome_code %}
+    {% set caseStatus = client.caseStatus | lower %}
+    {% set thirdParty = client.thirdParty and not client.thirdParty.isSoftDeleted and client.thirdParty %}
+    {% set language = supportNeeds and supportNeeds.languageSupportNeeds %}
+    {% set textRelay = supportNeeds and supportNeeds.textRelay == "Yes" %}
+    {% set bslWebcam = supportNeeds and supportNeeds.bslWebcam == "Yes" %}
 
-  {{ caseFlagComponent(
-    isUrgent,
-    vulnerableUser,
-    outcomeCode,
-    caseStatus,
-    thirdParty,
-    language,
-    textRelay,
-    bslWebcam,
-    true
-  ) }}
+    {{ caseFlagComponent(
+      isUrgent,
+      vulnerableUser,
+      outcomeCode,
+      caseStatus,
+      thirdParty,
+      language,
+      textRelay,
+      bslWebcam,
+      true
+    ) }}
 
-  {# Date received #}
-  <h2 class="govuk-heading-s govuk-!-margin-bottom-1">{{ t('pages.caseDetails.dateReceived') }}: <span class="govuk-body">{{ client.provider_assigned_at }}</span></h2>
-  {# LAA reference #}
-  <h2 class="govuk-heading-s govuk-!-margin-bottom-1">{{ t('pages.caseDetails.laaReference') }}: <span class="govuk-body">{{ client.laaReference }}</span></h2>
+    {# Date received #}
+    <h2 class="govuk-heading-s govuk-!-margin-bottom-1">{{ t('pages.caseDetails.dateReceived') }}: <span class="govuk-body">{{ client.provider_assigned_at | formatDateLongMonth }}</span></h2>
+    {# LAA reference #}
+    <h2 class="govuk-heading-s govuk-!-margin-bottom-1">{{ t('pages.caseDetails.laaReference') }}: <span class="govuk-body">{{ client.laaReference }}</span></h2>
 
-  <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{ t('pages.caseDetails.status') }}: 
-    <span>
-      {{ govukTag({
-        text: statusConfig[currentStatus].text,
-        classes: statusConfig[currentStatus].classes}) 
-      }}
-    </span>
-  </h2>
-
-  {% if hideStatusButton %}
-    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-2"/>
-  {% endif %}
-
-  <div class="case-status-wrapper govuk-!-display-inline-block">
-    {% if not hideStatusButton %}
-      {{ mojButtonMenu({
+    <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{ t('pages.caseDetails.status') }}: 
+      <span>
+        {{ govukTag({
+          text: statusConfig[currentStatus].text,
+          classes: statusConfig[currentStatus].classes}) 
+        }}
+      </span>
+    </h2>
+    {% if hideStatusButton %}
+      <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-2"/>
+    {% endif %}
+    <div class="case-status-wrapper govuk-!-display-inline-block">
+      {% if not hideStatusButton %}
+        {{ mojButtonMenu({
           id: "change-case-status-menu",
           button: {
             text: t('pages.caseDetails.buttons.label'),
@@ -151,19 +150,20 @@
           },
           preventDoubleClick: true,
           items: menuItems
-      }) }}
+        }) }}
 
-      {{ govukButton({
-        text: t('pages.caseDetails.buttons.splitThisCase'),
-        href: "/cases/" + client.caseReference + "/split-this-case",
-        classes: "govuk-button--secondary govuk-!-margin-right-3"
-      }) }}
+        {{ govukButton({
+          text: t('pages.caseDetails.buttons.splitThisCase'),
+          href: "/cases/" + client.caseReference + "/split-this-case",
+          classes: "govuk-button--secondary govuk-!-margin-right-3"
+        }) }}
 
-      {{ govukButton({
-        text: t('pages.caseDetails.buttons.giveOperatorFeedback'),
-        href: "/cases/" + client.caseReference + "/give-operator-feedback",
-        classes: "govuk-button--secondary govuk-!-margin-right-3"
-      }) }}
-    {% endif %}
+        {{ govukButton({
+          text: t('pages.caseDetails.buttons.giveOperatorFeedback'),
+          href: "/cases/" + client.caseReference + "/give-operator-feedback",
+          classes: "govuk-button--secondary govuk-!-margin-right-3"
+        }) }}
+      {% endif %}
+    </div>
   </div>
 </div>
