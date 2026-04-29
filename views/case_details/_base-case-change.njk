@@ -15,7 +15,12 @@
 {% endblock %}
 
 {% block pageContent %}
-  {{ caseDetailsHeaderComponent(client, hideStatusButton = true) }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {{ caseDetailsHeaderComponent(client, hideStatusButton = true) }}
+    </div>
+  </div>
   {% block formContent %}
     {# Child templates override this block with their specific form content #}
   {% endblock %}
