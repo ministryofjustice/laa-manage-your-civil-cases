@@ -30,6 +30,33 @@ test.describe('Case details tab', () => {
     const saveButton = page.getByRole('button', { name: t('common.save') });
     await expect(saveButton).toBeVisible();
 
+    // Check for `event` tags - which are populated via MSW API call
+    const caseViewedTag = page.getByText('Case pending');
+    const misTag = page.getByText('Case closed').nth(3);
+    const misOosTag = page.locator('strong:nth-child(43)');
+    const misMeansTag = page.getByText('Case closed').nth(4);
+    const coiTag = page.getByText('Case closed').nth(5);
+    const spopTag = page.getByText('Case re-opened').nth(1);
+    const reopenTag = page.getByText('Case re-opened').first();
+    const refintTag = page.getByText('Case split');
+    const clspTag = page.getByText('Case completed', { exact: true });
+    const meriTag = page.getByText('Case closed').first();
+    const duplTag = page.getByText('Case closed').nth(1);
+    const clotTag = page.getByText('Case closed').nth(2);
+
+    await expect(caseViewedTag).toBeVisible();
+    await expect(misTag).toBeVisible();
+    await expect(misOosTag).toBeVisible();
+    await expect(misMeansTag).toBeVisible();
+    await expect(coiTag).toBeVisible();
+    await expect(spopTag).toBeVisible();
+    await expect(reopenTag).toBeVisible();
+    await expect(refintTag).toBeVisible();
+    await expect(clspTag).toBeVisible();
+    await expect(meriTag).toBeVisible();
+    await expect(duplTag).toBeVisible();
+    await expect(clotTag).toBeVisible();
+
     // Check URL
     await expect(page).toHaveURL(caseDetails.url);
   });
