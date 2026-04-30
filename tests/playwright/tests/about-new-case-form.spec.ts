@@ -165,7 +165,7 @@ test('we should see error validations, for when 2500 or more character entered',
   await page.click('button.govuk-button');
 
   // Assert error components are visible
-  const errorSummaryComponent = page.locator('div').filter({ hasText: 'There is a problem Select the' }).nth(5);
+  const errorSummaryComponent = page.locator('div').filter({ hasText: 'There is a problem Why you' }).nth(4);
   const inlineErrorTooManyCharacters = page.getByText('Error: Why you want to split');
   await expect(errorSummaryComponent).toBeVisible();
   await expect(inlineErrorTooManyCharacters).toBeVisible();
