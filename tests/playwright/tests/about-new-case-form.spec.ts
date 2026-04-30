@@ -126,3 +126,47 @@ test('continue button should hit post about new case form end point', async ({ p
   // Assert we are redirected to the about a new case page (or appropriate next page)
   await expect(page).toHaveURL(`/cases/${caseReference}/about-new-case`);
 });
+
+test('we should see error validations, when no data entered', async ({ page, i18nSetup }) => {
+  const aboutNewCasePage = AboutNewSplitCaseFormPage.forCase(page, caseReference);
+
+  // Navigate to the operator feedback form
+  await aboutNewCasePage.navigate();
+
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(aboutNewCasePage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+
+  // Click the submit button
+  await page.click('button.govuk-button');
+
+  // Assert error components are visible
+  const errorSummaryComponent = page.locator('div').filter({ hasText: 'There is a problem Select the' }).nth(5);
+  const inlineErrorCategory = page.getByText('Error: Select the category of');
+  const inlineErrorNote = page.getByText('Error: Enter why you want to')
+  await expect(errorSummaryComponent).toBeVisible();
+  await expect(inlineErrorCategory).toBeVisible();
+  await expect(inlineErrorNote).toBeVisible();
+});
+
+test('we should see error validations, for when 2500 or more character entered', async ({ page, i18nSetup }) => {
+  const aboutNewCasePage = AboutNewSplitCaseFormPage.forCase(page, caseReference);
+
+  // Navigate to the operator feedback form
+  await aboutNewCasePage.navigate();
+
+  // Select a category from the <select>
+  await page.selectOption('#category', { label: 'Debt, money problems and bankruptcy' });
+
+  // Fill the notes field, and repeat the message 50 times
+  const message = 'Splitting case because the issues differ, please repeat message';
+  await page.fill('#notes', message.repeat(50));
+  
+  // Click the submit button
+  await page.click('button.govuk-button');
+
+  // Assert error components are visible
+  const errorSummaryComponent = page.locator('div').filter({ hasText: 'There is a problem Select the' }).nth(5);
+  const inlineErrorTooManyCharacters = page.getByText('Error: Why you want to split');
+  await expect(errorSummaryComponent).toBeVisible();
+  await expect(inlineErrorTooManyCharacters).toBeVisible();
+});
