@@ -69,12 +69,11 @@
   {% endif %}
 {% endset %}
 
-{% set clientRiskOfAbuse = t('common.yes') if data.vulnerableUser else t('common.no') %}
 
 {# Create enhanced data object with computed phone content #}
 {% set constructedData = {
   fullName: data.fullName,
-  clientRiskOfAbuse: clientRiskOfAbuse,
+  clientRiskOfAbuse: 'Yes' if data.vulnerableUser else 'No',
   dateOfBirth: data.dateOfBirth,
   email: data.emailAddress,
   phoneNumber: data.phoneNumber,
@@ -140,7 +139,6 @@
   {{ summaryCardComponent({
     data: constructedData,
     card: {
-      id: "client-risk-of-abuse",
       title: {
         text: t('pages.caseDetails.clientDetails.clientAbuseRisk')
       },
