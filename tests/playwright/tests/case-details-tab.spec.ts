@@ -33,7 +33,7 @@ test.describe('Case details tab', () => {
     // Check for `event` tags - which are populated via MSW API call
     const caseViewedTag = page.getByText('Case pending');
     const misTag = page.getByText('Case closed').nth(3);
-    const misOosTag = page.locator('strong:nth-child(43)');
+    const misOosTag = page.locator('strong:nth-child(49)');
     const misMeansTag = page.getByText('Case closed').nth(4);
     const coiTag = page.getByText('Case closed').nth(5);
     const spopTag = page.getByText('Case re-opened').nth(1);

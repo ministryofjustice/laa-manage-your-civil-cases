@@ -11,19 +11,23 @@
   },
   "MIS": {
     text: t('common.eventCode.caseClosed'),
-    classes: "govuk-tag--grey event-tag-spacing tag-padding"
+    classes: "govuk-tag--grey event-tag-spacing tag-padding",
+    isClosed: true
   },
   "MIS-OOS": {
     text: t('common.eventCode.caseClosed'),
-    classes: "govuk-tag--grey event-tag-spacing tag-padding"
+    classes: "govuk-tag--grey event-tag-spacing tag-padding",
+    isClosed: true
   },
   "MIS-MEANS": {
     text: t('common.eventCode.caseClosed'),
-    classes: "govuk-tag--grey event-tag-spacing tag-padding"
+    classes: "govuk-tag--grey event-tag-spacing tag-padding",
+    isClosed: true
   },
   "COI": {
     text: t('common.eventCode.caseClosed'),
-    classes: "govuk-tag--grey event-tag-spacing tag-padding"
+    classes: "govuk-tag--grey event-tag-spacing tag-padding",
+    isClosed: true
   },
   "SPOP": {
     text: t('common.eventCode.caseReOpened'),
@@ -43,15 +47,18 @@
   },
   "MERI": {
     text: t('common.eventCode.caseClosed'),
-    classes: "govuk-tag--grey event-tag-spacing tag-padding"
+    classes: "govuk-tag--grey event-tag-spacing tag-padding",
+    isClosed: true
   },
   "DUPL": {
     text: t('common.eventCode.caseClosed'),
-    classes: "govuk-tag--grey event-tag-spacing tag-padding"
+    classes: "govuk-tag--grey event-tag-spacing tag-padding",
+    isClosed: true
   },
   "CLOT": {
     text: t('common.eventCode.caseClosed'),
-    classes: "govuk-tag--grey event-tag-spacing tag-padding"
+    classes: "govuk-tag--grey event-tag-spacing tag-padding",
+    isClosed: true
   }
 } %}
 
@@ -166,6 +173,10 @@
       }) }}
     {% endif %}
 
+    {# only show translated outcome code if a closed event tag #}
+    {% if item.type == 'caseLog' and eventTagConfig[item.code].isClosed %}
+      <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-margin-top-1">{{ t('common.outcomeCode.' + item.code) }}</p>
+    {% endif %}
     <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-margin-top-3">{{ item.notes }}</p>
     <p class="govuk-hint govuk-!-margin-bottom-3 govuk-!-margin-top-1 govuk-!-font-size-16">{{ item.createdBy }} on {{ item.created }}</p>
     <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-top-1 govuk-!-margin-bottom-0"/>
