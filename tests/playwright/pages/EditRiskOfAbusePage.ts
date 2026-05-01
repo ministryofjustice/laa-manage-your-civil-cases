@@ -1,6 +1,6 @@
-import type { Page, Locator, expect } from '@playwright/test';
+import type { Page, Locator } from '@playwright/test';
 import { BaseEditFormPage } from './BaseEditFormPage.js';
-import { t, getClientDetailsUrlByStatus } from '../utils/index.js';
+import { t } from '../utils/index.js';
 
 /**
  * Page object for the edit client risk of abuse form
@@ -54,10 +54,10 @@ private readonly caseReference: string;
   }
 
     /**
-   * Creates a SplitThisCaseFormPage instance for a specific case
+   * Creates a EditRiskOfAbusePage instance for a specific case
    * @param {Page} page - The Playwright page instance
    * @param {string} caseReference - The case reference number
-   * @returns {SplitThisCaseFormPage} New 'split this case' form page instance
+   * @returns {EditRiskOfAbusePage} New 'edit risk of abuse' form page instance
    */
   static forCase(page: Page, caseReference: string): EditRiskOfAbusePage {
     return new EditRiskOfAbusePage(page, caseReference);

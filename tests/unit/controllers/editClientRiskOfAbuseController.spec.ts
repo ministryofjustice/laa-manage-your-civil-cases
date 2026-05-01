@@ -17,7 +17,7 @@
 import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import type { Request, Response, NextFunction } from 'express';
+import type { Request, Response } from 'express';
 import {
   getEditRiskOfAbuse,
   postEditRiskOfAbuse
@@ -25,22 +25,12 @@ import {
 import { apiService } from '#src/services/apiService.js';
 // Import to get global type declarations for axiosMiddleware
 import '#utils/server/axiosSetup.js';
-import { validateClientRiskOfAbuse } from '#src/middlewares/clientRiskOfAbuseSchema.js';
-import { ValidationChain } from '#node_modules/express-validator/lib/index.js';
 
 // Define the RequestWithMiddleware interface for testing
 interface RequestWithMiddleware extends Request {
   axiosMiddleware: any;
   csrfToken?: () => string;
 }
-
-// Run an express-validator schema against a fake request
-const runSchema = async (req: any, schema: ValidationChain[] | ValidationChain): Promise<void> => {
-  const chains = Array.isArray(schema) ? schema : [schema];
-  for (const chain of chains) {
-    await chain.run(req);
-  }
-};
 
 describe('Edit Client Risk of Abuse Controller', () => {
   let req: Partial<RequestWithMiddleware>;
@@ -89,9 +79,7 @@ describe('Edit Client Risk of Abuse Controller', () => {
         data: {
           fullName: 'John Doe',
           caseReference: 'TEST123',
-          mcc_case_flags: {
-            "vulnerable_user": true
-       }
+          vulnerable_user: true
         }
       };
 
@@ -102,7 +90,7 @@ describe('Edit Client Risk of Abuse Controller', () => {
 
       // Assert
       expect(apiServiceGetStub.calledOnce).to.be.true;
-      expect(renderStub.calledWith('case_details/risk-of-abuse.njk')).to.be.true;
+      expect(renderStub.calledWith('case_details/edit-risk-of-abuse.njk')).to.be.true;
     });
 
     it('should delegate API errors to Express error handling middleware', async () => {

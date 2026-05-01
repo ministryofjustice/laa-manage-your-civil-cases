@@ -9,7 +9,7 @@ test.describe('Edit Client Risk of Abuse', () => {
     await setupAuth(page);
   });
 
-  test('should display all expected form elements', async ({ page, pages }) => {
+  test('should display all expected form elements', async ({ page }) => {
     const riskOfAbusePage = EditRiskOfAbusePage.forCase(page, 'PC-1977-1241');
    
     await riskOfAbusePage.navigate();

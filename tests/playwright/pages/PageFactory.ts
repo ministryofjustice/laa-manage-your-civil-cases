@@ -9,8 +9,6 @@ import { PendingCaseFormPage } from './PendingCaseFormPage.js';
 import { CloseCaseFormPage } from './CloseCaseFormPage.js';
 import { ReopenCaseFormPage } from './ReopenCaseFormPage.js';
 import { ClientDetailsPage } from './ClientDetailsPage.js';
-import { EditRiskOfAbusePage } from './EditRiskOfAbusePage.js';
-
 /**
  * Factory class for creating page objects for client detail edit forms
  */
@@ -71,16 +69,6 @@ export class PageFactory {
     return new EditEmailPage(this.page);
   }
 
-    /**
-   * Gets an instance of the edit risk of abuse page
-   * @returns {EditRiskOfAbusePage} The edit risk of abuse page object
-   */
-  get editRiskOfAbuse(): EditRiskOfAbusePage {
-       return new EditRiskOfAbusePage(
-      this.page, 'PC-1977-1241'
-    );
-  }
-
   /**
    * Gets an instance of the login page
    * @returns {LoginPage} The login page object
@@ -133,5 +121,4 @@ export class PageFactory {
   get clientDetails(): ClientDetailsPage {
     return ClientDetailsPage.forCase(this.page, this.getCaseReference());
   }
-
 }

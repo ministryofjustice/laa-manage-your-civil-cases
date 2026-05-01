@@ -15,7 +15,7 @@ import {
  */
 export async function getEditRiskOfAbuse (req: Request, res: Response, next: NextFunction): Promise<void> {
   await handleGetEditForm(req, res, next, {
-    templatePath: 'case_details/risk-of-abuse.njk'
+    templatePath: 'case_details/edit-risk-of-abuse.njk'
   });
 }
 
@@ -31,7 +31,7 @@ export async function postEditRiskOfAbuse(req: Request, res: Response, next: Nex
   const formFields = extractFormFields(req.body, ['clientRiskOfAbuse', 'existingRiskOfAbuse']);
   
   await handlePostEditForm(req, res, next, {
-    templatePath: 'case_details/risk-of-abuse.njk',
+    templatePath: 'case_details/edit-risk-of-abuse.njk',
     fields: [{ name: 'clientRiskOfAbuse', value: formFields.clientRiskOfAbuse, existingValue: formFields.existingRiskOfAbuse }],
     apiUpdateData: { vulnerable_user: formFields.clientRiskOfAbuse }
   });

@@ -69,7 +69,7 @@ export function createMockClientDetails(
     postcode: 'TEST 123',
     dateOfBirth: '1990-01-01T00:00:00.000Z',
     caseStatus: 'Accepted',
-    clientIsVulnerable: false,
+    vulnerableUser: false,
     language: 'English',
     ...overrides
   };

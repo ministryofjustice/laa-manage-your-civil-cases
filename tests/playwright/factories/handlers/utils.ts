@@ -73,7 +73,7 @@ export function transformToApiFormat(caseItem: MockCase): object {
     // Personal details nested object
     personal_details: {
       full_name: caseItem.fullName,
-      vulnerable_user: caseItem.vulnerableUser === true,
+      vulnerable_user: caseItem.vulnerableUser,
       date_of_birth: caseItem.dateOfBirth,
       home_phone: caseItem.phoneNumber,
       mobile_phone: caseItem.phoneNumber,
@@ -88,7 +88,7 @@ export function transformToApiFormat(caseItem: MockCase): object {
       text_relay: caseItem.clientSupportNeeds?.textRelay === 'Yes',
       bsl_webcam: caseItem.clientSupportNeeds?.bslWebcam === 'Yes',
       thirdparty_details: Boolean(caseItem.thirdParty),
-      vulnerable_user: caseItem.vulnerableUser === true,
+      vulnerable_user: caseItem.vulnerableUser,
       language: caseItem.clientSupportNeeds?.languageSupportNeeds || null
     },
     // Adaptation details nested object

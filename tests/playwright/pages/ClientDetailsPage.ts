@@ -80,11 +80,7 @@ async expectRiskOfAbuse(value: 'Yes' | 'No'): Promise<void> {
     })
     .locator('.govuk-summary-list__value');
 
- 
-  // DEBUG OUTPUT (this is the key bit)
-  const actualText = await riskValue.textContent();
-  console.log('[DEBUG] Risk of abuse text content:', JSON.stringify(actualText));
-
+  // Assert the risk of abuse value
   await expect(riskValue).toHaveText(value);
 
 }

@@ -35,7 +35,7 @@ export interface CaseData {
   textRelay?: boolean,
   bslWebcam?: boolean,
   thirdpartyDetails?: boolean,
-  vulnerableUser?: string,
+  vulnerableUser?: boolean,
   language?: string
 }
 

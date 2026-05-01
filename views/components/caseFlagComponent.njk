@@ -10,7 +10,7 @@
     }) }}
   {% endif %}
 
-  {% if vulnerableUser == "true" or vulnerableUser == true %}
+  {% if vulnerableUser %}
     {{ mojBadge({
       text: t('pages.caseDetails.atRiskOfAbuse'),
       classes: "moj-badge--red" + spacingClass
