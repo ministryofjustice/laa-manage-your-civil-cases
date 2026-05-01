@@ -87,7 +87,9 @@
       "CLSP": "Case completed",
       "DREFER": "Arranged an appointment with a F2F specialist",
       "REF-INT": "Referred internally",
-      "REF-EXT": "Referred externally"
+      "REF-EXT": "Referred externally",
+      "MERI": "Case closed",
+      "CLOT": "Case closed"
     },
     "eventCode":{
       "casePending": "Case pending",
