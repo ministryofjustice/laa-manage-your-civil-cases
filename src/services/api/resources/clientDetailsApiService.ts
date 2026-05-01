@@ -19,12 +19,12 @@ import { API_PREFIX, JSON_INDENT } from '../base/constants.js';
  */
 export async function getClientDetails(axiosMiddleware: AxiosInstanceWrapper, caseReference: string): Promise<ClientDetailsApiResponse> {
   try {
-    devLog(`API: GET ${API_PREFIX}/case/${caseReference}/detailed`);
+    devLog(`API: GET ${API_PREFIX}/mcc/case/${caseReference}/detailed`);
 
     const configuredAxios = configureAxiosInstance(axiosMiddleware);
 
     // Call API endpoint
-    const response = await configuredAxios.get(`${API_PREFIX}/case/${caseReference}/detailed`);
+    const response = await configuredAxios.get(`${API_PREFIX}/mcc/case/${caseReference}/detailed`);
 
     devLog(`API: Client details response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
 

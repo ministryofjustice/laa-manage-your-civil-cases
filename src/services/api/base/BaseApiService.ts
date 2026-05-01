@@ -52,7 +52,7 @@ export async function patchAndRefetch(
     devLog(`API: ${operation} response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
 
     // Re-fetch full case data
-    const reFetchedFullData = await configuredAxios.get(`${API_PREFIX}/case/${caseReference}/detailed`);
+    const reFetchedFullData = await configuredAxios.get(`${API_PREFIX}/mcc/case/${caseReference}/detailed`);
     devLog(`API: Re-fetched case after ${operation}: ${JSON.stringify(reFetchedFullData.data, null, JSON_INDENT)}`);
 
     return {
