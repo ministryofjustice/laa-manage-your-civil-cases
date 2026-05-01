@@ -84,3 +84,23 @@ test('continue button should hit post split case form end point', async ({ page,
   // Assert we are redirected to the about a new case page (or appropriate next page)
   await expect(page).toHaveURL(`/cases/${caseReference}/about-new-case`);
 });
+
+test('we should see error validations, when no data entered', async ({ page, i18nSetup }) => {
+  const splitCasePage = SplitThisCaseFormPage.forCase(page, caseReference);
+
+  // Navigate to the operator feedback form
+  await splitCasePage.navigate();
+
+  // Assert the case details header is present
+  await assertCaseDetailsHeaderPresent(splitCasePage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+
+  // Click the continue button
+  const continueButton = page.getByRole('button', { name: 'Continue' });
+  await continueButton.click();
+
+  // Assert error components are visible
+  const errorSummaryComponent = page.locator('div').filter({ hasText: 'There is a problem Select who' }).nth(5);
+  const inlineErrorForAssigning = page.getByText('Who should the new case be');
+  await expect(errorSummaryComponent).toBeVisible();
+  await expect(inlineErrorForAssigning).toBeVisible();
+});
