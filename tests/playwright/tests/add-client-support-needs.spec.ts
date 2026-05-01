@@ -69,7 +69,7 @@ test('add client support button should show on client details, when skype or min
   await page.goto(clientDetailsUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Lisa Chen", expectedCaseRef: "PC-1924-9560", dateReceived: "15 January 2025", badgeTexts: ['Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Lisa NO NOTES Chen", expectedCaseRef: "PC-1924-9560", dateReceived: "15 January 2025", badgeTexts: ['Third Party'] }); 
 
   // Expect to see Add client support need button
   const addClientSupportNeedButton = page.getByRole('button', { name: 'Add client support need' })

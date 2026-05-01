@@ -4,10 +4,11 @@
  */
 
 import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
-import type { ClientDetailsResponse, ClientDetailsApiResponse, ClientHistoryApiResponse } from '#types/api-types.js';
+import type { ClientDetailsResponse, ClientDetailsApiResponse, CaseLogsApiResponse, ClientHistoryApiResponse } from '#types/api-types.js';
 import { devLog, extractAndLogError } from '#src/scripts/helpers/index.js';
 import { transformClientDetailsItem } from '../transforms/transformClientDetails.js';
 import { transformClientHistoryLogs } from '../transforms/transformClientHistoryLogs.js';
+import { transformClientCaseLogs } from '../transforms/transformClientCaseLogs.js';
 import { configureAxiosInstance } from '../base/BaseApiService.js';
 import { API_PREFIX, JSON_INDENT } from '../base/constants.js';
 
@@ -67,6 +68,57 @@ export async function updateClientDetails(
     };
   } catch (error) {
     const errorMessage = extractAndLogError(error, 'API error');
+    return {
+      data: null,
+      status: 'error',
+      message: errorMessage
+    };
+  }
+}
+
+/**
+ * Get client case log details by case reference
+ * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+ * @param {string} caseReference - Case reference number
+ * @returns {Promise<CaseLogsApiResponse>} API response with client details
+ */
+export async function getClientCaseLogs(axiosMiddleware: AxiosInstanceWrapper, caseReference: string): Promise<CaseLogsApiResponse> {
+  try {
+    const configuredAxios = configureAxiosInstance(axiosMiddleware);
+
+    const eventCodes = [
+      'CASE_VIEWED',
+      'MIS',
+      'MIS-OOS',
+      'MIS-MEANS',
+      'COI',
+      'SPOP',
+      'REOPEN',
+      'REF-INT',
+      'CLSP',
+      'MERI',
+      'DUPL',
+      'CLOT'
+    ];
+
+    const query = eventCodes.map(code => `codes=${encodeURIComponent(code)}`).join('&');
+    const url = `${API_PREFIX}/case/${encodeURIComponent(caseReference)}/logs/?${query}`;
+
+    // Call API endpoint
+    devLog(`API: GET ${url}`);
+    const response = await configuredAxios.get(`${url}`);
+
+    devLog(`API: Client case logs response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+    const logs = Array.isArray(response.data) ? response.data.map(transformClientCaseLogs) : [];
+
+    return {
+      data: logs,
+      status: 'success'
+    };
+
+  } catch (error) {
+    const errorMessage = extractAndLogError(error, 'API error');
+
     return {
       data: null,
       status: 'error',

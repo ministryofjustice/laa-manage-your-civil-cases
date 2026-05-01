@@ -48,7 +48,7 @@ test.describe('Case Status Handling', () => {
       await advisingButton.click();
 
       await expect(page).toHaveURL(clientDetails.url);
-      await expect(page.locator('.govuk-tag--light-blue')).toHaveText('Advising');
+      await expect(page.locator('.govuk-tag--blue')).toHaveText('Advising');
     });
 
     test('Move a closed case to advising', async ({ page }) => {
@@ -76,7 +76,7 @@ test.describe('Case Status Handling', () => {
       const save = page.getByRole('button', { name: 'Save' });
       await save.click();
 
-      await expect(page.locator('.govuk-tag--light-blue')).toHaveText('Advising');
+      await expect(page.locator('.govuk-tag--blue')).toHaveText('Advising');
     });
   });
 

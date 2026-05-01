@@ -233,6 +233,26 @@ export interface ClientHistoryApiResponse {
 }
 
 /**
+ * Case log details API response interface
+ */
+export interface CaseLogItem {
+  code: string;
+  createdBy: string;
+  created: string;
+  createdIso: string;
+  notes: string;
+}
+
+/**
+ * API response interface for single client case log
+ */
+export interface CaseLogsApiResponse {
+  data: CaseLogItem[] | null;
+  status: 'success' | 'error';
+  message?: string;
+}
+
+/**
  * Feedback choice interface from API OPTIONS response
  */
 export interface FeedbackChoice {

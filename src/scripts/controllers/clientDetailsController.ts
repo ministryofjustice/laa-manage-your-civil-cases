@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { storeSessionData, clearSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 import { handleCaseTab } from '#src/scripts/helpers/caseTabHandler.js';
-import { ClientSupportNeeds } from '#types/api-types.js';
+import type { ClientSupportNeeds } from '#types/api-types.js';
 
 /**
  * Handle client details view with API data
