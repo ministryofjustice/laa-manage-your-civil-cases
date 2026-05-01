@@ -112,7 +112,7 @@ export async function deleteThirdPartyContact(
     devLog(`API: Third party soft delete response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
     
     // Re-fetch the case to get updated state
-    const caseResponse = await configuredAxios.get(`${API_PREFIX}/case/${caseReference}/detailed`);
+    const caseResponse = await configuredAxios.get(`${API_PREFIX}/mcc/case/${caseReference}/detailed`);
     devLog(`API: Re-fetched case after third party deletion: ${JSON.stringify(caseResponse.data, null, JSON_INDENT)}`);
     
     return {

@@ -90,16 +90,16 @@ function createPatchCaseHandler(
 }
 
 /**
- * GET /case/:caseReference/detailed - Get detailed case information
+ * GET /mcc/case/:caseReference/detailed - Get detailed case information
  */
 function createGetCaseDetailedHandler(
   API_BASE_URL: string,
   API_PREFIX: string,
   cases: MockCase[]
 ) {
-  return http.get(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/detailed`, ({ params }) => {
+  return http.get(`${API_BASE_URL}${API_PREFIX}/mcc/case/:caseReference/detailed`, ({ params }) => {
     const { caseReference } = params;
-    console.log(`[MSW] Intercepting GET /case/${caseReference}/detailed`);
+    console.log(`[MSW] Intercepting GET /mcc/case/${caseReference}/detailed`);
     
     const caseItem = findMockCase(caseReference as string, cases);
     
