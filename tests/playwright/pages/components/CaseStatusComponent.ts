@@ -12,9 +12,9 @@ export class CaseStatusComponent {
    */
   private readonly tagClasses = {
     'New': '.govuk-tag--green.govuk-\\!-margin-bottom-2',
-    'Advising': '.govuk-tag--orange.govuk-\\!-margin-bottom-2',
+    'Advising': '.govuk-tag--blue.govuk-\\!-margin-bottom-2',
     'Closed': '.govuk-tag--grey.govuk-\\!-margin-bottom-2',
-    'Pending': '.govuk-tag--blue.govuk-\\!-margin-bottom-2',
+    'Pending': '.govuk-tag--orange.govuk-\\!-margin-bottom-2',
     'Completed': '.govuk-tag--pink.govuk-\\!-margin-bottom-2'
   } as const;
 
