@@ -27,7 +27,7 @@ export interface MockCase {
   postcode: string;
   laaReference: string;
   outcomeCode: string;
-  clientIsVulnerable: string;
+  vulnerableUser?: boolean;
   thirdParty?: {
     fullName: string;
     emailAddress: string;

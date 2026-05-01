@@ -83,9 +83,8 @@ router.use((err: Error, req: Request, res: Response, next: NextFunction): void =
   const originalError = err.cause instanceof Error ? err.cause : err;
   devError(`Global error handler - URL: ${originalUrl}, Error: ${originalError.message}`);
 
-  const httpInternalServerError = 500;
-  res.status(httpInternalServerError).render('main/error.njk', {
-    status: '500',
+  res.status(HTTP.INTERNAL_SERVER_ERROR).render('main/error.njk', {
+    status: HTTP.INTERNAL_SERVER_ERROR,
     error: userFriendlyMessage
   });
 });

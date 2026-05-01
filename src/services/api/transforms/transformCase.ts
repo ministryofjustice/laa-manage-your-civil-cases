@@ -46,7 +46,7 @@ export function transformCaseItem(item: unknown): CaseData {
     textRelay: Boolean(mcc_case_flags.text_relay),
     bslWebcam: Boolean(mcc_case_flags.bsl_webcam),
     thirdpartyDetails: Boolean(mcc_case_flags.thirdparty_details),
-    vulnerableUser: safeOptionalString(mcc_case_flags.vulnerable_user),
+    vulnerableUser: Boolean(mcc_case_flags.vulnerable_user),
     language: safeOptionalString(mcc_case_flags.language)
   };
 }

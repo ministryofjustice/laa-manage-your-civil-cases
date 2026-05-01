@@ -3,9 +3,7 @@ import 'csrf-sync'; // Import to ensure CSRF types are loaded
 import { handleGetEditForm, extractFormFields, handleAddThirdPartyValidationErrors, prepareThirdPartyData, devLog, devError, createProcessedError, safeString, validCaseReference } from '#src/scripts/helpers/index.js';
 import { getSessionData, clearSessionData } from '#src/scripts/helpers/sessionHelpers.js';
 import { apiService } from '#src/services/apiService.js';
-
-// HTTP Status codes
-const INTERNAL_SERVER_ERROR = 500;
+import { HTTP } from '#src/services/api/base/constants.js';
 
 /**
  * Renders the add client third party form for a given case reference.
@@ -84,8 +82,8 @@ async function processThirdPartyAddition(
     res.redirect(`/cases/${caseReference}/client-details`);
   } else {
     devError(`Failed to add third party contact for case: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);
-    res.status(INTERNAL_SERVER_ERROR).render('main/error.njk', {
-      status: '500',
+    res.status(HTTP.INTERNAL_SERVER_ERROR).render('main/error.njk', {
+      status: HTTP.INTERNAL_SERVER_ERROR,
       error: response.message ?? 'Failed to add third party contact'
     });
   }

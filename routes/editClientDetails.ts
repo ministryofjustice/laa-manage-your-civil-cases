@@ -18,7 +18,9 @@ import {
   getAddClientSupportNeeds,
   postAddClientSupportNeeds,
   getEditClientSupportNeeds,
-  postEditClientSupportNeeds
+  postEditClientSupportNeeds,
+  getEditRiskOfAbuse,
+  postEditRiskOfAbuse
 } from '#src/scripts/controllers/index.js';
 
 import {
@@ -30,7 +32,8 @@ import {
   validateAddClientThirdParty,
   validateEditClientThirdParty,
   validateAddClientSupportNeeds,
-  validateEditClientSupportNeeds
+  validateEditClientSupportNeeds,
+  validateClientRiskOfAbuse
 } from '#src/middlewares/indexSchema.js';
 
 const router = express.Router();
@@ -61,4 +64,8 @@ router.post('/:caseReference/client-details/add/support-need', validateAddClient
 
 router.get('/:caseReference/client-details/change/support-need', getEditClientSupportNeeds);
 router.post('/:caseReference/client-details/change/support-need', validateEditClientSupportNeeds(), postEditClientSupportNeeds);
+
+router.get('/:caseReference/client-details/change/risk-of-abuse', getEditRiskOfAbuse);
+router.post('/:caseReference/client-details/change/risk-of-abuse', validateClientRiskOfAbuse(), postEditRiskOfAbuse);
+
 export default router;

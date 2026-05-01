@@ -9,7 +9,6 @@ import { PendingCaseFormPage } from './PendingCaseFormPage.js';
 import { CloseCaseFormPage } from './CloseCaseFormPage.js';
 import { ReopenCaseFormPage } from './ReopenCaseFormPage.js';
 import { ClientDetailsPage } from './ClientDetailsPage.js';
-
 /**
  * Factory class for creating page objects for client detail edit forms
  */
