@@ -11,16 +11,19 @@ const FORMAT_OPTIONS_DATE_SHORT_PART: Intl.DateTimeFormatOptions = {
   day: 'numeric',
   month: 'short',
   year: 'numeric',
+  timeZone: 'Europe/London'
 }
 const FORMAT_OPTIONS_DATE_LONG_PART: Intl.DateTimeFormatOptions = {
   day: 'numeric',
   month: 'long',
   year: 'numeric',
+  timeZone: 'Europe/London'
 }
 const FORMAT_OPTIONS_TIME_PART: Intl.DateTimeFormatOptions = {
   hour: 'numeric',
   minute: '2-digit',
   hour12: true,
+  timeZone: 'Europe/London'
 }
 
 /**

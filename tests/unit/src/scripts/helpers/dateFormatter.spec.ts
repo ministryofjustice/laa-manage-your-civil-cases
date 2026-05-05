@@ -39,23 +39,23 @@ describe('formatDateLongMonth()', () => {
 
 describe('formatLongFormDate()', () => {
   it('formats a valid ISO date string correctly', () => {
-    expect(formatLongFormDate('1986-01-06T14:01:00')).to.equal('6 January 1986 at 2:01pm');
+    expect(formatLongFormDate('1986-01-06T14:01:00Z')).to.equal('6 January 1986 at 2:01pm');
   });
 
   it('formats morning times using am', () => {
-    expect(formatLongFormDate('2023-07-28T09:05:00')).to.equal('28 July 2023 at 9:05am');
+    expect(formatLongFormDate('2023-07-28T09:05:00+01:00')).to.equal('28 July 2023 at 9:05am');
   });
 
   it('pads minutes with a leading zero when needed', () => {
-    expect(formatLongFormDate('2023-07-28T14:05:00')).to.equal('28 July 2023 at 2:05pm');
+    expect(formatLongFormDate('2023-07-28T14:05:00+01:00')).to.equal('28 July 2023 at 2:05pm');
   });
 
   it('handles midnight correctly', () => {
-    expect(formatLongFormDate('2023-07-28T00:00:00')).to.equal('28 July 2023 at 12:00am');
+    expect(formatLongFormDate('2023-07-28T00:00:00+01:00')).to.equal('28 July 2023 at 12:00am');
   });
 
   it('handles noon correctly', () => {
-    expect(formatLongFormDate('2023-07-28T12:00:00')).to.equal('28 July 2023 at 12:00pm');
+    expect(formatLongFormDate('2023-07-28T12:00:00+01:00')).to.equal('28 July 2023 at 12:00pm');
   });
 
   it('handles invalid date strings by returning the original input', () => {
@@ -66,23 +66,23 @@ describe('formatLongFormDate()', () => {
 
 describe('formatLongFormDateWithShortMonth()', () => {
   it('formats a valid ISO date string correctly', () => {
-    expect(formatLongFormDateWithShortMonth('1986-01-06T14:01:00')).to.equal('6 Jan 1986 at 2:01pm');
+    expect(formatLongFormDateWithShortMonth('1986-01-06T14:01:00Z')).to.equal('6 Jan 1986 at 2:01pm');
   });
 
   it('formats morning times using am', () => {
-    expect(formatLongFormDateWithShortMonth('2023-07-28T09:05:00')).to.equal('28 Jul 2023 at 9:05am');
+    expect(formatLongFormDateWithShortMonth('2023-07-28T09:05:00+01:00')).to.equal('28 Jul 2023 at 9:05am');
   });
 
   it('pads minutes with a leading zero when needed', () => {
-    expect(formatLongFormDateWithShortMonth('2023-07-28T14:05:00')).to.equal('28 Jul 2023 at 2:05pm');
+    expect(formatLongFormDateWithShortMonth('2023-07-28T14:05:00+01:00')).to.equal('28 Jul 2023 at 2:05pm');
   });
 
   it('handles midnight correctly', () => {
-    expect(formatLongFormDateWithShortMonth('2023-07-28T00:00:00')).to.equal('28 Jul 2023 at 12:00am');
+    expect(formatLongFormDateWithShortMonth('2023-07-28T00:00:00+01:00')).to.equal('28 Jul 2023 at 12:00am');
   });
 
   it('handles noon correctly', () => {
-    expect(formatLongFormDateWithShortMonth('2023-07-28T12:00:00')).to.equal('28 Jul 2023 at 12:00pm');
+    expect(formatLongFormDateWithShortMonth('2023-07-28T12:00:00+01:00')).to.equal('28 Jul 2023 at 12:00pm');
   });
 
   it('handles invalid date strings by returning the original input', () => {
