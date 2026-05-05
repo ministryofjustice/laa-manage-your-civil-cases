@@ -7,6 +7,24 @@
 // Constants
 const DATE_PADDING_WIDTH = 2;
 const DATE_PADDING_CHAR = '0';
+const FORMAT_OPTIONS_DATE_SHORT_PART: Intl.DateTimeFormatOptions = {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+  timeZone: 'Europe/London',
+}
+const FORMAT_OPTIONS_DATE_LONG_PART: Intl.DateTimeFormatOptions = {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'Europe/London',
+}
+const FORMAT_OPTIONS_TIME_PART: Intl.DateTimeFormatOptions = {
+  hour: 'numeric',
+  minute: '2-digit',
+  hour12: true,
+  timeZone: 'Europe/London',
+}
 
 /**
  * Format date for display in table cells and UI components
@@ -20,11 +38,7 @@ export function formatDate(dateString: string): string {
     return dateString;
   }
   // Intl.DateTimeFormat handles BST for us
-  const datePart = new Intl.DateTimeFormat('en-GB', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  }).format(date);
+  const datePart = new Intl.DateTimeFormat('en-GB', FORMAT_OPTIONS_DATE_SHORT_PART).format(date);
 
   return `${datePart}`;
 }
@@ -42,11 +56,7 @@ export function formatDateLongMonth(dateString: string): string {
   }
 
   // Intl.DateTimeFormat handles BST for us
-  const datePart = new Intl.DateTimeFormat('en-GB', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  }).format(date);
+  const datePart = new Intl.DateTimeFormat('en-GB', FORMAT_OPTIONS_DATE_LONG_PART).format(date);
 
   return `${datePart}`;
 }
@@ -64,17 +74,9 @@ export function formatLongFormDate(dateString: string): string {
   }
 
   // Intl.DateTimeFormat handles BST for us
-  const datePart = new Intl.DateTimeFormat('en-GB', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  }).format(date);
+  const datePart = new Intl.DateTimeFormat('en-GB', FORMAT_OPTIONS_DATE_LONG_PART).format(date);
 
-  const timePart = new Intl.DateTimeFormat('en-GB', {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  })
+  const timePart = new Intl.DateTimeFormat('en-GB', FORMAT_OPTIONS_TIME_PART)
     .format(date)
     .replace(' am', 'am')
     .replace(' pm', 'pm')
@@ -97,17 +99,9 @@ export function formatLongFormDateWithShortMonth(dateString: string): string {
   }
 
   // Intl.DateTimeFormat handles BST for us
-  const datePart = new Intl.DateTimeFormat('en-GB', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  }).format(date);
+  const datePart = new Intl.DateTimeFormat('en-GB', FORMAT_OPTIONS_DATE_SHORT_PART).format(date);
 
-  const timePart = new Intl.DateTimeFormat('en-GB', {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  })
+  const timePart = new Intl.DateTimeFormat('en-GB', FORMAT_OPTIONS_TIME_PART)
     .format(date)
     .replace(' am', 'am')
     .replace(' pm', 'pm')
