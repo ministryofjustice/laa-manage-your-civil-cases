@@ -90,13 +90,13 @@ export async function submitSplitCase(
   splitData: SplitCaseSubmissionRequest
 ): Promise<SplitCaseSubmissionApiResponse> {
   try {
-    devLog(`API: POST ${API_PREFIX}/case/${caseReference}/mcc_split/`);
+    devLog(`API: POST ${API_PREFIX}/mcc/case/${caseReference}/split/`);
     devLog(`Split case data: ${JSON.stringify(splitData, null, JSON_INDENT)}`);
 
     const configuredAxios = configureAxiosInstance(axiosMiddleware);
 
     // Call API POST endpoint to submit split case details 
-    const response = await configuredAxios.post(`${API_PREFIX}/case/${caseReference}/mcc_split/`, splitData);
+    const response = await configuredAxios.post(`${API_PREFIX}/mcc/case/${caseReference}/split/`, splitData);
 
     devLog(`API: Split case submission response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
 

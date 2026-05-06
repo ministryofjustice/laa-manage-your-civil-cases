@@ -404,7 +404,7 @@ describe('ApiService', () => {
 
         // Verify GET was called to re-fetch case data
         expect(getStub.calledOnce).to.be.true;
-        expect(getStub.calledWith('/cla_provider/api/v1/case/TEST123/detailed')).to.be.true;
+        expect(getStub.calledWith('/cla_provider/api/v1/mcc/case/TEST123/detailed')).to.be.true;
       });
 
       it('should handle API errors gracefully', async () => {

@@ -46,7 +46,7 @@ class ChangeCaseStateService {
       devLog(`API: Case accepted successfully, fetching updated details`);
 
       // Re-fetch the full case details to get complete data structure
-      const detailedResponse = await configuredAxios.get(`${API_PREFIX}/case/${caseReference}/detailed`);
+      const detailedResponse = await configuredAxios.get(`${API_PREFIX}/mcc/case/${caseReference}/detailed`);
       devLog(`API: Accept case - full details: ${JSON.stringify(detailedResponse.data, null, JSON_INDENT)}`);
 
       // Import transformClientDetailsItem dynamically to avoid circular dependency
@@ -81,7 +81,7 @@ class ChangeCaseStateService {
       devLog(`API: Case completed successfully, fetching updated details`);
 
       // Re-fetch the full case details to get complete data structure
-      const detailedResponse = await configuredAxios.get(`${API_PREFIX}/case/${caseReference}/detailed`);
+      const detailedResponse = await configuredAxios.get(`${API_PREFIX}/mcc/case/${caseReference}/detailed`);
       devLog(`API: Complete case - full details: ${JSON.stringify(detailedResponse.data, null, JSON_INDENT)}`);
 
       return {
@@ -117,7 +117,7 @@ class ChangeCaseStateService {
       devLog(`API: Case marked as pending successfully, fetching updated details`);
 
       // Re-fetch the full case details to get complete data structure
-      const detailedResponse = await configuredAxios.get(`${API_PREFIX}/case/${caseReference}/detailed`);
+      const detailedResponse = await configuredAxios.get(`${API_PREFIX}/mcc/case/${caseReference}/detailed`);
       devLog(`API: Pending case - full details: ${JSON.stringify(detailedResponse.data, null, JSON_INDENT)}`);
 
       return {
@@ -163,7 +163,7 @@ class ChangeCaseStateService {
       devLog(`API: Case closed successfully, fetching updated details`);
 
       // Re-fetch the full case details to get complete data structure
-      const detailedResponse = await configuredAxios.get(`${API_PREFIX}/case/${caseReference}/detailed`);
+      const detailedResponse = await configuredAxios.get(`${API_PREFIX}/mcc/case/${caseReference}/detailed`);
       devLog(`API: Close case - full details: ${JSON.stringify(detailedResponse.data, null, JSON_INDENT)}`);
 
       // Import transformClientDetailsItem dynamically to avoid circular dependency
