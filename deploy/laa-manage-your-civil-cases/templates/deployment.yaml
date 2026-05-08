@@ -97,6 +97,24 @@ spec:
                 secretKeyRef:
                   name: elasticache-redis
                   key: auth_token
+            - name: ENTRA_TENANT_ID
+              value: "{{ .Values.env.ENTRA_TENANT_ID }}"
+            - name: ENTRA_CLIENT_ID
+              value: "{{ .Values.env.ENTRA_CLIENT_ID }}"
+            - name: ENTRA_APP_ID
+              value: "{{ .Values.env.ENTRA_APP_ID }}"
+            - name: ENTRA_CLIENT_SECRET
+              value: "{{ .Values.env.ENTRA_CLIENT_SECRET }}"
+            - name: ENTRA_REDIRECT_URI
+              value: "{{ .Values.env.ENTRA_REDIRECT_URI }}"
+            - name: ENTRA_POST_LOGOUT_REDIRECT_URI
+              value: "{{ .Values.env.ENTRA_POST_LOGOUT_REDIRECT_URI }}"
+            - name: ENTRA_AUTHORITY
+              value: "{{ .Values.env.ENTRA_AUTHORITY }}"
+            - name: SILAS_SCOPES
+              value: "{{ .Values.env.SILAS_SCOPES }}"
+            - name: SILAS_EXPECTED_AUDIENCE
+              value: "{{ .Values.env.SILAS_EXPECTED_AUDIENCE }}"
       {{- with .Values.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
