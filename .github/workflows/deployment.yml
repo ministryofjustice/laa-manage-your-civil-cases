@@ -145,6 +145,15 @@ jobs:
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
           api_client_id: ${{ secrets.API_CLIENT_ID }}
           api_client_secret: ${{ secrets.API_CLIENT_SECRET }}
+          entra_tenant_id: ${{ secrets.ENTRA_TENANT_ID }}
+          entra_client_id: ${{ secrets.ENTRA_CLIENT_ID }}
+          entra_app_id: ${{ secrets.ENTRA_APP_ID }}
+          entra_client_secret: ${{ secrets.ENTRA_CLIENT_SECRET }}
+          entra_redirect_uri: ${{ secrets.ENTRA_REDIRECT_URI }}
+          entra_post_logout_redirect_uri: ${{ secrets.ENTRA_POST_LOGOUT_REDIRECT_URI }}
+          entra_authority: ${{ secrets.ENTRA_AUTHORITY }}
+          silas_scopes: ${{ secrets.SILAS_SCOPES }}
+          silas_expected_audience: ${{ secrets.SILAS_EXPECTED_AUDIENCE }}
   
   deploy-staging:
     environment: staging
@@ -170,6 +179,15 @@ jobs:
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
           api_client_id: ${{ secrets.API_CLIENT_ID }}
           api_client_secret: ${{ secrets.API_CLIENT_SECRET }}
+          entra_tenant_id: ${{ secrets.ENTRA_TENANT_ID }}
+          entra_client_id: ${{ secrets.ENTRA_CLIENT_ID }}
+          entra_app_id: ${{ secrets.ENTRA_APP_ID }}
+          entra_client_secret: ${{ secrets.ENTRA_CLIENT_SECRET }}
+          entra_redirect_uri: ${{ secrets.ENTRA_REDIRECT_URI }}
+          entra_post_logout_redirect_uri: ${{ secrets.ENTRA_POST_LOGOUT_REDIRECT_URI }}
+          entra_authority: ${{ secrets.ENTRA_AUTHORITY }}
+          silas_scopes: ${{ secrets.SILAS_SCOPES }}
+          silas_expected_audience: ${{ secrets.SILAS_EXPECTED_AUDIENCE }}
 
   deploy-production:
     environment: production
@@ -195,3 +213,12 @@ jobs:
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
           api_client_id: ${{ secrets.API_CLIENT_ID }}
           api_client_secret: ${{ secrets.API_CLIENT_SECRET }}
+          entra_tenant_id: ${{ secrets.ENTRA_TENANT_ID }}
+          entra_client_id: ${{ secrets.ENTRA_CLIENT_ID }}
+          entra_app_id: ${{ secrets.ENTRA_APP_ID }}
+          entra_client_secret: ${{ secrets.ENTRA_CLIENT_SECRET }}
+          entra_redirect_uri: ${{ secrets.ENTRA_REDIRECT_URI }}
+          entra_post_logout_redirect_uri: ${{ secrets.ENTRA_POST_LOGOUT_REDIRECT_URI }}
+          entra_authority: ${{ secrets.ENTRA_AUTHORITY }}
+          silas_scopes: ${{ secrets.SILAS_SCOPES }}
+          silas_expected_audience: ${{ secrets.SILAS_EXPECTED_AUDIENCE }}

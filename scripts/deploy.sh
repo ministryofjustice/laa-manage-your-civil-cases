@@ -21,7 +21,16 @@ deploy_branch() {
                 --set ingress.hosts[0].host="$RELEASE_HOST" \
                 --set env.SESSION_SECRET="$SESSION_SECRET" \
                 --set env.API_CLIENT_ID="$API_CLIENT_ID" \
-                --set env.API_CLIENT_SECRET="$API_CLIENT_SECRET"
+                --set env.API_CLIENT_SECRET="$API_CLIENT_SECRET" \
+                --set env.ENTRA_TENANT_ID="$ENTRA_TENANT_ID" \
+                --set env.ENTRA_CLIENT_ID="$ENTRA_CLIENT_ID" \
+                --set env.ENTRA_APP_ID="$ENTRA_APP_ID" \
+                --set env.ENTRA_CLIENT_SECRET="$ENTRA_CLIENT_SECRET" \
+                --set env.ENTRA_REDIRECT_URI="$ENTRA_REDIRECT_URI" \
+                --set env.ENTRA_POST_LOGOUT_REDIRECT_URI="$ENTRA_POST_LOGOUT_REDIRECT_URI" \
+                --set env.ENTRA_AUTHORITY="$ENTRA_AUTHORITY" \
+                --set env.SILAS_SCOPES="$SILAS_SCOPES" \
+                --set env.SILAS_EXPECTED_AUDIENCE="$SILAS_EXPECTED_AUDIENCE"
 }
 
 deploy_main() {  
@@ -33,7 +42,16 @@ deploy_main() {
                           --set image.tag="$IMAGE_TAG" \
                           --set env.SESSION_SECRET="$SESSION_SECRET" \
                           --set env.API_CLIENT_ID="$API_CLIENT_ID" \
-                          --set env.API_CLIENT_SECRET="$API_CLIENT_SECRET"
+                          --set env.API_CLIENT_SECRET="$API_CLIENT_SECRET" \
+                          --set env.ENTRA_TENANT_ID="$ENTRA_TENANT_ID" \
+                          --set env.ENTRA_CLIENT_ID="$ENTRA_CLIENT_ID" \
+                          --set env.ENTRA_APP_ID="$ENTRA_APP_ID" \
+                          --set env.ENTRA_CLIENT_SECRET="$ENTRA_CLIENT_SECRET" \
+                          --set env.ENTRA_REDIRECT_URI="$ENTRA_REDIRECT_URI" \
+                          --set env.ENTRA_POST_LOGOUT_REDIRECT_URI="$ENTRA_POST_LOGOUT_REDIRECT_URI" \
+                          --set env.ENTRA_AUTHORITY="$ENTRA_AUTHORITY" \
+                          --set env.SILAS_SCOPES="$SILAS_SCOPES" \
+                          --set env.SILAS_EXPECTED_AUDIENCE="$SILAS_EXPECTED_AUDIENCE"
 }
 
 if [[ "$GITHUB_REF_NAME" == "main" ]]; then
