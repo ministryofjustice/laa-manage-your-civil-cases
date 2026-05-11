@@ -30,8 +30,8 @@ The application uses Helm charts located in the `helm_deploy/` directory for Kub
 
 Dependabot is configured to automatically raise a PR request and jira ticket to highlight dependency updates, but it does not have access to secrets required for deployment.
 Team investigations into dependabot configuration reviewed skip steps and attempting to manually run workflows to provide access to secrets. 
-This was unsuccessful as the workflows triggers in the PR are linked to the commit and doesnt update when a manual trigger is attempted.
-Reviewing other options available such as adding secrets to dependabot results in deplication and raises security concerns.
+This was unsuccessful as the workflows triggers in the PR are linked to the commit and does not update when a manual trigger is attempted.
+Reviewing other options available such as adding secrets to dependabot results in duplication.
 The decision was made to accept the dependabot pipeline will fail and to utilise this as a signal to create a manual PR request for team approval. 
 
 ## Further Information
