@@ -32,6 +32,27 @@ inputs:
     api_client_secret:
       description: "OAuth client secret"
       required: true
+    entra_tenant_id:
+      description: "ENTRA tenant ID"
+      required: true
+    entra_client_id:
+      description: "ENTRA client ID"
+      required: true
+    entra_app_id:
+      description: "ENTRA app ID"
+      required: true
+    entra_client_secret:
+      description: "ENTRA client secret"
+      required: true
+    entra_authority:
+      description: "ENTRA authority"
+      required: true
+    silas_scopes:
+      description: "SiLAS scopes"
+      required: true
+    silas_expected_audience:
+      description: "SiLAS expected audience"
+      required: true
 
 runs:
   using: "composite"
@@ -68,6 +89,13 @@ runs:
         SESSION_SECRET: ${{ inputs.session_secret }}
         API_CLIENT_ID: ${{ inputs.api_client_id }}
         API_CLIENT_SECRET: ${{ inputs.api_client_secret }}
+        ENTRA_TENANT_ID: ${{ inputs.entra_tenant_id }}
+        ENTRA_CLIENT_ID: ${{ inputs.entra_client_id }}
+        ENTRA_APP_ID: ${{ inputs.entra_app_id }}
+        ENTRA_CLIENT_SECRET: ${{ inputs.entra_client_secret }}
+        ENTRA_AUTHORITY: ${{ inputs.entra_authority }}
+        SILAS_SCOPES: ${{ inputs.silas_scopes }}
+        SILAS_EXPECTED_AUDIENCE: ${{ inputs.silas_expected_audience }}
 
     - name: Notify deployment failure
       shell: bash
