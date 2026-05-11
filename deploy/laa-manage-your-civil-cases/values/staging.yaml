@@ -82,6 +82,8 @@ env:
   API_PREFIX: "/cla_provider/api/v1"
   REDIS_ENABLED: true
   REDIS_TLS_ENABLED: true
+  ENTRA_REDIRECT_URI: "https://manage-your-civil-cases-staging.cloud-platform.service.justice.gov.uk/auth/login/callback"
+  ENTRA_POST_LOGOUT_REDIRECT_URI: "https://manage-your-civil-cases-staging.cloud-platform.service.justice.gov.uk/auth/logout/callback"
 
 livenessProbe:
   httpGet:

@@ -94,6 +94,8 @@ env:
   API_PREFIX: "/cla_provider/api/v1"
   REDIS_ENABLED: true
   REDIS_TLS_ENABLED: true
+  ENTRA_REDIRECT_URI: "http://localhost:3000/auth/callback"
+  ENTRA_POST_LOGOUT_REDIRECT_URI: "http://localhost:3000/auth/logout/callback"
 
 autoscaling:
   enabled: false

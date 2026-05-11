@@ -44,12 +44,6 @@ inputs:
     entra_client_secret:
       description: "ENTRA client secret"
       required: true
-    entra_redirect_uri:
-      description: "ENTRA redirect uri"
-      required: true
-    entra_post_logout_redirect_uri:
-      description: "ENTRA post logout redirect uri"
-      required: true
     entra_authority:
       description: "ENTRA authority"
       required: true
@@ -99,8 +93,6 @@ runs:
         ENTRA_CLIENT_ID: ${{ inputs.entra_client_id }}
         ENTRA_APP_ID: ${{ inputs.entra_app_id }}
         ENTRA_CLIENT_SECRET: ${{ inputs.entra_client_secret }}
-        ENTRA_REDIRECT_URI: ${{ inputs.entra_redirect_uri }}
-        ENTRA_POST_LOGOUT_REDIRECT_URI: ${{ inputs.entra_post_logout_redirect_uri }}
         ENTRA_AUTHORITY: ${{ inputs.entra_authority }}
         SILAS_SCOPES: ${{ inputs.silas_scopes }}
         SILAS_EXPECTED_AUDIENCE: ${{ inputs.silas_expected_audience }}

@@ -26,8 +26,6 @@ deploy_branch() {
                 --set env.ENTRA_CLIENT_ID="$ENTRA_CLIENT_ID" \
                 --set env.ENTRA_APP_ID="$ENTRA_APP_ID" \
                 --set env.ENTRA_CLIENT_SECRET="$ENTRA_CLIENT_SECRET" \
-                --set env.ENTRA_REDIRECT_URI="$ENTRA_REDIRECT_URI" \
-                --set env.ENTRA_POST_LOGOUT_REDIRECT_URI="$ENTRA_POST_LOGOUT_REDIRECT_URI" \
                 --set env.ENTRA_AUTHORITY="$ENTRA_AUTHORITY" \
                 --set env.SILAS_SCOPES="$SILAS_SCOPES" \
                 --set env.SILAS_EXPECTED_AUDIENCE="$SILAS_EXPECTED_AUDIENCE"
@@ -47,8 +45,6 @@ deploy_main() {
                           --set env.ENTRA_CLIENT_ID="$ENTRA_CLIENT_ID" \
                           --set env.ENTRA_APP_ID="$ENTRA_APP_ID" \
                           --set env.ENTRA_CLIENT_SECRET="$ENTRA_CLIENT_SECRET" \
-                          --set env.ENTRA_REDIRECT_URI="$ENTRA_REDIRECT_URI" \
-                          --set env.ENTRA_POST_LOGOUT_REDIRECT_URI="$ENTRA_POST_LOGOUT_REDIRECT_URI" \
                           --set env.ENTRA_AUTHORITY="$ENTRA_AUTHORITY" \
                           --set env.SILAS_SCOPES="$SILAS_SCOPES" \
                           --set env.SILAS_EXPECTED_AUDIENCE="$SILAS_EXPECTED_AUDIENCE"
