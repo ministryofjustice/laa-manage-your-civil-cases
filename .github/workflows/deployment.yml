@@ -37,7 +37,6 @@ jobs:
   snyk:
     name: Snyk Security Scan
     runs-on: ubuntu-latest
-    if : github.actor != 'dependabot[bot]' # because dependabot has no access to secrets
     steps:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -59,7 +58,6 @@ jobs:
   build-image:
     name: Build Docker Image
     runs-on: ubuntu-latest
-    if : github.actor != 'dependabot[bot]' # because dependabot has no access to secrets
     permissions:
       id-token: write
       contents: read
@@ -118,7 +116,6 @@ jobs:
   deploy-uat:
     environment: uat
     runs-on: ubuntu-latest
-    if : github.actor != 'dependabot[bot]' # because dependabot has no access to secrets
     needs:
       - code-linting
       - code-security-audit
