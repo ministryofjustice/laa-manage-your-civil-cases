@@ -139,7 +139,7 @@ test.describe('CSRF Protection', () => {
       expect(sessionCookie.httpOnly).toBe(true);
 
       // Verify SameSite attribute (CSRF protection)
-      expect(sessionCookie.sameSite).toBe('Strict');
+      expect(sessionCookie.sameSite).toBe('lax');
 
       // In production, verify Secure flag
       // Note: In development (http://localhost), secure cookies won't be set

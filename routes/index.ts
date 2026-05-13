@@ -17,8 +17,8 @@ router.get('/', requireAuth, (req: Request, res: Response): void => {
   res.redirect('/cases/new');
 });
 
-// Mount the login routes (no auth required)
-router.use('/login', loginRouter);
+// Mount the AuthN route
+router.use('/auth', loginRouter);
 
 // Logout route at root level (no auth required)
 router.get('/logout', loginRouter);

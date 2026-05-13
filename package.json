@@ -32,6 +32,7 @@
     "node": "25.9.0"
   },
   "dependencies": {
+    "@azure/msal-node": "^5.0.6",
     "@ministryofjustice/frontend": "^9.0.0",
     "@x-govuk/govuk-prototype-components": "^6.0.0",
     "axios": "1.16.0",
