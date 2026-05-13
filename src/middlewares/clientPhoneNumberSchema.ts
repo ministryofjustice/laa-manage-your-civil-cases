@@ -45,19 +45,4 @@ export const validateEditClientPhoneNumber = (): ReturnType<typeof checkSchema> 
         })
       },
     },
-    notChanged: createChangeDetectionValidator(
-      [
-        { current: 'phoneNumber', original: 'existingPhoneNumber' },
-        { current: 'safeToCall', original: 'existingSafeToCall' },
-        { current: 'announceCall', original: 'existingAnnounceCall' }
-      ],
-      {
-        /**
-         * Returns the summary message for unchanged phone number or call status.
-         * @returns {string} Localized validation error message
-         */
-        summaryMessage: () => t('forms.clientDetails.phoneNumber.validationError.notChanged'),
-        inlineMessage: ''
-      }
-    ),
   });

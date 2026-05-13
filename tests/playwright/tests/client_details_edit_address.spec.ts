@@ -17,8 +17,8 @@ test('viewing change address form, to see the expected elements', async ({ page,
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
- 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+
 
   // Expect to see the following elements
   await expect(page.locator('h2.govuk-heading-m')).toContainText(t('forms.clientDetails.address.title'));
@@ -38,7 +38,7 @@ test('viewing change address form for a closed case should display alert banner'
   await page.goto(closedCaseUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Roronoa Zoro", expectedCaseRef: "PC-6667-9089", dateReceived: "6 January 2025", badgeTexts: ['At risk of abuse', 'Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Roronoa Zoro", expectedCaseRef: "PC-6667-9089", dateReceived: "6 January 2025", badgeTexts: ['At risk of abuse', 'Third Party'] });
 
   // Expect alert banner to be visible with expected text
   await expect(alertBanner).toBeVisible();
@@ -48,7 +48,7 @@ test('viewing change address form for a closed case should display alert banner'
   await expect(errorSummary).not.toBeVisible();
 });
 
-test('unchanged fields trigger change detection error', async ({ page, i18nSetup }) => {
+test('unchanged fields should display no change warning banner', async ({ page, i18nSetup }) => {
   const saveButton = page.getByRole('button', { name: t('common.save') });
   const errorSummary = page.locator('.govuk-error-summary');
 
@@ -56,27 +56,22 @@ test('unchanged fields trigger change detection error', async ({ page, i18nSetup
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
- 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
 
   // Submit form
   await expect(saveButton).toBeVisible();
   await saveButton.click();
+  await expect(page).toHaveURL(clientDetailsUrl);
 
-  // Check GOV.UK error summary appears for change detection
-  await expect(errorSummary).toBeVisible();
-  await expect(errorSummary).toContainText(t('components.errorSummary.title'));
-  await expect(errorSummary).toContainText(t('forms.clientDetails.address.validationError.notChanged'));
+  // Notification banner should be visible
+  const banner = page.locator('.moj-alert');
+  await expect(banner).toBeVisible();
 
-  // Check alert banner is not present (as this is a validation error takes priority)
-  const alertBanner = page.locator('.mcc-alert-banner');
-  await expect(alertBanner).not.toBeVisible();
+  // Check banner text
+  await expect(banner).toContainText('No changes were made');
 
-  // Change detection error should NOT have inline field error messages
-  const addressErrorMessage = page.locator('#address-error');
-  const postcodeErrorMessage = page.locator('#postcode-error');
-  await expect(addressErrorMessage).not.toBeVisible();
-  await expect(postcodeErrorMessage).not.toBeVisible();
+  // Error summary should NOT exist
+  await expect(errorSummary).toHaveCount(0);
 });
 
 test('save button should redirect to client details when valid data submitted', async ({ page, i18nSetup }) => {
@@ -88,7 +83,7 @@ test('save button should redirect to client details when valid data submitted', 
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
 
   // Fill in valid address details (ensure they're different from any existing data)
   await addressInput.fill('123 New Street\nLondon');
@@ -111,7 +106,7 @@ test('should trigger postcode validation when 12 or more characters are entered'
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
 
   // Fill in invalid postcode filed with 13 characters
   await addressInput.fill('123 New Street\nLondon');

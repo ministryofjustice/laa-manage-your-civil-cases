@@ -177,25 +177,6 @@ describe('Client Address Schema Validation', () => {
     });
 
     describe('change detection (AC5)', () => {
-      it('should have validation errors when no changes are made', async () => {
-        const schema = validateEditClientAddress();
-        const req = createMockRequest({
-          address: '123 Main Street',
-          postcode: 'SW1A 1AA',
-          existingAddress: '123 Main Street',
-          existingPostcode: 'SW1A 1AA'
-        });
-
-        await Promise.all(schema.map(validation => validation.run(req)));
-        const errors = validationResult(req).formatWith(formatValidationError);
-
-        expect(errors.isEmpty()).to.be.false;
-
-        const changeError = errors.array().find(error => error.summaryMessage.includes(t('forms.clientDetails.address.validationError.notChanged')));
-        expect(changeError).to.exist;
-        expect(changeError?.summaryMessage).to.equal(t('forms.clientDetails.address.validationError.notChanged'));
-      });
-
       it('should pass validation when address changes', async () => {
         const schema = validateEditClientAddress();
         const req = createMockRequest({
@@ -225,33 +206,14 @@ describe('Client Address Schema Validation', () => {
 
         expect(errors.isEmpty()).to.be.true;
       });
-
-      it('should handle whitespace differences in change detection', async () => {
-        const schema = validateEditClientAddress();
-        const req = createMockRequest({
-          address: ' 123 Main Street ',
-          postcode: ' SW1A 1AA ',
-          existingAddress: '123 Main Street',
-          existingPostcode: 'SW1A 1AA'
-        });
-
-        await Promise.all(schema.map(validation => validation.run(req)));
-        const errors = validationResult(req).formatWith(formatValidationError);
-
-        // Should detect as unchanged after trimming
-        expect(errors.isEmpty()).to.be.false;
-
-        const changeError = errors.array().find(error => error.summaryMessage.includes(t('forms.clientDetails.address.validationError.notChanged')));
-        expect(changeError).to.exist;
-      });
     });
 
     describe('error structure validation', () => {
       it('should produce correctly formatted errors when used with formatValidationError', async () => {
         const schema = validateEditClientAddress();
         const req = createMockRequest({
-          address: '123 Main Street',  // No change to trigger AC5 error
-          postcode: 'SW1A 1AA',
+          address: '123 Main Street', 
+          postcode: 'SW1A 1AAFFFFFFFFFFFFFFFF', // Exceeds max length to trigger error
           existingAddress: '123 Main Street',
           existingPostcode: 'SW1A 1AA'
         });

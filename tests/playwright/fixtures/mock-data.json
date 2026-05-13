@@ -33,7 +33,7 @@
     "emailAddress": "emberhamilton@gmail.com",
     "address": "490 Oak Avenue, Stoke-on-Trent",
     "postcode": "HU1 5NT",
-    "vulnerableUser": true, 
+    "vulnerableUser": true,
     "laaReference": "3080639",
     "thirdParty": {
       "fullName": "Chris Green",
@@ -43,10 +43,14 @@
       "address": "22 Baker Street, London",
       "postcode": "NW1 6XE",
       "relationshipToClient": {
-        "selected": ["Other"]
+        "selected": [
+          "OTHER"
+        ]
       },
       "passphraseSetUp": {
-        "selected": ["Yes"],
+        "selected": [
+          "Yes"
+        ],
         "passphrase": "LetMeIn"
       }
     }
@@ -77,10 +81,14 @@
       "address": "84 Zoo Lane, Birmingham",
       "postcode": "B88 1RW",
       "relationshipToClient": {
-        "selected": ["Parent or Guardian"]
+        "selected": [
+          "PARENT_GUARDIAN"
+        ]
       },
       "passphraseSetUp": {
-        "selected": ["Yes"],
+        "selected": [
+          "Yes"
+        ],
         "passphrase": "LetMeIn"
       }
     },
@@ -107,7 +115,7 @@
     "isUrgent": true,
     "dateOfBirth": "1981-08-18T00:00:00-05:00",
     "vulnerableUser": true,
-    "phoneNumber": "0786442261",
+    "phoneNumber": "07864422613",
     "safeToCall": false,
     "announceCall": false,
     "emailAddress": "jack@young.com",
@@ -117,12 +125,14 @@
     "thirdParty": {
       "fullName": "Sarah Johnson",
       "emailAddress": "sarah@johnson.com",
-      "contactNumber": "0787123456",
+      "contactNumber": "07787123456",
       "safeToCall": true,
       "address": "45 Main Street, Sheffield",
       "postcode": "S1 2AB",
       "relationshipToClient": {
-        "selected": ["Friend or Family"]
+        "selected": [
+          "FAMILY_FRIEND"
+        ]
       },
       "passphraseSetUp": {
         "selected": ["Yes"],
@@ -164,14 +174,16 @@
       "emailAddress": "sarah@johnson.com",
       "contactNumber": "0787123456",
       "safeToCall": true,
-      "address": "49 Bull Lane, Llangefni",
-      "postcode": "LL60 6DT",
+      "address": "45 Main Street, Sheffield",
+      "postcode": "S1 2AB",
       "relationshipToClient": {
-        "selected": ["Friend or Family"]
+        "selected": [
+          "FAMILY_FRIEND"
+        ]
       },
       "passphraseSetUp": {
         "selected": ["Yes"],
-        "passphrase": "TestPass124"
+        "passphrase": "TestPass123"
       }
     },
     "clientSupportNeeds": {
@@ -203,7 +215,7 @@
     "emailAddress": "barbra@white.com",
     "address": "108 bull head road, Sheffield",
     "postcode": "G1 2LQ",
-    "laaReference":"1731666",
+    "laaReference": "1731666",
     "outcomeCode": "SPOR",
     "thirdParty": {
       "fullName": "Sarah Johnson",
@@ -213,10 +225,14 @@
       "address": "45 Main Street, Sheffield",
       "postcode": "S1 2AB",
       "relationshipToClient": {
-        "selected": ["Friend or Family"]
+        "selected": [
+          "FAMILY_FRIEND"
+        ]
       },
       "passphraseSetUp": {
-        "selected": ["Yes"],
+        "selected": [
+          "Yes"
+        ],
         "passphrase": "TestPass123"
       }
     },
@@ -232,7 +248,7 @@
     },
     "lastModified": "2025-07-06T19:00:00-05:00"
   },
-    {
+  {
     "fullName": "Katie Young",
     "caseReference": "PC-1922-1866",
     "refCode": "",
@@ -256,10 +272,14 @@
       "address": "45 Main Street, Sheffield",
       "postcode": "S1 2AB",
       "relationshipToClient": {
-        "selected": ["Friend or Family"]
+        "selected": [
+          "FAMILY_FRIEND"
+        ]
       },
       "passphraseSetUp": {
-        "selected": ["Yes"],
+        "selected": [
+          "Yes"
+        ],
         "passphrase": "TestPass123"
       }
     },
@@ -296,10 +316,14 @@
       "address": "1 Hadamard Gate, Oxford",
       "postcode": "OX1 1AW",
       "relationshipToClient": {
-        "selected": ["Other"]
+        "selected": [
+          "OTHER"
+        ]
       },
       "passphraseSetUp": {
-        "selected": ["No, client is a child or patient"]
+        "selected": [
+          "No, client is a child or patient"
+        ]
       }
     },
     "lastModified": "2025-01-08T19:00:00-05:00"
@@ -330,10 +354,14 @@
       "address": "22 Baker Street, London",
       "postcode": "NW1 6XE",
       "relationshipToClient": {
-        "selected": ["Legal adviser"]
+        "selected": [
+          "LEGAL_ADVISER"
+        ]
       },
       "passphraseSetUp": {
-        "selected": ["Yes"],
+        "selected": [
+          "Yes"
+        ],
         "passphrase": "LetMeIn"
       }
     },
@@ -364,10 +392,14 @@
       "address": "22 Baker Street, London",
       "postcode": "NW1 6XE",
       "relationshipToClient": {
-        "selected": ["Legal adviser"]
+        "selected": [
+          "LEGAL_ADVISER"
+        ]
       },
       "passphraseSetUp": {
-        "selected": ["Yes"],
+        "selected": [
+          "Yes"
+        ],
         "passphrase": "LetMeIn"
       }
     },
@@ -399,10 +431,14 @@
       "address": "22 Baker Street, London",
       "postcode": "NW1 6XE",
       "relationshipToClient": {
-        "selected": ["Legal adviser"]
+        "selected": [
+          "LEGAL_ADVISER"
+        ]
       },
       "passphraseSetUp": {
-        "selected": ["Yes"],
+        "selected": [
+          "Yes"
+        ],
         "passphrase": "Warlord of the Sea"
       }
     },
@@ -444,10 +480,14 @@
       "address": "5 Maple Avenue, Manchester",
       "postcode": "M1 2AB",
       "relationshipToClient": {
-        "selected": ["Parent or Guardian"]
+        "selected": [
+          "PARENT_GUARDIAN"
+        ]
       },
       "passphraseSetUp": {
-        "selected": ["No, client is a child or patient"]
+        "selected": [
+          "No, client is a child or patient"
+        ]
       }
     }
   },
@@ -477,10 +517,14 @@
       "address": "84 Zoo Lane, Birmingham",
       "postcode": "B88 1RW",
       "relationshipToClient": {
-        "selected": ["Legal adviser"]
+        "selected": [
+          "LEGAL_ADVISER"
+        ]
       },
       "passphraseSetUp": {
-        "selected": ["No, client is a child or patient"]
+        "selected": [
+          "No, client is a child or patient"
+        ]
       }
     },
     "clientSupportNeeds": {
@@ -508,7 +552,7 @@
     "address": "Foosha Village, East Blue",
     "postcode": "EB1 4OP",
     "laaReference": "2850581",
-    "thirdParty": {    
+    "thirdParty": {
       "fullName": "Benn Beckman",
       "emailAddress": "b.beckman@redforce.com",
       "contactNumber": "",
@@ -516,11 +560,15 @@
       "address": "Red Force Ship, Grand Line",
       "postcode": "GL7 2RB",
       "relationshipToClient": {
-        "selected": ["Legal adviser"]    
-        },   
-        "passphraseSetUp": {      
-          "selected": ["No, client is a child or patient"]    
-        }  
+        "selected": [
+          "LEGAL_ADVISER"
+        ]
+      },
+      "passphraseSetUp": {
+        "selected": [
+          "No, client is a child or patient"
+        ]
+      }
     },
     "clientSupportNeeds": {
       "bslWebcam": "Yes",
@@ -557,10 +605,14 @@
       "address": "Baratie Restaurant, East Blue",
       "postcode": "EB7 5B",
       "relationshipToClient": {
-        "selected": ["Legal adviser"]
+        "selected": [
+          "LEGAL_ADVISER"
+        ]
       },
       "passphraseSetUp": {
-        "selected": ["No, client is a child or patient"]
+        "selected": [
+          "No, client is a child or patient"
+        ]
       }
     },
     "scopeTraversal": {
@@ -577,10 +629,16 @@
     },
     "diagnosis": {
       "category": "Debt",
-      "diagnosisNode":[
-        {"node": "Debt and housing - loss of home"},
-        {"node": "Homeless or at risk of becoming homeless within 56 days"},
-        {"node": "The landlord has unlawfully evicted the client without due process"}
+      "diagnosisNode": [
+        {
+          "node": "Debt and housing - loss of home"
+        },
+        {
+          "node": "Homeless or at risk of becoming homeless within 56 days"
+        },
+        {
+          "node": "The landlord has unlawfully evicted the client without due process"
+        }
       ]
     },
     "notesHistory": [
@@ -623,10 +681,14 @@
       "address": "84 Zoo Lane, Birmingham",
       "postcode": "B88 1RW",
       "relationshipToClient": {
-        "selected": ["Legal adviser"]
+        "selected": [
+          "LEGAL_ADVISER"
+        ]
       },
       "passphraseSetUp": {
-        "selected": ["No, client is a child or patient"]
+        "selected": [
+          "No, client is a child or patient"
+        ]
       }
     },
     "clientSupportNeeds": {
@@ -661,7 +723,7 @@
       "address": "1 Hadamard Gate, Oxford",
       "postcode": "OX1 1AW",
       "relationshipToClient": {
-        "selected": ["Other"]
+        "selected": ["OTHER"]
       },
       "passphraseSetUp": {
         "selected": ["No, client is a child or patient"]

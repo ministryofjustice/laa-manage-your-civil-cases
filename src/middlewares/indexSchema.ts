@@ -28,13 +28,11 @@ export {
 } from './clientAddressSchema.js';
 
 export {
-  validateAddClientThirdParty,
-  validateEditClientThirdParty
+  validateClientThirdParty
 } from './clientThirdPartySchema.js';
 
 export {
-  validateAddClientSupportNeeds,
-  validateEditClientSupportNeeds
+  validateClientSupportNeeds
 } from './clientSupportNeedsSchema.js';
 
 export {

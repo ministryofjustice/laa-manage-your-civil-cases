@@ -1,4 +1,4 @@
-import { test } from '../fixtures/index.js';
+import { test, expect } from '../fixtures/index.js';
 import { getClientDetailsUrlByStatus, setupAuth, assertCaseDetailsHeaderPresent } from '../utils/index.js';
 import { ThirdPartyFormPage } from '../pages/ThirdPartyFormPage.js';
 
@@ -15,7 +15,7 @@ test('viewing edit third party form should display expected elements', async ({ 
   await thirdPartyPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
   // Expect to see the main elements
   await thirdPartyPage.expectPageLoaded(thirdPartyPage.getExpectedHeading());
   await thirdPartyPage.expectFormElementsVisible();
@@ -31,7 +31,7 @@ test('cancel link should navigate back to client details', async ({ page, i18nSe
   await thirdPartyPage.expectCancelNavigatesBack();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
 });
 
 test('save button should redirect to client details when valid data submitted', async ({ page, i18nSetup }) => {
@@ -67,8 +67,8 @@ test('edit third party form displays validation errors correctly', async ({ page
   await thirdPartyPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
-  
+  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+
   // Submit form with invalid data
   await thirdPartyPage.clearNameField();
   await thirdPartyPage.clickSave();
@@ -90,7 +90,7 @@ test('edit third party form displays postcode validation errors correctly', asyn
   await thirdPartyPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
 
   // Update third party details
   await thirdPartyPage.fillValidThirdPartyData({
@@ -100,7 +100,7 @@ test('edit third party form displays postcode validation errors correctly', asyn
     relationshipValue: 'PARENT_GUARDIAN',
     safeToCall: true,
     hasPassphrase: false,
-    postcode: "TEST567890123" // Invalid postcode input
+    postcode: "TEST567890123" // Invalid postcode input 
   });
 
   // Submit the form
@@ -116,21 +116,21 @@ test('edit third party form displays postcode validation errors correctly', asyn
   await thirdPartyPage.expectPostcodeFieldError();
 });
 
-test('unchanged fields trigger change detection error', async ({ page, i18nSetup }) => {
+test('unchanged fields show "no changes" banner and redirect', async ({ page }) => {
   const thirdPartyPage = ThirdPartyFormPage.forEdit(page, clientDetailsUrl);
 
   // Navigate to the edit third party form
   await thirdPartyPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
 
-  // Submit form without making any changes
-  // (assuming the form loads with existing third party data)
-  await thirdPartyPage.clickSave();
+  // Click save without making any changes
+  await Promise.all([page.waitForURL(clientDetailsUrl),thirdPartyPage.clickSave()]);
 
-  // Check GOV.UK error summary appears for change detection
-  await thirdPartyPage.expectErrorSummaryVisible();
-  // Since MSW might return empty data, we just check that some validation error appears
-  // rather than checking for a specific "no changes" message
+  // Check "no changes" banner appears on client details page
+  await expect(page.getByText('No changes were made')).toBeVisible();
+
+  // Check error summary is not present
+  await expect(page.locator('.govuk-error-summary')).not.toBeVisible();
 });

@@ -151,5 +151,24 @@ describe('Edit Client Name Controller', () => {
       expect(redirectStub.called).to.be.false;
       expect(renderStub.calledWith('case_details/edit-client-name.njk')).to.be.true;
     });
+
+    it('should set warning banner in session and redirect when no change is made', async () => {
+      // Arrange
+      req.session = {} as any;
+      req.body = {
+        fullName: 'John Doe',
+        existingFullName: 'John Doe'
+      };
+
+      // Act
+      await postEditClientName(req as RequestWithMiddleware, res as Response, next);
+
+      expect(redirectStub.calledOnce).to.be.true;
+      expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
+
+      expect((req.session as any).noChangeWarningCache.noChangeWarningBanner).to.be.true;
+
+      expect(apiServiceUpdateStub.called).to.be.false;
+    });
   });
 });

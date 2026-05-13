@@ -21,6 +21,11 @@ export interface SplitCaseCache {
   currentProvider?: string;
 }
 
+// Interface for no change warning banner data
+export interface NoChangeWarningCache {
+  noChangeWarningBanner: boolean;
+}
+
 // Extend the Express session interface to support dynamic namespaces
 declare module 'express-session' {
   interface SessionData extends Record<string, Record<string, string> | string | undefined> {

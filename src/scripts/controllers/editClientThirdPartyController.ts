@@ -1,13 +1,13 @@
 import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
-import { 
-  handleGetEditForm, 
-  extractFormFields, 
-  handleEditThirdPartyValidationErrors, 
-  prepareThirdPartyData, 
+import {
+  handleGetEditForm,
+  extractFormFields,
+  handleEditThirdPartyValidationErrors,
+  prepareThirdPartyData,
   devLog,
-  devError, 
-  createProcessedError, 
+  devError,
+  createProcessedError,
   safeString,
   isRecord,
   hasProperty,
@@ -16,7 +16,8 @@ import {
   storeOriginalFormData,
   clearSessionData,
   booleanToString,
-  validCaseReference
+  validCaseReference,
+  handleNoChangeRedirect
 } from '#src/scripts/helpers/index.js';
 import { apiService } from '#src/services/apiService.js';
 import { HTTP } from '#src/services/api/base/constants.js';
@@ -84,7 +85,7 @@ export async function getEditClientThirdParty(req: Request, res: Response, next:
       if (!isRecord(thirdPartyData)) {
         return {};
       }
-      
+
       // Transform nested structure to flat structure using safe extractors
       const flatData = extractThirdPartyData(thirdPartyData);
 
@@ -117,7 +118,7 @@ export async function postEditClientThirdParty(req: Request, res: Response, next
   }
 
   const formFields = extractFormFields(req.body, [
-    'thirdPartyFullName', 
+    'thirdPartyFullName',
     'thirdPartyEmailAddress',
     'thirdPartyContactNumber',
     'thirdPartySafeToCall',
@@ -139,15 +140,30 @@ export async function postEditClientThirdParty(req: Request, res: Response, next
     // Prepare the third party data for the API
     const thirdPartyData = prepareThirdPartyData(formFields);
 
+    // Retrieve original form data
+    const original = req.session.thirdPartyOriginal;
+
+    if (isRecord(original)) {
+      const existing = prepareThirdPartyData(original);
+      const fields = [
+        {
+          current: thirdPartyData,
+          existing: existing
+        }
+      ];
+
+      if (handleNoChangeRedirect(req, res, caseReference, fields)) return;
+    }
+
     // Call the API to update third party contact
     const response = await apiService.updateThirdPartyContact(req.axiosMiddleware, caseReference, thirdPartyData);
 
     if (response.status === 'success') {
       devLog(`Third party contact successfully updated for case: ${caseReference}`);
-      
+
       // Clear session data after successful update
       clearSessionData(req, 'thirdPartyOriginal');
-      
+
       res.redirect(`/cases/${caseReference}/client-details`);
     } else {
       devError(`Failed to update third party contact for case: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);

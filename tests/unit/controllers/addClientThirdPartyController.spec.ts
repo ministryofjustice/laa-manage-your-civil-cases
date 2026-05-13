@@ -25,7 +25,7 @@ import {
 import { apiService } from '#src/services/apiService.js';
 // Import to get global type declarations for axiosMiddleware
 import '#utils/server/axiosSetup.js';
-import { validateAddClientThirdParty } from '#src/middlewares/clientThirdPartySchema.js';
+import { validateClientThirdParty } from '#src/middlewares/clientThirdPartySchema.js';
 import { ValidationChain } from '#node_modules/express-validator/lib/index.js';
 
 // Define the RequestWithMiddleware interface for testing
@@ -177,7 +177,7 @@ describe('Add Client Third Party Controller', () => {
       // Arrange
       req.body = { thirdPartyFullName: '' }; // Empty name should trigger validation
 
-      await runSchema(req as any, validateAddClientThirdParty());
+      await runSchema(req as any, validateClientThirdParty());
 
       // Stub a successful getClientDetails response so handleAddThirdPartyValidationErrors thinks it has info
       apiServiceGetStub.resolves({
@@ -199,7 +199,7 @@ describe('Add Client Third Party Controller', () => {
         thirdPartyEmailAddress: 'invalid-email' // Invalid email format
       }; 
 
-      await runSchema(req as any, validateAddClientThirdParty());
+      await runSchema(req as any, validateClientThirdParty());
 
       // Stub a successful getClientDetails response so handleAddThirdPartyValidationErrors thinks it has info
       apiServiceGetStub.resolves({
@@ -221,7 +221,7 @@ describe('Add Client Third Party Controller', () => {
         thirdPartyContactNumber: '007' // Invalid phone number format
       }; 
 
-      await runSchema(req as any, validateAddClientThirdParty());
+      await runSchema(req as any, validateClientThirdParty());
 
       // Stub a successful getClientDetails response so handleAddThirdPartyValidationErrors thinks it has info
       apiServiceGetStub.resolves({
@@ -243,7 +243,7 @@ describe('Add Client Third Party Controller', () => {
         thirdPartyPassphraseSetUp: '' // Empty
       }; 
 
-      await runSchema(req as any, validateAddClientThirdParty());
+      await runSchema(req as any, validateClientThirdParty());
 
       // Stub a successful getClientDetails response so handleAddThirdPartyValidationErrors thinks it has info
       apiServiceGetStub.resolves({
