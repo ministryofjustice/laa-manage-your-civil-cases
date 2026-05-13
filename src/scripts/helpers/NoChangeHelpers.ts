@@ -1,0 +1,38 @@
+
+import type { Request, Response } from 'express';
+import { setSessionValue } from '#src/scripts/helpers/sessionHelpers.js';
+import { safeString } from '#src/scripts/helpers/dataTransformers.js';
+
+/**
+ * Handles no changes made to a form field.
+ * If the current value matches the existing value, a warning banner is set
+ * in session storage and the user is redirected back to the client details page.
+ *
+ * @param {Request} req - The Express request object containing route params and session.
+ * @param {Response} res - The Express response object used to perform the redirect.
+ * @param {unknown} currentValue - The value submitted from the form.
+ * @param {unknown} existingValue - The original value before editing.
+ * @returns {boolean} Returns true if a redirect was triggered due to no changes, otherwise false.
+ */
+export function handleNoChangeRedirect(
+  req: Request,
+  res: Response,
+  currentValue: unknown,
+  existingValue: unknown
+): boolean {
+  const current = safeString(currentValue).trim();
+  const existing = safeString(existingValue).trim();
+
+  if (current === existing) {
+    setSessionValue(req, 'warningBanner', {
+      variant: 'warning',
+      title: 'No changes were made',
+      dismissible: true
+    });
+
+    res.redirect(`/cases/${req.params.caseReference}/client-details`);
+    return true;
+  }
+
+  return false;
+}

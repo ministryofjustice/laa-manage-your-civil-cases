@@ -94,6 +94,12 @@ export abstract class BaseEditFormPage {
     return this.page.locator('.mcc-alert-banner');
   }
 
+
+get warningBanner(): Locator {
+  return this.page.locator('.moj-alert');
+}
+
+
   // Common actions
   /**
    * Navigates to the form URL
@@ -187,6 +193,15 @@ export abstract class BaseEditFormPage {
     await expect(field).toHaveClass(/govuk-input--error/);
   }
 
+ /**
+   * Asserts that the warning banner is visable with the expected message
+   */
+async expectWarningBanner(message: string): Promise<void> {
+  await expect(this.warningBanner).toBeVisible();
+  await expect(this.warningBanner).toContainText(message);
+}
+
+
   /**
    * Asserts that the form submission was successful
    */
@@ -197,3 +212,4 @@ export abstract class BaseEditFormPage {
   // Abstract method that each specific page must implement
   abstract getExpectedHeading(): string;
 }
+

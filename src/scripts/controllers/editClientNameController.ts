@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
-import { handleGetEditForm, handlePostEditForm, extractFormFields } from '#src/scripts/helpers/index.js';
+import { handleGetEditForm, handlePostEditForm, extractFormFields, handleNoChangeRedirect, t } from '#src/scripts/helpers/index.js';
 
 /**
  * Renders the edit client name form for a given case reference.
@@ -27,6 +27,18 @@ export async function getEditClientName(req: Request, res: Response, next: NextF
  */
 export async function postEditClientName(req: Request, res: Response, next: NextFunction): Promise<void> {
   const formFields = extractFormFields(req.body, ['fullName', 'existingFullName']);
+
+  
+
+const handled = handleNoChangeRedirect(
+  req,
+  res,
+  formFields.fullName,
+  formFields.existingFullName
+);
+
+if (handled) return;
+
 
   await handlePostEditForm(req, res, next, {
     templatePath: 'case_details/edit-client-name.njk',

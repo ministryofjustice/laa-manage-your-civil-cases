@@ -5,6 +5,7 @@
 {% from "components/caseDetailsHeaderComponent.njk" import caseDetailsHeaderComponent %}
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
 {% from "components/alertBannerComponent.njk" import alertBannerComponent %}
+{% from "moj/components/alert/macro.njk" import mojAlert %}
 
 {% block backLink %}
   {{ govukBackLink({
@@ -31,6 +32,13 @@
   {% else %}
     {{ alertBannerComponent(client) }}
   {% endif %}
+{% if warningBanner %}
+  {{ mojAlert({
+    variant: warningBanner.variant,
+    title: warningBanner.title,
+    dismissible: warningBanner.dismissible
+  }) }}
+{% endif %}
 {% endblock %}
 
 {% block pageContent %}
