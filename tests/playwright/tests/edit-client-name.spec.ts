@@ -85,7 +85,7 @@ test.describe('Edit Client Name', () => {
     await expect(editNamePage.alertBanner).not.toBeVisible();
   });
 
-  test('unchanged name triggers change detection error', async ({ pages, i18nSetup }) => {
+  test('unchanged name triggers no change warning', async ({ pages, i18nSetup }) => {
     const editNamePage = pages.editName;
     await editNamePage.submitWithoutChanges();
     await editNamePage.expectSuccessfulSubmission();

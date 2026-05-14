@@ -1,13 +1,15 @@
 import type { Request, Response, NextFunction } from 'express';
 import { validationResult, type Result } from 'express-validator';
-import { safeString, handleGetEditForm, isRecord, handlePostEditForm, extractAndConvertDateFields, extractFormFields } from '#src/scripts/helpers/index.js';
+import { safeString, handleGetEditForm, isRecord, handlePostEditForm, extractAndConvertDateFields, extractFormFields, handleNoChangeRedirect, extractDateFormData } from '#src/scripts/helpers/index.js';
 import {
   formatValidationError,
   type ValidationErrorData
 } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 import {
   parseDateString,
-  handleDateOfBirthValidationErrors
+  handleDateOfBirthValidationErrors,
+  isRequestBodyWithDates,
+  extractOriginalDateData
 } from '#src/scripts/helpers/ValidationDateHelpers.js';
 
 /**
@@ -75,11 +77,29 @@ export async function postEditClientDateOfBirth(req: Request, res: Response, nex
     ]);
 
     const formFields = extractFormFields(req.body, [
-      'dateOfBirth-day', 
-      'dateOfBirth-month', 
+      'dateOfBirth-day',
+      'dateOfBirth-month',
       'dateOfBirth-year'
     ]);
 
+    const bodyWithDates = isRequestBodyWithDates(req.body) ? req.body : {};
+
+    const formData = extractDateFormData(bodyWithDates);
+    const originalData = extractOriginalDateData(bodyWithDates);
+
+    const currentDob = `${formData.day}-${formData.month}-${formData.year}`;
+    const originalDob = `${originalData.day}-${originalData.month}-${originalData.year}`;
+
+    if (!(originalDob === '---')) {
+    const handled = handleNoChangeRedirect(
+      req,
+      res,
+      currentDob,
+      originalDob
+    );
+  
+    if (handled) return;
+  }
     await handlePostEditForm(req, res, next, {
       templatePath: 'case_details/edit-date-of-birth.njk',
       fields: [
@@ -91,7 +111,8 @@ export async function postEditClientDateOfBirth(req: Request, res: Response, nex
           day: formFields['dateOfBirth-day'],
           year: formFields['dateOfBirth-year']
         }
-      }    });
+      }
+    });
 
   } catch (error) {
     next(error);

@@ -15,8 +15,8 @@ test('viewing edit date of birth form should display expected elements', async (
   await editDateOfBirthPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
- 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+
 
   // Assert all main elements are visible
   await editDateOfBirthPage.assertMainElementsVisible();
@@ -27,8 +27,18 @@ test('cancel link should navigate back to client details', async ({ page, i18nSe
   // Test cancel navigation functionality
   await editDateOfBirthPage.expectCancelNavigatesBack();
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(editDateOfBirthPage.getPage, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(editDateOfBirthPage.getPage, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
 
+
+});
+
+test('unchanged date of birth triggers no change warning', async ({ pages, i18nSetup }) => {
+  const editDateOfBirthPage = pages.editDateOfBirth;
+  await editDateOfBirthPage.navigate();
+
+  await editDateOfBirthPage.clickSave();
+  await editDateOfBirthPage.expectSuccessfulSubmission();
+  await editDateOfBirthPage.expectWarningBanner('No changes were made');
 
 });
 
@@ -45,7 +55,7 @@ test('save button should redirect to client details when no validation errors', 
   await expect(page).toHaveURL(clientDetailsUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(editDateOfBirthPage.getPage, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(editDateOfBirthPage.getPage, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
 });
 
 test('date of birth edit page should be accessible', {
