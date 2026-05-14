@@ -13,6 +13,10 @@ import { initializeI18nextSync } from '#src/scripts/helpers/index.js';
 import indexRouter from '#routes/index.js';
 import livereload from 'connect-livereload';
 import { buildSessionConfig } from '#utils/server/session.js';
+import { Forge } from '@ministryofjustice/hmpps-forge/core';
+import { ExpressFrameworkAdapter } from '@ministryofjustice/hmpps-forge/express-nunjucks';
+import { govukComponents } from '@ministryofjustice/hmpps-forge/govuk-components'
+import { mojComponents } from '@ministryofjustice/hmpps-forge/moj-components'
 
 const TRUST_FIRST_PROXY = 1;
 
@@ -76,7 +80,16 @@ const createApp = async (): Promise<express.Application> => {
 	app.use(setupLocaleMiddleware);
 	
 	// Set up Nunjucks as the template engine
-	nunjucksSetup(app);
+	const nunjucksEnv = nunjucksSetup(app);
+
+	// Set up Forge
+	const forge = new Forge({
+		frameworkAdapter: ExpressFrameworkAdapter.configure({ nunjucksEnv }),
+	})
+	forge.registerGlobalComponents(govukComponents)
+	forge.registerGlobalComponents(mojComponents)
+	app.use(express.urlencoded({ extended: true }));
+	app.use(forge.getRouter() as express.Router);
 
 	// Set up application-specific configurations
 	setupConfig(app);

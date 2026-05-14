@@ -10,9 +10,9 @@ import { formatDate, formatLongFormDate, formatDateLongMonth, nunjucksT, capital
  * the directories where Nunjucks should look for template files.
  *
  * @param {Application} app - The Express application instance.
- * @returns {void} This function does not return a value; it configures Nunjucks for the provided app.
+ * @returns {nunjucks.Environment} The configured Nunjucks environment.
  */
-export const nunjucksSetup = (app: Application): void => {
+export const nunjucksSetup = (app: Application): nunjucks.Environment => {
   const appInstance = app;
   appInstance.set('view engine', 'njk');
 
@@ -56,4 +56,6 @@ export const nunjucksSetup = (app: Application): void => {
 
   // Add global variables
   nunjucksEnv.addGlobal('t', nunjucksT);
+  
+  return nunjucksEnv;
 };

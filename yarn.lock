@@ -798,6 +798,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ministryofjustice/hmpps-forge@npm:0.1.0-alpha.5":
+  version: 0.1.0-alpha.5
+  resolution: "@ministryofjustice/hmpps-forge@npm:0.1.0-alpha.5"
+  dependencies:
+    express: "npm:^4.21.0 || ^5.0.0"
+    http-errors: "npm:^2.0.0"
+    nunjucks: "npm:^3.2.4"
+    zod: "npm:^4.1.5"
+  checksum: 10c0/70f0e99bba64a1c5a03d64380acffe28077184f4a17dfeba226f3ab20ecda360110909b7d7826fbbcad517ac8eb9657e97005dd13c9618d1ce06381f7ca5af79
+  languageName: node
+  linkType: hard
+
 "@mswjs/interceptors@npm:^0.41.3":
   version: 0.41.6
   resolution: "@mswjs/interceptors@npm:0.41.6"
@@ -3672,7 +3684,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express@npm:^5.2.0":
+"express@npm:^4.21.0 || ^5.0.0, express@npm:^5.2.0":
   version: 5.2.1
   resolution: "express@npm:5.2.1"
   dependencies:
@@ -4978,6 +4990,7 @@ __metadata:
     "@axe-core/playwright": "npm:^4.11.3"
     "@eslint/js": "npm:^10.0.1"
     "@ministryofjustice/frontend": "npm:^9.0.0"
+    "@ministryofjustice/hmpps-forge": "npm:0.1.0-alpha.5"
     "@playwright/test": "npm:^1.60.0"
     "@types/chai": "npm:^5.2.3"
     "@types/compression": "npm:^1.7.5"
@@ -7923,5 +7936,12 @@ __metadata:
   version: 0.1.0
   resolution: "yocto-queue@npm:0.1.0"
   checksum: 10c0/dceb44c28578b31641e13695d200d34ec4ab3966a5729814d5445b194933c096b7ced71494ce53a0e8820685d1d010df8b2422e5bf2cdea7e469d97ffbea306f
+  languageName: node
+  linkType: hard
+
+"zod@npm:^4.1.5":
+  version: 4.4.3
+  resolution: "zod@npm:4.4.3"
+  checksum: 10c0/7ea31b558e88f9faf44f31dd185e2e1cbf51fed3081787fb96cc2534749b50c0acfc6da7f0922a7353ed092dd358c7d50c28ea96c94d04af64191bd33152eca3
   languageName: node
   linkType: hard
