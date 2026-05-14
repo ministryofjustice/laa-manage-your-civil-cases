@@ -4,7 +4,7 @@ import yourCasesRouter from './yourCases.js';
 import caseDetailsRouter from './caseDetails.js';
 import editClientDetailsRouter from './editClientDetails.js';
 import searchRouter from './search.js';
-import loginRouter from './login.js';
+import loginAndLogoutRouter from './loginAndLogout.js';
 import { requireAuth } from '#src/middlewares/indexSetUp.js';
 import { devError, extractErrorMessage } from '#src/scripts/helpers/index.js';
 import { HTTP } from '#src/services/api/base/constants.js';
@@ -18,10 +18,10 @@ router.get('/', requireAuth, (req: Request, res: Response): void => {
 });
 
 // Mount the AuthN route
-router.use('/auth', loginRouter);
+router.use('/auth', loginAndLogoutRouter);
 
 // Logout route at root level (no auth required)
-router.get('/logout', loginRouter);
+router.get('/auth/logout', loginAndLogoutRouter);
 
 // Mount the cases routes (auth required)
 router.use('/cases', requireAuth, yourCasesRouter);

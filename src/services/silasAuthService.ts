@@ -4,7 +4,6 @@ import type { SilasTokenExchangeResult, AccessTokenClaims } from '#types/auth-ty
 
 const LOGIN_RESPONSE_MODE = 'query';
 const OIDC_SCOPES = new Set(['openid', 'profile', 'offline_access']);
-const PROVIDER_IDENTITY_CHECK_PATH = `${process.env.API_PREFIX ?? '/cla_provider/api/v1'}/case?only=new&page=1&page_size=1`;
 
 /**
  * Returns a lazily initialized MSAL confidential client instance.
@@ -178,39 +177,4 @@ export async function exchangeSilasCodeForToken(code: string): Promise<SilasToke
     name: tokenResult.account?.name,
     oid: typeof claims.oid === 'string' ? claims.oid : tokenResult.account?.localAccountId,
   };
-}
-
-
-/**
- * Guardrail check for provider identity mapping/authorization.
- *
- * Why this exists:
- * - A user can be successfully authenticated by Entra/SiLAS but still not be linked/authorized as an MCC provider in backend data.
- * - We verify that access immediately after token exchange so login fails early with a specific, actionable error path.
- *
- * Why this endpoint:
- * - Uses an existing low-cost provider API request with minimal pagination.
- * - 401/403 is treated as a mapping/authorization failure.
- *
- * @param {string} accessToken Access token used for provider identity verification.
- * @returns {Promise<void>}
- */
-export async function verifySilasProviderIdentity(accessToken: string): Promise<void> {
-  const endpoint = `${config.api.baseUrl}${PROVIDER_IDENTITY_CHECK_PATH}`;
-
-  const response = await fetch(endpoint, {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-
-  if (response.status === 401 || response.status === 403) {
-    throw new SilasIdentityMappingError('SILAS identity is not authorized for provider access');
-  }
-
-  if (!response.ok) {
-    throw new Error(`Failed provider identity verification: ${response.status} ${response.statusText}`);
-  }
 }
