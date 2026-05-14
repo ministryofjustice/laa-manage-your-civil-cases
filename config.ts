@@ -46,7 +46,7 @@ const config: Config = {
     cookie: {
       secure: process.env.NODE_ENV === 'production',  // HTTPS only in production
       httpOnly: true,                                 // Prevent XSS attacks
-      sameSite: 'lax' as const,                       // OAuth2: allow POST from SILAS but protect against CSRF in other contexts
+      sameSite: 'lax' as const,                       // OAuth2: allow POST from SiLAS but protect against CSRF in other contexts
       maxAge: 1000 * 60 * 60 * 24                     // 24 hours session duration
     }
   },
@@ -86,7 +86,7 @@ const config: Config = {
     auth_token: process.env.REDIS_AUTH_TOKEN,
     tls_enabled: process.env.REDIS_TLS_ENABLED === 'true'
   },
-  // SILAS / Microsoft Entra configuration
+  // SiLAS / Microsoft Entra configuration
   silas: {
     tenantId: process.env.ENTRA_TENANT_ID ?? '',
     clientId: process.env.ENTRA_CLIENT_ID ?? '',

@@ -3,7 +3,7 @@ import '#src/scripts/helpers/sessionHelpers.js';
 
 /**
  * Authentication middleware to check if user is logged in
- * Redirects to entra login page if no valid SiLAS session token is found or the token is expired
+ * Redirects to Entra login page if no valid SiLAS session token is found or the token is expired
  * @param {Request} req Express request object
  * @param {Response} res Express response object
  * @param {NextFunction} next Express next function
@@ -13,7 +13,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction): vo
   const hasValidToken = silasAuth !== undefined && silasAuth.expiresAt > Date.now();
 
   if (!hasValidToken) {
-    // User is not authenticated - redirect to entra login
+    // User is not authenticated - redirect to Entra login
     res.redirect('/auth');
     return;
   }
