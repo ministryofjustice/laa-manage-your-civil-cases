@@ -17,6 +17,7 @@ import { Forge } from '@ministryofjustice/hmpps-forge/core';
 import { ExpressFrameworkAdapter } from '@ministryofjustice/hmpps-forge/express-nunjucks';
 import { govukComponents } from '@ministryofjustice/hmpps-forge/govuk-components'
 import { mojComponents } from '@ministryofjustice/hmpps-forge/moj-components'
+import feedbackPackage from '#src/journeys/my-journey/index.js';
 
 const TRUST_FIRST_PROXY = 1;
 
@@ -88,6 +89,7 @@ const createApp = async (): Promise<express.Application> => {
 	})
 	forge.registerGlobalComponents(govukComponents)
 	forge.registerGlobalComponents(mojComponents)
+	forge.registerPackage(feedbackPackage);
 	app.use(express.urlencoded({ extended: true }));
 	app.use(forge.getRouter() as express.Router);
 
