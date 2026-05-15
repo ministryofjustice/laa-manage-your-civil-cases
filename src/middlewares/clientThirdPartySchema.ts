@@ -158,31 +158,6 @@ export const validateAddClientThirdParty = (): ReturnType<typeof checkSchema> =>
  * Extends the add validation with session-based change detection to ensure modifications have been made.
  * @returns {Error} Validation schema for express-validator
  */
-export const validateEditClientThirdParty = (): ReturnType<typeof checkSchema> => checkSchema({
-    // Include all base validation rules
-    ...clientThirdPartyBaseSchema,
-    
-    // Add session-based change detection at the end (consistent with other edit schemas)
-    notChanged: createSessionChangeDetectionValidator(
-      [
-        'thirdPartyFullName',
-        'thirdPartyEmailAddress', 
-        'thirdPartyContactNumber',
-        'thirdPartySafeToCall',
-        'thirdPartyAddress',
-        'thirdPartyPostcode',
-        'thirdPartyRelationshipToClient',
-        'thirdPartyPassphraseSetUp',
-        'thirdPartyPassphrase'
-      ],
-      'thirdPartyOriginal',
-      {
-        /**
-         * Returns the summary message for unchanged third party details.
-         * @returns {string} Localized validation error message
-         */
-        summaryMessage: () => t('forms.clientDetails.thirdParty.validationError.notChanged'),
-        inlineMessage: ''
-      }
-    ),
-  });
+
+export const validateEditClientThirdParty = (): ReturnType<typeof checkSchema> =>
+  checkSchema(clientThirdPartyBaseSchema);

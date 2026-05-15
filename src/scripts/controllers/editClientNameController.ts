@@ -28,21 +28,10 @@ export async function getEditClientName(req: Request, res: Response, next: NextF
 export async function postEditClientName(req: Request, res: Response, next: NextFunction): Promise<void> {
   const formFields = extractFormFields(req.body, ['fullName', 'existingFullName']);
 
-  
-
-const handled = handleNoChangeRedirect(
-  req,
-  res,
-  formFields.fullName,
-  formFields.existingFullName
-);
-
-if (handled) return;
-
-
   await handlePostEditForm(req, res, next, {
     templatePath: 'case_details/edit-client-name.njk',
     fields: [{ name: 'fullName', value: formFields.fullName, existingValue: formFields.existingFullName }],
-    apiUpdateData: { full_name: formFields.fullName }
+    apiUpdateData: { full_name: formFields.fullName },
+    enableNoChangeRedirect: true
   });
 }

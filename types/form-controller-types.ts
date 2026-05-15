@@ -50,4 +50,5 @@ export interface PostFormOptions {
   templatePath: string;
   fields: FormField[];
   apiUpdateData: Record<string, unknown>;
+  enableNoChangeRedirect?: boolean;
 }

@@ -35,6 +35,7 @@ test('cancel link should navigate back to client details', async ({ page, i18nSe
 test('unchanged date of birth triggers no change warning', async ({ pages, i18nSetup }) => {
   const editDateOfBirthPage = pages.editDateOfBirth;
   await editDateOfBirthPage.navigate();
+  await editDateOfBirthPage.populateOriginalDateFields('18', '08', '1981');
 
   await editDateOfBirthPage.clickSave();
   await editDateOfBirthPage.expectSuccessfulSubmission();

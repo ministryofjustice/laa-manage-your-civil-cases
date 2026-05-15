@@ -14,16 +14,19 @@ import { safeString } from '#src/scripts/helpers/dataTransformers.js';
  * @param {unknown} existingValue - The original value before editing.
  * @returns {boolean} Returns true if a redirect was triggered due to no changes, otherwise false.
  */
+
 export function handleNoChangeRedirect(
   req: Request,
   res: Response,
-  currentValue: unknown,
-  existingValue: unknown
+  fields: Array<{ current: unknown; existing: unknown }>
 ): boolean {
-  const current = safeString(currentValue).trim();
-  const existing = safeString(existingValue).trim();
+  const noChanges = fields.every(field => {
+    const current = safeString(field.current).trim();
+    const existing = safeString(field.existing).trim();
+    return current === existing;
+  });
 
-  if (current === existing) {
+  if (noChanges) {
     setSessionValue(req, 'warningBanner', {
       variant: 'warning',
       title: 'No changes were made',

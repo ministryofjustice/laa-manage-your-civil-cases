@@ -28,20 +28,10 @@ export async function getEditClientEmailAddress(req: Request, res: Response, nex
 export async function postEditClientEmailAddress(req: Request, res: Response, next: NextFunction): Promise<void> {
   const formFields = extractFormFields(req.body, ['emailAddress', 'existingEmailAddress']);
 
-  if (!(formFields.existingEmailAddress === '')) {
-    const handled = handleNoChangeRedirect(
-      req,
-      res,
-      formFields.emailAddress,
-      formFields.existingEmailAddress
-    );
-    
-    if (handled) return;
-  }
-
   await handlePostEditForm(req, res, next, {
     templatePath: 'case_details/edit-client-email-address.njk',
     fields: [{ name: 'emailAddress', value: formFields.emailAddress, existingValue: formFields.existingEmailAddress }],
-    apiUpdateData: { email: formFields.emailAddress }
+    apiUpdateData: { email: formFields.emailAddress },
+    enableNoChangeRedirect: true
   });
 }
