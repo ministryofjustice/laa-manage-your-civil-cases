@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
-import { handleGetEditForm, handlePostEditForm, extractFormFields } from '#src/scripts/helpers/index.js';
+import { handleGetEditForm, handlePostEditForm, extractFormFields, handleNoChangeRedirect } from '#src/scripts/helpers/index.js';
 
 /**
  * Renders the edit client phone number form for a given case reference.
@@ -36,7 +36,17 @@ export async function postEditClientPhoneNumber(req: Request, res: Response, nex
 
   const safeToContact = formFields.safeToCall === 'true' ? 'SAFE' : 'DONT_CALL';
   const announceCall = formFields.announceCall === 'true';
+
+  if (!(formFields.existingPhoneNumber === '')) {
+  const handled = handleNoChangeRedirect(
+    req,
+    res,
+    formFields.phoneNumber,
+    formFields.existingPhoneNumber
+  );
   
+  if (handled) return;
+}
   await handlePostEditForm(req, res, next, {
     templatePath: 'case_details/edit-client-phone-number.njk',
     fields: [

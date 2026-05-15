@@ -94,50 +94,6 @@ test('phoneNumber is not valid and correct validation errors display', async ({ 
   await expect(errorLinkSafeToCall).not.toBeVisible();
 });
 
-test('safeToCall & phoneNumber & announceCall not changed and correct validation errors displayed', async ({ page, i18nSetup }) => {
-  const saveButton = page.getByRole('button', { name: t('common.save') });
-  const errorSummary = page.locator('.govuk-error-summary');
-
-  // Navigate to the `/change/phone-number`
-  await page.goto(visitUrl);
-
-  // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
-
-  // Wait for the form to load with existing data
-  await page.waitForLoadState('networkidle');
-
-  // Navigate to the `/change/phone-number`
-  await page.goto(visitUrl);
-
-  // Wait for the form to load with existing data
-  await page.waitForLoadState('networkidle');
-
-  // Find and click the save button without making any changes
-  // (assuming the form loads with existing client data)
-  await expect(saveButton).toBeVisible();
-  await saveButton.click();
-
-  // Check GOV.UK error summary appears
-  await expect(errorSummary).toBeVisible();
-
-  // Check for either "not changed" error or "required field" error depending on data state
-  // If the page loads with existing data, we should see "not changed"
-  // If the page loads empty, we should see "required field"
-  const errorText = await errorSummary.textContent();
-  const hasNotChangedError = errorText?.includes(t('forms.clientDetails.phoneNumber.validationError.notChanged'));
-  const hasRequiredError = errorText?.includes(t('forms.clientDetails.phoneNumber.validationError.notEmpty'));
-
-  // Assert that we get one of the expected errors
-  if (hasNotChangedError) {
-    await expect(errorSummary).toContainText(t('forms.clientDetails.phoneNumber.validationError.notChanged'));
-  } else if (hasRequiredError) {
-    await expect(errorSummary).toContainText(t('forms.clientDetails.phoneNumber.validationError.notEmpty'));
-  } else {
-    throw new Error(`Expected either "not changed" or "required field" error, but got: ${errorText}`);
-  }
-});
-
 test('save button should redirect to client details when valid data submitted', async ({ page, i18nSetup }) => {
   const phoneInput = page.locator('#phoneNumber');
   const safeToCallRadios = page.locator('[name="safeToCall"]');
@@ -161,6 +117,40 @@ test('save button should redirect to client details when valid data submitted', 
   // Should redirect to client details page
   await expect(page).toHaveURL(clientDetailsUrl);
 });
+
+
+test('shows warning banner when no changes are made', async ({ page, i18nSetup }) => {
+  const phoneInput = page.locator('#phoneNumber');
+  const saveButton = page.getByRole('button', { name: t('common.save') });
+
+  // Go to edit page
+  await page.goto(visitUrl);
+
+  await assertCaseDetailsHeaderPresent(page, {
+    withMenuButtons: false,
+    expectedName: "Jack Youngs",
+    expectedCaseRef: "PC-1922-1879",
+    dateReceived: "7 July 2025",
+    badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party']
+  });
+
+  await page.waitForLoadState('networkidle');
+  const existingPhone = await phoneInput.inputValue();
+
+  // Submit without changing the phone number
+  await phoneInput.fill(existingPhone);
+  await saveButton.click();
+
+  await expect(page).toHaveURL(clientDetailsUrl);
+
+  // Assert warning banner appears
+  const warningBanner = page.locator('.moj-alert'); 
+  await expect(warningBanner).toBeVisible();
+
+  // Check warning banner contains correct text
+  await expect(warningBanner).toContainText('No changes were made');
+});
+
 
 test('phone number edit page should be accessible', {
   tag: '@accessibility',
