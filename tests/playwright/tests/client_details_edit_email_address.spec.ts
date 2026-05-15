@@ -30,6 +30,30 @@ test('change email address form displays validation errors correctly', async ({ 
   await editEmailPage.assertInvalidEmailValidation('JackYoungs.com');
 });
 
+test('shows warning banner when email is not changed', async ({ page, i18nSetup }) => {
+  const editEmailPage = new EditEmailPage(page);
+
+  await editEmailPage.navigate();
+
+  await assertCaseDetailsHeaderPresent(page, {
+    withMenuButtons: false,
+    expectedName: "Jack Youngs",
+    expectedCaseRef: "PC-1922-1879",
+    dateReceived: "7 July 2025",
+    badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party']
+  });
+
+  await editEmailPage.waitForLoad();
+
+  await editEmailPage.submitUnchangedEmail();
+
+  // assert redirect
+  await editEmailPage.expectSuccessfulSubmission();
+
+  // assert warning banner 
+  await editEmailPage.expectWarningBanner('No changes were made');
+});
+
 test('email address edit page should be accessible', {
   tag: '@accessibility',
 }, async ({ page, checkAccessibility }) => {

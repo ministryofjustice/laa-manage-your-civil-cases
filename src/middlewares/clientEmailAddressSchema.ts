@@ -22,15 +22,4 @@ export const validateEditClientEmailAddress = (): ReturnType<typeof checkSchema>
         })
       },
     },
-    notChanged: createChangeDetectionValidator(
-      [{ current: 'emailAddress', original: 'existingEmailAddress' }],
-      {
-        /**
-         * Returns the summary message for unchanged email address.
-         * @returns {string} Localized validation error message
-         */
-        summaryMessage: () => t('forms.clientDetails.email.validationError.notChanged'),
-        inlineMessage: ''
-      }
-    ),
   });

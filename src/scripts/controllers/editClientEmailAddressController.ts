@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
-import { handleGetEditForm, handlePostEditForm, extractFormFields } from '#src/scripts/helpers/index.js';
+import { handleGetEditForm, handlePostEditForm, extractFormFields, handleNoChangeRedirect } from '#src/scripts/helpers/index.js';
 
 /**
  * Renders the edit client email address form for a given case reference.
@@ -27,6 +27,17 @@ export async function getEditClientEmailAddress(req: Request, res: Response, nex
  */
 export async function postEditClientEmailAddress(req: Request, res: Response, next: NextFunction): Promise<void> {
   const formFields = extractFormFields(req.body, ['emailAddress', 'existingEmailAddress']);
+
+  if (!(formFields.existingEmailAddress === '')) {
+    const handled = handleNoChangeRedirect(
+      req,
+      res,
+      formFields.emailAddress,
+      formFields.existingEmailAddress
+    );
+    
+    if (handled) return;
+  }
 
   await handlePostEditForm(req, res, next, {
     templatePath: 'case_details/edit-client-email-address.njk',
