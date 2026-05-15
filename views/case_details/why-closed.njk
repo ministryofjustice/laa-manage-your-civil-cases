@@ -40,6 +40,11 @@
           errorMessage: errorMessages.eventCode if error,
           items: [
             {
+              value: "MERI",
+              text: t('common.outcomeCode.MERI'),
+              checked: currentEventCode == "MERI"
+            },
+            {
               value: "MIS-OOS",
               text: t('common.outcomeCode.MIS-OOS'),
               checked: currentEventCode == "MIS-OOS"
@@ -64,6 +69,16 @@
                 text: t('pages.caseDetails.closedCase.reasons.coiHint')
               },
               checked: currentEventCode == "COI"
+            },
+            {
+              value: "DUPL",
+              text: t('common.outcomeCode.DUPL'),
+              checked: currentEventCode == "DUPL"
+            },
+            {
+              value: "CLOT",
+              text: t('common.outcomeCode.CLOT'),
+              checked: currentEventCode == "CLOT"
             }
           ]
         }) }}

@@ -122,6 +122,18 @@ test.describe('Case Status Handling', () => {
       await giveFeedback.expectStatus('Closed');
     });
 
+    test('should submit close case form, using MERI code', async ({ page }) => {
+      const closePage = CloseCaseFormPage.forCase(page, 'PC-7755-4557');
+      await closePage.navigate();
+      // Assert the case details header is present
+      await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Alan Turning", expectedCaseRef: "PC-7755-4557", dateReceived: "9 January 2025", badgeTexts: ['At risk of abuse', 'Third Party'] }); 
+      await closePage.submitWithData('MERI', 'Case successfully closed as Merits - not eligible"');
+
+      const giveFeedback = GiveFeedbackFormPage.forCase(page, 'PC-7755-4557');
+      await expect(page).toHaveURL(giveFeedback.url);
+      await giveFeedback.expectStatus('Closed');
+    });
+
     test('should validate required fields', async ({ page }) => {
       const closePage = CloseCaseFormPage.forCase(page, 'PC-2211-4466');
       await closePage.navigate();
