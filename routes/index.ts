@@ -32,10 +32,10 @@ router.use('/cases', requireAuth, caseDetailsRouter);
 // Mount the edit client details routes (auth required)
 router.use('/cases', requireAuth, editClientDetailsRouter);
 
-
 // Mount the search routes (auth required)
 router.use('/search', requireAuth, searchRouter);
 /* GET liveness and readiness probes for Helm deployments */
+
 router.get('/status', (req: Request, res: Response): void => {
   res.status(HTTP.SUCCESSFUL_REQUEST).send('OK');
 });
