@@ -20,9 +20,7 @@ import {
   getEditClientSupportNeeds,
   postEditClientSupportNeeds,
   getEditRiskOfAbuse,
-  postEditRiskOfAbuse,
-  getEditFinancialEligibilityBenefits,
-  postEditFinancialEligibilityBenefits
+  postEditRiskOfAbuse
 } from '#src/scripts/controllers/index.js';
 
 import {
@@ -69,8 +67,5 @@ router.post('/:caseReference/client-details/change/support-need', validateEditCl
 
 router.get('/:caseReference/client-details/change/risk-of-abuse', getEditRiskOfAbuse);
 router.post('/:caseReference/client-details/change/risk-of-abuse', validateClientRiskOfAbuse(), postEditRiskOfAbuse);
-
-router.get('/:caseReference/financial-eligibility/change/benefits', getEditFinancialEligibilityBenefits);
-router.post('/:caseReference/financial-eligibility/change/benefits', postEditFinancialEligibilityBenefits);
 
 export default router;

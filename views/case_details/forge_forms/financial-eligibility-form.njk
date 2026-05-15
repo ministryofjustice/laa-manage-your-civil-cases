@@ -1,0 +1,25 @@
+{% extends "base.njk" %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "components/caseDetailsHeaderComponent.njk" import caseDetailsHeaderComponent %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% if fieldValidationErrors | length %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: fieldValidationErrors
+        }) }}
+      {% endif %}
+
+      {{ caseDetailsHeaderComponent(client, hideStatusButton = true) }}
+
+      <form method="post" novalidate>
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+        {% for block in blocks %}
+          {{ block | safe }}
+        {% endfor %}
+      </form>
+    </div>
+  </div>
+{% endblock %}

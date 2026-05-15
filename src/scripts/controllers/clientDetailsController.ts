@@ -12,7 +12,7 @@ import type { ClientSupportNeeds } from '#types/api-types.js';
  * @returns {void} Page to be returned
  */
 export function handleClientDetailsTab(req: Request, res: Response, next: NextFunction, activeTab: string): void {
-  handleCaseTab(req, res, next, activeTab, 'client details', ({ req, res, caseReference, activeTab }) => {
+  void handleCaseTab(req, res, next, activeTab, 'client details', ({ req, res, caseReference, activeTab }) => {
     // Client details already fetched by middleware, available at req.clientData
     const { clientData } = req;
 
@@ -35,7 +35,6 @@ export function handleClientDetailsTab(req: Request, res: Response, next: NextFu
     const { clientSupportNeeds } = clientData as { clientSupportNeeds?: ClientSupportNeeds; };
     const showClientSupportNeeds = clientSupportNeeds?.bslWebcam === 'Yes' || clientSupportNeeds?.textRelay === 'Yes' || clientSupportNeeds?.callbackPreference === 'Yes' || clientSupportNeeds?.languageSupportNeeds !== '' || clientSupportNeeds?.notes !== '';
 
-    console.log('Rendering template case_details/index.njk  with clientData:', clientData, 'activeTab:', activeTab, 'caseReference:', caseReference);
     res.render('case_details/index.njk', {
       activeTab,
       client: clientData,

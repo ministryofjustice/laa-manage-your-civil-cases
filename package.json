@@ -5,6 +5,9 @@
   "license": "MIT",
   "main": "public/app.js",
   "type": "module",
+  "workspaces": [
+    "packages/financial-eligibility-journey"
+  ],
   "imports": {
     "#*": "./*"
   },

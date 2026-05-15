@@ -10,9 +10,9 @@ import { formatDate, formatLongFormDate, formatDateLongMonth, nunjucksT, capital
  * the directories where Nunjucks should look for template files.
  *
  * @param {Application} app - The Express application instance.
- * @returns {nunjucks.Environment} The configured Nunjucks environment.
+ * @returns {nunjucks.Environment } The configured Nunjucks environment.
  */
-export const nunjucksSetup = (app: Application): nunjucks.Environment => {
+export const nunjucksSetup = (app: Application): nunjucks.Environment  => {
   const appInstance = app;
   appInstance.set('view engine', 'njk');
 
@@ -22,7 +22,6 @@ export const nunjucksSetup = (app: Application): nunjucks.Environment => {
 
   /**
    * Retrieves the latest build file for the given prefix and extension.
-   *
    * @param {string} prefix - The prefix of the asset file.
    * @param {string} ext - The extension of the asset file (e.g., 'js' or 'css').
    * @returns {string} The path to the latest build file.
@@ -40,6 +39,8 @@ export const nunjucksSetup = (app: Application): nunjucks.Environment => {
       'node_modules/govuk-frontend/dist/components/', // GOV.UK components
       'node_modules/@ministryofjustice/frontend', // MoJ Design System components
       'node_modules/@x-govuk/govuk-prototype-components/src', // X-GOV.UK Frontend components
+      "node_modules/@ministryofjustice/hmpps-forge/dist/govuk-components/", // Forge variant of GOV.UK components
+      "node_modules/@ministryofjustice/hmpps-forge/dist/moj-components/", // Forge variant of MoJ Design System components
     ],
     {
       autoescape: true, // Enable auto escaping to prevent XSS attacks
@@ -56,6 +57,6 @@ export const nunjucksSetup = (app: Application): nunjucks.Environment => {
 
   // Add global variables
   nunjucksEnv.addGlobal('t', nunjucksT);
-  
+
   return nunjucksEnv;
 };

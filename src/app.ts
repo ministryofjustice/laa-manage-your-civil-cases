@@ -7,17 +7,20 @@ import chalk from 'chalk';
 import morgan from 'morgan';
 import compression from 'compression';
 import { setupCsrf, setupMiddlewares, setupConfig, setupLocaleMiddleware, setAuthStatus } from '#src/middlewares/indexSetUp.js';
+import { fetchClientDetails } from '#src/middlewares/caseDetailsMiddleware.js';
 import session from 'express-session';
 import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware, displayAsciiBanner } from '#utils/server/index.js';
 import { initializeI18nextSync } from '#src/scripts/helpers/index.js';
 import indexRouter from '#routes/index.js';
 import livereload from 'connect-livereload';
 import { buildSessionConfig } from '#utils/server/session.js';
+
+// Forge related packages and setup
 import { Forge } from '@ministryofjustice/hmpps-forge/core';
-import { ExpressFrameworkAdapter } from '@ministryofjustice/hmpps-forge/express-nunjucks';
+import { ExpressFrameworkAdapter, nunjucksFunctions } from '@ministryofjustice/hmpps-forge/express-nunjucks';
 import { govukComponents } from '@ministryofjustice/hmpps-forge/govuk-components'
 import { mojComponents } from '@ministryofjustice/hmpps-forge/moj-components'
-import feedbackPackage from '#src/journeys/my-journey/index.js';
+import eligibilityPackage from '@ministryofjustice/financial-eligibility-journey';
 
 const TRUST_FIRST_PROXY = 1;
 
@@ -83,27 +86,34 @@ const createApp = async (): Promise<express.Application> => {
 	// Set up Nunjucks as the template engine
 	const nunjucksEnv = nunjucksSetup(app);
 
+	// Set up application-specific configurations
+	setupConfig(app);
+
 	// Set up Forge
 	const forge = new Forge({
 		frameworkAdapter: ExpressFrameworkAdapter.configure({ nunjucksEnv }),
 	})
-	forge.registerGlobalComponents(govukComponents)
-	forge.registerGlobalComponents(mojComponents)
-	forge.registerPackage(feedbackPackage);
-	app.use(express.urlencoded({ extended: true }));
-	app.use(forge.getRouter() as express.Router);
 
-	// Set up application-specific configurations
-	setupConfig(app);
+	forge
+		.registerGlobalComponents(govukComponents)
+		.registerGlobalComponents(mojComponents)
+		.registerGlobalFunctions(nunjucksFunctions)
+		.registerPackage(eligibilityPackage);
 
 	// Set up request logging based on environment
 	if (process.env.NODE_ENV === 'production') {
 		// Use combined format for production (more structured, less verbose)
 		app.use(morgan('combined'));
 	} else {
-		// Use dev format for development (colored, more readable)
+		// Use dev format for development (coloured, more readable)
 		app.use(morgan('dev'));
 	}
+
+	// Forge routes set-up
+	app.use(express.urlencoded({ extended: true }));
+	// Fetch client details for Forge journey routes
+	app.use('/cases/:caseReference/financial-eligibility/change', fetchClientDetails);
+	app.use('/', forge.getRouter() as express.Router);
 
 	// Register the main router
 	app.use('/', indexRouter);
