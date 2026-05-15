@@ -1,5 +1,11 @@
 import {  defineEffectFunctions} from "@ministryofjustice/hmpps-forge/core/authoring";
 import type { EffectFunctionExpr } from "@ministryofjustice/hmpps-forge/core/authoring";
+import {
+  access,
+  redirect,
+  Condition,
+  Session,
+} from '@ministryofjustice/hmpps-forge/core/authoring'
 import type { FinancialEligibilityEffectContext } from "./context.type.ts";
 
 export interface FinancialEligibilityEffectShape {
@@ -66,3 +72,13 @@ export const {
     };
   },
 });
+
+export const requireAuth = () =>
+  access({
+    next: [
+      redirect({
+        when: Session('authCredentials').not.match(Condition.IsRequired()),
+        goto: '/',
+      }),
+    ],
+  })

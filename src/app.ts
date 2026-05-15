@@ -96,8 +96,9 @@ const createApp = async (): Promise<express.Application> => {
 		.registerGlobalFunctions(nunjucksFunctions)
 		.registerPackage(feedbackPackage);
 
+// Forge routes
 	app.use(express.urlencoded({ extended: true }));
-	app.use(forge.getRouter() as express.Router);
+	app.use("/", forge.getRouter() as express.Router);
 
 	// Set up application-specific configurations
 	setupConfig(app);
@@ -126,9 +127,6 @@ const createApp = async (): Promise<express.Application> => {
 	app.listen(config.app.port, () => {
 		console.log(chalk.yellow(`Listening on port ${config.app.port}...`));
 	});
-
-	app.use(express.urlencoded({ extended: true }));
-	app.use("/", forge.getRouter() as express.Router);
 
 	return app;
 };

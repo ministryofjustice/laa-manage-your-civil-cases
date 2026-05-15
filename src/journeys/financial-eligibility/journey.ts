@@ -5,7 +5,7 @@ import {
   GovUKButton,
   GovUKPanel,
 } from '@ministryofjustice/hmpps-forge/govuk-components'
-import { FinancialEligibilityEffects } from '../effects.js'
+import { FinancialEligibilityEffects, requireAuth } from '../effects.js'
 
 const nameStep = step({
   path: '/',
@@ -74,6 +74,7 @@ export const feedbackJourney = journey({
   code: 'feedback',
   title: 'Give feedback',
   path: '/feedback',
+  onAccess: [requireAuth()],
   view: { template: 'case_details/financial_eligibility/forge-form' },
   steps: [nameStep, feedbackStep, confirmationStep],
 })
