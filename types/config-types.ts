@@ -26,6 +26,7 @@ export interface SessionConfig {
   name: string;
   resave: boolean;
   saveUninitialized: boolean;
+  rolling: boolean;
   cookie: {
     secure: boolean;
     httpOnly: boolean;
@@ -45,6 +46,18 @@ export interface ApiConfig {
     clientId: string;
     clientSecret: string;
   };
+}
+
+export interface SilasConfig {
+  authority: string;
+  tenantId: string;
+  appId: string;
+  clientId: string;
+  clientSecret: string;
+  redirectUri: string;
+  postLogoutRedirectUri: string;
+  scopes: string[];
+  expectedAudience: string;
 }
 
 export interface PaginationConfig {
@@ -72,6 +85,7 @@ export interface Config {
   session: SessionConfig;
   paths: PathsConfig;
   api: ApiConfig;
+  silas: SilasConfig;
   pagination: PaginationConfig;
   redis: RedisConfig;
 }
