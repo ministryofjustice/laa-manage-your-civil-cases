@@ -1,5 +1,5 @@
 import { createForgePackage } from '@ministryofjustice/hmpps-forge/core/authoring'
-import { feedbackJourney } from '#src/journeys/my-journey/journey.js'
+import { feedbackJourney } from '#src/journeys/financial-eligibility/journey.js'
 import { FinancialEligibilityEffectsImplementations } from '../effects.js'
 
 export default createForgePackage({

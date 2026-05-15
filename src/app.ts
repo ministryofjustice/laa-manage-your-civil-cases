@@ -13,11 +13,13 @@ import { initializeI18nextSync } from '#src/scripts/helpers/index.js';
 import indexRouter from '#routes/index.js';
 import livereload from 'connect-livereload';
 import { buildSessionConfig } from '#utils/server/session.js';
+
+// Forge related packages and setup
 import { Forge } from '@ministryofjustice/hmpps-forge/core';
-import { ExpressFrameworkAdapter } from '@ministryofjustice/hmpps-forge/express-nunjucks';
+import { ExpressFrameworkAdapter, nunjucksFunctions } from '@ministryofjustice/hmpps-forge/express-nunjucks';
 import { govukComponents } from '@ministryofjustice/hmpps-forge/govuk-components'
 import { mojComponents } from '@ministryofjustice/hmpps-forge/moj-components'
-import feedbackPackage from '#src/journeys/my-journey/index.js';
+import feedbackPackage from '#src/journeys/financial-eligibility/index.js';
 
 const TRUST_FIRST_PROXY = 1;
 
@@ -87,9 +89,13 @@ const createApp = async (): Promise<express.Application> => {
 	const forge = new Forge({
 		frameworkAdapter: ExpressFrameworkAdapter.configure({ nunjucksEnv }),
 	})
-	forge.registerGlobalComponents(govukComponents)
-	forge.registerGlobalComponents(mojComponents)
-	forge.registerPackage(feedbackPackage);
+
+  forge
+    .registerGlobalComponents(govukComponents)
+    .registerGlobalComponents(mojComponents)
+		.registerGlobalFunctions(nunjucksFunctions)
+		.registerPackage(feedbackPackage);
+
 	app.use(express.urlencoded({ extended: true }));
 	app.use(forge.getRouter() as express.Router);
 
@@ -120,6 +126,9 @@ const createApp = async (): Promise<express.Application> => {
 	app.listen(config.app.port, () => {
 		console.log(chalk.yellow(`Listening on port ${config.app.port}...`));
 	});
+
+	app.use(express.urlencoded({ extended: true }));
+	app.use("/", forge.getRouter() as express.Router);
 
 	return app;
 };

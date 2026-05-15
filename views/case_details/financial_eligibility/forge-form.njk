@@ -16,9 +16,16 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="{{ contentClasses | default('govuk-grid-column-two-thirds') }}">
-      <form method="post" novalidate>
-        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+      {% set errorList = toErrorList(fieldValidationErrors, domainValidationErrors) %}
+      {% if errorList | length %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errorList
+        }) }}
+      {% endif %}
 
+      <form method="post" novalidate="novalidate">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
         {% for block in blocks %}
           {{ block | safe }}
         {% endfor %}
