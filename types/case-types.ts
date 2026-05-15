@@ -57,10 +57,6 @@ export type CaseStatus = 'New' | 'Accepted' | 'Opened' | 'Closed';
  */
 export type CaseStatusLabels = 'new' | 'pending' | 'advising' | 'closed' | 'completed';
 
-/**
- * Case reference code types
- */
-export type CaseRefCode = '' | 'Manually allocated by operator' | 'Operator recommends second opinion' | 'Out of scope for CLA' | 'Duplicate of existing case' | 'Not financially eligible for CLA' | 'Split from another case';
 
 export interface EligibilityIntervalAmount {
   per_interval_value: number;

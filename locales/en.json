@@ -60,7 +60,7 @@
       "TERM": "Hung up call",
       "IRCB": "Booked appointment with senior member of staff",
       "COPE": "Case opened in error",
-      "DUPL": "Duplicate of existing case",
+      "DUPL": "Duplicate case",
       "WROF": "Write off case - use only under senior instruction",
       "RDSP": "Sent back to specialist",
       "SAME": "Read out prior alternate help",
@@ -79,7 +79,7 @@
       "MANREF": "Manually allocated to Specialist for course-correction",
       "SPOR": "Operator recommends second opinion",
       "MIS-OOS": "Client signposted to other help – not in scope",
-      "MIS-MEANS": "Not financially eligible",
+      "MIS-MEANS": "Means - not eligible ",
       "MIS": "Refer back to the operator service – not in scope",
       "COI": "Conflict of interest",
       "REOPEN": "Case re-opened",
@@ -88,8 +88,8 @@
       "DREFER": "Arranged an appointment with a F2F specialist",
       "REF-INT": "Referred internally",
       "REF-EXT": "Referred externally",
-      "MERI": "Case closed",
-      "CLOT": "Case closed"
+      "MERI": "Merits - not eligible",
+      "CLOT": "Other"
     },
     "eventCode":{
       "casePending": "Case pending",
