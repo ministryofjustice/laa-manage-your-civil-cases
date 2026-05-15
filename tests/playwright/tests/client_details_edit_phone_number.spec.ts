@@ -134,11 +134,6 @@ test('shows warning banner when no changes are made', async ({ page, i18nSetup }
     badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party']
   });
 
-  await page.waitForLoadState('networkidle');
-  const existingPhone = await phoneInput.inputValue();
-
-  // Submit without changing the phone number
-  await phoneInput.fill(existingPhone);
   await saveButton.click();
 
   await expect(page).toHaveURL(clientDetailsUrl);

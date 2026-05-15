@@ -95,7 +95,7 @@ export abstract class BaseEditFormPage {
   }
 
 
-get warningBanner(): Locator {
+get noChangeWarningBanner(): Locator {
   return this.page.locator('.moj-alert');
 }
 
@@ -196,9 +196,9 @@ get warningBanner(): Locator {
  /**
    * Asserts that the warning banner is visable with the expected message
    */
-async expectWarningBanner(message: string): Promise<void> {
-  await expect(this.warningBanner).toBeVisible();
-  await expect(this.warningBanner).toContainText(message);
+async expectNoChangeWarningBanner(message: string): Promise<void> {
+  await expect(this.noChangeWarningBanner).toBeVisible();
+  await expect(this.noChangeWarningBanner).toContainText(message);
 }
 
 

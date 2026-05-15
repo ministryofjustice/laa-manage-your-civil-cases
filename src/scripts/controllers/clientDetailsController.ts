@@ -34,8 +34,8 @@ export function handleClientDetailsTab(req: Request, res: Response, next: NextFu
 
 
 
-    const warningBanner = getSessionValue(req, 'warningBanner');
-    setSessionValue(req, 'warningBanner', undefined);
+    const noChangeWarningBanner = getSessionValue(req, 'noChangeWarningBanner');
+    setSessionValue(req, 'noChangeWarningBanner', undefined);
 
 
 
@@ -47,7 +47,7 @@ export function handleClientDetailsTab(req: Request, res: Response, next: NextFu
       client: clientData,
       showClientSupportNeeds,
       caseReference,
-      warningBanner
+      noChangeWarningBanner
     });
   });
 }

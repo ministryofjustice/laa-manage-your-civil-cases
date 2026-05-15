@@ -39,7 +39,7 @@ test('unchanged date of birth triggers no change warning', async ({ pages, i18nS
 
   await editDateOfBirthPage.clickSave();
   await editDateOfBirthPage.expectSuccessfulSubmission();
-  await editDateOfBirthPage.expectWarningBanner('No changes were made');
+  await editDateOfBirthPage.expectNoChangeWarningBanner('No changes were made');
 
 });
 

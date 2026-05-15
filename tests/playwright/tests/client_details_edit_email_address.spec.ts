@@ -51,7 +51,7 @@ test('shows warning banner when email is not changed', async ({ page, i18nSetup 
   await editEmailPage.expectSuccessfulSubmission();
 
   // assert warning banner 
-  await editEmailPage.expectWarningBanner('No changes were made');
+  await editEmailPage.expectNoChangeWarningBanner('No changes were made');
 });
 
 test('email address edit page should be accessible', {

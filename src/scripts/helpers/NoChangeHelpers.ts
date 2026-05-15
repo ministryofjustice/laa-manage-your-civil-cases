@@ -20,14 +20,16 @@ export function handleNoChangeRedirect(
   res: Response,
   fields: Array<{ current: unknown; existing: unknown }>
 ): boolean {
-  const noChanges = fields.every(field => {
-    const current = safeString(field.current).trim();
-    const existing = safeString(field.existing).trim();
-    return current === existing;
-  });
+  
+const noChanges = fields.every(field => {
+  const current = safeString(field.current ?? field.existing).trim();
+  const existing = safeString(field.existing).trim();
+  return current === existing;
+});
+
 
   if (noChanges) {
-    setSessionValue(req, 'warningBanner', {
+    setSessionValue(req, 'noChangeWarningBanner', {
       variant: 'warning',
       title: 'No changes were made',
       dismissible: true

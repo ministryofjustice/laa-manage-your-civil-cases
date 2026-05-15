@@ -32,11 +32,11 @@
   {% else %}
     {{ alertBannerComponent(client) }}
   {% endif %}
-{% if warningBanner %}
+{% if noChangeWarningBanner %}
   {{ mojAlert({
-    variant: warningBanner.variant,
-    title: warningBanner.title,
-    dismissible: warningBanner.dismissible
+    variant: noChangeWarningBanner.variant,
+    title: noChangeWarningBanner.title,
+    dismissible: noChangeWarningBanner.dismissible
   }) }}
 {% endif %}
 {% endblock %}

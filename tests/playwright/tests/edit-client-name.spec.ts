@@ -89,7 +89,7 @@ test.describe('Edit Client Name', () => {
     const editNamePage = pages.editName;
     await editNamePage.submitWithoutChanges();
     await editNamePage.expectSuccessfulSubmission();
-    await editNamePage.expectWarningBanner('No changes were made');
+    await editNamePage.expectNoChangeWarningBanner('No changes were made');
     
   });
 
