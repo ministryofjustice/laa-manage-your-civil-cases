@@ -27,7 +27,6 @@ yarn build
 yarn dev
 ```
 
-
 **Production mode:**
 ```shell
 yarn build
