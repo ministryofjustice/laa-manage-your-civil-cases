@@ -29,7 +29,7 @@ export abstract class BaseEditFormPage {
   get heading(): Locator {
     return this.page.locator('h2.govuk-heading-m').nth(0);
   }
-  
+
   /**
    * Gets the legend element of the form, which has `govuk-fieldset__legend--m`class
    * @returns {Locator} The legend locator
@@ -53,7 +53,7 @@ export abstract class BaseEditFormPage {
   get getPage(): Page {
     return this.page;
   }
-  
+
   /**
    * Gets the save button element
    * @returns {Locator} The save button locator
@@ -92,6 +92,14 @@ export abstract class BaseEditFormPage {
    */
   get alertBanner(): Locator {
     return this.page.locator('.mcc-alert-banner');
+  }
+
+  /**
+   * Gets the warning banner element
+   * @returns {Locator} The warning banner locator
+   */
+  get noChangeWarningBanner(): Locator {
+    return this.page.locator('.moj-alert');
   }
 
   // Common actions
@@ -181,10 +189,18 @@ export abstract class BaseEditFormPage {
     const errorLink = this.page.locator(`a[href="#${fieldId}"]`);
     await expect(errorLink).toBeVisible();
     await expect(errorLink).toHaveText(expectedMessage);
-    
+
     // Check field has error styling
     const field = this.page.locator(`#${fieldId}`);
     await expect(field).toHaveClass(/govuk-input--error/);
+  }
+
+  /**
+    * Asserts that the warning banner is visable with the expected message
+    */
+  async expectNoChangeWarningBanner(message: string): Promise<void> {
+    await expect(this.noChangeWarningBanner).toBeVisible();
+    await expect(this.noChangeWarningBanner).toContainText(message);
   }
 
   /**
@@ -197,3 +213,4 @@ export abstract class BaseEditFormPage {
   // Abstract method that each specific page must implement
   abstract getExpectedHeading(): string;
 }
+

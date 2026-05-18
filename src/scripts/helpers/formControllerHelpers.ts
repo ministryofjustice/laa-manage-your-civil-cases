@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
 import { apiService } from '#src/services/apiService.js';
-import { safeString, capitaliseFirst, extractCurrentFields, normaliseSelectedCheckbox } from '#src/scripts/helpers/index.js';
+import { safeString, capitaliseFirst, extractCurrentFields, normaliseSelectedCheckbox, handleNoChangeRedirect } from '#src/scripts/helpers/index.js';
 import { validationResult } from 'express-validator';
 import { formatValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 import type {
@@ -133,6 +133,18 @@ export async function handlePostEditForm(
 
     res.status(HTTP.BAD_REQUEST).render(templatePath, renderData);
     return;
+  }
+
+if (!formIsInvalid && options.enableNoChangeRedirect) {
+const fieldsForComparison = options.fields.map(field => ({
+      current: field.value,
+      existing: field.existingValue
+    }));
+
+   
+ const handled = handleNoChangeRedirect(req, res, fieldsForComparison);
+
+    if (handled) return;
   }
 
   try {

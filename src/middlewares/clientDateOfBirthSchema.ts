@@ -208,19 +208,4 @@ export const validateEditClientDateOfBirth = (): ReturnType<typeof checkSchema> 
         })
       },
     },
-    notChanged: createChangeDetectionValidator(
-      [
-        { current: 'dateOfBirth-day', original: 'originalDay' },
-        { current: 'dateOfBirth-month', original: 'originalMonth' },
-        { current: 'dateOfBirth-year', original: 'originalYear' }
-      ],
-      {
-        /**
-         * Provides the summary message for unchanged date of birth validation.
-         * @returns {string} Localized error message for unchanged date of birth.
-         */
-        summaryMessage: () => t('forms.clientDetails.dateOfBirth.validationError.notChanged'),
-        inlineMessage: ''
-      }
-    ),
   });

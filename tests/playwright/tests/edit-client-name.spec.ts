@@ -85,14 +85,12 @@ test.describe('Edit Client Name', () => {
     await expect(editNamePage.alertBanner).not.toBeVisible();
   });
 
-  test('unchanged name triggers change detection error', async ({ pages, i18nSetup }) => {
+  test('unchanged name triggers no change warning', async ({ pages, i18nSetup }) => {
     const editNamePage = pages.editName;
     await editNamePage.submitWithoutChanges();
-    await editNamePage.expectErrorSummaryVisible();
+    await editNamePage.expectSuccessfulSubmission();
+    await editNamePage.expectNoChangeWarningBanner('No changes were made');
     
-    // Check that the error summary contains the expected change detection message
-    const errorSummary = editNamePage.errorSummary;
-    await expect(errorSummary).toContainText("Change the client name");
   });
 
   test('name edit page should be accessible', {

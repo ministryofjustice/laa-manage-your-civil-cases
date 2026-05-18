@@ -53,6 +53,15 @@ export class EditEmailPage extends BaseEditFormPage {
   }
 
   /**
+   * Submits an email address without changing it
+   */
+  async submitUnchangedEmail(): Promise<void> {
+    const existing = await this.emailInput.inputValue();
+    await this.emailInput.fill(existing);
+    await this.clickSave();
+  }
+
+  /**
    * Submits form with invalid email and asserts validation errors appear
    * @param {string} invalidEmail - The invalid email to test with
    */

@@ -16,7 +16,8 @@ import {
   storeOriginalFormData,
   clearSessionData,
   booleanToString,
-  validCaseReference
+  validCaseReference,
+  handleNoChangeRedirect
 } from '#src/scripts/helpers/index.js';
 import { apiService } from '#src/services/apiService.js';
 import { HTTP } from '#src/services/api/base/constants.js';
@@ -138,6 +139,18 @@ export async function postEditClientThirdParty(req: Request, res: Response, next
 
     // Prepare the third party data for the API
     const thirdPartyData = prepareThirdPartyData(formFields);
+
+
+const original = req.session.thirdPartyOriginal;
+
+if (isRecord(original)) {
+  const fields = Object.keys(formFields).map(key => ({
+    current: formFields[key],
+    existing: original[key] 
+  }));
+
+  if (handleNoChangeRedirect(req, res, fields)) return;
+}
 
     // Call the API to update third party contact
     const response = await apiService.updateThirdPartyContact(req.axiosMiddleware, caseReference, thirdPartyData);
