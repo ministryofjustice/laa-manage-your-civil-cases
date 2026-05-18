@@ -788,6 +788,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ministryofjustice/financial-eligibility-journey@workspace:packages/financial-eligibility-journey":
+  version: 0.0.0-use.local
+  resolution: "@ministryofjustice/financial-eligibility-journey@workspace:packages/financial-eligibility-journey"
+  peerDependencies:
+    "@ministryofjustice/hmpps-forge": ^0.1.0-alpha.5 || ^0.2.0
+    express-session: ^1.17.0
+  languageName: unknown
+  linkType: soft
+
 "@ministryofjustice/frontend@npm:^9.0.0":
   version: 9.0.0
   resolution: "@ministryofjustice/frontend@npm:9.0.0"

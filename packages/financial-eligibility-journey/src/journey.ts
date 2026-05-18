@@ -5,7 +5,7 @@ import {
   GovUKButton,
   GovUKPanel,
 } from '@ministryofjustice/hmpps-forge/govuk-components'
-import { FinancialEligibilityEffects } from '../effects.js'
+import { FinancialEligibilityEffects } from './effects.js'
 
 const nameStep = step({
   path: '/',

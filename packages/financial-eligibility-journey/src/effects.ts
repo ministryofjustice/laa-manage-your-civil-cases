@@ -1,6 +1,6 @@
 import {  defineEffectFunctions} from "@ministryofjustice/hmpps-forge/core/authoring";
 import type { EffectFunctionExpr } from "@ministryofjustice/hmpps-forge/core/authoring";
-import type { FinancialEligibilityEffectContext } from "./context.type.ts";
+import type { FinancialEligibilityEffectContext } from "./context.type.js";
 
 export interface FinancialEligibilityEffectShape {
   /** Copies previously stored draft answers for this pattern into the form context on access. */

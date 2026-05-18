@@ -17,7 +17,7 @@ import { Forge } from '@ministryofjustice/hmpps-forge/core';
 import { ExpressFrameworkAdapter } from '@ministryofjustice/hmpps-forge/express-nunjucks';
 import { govukComponents } from '@ministryofjustice/hmpps-forge/govuk-components'
 import { mojComponents } from '@ministryofjustice/hmpps-forge/moj-components'
-import feedbackPackage from '#src/journeys/my-journey/index.js';
+import feedbackPackage from '@ministryofjustice/financial-eligibility-journey';
 
 const TRUST_FIRST_PROXY = 1;
 
