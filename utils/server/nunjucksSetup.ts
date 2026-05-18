@@ -10,9 +10,9 @@ import { formatDate, formatLongFormDate, formatDateLongMonth, nunjucksT, capital
  * the directories where Nunjucks should look for template files.
  *
  * @param {Application} app - The Express application instance.
- * @returns {void} This function does not return a value; it configures Nunjucks for the provided app.
+ * @returns {nunjucks.Environment } The configured Nunjucks environment.
  */
-export const nunjucksSetup = (app: Application): void => {
+export const nunjucksSetup = (app: Application): nunjucks.Environment  => {
   const appInstance = app;
   appInstance.set('view engine', 'njk');
 
@@ -40,6 +40,8 @@ export const nunjucksSetup = (app: Application): void => {
       'node_modules/govuk-frontend/dist/components/', // GOV.UK components
       'node_modules/@ministryofjustice/frontend', // MoJ Design System components
       'node_modules/@x-govuk/govuk-prototype-components/src', // X-GOV.UK Frontend components
+      "node_modules/@ministryofjustice/hmpps-forge/dist/govuk-components/", // Forge variant of GOV.UK components
+      "node_modules/@ministryofjustice/hmpps-forge/dist/moj-components/", // Forge variant of MoJ Design System components
     ],
     {
       autoescape: true, // Enable auto escaping to prevent XSS attacks
@@ -56,4 +58,35 @@ export const nunjucksSetup = (app: Application): void => {
 
   // Add global variables
   nunjucksEnv.addGlobal('t', nunjucksT);
+
+  interface ValidationError {
+    message: string
+    blockCode?: string
+  }
+
+  nunjucksEnv.addGlobal(
+    'toErrorList',
+    (fieldErrors?: ValidationError[], domainErrors?: ValidationError[]) => {
+      const allErrors = [...(domainErrors ?? []), ...(fieldErrors ?? [])]
+      const seen = new Set<string>()
+
+      return allErrors.flatMap((error): { text: string; href?: string }[] => {
+        const key = error.blockCode ?? error.message
+
+        if (seen.has(key)) {
+          return []
+        }
+
+        seen.add(key)
+
+        return [
+          error.blockCode
+            ? { text: error.message, href: `#${error.blockCode}` }
+            : { text: error.message },
+        ]
+      })
+    },
+  )
+
+  return nunjucksEnv;
 };
