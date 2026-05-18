@@ -10,22 +10,20 @@ import { safeString } from '#src/scripts/helpers/dataTransformers.js';
  *
  * @param {Request} req - The Express request object containing route params and session.
  * @param {Response} res - The Express response object used to perform the redirect.
- * @param {unknown} currentValue - The value submitted from the form.
- * @param {unknown} existingValue - The original value before editing.
+ * @param {Array<{ current: unknown; existing: unknown }>} fields - Array of field objects containing current and existing values for comparison.
  * @returns {boolean} Returns true if a redirect was triggered due to no changes, otherwise false.
  */
-
 export function handleNoChangeRedirect(
   req: Request,
   res: Response,
   fields: Array<{ current: unknown; existing: unknown }>
 ): boolean {
-  
-const noChanges = fields.every(field => {
-  const current = safeString(field.current ?? field.existing).trim();
-  const existing = safeString(field.existing).trim();
-  return current === existing;
-});
+
+  const noChanges = fields.every(field => {
+    const current = safeString(field.current ?? field.existing).trim();
+    const existing = safeString(field.existing).trim();
+    return current === existing;
+  });
 
 
   if (noChanges) {

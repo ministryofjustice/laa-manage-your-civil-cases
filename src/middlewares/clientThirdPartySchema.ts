@@ -158,6 +158,5 @@ export const validateAddClientThirdParty = (): ReturnType<typeof checkSchema> =>
  * Extends the add validation with session-based change detection to ensure modifications have been made.
  * @returns {Error} Validation schema for express-validator
  */
-
 export const validateEditClientThirdParty = (): ReturnType<typeof checkSchema> =>
   checkSchema(clientThirdPartyBaseSchema);
