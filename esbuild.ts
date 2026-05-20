@@ -65,6 +65,8 @@ const externalModules: string[] = [
 	'http-errors',
 	'redis',
 	'connect-redis',
+	'@sentry/node',
+	'@opentelemetry/*',
 	'*.node'
 ];
 

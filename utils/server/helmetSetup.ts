@@ -3,6 +3,7 @@
  *
  * @param {import('express').Application} app - The Express application instance.
  */
+import config from '#config.js';
 import helmet from 'helmet';
 import crypto from 'node:crypto';
 import type { Request, Response, NextFunction, Application } from 'express';
@@ -34,6 +35,7 @@ export const helmetSetup = (app: Application): void => {
     helmet({
       contentSecurityPolicy: {
         directives: {
+          reportUri: config.sentry.sentryCspReportUri, // Optional: Set up CSP violation reporting to Sentry
           defaultSrc: ["'self'"],
           scriptSrc: [
             "'self'",

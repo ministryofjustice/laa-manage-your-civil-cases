@@ -149,6 +149,8 @@ jobs:
           entra_authority: ${{ secrets.ENTRA_AUTHORITY }}
           silas_scopes: ${{ secrets.SILAS_SCOPES }}
           silas_expected_audience: ${{ secrets.SILAS_EXPECTED_AUDIENCE }}
+          sentry_dsn: ${{ secrets.SENTRY_DSN }}
+          sentry_csp_report_uri: ${{ secrets.SENTRY_CSP_REPORT_URI }}
   
   deploy-staging:
     environment: staging
@@ -181,6 +183,8 @@ jobs:
           entra_authority: ${{ secrets.ENTRA_AUTHORITY }}
           silas_scopes: ${{ secrets.SILAS_SCOPES }}
           silas_expected_audience: ${{ secrets.SILAS_EXPECTED_AUDIENCE }}
+          sentry_dsn: ${{ secrets.SENTRY_DSN }}
+          sentry_csp_report_uri: ${{ secrets.SENTRY_CSP_REPORT_URI }}
 
   deploy-production:
     environment: production
@@ -213,3 +217,5 @@ jobs:
           entra_authority: ${{ secrets.ENTRA_AUTHORITY }}
           silas_scopes: ${{ secrets.SILAS_SCOPES }}
           silas_expected_audience: ${{ secrets.SILAS_EXPECTED_AUDIENCE }}
+          sentry_dsn: ${{ secrets.SENTRY_DSN }}
+          sentry_csp_report_uri: ${{ secrets.SENTRY_CSP_REPORT_URI }}
