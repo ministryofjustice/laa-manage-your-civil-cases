@@ -1,11 +1,10 @@
 // Ensure config is loaded before other imports that depend on it
 import config from '#config.js';
 
-import type { NextFunction, Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import express from 'express';
 import chalk from 'chalk';
 import bodyParser from 'body-parser';
-import morgan from 'morgan';
 import compression from 'compression';
 import { setupCsrf, setupMiddlewares, setupConfig, setupLocaleMiddleware, setAuthStatus } from '#src/middlewares/indexSetUp.js';
 import session from 'express-session';

@@ -108,6 +108,7 @@ runs:
         SENTRY_DSN: ${{ inputs.sentry_dsn }}
         SENTRY_CSP_REPORT_URI: ${{ inputs.sentry_csp_report_uri }}
         SENTRY_RELEASE: ${{ inputs.sentry_release }}
+
     - name: Notify deployment failure
       shell: bash
       if: failure()

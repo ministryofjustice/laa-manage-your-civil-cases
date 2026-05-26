@@ -35,7 +35,7 @@ export const helmetSetup = (app: Application): void => {
     helmet({
       contentSecurityPolicy: {
         directives: {
-          reportUri: config.sentry.sentryCspReportUri, // Optional: Set up CSP violation reporting to Sentry
+          reportUri: config.sentry.sentryCspReportUri,
           defaultSrc: ["'self'"],
           scriptSrc: [
             "'self'",
