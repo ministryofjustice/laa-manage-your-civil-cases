@@ -16,11 +16,6 @@ router.get('/', requireAuth, (req: Request, res: Response): void => {
   res.redirect('/cases/new');
 });
 
-// TODO: Remove this test route after confirming Sentry integration is working in all environments
-router.get('/test/sentry', (req: Request, res: Response): void => {
-  throw new Error('Testing Sentry integration');
-});
-
 // Mount the login routes (no auth required)
 router.use('/login', loginRouter);
 
