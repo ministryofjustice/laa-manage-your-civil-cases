@@ -17,7 +17,7 @@ export const clientAgeGroupStep = step({
     submit({
       validate: true,
       onValid: {
-        effects: [FinancialEligibilityEffects.SaveDraftAnswers('branching')],
+        effects: [FinancialEligibilityEffects.SaveDraftAnswers()],
         next: [
           redirect({
             when: Answer('clientAgeGroup').match(Condition.Equals('in-person')),

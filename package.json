@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@ministryofjustice/frontend": "^9.0.0",
-    "@ministryofjustice/hmpps-forge": "0.1.0-alpha.5",
+    "@ministryofjustice/hmpps-forge": "0.1.0-alpha.15",
     "@x-govuk/govuk-prototype-components": "^6.0.0",
     "axios": "1.16.0",
     "body-parser": "^2.2.2",

@@ -1,7 +1,7 @@
-import {  defineEffectFunctions} from "@ministryofjustice/hmpps-forge/core/authoring";
-import type { FinancialEligibilityEffectContext } from "./context.type.js";
+import { defineEffectFunctions } from "@ministryofjustice/hmpps-forge/core/authoring";
+import type { FinancialEligibilitySession } from "./context.type.js";
 import { access, redirect, Condition, Session } from '@ministryofjustice/hmpps-forge/core/authoring'
-import type { EffectFunctionExpr } from "@ministryofjustice/hmpps-forge/core/authoring";
+import type { EffectFunctionContext, EffectFunctionExpr } from "@ministryofjustice/hmpps-forge/core/authoring";
 
 export interface FinancialEligibilityEffectShape {
   /** Copies previously stored draft answers for this pattern into the form context on access. */
@@ -18,11 +18,11 @@ export const {
 } = defineEffectFunctions<FinancialEligibilityEffectShape>({
   /**
    * Loads draft financial eligibility answers from session storage
-   * @returns {(context: FinancialEligibilityEffectContext) => void} Function to apply stored draft answers to the context
+   * @param {unknown} _deps Effect dependencies supplied by Forge
+   * @returns {(context: EffectFunctionContext) => void} Function to apply stored draft answers to the context
    */
-  LoadDraftAnswers:
-    () => (context: FinancialEligibilityEffectContext) => {
-      const stored = context.getSession()?.financialEligibilityDraft;
+  LoadDraftAnswers: (_deps) => (context: EffectFunctionContext) => {
+      const stored = (context.getSession() as FinancialEligibilitySession | undefined)?.financialEligibilityDraft;
 
       if (!stored) {
         return;
@@ -37,13 +37,13 @@ export const {
 
   /**
    * Saves draft financial eligibility answers
-   * @returns {(context: FinancialEligibilityEffectContext) => void} Function to save stored draft answers to the session
+   * @param {unknown} _deps Effect dependencies supplied by Forge
+   * @returns {(context: EffectFunctionContext) => void} Function to save stored draft answers to the session
    */
-  SaveDraftAnswers:
-    () => (context: FinancialEligibilityEffectContext) => {
+  SaveDraftAnswers: (_deps) => (context: EffectFunctionContext) => {
         console.log(`Saving answers in session...`, context.getAllAnswers());
 
-      const session = context.getSession();
+      const session = context.getSession() as FinancialEligibilitySession | undefined;
 
       if (!session) {
         return;
@@ -63,11 +63,12 @@ export const {
 
   /**
    * Clears draft financial eligibility answers, in the session
-   * @returns {(context: FinancialEligibilityEffectContext) => void} Function to clear stored draft answers to the context
+   * @param {unknown} _deps Effect dependencies supplied by Forge
+   * @returns {(context: EffectFunctionContext) => void} Function to clear stored draft answers to the context
    */
-  ClearDraftAnswers: () => {
-    return (context: FinancialEligibilityEffectContext) => {
-      const session = context.getSession();
+  ClearDraftAnswers: (_deps) => {
+    return (context: EffectFunctionContext) => {
+      const session = context.getSession() as FinancialEligibilitySession | undefined;
 
       if (session?.financialEligibilityDraft) {
         delete session.financialEligibilityDraft;

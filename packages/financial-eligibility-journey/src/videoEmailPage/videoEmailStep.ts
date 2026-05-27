@@ -14,7 +14,7 @@ export const videoEmailStep = step({
     submit({
       validate: true,
       onValid: {
-        effects: [FinancialEligibilityEffects.SaveDraftAnswers('branching')],
+        effects: [FinancialEligibilityEffects.SaveDraftAnswers()],
         next: [redirect({ goto: 'check-answers' })],
       },
     }),

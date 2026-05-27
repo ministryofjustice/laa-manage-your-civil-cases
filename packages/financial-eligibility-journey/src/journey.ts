@@ -15,7 +15,7 @@ export const eligibilityJourney = journey({
   path: '/cases/:caseReference/financial-eligibility/change',
   onAccess: [
     access({
-      effects: [FinancialEligibilityEffects.LoadDraftAnswers('branching')],
+      effects: [FinancialEligibilityEffects.LoadDraftAnswers()],
     }),
     requireAuth()
   ],
