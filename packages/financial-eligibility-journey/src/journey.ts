@@ -1,9 +1,8 @@
 import { journey, access } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { FinancialEligibilityEffects, requireAuth } from './effects.js'
-import { clientAgeGroupStep } from './clientAgeGroupPage/clientAgeGroupStep.js'
-import { locationStep } from './locationPage/locationStep.js'
-import { videoEmailStep } from './videoEmailPage/videoEmailStep.js'
-import { phoneNumberStep } from './phoneNumberPage/phoneNumberStep.js'
+import { under17GroupStep } from './under17Page/under17Step.js'
+import { partnerStep } from './partnerPage/partnerStep.js'
+import { over60Step } from './over60Page/over60Step.js'
 import { checkAnswersStep } from './checkAnswersPage/checkAnswersStep.js'
 import { confirmationStep } from './confirmationPage/confirmationStep.js'
 
@@ -21,10 +20,9 @@ export const eligibilityJourney = journey({
   ],
   view: { template: 'case_details/forge_forms/financial-eligibility-form' },
   steps: [
-    clientAgeGroupStep,
-    locationStep,
-    videoEmailStep,
-    phoneNumberStep,
+    under17GroupStep,
+    partnerStep,
+    over60Step,
     checkAnswersStep,
     confirmationStep,
   ],

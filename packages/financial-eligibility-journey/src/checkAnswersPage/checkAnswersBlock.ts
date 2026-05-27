@@ -1,64 +1,51 @@
 import { Answer, Condition, match, Conditional, Transformer} from '@ministryofjustice/hmpps-forge/core/authoring'
-import { GovUKSummaryList, GovUKBody } from '@ministryofjustice/hmpps-forge/govuk-components'
+import { GovUKSummaryList } from '@ministryofjustice/hmpps-forge/govuk-components'
 
-
-// visitTypeLabel uses match() to pick a friendly display value for the row
+// under17Label uses match() to pick a friendly display value for the row
 // that is always shown. The three branch rows each declare visibleWhen, so
 // only the branch the user actually took appears on the summary. Answers
 // from other branches stay in the session (so switching back shows the
 // previous value pre-filled) but are not displayed here.
-const visitTypeLabel = match(Answer('visitType'))
-  .branch(Condition.Equals('in-person'), 'In person')
-  .branch(Condition.Equals('video'), 'Video call')
-  .branch(Condition.Equals('phone'), 'Phone call')
+const under17Label = match(Answer('under17'))
+  .branch(Condition.Equals('yes'), 'Yes')
+  .branch(Condition.Equals('no'), 'No')
   .otherwise('')
 
-
 export const summaryList = GovUKSummaryList({
+  card: {
+    title: {
+      text: "About you"
+    }
+  },
   rows: [
     {
-      key: { text: 'How you would like to meet' },
-      value: { text: visitTypeLabel },
+      key: { text: 'Are you aged 17 or under?' },
+      value: { text: under17Label },
       actions: {
         items: [
-          { href: 'visit-type', text: 'Change', visuallyHiddenText: 'how you would like to meet' },
+          { href: 'under-17', text: 'Change', visuallyHiddenText: 'Are you aged 17 or under?' },
         ],
       },
     },
     Conditional({
-      when: Answer('visitType').match(Condition.Equals('in-person')),
+      when: Answer('under17').match(Condition.Equals('no')),
       then: {
-        key: { text: 'Office' },
-        value: { text: Answer('location').pipe(Transformer.String.Capitalize()) },
+        key: { text: 'Do you have a partner?' },
+        value: { text: Answer('partner').pipe(Transformer.String.Capitalize()) },
         actions: {
-          items: [{ href: 'location', text: 'Change', visuallyHiddenText: 'office' }],
+          items: [{ href: 'partner', text: 'Change', visuallyHiddenText: 'Do you have a partner?' }],
         },
       },
     }),
     Conditional({
-      when: Answer('visitType').match(Condition.Equals('video')),
+      when: Answer('under17').match(Condition.Equals('no')),
       then: {
-        key: { text: 'Invite email' },
-        value: { text: Answer('videoEmail') },
+        key: { text: 'Are you aged 60 or over?' },
+        value: { text: Answer('over-60').pipe(Transformer.String.Capitalize()) },
         actions: {
-          items: [{ href: 'video-email', text: 'Change', visuallyHiddenText: 'invite email' }],
-        },
-      },
-    }),
-    Conditional({
-      when: Answer('visitType').match(Condition.Equals('phone')),
-      then: {
-        key: { text: 'Phone number' },
-        value: { text: Answer('phoneNumber') },
-        actions: {
-          items: [{ href: 'phone-number', text: 'Change', visuallyHiddenText: 'phone number' }],
+          items: [{ href: 'over-60', text: 'Change', visuallyHiddenText: 'Are you aged 60 or over?' }],
         },
       },
     }),
   ] as GovUKSummaryList['rows'],
-})
-
-
-export const confirmBody = GovUKBody({
-  text: 'Selecting "Confirm" will save your answers.',
 })

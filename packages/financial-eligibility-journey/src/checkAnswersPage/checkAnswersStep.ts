@@ -1,13 +1,13 @@
 import { step, submit, redirect, Condition, Session } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { heading, submitButton } from '../commonBlocks.js'
-import { summaryList, confirmBody } from './checkAnswersBlock.js'
+import { summaryList } from './checkAnswersBlock.js'
 
 
 export const checkAnswersStep = step({
   code: 'check-answers',
   path: '/check-answers',
   title: 'Check your answers',
-  blocks: [heading, summaryList, confirmBody, submitButton],
+  blocks: [heading, summaryList, submitButton],
   onSubmission: [
     submit({
       validate: false,

@@ -1,25 +1,24 @@
 import { Self, Condition, validation} from '@ministryofjustice/hmpps-forge/core/authoring'
 import { GovUKRadioInput, GovUKUtilityClasses } from '@ministryofjustice/hmpps-forge/govuk-components'
 
-export const locationField = GovUKRadioInput({
-  code: 'location',
+export const partnerField = GovUKRadioInput({
+  code: 'partner',
   fieldset: {
     legend: {
-      text: 'Which office would you like to visit?',
+      text: 'About you',
       classes: GovUKUtilityClasses.Fieldset.MediumLabel,
       isPageHeading: true,
     },
   },
+  hint: { text: 'Do you have a partner?' },
   items: [
-    { value: 'london', text: 'London' },
-    { value: 'manchester', text: 'Manchester' },
-    { value: 'cardiff', text: 'Cardiff' },
-    { value: 'edinburgh', text: 'Edinburgh' },
+    { value: 'yes', text: 'Yes' },
+    { value: 'no', text: 'No' },
   ],
   validWhen: [
     validation({
       condition: Self().match(Condition.IsRequired()),
-      message: 'Select an office',
+      message: 'Select if you have a partner',
     }),
   ],
 })
