@@ -343,6 +343,15 @@
         "changeLink": "Change",
         "changeLinkHiddenText": "Change new case details",
         "confirmSplitButton": "Confirm split case"
+      },
+      "changeCategoryOfLaw": {
+        "pageTitle": "Change category of law – {caseReference} – {serviceName} – GOV.UK",
+        "h2": "Change category of law",
+        "h3": "Category of Law",
+        "originalCaseInfo": "Original case category of law: ",
+        "newCaseInfo": "New case category of law: ",
+        "legend": "Why have you changed the category of law?",
+        "categoryPlaceholder": "Select a category of law"
       }
     },
     "error": {
@@ -450,6 +459,17 @@
           "notes": {
             "notEmpty": "Enter why you want to split this case",
             "tooLong": "Why you want to split this case must be 2500 characters or less"
+          }
+        }
+      },
+       "changeCategoryOfLaw": {
+        "validationError": {
+          "category": {
+            "notEmpty": "Select the category of law for the case"
+          },
+          "notes": {
+            "notEmpty": "Enter why you want to change the category of law for this case",
+            "tooLong": "Why you want to change the category of law for this case must be 2500 characters or less"
           }
         }
       }
@@ -617,7 +637,8 @@
       "removeThirdPartyContact": "Remove Third party contact details",
       "changeSupportNeeds": "Change Client support needs",
       "removeSupportNeeds": "Remove Client support needs",
-      "changeRiskOfAbuse": "Change Client risk of abuse"
+      "changeRiskOfAbuse": "Change Client risk of abuse",
+      "changeCategory": "Change category"
     }
   }
 }

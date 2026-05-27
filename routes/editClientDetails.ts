@@ -20,7 +20,8 @@ import {
   getEditClientSupportNeeds,
   postEditClientSupportNeeds,
   getEditRiskOfAbuse,
-  postEditRiskOfAbuse
+  postEditRiskOfAbuse,
+  getChangeCategoryOfLaw
 } from '#src/scripts/controllers/index.js';
 
 import {

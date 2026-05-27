@@ -13,7 +13,7 @@ test.describe('Case details tab', () => {
     await caseDetails.expectClientName('Jack Youngs');
     await caseDetails.expectStatus('New');
     // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
 
     // Check for page heading
     await expect(caseDetails.tabHeading).toBeVisible();
@@ -85,15 +85,16 @@ test.describe('Case details tab', () => {
     const hintText = page.getByText('19 August 2025') // Not added time as our CI has different timezone
     await expect(hintText).toBeVisible();
 
-    // Bullet list of onward question data
-    const onwardQuestionBulletsList = [
-      'Category',
-      'Where did the discrimination happen?'
-    ];
+    await expect(
+      page.getByRole('rowheader', { name: 'Category' }).first()
+    ).toBeVisible();
 
-    for (const text of onwardQuestionBulletsList) {
-      await expect(page.getByText(text, { exact: true })).toBeVisible();
-    }
+    // Bullet list of onward question data
+    const onwardQuestionBulletsList =
+      'Where did the discrimination happen?';
+
+    await expect(page.getByText(onwardQuestionBulletsList, { exact: true })).toBeVisible();
+
   });
 
   test('should show part of client problem section, when only client_notes is data present', async ({ page, i18nSetup }) => {

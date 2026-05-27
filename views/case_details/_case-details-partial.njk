@@ -3,6 +3,7 @@
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/tag/macro.njk" import govukTag %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
 {% set eventTagConfig = {
   "CASE_VIEWED": {
@@ -127,9 +128,72 @@
 
 {% endif %}
 
+{# Get latest MCC note #}
+{% set mccNote = "" %}
+
+{% for item in combinedHistoryAndCaseLogNotes | reverse %}
+  {% if not mccNote and item.type == "caseLog" and item.code == "MCC" and item.notes %}
+    {% set mccNote = item.notes %}
+  {% endif %}
+{% endfor %}
+
+{# Category of Law #}
+{% if data.diagnosis.category %}
+
+<div class="govuk-!-margin-bottom-3">
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">
+      {{ t('pages.caseDetails.changeCategoryOfLaw.h3') | replace(":", "") }}
+    </h3>
+
+<a href="/cases/{{ data.caseReference }}/change-law-category"
+     class="govuk-link">
+    {{ t('common.change') }}
+    <span class="govuk-visually-hidden">
+      {{ t('accessibility.visuallyHiddenText.changeCategory') }}
+    </span>
+  </a>
+</div>
+
+{# Build rows #}
+  {% set rows = [
+    [
+      {
+        text: t('pages.caseDetails.caseDetailsSection.category') | replace(":", "") | capitalize
+      },
+      {
+        text: data.diagnosis.category | capitalize
+      }
+    ]
+  ] %}
+
+  {# Add Note row only if MCC note exists #}
+  {% if mccNote and mccNote.trim() %}
+    {% set rows = rows.concat([
+      [
+        {
+          text: "Note"
+        },
+        {
+          text: mccNote
+        }
+      ]
+    ]) %}
+  {% endif %}
+
+  {{ govukTable({
+    captionClasses: "govuk-table__caption--s",
+    firstCellIsHeader: true,
+    classes: "govuk-!-margin-bottom-3",
+    rows: rows
+  }) }}
+
+{% endif %}
+
 {# Operator diagnosis section #}
 {% if data.diagnosis %}
-  <h3 class="govuk-heading-s govuk-!-margin-bottom-3">{{ t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle') }}</h3>
+  <h3 class="govuk-heading-s govuk-!-margin-top-6 govuk-!-margin-bottom-3">{{ t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle') }}</h3>
   {% set rows = [] %}
   {% if data.diagnosis.diagnosisNode and data.diagnosis.diagnosisNode.length > 0 %}
     {% for node in data.diagnosis.diagnosisNode %}
@@ -141,14 +205,14 @@
         ]
       ]) %}
     {% endfor %}
-    {% else %}
-  <p class="govuk-body govuk-!-margin-bottom-3">{{ t('pages.caseDetails.caseDetailsSection.noNotes') }}</p>
+  {% else %}
+    <p class="govuk-body govuk-!-margin-bottom-3">{{ t('pages.caseDetails.caseDetailsSection.noNotes') }}</p>
     <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-top-0 govuk-!-margin-bottom-0"/>
   {% endif %}
 
   {{ govukTable({
     captionClasses: "govuk-table__caption--s",
-    classes: "govuk-!-margin-bottom-0",
+    classes: "govuk-!-margin-bottom-3",
     firstCellIsHeader: false,
     rows: rows
   }) }}

@@ -1,0 +1,96 @@
+{% extends "case_details/_base-case-change.njk" %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "components/errorSummaryComponent.njk" import errorSummary %}
+{% from "components/alertBannerComponent.njk" import alertBannerComponent %}
+
+{% block pageTitle %}
+  {% if errorState.hasErrors %}{{ t('common.error') }}: {% endif %}{{ t('pages.caseDetails.changeCategoryOfLaw.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
+{% endblock %}
+
+{% block backLink %}
+  {{ govukBackLink({
+    text: t('common.back'),
+    href: "/cases/" + caseReference + "/case-details",
+    classes: "govuk-!-margin-bottom-0"
+  }) }}
+{% endblock %}
+
+{% block errorSummaryOrAlert %}
+  {% if errorState.hasErrors %}
+    {{ errorSummary(errorState.errors, t('common.errorSummaryTitle')) }}
+  {% else %}
+    {{ alertBannerComponent(client) }}
+  {% endif %}
+{% endblock %}
+
+{% block formContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form method="POST" action="/cases/{{ caseReference }}/change-law-category">
+
+        <!-- CSRF Protection -->
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+
+        <h2 class="govuk-heading-m">{{ t('pages.caseDetails.changeCategoryOfLaw.h2') }}</h2>
+
+        <p class="govuk-body">{{ t('pages.caseDetails.changeCategoryOfLaw.originalCaseInfo') }}
+          {{client.category}}</p>
+
+        <h3 class="govuk-heading-s">{{ t('pages.caseDetails.changeCategoryOfLaw.h3') }}</h3>
+
+        {% if (categoryItems | length) == 2 %}
+
+          <p class="govuk-body">{{ t('pages.caseDetails.changeCategoryOfLaw.newCaseInfo') }}
+            {{ categoryItems[1].text }}</p>
+          <input type="hidden" name="category" value="{{ categoryItems[1].value }}"/>
+
+        {% else %}
+
+          {{ govukSelect({
+            id: "category",
+            name: "category",
+            items: categoryItems,
+            classes: "govuk-!-width-half", 
+            errorMessage: errorState.fieldErrors.category if errorState.fieldErrors.category
+          }) }}
+
+        {% endif %}
+
+        {% call govukFieldset({
+          legend: {
+            text: t('pages.caseDetails.changeCategoryOfLaw.legend'),
+            classes: "govuk-fieldset__legend--s.custom-legend",
+            isPageHeading: false
+          }
+        }) %}
+
+        {{ govukCharacterCount({
+            id: "notes",
+            name: "notes",
+            value: formData.notes or notes,
+            rows: 8,
+            errorMessage: errorState.fieldErrors.notes if errorState.fieldErrors.notes,
+            maxlength: maxCommentLength,
+            threshold: characterThreshold
+          }) }}
+
+        {% endcall %}
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: t('common.save')
+          }) }}
+          <a class="govuk-link" href="{{ backLinkHref }}">{{ t('common.cancel') }}</a>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+{% endblock %}

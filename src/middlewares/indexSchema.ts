@@ -74,3 +74,6 @@ export {
 export {
   validateClientRiskOfAbuse
 } from './clientRiskOfAbuseSchema.js'
+
+export { validateChangeCategoryOfLaw
+} from './changeCategoryOfLawSchema.js'

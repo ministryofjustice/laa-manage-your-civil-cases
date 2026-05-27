@@ -98,7 +98,8 @@ export async function getClientCaseLogs(axiosMiddleware: AxiosInstanceWrapper, c
       'CLSP',
       'MERI',
       'DUPL',
-      'CLOT'
+      'CLOT', 
+      'MCC'
     ];
 
     const query = eventCodes.map(code => `codes=${encodeURIComponent(code)}`).join('&');
@@ -192,6 +193,52 @@ export async function updateProviderNotes(
     };
   } catch (error) {
     const errorMessage = extractAndLogError(error, 'API error');
+    return {
+      data: null,
+      status: 'error',
+      message: errorMessage
+    };
+  }
+}
+
+/**
+ * Change case category (MCC)
+ * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+ * @param {string} caseReference - Case reference number
+ * @param {string} category - Category code
+ * @param {string} notes - Reason for change
+ * @returns {Promise<ClientDetailsApiResponse>} API response with updated case category
+ */
+export async function changeCaseCategory(
+  axiosMiddleware: AxiosInstanceWrapper,
+  caseReference: string,
+  category: string,
+  notes: string
+): Promise<ClientDetailsApiResponse>{
+  try {
+    devLog(`API: PATCH ${API_PREFIX}/mcc/case/${caseReference}/category-change/`);
+
+    const configuredAxios = configureAxiosInstance(axiosMiddleware);
+
+    const payload = {
+      category,
+      notes
+    };
+
+    const response = await configuredAxios.patch(
+      `${API_PREFIX}/mcc/case/${caseReference}/category-change/`,
+      payload
+    );
+
+    devLog(`API: Change category response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+
+    return {
+      data: response.data ?? null,
+      status: 'success'
+    };
+  } catch (error) {
+    const errorMessage = extractAndLogError(error, 'API error');
+
     return {
       data: null,
       status: 'error',
