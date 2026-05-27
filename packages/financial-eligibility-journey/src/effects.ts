@@ -24,18 +24,18 @@ export const {
    * @returns {(context: EffectFunctionContext) => void} Function to apply stored draft answers to the context
    */
   LoadDraftAnswers: (_deps) => (context: EffectFunctionContext) => {
-      const stored = (context.getSession() as FinancialEligibilitySession | undefined)?.financialEligibilityDraft;
+    const stored = (context.getSession() as FinancialEligibilitySession | undefined)?.financialEligibilityDraft;
 
-      if (!stored) {
-        return;
-      }
+    if (!stored) {
+      return;
+    }
 
-      for (const [code, value] of Object.entries(stored)) {
-        if (!context.hasAnswer(code)) {
-          context.setAnswer(code, value);
-        }
+    for (const [code, value] of Object.entries(stored)) {
+      if (!context.hasAnswer(code)) {
+        context.setAnswer(code, value);
       }
-    },
+    }
+  },
 
   /**
    * Saves draft financial eligibility answers
@@ -43,25 +43,25 @@ export const {
    * @returns {(context: EffectFunctionContext) => void} Function to save stored draft answers to the session
    */
   SaveDraftAnswers: (_deps) => (context: EffectFunctionContext) => {
-      console.log(`Saving FE answers in session...`, context.getAllAnswers());
+    console.log(`Saving FE answers in session...`, context.getAllAnswers());
 
-      const session = context.getSession() as FinancialEligibilitySession | undefined;
+    const session = context.getSession() as FinancialEligibilitySession | undefined;
 
-      if (!session) {
-        return;
-      }
+    if (!session) {
+      return;
+    }
 
-      if (!session.financialEligibilityDraft) {
-        session.financialEligibilityDraft = {};
-      }
+    if (!session.financialEligibilityDraft) {
+      session.financialEligibilityDraft = {};
+    }
 
-      session.financialEligibilityDraft = {
-        ...session.financialEligibilityDraft,
-        ...context.getAllAnswers(),
-      };
+    session.financialEligibilityDraft = {
+      ...session.financialEligibilityDraft,
+      ...context.getAllAnswers(),
+    };
 
-      console.log(`Saved FE answers in session:`, session.financialEligibilityDraft);
-    },
+    console.log(`Saved FE answers in session:`, session.financialEligibilityDraft);
+  },
 
 
   /**
@@ -70,25 +70,25 @@ export const {
    * @returns {(context: EffectFunctionContext) => void} Function to submit saved answers to cla_backend
    */
   SubmitSavedAnswersToClaBackend: (_deps) => (context: EffectFunctionContext) => {
-      console.log(`Saving FE answers in session...`, context.getAllAnswers());
+    console.log(`Saving FE answers in session...`, context.getAllAnswers());
 
-      const session = context.getSession() as FinancialEligibilitySession | undefined;
+    const session = context.getSession() as FinancialEligibilitySession | undefined;
 
-      if (!session) {
-        return;
-      }
+    if (!session) {
+      return;
+    }
 
-      if (!session.financialEligibilityDraft) {
-        session.financialEligibilityDraft = {};
-      }
+    if (!session.financialEligibilityDraft) {
+      session.financialEligibilityDraft = {};
+    }
 
-      session.financialEligibilityDraft = {
-        ...session.financialEligibilityDraft,
-        ...context.getAllAnswers(),
-      };
+    session.financialEligibilityDraft = {
+      ...session.financialEligibilityDraft,
+      ...context.getAllAnswers(),
+    };
 
-      console.log(`Submitted FE answers in session, to cla_backend:`, session.financialEligibilityDraft);
-    },
+    console.log(`Submitted FE answers in session, to cla_backend:`, session.financialEligibilityDraft);
+  },
 
   /**
    * Clears draft financial eligibility answers, in the session
@@ -110,7 +110,7 @@ export const {
       console.log(`Cleared FE answers in session:`, context.getAllAnswers());
     };
   },
-  
+
 });
 
 /**
