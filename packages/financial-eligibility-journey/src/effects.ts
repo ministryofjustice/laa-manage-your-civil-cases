@@ -10,6 +10,8 @@ export interface FinancialEligibilityEffectShape {
   SaveDraftAnswers: () => EffectFunctionExpr;
   /** Clears draft answers for this pattern (used after committing drafts to the store). */
   ClearDraftAnswers: () => EffectFunctionExpr;
+  /** TODO Submit saved answers from session to cla_backend  */
+  SubmitSavedAnswersToClaBackend: () => EffectFunctionExpr;
 }
 
 export const {
@@ -41,7 +43,7 @@ export const {
    * @returns {(context: EffectFunctionContext) => void} Function to save stored draft answers to the session
    */
   SaveDraftAnswers: (_deps) => (context: EffectFunctionContext) => {
-        console.log(`Saving answers in session...`, context.getAllAnswers());
+      console.log(`Saving FE answers in session...`, context.getAllAnswers());
 
       const session = context.getSession() as FinancialEligibilitySession | undefined;
 
@@ -58,7 +60,34 @@ export const {
         ...context.getAllAnswers(),
       };
 
-      console.log(`Saved answers in session:`, session.financialEligibilityDraft);
+      console.log(`Saved FE answers in session:`, session.financialEligibilityDraft);
+    },
+
+
+  /**
+   * SSubmit saved answers from session to cla_backend
+   * @param {unknown} _deps Effect dependencies supplied by Forge
+   * @returns {(context: EffectFunctionContext) => void} Function to submit saved answers to cla_backend
+   */
+  SubmitSavedAnswersToClaBackend: (_deps) => (context: EffectFunctionContext) => {
+      console.log(`Saving FE answers in session...`, context.getAllAnswers());
+
+      const session = context.getSession() as FinancialEligibilitySession | undefined;
+
+      if (!session) {
+        return;
+      }
+
+      if (!session.financialEligibilityDraft) {
+        session.financialEligibilityDraft = {};
+      }
+
+      session.financialEligibilityDraft = {
+        ...session.financialEligibilityDraft,
+        ...context.getAllAnswers(),
+      };
+
+      console.log(`Submitted FE answers in session, to cla_backend:`, session.financialEligibilityDraft);
     },
 
   /**
@@ -77,8 +106,11 @@ export const {
       for (const key of Object.keys(context.getAllAnswers())) {
         context.clearAnswer(key);
       }
+
+      console.log(`Cleared FE answers in session:`, context.getAllAnswers());
     };
   },
+  
 });
 
 /**

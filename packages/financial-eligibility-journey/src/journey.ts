@@ -4,7 +4,6 @@ import { under17GroupStep } from './under17Page/under17Step.js'
 import { partnerStep } from './partnerPage/partnerStep.js'
 import { over60Step } from './over60Page/over60Step.js'
 import { checkAnswersStep } from './checkAnswersPage/checkAnswersStep.js'
-import { confirmationStep } from './confirmationPage/confirmationStep.js'
 
 // The loads any stored draft answers on every access, so switching between branches preserves earlier input.
 // The summary page filters rows to the  branch the user is currently on.
@@ -24,6 +23,5 @@ export const eligibilityJourney = journey({
     partnerStep,
     over60Step,
     checkAnswersStep,
-    confirmationStep,
   ],
 })
