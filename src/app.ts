@@ -4,7 +4,7 @@ import config from '#config.js';
 import type { Request, Response } from 'express';
 import express from 'express';
 import chalk from 'chalk';
-import morgan from 'morgan';
+import bodyParser from 'body-parser';
 import compression from 'compression';
 import { setupCsrf, setupMiddlewares, setupConfig, setupLocaleMiddleware, setAuthStatus } from '#src/middlewares/indexSetUp.js';
 import session from 'express-session';
@@ -13,6 +13,8 @@ import { initializeI18nextSync } from '#src/scripts/helpers/index.js';
 import indexRouter from '#routes/index.js';
 import livereload from 'connect-livereload';
 import { buildSessionConfig } from '#utils/server/session.js';
+import { errorHandler404, errorHandlerGlobalCatchAll } from '#src/middlewares/errorHandlers.js';
+import { setupSentry } from '#utils/server/sentrySetup.js';
 
 const TRUST_FIRST_PROXY = 1;
 
@@ -23,13 +25,53 @@ const TRUST_FIRST_PROXY = 1;
  * @returns {Promise<import('express').Application>} The configured Express application
  */
 const createApp = async (): Promise<express.Application> => {
+	
 	// Initialize i18next synchronously before setting up the app
 	initializeI18nextSync();
 	
 	const app = express();
 
+	// Set up application-specific configurations
+	setupConfig(app);
+
+	// Set up rate limiting
+	rateLimitSetUp(app, config);
+
+	// Set up security headers
+	helmetSetup(app);
+
+	app.use(session(await buildSessionConfig(config)));
+
+	// Set up axios middleware AFTER session middleware so req.session is available
+	app.use(axiosMiddleware);
+	
+	// Set up Nunjucks as the template engine
+	nunjucksSetup(app);
+
 	// Set up common middleware for handling cookies, body parsing, etc.
-	setupMiddlewares(app);
+	await setupMiddlewares(app);
+
+	// Set up Cross-Site Request Forgery (CSRF) protection
+	setupCsrf(app);
+
+	// Set up locale middleware for internationalisation
+	app.use(setupLocaleMiddleware);
+
+	// Set up authentication status for templates
+	app.use(setAuthStatus);
+
+	// Register the main router
+	app.use('/', indexRouter);
+
+	// The Sentry error handler must be registered before any other error middleware and after all controller
+	setupSentry(app, config);
+
+	// Error handlers
+	app.use(errorHandler404);
+	app.use(errorHandlerGlobalCatchAll);
+
+	// Parses URL-encoded bodies (form submissions)
+	app.use(bodyParser.urlencoded({ extended: true }));
 
 	// Response compression setup
 	app.use(compression({
@@ -49,49 +91,12 @@ const createApp = async (): Promise<express.Application> => {
 		}
 	}));
 
-	// Set up security headers
-	helmetSetup(app);
-
 	// Reducing fingerprinting by removing the 'x-powered-by' header
 	app.disable('x-powered-by');
 
 	// Set up cookie security for sessions
 	app.set('trust proxy', TRUST_FIRST_PROXY);
-	
-	app.use(session(await buildSessionConfig(config)));
 
-	// Set up rate limiting
-	rateLimitSetUp(app, config);
-	
-	// Set up authentication status for templates
-	app.use(setAuthStatus);
-
-  // Set up axios middleware AFTER session middleware so req.session is available
-	app.use(axiosMiddleware);
-
-	// Set up Cross-Site Request Forgery (CSRF) protection
-	setupCsrf(app);
-
-	// Set up locale middleware for internationalisation
-	app.use(setupLocaleMiddleware);
-	
-	// Set up Nunjucks as the template engine
-	nunjucksSetup(app);
-
-	// Set up application-specific configurations
-	setupConfig(app);
-
-	// Set up request logging based on environment
-	if (process.env.NODE_ENV === 'production') {
-		// Use combined format for production (more structured, less verbose)
-		app.use(morgan('combined'));
-	} else {
-		// Use dev format for development (colored, more readable)
-		app.use(morgan('dev'));
-	}
-
-	// Register the main router
-	app.use('/', indexRouter);
 
 	// Enable live-reload middleware in development mode
 	if (process.env.NODE_ENV === 'development') {

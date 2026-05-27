@@ -83,6 +83,14 @@ const config: Config = {
     enabled: process.env.REDIS_ENABLED === 'true',
     auth_token: process.env.REDIS_AUTH_TOKEN,
     tls_enabled: process.env.REDIS_TLS_ENABLED === 'true'
+  },
+  // Sentry configuration for error tracking
+  sentry: {
+    dsn: process.env.SENTRY_DSN,
+    environment: process.env.NODE_ENV ?? 'development',
+    release: process.env.SENTRY_RELEASE ?? 'unknown',
+    sendDefaultPii: process.env.SENTRY_SEND_DEFAULT_PII === 'true',
+    sentryCspReportUri: process.env.SENTRY_CSP_REPORT_URI ?? null
   }
 };
 

@@ -115,6 +115,12 @@ spec:
               value: "{{ .Values.env.SILAS_SCOPES }}"
             - name: SILAS_EXPECTED_AUDIENCE
               value: "{{ .Values.env.SILAS_EXPECTED_AUDIENCE }}"
+            - name: SENTRY_DSN
+              value: "{{ .Values.env.SENTRY_DSN }}"
+            - name: SENTRY_CSP_REPORT_URI
+              value: "{{ .Values.env.SENTRY_CSP_REPORT_URI }}"
+            - name: SENTRY_RELEASE
+              value: "{{ .Values.env.SENTRY_RELEASE }}"
       {{- with .Values.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}

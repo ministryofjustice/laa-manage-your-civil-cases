@@ -28,7 +28,10 @@ deploy_branch() {
                 --set env.ENTRA_CLIENT_SECRET="$ENTRA_CLIENT_SECRET" \
                 --set env.ENTRA_AUTHORITY="$ENTRA_AUTHORITY" \
                 --set env.SILAS_SCOPES="$SILAS_SCOPES" \
-                --set env.SILAS_EXPECTED_AUDIENCE="$SILAS_EXPECTED_AUDIENCE"
+                --set env.SILAS_EXPECTED_AUDIENCE="$SILAS_EXPECTED_AUDIENCE" \
+                --set env.SENTRY_DSN="$SENTRY_DSN" \
+                --set env.SENTRY_CSP_REPORT_URI="$SENTRY_CSP_REPORT_URI" \
+                --set env.SENTRY_RELEASE="$(git rev-parse HEAD)"
 }
 
 deploy_main() {  
@@ -47,7 +50,10 @@ deploy_main() {
                           --set env.ENTRA_CLIENT_SECRET="$ENTRA_CLIENT_SECRET" \
                           --set env.ENTRA_AUTHORITY="$ENTRA_AUTHORITY" \
                           --set env.SILAS_SCOPES="$SILAS_SCOPES" \
-                          --set env.SILAS_EXPECTED_AUDIENCE="$SILAS_EXPECTED_AUDIENCE"
+                          --set env.SILAS_EXPECTED_AUDIENCE="$SILAS_EXPECTED_AUDIENCE" \
+                          --set env.SENTRY_DSN="$SENTRY_DSN" \
+                          --set env.SENTRY_CSP_REPORT_URI="$SENTRY_CSP_REPORT_URI" \
+                          --set env.SENTRY_RELEASE="$(git rev-parse HEAD)"
 }
 
 if [[ "$GITHUB_REF_NAME" == "main" ]]; then

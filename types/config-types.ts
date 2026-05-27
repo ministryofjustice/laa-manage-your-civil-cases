@@ -52,6 +52,14 @@ export interface PaginationConfig {
   defaultLimit: number;
 }
 
+export interface SentryConfig {
+  dsn: string | undefined;
+  environment: string;
+  release: string;
+  sendDefaultPii: boolean;
+  sentryCspReportUri: string | null;
+}
+
 export interface Config {
   CONTACT_EMAIL: string | undefined;
   DEPARTMENT_NAME: string | undefined;
@@ -74,4 +82,5 @@ export interface Config {
   api: ApiConfig;
   pagination: PaginationConfig;
   redis: RedisConfig;
+  sentry: SentryConfig;
 }
