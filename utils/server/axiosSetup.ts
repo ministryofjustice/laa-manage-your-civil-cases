@@ -60,12 +60,18 @@ export const axiosMiddleware = (req: Request, res: Response, next: NextFunction)
   const silasAuth = req.session.silasAuth;
   const userAccessToken = silasAuth?.accessToken;
 
-  if (userAccessToken === undefined || userAccessToken.trim() === '') {
+  // Axios runs on every request, so this makes it less noisy by checking routes where SiLAS auth is needed
+  const hasToken = Boolean(userAccessToken?.trim());
+  const needsSilasAuth = req.path.startsWith('/cases') || req.path.startsWith('/search');
+
+  if (!hasToken && needsSilasAuth) {
     devLog('No SILAS access token found in session - request will proceed without Authorization header');
-  } else {
+  }
+
+  if (hasToken) {
     axiosWrapper.axiosInstance.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
-        config.headers.Authorization = `Bearer ${silasAuth?.accessToken}`;
+        config.headers.Authorization = `Bearer ${userAccessToken}`;
         devLog('Added SILAS bearer token to API request');
         return config;
       },

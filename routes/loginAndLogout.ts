@@ -11,7 +11,7 @@ router.get('/', (req: Request, res: Response) => {
 });
 
 /* POST login page submission */
-router.post('/', (res: Response) => {
+router.post('/', (_req: Request, res: Response) => {
 	res.status(HTTP.NOT_FOUND).render('main/error.njk', {
     status: HTTP.NOT_FOUND,
     error: 'Page not found. User tried to Login via SiLAS.'
@@ -26,6 +26,11 @@ router.get('/callback', (req: Request, res: Response) => {
 /* GET logout, clear session and redirect to Entra login page */
 router.get('/logout', (req: Request, res: Response) => {
 	handleSilasLogout(req, res);
+});
+
+/* GET logout callback screen, to show user they are logged out of Entra */
+router.get('/logout/callback', (req: Request, res: Response) => {
+  res.render('logout/callback/index');
 });
 
 /* GET test-only — bypasses OAuth for Playwright E2E tests */
