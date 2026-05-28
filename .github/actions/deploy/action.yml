@@ -53,6 +53,15 @@ inputs:
     silas_expected_audience:
       description: "SiLAS expected audience"
       required: true
+    sentry_dsn:
+      description: "Sentry DSN"
+      required: false
+    sentry_csp_report_uri:
+      description: "Sentry CSP report URI"
+      required: false
+    sentry_release:
+      description: "Sentry release version"
+      required: false
 
 runs:
   using: "composite"
@@ -96,6 +105,9 @@ runs:
         ENTRA_AUTHORITY: ${{ inputs.entra_authority }}
         SILAS_SCOPES: ${{ inputs.silas_scopes }}
         SILAS_EXPECTED_AUDIENCE: ${{ inputs.silas_expected_audience }}
+        SENTRY_DSN: ${{ inputs.sentry_dsn }}
+        SENTRY_CSP_REPORT_URI: ${{ inputs.sentry_csp_report_uri }}
+        SENTRY_RELEASE: ${{ inputs.sentry_release }}
 
     - name: Notify deployment failure
       shell: bash

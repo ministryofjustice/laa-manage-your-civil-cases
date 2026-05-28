@@ -98,6 +98,14 @@ const config: Config = {
     // Scopes used for the initial auth code exchange at user sign-in.
     scopes: (process.env.SILAS_SCOPES ?? '').split(' ').filter(Boolean),
     expectedAudience: process.env.SILAS_EXPECTED_AUDIENCE ?? ''
+  },
+  // Sentry configuration for error tracking
+  sentry: {
+    dsn: process.env.SENTRY_DSN,
+    environment: process.env.NODE_ENV ?? 'development',
+    release: process.env.SENTRY_RELEASE ?? 'unknown',
+    sendDefaultPii: process.env.SENTRY_SEND_DEFAULT_PII === 'true',
+    sentryCspReportUri: process.env.SENTRY_CSP_REPORT_URI ?? null
   }
 };
 

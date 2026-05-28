@@ -37,7 +37,6 @@ jobs:
   snyk:
     name: Snyk Security Scan
     runs-on: ubuntu-latest
-    if : github.actor != 'dependabot[bot]' # because dependabot has no access to secrets
     steps:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -59,7 +58,6 @@ jobs:
   build-image:
     name: Build Docker Image
     runs-on: ubuntu-latest
-    if : github.actor != 'dependabot[bot]' # because dependabot has no access to secrets
     permissions:
       id-token: write
       contents: read
@@ -77,7 +75,7 @@ jobs:
         id: login-ecr
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4.0.0
+        uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4.1.0
         with:
           driver: docker-container
           name: docker-builder
@@ -118,7 +116,6 @@ jobs:
   deploy-uat:
     environment: uat
     runs-on: ubuntu-latest
-    if : github.actor != 'dependabot[bot]' # because dependabot has no access to secrets
     needs:
       - code-linting
       - code-security-audit
@@ -152,6 +149,8 @@ jobs:
           entra_authority: ${{ secrets.ENTRA_AUTHORITY }}
           silas_scopes: ${{ secrets.SILAS_SCOPES }}
           silas_expected_audience: ${{ secrets.SILAS_EXPECTED_AUDIENCE }}
+          sentry_dsn: ${{ secrets.SENTRY_DSN }}
+          sentry_csp_report_uri: ${{ secrets.SENTRY_CSP_REPORT_URI }}
   
   deploy-staging:
     environment: staging
@@ -184,6 +183,8 @@ jobs:
           entra_authority: ${{ secrets.ENTRA_AUTHORITY }}
           silas_scopes: ${{ secrets.SILAS_SCOPES }}
           silas_expected_audience: ${{ secrets.SILAS_EXPECTED_AUDIENCE }}
+          sentry_dsn: ${{ secrets.SENTRY_DSN }}
+          sentry_csp_report_uri: ${{ secrets.SENTRY_CSP_REPORT_URI }}
 
   deploy-production:
     environment: production
@@ -216,3 +217,5 @@ jobs:
           entra_authority: ${{ secrets.ENTRA_AUTHORITY }}
           silas_scopes: ${{ secrets.SILAS_SCOPES }}
           silas_expected_audience: ${{ secrets.SILAS_EXPECTED_AUDIENCE }}
+          sentry_dsn: ${{ secrets.SENTRY_DSN }}
+          sentry_csp_report_uri: ${{ secrets.SENTRY_CSP_REPORT_URI }}
