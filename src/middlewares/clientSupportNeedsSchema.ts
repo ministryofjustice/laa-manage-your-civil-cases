@@ -96,32 +96,5 @@ const clientSupportNeedsBaseSchema = {
  * Validation middleware when user adds client support needs form.
  * @returns {Error} Validation schema for express-validator
  */
-export const validateAddClientSupportNeeds = (): ReturnType<typeof checkSchema> =>
+export const validateClientSupportNeeds = (): ReturnType<typeof checkSchema> =>
   checkSchema(clientSupportNeedsBaseSchema);
-
-/**
- * Validation middleware when user edits client support needs form.
- * Extends the add validation with session-based change detection to ensure modifications have been made.
- * @returns {Error} Validation schema for express-validator
- */
-export const validateEditClientSupportNeeds = (): ReturnType<typeof checkSchema> => checkSchema({
-  // Include all base validation rules
-  ...clientSupportNeedsBaseSchema,
-  // Add session-based change detection at the end (consistent with other edit schemas)
-  notChanged: createSessionChangeDetectionValidator(
-    [
-      'clientSupportNeeds',
-      'languageSupportNeeds',
-      'notes'
-    ],
-    'clientSupportNeedsOriginal',
-    {
-      /**
-       * Returns the summary message for unchanged third party details.
-       * @returns {string} Localized validation error message
-       */
-      summaryMessage: () => t('forms.clientDetails.clientSupportNeeds.validationError.notChanged'),
-      inlineMessage: ''
-    }
-  ),
-});

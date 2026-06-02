@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
 import { apiService } from '#src/services/apiService.js';
-import { safeString, capitaliseFirst, extractCurrentFields, normaliseSelectedCheckbox } from '#src/scripts/helpers/index.js';
+import { safeString, capitaliseFirst, extractCurrentFields, normaliseSelectedCheckbox, setSessionValue } from '#src/scripts/helpers/index.js';
 import { validationResult } from 'express-validator';
 import { formatValidationError } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 import type {
@@ -110,7 +110,7 @@ export async function handlePostEditForm(
   if (formIsInvalid) {
     // Fetch client details for the case info header and alert banner
     const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
-    
+
     const renderData: RenderData = {
       caseReference,
       client: response.data,
@@ -133,6 +133,15 @@ export async function handlePostEditForm(
 
     res.status(HTTP.BAD_REQUEST).render(templatePath, renderData);
     return;
+  } else {
+    const fieldsForComparison = options.fields.map(field => ({
+      current: field.value,
+      existing: field.existingValue
+    }));
+
+    const handled = handleNoChangeRedirect(req, res, caseReference, fieldsForComparison);
+
+    if (handled) return;
   }
 
   try {
@@ -530,4 +539,51 @@ export function hasAllowedCaseStatus(
     return false;
   }
   return allowedStatuses.includes(clientData.caseStatus as CaseStatusLabels);
+}
+
+/**
+ * Handles no changes made to a form field.
+ * If the current value matches the existing value, a warning banner is set
+ * in session storage and the user is redirected back to the client details page.
+ *
+ * @param {Request} req - The Express request object containing route params and session.
+ * @param {Response} res - The Express response object used to perform the redirect.
+ * @param {unknown} caseReference - The case reference value to validate
+ * @param {Array<{ current: unknown; existing: unknown }>} fields - Array of field objects containing current and existing values for comparison.
+ * @returns {boolean} Returns true if a redirect was triggered due to no changes, otherwise false.
+ */
+export function handleNoChangeRedirect(
+  req: Request,
+  res: Response,
+  caseReference: unknown, 
+  fields: Array<{ current: unknown; existing: unknown }>
+): boolean {
+
+  const noChanges = fields.every(field => {
+
+    const { current, existing } = field;
+
+    // Object comparison
+    if (
+      typeof current === 'object' && current !== null ||
+      typeof existing === 'object' && existing !== null
+    ) {
+      return JSON.stringify(current ?? null) === JSON.stringify(existing ?? null);
+    }
+
+    // Primitive comparison 
+    const currentStr = safeString(current ?? existing).trim();
+    const existingStr = safeString(existing).trim();
+
+    return currentStr === existingStr;
+  });
+
+  if (noChanges) {
+    setSessionValue(req, 'noChangeWarningCache', { noChangeWarningBanner: true });
+
+    res.redirect(`/cases/${caseReference}/client-details`);
+    return true;
+  }
+
+  return false;
 }

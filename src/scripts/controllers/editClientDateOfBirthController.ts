@@ -1,13 +1,15 @@
 import type { Request, Response, NextFunction } from 'express';
 import { validationResult, type Result } from 'express-validator';
-import { safeString, handleGetEditForm, isRecord, handlePostEditForm, extractAndConvertDateFields, extractFormFields } from '#src/scripts/helpers/index.js';
+import { safeString, handleGetEditForm, isRecord, handlePostEditForm, extractAndConvertDateFields, extractFormFields, dateStringFromThreeFields } from '#src/scripts/helpers/index.js';
 import {
   formatValidationError,
   type ValidationErrorData
 } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 import {
   parseDateString,
-  handleDateOfBirthValidationErrors
+  handleDateOfBirthValidationErrors,
+  isRequestBodyWithDates,
+  extractOriginalDateData
 } from '#src/scripts/helpers/ValidationDateHelpers.js';
 
 /**
@@ -75,15 +77,26 @@ export async function postEditClientDateOfBirth(req: Request, res: Response, nex
     ]);
 
     const formFields = extractFormFields(req.body, [
-      'dateOfBirth-day', 
-      'dateOfBirth-month', 
+      'dateOfBirth-day',
+      'dateOfBirth-month',
       'dateOfBirth-year'
     ]);
 
+    const bodyWithDates = isRequestBodyWithDates(req.body) ? req.body : {};
+    const originalData = extractOriginalDateData(bodyWithDates);
+
+    const originalDob = dateStringFromThreeFields(
+      originalData.day,
+      originalData.month,
+      originalData.year
+    );
+    
     await handlePostEditForm(req, res, next, {
       templatePath: 'case_details/edit-date-of-birth.njk',
       fields: [
-        { name: 'dateOfBirth', value: dateOfBirth, existingValue: '' }
+        {
+          name: 'dateOfBirth', value: dateOfBirth, existingValue: originalDob
+        }
       ],
       apiUpdateData: {
         dob: {
@@ -91,7 +104,8 @@ export async function postEditClientDateOfBirth(req: Request, res: Response, nex
           day: formFields['dateOfBirth-day'],
           year: formFields['dateOfBirth-year']
         }
-      }    });
+      }
+    });
 
   } catch (error) {
     next(error);

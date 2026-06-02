@@ -25,7 +25,7 @@ import {
 import { apiService } from '#src/services/apiService.js';
 // Import to get global type declarations for axiosMiddleware
 import '#utils/server/axiosSetup.js';
-import { validateEditClientThirdParty } from '#src/middlewares/clientThirdPartySchema.js';
+import { validateClientThirdParty } from '#src/middlewares/clientThirdPartySchema.js';
 import { ValidationChain } from '#node_modules/express-validator/lib/index.js';
 
 // Define the RequestWithMiddleware interface for testing
@@ -98,10 +98,10 @@ describe('Edit Client Third Party Controller', () => {
             address: '123 Test Street\nLondon',
             postcode: 'SW1A 1AA',
             relationshipToClient: {
-              selected: ['Family member of friend'],
+              selected: ['Family member or friend'],
               available: [
                 'Parent or Guardian',
-                'Family member of friend',
+                'Family member or friend',
                 'Professional',
                 'Legal adviser',
                 'Other'
@@ -142,7 +142,7 @@ describe('Edit Client Third Party Controller', () => {
   describe('postEditClientThirdParty', () => {
     it('should process successful third party update and redirect to case details', async () => {
       // Arrange
-      req.body = { 
+      req.body = {
         thirdPartyFullName: 'Jane Smith'
       };
 
@@ -166,11 +166,11 @@ describe('Edit Client Third Party Controller', () => {
 
     it('should handle validation errors and re-render form', async () => {
       // Arrange
-      req.body = { 
+      req.body = {
         thirdPartyFullName: '' // Empty name should trigger validation
       };
 
-      await runSchema(req as any, validateEditClientThirdParty());
+      await runSchema(req as any, validateClientThirdParty());
 
       // Stub a successful getClientDetails response so handleAddThirdPartyValidationErrors thinks it has info
       apiServiceGetStub.resolves({
@@ -186,18 +186,22 @@ describe('Edit Client Third Party Controller', () => {
     });
 
     it('should handle no changes scenario properly', async () => {
-      // Arrange - Set up session with original data  
-      req.session!.thirdPartyOriginal = {
+      // Arrange - original data  
+      const originalForm = {
         thirdPartyFullName: 'John Doe',
-        thirdPartyEmailAddress: 'john@example.com'
-      };
-      
-      req.body = { 
-        thirdPartyFullName: 'John Doe', // Same value = no change
-        thirdPartyEmailAddress: 'john@example.com'
+        thirdPartyEmailAddress: '',
+        thirdPartyContactNumber: '07723467891',
+        thirdPartySafeToCall: 'true',
+        thirdPartyAddress: '',
+        thirdPartyPostcode: '',
+        thirdPartyRelationshipToClient: 'LEGAL_ADVISOR',
+        thirdPartyPassphraseSetUp: 'CHILD_PATIENT',
+        thirdPartyPassphrase: ''
       };
 
-      await runSchema(req as any, validateEditClientThirdParty());
+      // Use SAME object for both
+      req.session!.thirdPartyOriginal = { ...originalForm };
+      req.body = { ...originalForm };
 
       // Stub a successful getClientDetails response so handleAddThirdPartyValidationErrors thinks it has info
       apiServiceGetStub.resolves({
@@ -208,13 +212,16 @@ describe('Edit Client Third Party Controller', () => {
       await postEditClientThirdParty(req as RequestWithMiddleware, res as Response, next);
 
       // Assert - Should render form with "no changes" error, not redirect
-      expect(redirectStub.called).to.be.false;
-      expect(renderStub.calledWith('case_details/third_party_details/change-client-third-party.njk')).to.be.true;
+      // Checks
+      expect(redirectStub.calledOnce).to.be.true;
+      expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
+      expect((req.session as any).noChangeWarningCache.noChangeWarningBanner).to.be.true;
+      expect(renderStub.called).to.be.false;
     });
 
     it('should delegate API errors to Express error handling middleware', async () => {
       // Arrange
-      req.body = { 
+      req.body = {
         thirdPartyFullName: 'Jane Smith'
       };
 
@@ -230,6 +237,7 @@ describe('Edit Client Third Party Controller', () => {
       await postEditClientThirdParty(req as RequestWithMiddleware, res as Response, next);
 
       // Assert
+      expect(apiServiceUpdateStub.calledOnce).to.be.true;
       expect(next.calledOnce).to.be.true;
     });
   });

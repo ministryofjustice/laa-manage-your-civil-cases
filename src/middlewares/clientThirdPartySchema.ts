@@ -1,7 +1,7 @@
 import { checkSchema } from 'express-validator';
 import type { Meta } from 'express-validator';
 import { isValidPhoneNumber } from 'libphonenumber-js';
-import { TypedValidationError, t, safeBodyString, createSessionChangeDetectionValidator } from '#src/scripts/helpers/index.js';
+import { TypedValidationError, t, safeBodyString } from '#src/scripts/helpers/index.js';
 import config from '#config.js';
 
 const { MAX_POSTCODE_LENGTH }: { MAX_POSTCODE_LENGTH: number } = config;
@@ -150,39 +150,6 @@ const clientThirdPartyBaseSchema = {
  * Validation middleware when user adds client's third party form.
  * @returns {Error} Validation schema for express-validator
  */
-export const validateAddClientThirdParty = (): ReturnType<typeof checkSchema> =>
+export const validateClientThirdParty = (): ReturnType<typeof checkSchema> =>
   checkSchema(clientThirdPartyBaseSchema);
 
-/**
- * Validation middleware when user edits client's third party form.
- * Extends the add validation with session-based change detection to ensure modifications have been made.
- * @returns {Error} Validation schema for express-validator
- */
-export const validateEditClientThirdParty = (): ReturnType<typeof checkSchema> => checkSchema({
-    // Include all base validation rules
-    ...clientThirdPartyBaseSchema,
-    
-    // Add session-based change detection at the end (consistent with other edit schemas)
-    notChanged: createSessionChangeDetectionValidator(
-      [
-        'thirdPartyFullName',
-        'thirdPartyEmailAddress', 
-        'thirdPartyContactNumber',
-        'thirdPartySafeToCall',
-        'thirdPartyAddress',
-        'thirdPartyPostcode',
-        'thirdPartyRelationshipToClient',
-        'thirdPartyPassphraseSetUp',
-        'thirdPartyPassphrase'
-      ],
-      'thirdPartyOriginal',
-      {
-        /**
-         * Returns the summary message for unchanged third party details.
-         * @returns {string} Localized validation error message
-         */
-        summaryMessage: () => t('forms.clientDetails.thirdParty.validationError.notChanged'),
-        inlineMessage: ''
-      }
-    ),
-  });

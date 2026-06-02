@@ -17,7 +17,7 @@
 import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import type { Request, Response, NextFunction } from 'express';
+import type { Request, Response } from 'express';
 import {
   getEditClientEmailAddress,
   postEditClientEmailAddress
@@ -147,12 +147,29 @@ describe('Edit Client Email Address Controller', () => {
         status: 'success'
       });
 
+      req.session = {} as any;
+
       // Act
       await postEditClientEmailAddress(req as RequestWithMiddleware, res as Response, next);
 
       // Assert - Should configure form response with errors, not redirect
       expect(redirectStub.called).to.be.false;
       expect(renderStub.calledWith('case_details/edit-client-email-address.njk')).to.be.true;
+      expect((req.session as any).noChangeWarningBanner).to.be.undefined;
+    });
+
+    it('should process display no change warning banner ', async () => {
+      // Arrange
+      req.body = { emailAddress: 'jane@example.com',  existingEmailAddress: 'jane@example.com' };
+      req.session = {} as any;
+
+      // Act
+      await postEditClientEmailAddress(req as RequestWithMiddleware, res as Response, next);
+
+      // Assert
+      expect(apiServiceUpdateStub.calledOnce).to.be.false;
+      expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
+      expect((req.session as any).noChangeWarningCache.noChangeWarningBanner).to.be.true;
     });
   });
 });

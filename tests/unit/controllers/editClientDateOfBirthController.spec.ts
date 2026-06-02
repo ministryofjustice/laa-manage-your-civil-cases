@@ -13,9 +13,8 @@ import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import type { Request, Response, NextFunction } from 'express';
-import { validationResult } from 'express-validator';
-import { 
-  getEditClientDateOfBirth, 
+import {
+  getEditClientDateOfBirth,
   postEditClientDateOfBirth
 } from '#src/scripts/controllers/editClientDateOfBirthController.js';
 import { apiService } from '#src/services/apiService.js';
@@ -41,7 +40,7 @@ describe('Edit Client Date of Birth Controller', () => {
       params: { caseReference: 'TEST123' },
       body: {},
       axiosMiddleware: {} as any,
-      csrfToken: sinon.stub().returns('mock-csrf-token')
+      csrfToken: sinon.stub().returns('mock-csrf-token') 
     };
 
     renderStub = sinon.stub();
@@ -79,10 +78,10 @@ describe('Edit Client Date of Birth Controller', () => {
       expect(apiServiceGetStub.calledOnce).to.be.true;
       expect(apiServiceGetStub.calledWith(req.axiosMiddleware, 'TEST123')).to.be.true;
       expect(renderStub.calledOnce).to.be.true;
-      
+
       const renderCall = renderStub.getCall(0);
       expect(renderCall.args[0]).to.equal('case_details/edit-date-of-birth.njk');
-      
+
       const renderData = renderCall.args[1];
       expect(renderData.caseReference).to.equal('TEST123');
       expect(renderData.formData.day).to.equal('15');
@@ -106,6 +105,7 @@ describe('Edit Client Date of Birth Controller', () => {
         }
       };
       apiServiceGetStub.resolves(mockApiResponse);
+      req.session = {} as any;
 
       // Act
       await getEditClientDateOfBirth(req as Request, res as Response, next as NextFunction);
@@ -115,6 +115,8 @@ describe('Edit Client Date of Birth Controller', () => {
       expect(renderData.formData.day).to.equal('');
       expect(renderData.formData.month).to.equal('');
       expect(renderData.formData.year).to.equal('');
+      expect((req.session as any).noChangeWarningBanner).to.be.undefined;
+
     });
 
     it('should delegate API errors to Express error handling middleware', async () => {
@@ -143,9 +145,9 @@ describe('Edit Client Date of Birth Controller', () => {
       // Arrange - Set up request with valid date data
       req.body = {
         'dateOfBirth-day': '15',
-        'dateOfBirth-month': '5', 
+        'dateOfBirth-month': '5',
         'dateOfBirth-year': '1990',
-        originalDay: '10',  // Different from current to avoid change detection
+        originalDay: '10',
         originalMonth: '3',
         originalYear: '1985'
       };
@@ -153,6 +155,7 @@ describe('Edit Client Date of Birth Controller', () => {
       // Mock successful API call
       apiServiceUpdateStub.resolves();
 
+       req.session = {} as any;
       // Simulate that validation passed by ensuring our request would pass real validation
       // (This tests the successful path without needing to mock express-validator)
 
@@ -162,17 +165,46 @@ describe('Edit Client Date of Birth Controller', () => {
       // Assert
       expect(redirectStub.calledOnce).to.be.true;
       expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
+      expect((req.session as any).noChangeWarningBanner).to.be.undefined;
     });
+
+    it('should redirect and set warning banner when no date changes are made', async () => {
+      // Arrange - SAME date as original
+      req.body = {
+        'dateOfBirth-day': '15',
+        'dateOfBirth-month': '5',
+        'dateOfBirth-year': '1990',
+        originalDay: '15',
+        originalMonth: '5',
+        originalYear: '1990'
+      };
+
+      req.session = {} as any;
+
+      // Act
+      await postEditClientDateOfBirth(req as Request, res as Response, next as NextFunction);
+
+      // Assert
+      expect(redirectStub.calledOnce).to.be.true;
+      expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
+
+      // API should NOT be called
+      expect(apiServiceUpdateStub.called).to.be.false;
+
+      // Banner should be set
+     expect((req.session as any).noChangeWarningCache.noChangeWarningBanner).to.be.true;
+    });
+
 
     it('should construct ISO date string correctly with proper padding', async () => {
       // This test actually executes the date construction logic in the controller
       // Even though we can't easily test it in isolation due to validation dependencies
-      
+
       // The logic being tested:
       // const paddedDay = day.padStart(2, '0');
       // const paddedMonth = month.padStart(2, '0');
       // dateOfBirth = `${year}-${paddedMonth}-${paddedDay}`;
-      
+
       // We can verify this through the API call parameters when validation passes
       expect(true).to.be.true; // Placeholder - actual test would need validation bypass
     });
@@ -181,13 +213,14 @@ describe('Edit Client Date of Birth Controller', () => {
       // Arrange
       const mockError = new Error('API Update Error');
       apiServiceUpdateStub.rejects(mockError);
-      
+
+      req.session = {} as any;
       req.body = {
         'dateOfBirth-day': '15',
         'dateOfBirth-month': '5',
         'dateOfBirth-year': '1990',
         originalDay: '10',
-        originalMonth: '3', 
+        originalMonth: '3',
         originalYear: '1985'
       };
 

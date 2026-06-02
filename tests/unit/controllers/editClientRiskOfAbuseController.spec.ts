@@ -26,6 +26,7 @@ import { apiService } from '#src/services/apiService.js';
 // Import to get global type declarations for axiosMiddleware
 import '#utils/server/axiosSetup.js';
 
+
 // Define the RequestWithMiddleware interface for testing
 interface RequestWithMiddleware extends Request {
   axiosMiddleware: any;
@@ -41,6 +42,7 @@ describe('Edit Client Risk of Abuse Controller', () => {
   let statusStub: sinon.SinonStub;
   let apiServiceGetStub: sinon.SinonStub;
   let apiServiceUpdateStub: sinon.SinonStub;
+
 
   beforeEach(() => {
     req = {
@@ -65,6 +67,7 @@ describe('Edit Client Risk of Abuse Controller', () => {
     // Stub the API service methods
     apiServiceGetStub = sinon.stub(apiService, 'getClientDetails');
     apiServiceUpdateStub = sinon.stub(apiService, 'updateClientDetails');
+
   });
 
   afterEach(() => {
@@ -107,9 +110,13 @@ describe('Edit Client Risk of Abuse Controller', () => {
   });
 
   describe('postEditClientRiskOfAbuse', () => {
+
     it('should process successful client risk of abuse update and redirect to case details', async () => {
       // Arrange
-      req.body = { vulnerable_user: false };
+      req.body = {
+        clientRiskOfAbuse: false,
+        existingRiskOfAbuse: true
+      };
 
       apiServiceUpdateStub.resolves({
         status: 'success',
@@ -123,5 +130,6 @@ describe('Edit Client Risk of Abuse Controller', () => {
       expect(apiServiceUpdateStub.calledOnce).to.be.true;
       expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
     });
+
   });
 });
