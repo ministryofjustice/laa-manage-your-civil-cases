@@ -5,6 +5,7 @@
 {% from "components/caseDetailsHeaderComponent.njk" import caseDetailsHeaderComponent %}
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
 {% from "components/alertBannerComponent.njk" import alertBannerComponent %}
+{% from "moj/components/alert/macro.njk" import mojAlert %}
 
 {% block backLink %}
   {{ govukBackLink({
@@ -26,6 +27,19 @@
 {% endblock %}
 
 {% block errorSummaryOrAlert %}
+  {% if noChangeWarningBanner %}
+    <div class="govuk-grid-row negative-margin alert-spacing">
+      <div class="govuk-grid-column-two-thirds">
+        {{ mojAlert({
+            variant: t('common.noChangeWarning.variant'),
+            title: t('common.noChangeWarning.title'),
+            dismissible: t('common.noChangeWarning.dismissible'),
+            focusOnDismissSelector: '.moj-header'
+          }) }}
+      </div>
+    </div>
+  {% endif %}
+
   {% if error %}
     {{ errorSummary(error.errorSummaryList) }}
   {% else %}

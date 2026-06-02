@@ -36,7 +36,7 @@ export async function postEditClientPhoneNumber(req: Request, res: Response, nex
 
   const safeToContact = formFields.safeToCall === 'true' ? 'SAFE' : 'DONT_CALL';
   const announceCall = formFields.announceCall === 'true';
-  
+
   await handlePostEditForm(req, res, next, {
     templatePath: 'case_details/edit-client-phone-number.njk',
     fields: [

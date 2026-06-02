@@ -25,7 +25,7 @@ import {
 import { apiService } from '#src/services/apiService.js';
 // Import to get global type declarations for axiosMiddleware
 import '#utils/server/axiosSetup.js';
-import { validateEditClientSupportNeeds } from '#src/middlewares/clientSupportNeedsSchema.js';
+import { validateClientSupportNeeds } from '#src/middlewares/clientSupportNeedsSchema.js';
 import { ValidationChain } from '#node_modules/express-validator/lib/index.js';
 
 // Define the RequestWithMiddleware interface for testing
@@ -144,11 +144,11 @@ describe('Edit Client Support Needs Controller', () => {
 
     it('should handle validation errors and re-render form', async () => {
       // Arrange
-      req.body = { 
+      req.body = {
         clientSupportNeeds: '' // Empty checkboxes should trigger validation
       };
 
-      await runSchema(req as any, validateEditClientSupportNeeds());
+      await runSchema(req as any, validateClientSupportNeeds());
 
       // Stub a successful getClientDetails response so handleAddClientSupportNeedsErrors thinks it has info
       apiServiceGetStub.resolves({
@@ -163,35 +163,37 @@ describe('Edit Client Support Needs Controller', () => {
       expect(renderStub.calledWith('case_details/client_support_needs/change-client-support-needs.njk')).to.be.true;
     });
 
-    it('should handle no changes scenario properly', async () => {
-      // Arrange - Set up session with original data  
+    it('should set no change banner and redirect when no changes are made', async () => {
+
       req.session!.clientSupportNeedsOriginal = {
-        clientSupportNeeds: 'bslWebcam'
+        clientSupportNeeds: ['bslWebcam'],
+        languageSupportNeeds: '',
+        notes: ''
+      } as any;
+
+      req.body = {
+        clientSupportNeeds: ['bslWebcam'],
+        languageSupportNeeds: '',
+        notes: ''
       };
-      
-      req.body = { 
-        clientSupportNeeds: 'bslWebcam', // Same value = no change
-      };
 
-      await runSchema(req as any, validateEditClientSupportNeeds());
+      await runSchema(req as any, validateClientSupportNeeds());
 
-      // Stub a successful getClientDetails response so handleAddClientSupportNeedsErrors thinks it has info
-      apiServiceGetStub.resolves({
-        status: 'success'
-      });
-
-      // Act
       await postEditClientSupportNeeds(req as RequestWithMiddleware, res as Response, next);
 
-      // Assert - Should render form with "no changes" error, not redirect
-      expect(redirectStub.called).to.be.false;
-      expect(renderStub.calledWith('case_details/client_support_needs/change-client-support-needs.njk')).to.be.true;
+      expect(apiServiceUpdateStub.called).to.be.false;
+
+      // Checks
+      expect(redirectStub.calledOnce).to.be.true;
+      expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
+      expect((req.session as any).noChangeWarningCache.noChangeWarningBanner).to.be.true;
+      expect(renderStub.called).to.be.false;
     });
 
     it('should delegate API errors to Express error handling middleware', async () => {
       // Arrange
-      req.body = { 
-        clientSupportNeeds: 'bslWebcam',
+      req.body = {
+        clientSupportNeeds: ['bslWebcam', 'textRelay'],
       };
 
       // Mock session data to simulate that original data was stored during GET request

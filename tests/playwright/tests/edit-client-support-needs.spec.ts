@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures/index.js';
-import { getClientDetailsUrlByStatus, setupAuth, assertCaseDetailsHeaderPresent } from '../utils/index.js';
+import { getClientDetailsUrlByStatus, setupAuth, assertCaseDetailsHeaderPresent, t } from '../utils/index.js';
 
 const caseReference = 'PC-1869-9154'; // Default test case reference
 const editSupportNeedsUrl = `/cases/${caseReference}/client-details/change/support-need`;
@@ -14,7 +14,7 @@ test('edit client support needs form should save valid data and redirect to clie
   await page.goto(editSupportNeedsUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 August 2025", badgeTexts: [ 'At risk of abuse', 'Third Party', 'Translation', 'BSL'] }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 August 2025", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'] });
 
   // Expect to see the form heading
   await expect(page.locator('legend.govuk-fieldset__legend')).toContainText('Change client support needs');
@@ -22,7 +22,7 @@ test('edit client support needs form should save valid data and redirect to clie
   // Check that the checkboxes are present
   const bslWebcamCheckbox = page.locator('input[name="clientSupportNeeds"][value="bslWebcam"]');
   const textRelayCheckbox = page.locator('input[name="clientSupportNeeds"][value="textRelay"]');
-  
+
   await expect(bslWebcamCheckbox).toBeVisible();
   await expect(textRelayCheckbox).toBeVisible();
 
@@ -46,9 +46,9 @@ test('edit client support needs form should show validation error if no option s
   await page.goto(editSupportNeedsUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 August 2025", badgeTexts: [ 'At risk of abuse', 'Third Party', 'Translation', 'BSL'] }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 August 2025", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'] });
 
- // Check the box for "Other support" but do not fill in the text to trigger validation error
+  // Check the box for "Other support" but do not fill in the text to trigger validation error
   const otherSupportCheckbox = page.locator('input[name="clientSupportNeeds"][value="otherSupport"]');
   await expect(otherSupportCheckbox).toBeVisible();
   await otherSupportCheckbox.check();
@@ -66,4 +66,48 @@ test('edit client support needs form should show validation error if no option s
   // Check alert banner is not present (as this is a validation error takes priority)
   const alertBanner = page.locator('.govuk-notification-banner');
   await expect(alertBanner).not.toBeVisible();
+});
+
+
+test('edit client support needs form should redirect with warning if no changes made', async ({ page }) => {
+  await page.goto(editSupportNeedsUrl);
+  const saveButton = page.getByRole('button', { name: t('common.save') });
+
+  // Ensure page loaded
+  await expect(page.locator('legend.govuk-fieldset__legend')).toContainText('Change client support needs');
+
+  // Assert the existing and unchecked values 
+
+  // BSL webcam 
+  await expect(page.locator('input[value="bslWebcam"]')).toBeChecked();
+
+  // Language selection
+  await expect(page.locator('input[value="languageSelection"]')).toBeChecked();
+
+  // Language value
+  await expect(page.locator('select[name="languageSupportNeeds"]')).toHaveValue('English');
+
+  // Other support checkbox
+  await expect(page.locator('input[value="otherSupport"]')).toBeChecked();
+
+  // Notes textarea
+  await expect(page.locator('textarea[name="notes"]')).toHaveValue('Here are some notes from the operator!');
+
+  // text relay 
+  await expect(page.locator('input[value="textRelay"]')).not.toBeChecked();
+
+  // callback preference 
+  await expect(page.locator('input[value="callbackPreference"]')).not.toBeChecked();
+
+  // Click save without making any changes
+  await expect(saveButton).toBeVisible();
+  await saveButton.click();
+
+  // Check redirect to client details page
+  await expect(page).toHaveURL(clientDetailsUrl);
+
+  // Assert warning message is shown
+  await expect(
+    page.getByText('No changes were made')
+  ).toBeVisible();
 });

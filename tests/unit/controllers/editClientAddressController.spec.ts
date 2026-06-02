@@ -1,8 +1,8 @@
 /**
- * Edit Client Phone Number Controller Tests
+ * Edit Client Address Controller Tests
  * 
  * Tests the Express.js controllers for client details editing functionality.
- * Covers HTTP request/response handling for name and email editing forms including:
+ * Covers HTTP request/response handling for address editing forms including:
  * - GET route handlers for form display
  * - POST route handlers for form submission  
  * - API integration and error handling
@@ -14,20 +14,25 @@
  * Dependencies: apiService, form validation helpers
  */
 
-import { describe, it, beforeEach, afterEach, before } from 'mocha';
+import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import type { Request, Response, NextFunction } from 'express';
+import type { Request, Response } from 'express';
 import {
-  getEditClientPhoneNumber,
-  postEditClientPhoneNumber
-} from '#src/scripts/controllers/editClientPhoneNumberController.js';
+  getEditClientAddress,
+  postEditClientAddress
+} from '#src/scripts/controllers/editClientAddressController.js';
 import { apiService } from '#src/services/apiService.js';
-import { initializeI18nextSync } from '#src/scripts/helpers/index.js';
 // Import to get global type declarations for axiosMiddleware
 import '#utils/server/axiosSetup.js';
-import { validateEditClientPhoneNumber } from '#src/middlewares/clientPhoneNumberSchema.js';
+import { validateEditClientAddress } from '#src/middlewares/clientAddressSchema.js';
 import { ValidationChain } from '#node_modules/express-validator/lib/index.js';
+
+// Define the RequestWithMiddleware interface for testing
+interface RequestWithMiddleware extends Request {
+  axiosMiddleware: any;
+  csrfToken?: () => string;
+}
 
 // Run an express-validator schema against a fake request
 const runSchema = async (req: any, schema: ValidationChain[] | ValidationChain): Promise<void> => {
@@ -37,13 +42,7 @@ const runSchema = async (req: any, schema: ValidationChain[] | ValidationChain):
   }
 };
 
-// Define the RequestWithMiddleware interface for testing
-interface RequestWithMiddleware extends Request {
-  axiosMiddleware: any;
-  csrfToken?: () => string;
-}
-
-describe('Edit Client Phone Number Controller', () => {
+describe('Edit Client Address Controller', () => {
   let req: Partial<RequestWithMiddleware>;
   let res: any;
   let next: any;
@@ -52,11 +51,6 @@ describe('Edit Client Phone Number Controller', () => {
   let statusStub: sinon.SinonStub;
   let apiServiceGetStub: sinon.SinonStub;
   let apiServiceUpdateStub: sinon.SinonStub;
-
-  before(() => {
-    // Initialize i18next for translations to work in tests
-    initializeI18nextSync();
-  });
 
   beforeEach(() => {
     req = {
@@ -87,101 +81,103 @@ describe('Edit Client Phone Number Controller', () => {
     sinon.restore();
   });
 
-  describe('getEditClientPhoneNumber', () => {
-    it('should configure edit phone number form response with existing data', async () => {
+  describe('getEditClientAddress', () => {
+    it('should render address editing form with pre-populated client data and CSRF protection', async () => {
       // Arrange
       const mockApiResponse = {
         status: 'success',
-        data: {
-          phoneNumber: '07777777777',
-          safeToCall: true,
-          announceCall: true
-        }
+        data: { address: '123 Main Street', postcode: 'SW1A 1AA' }
       };
 
       apiServiceGetStub.resolves(mockApiResponse);
+
       // Act
-      await getEditClientPhoneNumber(req as RequestWithMiddleware, res as Response, next);
+      await getEditClientAddress(req as RequestWithMiddleware, res as Response, next);
 
       // Assert
       expect(apiServiceGetStub.calledOnce).to.be.true;
-      expect(renderStub.calledWith('case_details/edit-client-phone-number.njk')).to.be.true;
+      expect(renderStub.calledWith('case_details/change-client-address.njk')).to.be.true;
     });
 
-    it('should handle API errors', async () => {
+    it('should delegate API errors to Express error handling middleware', async () => {
       // Arrange
       const error = new Error('API Error');
       apiServiceGetStub.rejects(error);
 
       // Act
-      await getEditClientPhoneNumber(req as RequestWithMiddleware, res as Response, next);
+      await getEditClientAddress(req as RequestWithMiddleware, res as Response, next);
 
       // Assert
       expect(next.calledOnce).to.be.true;
     });
   });
 
-  // no change warning banner presence is only checked on post requests as this is not part of the get route functions. 
-  describe('postEditClientPhoneNumber', () => {
-    it('should process valid phone update', async () => {
+  describe('postEditClientAddress', () => {
+    it('should process successful client address update and redirect to case details', async () => {
       // Arrange
-      req.body = { phoneNumber: '07864422612', safeToCall: true };
+      req.body = {
+        address: '123 Main Street',
+        postcode: 'SW1A 1AA',
+        existingAddress: 'Different St',
+        existingPostcode: 'SW1A 1AA'
+      };
 
       apiServiceUpdateStub.resolves({
         status: 'success',
-        data: { phoneNumber: '07864422612', safeToCall: true }
+        data: { address: '123 Main Street', postcode: 'SW1A 1AA' }
       });
+
       // Act
-      await postEditClientPhoneNumber(req as RequestWithMiddleware, res as Response, next);
-      req.session = {} as any;
+      await postEditClientAddress(req as RequestWithMiddleware, res as Response, next);
 
       // Assert
       expect(apiServiceUpdateStub.calledOnce).to.be.true;
       expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
-      expect((req.session as any).noChangeWarningBanner).to.be.undefined;
     });
 
     it('should handle validation errors', async () => {
       // Arrange
       req.body = {
-        phoneNumber: 'invalid-phoneNumber', // Invalid format
-        existingPhoneNumber: '07864422612',
-        safeToCall: 'true',
-        existingSafeToCall: 'true',
-        announceCall: 'true',
-        existingAnnounceCall: 'true'
+        address: '123 Main Street',
+        postcode: 'SW1A 1AAAAAAAAAAAAAAAAAA',
+        existingAddress: 'Different St',
+        existingPostcode: 'SW1A 1AA'
       };
 
-      await runSchema(req as any, validateEditClientPhoneNumber());
+      await runSchema(req as any, validateEditClientAddress());
 
       // Stub a successful getClientDetails response so handlePostEditForm thinks it has info
       apiServiceGetStub.resolves({
         status: 'success'
       });
-      req.session = {} as any;
 
       // Act
-      await postEditClientPhoneNumber(req as RequestWithMiddleware, res as Response, next);
+      await postEditClientAddress(req as RequestWithMiddleware, res as Response, next);
 
       // Assert - Should configure form response with errors, not redirect
       expect(redirectStub.called).to.be.false;
-      expect(renderStub.calledWith('case_details/edit-client-phone-number.njk')).to.be.true;
-      expect((req.session as any).noChangeWarningBanner).to.be.undefined;
+      expect(renderStub.calledWith('case_details/change-client-address.njk')).to.be.true;
     });
 
-    it('should process display no change warning banner when details are the same', async () => {
+    it('should set warning banner in session and redirect when no change is made', async () => {
       // Arrange
-      req.body = { phoneNumber: '07864422612', safeToCall: 'true', existingPhoneNumber: '07864422612', 
-        existingSafeToCall: 'true' };
       req.session = {} as any;
+      req.body = {
+        address: '123 Main St',
+        postcode: 'SW1A 1AA',
+        existingAddress: '123 Main St',
+        existingPostcode: 'SW1A 1AA'
+      };
 
       // Act
-      await postEditClientPhoneNumber(req as RequestWithMiddleware, res as Response, next);
+      await postEditClientAddress(req as RequestWithMiddleware, res as Response, next);
 
-      // Assert
-      expect(apiServiceUpdateStub.calledOnce).to.be.false;
+      expect(redirectStub.calledOnce).to.be.true;
       expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
+
       expect((req.session as any).noChangeWarningCache.noChangeWarningBanner).to.be.true;
+
+      expect(apiServiceUpdateStub.called).to.be.false;
     });
   });
 });

@@ -13,8 +13,9 @@ import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import type { Request, Response, NextFunction } from 'express';
-import { handlePostEditForm, handleAddThirdPartyValidationErrors, handleEditThirdPartyValidationErrors } from '#src/scripts/helpers/formControllerHelpers.js';
+import { handlePostEditForm, handleAddThirdPartyValidationErrors, handleEditThirdPartyValidationErrors, handleNoChangeRedirect } from '#src/scripts/helpers/formControllerHelpers.js';
 import { apiService } from '#src/services/apiService.js';
+import { Session, SessionData } from '#node_modules/@types/express-session/index.js';
 
 describe('Form Controller Helpers', () => {
   let req: Partial<Request>;
@@ -133,4 +134,171 @@ describe('Form Controller Helpers', () => {
       }).to.not.throw();
     });
   });
+
+  describe('handleNoChangeRedirect', () => {
+    let req: Partial<Request>;
+    let res: Partial<Response>;
+    let redirectStub: sinon.SinonStub;
+
+    function createMockSession(): Session & Partial<SessionData> {
+      const session = {
+        id: 'test-session-id',
+        cookie: {} as any,
+        regenerate: sinon.stub(),
+        destroy: sinon.stub(),
+        reload: sinon.stub(),
+        save: sinon.stub(),
+        touch: sinon.stub()
+      };
+
+      return session as unknown as Session & Partial<SessionData>;
+    }
+
+    beforeEach(() => {
+      req = {
+        params: { caseReference: 'TEST123' },
+        session: createMockSession()
+      };
+
+      redirectStub = sinon.stub();
+
+      res = {
+        redirect: redirectStub
+      };
+
+    });
+
+    afterEach(() => {
+      sinon.restore();
+    });
+
+
+    it('should redirect and set banner when all values match', () => {
+      const fields = [
+        { current: 'test', existing: 'test' }
+      ];
+
+      const result = handleNoChangeRedirect(req as Request, res as Response, req.params?.caseReference, fields);
+
+
+      expect(result).to.be.true;
+
+      expect((req.session as any).noChangeWarningCache.noChangeWarningBanner).to.be.true;
+
+      expect(redirectStub.calledOnce).to.be.true;
+
+    });
+
+    it('should not redirect when values differ', () => {
+      const fields = [
+        { current: 'test', existing: 'different' }
+      ];
+
+      const result = handleNoChangeRedirect(req as Request, res as Response, req.params?.caseReference, fields);
+
+
+      expect(result).to.be.false;
+
+      expect(req.session?.noChangeWarningBanner).to.be.undefined;
+
+      expect(redirectStub.calledOnce).to.be.false;
+
+    });
+
+    it('should treat undefined current as existing value', () => {
+      const fields = [
+        { current: undefined, existing: 'false' }
+      ];
+
+      const result = handleNoChangeRedirect(req as Request, res as Response, req.params?.caseReference, fields);
+
+
+      expect(result).to.be.true;
+
+      expect((req.session as any).noChangeWarningCache.noChangeWarningBanner).to.be.true;
+
+      expect(redirectStub.calledOnce).to.be.true;
+
+    });
+
+    it('should trim values before comparison', () => {
+      const fields = [
+        { current: '  test  ', existing: 'test' }
+      ];
+
+      const result = handleNoChangeRedirect(req as Request, res as Response, req.params?.caseReference, fields);
+
+
+      expect(result).to.be.true;
+
+      expect((req.session as any).noChangeWarningCache.noChangeWarningBanner).to.be.true;
+
+      expect(redirectStub.calledOnce).to.be.true;
+
+    });
+
+    it('should not redirect if any field differs', () => {
+      const fields = [
+        { current: 'same', existing: 'same' },
+        { current: 'different', existing: 'same' }
+      ];
+
+      const result = handleNoChangeRedirect(req as Request, res as Response, req.params?.caseReference, fields);
+
+      expect(result).to.be.false;
+
+      expect(req.session?.noChangeWarningBanner).to.be.undefined;
+
+      expect(redirectStub.calledOnce).to.be.false;
+
+    });
+
+    it('should redirect if all fields match', () => {
+      const fields = [
+        { current: 'same', existing: 'same' },
+        { current: 'same', existing: 'same' }
+      ];
+
+      const result = handleNoChangeRedirect(req as Request, res as Response, req.params?.caseReference, fields);
+
+
+      expect(result).to.be.true;
+
+     expect((req.session as any).noChangeWarningCache.noChangeWarningBanner).to.be.true;
+
+      expect(redirectStub.calledOnce).to.be.true;
+
+    });
+
+    it('should redirect if fields array is empty - checking empty optional values should return true', () => {
+      const fields: any[] = [];
+
+      const result = handleNoChangeRedirect(req as Request, res as Response, req.params?.caseReference, fields);
+
+
+      expect(result).to.be.true;
+
+      expect((req.session as any).noChangeWarningCache.noChangeWarningBanner).to.be.true;
+
+      expect(redirectStub.calledOnce).to.be.true;
+
+    });
+
+    it('should handle null and empty strings as equal when normalised', () => {
+      const fields = [
+        { current: null, existing: '' }
+      ];
+
+      const result = handleNoChangeRedirect(req as Request, res as Response, req.params?.caseReference, fields);
+
+
+      expect(result).to.be.true;
+
+      expect((req.session as any).noChangeWarningCache.noChangeWarningBanner).to.be.true;
+
+      expect(redirectStub.calledOnce).to.be.true;
+
+    });
+  });
+
 });

@@ -115,13 +115,7 @@ describe('Client Date of Birth Schema Validation', () => {
         await Promise.all(middleware.map(m => m(mockReq as Request, {} as any, () => { })));
 
         const errors = validationResult(mockReq as Request);
-        expect(errors.isEmpty()).to.be.false;
-
-        const errorArray = errors.array();
-        expect(errorArray).to.have.length(1);
-        // Check the actual structure - TypedValidationError has errorData property
-        expect(errorArray[0].msg.errorData).to.be.an('object');
-        expect(errorArray[0].msg.errorData.summaryMessage).to.equal(t('forms.clientDetails.dateOfBirth.validationError.notChanged'));
+        expect(errors.isEmpty()).to.be.true;
       });
 
       it('should fail validation when submitting empty form with empty originals', async () => {
@@ -148,19 +142,17 @@ describe('Client Date of Birth Schema Validation', () => {
         // checkCriticalFieldsComplete: triggers when ALL fields empty = 1 error
         // Change detection: 1 error
         // Total: 5 errors (logical validations skip when fields empty)
-        expect(errorArray).to.have.length(6); // Temporarily use actual count we're seeing
+        expect(errorArray).to.have.length(5); // Temporarily use actual count we're seeing
 
         // Look for required field errors and comprehensive error
         const dayRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.day.notEmpty'));
         const monthRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.month.notEmpty'));
         const yearRequiredError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.year.notEmpty'));
         const comprehensiveError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.allEmpty'));
-        const changeError = errorArray.find(err => err.msg.errorData?.summaryMessage === t('forms.clientDetails.dateOfBirth.validationError.notChanged'));
 
         expect(dayRequiredError).to.exist;
         expect(monthRequiredError).to.exist;
         expect(yearRequiredError).to.exist;
-        expect(changeError).to.exist;
       });
 
       it('should prioritize required field errors when only some fields are empty', async () => {
@@ -359,7 +351,7 @@ describe('Client Date of Birth Schema Validation', () => {
 
         const errors = validationResult(mockReq as Request);
         // Should pass because trimmed values are the same (no actual change)
-        expect(errors.isEmpty()).to.be.false;
+        expect(errors.isEmpty()).to.be.true;
       });
 
       it('should detect real changes even with whitespace', async () => {

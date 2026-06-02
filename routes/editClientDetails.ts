@@ -29,10 +29,8 @@ import {
   validateEditClientPhoneNumber,
   validateEditClientEmailAddress,
   validateEditClientAddress,
-  validateAddClientThirdParty,
-  validateEditClientThirdParty,
-  validateAddClientSupportNeeds,
-  validateEditClientSupportNeeds,
+  validateClientThirdParty,
+  validateClientSupportNeeds,
   validateClientRiskOfAbuse
 } from '#src/middlewares/indexSchema.js';
 
@@ -54,16 +52,16 @@ router.get('/:caseReference/client-details/change/address', getEditClientAddress
 router.post('/:caseReference/client-details/change/address', validateEditClientAddress(), postEditClientAddress);
 
 router.get('/:caseReference/client-details/add/third-party', getAddClientThirdParty);
-router.post('/:caseReference/client-details/add/third-party', validateAddClientThirdParty(), postAddClientThirdParty);
+router.post('/:caseReference/client-details/add/third-party', validateClientThirdParty(), postAddClientThirdParty);
 
 router.get('/:caseReference/client-details/change/third-party', getEditClientThirdParty);
-router.post('/:caseReference/client-details/change/third-party', validateEditClientThirdParty(), postEditClientThirdParty);
+router.post('/:caseReference/client-details/change/third-party', validateClientThirdParty(), postEditClientThirdParty);
 
 router.get('/:caseReference/client-details/add/support-need', getAddClientSupportNeeds);
-router.post('/:caseReference/client-details/add/support-need', validateAddClientSupportNeeds(), postAddClientSupportNeeds);
+router.post('/:caseReference/client-details/add/support-need', validateClientSupportNeeds(), postAddClientSupportNeeds);
 
 router.get('/:caseReference/client-details/change/support-need', getEditClientSupportNeeds);
-router.post('/:caseReference/client-details/change/support-need', validateEditClientSupportNeeds(), postEditClientSupportNeeds);
+router.post('/:caseReference/client-details/change/support-need', validateClientSupportNeeds(), postEditClientSupportNeeds);
 
 router.get('/:caseReference/client-details/change/risk-of-abuse', getEditRiskOfAbuse);
 router.post('/:caseReference/client-details/change/risk-of-abuse', validateClientRiskOfAbuse(), postEditRiskOfAbuse);

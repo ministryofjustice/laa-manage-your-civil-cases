@@ -1,11 +1,11 @@
 import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
-import { 
-  handleGetEditForm, 
-  extractFormFields, 
+import {
+  handleGetEditForm,
+  extractFormFields,
   devLog,
-  devError, 
-  createProcessedError, 
+  devError,
+  createProcessedError,
   safeString,
   isRecord,
   hasProperty,
@@ -17,7 +17,8 @@ import {
   handleEditClientSupportNeedsErrors,
   isYes,
   capitaliseFirstLetter,
-  validCaseReference
+  validCaseReference,
+  handleNoChangeRedirect
 } from '#src/scripts/helpers/index.js';
 import { apiService } from '#src/services/apiService.js';
 import languages from '#views/case_details/client_support_needs/languages.json' with { type: 'json' };
@@ -30,8 +31,8 @@ import { HTTP } from '#src/services/api/base/constants.js';
  * @param {NextFunction} next - Express next middleware function
  * @returns {Promise<void>}
  */
-export async function getEditClientSupportNeeds (req: Request, res: Response, next: NextFunction): Promise<void> {
- res.locals.languageItems = languages;
+export async function getEditClientSupportNeeds(req: Request, res: Response, next: NextFunction): Promise<void> {
+  res.locals.languageItems = languages;
   await handleGetEditForm(req, res, next, {
     templatePath: 'case_details/client_support_needs/change-client-support-needs.njk',
     /**
@@ -55,7 +56,7 @@ export async function getEditClientSupportNeeds (req: Request, res: Response, ne
       if (isYes(textRelay)) selectedCheckboxes.push('textRelay');
       if (isYes(callbackPreference)) selectedCheckboxes.push('callbackPreference');
       // open the prefilled conditional fields
-      if (safeString(language) !== '') {selectedCheckboxes.push('languageSelection');}
+      if (safeString(language) !== '') { selectedCheckboxes.push('languageSelection'); }
       if (safeString(notes) !== '') selectedCheckboxes.push('otherSupport');
 
       const flatData = {
@@ -87,7 +88,7 @@ export async function getEditClientSupportNeeds (req: Request, res: Response, ne
  * @returns {Promise<void>}
  */
 export async function postEditClientSupportNeeds(req: Request, res: Response, next: NextFunction): Promise<void> {
-  res.locals.languageItems = languages; 
+  res.locals.languageItems = languages;
   const caseReference = safeString(req.params.caseReference);
 
   if (!validCaseReference(caseReference, res)) {
@@ -111,15 +112,39 @@ export async function postEditClientSupportNeeds(req: Request, res: Response, ne
     // Prepare the client support needs data for the API
     const clientSupportNeeds = prepareClientSupportNeedsData(formFields);
 
+    const original = req.session.clientSupportNeedsOriginal;
+
+    if (isRecord(original)) {
+
+      const originalProcessed = prepareClientSupportNeedsData({
+        clientSupportNeeds: typeof original.clientSupportNeeds === 'string'
+          ? original.clientSupportNeeds.split(',')
+          : original.clientSupportNeeds,
+        languageSupportNeeds: original.languageSupportNeeds,
+        notes: original.notes
+      });
+
+      const fields = [
+        { current: clientSupportNeeds.bsl_webcam, existing: originalProcessed.bsl_webcam },
+        { current: clientSupportNeeds.text_relay, existing: originalProcessed.text_relay },
+        { current: clientSupportNeeds.callback_preference, existing: originalProcessed.callback_preference },
+        { current: clientSupportNeeds.language?.toUpperCase(), existing: originalProcessed.language?.toUpperCase() },
+        { current: clientSupportNeeds.notes, existing: originalProcessed.notes },
+        { current: clientSupportNeeds.no_adaptations_required, existing: originalProcessed.no_adaptations_required }
+      ];
+
+      if (handleNoChangeRedirect(req, res, caseReference, fields)) return;
+    }
+
     // Call the API to update third party contact
     const response = await apiService.updateClientSupportNeeds(req.axiosMiddleware, caseReference, clientSupportNeeds);
 
     if (response.status === 'success') {
       devLog(`Client support needs successfully updated for case: ${caseReference}`);
-      
+
       // Clear session data after successful update
       clearSessionData(req, 'clientSupportNeedsOriginal');
-      
+
       res.redirect(`/cases/${caseReference}/client-details`);
     } else {
       devError(`Failed to update client support needs for case: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);

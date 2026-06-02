@@ -151,6 +151,11 @@
         "NO_TELEPHONE_LANGUAGE": "NO_TELEPHONE_LANGUAGE",
         "OTHER": "OTHER"
       }
+    },
+    "noChangeWarning": {
+      "variant": "warning",
+      "title": "No changes were made",
+      "dismissible": true
     }
   },
   "navigation": {
@@ -455,8 +460,7 @@
         "title": "Client name",
         "pageTitle": "Client name – {caseReference} – {serviceName} – GOV.UK",
         "validationError": {
-          "notEmpty": "Enter the client name",
-          "notChanged": "Change the client name, or select ‘Cancel’"
+          "notEmpty": "Enter the client name"
         }
       },
       "dateOfBirth": {
@@ -481,8 +485,7 @@
           "validDate": "Enter a date in the correct format",
           "dateInPast": "The date of birth must be in the past",
           "mustInclude": "The date of birth must include a {field}",
-          "allEmpty": "Enter the client date of birth",
-          "notChanged": "Change the client date of birth, or select 'Cancel'"
+          "allEmpty": "Enter the client date of birth"
         }
       },
       "email": {
@@ -490,8 +493,7 @@
         "title": "Client email address (optional)",
         "pageTitle": "Client email address – {caseReference} – {serviceName} – GOV.UK",
         "validationError": {
-          "invalidFormat": "Enter an email address in the correct format, like name@example.com",
-          "notChanged": "Change the client email address, or select 'Cancel'"
+          "invalidFormat": "Enter an email address in the correct format, like name@example.com"
         }
       },
       "phoneNumber": {
@@ -505,8 +507,7 @@
         "doNotAnnounce": "Do not say the call is from Civil Legal Advice",
         "validationError": {
           "invalidFormat": "Enter the phone number in the correct format",
-          "notEmpty": "Enter the client phone number",
-          "notChanged": "Change information on the page, or select 'Cancel'"
+          "notEmpty": "Enter the client phone number"
         }
       },
       "address": {
@@ -515,7 +516,6 @@
         "pageTitle": "Client address – {caseReference} – {serviceName} – GOV.UK",
         "postcode": "Postcode",
         "validationError": {
-          "notChanged": "Change the client address, or select 'Cancel'",
           "isLength": "Postcode must be 12 characters or fewer"
         }
       },
@@ -543,7 +543,6 @@
           "notEmpty": "Select a client support need or select 'Cancel'",
           "notEmptyLanguage": "Select a language",
           "notEmptyNotes": "Enter the client support need",
-          "notChanged": "Change the client support needs or select 'Cancel'",
           "tooLongNotes": "Notes must be 255 characters or less"
         }
       },
@@ -552,8 +551,7 @@
         "h1": "Is the client at risk of abuse?",
         "textInfo": "Guidance on abuse is in the Civil Legal Advice: Protection of Children, Young People & Adults at Risk of Abuse Policy, Guidance & Procedures.",
         "validationError": {
-          "notEmpty": "Select a client risk of abuse or select 'Cancel'",
-          "notChanged": "Change the client risk of abuse or select 'Cancel'"
+          "notEmpty": "Select a client risk of abuse or select 'Cancel'"
         }
       },
       "thirdParty": {
@@ -590,7 +588,6 @@
           "notEmptyRelationshipToClient": "Select the relationship to client",
           "notEmptyPassphraseSetUp": "Select if the client has set up a passphrase",
           "notEmptyPassphrase": "Enter the passphrase ",
-          "notChanged": "Change third party details, or select 'Cancel'",
           "isLength": "Postcode must be 12 characters or fewer"
         }
       }

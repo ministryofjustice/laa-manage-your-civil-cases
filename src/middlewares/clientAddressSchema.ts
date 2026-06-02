@@ -44,21 +44,5 @@ export const validateEditClientAddress = (): ReturnType<typeof checkSchema> =>
           inlineMessage: t('forms.clientDetails.address.validationError.isLength')
         })
       }
-    },
-    notChanged: createChangeDetectionValidator(
-      [
-        { current: 'address', original: 'existingAddress' },
-        { current: 'postcode', original: 'existingPostcode' }
-      ],
-      {
-        // Use a thunk so translation happens at validation time
-        /**
-         * Provides the summary error message for unchanged address fields.
-         * Uses translation at validation time.
-         * @returns {string} Translated summary error message
-         */
-        summaryMessage: () => t('forms.clientDetails.address.validationError.notChanged'),
-        inlineMessage: ''
-      }
-    ),
+    }
   });
