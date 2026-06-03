@@ -1,6 +1,5 @@
 import { checkSchema } from 'express-validator';
-import type { Meta } from 'express-validator';
-import { createChangeDetectionValidator, TypedValidationError, t } from '#src/scripts/helpers/index.js';
+import { TypedValidationError, t } from '#src/scripts/helpers/index.js';
 
 /**
  * Validation middleware when user edits client's risk of abuse.
@@ -25,7 +24,7 @@ export const validateClientRiskOfAbuse = (): ReturnType<typeof checkSchema> =>
       trim: true,
       notEmpty: {
         /**
-         * Custom error message for empty exising risk of abuse field.
+         * Custom error message for empty existing risk of abuse field.
          * @returns {TypedValidationError} Returns TypedValidationError with structured error data
          */
         errorMessage: () => new TypedValidationError({

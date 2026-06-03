@@ -99,7 +99,7 @@ export abstract class BaseEditFormPage {
    * @returns {Locator} The warning banner locator
    */
   get noChangeWarningBanner(): Locator {
-    return this.page.locator('.moj-alert');
+    return this.page.getByRole('region', { name: 'warning: No changes were made' });
   }
 
   // Common actions
@@ -207,7 +207,7 @@ export abstract class BaseEditFormPage {
    * Asserts that the warning banner is not visible with the expected message
    */
   async expectNoWarningBanner(): Promise<void> {
-    await expect(this.page.locator('.moj-alert')).not.toContainText('No changes were made');
+    await expect(this.page.getByRole('region', { name: 'warning: No changes were made' })).not.toBeVisible;
   }
 
   /**

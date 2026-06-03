@@ -1,5 +1,4 @@
 import { checkSchema } from 'express-validator';
-import { createChangeDetectionValidator } from '#src/scripts/helpers/ValidationErrorHelpers.js';
 import { TypedValidationError, t } from '#src/scripts/helpers/index.js';
 import config from '#config.js';
 

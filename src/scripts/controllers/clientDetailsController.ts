@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
-import { storeSessionData, clearSessionData, getSessionValue, NoChangeWarningCache } from '#src/scripts/helpers/sessionHelpers.js';
+import type { NoChangeWarningCache } from '#src/scripts/helpers/sessionHelpers.js';
+import { storeSessionData, clearSessionData, getSessionValue } from '#src/scripts/helpers/sessionHelpers.js';
 import { handleCaseTab } from '#src/scripts/helpers/caseTabHandler.js';
 import type { ClientSupportNeeds } from '#types/api-types.js';
 
@@ -43,6 +44,7 @@ export function handleClientDetailsTab(req: Request, res: Response, next: NextFu
       client: clientData,
       showClientSupportNeeds,
       caseReference,
+      sessionID: req.sessionID,
       noChangeWarningBanner
     });
   });

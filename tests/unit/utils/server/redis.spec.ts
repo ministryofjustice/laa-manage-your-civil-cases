@@ -1,6 +1,6 @@
 import { strict as assert } from 'assert';
 import sinon from 'sinon';
-import { createRedisClient } from '#utils/server/redis.js';
+import { createRedisClient, recycleRedisClient } from '#utils/server/redis.js';
 import type { RedisConfig } from '#types/config-types.js';
 
 describe('createRedisClient', () => {
@@ -10,6 +10,7 @@ describe('createRedisClient', () => {
   beforeEach(() => {
     consoleLogStub = sinon.stub(console, 'log');
     consoleErrorStub = sinon.stub(console, 'error');
+    recycleRedisClient(); // Ensure we start with a fresh client for each test
   });
 
   afterEach(() => {
