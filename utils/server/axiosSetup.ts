@@ -73,6 +73,7 @@ export const axiosMiddleware = (req: Request, res: Response, next: NextFunction)
       (config: InternalAxiosRequestConfig) => {
         config.headers.Authorization = `Bearer ${userAccessToken}`;
         devLog('Added SILAS bearer token to API request');
+        devLog(`Access token: ${userAccessToken}`)
         return config;
       },
       async (error: unknown) => await Promise.reject(toError(error))
