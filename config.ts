@@ -3,8 +3,8 @@ import type { Config } from '#types/config-types.js';
 dotenv.config();
 import { validateSilasConfig } from './utils/server/silasConfigValidationHelper.js';
 
-const DEFAULT_RATE_LIMIT_MAX = 100;
-const DEFAULT_RATE_WINDOW_MS_MINUTE = 15;
+const DEFAULT_RATE_LIMIT_MAX = 1000;
+const DEFAULT_RATE_WINDOW_MS_MINUTE = 150;
 const MILLISECONDS_IN_A_MINUTE = 60000;
 const DEFAULT_PORT = 3000;
 const CHARACTER_THRESHOLD = 85;
