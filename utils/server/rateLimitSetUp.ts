@@ -26,5 +26,5 @@ export const rateLimitSetUp = (app: Application, config: Config): void => {
   });
 
   // Apply the general rate limiter to all requests
-  app.use(generalLimiter);
+  // app.use(generalLimiter);
 };
