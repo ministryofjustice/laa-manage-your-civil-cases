@@ -9,7 +9,7 @@ const splitThisCaseSchema = {
     trim: true,
     notEmpty: {
       /**
-       * Custom error message for empty radio selection
+       * Custom error message for no drop down selection
        * @returns {TypedValidationError} Returns TypedValidationError with structured error data
        */
       errorMessage: () => new TypedValidationError({
@@ -21,7 +21,7 @@ const splitThisCaseSchema = {
 };
 
 /**
- * Validation middleware for "do you want to give feedback" form.
+ * Validation middleware for "split this case" form.
  * @returns {Error} Validation schema for express-validator
  */
 export const validateSplitThisCase = (): ReturnType<typeof checkSchema> =>

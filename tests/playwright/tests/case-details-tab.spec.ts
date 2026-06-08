@@ -89,7 +89,7 @@ test.describe('Case details tab', () => {
       page.getByRole('rowheader', { name: 'Category' }).first()
     ).toBeVisible();
 
-    // Bullet list of onward question data
+    // Onward question data
     const onwardQuestionBulletsList =
       'Where did the discrimination happen?';
 

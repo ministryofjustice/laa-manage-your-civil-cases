@@ -60,6 +60,7 @@ export async function updateClientDetails(
   try {
     devLog(`API: PATCH ${API_PREFIX}/case/${caseReference}/personal_details/`);
     const configuredAxios = configureAxiosInstance(axiosMiddleware);
+    
     const response = await configuredAxios.patch(`${API_PREFIX}/case/${caseReference}/personal_details/`, updateData);
     devLog(`API: Update client details response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
     return {
@@ -99,7 +100,7 @@ export async function getClientCaseLogs(axiosMiddleware: AxiosInstanceWrapper, c
       'MERI',
       'DUPL',
       'CLOT', 
-      'MCC'
+      'CATEGORY_CHANGED'
     ];
 
     const query = eventCodes.map(code => `codes=${encodeURIComponent(code)}`).join('&');
@@ -220,20 +221,14 @@ export async function changeCaseCategory(
 
     const configuredAxios = configureAxiosInstance(axiosMiddleware);
 
-    const payload = {
-      category,
-      notes
-    };
+    const categoryUpdate = { category, notes };
 
-    const response = await configuredAxios.patch(
-      `${API_PREFIX}/mcc/case/${caseReference}/category-change/`,
-      payload
-    );
+    const response = await configuredAxios.patch(`${API_PREFIX}/mcc/case/${caseReference}/category-change/`, categoryUpdate );
 
     devLog(`API: Change category response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
 
     return {
-      data: response.data ?? null,
+      data: response.data,
       status: 'success'
     };
   } catch (error) {

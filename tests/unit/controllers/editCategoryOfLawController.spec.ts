@@ -1,4 +1,3 @@
-
 /**
  * Change Category Of Law Controller Tests
  *
@@ -18,7 +17,7 @@
 import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import type { Request, Response, NextFunction } from 'express';
+import type { Request, Response } from 'express';
 
 import {
   getChangeCategoryOfLaw,
@@ -34,21 +33,22 @@ import '#utils/server/axiosSetup.js';
 interface RequestWithMiddleware extends Request {
   axiosMiddleware: any;
   csrfToken?: () => string;
+  clientData?: {
+    providerId: string;
+    category?: string;
+    outcome_code?: string;
+  };
 }
 
 describe('Change Category Of Law Controller', () => {
   let req: Partial<RequestWithMiddleware>;
   let res: any;
   let next: sinon.SinonStub;
-
   let renderStub: sinon.SinonStub;
   let redirectStub: sinon.SinonStub;
   let statusStub: sinon.SinonStub;
-
-  let validationResultStub: sinon.SinonStub;
   let apiChangeCategoryStub: sinon.SinonStub;
   let apiProviderChoicesStub: sinon.SinonStub;
-
 
   const runSchema = async (
     req: any,
@@ -60,20 +60,19 @@ describe('Change Category Of Law Controller', () => {
     }
   };
 
-
   beforeEach(() => {
 
     req = {
-      params: { caseReference: 'TEST123' }, // valid format
+      params: { caseReference: 'TEST123' }, 
       body: { category: 'DEBT', notes: 'test' },
       clientData: {
         providerId: '123',
-        category: 'housing'
+        category: 'housing',
+        outcome_code: 'SPOP'
       },
       axiosMiddleware: {},
       csrfToken: () => 'token'
     };
-
 
     renderStub = sinon.stub();
     redirectStub = sinon.stub();
@@ -87,9 +86,6 @@ describe('Change Category Of Law Controller', () => {
 
     next = sinon.stub();
 
-    // Stub validation
-
-
     // Stub API
     apiProviderChoicesStub = sinon.stub(apiService, 'getProviderChoices');
     apiChangeCategoryStub = sinon.stub(apiService, 'changeCaseCategory');
@@ -99,9 +95,8 @@ describe('Change Category Of Law Controller', () => {
     sinon.restore();
   });
 
-  // =========================
   // GET CONTROLLER TESTS
-  // =========================
+
   describe('getChangeCategoryOfLaw', () => {
 
     it('should render change category page successfully', async () => {
@@ -161,9 +156,8 @@ describe('Change Category Of Law Controller', () => {
     });
   });
 
-  // =========================
   // POST CONTROLLER TESTS
-  // =========================
+  
   describe('submitChangeCategoryOfLawForm', () => {
 
     it('should redirect on successful category change', async () => {
@@ -171,7 +165,6 @@ describe('Change Category Of Law Controller', () => {
         category: 'DEBT',
         notes: 'Changing category'
       };
-
 
       apiChangeCategoryStub.resolves({
         status: 'success'
@@ -190,6 +183,7 @@ describe('Change Category Of Law Controller', () => {
       )).to.be.true;
 
       expect(redirectStub.calledWith('/cases/TEST123/case-details')).to.be.true;
+      expect(req.clientData?.outcome_code).to.equal('SPOP');
     });
 
     it('should render form with errors when validation fails', async () => {
@@ -253,4 +247,3 @@ describe('Change Category Of Law Controller', () => {
     });
   });
 });
-

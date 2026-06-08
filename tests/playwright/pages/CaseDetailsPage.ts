@@ -205,6 +205,28 @@ export class CaseDetailsTabPage {
     await expect(this.providerNoteError).toBeVisible();
   }
 
+ get categoryRow(): Locator {
+  return this.page
+    .getByRole('row')
+    .filter({ has: this.page.getByRole('rowheader', { name: 'Category' }) })
+    .nth(1);
+}
+
+get categoryValue(): Locator {
+  return this.categoryRow.locator('td').first();
+}
+
+get changeCategoryLink(): Locator {
+  return this.page.getByRole('link', {
+    name: 'Change'
+  });
+}
+
+async clickChangeCategory(): Promise<void> {
+  await expect(this.changeCategoryLink).toBeVisible();
+  await this.changeCategoryLink.click();
+}
+
   /**
    * Creates a new CaseDetailsTabPage instance for a specific case
    * @param {Page} page - The Playwright page instance

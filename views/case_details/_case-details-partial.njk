@@ -128,131 +128,152 @@
 
 {% endif %}
 
+{% set categoryValue = t('common.notProvided') %}
+
+{% if data.diagnosis and data.diagnosis.category %}
+  {% set categoryValue = data.diagnosis.category | capitalize %}
+{% endif %}
+
 {# Get latest MCC note #}
-{% set mccNote = "" %}
+{% set mccNote = null %}
 
 {% for item in combinedHistoryAndCaseLogNotes | reverse %}
-  {% if not mccNote and item.type == "caseLog" and item.code == "MCC" and item.notes %}
-    {% set mccNote = item.notes %}
+  {% if not mccNote and data.diagnosis.diagnosisNode.length == 0 and item.type == "caseLog" and item.code == "CATEGORY_CHANGED" and item.notes and categoryValue != "Not provided" %}
+    {% set mccNote = item %}
   {% endif %}
 {% endfor %}
 
 {# Category of Law #}
-{% if data.diagnosis.category %}
+{% if data %}
 
-<div class="govuk-!-margin-bottom-3">
-  <div style="display:flex; justify-content:space-between; align-items:center;">
-    
-    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">
-      {{ t('pages.caseDetails.changeCategoryOfLaw.h3') | replace(":", "") }}
-    </h3>
+  <div class="govuk-!-margin-bottom-3">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
 
-<a href="/cases/{{ data.caseReference }}/change-law-category"
+      <h3 class="govuk-heading-s govuk-!-margin-bottom-2">
+        {{ t('pages.caseDetails.changeCategoryOfLaw.h3') | replace(":", "") }}
+      </h3>
+
+        <a href="/cases/{{ data.caseReference }}/change-law-category"
      class="govuk-link">
-    {{ t('common.change') }}
-    <span class="govuk-visually-hidden">
-      {{ t('accessibility.visuallyHiddenText.changeCategory') }}
-    </span>
-  </a>
-</div>
+          {{ t('common.change') }}
+          <span class="govuk-visually-hidden">
+            {{ t('accessibility.visuallyHiddenText.changeCategory') }}
+          </span>
+        </a>
 
-{# Build rows #}
-  {% set rows = [
-    [
-      {
-        text: t('pages.caseDetails.caseDetailsSection.category') | replace(":", "") | capitalize
-      },
-      {
-        text: data.diagnosis.category | capitalize
-      }
-    ]
-  ] %}
+    </div>
 
-  {# Add Note row only if MCC note exists #}
-  {% if mccNote and mccNote.trim() %}
-    {% set rows = rows.concat([
+    {# Build rows #}
+    {% set rows = [
       [
         {
-          text: "Note"
-        },
-        {
-          text: mccNote
+          text: t('pages.caseDetails.caseDetailsSection.category') | replace(":", "") | capitalize
+        }, {
+          text: categoryValue
         }
       ]
-    ]) %}
-  {% endif %}
+    ] %}
 
-  {{ govukTable({
+    {# Add Note row only if MCC note exists #}
+    {% if mccNote and mccNote.notes.trim() %}
+      {% set rows = rows.concat([
+        [
+          {
+            text: "Note"
+          }, {
+            text: mccNote.notes
+          }
+        ]
+      ]) %}
+    {% endif %}
+
+    {{ govukTable({
     captionClasses: "govuk-table__caption--s",
     firstCellIsHeader: true,
     classes: "govuk-!-margin-bottom-3",
     rows: rows
   }) }}
-
+  
+{% if mccNote %}
+  <p class = "govuk-hint govuk-!-font-size-16">
+    Changed by {{ mccNote.createdBy }} on {{ mccNote.created }}
+  </p>
 {% endif %}
 
-{# Operator diagnosis section #}
-{% if data.diagnosis %}
-  <h3 class="govuk-heading-s govuk-!-margin-top-6 govuk-!-margin-bottom-3">{{ t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle') }}</h3>
-  {% set rows = [] %}
-  {% if data.diagnosis.diagnosisNode and data.diagnosis.diagnosisNode.length > 0 %}
-    {% for node in data.diagnosis.diagnosisNode %}
-      {% set rows = rows.concat([
-        [
-          {
-            text: node.node
-          }
-        ]
-      ]) %}
-    {% endfor %}
-  {% else %}
-    <p class="govuk-body govuk-!-margin-bottom-3">{{ t('pages.caseDetails.caseDetailsSection.noNotes') }}</p>
-    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-top-0 govuk-!-margin-bottom-0"/>
+
   {% endif %}
 
-  {{ govukTable({
+  {% set operatorScopeValue = t('common.notProvided') %}
+
+  {% if data.diagnosis %}
+    {% set operatorScopeValue = t('pages.caseDetails.caseDetailsSection.noNotes') %}
+  {% endif %}
+
+  {# Operator diagnosis section #}
+  {% if data and not mccNote %}
+    <h3 class="govuk-heading-s govuk-!-margin-top-6 govuk-!-margin-bottom-3">{{ t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle') }}</h3>
+    {% set rows = [] %}
+    {% if data.diagnosis.diagnosisNode and data.diagnosis.diagnosisNode.length > 0 %}
+      {% for node in data.diagnosis.diagnosisNode %}
+        {% set rows = rows.concat([
+          [
+            {
+              text: node.node
+            }
+          ]
+        ]) %}
+      {% endfor %}
+    {% else %}
+      <p class="govuk-body govuk-!-margin-bottom-3">{{ operatorScopeValue }}</p>
+      <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-top-0 govuk-!-margin-bottom-0"/>
+    {% endif %}
+
+    {{ govukTable({
     captionClasses: "govuk-table__caption--s",
     classes: "govuk-!-margin-bottom-3",
     firstCellIsHeader: false,
     rows: rows
   }) }}
 
-{% endif %}
+  {% endif %}
 
-{# Operator notes section #}
-{% if data.operatorNotes %}
-  <h3 class="govuk-heading-s govuk-!-margin-top-6 govuk-!-margin-bottom-3">{{ t('pages.caseDetails.caseDetailsSection.operatorNotesTitle') }}</h3>
-  <p class="govuk-body govuk-!-margin-bottom-3">{{ data.operatorNotes }}</p>
-  <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-0 govuk-!-margin-top-0"/>
-{% endif %}
+  {# Operator notes section #}
+  {% if data.operatorNotes %}
+    <h3 class="govuk-heading-s govuk-!-margin-top-6 govuk-!-margin-bottom-3">{{ t('pages.caseDetails.caseDetailsSection.operatorNotesTitle') }}</h3>
+    <p class="govuk-body govuk-!-margin-bottom-3">{{ data.operatorNotes }}</p>
+    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-0 govuk-!-margin-top-0"/>
+  {% endif %}
 
-{# Providers notes section #}
-<h3 class="govuk-heading-s case-details-tab-provider-notes-section">{{ t('pages.caseDetails.caseDetailsSection.providerNotesTitle') }}</h3>
-{% if combinedHistoryAndCaseLogNotes and combinedHistoryAndCaseLogNotes.length > 0 %}
-  {% for item in combinedHistoryAndCaseLogNotes %}
-    {% if item.type == 'caseLog' %}
-      {{ govukTag({
-        text: eventTagConfig[item.code].text,
-        classes: eventTagConfig[item.code].classes
-      }) }}
-    {% endif %}
+  {# Providers notes section #}
+  <h3 class="govuk-heading-s case-details-tab-provider-notes-section">{{ t('pages.caseDetails.caseDetailsSection.providerNotesTitle') }}</h3>
+  {% if combinedHistoryAndCaseLogNotes and combinedHistoryAndCaseLogNotes.length > 0 %}
+    {% for item in combinedHistoryAndCaseLogNotes %}
+      {# Remove category changed notes here, required above and in history tab display #}
+      {% if item.code != "CATEGORY_CHANGED" %}
+        {% if item.type == 'caseLog' %}
+          {{ govukTag({
+          text: eventTagConfig[item.code].text,
+          classes: eventTagConfig[item.code].classes
+        }) }}
+        {% endif %}
 
-    {# only show translated outcome code if a closed event tag #}
-    {% if item.type == 'caseLog' and eventTagConfig[item.code].isClosed %}
-      <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-margin-top-1">{{ t('common.outcomeCode.' + item.code) }}</p>
-    {% endif %}
-    <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-margin-top-3">{{ item.notes }}</p>
-    <p class="govuk-hint govuk-!-margin-bottom-3 govuk-!-margin-top-1 govuk-!-font-size-16">{{ item.createdBy }} on {{ item.created }}</p>
-    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-top-1 govuk-!-margin-bottom-0"/>
-  {% endfor %}
-{% else %}
-  <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-3">{{ t('pages.caseDetails.caseDetailsSection.noNotes') }}</p>
-{% endif %}
+        {# only show translated outcome code if a closed event tag #}
+        {% if item.type == 'caseLog' and eventTagConfig[item.code].isClosed %}
+          <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-margin-top-1">{{ t('common.outcomeCode.' + item.code) }}</p>
+        {% endif %}
+        <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-margin-top-3">{{ item.notes }}</p>
+        <p class="govuk-hint govuk-!-margin-bottom-3 govuk-!-margin-top-1 govuk-!-font-size-16">{{ item.createdBy }} on {{ item.created }}</p>
+        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-top-1 govuk-!-margin-bottom-0"/>
+      {% endif %}
+    {% endfor %}
+  {% else %}
+    <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-3">{{ t('pages.caseDetails.caseDetailsSection.noNotes') }}</p>
+  {% endif %}
 
-{% block formContent %}
-  <form method="post" action="">
-    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-    {{ govukCharacterCount({
+  {% block formContent %}
+    <form method="post" action="">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+      {{ govukCharacterCount({
       id: "providerNote",
       name: "providerNote",
       label: {
@@ -267,8 +288,8 @@
       formGroup: { classes: "govuk-!-margin-bottom-0" }
     }) }}
 
-    {{ govukButton({
+      {{ govukButton({
       text: t('common.save')
     }) }}
-  </form>
-{% endblock %}
+    </form>
+  {% endblock %}

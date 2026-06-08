@@ -6,13 +6,14 @@ const { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH } = config;
 
 /**
  * Validation schema for "change category of law" form.
+ * @returns {Error} Validation schema for express-validator
  */
 const changeCategoryOfLawSchema = {
   category: {
     trim: true,
     notEmpty: {
       /**
-       * Custom error message for empty radio selection
+       * Custom error message for no drop down selection
        * @returns {TypedValidationError} Returns TypedValidationError with structured error data
        */
       errorMessage: () => new TypedValidationError({

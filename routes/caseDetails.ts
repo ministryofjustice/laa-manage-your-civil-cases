@@ -168,7 +168,7 @@ router.get('/:caseReference/change-law-category', fetchClientDetails, async (req
   await getChangeCategoryOfLaw(req, res, next);
 });
 
-/* GET change category of law form. */
+/* POST change category of law form. */
 router.post('/:caseReference/change-law-category', fetchClientDetails, validateChangeCategoryOfLaw(), async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   await submitChangeCategoryOfLawForm(req, res, next);
 });

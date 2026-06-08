@@ -2,6 +2,7 @@
   "common": {
     "back": "Back",
     "backToAllCases": "Back to all cases",
+    "notProvided": "Not provided",
     "change": "Change",
     "remove": "Remove",
     "save": "Save",
@@ -89,7 +90,8 @@
       "REF-INT": "Referred internally",
       "REF-EXT": "Referred externally",
       "MERI": "Merits - not eligible",
-      "CLOT": "Other"
+      "CLOT": "Other",
+      "CATEGORY_CHANGED": "Category of law changed"
     },
     "eventCode":{
       "casePending": "Case pending",
@@ -347,9 +349,9 @@
       "changeCategoryOfLaw": {
         "pageTitle": "Change category of law – {caseReference} – {serviceName} – GOV.UK",
         "h2": "Change category of law",
-        "h3": "Category of Law",
-        "originalCaseInfo": "Original case category of law: ",
-        "newCaseInfo": "New case category of law: ",
+        "h3": "Category of law",
+        "originalCaseInfo": "Original category of law: ",
+        "newCaseInfo": "New category of law",
         "legend": "Why have you changed the category of law?",
         "categoryPlaceholder": "Select a category of law"
       }
@@ -465,11 +467,11 @@
        "changeCategoryOfLaw": {
         "validationError": {
           "category": {
-            "notEmpty": "Select the category of law for the case"
+            "notEmpty": "Select a category of law"
           },
           "notes": {
-            "notEmpty": "Enter why you want to change the category of law for this case",
-            "tooLong": "Why you want to change the category of law for this case must be 2500 characters or less"
+            "notEmpty": "Explain why you changed the category of law",
+            "tooLong": "Why you changed the category of law must be 2500 characters or less"
           }
         }
       }

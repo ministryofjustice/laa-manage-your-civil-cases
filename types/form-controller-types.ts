@@ -51,3 +51,21 @@ export interface PostFormOptions {
   fields: FormField[];
   apiUpdateData: Record<string, unknown>;
 }
+
+/**
+ * Category choice structure for category selection
+ */
+export interface CategoryChoice {
+  code: string;
+  name: string;
+}
+
+/**
+ * Options for building category items for selection
+ */
+export interface BuildCategoryItemsOptions {
+  choices: CategoryChoice[];
+  selectedCategory?: string;
+  placeholderText: string;
+  excludeCode?: string;
+}
