@@ -75,7 +75,7 @@ env:
   SERVICE_URL: "https://www.gov.uk/legal-aid"
   SESSION_NAME: "sessionId"
   RATELIMIT_HEADERS_ENABLED: true
-  RATE_LIMIT_MAX: 100
+  RATE_LIMIT_MAX: 300
   RATE_WINDOW_MS: 900000
   NODE_ENV: "staging"
   API_URL: "http://cla-backend-app.laa-cla-backend-staging.svc.cluster.local"
