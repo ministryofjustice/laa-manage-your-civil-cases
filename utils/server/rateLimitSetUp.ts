@@ -23,6 +23,12 @@ export const rateLimitSetUp = (app: Application, config: Config): void => {
   const generalLimiter = rateLimit({
     windowMs: typeof config.RATE_WINDOW_MS === 'string' ? parseInt(config.RATE_WINDOW_MS, 10) : config.RATE_WINDOW_MS,
     max: typeof config.RATE_LIMIT_MAX === 'string' ? parseInt(config.RATE_LIMIT_MAX, 10) : config.RATE_LIMIT_MAX,
+    /**
+     * Handles rate-limited requests, and show message when limit reached
+     * @param {Request} _req - Express request object
+     * @param {Response} res - Express response object used to send the 429 response
+     * @returns {void} Renders the `main/error.njk` template with rate-limit details
+     */
     handler: (_req, res) => {      
       res.status(HTTP.TOO_MANY_REQUESTS).render('main/error.njk', {
         status: HTTP.TOO_MANY_REQUESTS,
