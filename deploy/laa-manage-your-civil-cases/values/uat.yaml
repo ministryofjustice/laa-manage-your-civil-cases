@@ -90,7 +90,7 @@ env:
   RATE_LIMIT_MAX: 100
   RATE_WINDOW_MS: 900000
   NODE_ENV: "uat"
-  API_URL: "http://mas-nle-test-app.laa-cla-backend-uat.svc.cluster.local" # No longer at cluster level `http://cla-backend-app.laa-cla-backend-uat.svc.cluster.local` as this is going via open internet
+  API_URL: "http://mas-nle-test-app.laa-cla-backend-uat.svc.cluster.local"
   API_PREFIX: "/cla_provider/api/v1"
   REDIS_ENABLED: true
   REDIS_TLS_ENABLED: true
