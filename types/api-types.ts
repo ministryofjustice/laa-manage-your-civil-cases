@@ -345,3 +345,10 @@ export interface SplitCaseSubmissionApiResponse {
   status: 'success' | 'error';
   message?: string;
 }
+
+
+export interface FinancialEligibilityData {
+  hasPartner: boolean;
+  isUnder17: boolean;
+  isOver60: boolean;
+}

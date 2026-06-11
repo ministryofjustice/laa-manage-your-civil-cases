@@ -2,6 +2,7 @@ import { defineEffectFunctions } from "@ministryofjustice/hmpps-forge/core/autho
 import type { FinancialEligibilitySession } from "./context.type.js";
 import { access, redirect, Condition, Session } from '@ministryofjustice/hmpps-forge/core/authoring'
 import type { EffectFunctionContext, EffectFunctionExpr } from "@ministryofjustice/hmpps-forge/core/authoring";
+import { mapAnswersToApiPayload } from '@ministryofjustice/financial-eligibility-journey';
 
 export type Deps = {
   apiService: any;
@@ -58,7 +59,10 @@ export const {
     }
 
     const axiosMiddleware = context.getState('authenticatedAxios')
-    const details = await _deps.apiService.getClientDetails(axiosMiddleware, caseReference);
+    if (!axiosMiddleware) {
+      console.warn('Authenticated Axios middleware not found in state; API call may fail if it is required by the service implementation.');
+    }
+    const details = await _deps.apiService.getClientDetails(caseReference, axiosMiddleware);
     
     console.log('Fetched case details for case reference', caseReference, details);
     context.setData('caseDetails', details);
@@ -92,11 +96,11 @@ export const {
 
 
   /**
-   * SSubmit saved answers from session to cla_backend
+   * Submit saved answers from session to cla_backend
    * @param {unknown} _deps Effect dependencies supplied by Forge
-   * @returns {(context: EffectFunctionContext) => void} Function to submit saved answers to cla_backend
+   * @returns {(context: EffectFunctionContext) => Promise<void>} Async function to submit saved answers to cla_backend
    */
-  SubmitSavedAnswersToClaBackend: (_deps) => (context: EffectFunctionContext) => {
+  SubmitSavedAnswersToClaBackend: (_deps) => async (context: EffectFunctionContext) => {
     console.log(`Saving FE answers in session...`, context.getAllAnswers());
 
     const session = context.getSession() as FinancialEligibilitySession | undefined;
@@ -113,6 +117,17 @@ export const {
       ...session.financialEligibilityDraft,
       ...context.getAllAnswers(),
     };
+
+    // Make API call to CLA backend with the apiService.
+    const axiosMiddleware = context.getState('authenticatedAxios')
+    if (!axiosMiddleware) {
+      console.warn("Authenticated Axios middleware not found in state; API call may fail if it is required by the service implementation.");
+    }
+    await _deps.apiService.updateFinancialEligibility(
+      axiosMiddleware,
+      context.getRequestParam('caseReference'),
+      mapAnswersToApiPayload(session.financialEligibilityDraft)
+    );
 
     console.log(`Submitted FE answers in session, to cla_backend:`, session.financialEligibilityDraft);
   },

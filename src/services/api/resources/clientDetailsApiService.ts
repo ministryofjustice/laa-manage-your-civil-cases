@@ -4,7 +4,7 @@
  */
 
 import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
-import type { ClientDetailsResponse, ClientDetailsApiResponse, CaseLogsApiResponse, ClientHistoryApiResponse } from '#types/api-types.js';
+import type { ClientDetailsResponse, ClientDetailsApiResponse, CaseLogsApiResponse, ClientHistoryApiResponse, FinancialEligibilityData } from '#types/api-types.js';
 import { devLog, extractAndLogError } from '#src/scripts/helpers/index.js';
 import { transformClientDetailsItem } from '../transforms/transformClientDetails.js';
 import { transformClientHistoryLogs } from '../transforms/transformClientHistoryLogs.js';
@@ -186,6 +186,39 @@ export async function updateProviderNotes(
     const response = await configuredAxios.patch(`${API_PREFIX}/case/${caseReference}/`, payload);
     devLog(`API: Update provider notes response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
 
+    return {
+      data: transformClientDetailsItem(response.data),
+      status: 'success'
+    };
+  } catch (error) {
+    const errorMessage = extractAndLogError(error, 'API error');
+    return {
+      data: null,
+      status: 'error',
+      message: errorMessage
+    };
+  }
+}
+
+
+/**
+ * Update financial eligibility data for a case
+ * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+ * @param {string} caseReference - Case reference number
+ * @param {Partial<FinancialEligibilityData>} financialEligibilityData - Financial eligibility data to update
+ * @returns {Promise<ClientDetailsApiResponse>} API response with updated client details
+ */
+export async function updateFinancialEligibility(
+  axiosMiddleware: AxiosInstanceWrapper,
+  caseReference: string,
+  financialEligibilityData: Partial<FinancialEligibilityData>
+): Promise<ClientDetailsApiResponse> {
+  try {
+    devLog(`API: PATCH ${API_PREFIX}/case/${caseReference}/eligibility_check/`);
+    const configuredAxios = configureAxiosInstance(axiosMiddleware);
+
+    const response = await configuredAxios.patch(`${API_PREFIX}/case/${caseReference}/eligibility_check/`, financialEligibilityData);
+    devLog(`API: Update financial eligibility response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
     return {
       data: transformClientDetailsItem(response.data),
       status: 'success'
