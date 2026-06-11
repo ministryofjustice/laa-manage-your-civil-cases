@@ -19,6 +19,7 @@ interface CaseViewer {
   userId: string;
   sessionId: string;
   joinedAt: number;
+  userName: string;
 }
 
 /** Redis key prefix for case viewer tracking */
@@ -30,25 +31,27 @@ const VIEWER_TTL = 30; // 30 seconds - refreshed by heartbeat
 /**
  * Adds a user to the list of viewers for a specific case in Redis.
  * Creates or updates a Redis hash entry with viewer information and sets TTL.
- * 
  * @async
  * @param {RedisClientType} redisClient - Redis client instance
  * @param {string} caseReference - The unique reference number of the case
  * @param {string} userId - User's email address or identifier
  * @param {string} sessionId - User's session identifier
+ * @param {string} userName - The user's name
  * @returns {Promise<void>}
  */
 export const addCaseViewer = async (
   redisClient: RedisClientType,
   caseReference: string,
   userId: string,
-  sessionId: string
+  sessionId: string,
+  userName: string
 ): Promise<void> => {
   const key = `${VIEWER_KEY_PREFIX}${caseReference}`;
   const viewer: CaseViewer = {
     userId,
     sessionId,
-    joinedAt: Date.now()
+    joinedAt: Date.now(),
+    userName
   };
 
   // Add viewer to Redis hash with TTL
@@ -59,7 +62,6 @@ export const addCaseViewer = async (
 /**
  * Removes a user from the list of viewers for a specific case in Redis.
  * Deletes the viewer's entry from the Redis hash.
- *
  * @async
  * @param {RedisClientType} redisClient - Redis client instance
  * @param {string} caseReference - The unique reference number of the case
@@ -78,7 +80,6 @@ export const removeCaseViewer = async (
 /**
  * Retrieves all viewers for a specific case, excluding the current user.
  * Parses viewer data from Redis hash and returns array of CaseViewer objects.
- *
  * @async
  * @param {RedisClientType} redisClient - Redis client instance
  * @param {string} caseReference - The unique reference number of the case
@@ -101,7 +102,6 @@ export const getCaseViewers = async (
 /**
  * Refreshes the TTL for a case viewer entry in Redis.
  * Called by heartbeat mechanism to maintain viewer presence.
- *
  * @async
  * @param {RedisClientType} redisClient - Redis client instance
  * @param {string} caseReference - The unique reference number of the case
@@ -127,7 +127,6 @@ export const refreshViewerHeartbeat = async (
 /**
  * Gets the count of other viewers currently viewing a case.
  * Excludes the current user from the count.
- *
  * @async
  * @param {RedisClientType} redisClient - Redis client instance
  * @param {string} caseReference - The unique reference number of the case
@@ -141,4 +140,22 @@ export const getViewerCount = async (
 ): Promise<number> => {
   const viewers = await getCaseViewers(redisClient, caseReference, currentSessionId);
   return viewers.length;
+};
+
+/** 
+ * Gets the name of the first viewer, when a second person is viewing the case.
+ * @async
+ * @param {RedisClientType} redisClient - Redis client instance
+ * @param {string} caseReference - The unique reference number of the case
+ * @returns {Promise<string | undefined>} User name or `undefined`
+ */
+export const getFirstViewerName = async (
+  redisClient: RedisClientType,
+  caseReference: string
+): Promise<string | undefined> => {
+  const viewers = await getCaseViewers(redisClient, caseReference, '');
+
+  const firstViewer = viewers.sort((a, b) => a.joinedAt - b.joinedAt)[0];
+
+  return firstViewer?.userName;
 };

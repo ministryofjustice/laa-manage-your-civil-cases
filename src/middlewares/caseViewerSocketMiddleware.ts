@@ -61,7 +61,7 @@ declare const window: WindowWithIO;
 
     socketInstance.on('viewers-updated', function (data: ViewersUpdatedData) {
       devLog('[CaseViewer] Received viewers-updated: ' + JSON.stringify(data));
-      updateViewerAlert(data.viewerCount);
+      updateViewerAlert(data.viewerCount, data.firstViewerName);
     });
 
     socketInstance.on('heartbeat-ack', function () {
@@ -89,13 +89,15 @@ declare const window: WindowWithIO;
     }
 
     const userId = getUserId();
+    const userName = getUserName();
 
     devLog('[CaseViewer] Joining case: ' + JSON.stringify({ caseReference, sessionId, userId }));
 
     socket.emit('join-case', {
       caseReference: caseReference,
       sessionId: sessionId,
-      userId: userId
+      userId: userId,
+      userName: userName
     });
 
     currentCaseReference = caseReference;
@@ -175,17 +177,35 @@ declare const window: WindowWithIO;
   }
 
   /**
+   * Retrieves the user name or falls back to 'Unknown user'
+   * @returns {string} User name or 'Unknown user'
+   */
+  function getUserName(): string {
+    const caseElement = document.querySelector('[data-case-reference]') as HTMLElement;
+    const userName = caseElement?.dataset.userName;
+
+    if (userName) {
+      return userName;
+    }
+
+    return 'Unknown user';
+  }
+
+  /**
    * Updates the MOJ Alert banner showing how many other users are viewing the case.
    * Hides alert when no other viewers, shows warning alert otherwise.
    * @param {number} viewerCount - Total number of viewers including current user
+   * @param {string} firstViewerName - The name of the first person viewing the case
    * @returns {void}
    */
-  function updateViewerAlert(viewerCount: number): void {
+  function updateViewerAlert(viewerCount: number, firstViewerName?: string): void {
+    const alertContainerRow = document.getElementById('case-viewer-alert-row');
+    const alertContainerColumn = document.getElementById('case-viewer-alert-column');
     const alertContainer = document.getElementById('case-viewer-alert');
     const singleViewerAlert = document.getElementById('viewer-alert-single');
     const multipleViewersAlert = document.getElementById('viewer-alert-multiple');
 
-    if (!alertContainer || !singleViewerAlert || !multipleViewersAlert) {
+    if (!alertContainerRow || !alertContainerColumn || !alertContainer || !singleViewerAlert || !multipleViewersAlert) {
       devWarn('[CaseViewer] Alert container or templates not found in DOM');
       return;
     }
@@ -196,24 +216,38 @@ declare const window: WindowWithIO;
     
     if (otherViewers === 0) {
       // No other viewers, hide all alerts
+      alertContainerRow.hidden = true;
+      alertContainerColumn.hidden = true;
       alertContainer.hidden = true;
       singleViewerAlert.hidden = true;
       multipleViewersAlert.hidden = true;
-    } else if (otherViewers === 1) {
-      // Show single viewer alert
-      alertContainer.hidden = false;
+      return;
+    }
+
+    alertContainerRow.hidden = false;
+    alertContainerColumn.hidden = false;
+    alertContainer.hidden = false;
+
+    if (otherViewers === 1) {
+      const singleViewerAlertNameInText = singleViewerAlert.querySelector('.moj-alert__heading');
+
+      if (singleViewerAlertNameInText) {
+        singleViewerAlertNameInText.textContent = `${firstViewerName ?? 'Another user'} is currently viewing this case`;
+      }
+
       singleViewerAlert.hidden = false;
       multipleViewersAlert.hidden = true;
-    } else {
-      // Show multiple viewers alert and update the text
-      const alertText = multipleViewersAlert.querySelector('.moj-alert__paragraph');
-      if (alertText) {
-        alertText.textContent = `${otherViewers} other users are currently viewing this case`;
-      }
-      alertContainer.hidden = false;
-      singleViewerAlert.hidden = true;
-      multipleViewersAlert.hidden = false;
+      return;
     }
+
+    const multipleViewersAlertText = multipleViewersAlert.querySelector('.moj-alert__paragraph');
+
+    if (multipleViewersAlertText) {
+      multipleViewersAlertText.textContent = `${otherViewers} other users are currently viewing this case`;
+    }
+
+    singleViewerAlert.hidden = true;
+    multipleViewersAlert.hidden = false;
   }
 
   /**

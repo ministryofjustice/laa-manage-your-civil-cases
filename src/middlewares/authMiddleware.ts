@@ -33,5 +33,6 @@ export const setAuthStatus = (req: Request, res: Response, next: NextFunction): 
   const silasAuth = req.session.silasAuth;
   res.locals.isAuthenticated = silasAuth !== undefined && silasAuth.expiresAt > Date.now();
   res.locals.userEmail = req.session.user?.email ?? null;
+  res.locals.userName = req.session.user?.name ?? null;
   next();
 };

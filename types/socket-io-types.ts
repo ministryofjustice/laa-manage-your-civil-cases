@@ -5,6 +5,7 @@ export interface SocketData {
   sessionId?: string;
   userId?: string;
   caseReference?: string;
+  userName?: string;
 }
 
 /**
@@ -22,6 +23,7 @@ export interface Socket {
 export interface ViewersUpdatedData {
   caseReference: string;
   viewerCount: number;
+  firstViewerName: string;
 }
 
 /**
