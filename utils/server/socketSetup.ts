@@ -23,8 +23,8 @@ import type { SocketData } from '#types/socket-io-types.js';
  */
 export const setupSocketIO = async (
   httpServer: HTTPServer,
-  redisClient: RedisClientType,
-  redisUrl: string
+  redisClient?: RedisClientType,
+  redisUrl?: string
 ): Promise<SocketIOServer> => {
   const io = new SocketIOServer(httpServer, {
     cors: {
@@ -35,19 +35,21 @@ export const setupSocketIO = async (
   });
 
   // Set up Redis adapter for distributed Socket.IO
-  try {
-    const pubClient = createClient({ url: redisUrl });
-    const subClient = pubClient.duplicate();
+  if (redisClient && redisUrl) {
+    try {
+      const pubClient = createClient({ url: redisUrl });
+      const subClient = pubClient.duplicate();
 
-    await Promise.all([
-      pubClient.connect(),
-      subClient.connect()
-    ]);
+      await Promise.all([
+        pubClient.connect(),
+        subClient.connect()
+      ]);
 
-    io.adapter(createAdapter(pubClient, subClient));
-    console.log(chalk.green('✓ Socket.IO Redis adapter configured'));
-  } catch (error) {
-    console.error(chalk.red('❌ Failed to configure Socket.IO Redis adapter:'), error);
+      io.adapter(createAdapter(pubClient, subClient));
+      console.log(chalk.green('✓ Socket.IO Redis adapter configured'));
+    } catch (error) {
+      console.error(chalk.red('❌ Failed to configure Socket.IO Redis adapter:'), error);
+    }
   }
 
   // Socket.IO event handlers
@@ -64,20 +66,21 @@ export const setupSocketIO = async (
         socketData.userId = userId;
         socketData.caseReference = caseReference;
 
-        // Add viewer to Redis
-        await addCaseViewer(redisClient, caseReference, userId, sessionId);
-
         // Join Socket.IO room for this case
         await socket.join(`case:${caseReference}`);
 
-        // Get total viewer count (use empty string to get all viewers)
-        const viewerCount = await getViewerCount(redisClient, caseReference, '');
+        if (redisClient) {
+          // Add viewer to Redis
+          await addCaseViewer(redisClient, caseReference, userId, sessionId);
 
-        // Notify all users in the room
-        io.to(`case:${caseReference}`).emit('viewers-updated', {
-          caseReference,
-          viewerCount // Total count of all viewers
-        });
+          // Get total viewer count (use empty string to get all viewers)
+          const viewerCount = await getViewerCount(redisClient, caseReference, '');
+          // Notify all users in the room
+          io.to(`case:${caseReference}`).emit('viewers-updated', {
+            caseReference,
+            viewerCount // Total count of all viewers
+          });
+        }
 
         console.log(chalk.blue(`👀 User ${userId} joined case ${caseReference}`));
       } catch (error) {
@@ -89,12 +92,12 @@ export const setupSocketIO = async (
     // Handle heartbeat to keep viewer presence alive
     socket.on('heartbeat', async (data: { caseReference: string; sessionId: string }) => {
       try {
-        const { caseReference, sessionId } = data;
-        const refreshed = await refreshViewerHeartbeat(redisClient, caseReference, sessionId);
+        if (redisClient) {
+          const { caseReference, sessionId } = data;
+          const refreshed = await refreshViewerHeartbeat(redisClient, caseReference, sessionId);
 
-        if (!refreshed) {
-          // Session expired, re-add viewer
-          if (socketData.userId) {
+          if (!refreshed && socketData.userId) {
+            // Session expired, re-add viewer
             await addCaseViewer(redisClient, caseReference, socketData.userId, sessionId);
           }
         }
@@ -110,19 +113,19 @@ export const setupSocketIO = async (
       try {
         const { caseReference, sessionId } = data;
 
-        // Remove viewer from Redis
-        await removeCaseViewer(redisClient, caseReference, sessionId);
-
         // Leave Socket.IO room
         await socket.leave(`case:${caseReference}`);
 
-        // Get updated viewer count and broadcast (use empty string to get total count)
-        const viewerCount = await getViewerCount(redisClient, caseReference, '');
-
-        io.to(`case:${caseReference}`).emit('viewers-updated', {
-          caseReference,
-          viewerCount
-        });
+        if (redisClient) {
+          // Remove viewer from Redis
+          await removeCaseViewer(redisClient, caseReference, sessionId);
+           // Get updated viewer count and broadcast (use empty string to get total count)
+          const viewerCount = await getViewerCount(redisClient, caseReference, '');
+          io.to(`case:${caseReference}`).emit('viewers-updated', {
+            caseReference,
+            viewerCount 
+          });
+        }
 
         console.log(chalk.blue(`👋 User left case ${caseReference}`));
       } catch (error) {
@@ -135,17 +138,14 @@ export const setupSocketIO = async (
       try {
         const { caseReference, sessionId } = socketData;
 
-        if (caseReference && sessionId) {
+        if (caseReference && sessionId && redisClient) {
           await removeCaseViewer(redisClient, caseReference, sessionId);
-
           // Get total viewer count (use empty string to get all viewers)
           const viewerCount = await getViewerCount(redisClient, caseReference, '');
-
           io.to(`case:${caseReference}`).emit('viewers-updated', {
             caseReference,
             viewerCount
           });
-
           console.log(chalk.blue(`🔌 User disconnected from case ${caseReference}`));
         }
       } catch (error) {
