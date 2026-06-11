@@ -3,6 +3,11 @@ import type { FinancialEligibilitySession } from "./context.type.js";
 import { access, redirect, Condition, Session } from '@ministryofjustice/hmpps-forge/core/authoring'
 import type { EffectFunctionContext, EffectFunctionExpr } from "@ministryofjustice/hmpps-forge/core/authoring";
 
+export type Deps = {
+  apiService: any;
+}
+
+
 export interface FinancialEligibilityEffectShape {
   /** Copies previously stored draft answers for this pattern into the form context on access. */
   LoadDraftAnswers: () => EffectFunctionExpr;
@@ -12,12 +17,14 @@ export interface FinancialEligibilityEffectShape {
   ClearDraftAnswers: () => EffectFunctionExpr;
   /** TODO Submit saved answers from session to cla_backend  */
   SubmitSavedAnswersToClaBackend: () => EffectFunctionExpr;
+  /** Loads case details from the API and stores them in the context, for use in the journey. */
+  LoadCaseDetails: () => EffectFunctionExpr;
 }
 
 export const {
   effects: FinancialEligibilityEffects,
   implementations: FinancialEligibilityEffectsImplementations,
-} = defineEffectFunctions<FinancialEligibilityEffectShape>({
+} = defineEffectFunctions<FinancialEligibilityEffectShape, Deps>({
   /**
    * Loads draft financial eligibility answers from session storage
    * @param {unknown} _deps Effect dependencies supplied by Forge
@@ -35,6 +42,26 @@ export const {
         context.setAnswer(code, value);
       }
     }
+  },
+
+  /**
+   * Loads case details from the API and stores them in the context, for use in the journey.
+   * @param {unknown} _deps Effect dependencies supplied by Forge, expected to include a fetchClientDetails function
+   * @returns {(context: EffectFunctionContext) => Promise<void>} Async function to load case details and store in context
+   */
+  LoadCaseDetails: (_deps) => async (context: EffectFunctionContext) => {
+    const caseReference = context.getRequestParam('caseReference');
+
+    if (typeof caseReference !== 'string') {
+      console.error('No case reference found in path');
+      return;
+    }
+
+    const axiosMiddleware = context.getState('authenticatedAxios')
+    const details = await _deps.apiService.getClientDetails(axiosMiddleware, caseReference);
+    
+    console.log('Fetched case details for case reference', caseReference, details);
+    context.setData('caseDetails', details);
   },
 
   /**

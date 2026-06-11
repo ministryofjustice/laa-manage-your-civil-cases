@@ -1,10 +1,16 @@
-import { createForgePackage } from '@ministryofjustice/hmpps-forge/core/authoring'
+import { createForgePackage, createFunctionsRegistry, type ForgePackage } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { eligibilityJourney } from './journey.js'
-import { FinancialEligibilityEffectsImplementations } from './effects.js'
+import { type Deps, FinancialEligibilityEffectsImplementations } from './effects.js'
 
-export default createForgePackage({
-  journey: eligibilityJourney,
-  functions: {
-    ...FinancialEligibilityEffectsImplementations
-  },
-})
+
+/**
+ * Forge package entry point.
+ * @returns {ForgePackage} The configured Forge package for the financial eligibility journey
+ */
+export default createForgePackage<Deps>({
+    journey: eligibilityJourney,
+    functions: {
+      ...FinancialEligibilityEffectsImplementations
+    },
+  })
+

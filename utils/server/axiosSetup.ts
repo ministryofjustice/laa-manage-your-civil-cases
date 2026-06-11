@@ -12,7 +12,11 @@ const HTTP_UNAUTHORIZED = 401;
 // Extend Express Request to include our axiosMiddleware
 declare global {
   namespace Express {
+    interface RequestState {
+      authenticatedAxios: AxiosInstanceWrapper;
+    }
     interface Request {
+      state: RequestState;
       axiosMiddleware: AxiosInstanceWrapper;
     }
   }
@@ -41,6 +45,7 @@ function isAxiosErrorWithResponse(error: unknown): error is { response: { status
          'status' in error.response &&
          typeof (error.response as { status: unknown }).status === 'number';
 }
+
 
 /**
  * Axios middleware to attach Axios instance to request object.
@@ -115,5 +120,7 @@ export const axiosMiddleware = (req: Request, res: Response, next: NextFunction)
   }
 
   req.axiosMiddleware = axiosWrapper;
+  req.state = { authenticatedAxios: axiosWrapper };
+
   next();
 };

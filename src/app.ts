@@ -20,9 +20,13 @@ import { Forge } from '@ministryofjustice/hmpps-forge/core';
 import { ExpressFrameworkAdapter, nunjucksFunctions } from '@ministryofjustice/hmpps-forge/express-nunjucks';
 import { govukComponents } from '@ministryofjustice/hmpps-forge/govuk-components'
 import { mojComponents } from '@ministryofjustice/hmpps-forge/moj-components'
-import eligibilityPackage from '@ministryofjustice/financial-eligibility-journey';
+import createEligibilityPackage from '@ministryofjustice/financial-eligibility-journey';
+import { apiService } from '#src/services/apiService.js';
+import { type Deps } from '#packages/financial-eligibility-journey/src/effects.js';
+import { type AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
 
 const TRUST_FIRST_PROXY = 1;
+
 
 /**
  * Creates and configures an Express application.
@@ -98,7 +102,7 @@ const createApp = async (): Promise<express.Application> => {
 		.registerGlobalComponents(govukComponents)
 		.registerGlobalComponents(mojComponents)
 		.registerGlobalFunctions(nunjucksFunctions)
-		.registerPackage(eligibilityPackage);
+		.registerPackage<Deps>(createEligibilityPackage, {apiService});
 
 	// Set up request logging based on environment
 	if (process.env.NODE_ENV === 'production') {
