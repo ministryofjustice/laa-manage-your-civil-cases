@@ -41,28 +41,36 @@
   {% endif %}
 
   {# Container for real-time viewer alert - populated by Socket.IO client #}
-  <div id="case-viewer-alert" class="govuk-!-margin-bottom-4" hidden>
-    {# Template for single viewer alert #}
-    <div id="viewer-alert-single" hidden>
-      {{ mojAlert({
-        variant: "warning",
-        text: "1 other user is currently viewing this case",
-        dismissible: false
-      }) }}
-    </div>
+  <div class="govuk-grid-row" hidden>
+    <div class="govuk-grid-column-two-thirds" hidden>
+      <div id="case-viewer-alert" class="govuk-!-margin-bottom-4" hidden>
+        {# Template for single viewer alert #}
+        <div id="viewer-alert-single" hidden>
+          {{ mojAlert({
+            variant: "warning",
+            title: userName + " is currently viewing this case",
+            showTitleAsHeading: true,
+            text: "You will both be able to make changes to this case.",
+            dismissible: false
+          }) }}
+        </div>
 
-    {# Template for multiple viewers alert - text will be updated by JS #}
-    <div id="viewer-alert-multiple" hidden>
-      {{ mojAlert({
-        variant: "warning",
-        text: "X other users are currently viewing this case",
-        dismissible: false
-      }) }}
+        {# Template for multiple viewers alert - text will be updated by JS #}
+        <div id="viewer-alert-multiple" hidden>
+          {{ mojAlert({
+            variant: "warning",
+            title: "Multiple users are currently viewing this case",
+            showTitleAsHeading: true,
+            text: "You and the other users will be able to make changes to this case.",
+            dismissible: false
+          }) }}
+        </div>
+      </div>
+
+      {# Hidden data attributes for Socket.IO client #}
+      <div data-case-reference="{{ caseReference }}" data-session-id="{{ sessionID }}" hidden></div>
     </div>
   </div>
-
-  {# Hidden data attributes for Socket.IO client #}
-  <div data-case-reference="{{ caseReference }}" data-session-id="{{ sessionID }}" hidden></div>
 
   {% if error %}
     {{ errorSummary(error.errorSummaryList) }}
