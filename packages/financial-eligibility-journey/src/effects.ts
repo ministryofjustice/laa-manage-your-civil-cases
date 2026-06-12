@@ -4,7 +4,7 @@ import { access, redirect, Condition, Session } from '@ministryofjustice/hmpps-f
 import type { EffectFunctionContext, EffectFunctionExpr } from "@ministryofjustice/hmpps-forge/core/authoring";
 import { mapAnswersToApiPayload } from '@ministryofjustice/financial-eligibility-journey';
 
-export type Deps = {
+export interface Deps {
   apiService: any;
 }
 
@@ -201,6 +201,11 @@ export const {
     };
   },
 
+  /**
+   * Saves a new answer if it has been answered, by checking the post data for any answers and saving them to the session as drafts
+   * @param {unknown} _deps Effect dependencies supplied by Forge
+   * @returns {(context: EffectFunctionContext) => void} Function to save new answers to the session as drafts
+   */
   SaveNewAnswerIfAnswered: (_deps) => (context: EffectFunctionContext) => {
     const requestPostData = context.getPostData();
     const answerKeys = Object.keys(requestPostData);
