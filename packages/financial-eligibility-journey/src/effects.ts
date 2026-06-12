@@ -16,10 +16,14 @@ export interface FinancialEligibilityEffectShape {
   SaveDraftAnswers: () => EffectFunctionExpr;
   /** Clears draft answers for this pattern (used after committing drafts to the store). */
   ClearDraftAnswers: () => EffectFunctionExpr;
-  /** TODO Submit saved answers from session to cla_backend  */
+  /** Submit saved answers from session to cla_backend  */
   SubmitSavedAnswersToClaBackend: () => EffectFunctionExpr;
   /** Loads case details from the API and stores them in the context, for use in the journey. */
   LoadCaseDetails: () => EffectFunctionExpr;
+  /** Loads financial eligibility data from the API and stores it in the context, for use in the journey. */
+  LoadCaseFinancialEligibility: () => EffectFunctionExpr;
+  /** Saves a new answer if it has been answered */
+  SaveNewAnswerIfAnswered: () => EffectFunctionExpr;
 }
 
 export const {
@@ -32,17 +36,23 @@ export const {
    * @returns {(context: EffectFunctionContext) => void} Function to apply stored draft answers to the context
    */
   LoadDraftAnswers: (_deps) => (context: EffectFunctionContext) => {
-    const stored = (context.getSession() as FinancialEligibilitySession | undefined)?.financialEligibilityDraft;
+    const caseReference = context.getRequestParam('caseReference');
+    const session = context.getSession() as FinancialEligibilitySession | undefined;
+    if (session && session.financialEligibilityDrafts === undefined) {
+      session.financialEligibilityDrafts = {};
+    }
+
+    const stored = session?.financialEligibilityDrafts[caseReference || ''] ?? null;
 
     if (!stored) {
       return;
     }
 
-    for (const [code, value] of Object.entries(stored)) {
-      if (!context.hasAnswer(code)) {
-        context.setAnswer(code, value);
-      }
-    }
+    // for (const [code, value] of Object.entries(stored)) {
+    //   if (!context.hasAnswer(code)) {
+    //     context.setAnswer(code, value);
+    //   }
+    // }
   },
 
   /**
@@ -53,7 +63,7 @@ export const {
   LoadCaseDetails: (_deps) => async (context: EffectFunctionContext) => {
     const caseReference = context.getRequestParam('caseReference');
 
-    if (typeof caseReference !== 'string') {
+    if (caseReference === undefined) {
       console.error('No case reference found in path');
       return;
     }
@@ -62,10 +72,37 @@ export const {
     if (!axiosMiddleware) {
       console.warn('Authenticated Axios middleware not found in state; API call may fail if it is required by the service implementation.');
     }
-    const details = await _deps.apiService.getClientDetails(caseReference, axiosMiddleware);
+    const details = await _deps.apiService.getClientDetails(axiosMiddleware, caseReference);
     
     console.log('Fetched case details for case reference', caseReference, details);
     context.setData('caseDetails', details);
+  },
+
+  /**
+   * Loads financial eligibility data from the API and stores it in the context, for use in the journey.
+   * @param {unknown} _deps Effect dependencies supplied by Forge, expected to include a getFinancialEligibility function
+   * @returns {(context: EffectFunctionContext) => Promise<void>} Async function to load financial eligibility data and store in context
+   */
+  LoadCaseFinancialEligibility: (_deps) => async (context: EffectFunctionContext) => {
+    const caseReference = context.getRequestParam('caseReference');
+
+    if (caseReference === undefined) {
+      console.error('No case reference found in path');
+      return;
+    }
+
+    const axiosMiddleware = context.getState('authenticatedAxios')
+    if (!axiosMiddleware) {
+      console.warn('Authenticated Axios middleware not found in state; API call may fail if it is required by the service implementation.');
+    }
+    const financialEligibilityData = await _deps.apiService.getFinancialEligibility(axiosMiddleware, caseReference);
+    
+    console.log('Fetched financial eligibility data for case reference', caseReference, financialEligibilityData);
+    
+    // TODO: Map API response to form answers with a utility function, rather than hardcoding field mappings here
+    context.setAnswer('under17', financialEligibilityData.is_you_under_18 ? 'yes' : 'no');
+    context.setAnswer('over-60', financialEligibilityData.is_you_or_your_partner_over_60 ? 'yes' : 'no');
+    context.setAnswer('partner', financialEligibilityData.has_partner ? 'yes' : 'no');
   },
 
   /**
@@ -76,22 +113,27 @@ export const {
   SaveDraftAnswers: (_deps) => (context: EffectFunctionContext) => {
     console.log(`Saving FE answers in session...`, context.getAllAnswers());
 
+    const caseReference = context.getRequestParam('caseReference')
+    if (caseReference === undefined) {
+      console.error('No case reference found in path; cannot save draft answers');
+      return;
+    }
     const session = context.getSession() as FinancialEligibilitySession | undefined;
 
     if (!session) {
       return;
     }
 
-    if (!session.financialEligibilityDraft) {
-      session.financialEligibilityDraft = {};
+    if (!session.financialEligibilityDrafts[caseReference]) {
+      session.financialEligibilityDrafts[caseReference] = {};
     }
 
-    session.financialEligibilityDraft = {
-      ...session.financialEligibilityDraft,
+    session.financialEligibilityDrafts[caseReference] = {
+      ...session.financialEligibilityDrafts[caseReference],
       ...context.getAllAnswers(),
     };
 
-    console.log(`Saved FE answers in session:`, session.financialEligibilityDraft);
+    console.log(`Saved FE answers in session:`, session.financialEligibilityDrafts);
   },
 
 
@@ -109,14 +151,20 @@ export const {
       return;
     }
 
-    if (!session.financialEligibilityDraft) {
-      session.financialEligibilityDraft = {};
+    const caseReference = context.getRequestParam('caseReference')
+    if (caseReference === undefined) {
+      console.error('No case reference found in path; cannot submit draft answers');
+      return;
     }
 
-    session.financialEligibilityDraft = {
-      ...session.financialEligibilityDraft,
-      ...context.getAllAnswers(),
-    };
+    if (!session.financialEligibilityDrafts[caseReference]) {
+      session.financialEligibilityDrafts[caseReference] = {};
+    }
+
+    // session.financialEligibilityDrafts[caseReference] = {
+    //   ...session.financialEligibilityDrafts[caseReference],
+    //   ...context.getAllAnswers(),
+    // };
 
     // Make API call to CLA backend with the apiService.
     const axiosMiddleware = context.getState('authenticatedAxios')
@@ -126,10 +174,10 @@ export const {
     await _deps.apiService.updateFinancialEligibility(
       axiosMiddleware,
       context.getRequestParam('caseReference'),
-      mapAnswersToApiPayload(session.financialEligibilityDraft)
+      mapAnswersToApiPayload(session.financialEligibilityDrafts[caseReference])
     );
 
-    console.log(`Submitted FE answers in session, to cla_backend:`, session.financialEligibilityDraft);
+    console.log(`Submitted FE answers in session, to cla_backend:`, session.financialEligibilityDrafts[caseReference]);
   },
 
   /**
@@ -141,17 +189,51 @@ export const {
     return (context: EffectFunctionContext) => {
       const session = context.getSession() as FinancialEligibilitySession | undefined;
 
-      if (session?.financialEligibilityDraft) {
-        delete session.financialEligibilityDraft;
+      const caseReference = context.getRequestParam('caseReference')
+      if (caseReference === undefined) {
+        console.error('No case reference found in path; cannot clear draft answers');
+        return;
       }
 
-      for (const key of Object.keys(context.getAllAnswers())) {
-        context.clearAnswer(key);
+      if (session?.financialEligibilityDrafts[caseReference]) {
+        delete session.financialEligibilityDrafts[caseReference];
       }
-
-      console.log(`Cleared FE answers in session:`, context.getAllAnswers());
     };
   },
+
+  SaveNewAnswerIfAnswered: (_deps) => (context: EffectFunctionContext) => {
+    const requestPostData = context.getPostData();
+    const answerKeys = Object.keys(requestPostData);
+
+    if (answerKeys.length === 0) {
+      return;
+    }
+
+    const caseReference = context.getRequestParam('caseReference')
+    if (caseReference === undefined) {
+      console.error('No case reference found in path; cannot save new answer');
+      return;
+    }
+    const session = context.getSession() as FinancialEligibilitySession | undefined;
+
+    if (!session) {
+      return;
+    }
+
+    if (!session.financialEligibilityDrafts[caseReference]) {
+      session.financialEligibilityDrafts[caseReference] = {};
+    }
+
+    for (const key of answerKeys) {
+      const value = requestPostData[key];
+      if (value !== undefined && value !== null && value !== '') {
+        session.financialEligibilityDrafts[caseReference][key] = value;
+      }
+    }
+
+    console.log(`Saved new FE answers in session...`, session.financialEligibilityDrafts);
+    console.log('Current state of all FE answers in session:', session.financialEligibilityDrafts);
+  }
 
 });
 

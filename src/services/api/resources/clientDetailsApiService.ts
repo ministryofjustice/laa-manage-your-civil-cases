@@ -232,3 +232,24 @@ export async function updateFinancialEligibility(
     };
   }
 }
+
+
+/**
+ * Get financial eligibility data for a case
+ * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+ * @param {string} caseReference - Case reference number
+ * @returns {Promise<FinancialEligibilityData | null>} Financial eligibility data or null if error occurs
+ */
+export async function getFinancialEligibility(axiosMiddleware: AxiosInstanceWrapper, caseReference: string): Promise<FinancialEligibilityData | null> {
+  try {
+    devLog(`API: GET ${API_PREFIX}/case/${caseReference}/eligibility_check/`);
+    const configuredAxios = configureAxiosInstance(axiosMiddleware);
+    const response = await configuredAxios.get(`${API_PREFIX}/case/${caseReference}/eligibility_check/`);
+    devLog(`API: Get financial eligibility response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+    return response.data;
+  } catch (error) {
+    const errorMessage = extractAndLogError(error, 'API error');
+    devLog(`Error fetching financial eligibility data: ${errorMessage}`);
+    return null;
+  }
+}
