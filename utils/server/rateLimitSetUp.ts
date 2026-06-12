@@ -32,7 +32,7 @@ export const rateLimitSetUp = (app: Application, config: Config): void => {
     handler: (_req, res) => {      
       res.status(HTTP.TOO_MANY_REQUESTS).render('main/error.njk', {
         status: HTTP.TOO_MANY_REQUESTS,
-        error: "You have made too many requests. Please wait 15 minutes before trying again."
+        error: "You have made too many requests. Please wait 5 minutes before trying again."
       });
     }
   });

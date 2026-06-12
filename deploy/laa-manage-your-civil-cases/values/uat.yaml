@@ -87,8 +87,8 @@ env:
   SERVICE_URL: "https://www.gov.uk/legal-aid"
   SESSION_NAME: "sessionId"
   RATELIMIT_HEADERS_ENABLED: true
-  RATE_LIMIT_MAX: 300
-  RATE_WINDOW_MS: 900000
+  RATE_LIMIT_MAX: 500
+  RATE_WINDOW_MS: 300000
   NODE_ENV: "uat"
   API_URL: "http://cla-backend-app.laa-cla-backend-uat.svc.cluster.local"
   API_PREFIX: "/cla_provider/api/v1"
