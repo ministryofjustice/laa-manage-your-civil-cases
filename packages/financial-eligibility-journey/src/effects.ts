@@ -12,12 +12,10 @@ export interface Deps {
 export interface FinancialEligibilityEffectShape {
   /** Copies previously stored draft answers for this pattern into the form context on access. */
   LoadDraftAnswers: () => EffectFunctionExpr;
-  /** Persists the current answers into the session as a draft, kept separately from committed answers. */
-  SaveDraftAnswers: () => EffectFunctionExpr;
   /** Clears draft answers for this pattern (used after committing drafts to the store). */
   ClearDraftAnswers: () => EffectFunctionExpr;
   /** Submit saved answers from session to cla_backend  */
-  SubmitSavedAnswersToClaBackend: () => EffectFunctionExpr;
+  PersistSavedAnswers: () => EffectFunctionExpr;
   /** Loads case details from the API and stores them in the context, for use in the journey. */
   LoadCaseDetails: () => EffectFunctionExpr;
   /** Loads financial eligibility data from the API and stores it in the context, for use in the journey. */
@@ -48,8 +46,6 @@ export const {
       return;
     }
 
-    // TODO: Fix this. Need to make API call to CLA, get the data, and do `context.setAnswer(code, value)`
-    // for each field in the response.
     const axiosMiddleware = context.getState('authenticatedAxios')
     if (!axiosMiddleware) {
       console.warn('Authenticated Axios middleware not found in state; API call may fail if it is required by the service implementation.');
@@ -63,12 +59,6 @@ export const {
         }
       }
     }
-
-    // for (const [code, value] of Object.entries(stored)) {
-    //   if (!context.hasAnswer(code)) {
-    //     context.setAnswer(code, value);
-    //   }
-    // }
   },
 
   /**
@@ -122,43 +112,11 @@ export const {
   },
 
   /**
-   * Saves draft financial eligibility answers
-   * @param {unknown} _deps Effect dependencies supplied by Forge
-   * @returns {(context: EffectFunctionContext) => void} Function to save stored draft answers to the session
-   */
-  SaveDraftAnswers: (_deps) => (context: EffectFunctionContext) => {
-    console.log(`Saving FE answers in session...`, context.getAllAnswers());
-
-    const caseReference = context.getRequestParam('caseReference')
-    if (caseReference === undefined) {
-      console.error('No case reference found in path; cannot save draft answers');
-      return;
-    }
-    const session = context.getSession() as FinancialEligibilitySession | undefined;
-
-    if (!session) {
-      return;
-    }
-
-    if (!session.financialEligibilityDrafts[caseReference]) {
-      session.financialEligibilityDrafts[caseReference] = {};
-    }
-
-    session.financialEligibilityDrafts[caseReference] = {
-      ...session.financialEligibilityDrafts[caseReference],
-      ...context.getAllAnswers(),
-    };
-
-    console.log(`Saved FE answers in session:`, session.financialEligibilityDrafts);
-  },
-
-
-  /**
    * Submit saved answers from session to cla_backend
    * @param {unknown} _deps Effect dependencies supplied by Forge
    * @returns {(context: EffectFunctionContext) => Promise<void>} Async function to submit saved answers to cla_backend
    */
-  SubmitSavedAnswersToClaBackend: (_deps) => async (context: EffectFunctionContext) => {
+  PersistSavedAnswers: (_deps) => async (context: EffectFunctionContext) => {
     console.log(`Saving FE answers in session...`, context.getAllAnswers());
 
     const session = context.getSession() as FinancialEligibilitySession | undefined;
@@ -176,11 +134,6 @@ export const {
     if (!session.financialEligibilityDrafts[caseReference]) {
       session.financialEligibilityDrafts[caseReference] = {};
     }
-
-    // session.financialEligibilityDrafts[caseReference] = {
-    //   ...session.financialEligibilityDrafts[caseReference],
-    //   ...context.getAllAnswers(),
-    // };
 
     // Make API call to CLA backend with the apiService.
     const axiosMiddleware = context.getState('authenticatedAxios')

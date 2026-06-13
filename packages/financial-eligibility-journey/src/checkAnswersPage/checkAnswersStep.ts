@@ -14,7 +14,7 @@ export const checkAnswersStep = step({
       validate: false,
       onAlways: {
         effects: [
-          FinancialEligibilityEffects.SubmitSavedAnswersToClaBackend(),
+          FinancialEligibilityEffects.PersistSavedAnswers(),
           FinancialEligibilityEffects.ClearDraftAnswers()
         ],
         next: [
