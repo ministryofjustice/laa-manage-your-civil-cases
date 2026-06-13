@@ -18,7 +18,6 @@ export const under17GroupStep = step({
       validate: true,
       onValid: {
         effects: [
-          // FinancialEligibilityEffects.SaveDraftAnswers(),
           FinancialEligibilityEffects.SaveNewAnswerIfAnswered(),
         ],
         next: [

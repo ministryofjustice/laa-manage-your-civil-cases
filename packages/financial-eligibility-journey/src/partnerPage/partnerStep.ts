@@ -14,7 +14,7 @@ export const partnerStep = step({
     submit({
       validate: true,
       onValid: {
-        effects: [FinancialEligibilityEffects.SaveDraftAnswers()],
+        effects: [FinancialEligibilityEffects.SaveNewAnswerIfAnswered()],
         next: [redirect({ goto: 'over-60' })],
       },
     }),

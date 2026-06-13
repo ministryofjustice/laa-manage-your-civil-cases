@@ -15,14 +15,13 @@ export const checkAnswersStep = step({
       onAlways: {
         effects: [
           FinancialEligibilityEffects.SubmitSavedAnswersToClaBackend(),
-          // FinancialEligibilityEffects.ClearDraftAnswers()
+          FinancialEligibilityEffects.ClearDraftAnswers()
         ],
         next: [
           redirect({
-            // Gate on session state so the redirect only fires after the effects
-            // above have run — the session value survives ClearDraftAnswers.
-            // when: Session('patternSubmitted').match(Condition.Equals(true)),
-            // goto: '/cases/:caseReference/financial-eligibility',
+            // TOOD: This should be a redirection to the case details page.
+            // It's not done yet because I haven't figured out how to get the case reference
+            // from the context in this step definition.
             goto: '/',
           }),
         ],

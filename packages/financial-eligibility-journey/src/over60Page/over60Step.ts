@@ -15,7 +15,7 @@ export const over60Step = step({
     submit({
       validate: true,
       onValid: {
-        effects: [FinancialEligibilityEffects.SaveDraftAnswers()],
+        effects: [FinancialEligibilityEffects.SaveNewAnswerIfAnswered()],
         next: [redirect({ goto: 'check-answers' })],
       },
     }),
