@@ -21,6 +21,22 @@ export function mapStepCodeToApiField(stepCode: string): string | null {
 
 
 /**
+ * Utility function to map API field names to step codes for financial eligibility data
+ * @param {string} apiField - The API field name to map
+ * @returns {string | null} The corresponding step code, or null if no mapping exists
+ */
+export function mapApiFieldToStepCode(apiField: string): string | null {
+    const mapping: Record<string, string> = {
+        'is_you_or_your_partner_over_60': STEP_CODES.OVER_60,
+        'is_you_under_18': STEP_CODES.UNDER_17,
+        'has_partner': STEP_CODES.HAS_PARTNER,
+    };
+
+    return mapping[apiField] || null;
+}
+
+
+/**
  * Utility function to map user answers from the Forge journey to the API payload format
  * @param {Record<string, any>} answers - The user's answers keyed by step code
  * @returns {Record<string, any>} The API payload with mapped field names and values

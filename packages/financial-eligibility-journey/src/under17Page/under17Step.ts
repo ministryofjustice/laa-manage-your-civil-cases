@@ -17,7 +17,10 @@ export const under17GroupStep = step({
     submit({
       validate: true,
       onValid: {
-        effects: [FinancialEligibilityEffects.SaveDraftAnswers()],
+        effects: [
+          // FinancialEligibilityEffects.SaveDraftAnswers(),
+          FinancialEligibilityEffects.SaveNewAnswerIfAnswered(),
+        ],
         next: [
           redirect({
             when: Answer(STEP_CODES.UNDER_17).match(Condition.Equals('yes')),
@@ -25,7 +28,10 @@ export const under17GroupStep = step({
           }),
           redirect({
             when: Answer(STEP_CODES.UNDER_17).match(Condition.Equals('no')),
-            goto: 'partner',
+            goto: STEP_CODES.HAS_PARTNER,
+          }),
+          redirect({
+            goto: STEP_CODES.HAS_PARTNER,
           })
         ],
       },

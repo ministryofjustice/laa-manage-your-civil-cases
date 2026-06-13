@@ -2,7 +2,7 @@ import { defineEffectFunctions } from "@ministryofjustice/hmpps-forge/core/autho
 import type { FinancialEligibilitySession } from "./context.type.js";
 import { access, redirect, Condition, Session } from '@ministryofjustice/hmpps-forge/core/authoring'
 import type { EffectFunctionContext, EffectFunctionExpr } from "@ministryofjustice/hmpps-forge/core/authoring";
-import { mapAnswersToApiPayload } from '@ministryofjustice/financial-eligibility-journey';
+import { mapAnswersToApiPayload, mapApiFieldToStepCode } from '@ministryofjustice/financial-eligibility-journey';
 
 export interface Deps {
   apiService: any;
@@ -35,7 +35,7 @@ export const {
    * @param {unknown} _deps Effect dependencies supplied by Forge
    * @returns {(context: EffectFunctionContext) => void} Function to apply stored draft answers to the context
    */
-  LoadDraftAnswers: (_deps) => (context: EffectFunctionContext) => {
+  LoadDraftAnswers: (_deps) => async (context: EffectFunctionContext) => {
     const caseReference = context.getRequestParam('caseReference');
     const session = context.getSession() as FinancialEligibilitySession | undefined;
     if (session && session.financialEligibilityDrafts === undefined) {
@@ -46,6 +46,22 @@ export const {
 
     if (!stored) {
       return;
+    }
+
+    // TODO: Fix this. Need to make API call to CLA, get the data, and do `context.setAnswer(code, value)`
+    // for each field in the response.
+    const axiosMiddleware = context.getState('authenticatedAxios')
+    if (!axiosMiddleware) {
+      console.warn('Authenticated Axios middleware not found in state; API call may fail if it is required by the service implementation.');
+    }
+    const financialEligibilityData = await _deps.apiService.getFinancialEligibility(axiosMiddleware, caseReference);
+    for (const [code, value] of Object.entries(financialEligibilityData)) {
+      if (!context.hasAnswer(code)) {
+        const stepCode = mapApiFieldToStepCode(code);
+        if (stepCode) {
+          context.setAnswer(stepCode, value);
+        }
+      }
     }
 
     // for (const [code, value] of Object.entries(stored)) {
@@ -233,6 +249,9 @@ export const {
       const value = requestPostData[key];
       if (value !== undefined && value !== null && value !== '') {
         session.financialEligibilityDrafts[caseReference][key] = value;
+
+        // Also set the answer in the context so that Forge can handle redirections correctly
+        context.setAnswer(key, value);
       }
     }
 

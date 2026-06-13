@@ -17,7 +17,6 @@ export const eligibilityJourney = journey({
         FinancialEligibilityEffects.LoadDraftAnswers(),
         FinancialEligibilityEffects.LoadCaseDetails(),
         FinancialEligibilityEffects.LoadCaseFinancialEligibility(),
-        FinancialEligibilityEffects.SaveNewAnswerIfAnswered(),
       ],
     }),
     requireAuth()
