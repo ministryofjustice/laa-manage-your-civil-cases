@@ -93,7 +93,7 @@
     "concurrently": "^9.2.1",
     "connect-livereload": "^0.6.1",
     "cross-env": "^10.1.0",
-    "esbuild": "^0.28.0",
+    "esbuild": "^0.28.1",
     "esbuild-plugin-copy": "^2.1.1",
     "esbuild-sass-plugin": "^3.7.0",
     "eslint": "^10.3.0",
