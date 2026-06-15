@@ -55,11 +55,11 @@
           }) }}
         </div>
 
-        {# Template for multiple viewers alert - text will be updated by JS #}
+        {# Template for multiple viewers alert - JS will update the title #}
         <div id="viewer-alert-multiple" hidden>
           {{ mojAlert({
             variant: "warning",
-            title: "Multiple users are currently viewing this case",
+            title: "",
             showTitleAsHeading: true,
             text: "You and the other users will be able to make changes to this case.",
             dismissible: false

@@ -243,7 +243,7 @@ declare const window: WindowWithIO;
     const multipleViewersAlertText = multipleViewersAlert.querySelector('.moj-alert__paragraph');
 
     if (multipleViewersAlertText) {
-      multipleViewersAlertText.textContent = `${otherViewers} other users are currently viewing this case`;
+      multipleViewersAlertText.textContent = `Multiple users are currently viewing this case`;
     }
 
     singleViewerAlert.hidden = true;
@@ -251,7 +251,7 @@ declare const window: WindowWithIO;
   }
 
   /**
-   * Initializes case viewer tracking on case details pages.
+   * Initialises case viewer tracking on case details pages.
    * Sets up Socket.IO connection, joins case room, and handles page lifecycle events.
    * @returns {void}
    */
@@ -279,7 +279,7 @@ declare const window: WindowWithIO;
     currentCaseReference = caseReference;
     currentSessionId = sessionId;
 
-    // Initialize socket connection
+    // Initialise socket connection
     socket = initSocket();
 
     if (!socket) {
@@ -309,7 +309,7 @@ declare const window: WindowWithIO;
     });
   }
 
-  // Initialize when DOM is ready
+  // Initialise when DOM is ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initCaseViewerTracking);
   } else {
