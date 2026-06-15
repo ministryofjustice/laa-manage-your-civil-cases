@@ -119,8 +119,7 @@ const createApp = async (): Promise<express.Application> => {
 				await redisClientForSocket.connect();
 			}
 		}
-		const redisUrl = config.redis.enabled ? `redis://${config.redis.host}:${config.redis.port}` : undefined;
-		await setupSocketIO(httpServer, redisClientForSocket, redisUrl);
+		setupSocketIO(httpServer, redisClientForSocket, config.redis);
 		console.log(chalk.green('✓ Socket.IO real-time notifications enabled'));
 	} catch (error) {
 		console.error(chalk.red('❌ Failed to set up Socket.IO:'), error);

@@ -4,6 +4,8 @@ import type { Server as HTTPServer } from 'http';
 import { createClient } from 'redis';
 import chalk from 'chalk';
 import type { RedisClientType } from './session.js';
+import type { RedisConfig } from '#types/config-types.js';
+import { buildConnectionUrl } from './redis.js';
 import {
   addCaseViewer,
   removeCaseViewer,
@@ -13,20 +15,103 @@ import {
 } from './caseViewerService.js';
 import type { SocketData } from '#types/socket-io-types.js';
 
+const SOCKET_IO_REDIS_CONNECT_TIMEOUT_MS = 10000;
+
+/**
+ * Closes Socket.IO Redis adapter clients safely during setup failures.
+ * @param {ReturnType<typeof createClient>} pubClient - Redis pub client.
+ * @param {ReturnType<typeof createClient>} subClient - Redis sub client.
+ * @returns {Promise<void>}
+ */
+const teardownRedisAdapterClients = async (
+  pubClient: ReturnType<typeof createClient>,
+  subClient: ReturnType<typeof createClient>
+): Promise<void> => {
+  /**
+   * Disconnects a Redis client, quitting if the connection is open.
+   * @param {ReturnType<typeof createClient>} client - Redis client instance.
+   * @returns {Promise<void>}
+   */
+  const disconnectClient = async (client: ReturnType<typeof createClient>): Promise<void> => {
+    if (client.isOpen) {
+      await client.quit();
+      return;
+    }
+    client.destroy();
+  };
+
+  await Promise.allSettled([disconnectClient(pubClient), disconnectClient(subClient)]);
+};
+
+/**
+ * Creates and connects authenticated Redis clients for Socket.IO pub/sub.
+ * @param {RedisConfig} redisConfig - Redis runtime configuration.
+ * @returns {Promise<ReturnType<typeof createClient>[]>} Connected Redis pub/sub clients.
+ */
+const connectRedisAdapterClients = async (
+  redisConfig: RedisConfig
+): Promise<ReturnType<typeof createClient>[]> => {
+  const pubClient = createClient({
+    url: buildConnectionUrl(redisConfig),
+    password: redisConfig.auth_token,
+    socket: {
+      connectTimeout: SOCKET_IO_REDIS_CONNECT_TIMEOUT_MS,
+      reconnectStrategy: false
+    }
+  });
+  const subClient = pubClient.duplicate();
+  let timeout: NodeJS.Timeout | undefined;
+
+  try {
+    await Promise.race([
+      Promise.all([pubClient.connect(), subClient.connect()]),
+      new Promise<never>((_, reject) => {
+        timeout = setTimeout(() => {
+          reject(new Error(`Socket.IO Redis adapter connection timed out after ${SOCKET_IO_REDIS_CONNECT_TIMEOUT_MS}ms`));
+        }, SOCKET_IO_REDIS_CONNECT_TIMEOUT_MS);
+      })
+    ]);
+  } catch (error) {
+    await teardownRedisAdapterClients(pubClient, subClient);
+    throw error;
+  } finally {
+    if (timeout != null) {
+      clearTimeout(timeout);
+    }
+  }
+
+  return [pubClient, subClient];
+};
+
+/**
+ * Configures the Socket.IO Redis adapter without blocking server startup.
+ * @param {SocketIOServer} io - Socket.IO server instance.
+ * @param {RedisConfig} redisConfig - Redis runtime configuration.
+ * @returns {Promise<void>}
+ */
+const configureSocketIORedisAdapter = async (io: SocketIOServer, redisConfig: RedisConfig): Promise<void> => {
+  try {
+    const [pubClient, subClient] = await connectRedisAdapterClients(redisConfig);
+    io.adapter(createAdapter(pubClient, subClient));
+    console.log(chalk.green('✓ Socket.IO Redis adapter configured'));
+  } catch (error) {
+    console.error(chalk.red('❌ Failed to configure Socket.IO Redis adapter:'), error);
+  }
+};
+
 /**
  * Sets up Socket.IO server with Redis adapter for distributed architecture.
  * Configures event handlers for case viewer tracking and real-time notifications.
- * @async
  * @param {HTTPServer} httpServer - Node.js HTTP server instance
  * @param {RedisClientType} redisClient - Redis client for viewer tracking
- * @param {string} redisUrl - Redis connection URL for pub/sub adapter
- * @returns {Promise<SocketIOServer>} Configured Socket.IO server instance
+ * @param {RedisConfig} redisConfig - Redis configuration for pub/sub adapter
+ * @returns {SocketIOServer} Configured Socket.IO server instance
  */
-export const setupSocketIO = async (
+export const setupSocketIO = (
   httpServer: HTTPServer,
   redisClient?: RedisClientType,
-  redisUrl?: string
-): Promise<SocketIOServer> => {
+  redisConfig?: RedisConfig
+): SocketIOServer => {
   const io = new SocketIOServer(httpServer, {
     cors: {
       origin: process.env.NODE_ENV === 'production' ? false : '*',
@@ -36,21 +121,8 @@ export const setupSocketIO = async (
   });
 
   // Set up Redis adapter for distributed Socket.IO
-  if (redisClient && redisUrl) {
-    try {
-      const pubClient = createClient({ url: redisUrl });
-      const subClient = pubClient.duplicate();
-
-      await Promise.all([
-        pubClient.connect(),
-        subClient.connect()
-      ]);
-
-      io.adapter(createAdapter(pubClient, subClient));
-      console.log(chalk.green('✓ Socket.IO Redis adapter configured'));
-    } catch (error) {
-      console.error(chalk.red('❌ Failed to configure Socket.IO Redis adapter:'), error);
-    }
+  if (redisClient && redisConfig) {
+    void configureSocketIORedisAdapter(io, redisConfig);
   }
 
   // Socket.IO event handlers
