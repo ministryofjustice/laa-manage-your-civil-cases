@@ -45,13 +45,10 @@
         <h3 class="govuk-heading-s">{{ t('pages.caseDetails.aboutNewCase.h3') }}</h3>
 
         {% if (categoryItems | length) == 2 %}
-
           <p class="govuk-body">{{ t('pages.caseDetails.aboutNewCase.newCaseInfo') }}
             {{ categoryItems[1].text }}</p>
           <input type="hidden" name="category" value="{{ categoryItems[1].value }}"/>
-
         {% else %}
-
           {{ govukSelect({
             id: "category",
             name: "category",
@@ -59,28 +56,22 @@
             classes: "govuk-!-width-half", 
             errorMessage: errorState.fieldErrors.category if errorState.fieldErrors.category
           }) }}
-
         {% endif %}
 
-        {% call govukFieldset({
-          legend: {
-            text: t('pages.caseDetails.aboutNewCase.legend'),
-            classes: "govuk-fieldset__legend--s",
-            isPageHeading: false
-          }
-        }) %}
-
         {{ govukCharacterCount({
-            id: "notes",
-            name: "notes",
-            value: formData.notes or notes,
-            rows: 8,
-            errorMessage: errorState.fieldErrors.notes if errorState.fieldErrors.notes,
-            maxlength: maxCommentLength,
-            threshold: characterThreshold
-          }) }}
-
-        {% endcall %}
+          id: "notes",
+          name: "notes",
+          label: {
+            text: t('pages.caseDetails.aboutNewCase.legend'),
+            classes: "govuk-label--s",
+            isPageHeading: false
+          },
+          value: formData.notes or notes,
+          rows: 8,
+          errorMessage: errorState.fieldErrors.notes if errorState.fieldErrors.notes,
+          maxlength: maxCommentLength,
+          threshold: characterThreshold
+        }) }}
 
         <div class="govuk-button-group">
           {{ govukButton({
@@ -92,9 +83,7 @@
             <a class="govuk-link" href="/cases/{{ caseReference }}/client-details">{{ t('common.cancel') }}</a>
           {% endif %}
         </div>
-
       </form>
-
     </div>
   </div>
 {% endblock %}
