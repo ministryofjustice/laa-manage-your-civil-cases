@@ -186,23 +186,25 @@
 {% endif %}
 
 {% block formContent %}
-
-  <h3 class="govuk-heading-s govuk-!-margin-bottom-3 govuk-!-margin-top-6">{{ t('pages.caseDetails.caseDetailsSection.noteLabel') }}</h3>
-
   <form method="post" action="">
     <input type="hidden" name="_csrf" value="{{ csrfToken }}">
     {{ govukCharacterCount({
-        id: "providerNote",
-        name: "providerNote",
-        value: currentProviderNote,
-        errorMessage: errorMessages.providerNote if error,
-        maxlength: maxProviderNoteLength,
-        threshold: characterThreshold,
-        formGroup: { classes: "govuk-!-margin-bottom-0" }
-      }) }}
+      id: "providerNote",
+      name: "providerNote",
+      label: {
+          text: t('pages.caseDetails.caseDetailsSection.noteLabel'),
+          classes: "govuk-label--s govuk-!-margin-top-6 govuk-!-margin-bottom-3",
+          isPageHeading: false
+      },
+      value: currentProviderNote,
+      errorMessage: errorMessages.providerNote if error,
+      maxlength: maxProviderNoteLength,
+      threshold: characterThreshold,
+      formGroup: { classes: "govuk-!-margin-bottom-0" }
+    }) }}
 
     {{ govukButton({
-        text: t('common.save')
-      }) }}
+      text: t('common.save')
+    }) }}
   </form>
 {% endblock %}

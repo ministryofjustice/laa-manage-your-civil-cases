@@ -34,9 +34,6 @@ const createApp = async (): Promise<express.Application> => {
 	// Set up application-specific configurations
 	setupConfig(app);
 
-	// Set up rate limiting
-	rateLimitSetUp(app, config);
-
 	// Set up security headers
 	helmetSetup(app);
 
@@ -50,6 +47,9 @@ const createApp = async (): Promise<express.Application> => {
 
 	// Set up common middleware for handling cookies, body parsing, etc.
 	await setupMiddlewares(app);
+
+	// Set up rate limiting
+	rateLimitSetUp(app, config);
 
 	// Set up Cross-Site Request Forgery (CSRF) protection
 	setupCsrf(app);
