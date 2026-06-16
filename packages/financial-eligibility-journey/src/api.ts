@@ -1,3 +1,19 @@
+
+import type { EffectFunctionContext, EffectFunctionExpr } from "@ministryofjustice/hmpps-forge/core/authoring";
+export interface Deps {
+    apiService: any;
+    effectsWithDeps: FinancialEligibilityEffectsWithDeps;
+}
+
+export interface FinancialEligibilityEffectsWithDeps {
+    LoadDraftAnswers: (_deps: Deps, context: EffectFunctionContext) => Promise<void>;
+    LoadCaseDetails: (_deps: Deps, context: EffectFunctionContext) => Promise<void>;
+    LoadCaseFinancialEligibility: (_deps: Deps, context: EffectFunctionContext) => Promise<void>;
+    PersistSavedAnswers: (_deps: Deps, context: EffectFunctionContext) => Promise<void>;
+    ClearDraftAnswers: (_deps: Deps, context: EffectFunctionContext) => Promise<void>;
+    SaveNewAnswerIfAnswered: (_deps: Deps, context: EffectFunctionContext) => Promise<void>;
+}
+
 export const STEP_CODES = {
     OVER_60: 'over-60',
     UNDER_17: 'under17',

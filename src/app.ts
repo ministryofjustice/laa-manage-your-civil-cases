@@ -22,8 +22,9 @@ import { govukComponents } from '@ministryofjustice/hmpps-forge/govuk-components
 import { mojComponents } from '@ministryofjustice/hmpps-forge/moj-components'
 import createEligibilityPackage from '@ministryofjustice/financial-eligibility-journey';
 import { apiService } from '#src/services/apiService.js';
-import { type Deps } from '#packages/financial-eligibility-journey/src/effects.js';
+import { type Deps } from '#packages/financial-eligibility-journey/src/api.js';
 import { type AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
+import { FinancialEligibilityEffectsWithDepsImpl } from '#src/services/financialEligibilityWithDeps.js';
 
 const TRUST_FIRST_PROXY = 1;
 
@@ -102,7 +103,7 @@ const createApp = async (): Promise<express.Application> => {
 		.registerGlobalComponents(govukComponents)
 		.registerGlobalComponents(mojComponents)
 		.registerGlobalFunctions(nunjucksFunctions)
-		.registerPackage<Deps>(createEligibilityPackage, {apiService});
+		.registerPackage<Deps>(createEligibilityPackage, {apiService, effectsWithDeps: new FinancialEligibilityEffectsWithDepsImpl()});
 
 	// Set up request logging based on environment
 	if (process.env.NODE_ENV === 'production') {
