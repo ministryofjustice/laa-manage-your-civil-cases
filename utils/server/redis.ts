@@ -1,6 +1,7 @@
 import { createClient } from 'redis';
 import chalk from 'chalk';
 import type { RedisConfig } from '#types/config-types.js';
+import { devError, devLog } from '#src/scripts/helpers/index.js';
 
 /**
  * Builds the Redis connection URL based on the configuration.
@@ -35,7 +36,7 @@ export const createRedisClient = (config: RedisConfig) => {
   }
 
   const redisUrl = buildConnectionUrl(config);
-  console.log(chalk.green(`Connecting to Redis at ${redisUrl}`));
+  devLog(chalk.green(`Connecting to Redis at ${redisUrl}`));
 
   globalRedisClient = createClient({
     url: redisUrl,
@@ -60,23 +61,23 @@ export const createRedisClient = (config: RedisConfig) => {
   });
 
   globalRedisClient.on('error', (err) => {
-    console.error(chalk.red('Redis Client Error:'), err);
+    devError(chalk.red('Redis Client Error:', err));
   });
 
   globalRedisClient.on('connect', () => {
-    console.log(chalk.green('✓ Redis client connecting...'));
+    devLog(chalk.green('✓ Redis client connecting...'));
   });
 
   globalRedisClient.on('ready', () => {
-    console.log(chalk.green('✓ Redis client ready'));
+    devLog(chalk.green('✓ Redis client ready'));
   });
 
   globalRedisClient.on('reconnecting', () => {
-    console.log(chalk.yellow('⚠️  Redis client reconnecting...'));
+    devLog(chalk.yellow('⚠️  Redis client reconnecting...'));
   });
 
   globalRedisClient.on('end', () => {
-    console.log(chalk.yellow('⚠️  Redis client disconnected'));
+    devLog(chalk.yellow('⚠️  Redis client disconnected'));
   });
 
   return globalRedisClient;

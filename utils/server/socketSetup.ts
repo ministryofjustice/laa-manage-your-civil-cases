@@ -14,6 +14,7 @@ import {
   getFirstViewerName
 } from './caseViewerService.js';
 import type { SocketData } from '#types/socket-io-types.js';
+import { devError, devLog } from '#src/scripts/helpers/devLogger.js';
 
 const SOCKET_IO_REDIS_CONNECT_TIMEOUT_MS = 10000;
 
@@ -93,9 +94,9 @@ const configureSocketIORedisAdapter = async (io: SocketIOServer, redisConfig: Re
   try {
     const [pubClient, subClient] = await connectRedisAdapterClients(redisConfig);
     io.adapter(createAdapter(pubClient, subClient));
-    console.log(chalk.green('✓ Socket.IO Redis adapter configured'));
+    devLog(chalk.green('✓ Socket.IO Redis adapter configured'));
   } catch (error) {
-    console.error(chalk.red('❌ Failed to configure Socket.IO Redis adapter:'), error);
+    devError(chalk.red('❌ Failed to configure Socket.IO Redis adapter:', error));
   }
 };
 
@@ -146,23 +147,20 @@ export const setupSocketIO = (
         if (redisClient) {
           // Add viewer to Redis
           await addCaseViewer(redisClient, caseReference, userId, sessionId, userName);
+          const viewerCount = await getViewerCount(redisClient, caseReference, ''); // Get total viewer count (use empty string to get all viewers)
+          const firstViewerName = await getFirstViewerName(redisClient, caseReference); // Get the name of the person who first viewed the case
 
-          // Get total viewer count (use empty string to get all viewers)
-          const viewerCount = await getViewerCount(redisClient, caseReference, '');
-
-          // Get the name of the person who first viewed the case
-          const firstViewerName = await getFirstViewerName(redisClient, caseReference);
           // Notify all users in the room
           io.to(`case:${caseReference}`).emit('viewers-updated', {
             caseReference,
-            viewerCount, // Total count of all viewers
+            viewerCount,
             firstViewerName
           });
         }
 
-        console.log(chalk.blue(`👀 User ${userId} joined case ${caseReference}`));
+        devLog(chalk.blue(`👀 User ${userId} joined case ${caseReference}`));
       } catch (error) {
-        console.error('Error handling join-case:', error);
+        devError('Error handling join-case:' + error);
         socket.emit('error', { message: 'Failed to join case view' });
       }
     });
@@ -182,7 +180,7 @@ export const setupSocketIO = (
 
         socket.emit('heartbeat-ack');
       } catch (error) {
-        console.error('Error handling heartbeat:', error);
+        devError('Error handling heartbeat:' + error);
       }
     });
 
@@ -197,10 +195,8 @@ export const setupSocketIO = (
         if (redisClient) {
           // Remove viewer from Redis
           await removeCaseViewer(redisClient, caseReference, sessionId);
-           // Get updated viewer count and broadcast (use empty string to get total count)
-          const viewerCount = await getViewerCount(redisClient, caseReference, '');
-          // Get the name of the person who first viewed the case
-          const firstViewerName = await getFirstViewerName(redisClient, caseReference);
+          const viewerCount = await getViewerCount(redisClient, caseReference, ''); // Get total viewer count (use empty string to get all viewers)
+          const firstViewerName = await getFirstViewerName(redisClient, caseReference); // Get the name of the person who first viewed the case
           io.to(`case:${caseReference}`).emit('viewers-updated', {
             caseReference,
             viewerCount,
@@ -208,9 +204,9 @@ export const setupSocketIO = (
           });
         }
 
-        console.log(chalk.blue(`👋 User left case ${caseReference}`));
+        devLog(chalk.blue(`👋 User left case ${caseReference}`));
       } catch (error) {
-        console.error('Error handling leave-case:', error);
+        devError('Error handling leave-case:' + error);
       }
     });
 
@@ -221,19 +217,17 @@ export const setupSocketIO = (
 
         if (caseReference && sessionId && redisClient) {
           await removeCaseViewer(redisClient, caseReference, sessionId);
-          // Get total viewer count (use empty string to get all viewers)
-          const viewerCount = await getViewerCount(redisClient, caseReference, '');
-          // Get the name of the person who first viewed the case
-          const firstViewerName = await getFirstViewerName(redisClient, caseReference);
+          const viewerCount = await getViewerCount(redisClient, caseReference, ''); // Get total viewer count (use empty string to get all viewers)
+          const firstViewerName = await getFirstViewerName(redisClient, caseReference); // Get the name of the person who first viewed the case
           io.to(`case:${caseReference}`).emit('viewers-updated', {
             caseReference,
             viewerCount,
             firstViewerName
           });
-          console.log(chalk.blue(`🔌 User disconnected from case ${caseReference}`));
+          devLog(chalk.blue(`🔌 User disconnected from case ${caseReference}`));
         }
       } catch (error) {
-        console.error('Error handling disconnect:', error);
+        devError('Error handling disconnect:' + error);
       }
     });
   });

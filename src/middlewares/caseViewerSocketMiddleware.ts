@@ -27,7 +27,7 @@ declare const window: WindowWithIO;
   let currentSessionId: string | null = null;
 
   /**
-   * Initializes Socket.IO connection with server.
+   * Initialises Socket.IO connection with server.
    * Sets up event handlers for connection, disconnection, and real-time updates.
    * @returns {Socket | null} Socket.IO client instance or null if Socket.IO library not loaded
    */

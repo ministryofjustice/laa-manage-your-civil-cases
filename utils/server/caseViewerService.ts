@@ -1,26 +1,11 @@
 /**
  * Case Viewer Service
- * 
  * Manages tracking of users currently viewing cases using Redis.
- * Provides real-time awareness of who is viewing which cases to prevent
- * multiple users working on the same case simultaneously.
+ * Provides real-time awareness of who is viewing which cases to prevent multiple users working on the same case simultaneously.
  */
 
 import type { RedisClientType } from './session.js';
-
-/**
- * Represents a user currently viewing a case.
- * @interface CaseViewer
- * @property {string} userId - User's email address or identifier
- * @property {string} sessionId - User's session identifier
- * @property {number} joinedAt - Timestamp when user joined (milliseconds since epoch)
- */
-interface CaseViewer {
-  userId: string;
-  sessionId: string;
-  joinedAt: number;
-  userName: string;
-}
+import type { CaseViewer } from '#types/socket-io-types.js';
 
 /** Redis key prefix for case viewer tracking */
 const VIEWER_KEY_PREFIX = 'case:viewer:';

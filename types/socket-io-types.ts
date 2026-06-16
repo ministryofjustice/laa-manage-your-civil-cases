@@ -32,3 +32,13 @@ export interface ViewersUpdatedData {
 export interface WindowWithIO extends Window {
   io?: (options?: Record<string, unknown>) => Socket;
 }
+
+/**
+ * Represents a user currently viewing a case.
+ */
+export interface CaseViewer {
+  userId: string;
+  sessionId: string;
+  joinedAt: number;
+  userName: string;
+}
