@@ -1,5 +1,5 @@
-@use "govuk-frontend/dist/govuk/index";
 @use "@ministryofjustice/frontend/moj/all";
+@use "govuk-frontend/dist/govuk/helpers/font-faces--internal" as govuk-fonts;
 @use "@x-govuk/govuk-prototype-components/src/x-govuk/components/autocomplete";
 
 // Custom components
@@ -9,4 +9,6 @@
 @use "components/sortable-table";
 @use "components/search";
 @use "components/case_details_header";
-@use "components/case_details_tab"
+@use "components/case_details_tab";
+
+@include govuk-fonts.gds-transport();
