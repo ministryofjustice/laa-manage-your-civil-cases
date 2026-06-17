@@ -1,4 +1,4 @@
-import { step, submit, redirect, Condition, Session } from '@ministryofjustice/hmpps-forge/core/authoring'
+import { step, submit, redirect, Condition, Session, Data, Query, Params, Iterator, Item, Transformer, Format } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { heading, submitButton } from '../commonBlocks.js'
 import { summaryList } from './checkAnswersBlock.js'
 import { FinancialEligibilityEffects } from '../effects.js'
@@ -22,10 +22,7 @@ export const checkAnswersStep: StepDefinition = step({
         ],
         next: [
           redirect({
-            // TOOD: This should be a redirection to the case details page.
-            // It's not done yet because I haven't figured out how to get the case reference
-            // from the context in this step definition.
-            goto: '/',
+            goto: '..',
           }),
         ],
       },

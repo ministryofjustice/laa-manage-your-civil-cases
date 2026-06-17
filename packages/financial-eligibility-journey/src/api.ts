@@ -1,11 +1,7 @@
 
 import type { EffectFunctionContext, EffectFunctionExpr } from "@ministryofjustice/hmpps-forge/core/authoring";
-import { STEP_CODES } from "./journey.js";
-import { under17GroupStep } from "./under17Page/under17Step.js";
-import { over60Step } from "./over60Page/over60Step.js";
-import { partnerStep } from "./partnerPage/partnerStep.js";
+
 export interface Deps {
-    apiService: any;
     effectsWithDeps: FinancialEligibilityEffectsWithDeps;
 }
 

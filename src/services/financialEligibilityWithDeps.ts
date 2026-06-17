@@ -1,7 +1,8 @@
-import type { EffectFunctionContext, EffectFunctionExpr } from "@ministryofjustice/hmpps-forge/core/authoring";
+import type { EffectFunctionContext } from "@ministryofjustice/hmpps-forge/core/authoring";
 import { type FinancialEligibilityEffectsWithDeps, type Deps } from '#packages/financial-eligibility-journey/src/api.js';
 import { type FinancialEligibilitySession } from '#packages/financial-eligibility-journey/src/context.type.js';
 import { over60Step, partnerStep, under17GroupStep } from "#packages/financial-eligibility-journey/src/index.js";
+import { type apiService } from "./api/index.js";
 
 /**
  * Utility function to map step codes to API field names for financial eligibility data
@@ -36,10 +37,10 @@ export function mapApiFieldToStepCode(apiField: string): string | null {
 /**
  * Utility function to map user answers from the Forge journey to the API payload format
  * @param {Record<string, any>} answers - The user's answers keyed by step code
- * @returns {Record<string, any>} The API payload with mapped field names and values
+ * @returns {Record<string, unknown>} The API payload with mapped field names and values
  */
-export function mapAnswersToApiPayload(answers: Record<string, any>): Record<string, any> {
-    const payload: Record<string, any> = {};
+export function mapAnswersToApiPayload(answers: Record<string, any>): Record<string, unknown> {
+    const payload: Record<string, unknown> = {};
     for (const [stepCode, answer] of Object.entries(answers)) {
         const apiField = mapStepCodeToApiField(stepCode);
         if (apiField) {
@@ -65,6 +66,16 @@ export function mapAnswersToApiPayload(answers: Record<string, any>): Record<str
  */
 export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibilityEffectsWithDeps {
 
+    private readonly apiService: Record<string, CallableFunction>;
+
+    /**
+     * Constructs an instance of FinancialEligibilityEffectsWithDepsImpl with the provided API service.
+     * @param {Record<string, CallableFunction>} apiService - The API service to be used for financial eligibility operations
+     */
+    constructor(apiService: Record<string, CallableFunction>) {
+        this.apiService = apiService;
+    }
+
     /**
      * Loads draft financial eligibility answers from session storage
      * @param {Deps} _deps Effect dependencies supplied by Forge
@@ -87,7 +98,7 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
         if (!axiosMiddleware) {
             console.warn('Authenticated Axios middleware not found in state; API call may fail if it is required by the service implementation.');
         }
-        const financialEligibilityData = await _deps.apiService.getFinancialEligibility(axiosMiddleware, caseReference);
+        const financialEligibilityData = await this.apiService.getFinancialEligibility(axiosMiddleware, caseReference);
         for (const [code, value] of Object.entries(financialEligibilityData)) {
             if (!context.hasAnswer(code)) {
                 const stepCode = mapApiFieldToStepCode(code);
@@ -115,7 +126,7 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
         if (!axiosMiddleware) {
             console.warn('Authenticated Axios middleware not found in state; API call may fail if it is required by the service implementation.');
         }
-        const details = await _deps.apiService.getClientDetails(axiosMiddleware, caseReference);
+        const details = await this.apiService.getClientDetails(axiosMiddleware, caseReference);
         
         console.log('Fetched case details for case reference', caseReference, details);
         context.setData('caseDetails', details);
@@ -138,7 +149,7 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
         if (!axiosMiddleware) {
             console.warn('Authenticated Axios middleware not found in state; API call may fail if it is required by the service implementation.');
         }
-        const financialEligibilityData = await _deps.apiService.getFinancialEligibility(axiosMiddleware, caseReference);
+        const financialEligibilityData = await this.apiService.getFinancialEligibility(axiosMiddleware, caseReference);
         
         console.log('Fetched financial eligibility data for case reference', caseReference, financialEligibilityData);
         
@@ -177,7 +188,7 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
         if (!axiosMiddleware) {
             console.warn("Authenticated Axios middleware not found in state; API call may fail if it is required by the service implementation.");
         }
-        await _deps.apiService.updateFinancialEligibility(
+        await this.apiService.updateFinancialEligibility(
             axiosMiddleware,
             context.getRequestParam('caseReference'),
             mapAnswersToApiPayload(session.financialEligibilityDrafts[caseReference])

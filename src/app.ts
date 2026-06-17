@@ -103,7 +103,12 @@ const createApp = async (): Promise<express.Application> => {
 		.registerGlobalComponents(govukComponents)
 		.registerGlobalComponents(mojComponents)
 		.registerGlobalFunctions(nunjucksFunctions)
-		.registerPackage<Deps>(createEligibilityPackage, {apiService, effectsWithDeps: new FinancialEligibilityEffectsWithDepsImpl()});
+		.registerPackage<Deps>(
+			createEligibilityPackage,
+			{
+				effectsWithDeps: new FinancialEligibilityEffectsWithDepsImpl(apiService),
+			}
+		);
 
 	// Set up request logging based on environment
 	if (process.env.NODE_ENV === 'production') {
