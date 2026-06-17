@@ -1,8 +1,7 @@
 import { defineEffectFunctions } from "@ministryofjustice/hmpps-forge/core/authoring";
-import type { FinancialEligibilitySession } from "./context.type.js";
 import { access, redirect, Condition, Session } from '@ministryofjustice/hmpps-forge/core/authoring'
 import type { EffectFunctionContext, EffectFunctionExpr } from "@ministryofjustice/hmpps-forge/core/authoring";
-import { type Deps, mapAnswersToApiPayload, mapApiFieldToStepCode } from '@ministryofjustice/financial-eligibility-journey';
+import { type Deps } from '@ministryofjustice/financial-eligibility-journey';
 
 export interface FinancialEligibilityEffectShape {
   /** Copies previously stored draft answers for this pattern into the form context on access. */

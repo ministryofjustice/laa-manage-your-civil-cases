@@ -16,3 +16,12 @@ export default createForgePackage<Deps>({
   })
 
 export * from './api.js'
+export * from './authoring.js'
+export * from './effects.js'
+export * from './context.type.js'
+export * from './journey.js'
+
+export * from './checkAnswersPage/checkAnswersStep.js'
+export * from './over60Page/over60Step.js'
+export * from './under17Page/under17Step.js'
+export * from './partnerPage/partnerStep.js'

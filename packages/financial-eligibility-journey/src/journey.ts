@@ -29,3 +29,9 @@ export const eligibilityJourney = journey({
     checkAnswersStep,
   ],
 })
+
+export const STEP_CODES = {
+    OVER_60: 'over-60',
+    UNDER_17: under17GroupStep.code,
+    HAS_PARTNER: 'partner',
+};

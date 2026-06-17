@@ -2,10 +2,13 @@ import { step, submit, redirect, Condition, Session } from '@ministryofjustice/h
 import { heading, submitButton } from '../commonBlocks.js'
 import { summaryList } from './checkAnswersBlock.js'
 import { FinancialEligibilityEffects } from '../effects.js'
+import { type StepDefinition } from '../authoring.js'
 
 
-export const checkAnswersStep = step({
-  code: 'check-answers',
+const STEP_CODE = 'check-answers'
+
+export const checkAnswersStep: StepDefinition = step({
+  code: STEP_CODE,
   path: '/check-answers',
   title: 'Check your answers',
   blocks: [heading, summaryList, submitButton],

@@ -1,6 +1,63 @@
 import type { EffectFunctionContext, EffectFunctionExpr } from "@ministryofjustice/hmpps-forge/core/authoring";
-import { type FinancialEligibilityEffectsWithDeps, type Deps, mapApiFieldToStepCode, mapAnswersToApiPayload } from '#packages/financial-eligibility-journey/src/api.js';
+import { type FinancialEligibilityEffectsWithDeps, type Deps } from '#packages/financial-eligibility-journey/src/api.js';
 import { type FinancialEligibilitySession } from '#packages/financial-eligibility-journey/src/context.type.js';
+import { over60Step, partnerStep, under17GroupStep } from "#packages/financial-eligibility-journey/src/index.js";
+
+/**
+ * Utility function to map step codes to API field names for financial eligibility data
+ * @param {string} stepCode - The code of the step to map
+ * @returns {string | null} The corresponding API field name, or null if no mapping exists
+ */
+export function mapStepCodeToApiField(stepCode: string): string | null {
+    const mapping: Record<string, string> = {
+        [over60Step.code]: 'is_you_or_your_partner_over_60',
+        [under17GroupStep.code]: 'is_you_under_18',
+        [partnerStep.code]: 'has_partner',
+    };
+
+    return mapping[stepCode] || null;
+}
+
+/**
+ * Utility function to map API field names to step codes for financial eligibility data
+ * @param {string} apiField - The API field name to map
+ * @returns {string | null} The corresponding step code, or null if no mapping exists
+ */
+export function mapApiFieldToStepCode(apiField: string): string | null {
+    const mapping: Record<string, string> = {
+        'is_you_or_your_partner_over_60': over60Step.code,
+        'is_you_under_18': under17GroupStep.code,
+        'has_partner': partnerStep.code,
+    };
+
+    return mapping[apiField] || null;
+}
+
+/**
+ * Utility function to map user answers from the Forge journey to the API payload format
+ * @param {Record<string, any>} answers - The user's answers keyed by step code
+ * @returns {Record<string, any>} The API payload with mapped field names and values
+ */
+export function mapAnswersToApiPayload(answers: Record<string, any>): Record<string, any> {
+    const payload: Record<string, any> = {};
+    for (const [stepCode, answer] of Object.entries(answers)) {
+        const apiField = mapStepCodeToApiField(stepCode);
+        if (apiField) {
+            if (typeof answer === 'string') {
+                if (answer.toLowerCase() === 'yes') {
+                    payload[apiField] = true;
+                } else if (answer.toLowerCase() === 'no') {
+                    payload[apiField] = false;
+                } else {
+                    payload[apiField] = answer;
+                }
+            } else {
+                payload[apiField] = answer;
+            }
+        }
+    }
+    return payload;
+}
 
 /**
  * This class implements the FinancialEligibilityWithDeps interface, providing methods to handle financial eligibility operations with dependencies.
@@ -153,7 +210,7 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
      * @param {Deps} _deps Effect dependencies supplied by Forge
      * @param {EffectFunctionContext} context The context of the effect function, providing access to request parameters and session data
      */
-    SaveNewAnswerIfAnswered = (_deps: Deps, context: EffectFunctionContext): void => {
+    SaveNewAnswerIfAnswered = async (_deps: Deps, context: EffectFunctionContext): Promise<void> => {
         const requestPostData = context.getPostData();
         const answerKeys = Object.keys(requestPostData);
 
