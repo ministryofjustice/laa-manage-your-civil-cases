@@ -209,8 +209,17 @@ export class CaseDetailsTabPage {
   return this.page
     .getByRole('row')
     .filter({ has: this.page.getByRole('rowheader', { name: 'Category' }) })
-    .nth(1);
+    .first();
 }
+
+get changeCategoryCardLink(): Locator {
+  return this.page
+    .locator('div')
+    .filter({
+      has: this.page.getByRole('heading', { name: 'Category of law' })
+    })
+    .getByRole('link', { name: 'Change' });
+  }
 
 get categoryValue(): Locator {
   return this.categoryRow.locator('td').first();

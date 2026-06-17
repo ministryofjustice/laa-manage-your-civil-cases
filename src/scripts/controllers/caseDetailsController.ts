@@ -6,7 +6,7 @@ import { devLog, devError } from '../helpers/devLogger.js';
 import { createProcessedError } from '../helpers/errorHandler.js';
 import { validCaseReference } from '../helpers/formControllerHelpers.js';
 import { handleCaseTab } from '../helpers/caseTabHandler.js';
-import { safeBodyString, formatValidationError } from '../helpers/index.js';
+import { safeBodyString, formatValidationError, hasMoreThanOneCategory } from '../helpers/index.js';
 import { apiService } from '#src/services/apiService.js';
 import config from '#config.js';
 import { HTTP } from '#src/services/api/base/constants.js';
@@ -56,12 +56,16 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
           }))
       ].sort((a, b) => a.sortDate - b.sortDate);
 
+      const moreThanOneCategory = await hasMoreThanOneCategory(req, caseReference);
+      console.log('moreThanOneCategory:', moreThanOneCategory);
+
       res.render('case_details/index.njk', {
         activeTab,
         client: clientData,
         combinedHistoryAndCaseLogNotes,
         maxProviderNoteLength: MAX_PROVIDER_NOTE_LENGTH,
         characterThreshold: CHARACTER_THRESHOLD,
+        moreThanOneCategory: moreThanOneCategory,
         currentProviderNote: '',
         caseReference,
         csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,

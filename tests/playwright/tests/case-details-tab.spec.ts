@@ -278,6 +278,21 @@ test.describe('Case details tab', () => {
     await expect(caseDetails.providerNoteTextarea).toHaveValue(tooLongNote);
   });
 
+  test('category summary card is displayed and change link is not available when provider has one category', async ({ page }) => {
+    const caseDetailsPage = CaseDetailsTabPage.forCase(page, 'PC-1122-1349');
+
+    await caseDetailsPage.navigate();
+
+    // Category row exists
+    await expect(caseDetailsPage.categoryRow).toBeVisible();
+
+    // Current category shown
+    await expect(caseDetailsPage.categoryValue).toContainText('Housing');
+
+    // Change link is not shown
+    await expect(caseDetailsPage.changeCategoryCardLink).not.toBeVisible();
+  });
+
   test('note form should have correct CSRF protection', async ({ page, i18nSetup }) => {
     const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-1922-1879');
     await caseDetails.navigate();

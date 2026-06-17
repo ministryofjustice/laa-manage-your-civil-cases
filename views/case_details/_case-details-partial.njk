@@ -134,6 +134,7 @@
   {% set categoryValue = data.diagnosis.category | capitalize %}
 {% endif %}
 
+
 {# Get latest MCC note #}
 {% set mccNote = null %}
 
@@ -153,6 +154,7 @@
         {{ t('pages.caseDetails.changeCategoryOfLaw.h3') | replace(":", "") }}
       </h3>
 
+      {% if moreThanOneCategory %}
         <a href="/cases/{{ data.caseReference }}/change-law-category"
      class="govuk-link">
           {{ t('common.change') }}
@@ -160,7 +162,7 @@
             {{ t('accessibility.visuallyHiddenText.changeCategory') }}
           </span>
         </a>
-
+      {% endif %}
     </div>
 
     {# Build rows #}
