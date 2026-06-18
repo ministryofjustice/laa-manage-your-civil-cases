@@ -4,9 +4,10 @@
  * Utility functions for safely transforming and validating data from JSON fixtures
  */
 
-import type { FieldConfig } from '#types/form-controller-types.js';
+import type { FieldConfig, BuildCategoryItemsOptions } from '#types/form-controller-types.js';
 import type { PaginationResult } from '#types/pagination-types.js';
 import { formatDate, formatLongFormDate } from './dateFormatter.js';
+import { t } from './index.js';
 /**
  * Safely extract nested field value using custom path resolution
  * @param {unknown} obj - Object to traverse
@@ -778,3 +779,35 @@ export function createPaginationForGivenDataSet<T>(items: T[], pageQuery: unknow
   };
 }
 
+/**
+ * Build a list of category items for selection
+ * @param {BuildCategoryItemsOptions} options - Options for building category items
+ * @returns {Promise<{ value: string; text: string; selected: boolean }[]>} List of category items
+ */
+export async function buildCategoryItems({
+  choices,
+  selectedCategory,
+  placeholderText,
+  excludeCode
+}: BuildCategoryItemsOptions) {
+  const filteredChoices = excludeCode
+    ? choices.filter(choice => choice.code !== excludeCode)
+    : choices;
+
+  return [
+    {
+      value: '',
+      text: placeholderText,
+      selected: !selectedCategory
+    },
+    ...filteredChoices.map(choice => ({
+      value: choice.code,
+      text: capitaliseFirstLetter(
+        choice.code === 'none'
+          ? t('allCategoriesAdditions.none')
+          : choice.name
+      ),
+      selected: selectedCategory === choice.code
+    }))
+  ];
+}
