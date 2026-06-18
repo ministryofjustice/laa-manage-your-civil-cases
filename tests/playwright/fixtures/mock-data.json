@@ -39,7 +39,7 @@
       "fullName": "Chris Green",
       "emailAddress": "chris@green.com",
       "contactNumber": "0786304271",
-      "safeToCall": false,
+      "safeToCall": true,
       "address": "22 Baker Street, London",
       "postcode": "NW1 6XE",
       "relationshipToClient": {
@@ -126,7 +126,7 @@
       "fullName": "Sarah Johnson",
       "emailAddress": "sarah@johnson.com",
       "contactNumber": "07787123456",
-      "safeToCall": true,
+      "safeToCall": false,
       "address": "45 Main Street, Sheffield",
       "postcode": "S1 2AB",
       "relationshipToClient": {
@@ -163,39 +163,32 @@
     "dateOfBirth": "1981-08-18T00:00:00-05:00",
     "vulnerableUser": true,
     "phoneNumber": "0786442261",
-    "safeToCall": false,
-    "announceCall": false,
+    "safeToCall": true,
+    "announceCall": true,
     "emailAddress": "harry@potter.com",
     "address": "870 Holyhead Road, Bangor",
     "postcode": "LL53 1AD",
     "laaReference": "8196672",
-    "thirdParty": {
-      "fullName": "Sarah Johnson",
-      "emailAddress": "sarah@johnson.com",
-      "contactNumber": "0787123456",
-      "safeToCall": true,
-      "address": "45 Main Street, Sheffield",
-      "postcode": "S1 2AB",
-      "relationshipToClient": {
-        "selected": [
-          "FAMILY_FRIEND"
-        ]
-      },
-      "passphraseSetUp": {
-        "selected": ["Yes"],
-        "passphrase": "TestPass123"
-      }
-    },
-    "clientSupportNeeds": {
-      "skype": true,
-      "minicom": false,
-      "bslWebcam": "No",
-      "textRelay": "No",
-      "callbackPreference": "No",
-      "languageSupportNeeds": "",
-      "notes": "",
-      "no_adaptations_required": false
-    },
+    "lastModified": "2025-07-06T19:00:00-05:00"
+  },
+  {
+    "fullName": "James Potter",
+    "providerId": "14",
+    "caseReference": "PC-1357-1212",
+    "refCode": "",
+    "dateReceived": "2025-07-06T19:00:00-05:00",
+    "caseStatus": "New",
+    "category": "Housing, eviction and homelessness",
+    "isUrgent": true,
+    "dateOfBirth": "1981-08-18T00:00:00-05:00",
+    "vulnerableUser": true,
+    "phoneNumber": "0786442159",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "James@potter.com",
+    "address": "871 Holyhead Lane, Bangor",
+    "postcode": "LL53 2AD",
+    "laaReference": "8196672",
     "lastModified": "2025-07-06T19:00:00-05:00"
   },
   {
@@ -404,7 +397,7 @@
       "postcode": "NW1 6XE",
       "relationshipToClient": {
         "selected": [
-          "LEGAL_ADVISER"
+          "LEGAL_ADVISOR"
         ]
       },
       "passphraseSetUp": {
@@ -443,7 +436,7 @@
       "postcode": "NW1 6XE",
       "relationshipToClient": {
         "selected": [
-          "LEGAL_ADVISER"
+          "LEGAL_ADVISOR"
         ]
       },
       "passphraseSetUp": {
@@ -530,7 +523,7 @@
       "postcode": "B88 1RW",
       "relationshipToClient": {
         "selected": [
-          "LEGAL_ADVISER"
+          "LEGAL_ADVISOR"
         ]
       },
       "passphraseSetUp": {
@@ -545,6 +538,49 @@
       "callbackPreference": "No",
       "languageSupportNeeds": "English",
       "notes": "Here are some notes from the operator!"
+    }
+  },
+  {
+    "fullName": "George Gregory",
+    "caseReference": "PC-3152-7329",
+    "refCode": "",
+    "dateReceived": "2025-08-07T19:00:00-05:00",
+    "lastModified": "2025-08-08T17:30:00-05:00",
+    "caseStatus": "Completed",
+    "dateOfBirth": "1979-11-12T00:00:00-05:00",
+    "vulnerableUser": true,
+    "language": "Irish",
+    "phoneNumber": "0776829155",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "geroge.greg@outlook.com",
+    "address": "Green Village, Caernarfon",
+    "postcode": "LL57 @WQ",
+    "laaReference": "2850581",
+    "thirdParty": {
+      "fullName": "Benn Beckman",
+      "emailAddress": "b.beckman@redforce.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "Red Force Ship, Grand Line",
+      "postcode": "GL7 2RB",
+      "relationshipToClient": {
+        "selected": [
+          "LEGAL_ADVISOR"
+        ]
+      },
+      "passphraseSetUp": {
+        "selected": [
+          "No, client is a child or patient"
+        ]
+      }
+    },
+    "clientSupportNeeds": {
+      "bslWebcam": "Yes",
+      "textRelay": "No",
+      "callbackPreference": "No",
+      "languageSupportNeeds": "English",
+      "notes": "Client has a calm manner and cooperates well. Missing left arm noted but no mobility concerns."
     }
   },
   {
@@ -573,7 +609,7 @@
       "postcode": "GL7 2RB",
       "relationshipToClient": {
         "selected": [
-          "LEGAL_ADVISER"
+          "LEGAL_ADVISOR"
         ]
       },
       "passphraseSetUp": {
@@ -696,7 +732,7 @@
       "postcode": "B88 1RW",
       "relationshipToClient": {
         "selected": [
-          "LEGAL_ADVISER"
+          "LEGAL_ADVISOR"
         ]
       },
       "passphraseSetUp": {

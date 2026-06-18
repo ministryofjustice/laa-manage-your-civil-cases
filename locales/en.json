@@ -248,6 +248,7 @@
         "aboutClient": "About the client",
         "contactDetails": "Contact details",
         "thirdPartyContact": "Third party contact",
+        "thirdPartyDetails": "Third party details",
         "clientSupportNeeds": "Client support needs",
         "clientAbuseRisk": "Risk of abuse"
       },

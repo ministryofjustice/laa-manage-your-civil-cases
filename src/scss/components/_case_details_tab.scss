@@ -21,3 +21,11 @@
   margin-top: 15px;
   margin-bottom: 0px;
 }
+
+.empty-summary-row .govuk-summary-list__key {
+  display: none;
+}
+
+.empty-summary-row .govuk-summary-list__value {
+  width: 100%;
+}

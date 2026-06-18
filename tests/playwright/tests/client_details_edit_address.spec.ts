@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures/index.js';
-import { t, getClientDetailsUrlByStatus, setupAuth, assertCaseDetailsHeaderPresent } from '../utils/index.js';
+import { t, getClientDetailsUrlByStatus, setupAuth, assertCaseDetailsHeaderPresent, assertSummaryCardData, assertSummaryCardState } from '../utils/index.js';
 
 const visitUrl = getClientDetailsUrlByStatus('default') + '/change/address';
 const clientDetailsUrl = getClientDetailsUrlByStatus('default');
@@ -63,6 +63,13 @@ test('unchanged fields should display no change warning banner', async ({ page, 
   await saveButton.click();
   await expect(page).toHaveURL(clientDetailsUrl);
 
+  // Assert support needs summary card is visible with no data 
+  await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
+  // Assert third party details summary card is visible with no data
+  await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: true, changeHref: '/client-details/change/third-party', removeHref: '/confirm/remove-third-party' });
+  // Assert the data in the third party details summary card is correct
+  await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Sarah Johnson', 'Phone number': 'Warning Not safe to call', 'Email address': 'sarah@johnson.com', 'Address': '45 Main Street, Sheffield S1 2AB', 'Relationship to client': 'Family member or friend', 'Passphrase': 'TestPass123' });
+
   // Notification banner should be visible
   const banner = page.getByRole('region', { name: 'warning: No changes were made' });
   await expect(banner).toBeVisible();
@@ -91,6 +98,13 @@ test('save button should redirect to client details when valid data submitted', 
 
   // Should redirect to client details page
   await expect(page).toHaveURL(clientDetailsUrl);
+
+  // Assert support needs summary card is visible with no data 
+  await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
+  // Assert third party details summary card is visible with no data
+  await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: true, changeHref: '/client-details/change/third-party', removeHref: '/confirm/remove-third-party' });
+  // Assert the data in the third party details summary card is correct
+  await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Sarah Johnson', 'Phone number': 'Warning Not safe to call', 'Email address': 'sarah@johnson.com', 'Address': '45 Main Street, Sheffield S1 2AB', 'Relationship to client': 'Family member or friend', 'Passphrase': 'TestPass123' });
 });
 
 test('should trigger postcode validation when 12 or more characters are entered', async ({ page, i18nSetup }) => {

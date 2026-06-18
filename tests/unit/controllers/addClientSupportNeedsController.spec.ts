@@ -25,7 +25,7 @@ import {
 import { apiService } from '#src/services/apiService.js';
 // Import to get global type declarations for axiosMiddleware
 import '#utils/server/axiosSetup.js';
-import { validateClientSupportNeeds } from '#src/middlewares/clientSupportNeedsSchema.js';
+import { validateClientSupportNeedsAdd } from '#src/middlewares/clientSupportNeedsSchema.js';
 import { ValidationChain } from '#node_modules/express-validator/lib/index.js';
 
 // Define the RequestWithMiddleware interface for testing
@@ -139,7 +139,7 @@ describe('Add Client Support Needs Controller', () => {
       // Arrange
       req.body = {}; // Empty checkboxes should trigger validation
 
-      await runSchema(req as any, validateClientSupportNeeds());
+      await runSchema(req as any, validateClientSupportNeedsAdd());
 
       // Stub a successful getClientDetails response so handleAddClientSupportNeedsErrors thinks it has info
       apiServiceGetStub.resolves({
@@ -161,7 +161,7 @@ describe('Add Client Support Needs Controller', () => {
         languageSupportNeeds: '' // Should not be empty
       }; 
 
-      await runSchema(req as any, validateClientSupportNeeds());
+      await runSchema(req as any, validateClientSupportNeedsAdd());
 
       // Stub a successful getClientDetails response so handleAddClientSupportNeedsErrors thinks it has info
       apiServiceGetStub.resolves({
@@ -183,7 +183,7 @@ describe('Add Client Support Needs Controller', () => {
         notes: '' // Should not be empty
       }; 
 
-      await runSchema(req as any, validateClientSupportNeeds());
+      await runSchema(req as any, validateClientSupportNeedsAdd());
 
       // Stub a successful getClientDetails response so handleAddClientSupportNeedsErrors thinks it has info
       apiServiceGetStub.resolves({

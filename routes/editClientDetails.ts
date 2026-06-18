@@ -31,6 +31,7 @@ import {
   validateEditClientAddress,
   validateClientThirdParty,
   validateClientSupportNeeds,
+  validateClientSupportNeedsAdd,
   validateClientRiskOfAbuse
 } from '#src/middlewares/indexSchema.js';
 
@@ -58,7 +59,7 @@ router.get('/:caseReference/client-details/change/third-party', getEditClientThi
 router.post('/:caseReference/client-details/change/third-party', validateClientThirdParty(), postEditClientThirdParty);
 
 router.get('/:caseReference/client-details/add/support-need', getAddClientSupportNeeds);
-router.post('/:caseReference/client-details/add/support-need', validateClientSupportNeeds(), postAddClientSupportNeeds);
+router.post('/:caseReference/client-details/add/support-need', validateClientSupportNeedsAdd(), postAddClientSupportNeeds);
 
 router.get('/:caseReference/client-details/change/support-need', getEditClientSupportNeeds);
 router.post('/:caseReference/client-details/change/support-need', validateClientSupportNeeds(), postEditClientSupportNeeds);

@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures/index.js';
-import { t, getClientDetailsUrlByStatus, setupAuth, assertCaseDetailsHeaderPresent } from '../utils/index.js';
+import { t, getClientDetailsUrlByStatus, setupAuth, assertCaseDetailsHeaderPresent, assertSummaryCardData, assertSummaryCardState } from '../utils/index.js';
 
 const visitUrl = getClientDetailsUrlByStatus('default') + '/change/phone-number';
 const clientDetailsUrl = getClientDetailsUrlByStatus('default');
@@ -18,7 +18,7 @@ test('viewing change phone-number form, to see the expected elements', async ({ 
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
 
   // Expect to see the following elements
   await expect(page.locator('h2.govuk-heading-m')).toContainText(t('forms.clientDetails.phoneNumber.title'));
@@ -39,7 +39,7 @@ test('phoneNumber is blank and correct validation errors display', async ({ page
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
 
   // Submit form with blank phoneNumber
   await page.locator('#phoneNumber').fill('');
@@ -72,7 +72,7 @@ test('phoneNumber is not valid and correct validation errors display', async ({ 
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
 
   // Submit form with invalid phoneNumber
   await page.locator('#phoneNumber').fill('ggg');
@@ -104,7 +104,7 @@ test('save button should redirect to client details when valid data submitted', 
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
 
   // Fill in valid phone number details
   await phoneInput.fill('07700900123');
@@ -116,6 +116,13 @@ test('save button should redirect to client details when valid data submitted', 
 
   // Should redirect to client details page
   await expect(page).toHaveURL(clientDetailsUrl);
+
+  // Assert support needs summary card is visible with no data 
+  await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
+  // Assert third party details summary card is visible with no data
+  await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: true, changeHref: '/client-details/change/third-party', removeHref: '/confirm/remove-third-party' });
+  // Assert the data in the third party details summary card is correct
+  await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Sarah Johnson', 'Phone number': 'Warning Not safe to call', 'Email address': 'sarah@johnson.com', 'Address': '45 Main Street, Sheffield S1 2AB', 'Relationship to client': 'Family member or friend', 'Passphrase': 'TestPass123' });
 });
 
 
@@ -125,20 +132,21 @@ test('shows warning banner when no changes are made', async ({ page, i18nSetup }
   // Go to edit page
   await page.goto(visitUrl);
 
-  await assertCaseDetailsHeaderPresent(page, {
-    withMenuButtons: false,
-    expectedName: "Jack Youngs",
-    expectedCaseRef: "PC-1922-1879",
-    dateReceived: "7 July 2025",
-    badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party']
-  });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
 
   await saveButton.click();
 
   await expect(page).toHaveURL(clientDetailsUrl);
 
+  // Assert support needs summary card is visible with no data 
+  await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
+  // Assert third party details summary card is visible with no data
+  await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: true, changeHref: '/client-details/change/third-party', removeHref: '/confirm/remove-third-party' });
+  // Assert the data in the third party details summary card is correct
+  await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Sarah Johnson', 'Phone number': 'Warning Not safe to call', 'Email address': 'sarah@johnson.com', 'Address': '45 Main Street, Sheffield S1 2AB', 'Relationship to client': 'Family member or friend', 'Passphrase': 'TestPass123' });
+
   // Assert warning banner appears
-  const warningBanner = page.getByRole('region', { name: 'warning: No changes were made' });
+ const warningBanner = page.getByRole('region', { name: 'warning: No changes were made' });
   await expect(warningBanner).toBeVisible();
 
   // Check warning banner contains correct text
