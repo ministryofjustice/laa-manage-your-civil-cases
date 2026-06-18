@@ -14,7 +14,6 @@ export const eligibilityJourney = journey({
   onAccess: [
     access({
       effects: [
-        FinancialEligibilityEffects.LoadDraftAnswers(),
         FinancialEligibilityEffects.LoadCaseDetails(),
         FinancialEligibilityEffects.LoadCaseFinancialEligibility(),
       ],

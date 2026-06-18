@@ -60,6 +60,27 @@ export function mapAnswersToApiPayload(answers: Record<string, any>): Record<str
     return payload;
 }
 
+
+/**
+ * Utility function to map API payload data to user answers in the Forge journey format
+ * @param {Record<string, unknown>} apiPayload - The API payload with field names and values
+ * @returns {Record<string, any>} The user's answers keyed by step code
+ */
+export function mapApiPayloadToAnswers(apiPayload: Record<string, unknown>): Record<string, any> {
+    const answers: Record<string, any> = {};
+    for (const [apiField, value] of Object.entries(apiPayload)) {
+        const stepCode = mapApiFieldToStepCode(apiField);
+        if (stepCode) {
+            if (typeof value === 'boolean') {
+                answers[stepCode] = value ? 'yes' : 'no';
+            } else {
+                answers[stepCode] = value;
+            }
+        }
+    }
+    return answers;
+}
+
 /**
  * This class implements the FinancialEligibilityWithDeps interface, providing methods to handle financial eligibility operations with dependencies.
  * It uses the provided dependencies to perform actions such as loading draft answers, clearing drafts, persisting saved answers, and loading case details.
@@ -75,39 +96,6 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
     constructor(apiService: Record<string, CallableFunction>) {
         this.apiService = apiService;
     }
-
-    /**
-     * Loads draft financial eligibility answers from session storage
-     * @param {Deps} _deps Effect dependencies supplied by Forge
-     * @param {EffectFunctionContext} context The context of the effect function, providing access to request parameters and session data
-     */
-    LoadDraftAnswers = async (_deps: Deps, context: EffectFunctionContext): Promise<void> => {
-        const caseReference = context.getRequestParam('caseReference');
-        const session = context.getSession() as FinancialEligibilitySession | undefined;
-        if (session && session.financialEligibilityDrafts === undefined) {
-            session.financialEligibilityDrafts = {};
-        }
-
-        const stored = session?.financialEligibilityDrafts[caseReference || ''] ?? null;
-
-        if (!stored) {
-        return;
-        }
-
-        const axiosMiddleware = context.getState('authenticatedAxios')
-        if (!axiosMiddleware) {
-            console.warn('Authenticated Axios middleware not found in state; API call may fail if it is required by the service implementation.');
-        }
-        const financialEligibilityData = await this.apiService.getFinancialEligibility(axiosMiddleware, caseReference);
-        for (const [code, value] of Object.entries(financialEligibilityData)) {
-            if (!context.hasAnswer(code)) {
-                const stepCode = mapApiFieldToStepCode(code);
-                if (stepCode) {
-                    context.setAnswer(stepCode, value);
-                }
-            }
-        }
-    };
 
     /**
      * Loads case details from the API and stores them in the context, for use in the journey.
@@ -133,7 +121,8 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
     }
 
     /**
-     * Loads financial eligibility data from the API and stores it in the context, for use in the journey.
+     * Loads financial eligibility data from the API, checks if any questions have been answered so that they
+     * take precedence over the API data, and stores the results in Forge's answers.
      * @param {Deps} _deps Effect dependencies supplied by Forge, expected to include a getFinancialEligibility function
      * @param {EffectFunctionContext} context The context of the effect function, providing access to request parameters and session data
      */
@@ -153,10 +142,26 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
         
         console.log('Fetched financial eligibility data for case reference', caseReference, financialEligibilityData);
         
-        // TODO: Map API response to form answers with a utility function, rather than hardcoding field mappings here
-        context.setAnswer('under17', financialEligibilityData.is_you_under_18 ? 'yes' : 'no');
-        context.setAnswer('over-60', financialEligibilityData.is_you_or_your_partner_over_60 ? 'yes' : 'no');
-        context.setAnswer('partner', financialEligibilityData.has_partner ? 'yes' : 'no');
+        const session = context.getSession() as FinancialEligibilitySession | undefined;
+        if (!session) {
+            console.error('No session found; cannot load financial eligibility data');
+            return;
+        }
+
+        for (const [code, apiValue] of Object.entries(financialEligibilityData)) {
+            const stepCode = mapApiFieldToStepCode(code);
+            if (stepCode === null) {
+                continue;
+            }
+
+            const caseFEDraft = session.financialEligibilityDrafts[caseReference] || {};
+            if (stepCode in caseFEDraft) {
+                context.setAnswer(stepCode, caseFEDraft[stepCode]);
+            } else {
+                const answerValue = mapApiPayloadToAnswers({ [code]: apiValue })[stepCode];
+                context.setAnswer(stepCode, answerValue);
+            }
+        }
     }
 
     /**
@@ -213,6 +218,7 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
 
         if (session?.financialEligibilityDrafts[caseReference]) {
             delete session.financialEligibilityDrafts[caseReference];
+            context.getAllAnswers();
         }
     }
 

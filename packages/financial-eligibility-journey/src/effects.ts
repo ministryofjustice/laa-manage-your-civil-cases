@@ -4,15 +4,13 @@ import type { EffectFunctionContext, EffectFunctionExpr } from "@ministryofjusti
 import { type Deps } from '@ministryofjustice/financial-eligibility-journey';
 
 export interface FinancialEligibilityEffectShape {
-  /** Copies previously stored draft answers for this pattern into the form context on access. */
-  LoadDraftAnswers: () => EffectFunctionExpr;
   /** Clears draft answers for this pattern (used after committing drafts to the store). */
   ClearDraftAnswers: () => EffectFunctionExpr;
   /** Submit saved answers from session to cla_backend  */
   PersistSavedAnswers: () => EffectFunctionExpr;
   /** Loads case details from the API and stores them in the context, for use in the journey. */
   LoadCaseDetails: () => EffectFunctionExpr;
-  /** Loads financial eligibility data from the API and stores it in the context, for use in the journey. */
+  /** Loads financial eligibility data from the API, checks if any questions have been answered so that they take precedence over the API data, and stores the results in Forge's answers. */
   LoadCaseFinancialEligibility: () => EffectFunctionExpr;
   /** Saves a new answer if it has been answered */
   SaveNewAnswerIfAnswered: () => EffectFunctionExpr;
@@ -23,15 +21,6 @@ export const {
   implementations: FinancialEligibilityEffectsImplementations,
 } = defineEffectFunctions<FinancialEligibilityEffectShape, Deps>({
   /**
-   * Loads draft financial eligibility answers from session storage
-   * @param {unknown} _deps Effect dependencies supplied by Forge
-   * @returns {(context: EffectFunctionContext) => void} Function to apply stored draft answers to the context
-   */
-  LoadDraftAnswers: (_deps) => async (context: EffectFunctionContext) => {
-    await _deps.effectsWithDeps.LoadDraftAnswers(_deps, context);
-  },
-
-  /**
    * Loads case details from the API and stores them in the context, for use in the journey.
    * @param {unknown} _deps Effect dependencies supplied by Forge, expected to include a fetchClientDetails function
    * @returns {(context: EffectFunctionContext) => Promise<void>} Async function to load case details and store in context
@@ -41,7 +30,7 @@ export const {
   },
 
   /**
-   * Loads financial eligibility data from the API and stores it in the context, for use in the journey.
+   * Loads financial eligibility data from the API, checks if any questions have been answered so that they take precedence over the API data, and stores the results in Forge's answers.
    * @param {unknown} _deps Effect dependencies supplied by Forge, expected to include a getFinancialEligibility function
    * @returns {(context: EffectFunctionContext) => Promise<void>} Async function to load financial eligibility data and store in context
    */

@@ -6,7 +6,6 @@ export interface Deps {
 }
 
 export interface FinancialEligibilityEffectsWithDeps {
-    LoadDraftAnswers: (_deps: Deps, context: EffectFunctionContext) => Promise<void>;
     LoadCaseDetails: (_deps: Deps, context: EffectFunctionContext) => Promise<void>;
     LoadCaseFinancialEligibility: (_deps: Deps, context: EffectFunctionContext) => Promise<void>;
     PersistSavedAnswers: (_deps: Deps, context: EffectFunctionContext) => Promise<void>;
