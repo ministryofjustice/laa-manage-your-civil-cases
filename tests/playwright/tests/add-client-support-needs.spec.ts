@@ -14,7 +14,7 @@ test('add client support needs form should save valid data and redirect to clien
   await page.goto(addSupportNeedsUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
 
   // Expect to see the form heading
   await expect(page.locator('legend.govuk-fieldset__legend')).toContainText('Add a client support need');
@@ -22,7 +22,7 @@ test('add client support needs form should save valid data and redirect to clien
   // Check that the checkboxes are present
   const bslWebcamCheckbox = page.locator('input[name="clientSupportNeeds"][value="bslWebcam"]');
   const textRelayCheckbox = page.locator('input[name="clientSupportNeeds"][value="textRelay"]');
-  
+
   await expect(bslWebcamCheckbox).toBeVisible();
   await expect(textRelayCheckbox).toBeVisible();
 
@@ -42,7 +42,7 @@ test('add client support needs form should show validation error if no option se
   await page.goto(addSupportNeedsUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
 
   // Check the box for "Other support" but do not fill in the text to trigger validation error
   const otherSupportCheckbox = page.locator('input[name="clientSupportNeeds"][value="otherSupport"]');
@@ -64,16 +64,17 @@ test('add client support needs form should show validation error if no option se
 
 test('add client support button should show on client details, when skype or minicom are true', async ({ page, i18nSetup }) => {
   const clientDetailsUrl = `/cases/PC-1924-9560/client-details`;
-  
+
   // Navigate to client details screen
   await page.goto(clientDetailsUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Lisa NO NOTES Chen", expectedCaseRef: "PC-1924-9560", dateReceived: "15 January 2025", badgeTexts: ['Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Lisa NO NOTES Chen", expectedCaseRef: "PC-1924-9560", dateReceived: "15 January 2025", badgeTexts: ['Third Party'] });
 
   // Expect to see Add client support need button
-  const addClientSupportNeedButton = page.getByRole('button', { name: 'Add client support need' })
-  await expect(addClientSupportNeedButton).toBeVisible();
+  const clientSupportNeedsLink = page.locator('a[href*="/client-details/add/support-need"]');
+  await expect(clientSupportNeedsLink).toBeVisible();
+  await expect(page.getByText('No support needs')).toBeVisible();
 
   // Should redirect to client details page
   await expect(page).toHaveURL(clientDetailsUrl);

@@ -11,7 +11,7 @@ test('client details selected from closed cases tab has correct page elements', 
   await page.goto(getClientDetailsUrlByStatus('closed'));
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Roronoa Zoro", expectedCaseRef: "PC-6667-9089", dateReceived: "6 January 2025", badgeTexts: ['At risk of abuse', 'Third Party'] });  
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Roronoa Zoro", expectedCaseRef: "PC-6667-9089", dateReceived: "6 January 2025", badgeTexts: ['At risk of abuse', 'Third Party'] });
 
   const closed_tag = page.getByText('Closed', { exact: true });
   const changeStatusButton = page.getByRole('button', { name: 'Change status' });
@@ -22,21 +22,24 @@ test('client details selected from closed cases tab has correct page elements', 
   await expect(closed_tag).toBeVisible();
   await expect(changeStatusButton).toBeVisible();
   await expect(alertBanner).toBeVisible();
-  
+
   // After opening the menu, the "Advising" option should be visible
   await changeStatusButton.click();
   await expect(advisingMenuItem).toBeVisible();
 });
 
-test('client support needs card is not shown on new case when `minicom` is true and `skype` is false', async ({ page, i18nSetup }) => {
+test('client support needs card is shown with no support needs on new case when `minicom` is true and `skype` is false', async ({ page, i18nSetup }) => {
   // Navigate to the client details
   await page.goto(getClientDetailsUrlByStatus('closed'));
 
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Roronoa Zoro", expectedCaseRef: "PC-6667-9089", dateReceived: "6 January 2025", badgeTexts: ['At risk of abuse', 'Third Party'] });  
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Roronoa Zoro", expectedCaseRef: "PC-6667-9089", dateReceived: "6 January 2025", badgeTexts: ['At risk of abuse', 'Third Party'] });
 
   // 'Roronoa Zoro' clientSupportNeeds data in `tests/playwright/fixtures/mock-data.json`, has been adjusted to mock this scenario
-  const clientSupportNeedsButton = page.getByRole('button', { name: 'Add client support need' });
-  await expect(clientSupportNeedsButton).toBeVisible();
+  const clientSupportNeedsLink = page.locator(
+    'a[href*="/client-details/add/support-need"]'
+  );
+  await expect(clientSupportNeedsLink).toBeVisible();
+  await expect(page.getByText('No support needs')).toBeVisible();
 });
 
 

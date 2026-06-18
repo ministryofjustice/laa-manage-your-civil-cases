@@ -90,7 +90,9 @@ export class CheckSplitCaseAnswersPage extends BaseEditFormPage {
    * Gets the locator for the cancel link
    */
   get cancelLink() {
-    return this.page.getByRole('link', { name: t('common.cancel'), });
+    return this.page.locator(
+      `a[href="/cases/${this.caseReference}/client-details"]`
+    );
   }
 
   /**

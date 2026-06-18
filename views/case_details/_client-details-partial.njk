@@ -3,35 +3,35 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% set phoneNumberContent %}
-  {% if data.safeToCall %}
-    {{ data.phoneNumber }}
-    {% if not data.announceCall %}
-      {{ govukWarningText({
+{% if data.safeToCall %}
+  {{ data.phoneNumber }}
+  {% if not data.announceCall %}
+    {{ govukWarningText({
         text: t('forms.clientDetails.phoneNumber.doNotAnnounce'),
         iconFallbackText: t.common.warning
       }) }}
-    {% endif %}
-  {% else %}
-    {{ govukWarningText({
+  {% endif %}
+{% else %}
+  {{ govukWarningText({
       text: t('forms.clientDetails.phoneNumber.notSafeToCallWarning'),
       iconFallbackText: t.common.warning
     }) }}
-  {% endif %}
+{% endif %}
 {% endset %}
 
 {% set phoneNumberContentThirdParty %}
-  {% if data.thirdParty.contactNumber %}
-    {% if data.thirdParty.safeToCall %}
-      {{ data.thirdParty.contactNumber }}
-    {% else %}
-      {{ govukWarningText({
+{% if data.thirdParty.contactNumber %}
+  {% if data.thirdParty.safeToCall %}
+    {{ data.thirdParty.contactNumber }}
+  {% else %}
+    {{ govukWarningText({
         text: t('forms.clientDetails.phoneNumber.notSafeToCallWarning'),
         iconFallbackText: t.common.warning
       }) }}
-    {% endif %}
-  {% else %}
-    {{ t('pages.caseDetails.notProvided') }}
-  {% endif%}
+  {% endif %}
+{% else %}
+  {{ t('pages.caseDetails.notProvided') }}
+{% endif %}
 {% endset %}
 
 {% macro renderAddress(address, postcode) %}
@@ -54,17 +54,17 @@
 {% set addressWithPostcodeThirdParty = renderAddress(data.thirdParty.address, data.thirdParty.postcode) %}
 
 {% set passphraseContent %}
-  {% if data.thirdParty.passphrase %}
-    {{ data.thirdParty.passphrase }}
-  {% else %}
-    {{ t('common.thirdPartyReason.text.' + data.thirdParty.noContactReason) }}
-  {% endif %}
+{% if data.thirdParty.passphrase %}
+  {{ data.thirdParty.passphrase }}
+{% else %}
+  {{ t('common.thirdPartyReason.text.' + data.thirdParty.noContactReason) }}
+{% endif %}
 {% endset %}
 
 {% set relationshipToClient %}
-  {% if data.thirdParty.relationshipToClient %}
-    {{ t('common.thirdPartyRelationship.text.' + data.thirdParty.relationshipToClient) }}
-  {% else %}
+{% if data.thirdParty.relationshipToClient %}
+  {{ t('common.thirdPartyRelationship.text.' + data.thirdParty.relationshipToClient) }}
+{% else %}
     ""
   {% endif %}
 {% endset %}
@@ -72,25 +72,26 @@
 {# Create enhanced data object with computed phone content #}
 {% set constructedData = {
   fullName: data.fullName,
-  clientRiskOfAbuse: t('common.yes') if data.vulnerableUser else t('common.no'),
-  dateOfBirth: data.dateOfBirth,
-  email: data.emailAddress,
-  phoneNumber: data.phoneNumber,
-  address: data.address,
-  postcode: data.postcode,
-  computedPhoneNumber: phoneNumberContent,
-  computedAddress: addressWithPostcode,
-  bslWebcam: data.clientSupportNeeds.bslWebcam,
-  textRelay: data.clientSupportNeeds.textRelay,
-  callbackPreference: data.clientSupportNeeds.callbackPreference,
-  languageSupportNeeds: data.clientSupportNeeds.languageSupportNeeds | capitaliseFirstLetter,
-  notes: data.clientSupportNeeds.notes,
-  fullNameThirdParty: data.thirdParty.fullName,
-  computedAddressThirdParty: addressWithPostcodeThirdParty,
-  computedPhoneNumberThirdParty: phoneNumberContentThirdParty,
-  emailAddressThirdParty: data.thirdParty.emailAddress,
-  relationshipToClientThirdParty: relationshipToClient,
-  passphraseContent: passphraseContent
+  clientRiskOfAbuse: t('common.yes')if data.vulnerableUser else 
+    t('common.no'),
+    dateOfBirth: data.dateOfBirth,
+    email: data.emailAddress,
+    phoneNumber: data.phoneNumber,
+    address: data.address,
+    postcode: data.postcode,
+    computedPhoneNumber: phoneNumberContent,
+    computedAddress: addressWithPostcode,
+    bslWebcam: data.clientSupportNeeds.bslWebcam,
+    textRelay: data.clientSupportNeeds.textRelay,
+    callbackPreference: data.clientSupportNeeds.callbackPreference,
+    languageSupportNeeds: data.clientSupportNeeds.languageSupportNeeds | capitaliseFirstLetter,
+    notes: data.clientSupportNeeds.notes,
+    fullNameThirdParty: data.thirdParty.fullName,
+    computedAddressThirdParty: addressWithPostcodeThirdParty,
+    computedPhoneNumberThirdParty: phoneNumberContentThirdParty,
+    emailAddressThirdParty: data.thirdParty.emailAddress,
+    relationshipToClientThirdParty: relationshipToClient,
+    passphraseContent: passphraseContent
 } %}
 
 <h2 class="govuk-heading-m">{{ t('pages.caseDetails.tabs.clientDetails') }}</h2>
@@ -200,65 +201,50 @@
   ]
 }) }}
 
-{% if (not data.clientSupportNeeds.no_adaptations_required or data.clientSupportNeeds.notes or data.clientSupportNeeds.languageSupportNeeds) and (not data.clientSupportNeeds.skype and not data.clientSupportNeeds.minicom) %}
-  {# Client support needs summary card #}
-  {{ summaryCardComponent({
-    data: constructedData,
-    card: {
-      id: "client-support-needs",
-      title: {
-        text: t('pages.caseDetails.clientDetails.clientSupportNeeds')
-      },
-      actions: {
-        items: [
-          {
-            href: "/cases/" + data.caseReference + "/client-details/change/support-need",
-            text: t('common.change'),
-            visuallyHiddenText: t('accessibility.visuallyHiddenText.changeSupportNeeds')
-          },
-          {
-            href: "/cases/" + data.caseReference + "/confirm/remove-support-need/",
-            text: t('common.remove'),
-            visuallyHiddenText: t('accessibility.visuallyHiddenText.removeSupportNeeds')
-          }
-        ]
-      }
+{% set hasSupportNeeds = (data.clientSupportNeeds.bslWebcam | lower == "yes")or(data.clientSupportNeeds.textRelay | lower == "yes")or(data.clientSupportNeeds.callbackPreference | lower == "yes")or(data.clientSupportNeeds.languageSupportNeeds | trim != "")or(data.clientSupportNeeds.notes | trim != "") %}
+
+{% set supportNeedsAction = {
+  href: "/cases/" + data.caseReference + ("/client-details/change/support-need" if hasSupportNeeds else "/client-details/add/support-need"),
+  text: t('common.change') if hasSupportNeeds else t('common.add') | capitalize,
+  visuallyHiddenText: t('accessibility.visuallyHiddenText.changeSupportNeeds')
+} %}
+
+{{ summaryCardComponent({
+  data: constructedData,
+  card: {
+    id: "client-support-needs",
+    title: {
+      text: t('pages.caseDetails.clientDetails.clientSupportNeeds')
     },
-    rows: [
-      {
-        label: t('forms.clientDetails.clientSupportNeeds.britishSignLanguage'),
-        key: "bslWebcam"
-      },
-      {
-        label: t('forms.clientDetails.clientSupportNeeds.textRelay'),
-        key: "textRelay"
-      },
-      {
-        label: t('forms.clientDetails.clientSupportNeeds.callbackPreference'),
-        key: "callbackPreference"
-      },
-      {
-        label: t('forms.clientDetails.clientSupportNeeds.language'),
-        key: "languageSupportNeeds"
-      },
-      {
-        label: t('forms.clientDetails.clientSupportNeeds.otherSupport'),
-        key: "notes"
-      }
-    ]
-  }) }}
-{% else %}
-  <div class="govuk-width-container govuk-!-margin-top-8 govuk-!-margin-bottom-5">
-    {{ govukButton({
-      href: "/cases/" + data.caseReference + "/client-details/add/support-need",
-      text: t('pages.caseDetails.buttons.addClientSupportNeed'),
-      classes: "govuk-button--secondary"
-    }) }}
-  </div>
-{% endif %}
+    actions: {
+      items: [supportNeedsAction]
+    }
+  },
+  rows: [
+    {
+      label: t('forms.clientDetails.clientSupportNeeds.britishSignLanguage'),
+      key: "bslWebcam"
+    },
+    {
+      label: t('forms.clientDetails.clientSupportNeeds.textRelay'),
+      key: "textRelay"
+    },
+    {
+      label: t('forms.clientDetails.clientSupportNeeds.callbackPreference'),
+      key: "callbackPreference"
+    },
+    {
+      label: t('forms.clientDetails.clientSupportNeeds.language'),
+      key: "languageSupportNeeds"
+    },
+    {
+      label: t('forms.clientDetails.clientSupportNeeds.otherSupport'),
+      key: "notes"
+    }
+  ]
+}) }}
 
-
-{% if data.thirdParty and (data.thirdParty.relationshipToClient != 'OTHER' or data.thirdParty.fullName) %}
+{% if data.thirdParty and(data.thirdParty.relationshipToClient != 'OTHER' or data.thirdParty.fullName) %}
   {# Third party info summary card #}
   {{ summaryCardComponent({
     data: constructedData,
