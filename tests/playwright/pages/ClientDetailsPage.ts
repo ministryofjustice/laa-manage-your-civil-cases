@@ -67,13 +67,7 @@ export class ClientDetailsPage {
  * Asserts the Risk of Abuse value in the summary card
  */
 async expectRiskOfAbuse(value: 'Yes' | 'No'): Promise<void> {
-  const card = this.page
-    .locator('.govuk-summary-card')
-    .filter({
-      has: this.page.getByRole('heading', { name: 'Risk of abuse' }),
-    });
-
-  const riskValue = card
+  const riskValue = this.page
     .locator('.govuk-summary-list__row')
     .filter({
       has: this.page.getByText('Is the client at risk of abuse?'),
