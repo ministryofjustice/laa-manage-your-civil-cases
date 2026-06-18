@@ -41,7 +41,7 @@
 
         <p class="govuk-body">
           <strong>{{ t('pages.caseDetails.changeCategoryOfLaw.originalCaseInfo') }}</strong>
-          {{client.category}}</p>
+          {{client.category or t('common.notProvided')}}</p>
 
         {% if (categoryItems | length) == 2 %}
           <p class="govuk-body">

@@ -57,7 +57,6 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
       ].sort((a, b) => a.sortDate - b.sortDate);
 
       const moreThanOneCategory = await hasMoreThanOneCategory(req, caseReference);
-      console.log('moreThanOneCategory:', moreThanOneCategory);
 
       res.render('case_details/index.njk', {
         activeTab,
