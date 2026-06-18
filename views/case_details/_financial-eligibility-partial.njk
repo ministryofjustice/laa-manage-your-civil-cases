@@ -15,36 +15,39 @@
 {% endset %}
 
 {% set detailsHtml %}
+  {% if financialEligibility.isUnder17 %}
+   {% set under17Text = "Yes" %}
+  {% else %}
+   {% set under17Text = "No" %}
+  {% endif %}
+
+  {% if financialEligibility.hasPartner %}
+    {% set partnerText = "Yes" %}
+  {% else %}
+    {% set partnerText = "No" %}
+  {% endif %}
+
+  {% if financialEligibility.isOver60 %}
+    {% set over60Text = "Yes" %}
+  {% else %}
+    {% set over60Text = "No" %}
+  {% endif %}
+
+  {% set rows = [
+    [{ text: "Are you aged 17 or under?" }, { text: under17Text }]
+  ] %}
+  {% if not financialEligibility.isUnder17 %}
+    {% set rows = rows.concat([
+      [{ text: "Do you have a partner?" }, { text: partnerText }],
+      [{ text: "Are you aged 60 or over?" }, { text: over60Text }]
+    ]) %}
+  {% endif %}
+
   {{ govukTable({
     caption: "About you",
     captionClasses: "govuk-table__caption--m",
     firstCellIsHeader: true,
-    rows: [
-      [
-        {
-          text: "Around you aged 17 or under?"
-        },
-        {
-          text: "No"
-        }
-      ],
-      [
-        {
-          text: "Do you have a partner?"
-        },
-        {
-          text: "No"
-        }
-      ],
-      [
-        {
-          text: "Are you  aged 60 or over?"
-        },
-        {
-          text: "No"
-        }
-      ]
-    ]
+    rows: rows
   }) }}
 
   {{ govukTable({

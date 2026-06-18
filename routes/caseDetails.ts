@@ -19,8 +19,8 @@ router.get('/:caseReference/client-details', fetchClientDetails, (req: Request, 
 });
 
 /* GET case details details for a specific case. */
-router.get('/:caseReference/case-details', fetchClientDetails, (req: Request, res: Response, next: NextFunction): void => {
-  handleCaseDetailsTab(req, res, next, 'case_details');
+router.get('/:caseReference/case-details', fetchClientDetails, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  await handleCaseDetailsTab(req, res, next, 'case_details');
 });
 
 /* POST save provider note for a case. */
@@ -29,8 +29,8 @@ router.post('/:caseReference/case-details', fetchClientDetails, validateProvider
 });
 
 /* GET financial eligibility details for a specific case. */
-router.get('/:caseReference/financial-eligibility', fetchClientDetails, (req: Request, res: Response, next: NextFunction): void => {
-  handleClientDetailsTab(req, res, next, 'financial_eligibility');
+router.get('/:caseReference/financial-eligibility', fetchClientDetails, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  await handleClientDetailsTab(req, res, next, 'financial_eligibility');
 });
 
 /* GET history for a specific case. */

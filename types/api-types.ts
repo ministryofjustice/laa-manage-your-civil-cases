@@ -352,3 +352,9 @@ export interface FinancialEligibilityData {
   isUnder17: boolean;
   isOver60: boolean;
 }
+
+export interface GetFinancialEligibilityApiResponse {
+  data: FinancialEligibilityData | null;
+  status: 'success' | 'error';
+  message?: string;
+}

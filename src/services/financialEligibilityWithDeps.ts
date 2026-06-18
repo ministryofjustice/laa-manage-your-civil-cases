@@ -2,14 +2,14 @@ import type { EffectFunctionContext } from "@ministryofjustice/hmpps-forge/core/
 import { type FinancialEligibilityEffectsWithDeps, type Deps } from '#packages/financial-eligibility-journey/src/api.js';
 import { type FinancialEligibilitySession } from '#packages/financial-eligibility-journey/src/context.type.js';
 import { over60Step, partnerStep, under17GroupStep } from "#packages/financial-eligibility-journey/src/index.js";
-import { type apiService } from "./api/index.js";
+import { type FinancialEligibilityData } from "#types/api-types.js";
 
 /**
  * Utility function to map step codes to API field names for financial eligibility data
  * @param {string} stepCode - The code of the step to map
  * @returns {string | null} The corresponding API field name, or null if no mapping exists
  */
-export function mapStepCodeToApiField(stepCode: string): string | null {
+function mapStepCodeToApiField(stepCode: string): string | null {
     const mapping: Record<string, string> = {
         [over60Step.code]: 'is_you_or_your_partner_over_60',
         [under17GroupStep.code]: 'is_you_under_18',
@@ -20,18 +20,30 @@ export function mapStepCodeToApiField(stepCode: string): string | null {
 }
 
 /**
- * Utility function to map API field names to step codes for financial eligibility data
- * @param {string} apiField - The API field name to map
- * @returns {string | null} The corresponding step code, or null if no mapping exists
+ * Utility function to map financial eligibility API data to step codes for use in the Forge journey
+ * @param {FinancialEligibilityData} financialEligibilityData - The financial eligibility data from the API
+ * @returns {Record<string, unknown>} A record mapping step codes to their corresponding values
  */
-export function mapApiFieldToStepCode(apiField: string): string | null {
-    const mapping: Record<string, string> = {
-        'is_you_or_your_partner_over_60': over60Step.code,
-        'is_you_under_18': under17GroupStep.code,
-        'has_partner': partnerStep.code,
-    };
+function mapFinancialEligibilityApiDataToStepCodes(financialEligibilityData: FinancialEligibilityData): Record<string, unknown> {
+    return {
+        [over60Step.code]: financialEligibilityData.isOver60,
+        [under17GroupStep.code]: financialEligibilityData.isUnder17,
+        [partnerStep.code]: financialEligibilityData.hasPartner,
+    }
+}
 
-    return mapping[apiField] || null;
+/**
+ * Utility function to map API values to Forge answer values based on step codes
+ * @param {unknown} apiValue - The value from the API to map
+ * @param {string} stepCode - The code of the step to determine the mapping
+ * @returns {unknown} The corresponding Forge answer value
+ */
+function mapApiValueToForgeValue(apiValue: unknown, stepCode: string): unknown {
+    return {
+        [over60Step.code]: apiValue ? 'yes' : 'no',
+        [under17GroupStep.code]: apiValue ? 'yes' : 'no',
+        [partnerStep.code]: apiValue ? 'yes' : 'no',
+    }[stepCode];
 }
 
 /**
@@ -39,7 +51,7 @@ export function mapApiFieldToStepCode(apiField: string): string | null {
  * @param {Record<string, any>} answers - The user's answers keyed by step code
  * @returns {Record<string, unknown>} The API payload with mapped field names and values
  */
-export function mapAnswersToApiPayload(answers: Record<string, any>): Record<string, unknown> {
+function mapAnswersToApiPayload(answers: Record<string, any>): Record<string, unknown> {
     const payload: Record<string, unknown> = {};
     for (const [stepCode, answer] of Object.entries(answers)) {
         const apiField = mapStepCodeToApiField(stepCode);
@@ -58,27 +70,6 @@ export function mapAnswersToApiPayload(answers: Record<string, any>): Record<str
         }
     }
     return payload;
-}
-
-
-/**
- * Utility function to map API payload data to user answers in the Forge journey format
- * @param {Record<string, unknown>} apiPayload - The API payload with field names and values
- * @returns {Record<string, any>} The user's answers keyed by step code
- */
-export function mapApiPayloadToAnswers(apiPayload: Record<string, unknown>): Record<string, any> {
-    const answers: Record<string, any> = {};
-    for (const [apiField, value] of Object.entries(apiPayload)) {
-        const stepCode = mapApiFieldToStepCode(apiField);
-        if (stepCode) {
-            if (typeof value === 'boolean') {
-                answers[stepCode] = value ? 'yes' : 'no';
-            } else {
-                answers[stepCode] = value;
-            }
-        }
-    }
-    return answers;
 }
 
 /**
@@ -138,27 +129,22 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
         if (!axiosMiddleware) {
             console.warn('Authenticated Axios middleware not found in state; API call may fail if it is required by the service implementation.');
         }
-        const financialEligibilityData = await this.apiService.getFinancialEligibility(axiosMiddleware, caseReference);
-        
-        console.log('Fetched financial eligibility data for case reference', caseReference, financialEligibilityData);
+        const financialEligibilityResponse = await this.apiService.getFinancialEligibility(axiosMiddleware, caseReference);
         
         const session = context.getSession() as FinancialEligibilitySession | undefined;
         if (!session) {
             console.error('No session found; cannot load financial eligibility data');
             return;
         }
+        
 
-        for (const [code, apiValue] of Object.entries(financialEligibilityData)) {
-            const stepCode = mapApiFieldToStepCode(code);
-            if (stepCode === null) {
-                continue;
-            }
-
+        const mappedAnswers = mapFinancialEligibilityApiDataToStepCodes(financialEligibilityResponse.data);
+        for (const [stepCode, apiValue] of Object.entries(mappedAnswers)) {
             const caseFEDraft = session.financialEligibilityDrafts[caseReference] || {};
             if (stepCode in caseFEDraft) {
                 context.setAnswer(stepCode, caseFEDraft[stepCode]);
             } else {
-                const answerValue = mapApiPayloadToAnswers({ [code]: apiValue })[stepCode];
+                const answerValue = mapApiValueToForgeValue(apiValue, stepCode);
                 context.setAnswer(stepCode, answerValue);
             }
         }
