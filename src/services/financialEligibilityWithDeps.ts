@@ -136,11 +136,14 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
             console.error('No session found; cannot load financial eligibility data');
             return;
         }
-        
+
+        if (!(caseReference in session.financialEligibilityDrafts)) {
+            session.financialEligibilityDrafts[caseReference] = {};
+        }
 
         const mappedAnswers = mapFinancialEligibilityApiDataToStepCodes(financialEligibilityResponse.data);
         for (const [stepCode, apiValue] of Object.entries(mappedAnswers)) {
-            const caseFEDraft = session.financialEligibilityDrafts[caseReference] || {};
+            const caseFEDraft = session.financialEligibilityDrafts[caseReference];
             if (stepCode in caseFEDraft) {
                 context.setAnswer(stepCode, caseFEDraft[stepCode]);
             } else {
