@@ -130,17 +130,10 @@
           }
         ]
       }
-    }
-  ]
-}) }}
-
-{# Client risk of abuse summary card #}
-  {{ summaryCardComponent({
-    data: constructedData,
-    card: {
-      title: {
-        text: t('pages.caseDetails.clientDetails.clientAbuseRisk')
-      },
+    },
+    {
+      label: t('forms.clientDetails.riskOfAbuse.h1'),
+      key: "clientRiskOfAbuse",
       actions: {
         items: [
           {
@@ -150,14 +143,9 @@
           }
         ]
       }
-    },
-    rows: [
-      {
-        label: t('forms.clientDetails.riskOfAbuse.h1'),
-        key: "clientRiskOfAbuse"
-      }
-    ]
-  }) }}
+    }
+  ]
+}) }}
 
 {# Contact Details summary card #}
 {{ summaryCardComponent({
