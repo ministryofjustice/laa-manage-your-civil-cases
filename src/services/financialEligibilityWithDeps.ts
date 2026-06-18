@@ -137,6 +137,10 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
             return;
         }
 
+        if (!session.financialEligibilityDrafts) {
+            session.financialEligibilityDrafts = {};
+        }
+
         if (!(caseReference in session.financialEligibilityDrafts)) {
             session.financialEligibilityDrafts[caseReference] = {};
         }
