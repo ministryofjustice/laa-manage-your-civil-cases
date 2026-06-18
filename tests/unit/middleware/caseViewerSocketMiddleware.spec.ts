@@ -27,16 +27,15 @@ describe('caseViewerSocketMiddleware', () => {
         data-user-name="Specialist Provider">
       </div>
 
-      <div id="case-viewer-alert-row" hidden></div>
-      <div id="case-viewer-alert-column" hidden></div>
-      <div id="case-viewer-alert" hidden></div>
-
-      <div id="viewer-alert-single" hidden>
-        <h2 class="moj-alert__heading"></h2>
-      </div>
-
-      <div id="viewer-alert-multiple" hidden>
-        <p class="moj-alert__paragraph"></p>
+      <div class="govuk-grid-row" id="case-viewer-alert-row" hidden>
+        <div class="govuk-grid-column-two-thirds" id="case-viewer-alert-column" hidden>
+          <div id="case-viewer-alert" class="govuk-!-margin-bottom-4" hidden>
+            <div class="moj-alert moj-alert--warning">
+              <h2 class="moj-alert__heading"></h2>
+              <p class="moj-alert__paragraph"></p>
+            </div>
+          </div>
+        </div>
       </div>
     `);
 
@@ -77,9 +76,7 @@ describe('caseViewerSocketMiddleware', () => {
     expect(dom.window.document.getElementById('case-viewer-alert-row')?.hidden).to.equal(false);
     expect(dom.window.document.getElementById('case-viewer-alert-column')?.hidden).to.equal(false);
     expect(dom.window.document.getElementById('case-viewer-alert')?.hidden).to.equal(false);
-    expect(dom.window.document.getElementById('viewer-alert-single')?.hidden).to.equal(false);
-    expect(dom.window.document.getElementById('viewer-alert-multiple')?.hidden).to.equal(true);
-    expect(dom.window.document.querySelector('#viewer-alert-single .moj-alert__heading')?.textContent).to.equal('Alex Arnold Chamberlain is currently viewing this case');
+    expect(dom.window.document.querySelector('#case-viewer-alert .moj-alert__heading')?.textContent).to.equal('Alex Arnold Chamberlain is currently viewing this case');
   });
 
   it('shows multiple viewer alert count and hides single alert for 2+ other users', () => {
@@ -88,8 +85,6 @@ describe('caseViewerSocketMiddleware', () => {
 
     handler({ viewerCount: 4, firstViewerName: 'Alex Arnold Chamberlain' });
 
-    expect(dom.window.document.getElementById('viewer-alert-single')?.hidden).to.equal(true);
-    expect(dom.window.document.getElementById('viewer-alert-multiple')?.hidden).to.equal(false);
-    expect(dom.window.document.querySelector('#viewer-alert-multiple .moj-alert__paragraph')?.textContent).to.equal('Multiple users are currently viewing this case');
+    expect(dom.window.document.querySelector('#case-viewer-alert .moj-alert__heading')?.textContent).to.equal('Multiple users are currently viewing this case');
   });
 });

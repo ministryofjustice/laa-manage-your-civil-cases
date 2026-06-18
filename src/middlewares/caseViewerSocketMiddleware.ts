@@ -202,10 +202,10 @@ declare const window: WindowWithIO;
     const alertContainerRow = document.getElementById('case-viewer-alert-row');
     const alertContainerColumn = document.getElementById('case-viewer-alert-column');
     const alertContainer = document.getElementById('case-viewer-alert');
-    const singleViewerAlert = document.getElementById('viewer-alert-single');
-    const multipleViewersAlert = document.getElementById('viewer-alert-multiple');
+    const alertHeading = alertContainer?.querySelector('.moj-alert__heading');
+    const alertText = alertContainer?.querySelector('.moj-alert__paragraph');
 
-    if (!alertContainerRow || !alertContainerColumn || !alertContainer || !singleViewerAlert || !multipleViewersAlert) {
+    if (!alertContainerRow || !alertContainerColumn || !alertContainer || !alertHeading || !alertText) {
       devWarn('[CaseViewer] Alert container or templates not found in DOM');
       return;
     }
@@ -219,8 +219,6 @@ declare const window: WindowWithIO;
       alertContainerRow.hidden = true;
       alertContainerColumn.hidden = true;
       alertContainer.hidden = true;
-      singleViewerAlert.hidden = true;
-      multipleViewersAlert.hidden = true;
       return;
     }
 
@@ -229,25 +227,13 @@ declare const window: WindowWithIO;
     alertContainer.hidden = false;
 
     if (otherViewers === 1) {
-      const singleViewerAlertNameInText = singleViewerAlert.querySelector('.moj-alert__heading');
-
-      if (singleViewerAlertNameInText) {
-        singleViewerAlertNameInText.textContent = `${firstViewerName ?? 'Another user'} is currently viewing this case`;
-      }
-
-      singleViewerAlert.hidden = false;
-      multipleViewersAlert.hidden = true;
+      alertHeading.textContent = `${firstViewerName ?? 'Another user'} is currently viewing this case`;
+      alertText.textContent = 'You will both be able to make changes to this case.';
       return;
     }
 
-    const multipleViewersAlertText = multipleViewersAlert.querySelector('.moj-alert__paragraph');
-
-    if (multipleViewersAlertText) {
-      multipleViewersAlertText.textContent = `Multiple users are currently viewing this case`;
-    }
-
-    singleViewerAlert.hidden = true;
-    multipleViewersAlert.hidden = false;
+    alertHeading.textContent = 'Multiple users are currently viewing this case';
+    alertText.textContent = 'You and the other users will be able to make changes to this case.';
   }
 
   /**

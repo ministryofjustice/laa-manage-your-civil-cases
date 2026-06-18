@@ -44,27 +44,14 @@
   <div class="govuk-grid-row" id="case-viewer-alert-row" hidden>
     <div class="govuk-grid-column-two-thirds" id="case-viewer-alert-column" hidden>
       <div id="case-viewer-alert" class="govuk-!-margin-bottom-4" hidden>
-        {# Template for single viewer alert - JS will update the title #}
-        <div id="viewer-alert-single" hidden>
-          {{ mojAlert({
-            variant: "warning",
-            title: "",
-            showTitleAsHeading: true,
-            text: "You will both be able to make changes to this case.",
-            dismissible: false
-          }) }}
-        </div>
-
-        {# Template for multiple viewers alert - JS will update the title #}
-        <div id="viewer-alert-multiple" hidden>
-          {{ mojAlert({
-            variant: "warning",
-            title: "",
-            showTitleAsHeading: true,
-            text: "You and the other users will be able to make changes to this case.",
-            dismissible: false
-          }) }}
-        </div>
+        {# JS will update the title #}
+        {{ mojAlert({
+          variant: "warning",
+          title: "",
+          showTitleAsHeading: true,
+          text: "",
+          dismissible: false
+        }) }}
       </div>
 
       {# Hidden data attributes for Socket.IO client #}
