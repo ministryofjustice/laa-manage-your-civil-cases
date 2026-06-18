@@ -44,6 +44,6 @@ export async function fetchProviderNameAndDetail(req: Request, caseReference: st
  * @returns {Promise<boolean>} - Returns a promise resolving to true if the provider has more than one category, false otherwise
  */
 export async function hasMoreThanOneCategory(req: Request, caseReference: string): Promise<boolean> {
-    const provider = await fetchProviderNameAndDetail(req, caseReference);
-    return provider.law_category.length > 1;
-  }
+  const provider = await fetchProviderNameAndDetail(req, caseReference);
+  return provider.law_category.length > 1;
+}

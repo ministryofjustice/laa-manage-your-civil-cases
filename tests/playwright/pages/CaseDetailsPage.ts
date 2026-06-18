@@ -205,36 +205,42 @@ export class CaseDetailsTabPage {
     await expect(this.providerNoteError).toBeVisible();
   }
 
- get categoryRow(): Locator {
-  return this.page
-    .getByRole('row')
-    .filter({ has: this.page.getByRole('rowheader', { name: 'Category' }) })
-    .first();
-}
-
-get changeCategoryCardLink(): Locator {
-  return this.page
-    .locator('div')
-    .filter({
-      has: this.page.getByRole('heading', { name: 'Category of law' })
-    })
-    .getByRole('link', { name: 'Change' });
+  /**
+   * Gets the category section
+   */
+  get categoryRow(): Locator {
+    return this.page
+      .getByRole('row')
+      .filter({ has: this.page.getByRole('rowheader', { name: 'Category' }) })
+      .first();
   }
 
-get categoryValue(): Locator {
-  return this.categoryRow.locator('td').first();
-}
+  /**
+   * Gets the category change link
+   */
+  get changeCategoryCardLink(): Locator {
+    return this.page
+      .locator('div')
+      .filter({
+        has: this.page.getByRole('heading', { name: 'Category of law' })
+      })
+      .getByRole('link', { name: 'Change' });
+  }
 
-get changeCategoryLink(): Locator {
-  return this.page.getByRole('link', {
-    name: 'Change'
-  });
-}
+  /**
+   * Gets the category value
+   */
+  get categoryValue(): Locator {
+    return this.categoryRow.locator('td').first();
+  }
 
-async clickChangeCategory(): Promise<void> {
-  await expect(this.changeCategoryLink).toBeVisible();
-  await this.changeCategoryLink.click();
-}
+  /**
+   * Click the change category link
+   */
+  async clickChangeCategory(): Promise<void> {
+    await expect(this.changeCategoryCardLink).toBeVisible();
+    await this.changeCategoryCardLink.click();
+  }
 
   /**
    * Creates a new CaseDetailsTabPage instance for a specific case

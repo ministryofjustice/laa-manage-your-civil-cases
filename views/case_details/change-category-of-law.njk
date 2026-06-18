@@ -39,15 +39,17 @@
 
         <h2 class="govuk-heading-m">{{ t('pages.caseDetails.changeCategoryOfLaw.h2') }}</h2>
 
-        <p class="govuk-body"><strong>{{ t('pages.caseDetails.changeCategoryOfLaw.originalCaseInfo') }}</strong>
+        <p class="govuk-body">
+          <strong>{{ t('pages.caseDetails.changeCategoryOfLaw.originalCaseInfo') }}</strong>
           {{client.category}}</p>
 
         {% if (categoryItems | length) == 2 %}
-          <p class="govuk-body"><strong>{{ t('pages.caseDetails.changeCategoryOfLaw.newCaseInfo') }}:</strong>
+          <p class="govuk-body">
+            <strong>{{ t('pages.caseDetails.changeCategoryOfLaw.newCaseInfo') }}:</strong>
             {{ categoryItems[1].text }}</p>
           <input type="hidden" name="category" value="{{ categoryItems[1].value }}"/>
         {% else %}
-        <h3 class="govuk-heading-s">{{ t('pages.caseDetails.changeCategoryOfLaw.newCaseInfo') }}</h3>
+          <h3 class="govuk-heading-s">{{ t('pages.caseDetails.changeCategoryOfLaw.newCaseInfo') }}</h3>
 
           {{ govukSelect({
             id: "category",
