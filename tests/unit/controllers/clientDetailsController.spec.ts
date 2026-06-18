@@ -39,7 +39,8 @@ describe('Client Details Controller', () => {
   let next: any;
   let renderStub: sinon.SinonStub;
   let statusStub: sinon.SinonStub;
-  let apiServiceStub: sinon.SinonStub;
+  let apiServiceGetClientDetailsStub: sinon.SinonStub;
+  let apiServiceGetFinancialEligibilityStub: sinon.SinonStub;
 
   beforeEach(() => {
     req = {
@@ -59,7 +60,8 @@ describe('Client Details Controller', () => {
     next = sinon.stub();
     
     // Stub the API service
-    apiServiceStub = sinon.stub(apiService, 'getClientDetails');
+    apiServiceGetClientDetailsStub = sinon.stub(apiService, 'getClientDetails');
+    apiServiceGetFinancialEligibilityStub = sinon.stub(apiService, 'getFinancialEligibility');
   });
 
   afterEach(() => {
@@ -79,7 +81,7 @@ describe('Client Details Controller', () => {
       req.clientData = mockClientData;
 
       // Act
-      handleClientDetailsTab(
+      await handleClientDetailsTab(
         req as Request,
         res as Response,
         next,
@@ -87,7 +89,7 @@ describe('Client Details Controller', () => {
       );
 
       // Assert - API service should not be called (middleware handles it)
-      expect(apiServiceStub.called).to.be.false;
+      expect(apiServiceGetClientDetailsStub.called).to.be.false;
       expect(renderStub.calledWith('case_details/index.njk')).to.be.true;
     });
 
@@ -96,7 +98,7 @@ describe('Client Details Controller', () => {
       req.params = {};
 
       // Act
-      handleClientDetailsTab(
+      await handleClientDetailsTab(
         req as Request,
         res as Response,
         next,
@@ -104,7 +106,7 @@ describe('Client Details Controller', () => {
       );
 
       // Assert
-      expect(apiServiceStub.called).to.be.false;
+      expect(apiServiceGetClientDetailsStub.called).to.be.false;
       expect(statusStub.calledWith(400)).to.be.true;
     });
 
@@ -117,7 +119,7 @@ describe('Client Details Controller', () => {
       renderStub.throws(new Error('Render error'));
 
       // Act
-      handleClientDetailsTab(
+      await handleClientDetailsTab(
         req as Request,
         res as Response,
         next,
