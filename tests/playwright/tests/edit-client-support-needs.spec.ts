@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures/index.js';
-import { getClientDetailsUrlByStatus, setupAuth, assertCaseDetailsHeaderPresent, t } from '../utils/index.js';
+import { getClientDetailsUrlByStatus, setupAuth, assertCaseDetailsHeaderPresent, t, assertSummaryCardData, assertSummaryCardState } from '../utils/index.js';
 
 const caseReference = 'PC-1869-9154'; // Default test case reference
 const editSupportNeedsUrl = `/cases/${caseReference}/client-details/change/support-need`;
@@ -39,6 +39,15 @@ test('edit client support needs form should save valid data and redirect to clie
 
   // Should redirect to client details page
   await expect(page).toHaveURL(clientDetailsUrl);
+
+  // Assert support needs summary card is visible with data 
+  await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: true, changeHref: '/client-details/change/support-need' });
+  // Assert the data in the support needs summary card is correct
+  await assertSummaryCardData(page, 'Client support needs', { 'British Sign Language': 'Yes' });
+  // Assert third party details summary card is visible with data
+  await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: true, changeHref: '/client-details/change/third-party', removeHref: '/confirm/remove-third-party' });
+  // Assert the correct data is displayed in the third party data summary card
+  await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Samira Patel', 'Phone number': 'Not provided', 'Email address': 'samira@patel.com', 'Address': '84 Zoo Lane, Birmingham B88 1RW', 'Relationship to client': 'Legal adviser' });
 });
 
 test('edit client support needs form should show validation error if no option selected', async ({ page, i18nSetup }) => {
@@ -105,6 +114,15 @@ test('edit client support needs form should redirect with warning if no changes 
 
   // Check redirect to client details page
   await expect(page).toHaveURL(clientDetailsUrl);
+
+  // Assert support needs summary card is visible with data 
+  await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: true, changeHref: '/client-details/change/support-need' });
+  // Assert the data in the support needs summary card is correct
+  await assertSummaryCardData(page, 'Client support needs', { 'British Sign Language': 'Yes' });
+  // Assert third party details summary card is visible with data
+  await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: true, changeHref: '/client-details/change/third-party', removeHref: '/confirm/remove-third-party' });
+  // Assert the correct data is displayed in the third party data summary card
+  await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Samira Patel', 'Phone number': 'Not provided', 'Email address': 'samira@patel.com', 'Address': '84 Zoo Lane, Birmingham B88 1RW', 'Relationship to client': 'Legal adviser' });
 
   // Assert warning message is shown
   await expect(

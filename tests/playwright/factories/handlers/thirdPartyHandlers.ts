@@ -18,22 +18,24 @@ export function createThirdPartyHandlers(
     http.patch(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details/`, async ({ params, request }) => {
       const { caseReference } = params;
       const updateData = await request.json() as Record<string, any>;
-      
+      console.log('update date recived: ', updateData)
+
       const caseItem = cases.find(c => c.caseReference === caseReference);
-      
+
+      console.log('CaseItem: ', caseItem?.thirdParty)
       if (!caseItem) {
         return HttpResponse.json({ error: 'Case not found' }, { status: HTTP.NOT_FOUND });
       }
 
       // Detect soft delete: personal_relationship = 'OTHER' with nested personal_details.full_name null and pass_phrase null
       const isSoftDelete = updateData.personal_relationship === 'OTHER' &&
-                          updateData.personal_details?.full_name === null &&
-                          updateData.pass_phrase === null;
+        updateData.personal_details?.full_name === null &&
+        updateData.pass_phrase === null;
 
-      if (isSoftDelete) {
+      if (isSoftDelete && caseReference === 'PC-1922-1879') {
         // Return a copy with thirdParty removed - don't mutate shared state
-        const caseWithoutThirdParty = { ...caseItem, thirdParty: null };
-        return HttpResponse.json(transformToApiFormat(caseWithoutThirdParty));
+        caseItem.thirdParty =  null ;
+        return HttpResponse.json(transformToApiFormat(caseItem));
       }
 
       const validationErrors: Record<string, any> = {};
@@ -60,7 +62,40 @@ export function createThirdPartyHandlers(
       if (Object.keys(validationErrors).length > 0) {
         return HttpResponse.json(validationErrors, { status: HTTP.BAD_REQUEST });
       }
-      
+
+
+      if (caseReference === 'PC-1922-1879') {
+        caseItem.thirdParty = {
+          fullName: updateData.personal_details?.full_name ?? '',
+
+          emailAddress:
+            updateData.personal_details?.email ?? '',
+
+          contactNumber:
+            updateData.contact_number ??
+            updateData.personal_details?.mobile_phone ??
+            updateData.mobile_phone ??
+            '',
+
+          safeToCall: true,
+
+          address:
+            updateData.personal_details?.street ??
+            updateData.personal_details?.address ??
+            '',
+
+          postcode:
+            updateData.personal_details?.postcode ?? '',
+
+          relationshipToClient: {
+            selected: [updateData.personal_relationship]
+          },
+          passphraseSetUp: {
+            selected: [updateData.thirdPartyPassphraseSetUp],
+            passphrase: updateData.pass_phrase ?? updateData.thirdPartyPassphrase ?? undefined,
+          }
+        };
+      }
       return HttpResponse.json(transformToApiFormat(caseItem));
     }),
 
@@ -69,9 +104,9 @@ export function createThirdPartyHandlers(
       const { caseReference } = params;
       const thirdPartyData = await request.json() as Record<string, any>;
       console.log(`[MSW] Intercepting POST /case/${caseReference}/thirdparty_details/`);
-      
+
       const caseItem = cases.find(c => c.caseReference === caseReference);
-      
+
       if (!caseItem) {
         console.log(`[MSW] Case ${caseReference} not found in mock data (POST thirdparty_details)`);
         return HttpResponse.json({ error: 'Case not found' }, { status: HTTP.NOT_FOUND });
@@ -80,8 +115,9 @@ export function createThirdPartyHandlers(
       const validationErrors: Record<string, any> = {};
 
       if (typeof thirdPartyData !== 'object' || thirdPartyData === null || Array.isArray(thirdPartyData)) {
-        return HttpResponse.json({ detail: 'Invalid request body format' }, { status: HTTP.BAD_REQUEST
-         });
+        return HttpResponse.json({ detail: 'Invalid request body format' }, {
+          status: HTTP.BAD_REQUEST
+        });
       }
 
       // Validate top-level third party fields
@@ -102,6 +138,41 @@ export function createThirdPartyHandlers(
       if (Object.keys(validationErrors).length > 0) {
         return HttpResponse.json(validationErrors, { status: HTTP.BAD_REQUEST });
       }
+
+      if (caseReference === 'PC-1357-1212') {
+        caseItem.thirdParty = {
+          fullName: thirdPartyData.personal_details?.full_name ?? '',
+
+          emailAddress:
+            thirdPartyData.personal_details?.email ?? '',
+
+          contactNumber:
+            thirdPartyData.contact_number ??
+            thirdPartyData.personal_details?.mobile_phone ??
+            thirdPartyData.mobile_phone ??
+            '',
+
+          safeToCall: true,
+
+          address:
+            thirdPartyData.personal_details?.street ??
+            thirdPartyData.personal_details?.address ??
+            '',
+
+          postcode:
+            thirdPartyData.personal_details?.postcode ?? '',
+
+          relationshipToClient: {
+            selected: [thirdPartyData.personal_relationship]
+          },
+
+          passphraseSetUp: {
+            selected: thirdPartyData.pass_phrase ? ['YES'] : ['NO'],
+            passphrase: thirdPartyData.pass_phrase ?? undefined
+          }
+        };
+      }
+
       console.log(`[MSW] Returning updated case data for ${caseReference} (POST thirdparty_details)`);
       return HttpResponse.json(transformToApiFormat(caseItem), { status: 201 });
     }),
@@ -110,9 +181,9 @@ export function createThirdPartyHandlers(
     http.put(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details/`, async ({ params, request }) => {
       const { caseReference } = params;
       const thirdPartyData = await request.json() as Record<string, any>;
-      
+
       const caseItem = cases.find(c => c.caseReference === caseReference);
-      
+
       if (!caseItem) {
         return HttpResponse.json({ error: 'Case not found' }, { status: HTTP.NOT_FOUND });
       }
@@ -141,6 +212,7 @@ export function createThirdPartyHandlers(
       if (Object.keys(validationErrors).length > 0) {
         return HttpResponse.json(validationErrors, { status: HTTP.BAD_REQUEST });
       }
+
       return HttpResponse.json(transformToApiFormat(caseItem));
     })
   ];

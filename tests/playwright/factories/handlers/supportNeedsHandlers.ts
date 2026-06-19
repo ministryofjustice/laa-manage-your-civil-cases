@@ -20,7 +20,7 @@ export function createSupportNeedsHandlers(
       const updateData = await request.json() as Record<string, any>;
 
       const caseItem = cases.find(c => c.caseReference === caseReference);
-      
+
       if (!caseItem) {
         return HttpResponse.json({ error: 'Case not found' }, { status: HTTP.NOT_FOUND });
       }
@@ -37,18 +37,18 @@ export function createSupportNeedsHandlers(
 
       // Validate nullable boolean field
       validateNullableBooleanField(updateData, 'no_adaptations_required', validationErrors);
-      
+
       // Validation for soft delete (remove support needs)
       if (updateData.no_adaptations_required === true) {
-        
+
         // Verify all required fields are present for soft delete
         const requiredFields = ['bsl_webcam', 'minicom', 'text_relay', 'skype_webcam', 'callback_preference', 'language', 'notes'];
         const missingFields = requiredFields.filter(field => !(field in updateData));
-        
+
         if (missingFields.length > 0) {
           validationErrors._soft_delete = [`Missing required fields: ${missingFields.join(', ')}`];
         }
-        
+
         // Verify fields are properly cleared (all booleans false, language null, notes empty)
         const expectedClearPayload = {
           bsl_webcam: false,
@@ -60,13 +60,13 @@ export function createSupportNeedsHandlers(
           notes: '',
           no_adaptations_required: true
         };
-        
+
         const incorrectFields = Object.entries(expectedClearPayload).filter(([key, expectedValue]) => {
           return updateData[key] !== expectedValue;
         });
-        
+
         if (incorrectFields.length > 0) {
-          validationErrors._soft_delete_values = incorrectFields.map(([key, expected]) => 
+          validationErrors._soft_delete_values = incorrectFields.map(([key, expected]) =>
             `${key}: expected ${JSON.stringify(expected)}, got ${JSON.stringify(updateData[key])}`
           );
         }
@@ -89,7 +89,18 @@ export function createSupportNeedsHandlers(
       if (Object.keys(validationErrors).length > 0) {
         return HttpResponse.json(validationErrors, { status: HTTP.BAD_REQUEST });
       }
-      
+
+       if (caseReference === 'PC-1977-1241' || caseReference === 'PC-1122-3344') {
+      caseItem.clientSupportNeeds = {
+        bslWebcam: updateData.bsl_webcam ? 'Yes' : 'No',
+        textRelay: updateData.text_relay ? 'Yes' : 'No',
+        skype: updateData.skype_webcam ?? false,
+        minicom: updateData.minicom ?? false,
+        callbackPreference: updateData.callback_preference ? 'Yes' : 'No',
+        languageSupportNeeds: updateData.language ?? '',
+        notes: updateData.notes ?? ''
+      };
+    }
       return HttpResponse.json(transformToApiFormat(caseItem));
     })
   ];

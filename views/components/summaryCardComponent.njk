@@ -76,6 +76,7 @@
   {% set summaryRows = [] %}
   {% set hasAnyData = false %}
   {% set isSupportNeedsSummaryCard = options.card and options.card.id == "client-support-needs" %}
+  {% set isThirdPartyCard = options.card and options.card.id == "third-party-contact" %}
 
   {% for row in options.rows %}
     {# Extract value from data object using the key #}
@@ -111,6 +112,13 @@
 
     {# Check if finalValue contains HTML or if html flag is set #}
     {% set isHtml = row.html == true or(finalValue and('<' in finalValue)) %}
+
+    {# Decide when to skip row in `Client third party details` summary card component #}
+    {% if isThirdPartyCard %}
+      {% if not trimmedValue %}
+        {% set skipRow = true %}
+      {% endif %}
+    {% endif %}
 
     {# Decide when to skip row in `Client support needs` summary card component #}
     {% set skipRow = false %}
@@ -150,11 +158,20 @@
   {% endfor %}
 
   {# If no rows, show "No support needs" #}
-  {% if summaryRows.length == 0 %}
+
+  {% if summaryRows | length == 0 %}
+    {% if isSupportNeedsSummaryCard %}
+      {% set emptyText = "No support needs" %}
+    {% elif isThirdPartyCard %}
+      {% set emptyText = "No third party contact required" %}
+    {% else %}
+      {% set emptyText = t('pages.caseDetails.notProvided') %}
+    {% endif %}
+
     {% set summaryRows = [
       {
         key: {
-          text: "No support needs"
+          text: emptyText
         },
         value: {
           text: ""

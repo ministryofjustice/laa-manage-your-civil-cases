@@ -201,6 +201,7 @@
   ]
 }) }}
 
+{# Support needs summary card #}
 {% set hasSupportNeeds = (data.clientSupportNeeds.bslWebcam | lower == "yes")or(data.clientSupportNeeds.textRelay | lower == "yes")or(data.clientSupportNeeds.callbackPreference | lower == "yes")or(data.clientSupportNeeds.languageSupportNeeds | trim != "")or(data.clientSupportNeeds.notes | trim != "") %}
 
 {% set supportNeedsAction = {
@@ -244,65 +245,73 @@
   ]
 }) }}
 
-{% if data.thirdParty and(data.thirdParty.relationshipToClient != 'OTHER' or data.thirdParty.fullName) %}
-  {# Third party info summary card #}
-  {{ summaryCardComponent({
-    data: constructedData,
-    card: {
-      title: {
-        text: t('pages.caseDetails.clientDetails.thirdPartyContact')
-      },
-      actions: {
-        items: [
-          {
-            href: "/cases/" + data.caseReference + "/client-details/change/third-party",
-            text: t('common.change'),
-            visuallyHiddenText: t('accessibility.visuallyHiddenText.changeThirdPartyContact')
-          },
-          {
-            href: "/cases/" + data.caseReference + "/confirm/remove-third-party/",
-            text: t('common.remove'),
-            visuallyHiddenText: t('accessibility.visuallyHiddenText.removeThirdPartyContact')
-          }
-        ]
-      }
-    },
-    rows: [
-      {
-        label: t('forms.clientDetails.thirdParty.name'),
-        key: "fullNameThirdParty"
-      },
-      {
-        label: t('forms.clientDetails.thirdParty.phoneNumber'),
-        key: "computedPhoneNumberThirdParty",
-        html: true
-      },
-      {
-        label: t('forms.clientDetails.thirdParty.emailAddress'),
-        key: "emailAddressThirdParty"
-      },
-      {
-        label: t('forms.clientDetails.thirdParty.address'),
-        key: "computedAddressThirdParty",
-        html: true
-      },
-      {
-        label: t('forms.clientDetails.thirdParty.relationshipToClient.title'),
-        key: "relationshipToClientThirdParty"
-      },
-      {
-        label: t('forms.clientDetails.thirdParty.passphrase.title'),
-        key: "passphraseContent",
-        html: true
-      }
-    ]
-  }) }}
+{# Third party info summary card #}
+{% set hasThirdParty = data.thirdParty and((data.thirdParty.fullName | trim != "")or(data.thirdParty.relationshipToClient | lower != "other")) %}
+
+{% if hasThirdParty %}
+  {% set thirdPartyRows = [
+    {
+      label: t('forms.clientDetails.thirdParty.name'),
+      key: "fullNameThirdParty"
+    }, {
+      label: t('forms.clientDetails.thirdParty.phoneNumber'),
+      key: "computedPhoneNumberThirdParty",
+      html: true
+    }, {
+      label: t('forms.clientDetails.thirdParty.emailAddress'),
+      key: "emailAddressThirdParty"
+    }, {
+      label: t('forms.clientDetails.thirdParty.address'),
+      key: "computedAddressThirdParty",
+      html: true
+    }, {
+      label: t('forms.clientDetails.thirdParty.relationshipToClient.title'),
+      key: "relationshipToClientThirdParty"
+    }, {
+      label: t('forms.clientDetails.thirdParty.passphrase.title'),
+      key: "passphraseContent",
+      html: true
+    }
+  ] %}
 {% else %}
-  <div class="govuk-width-container">
-    {{ govukButton({
-      href: "/cases/" + data.caseReference + "/client-details/add/third-party",
-      text: t('pages.caseDetails.buttons.addThirdPartyContact'),
-      classes: "govuk-button--secondary"
-    }) }}
-  </div>
+  {% set thirdPartyRows = [] %}
 {% endif %}
+
+{% if hasThirdParty %}
+  {% set thirdPartyAction = [
+    {
+      href: "/cases/" + data.caseReference + "/client-details/change/third-party",
+      text: t('common.change'),
+      visuallyHiddenText: t('accessibility.visuallyHiddenText.changeThirdPartyContact')
+    },
+    {
+      href: "/cases/" + data.caseReference + "/confirm/remove-third-party/",
+      text: t('common.remove'),
+      visuallyHiddenText: t('accessibility.visuallyHiddenText.removeThirdPartyContact')
+    }
+  ] %}
+{% else %}
+  {% set thirdPartyAction = [
+    {
+      href: "/cases/" + data.caseReference + "/client-details/add/third-party",
+      text: t('common.add') | capitalize,
+      visuallyHiddenText: t('accessibility.visuallyHiddenText.addThirdPartyContact')
+    }
+  ] %}
+{% endif %}
+
+{{ summaryCardComponent({
+  data: constructedData,
+  card: {
+    id: "third-party-contact",
+    title: {
+      text: t('pages.caseDetails.clientDetails.thirdPartyContact')
+    },
+    
+actions: {
+  items: thirdPartyAction
+}
+
+  },
+  rows: thirdPartyRows
+}) }}

@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures/index.js';
-import { getClientDetailsUrlByStatus, setupAuth, assertCaseDetailsHeaderPresent } from '../utils/index.js';
+import { getClientDetailsUrlByStatus, setupAuth, assertCaseDetailsHeaderPresent, assertSummaryCardData, assertSummaryCardState } from '../utils/index.js';
 import { ThirdPartyFormPage } from '../pages/ThirdPartyFormPage.js';
 
 const clientDetailsUrl = getClientDetailsUrlByStatus('default');
@@ -41,14 +41,7 @@ test('save button should redirect to client details when valid data submitted', 
   await thirdPartyPage.navigate();
 
   // Update third party details
-  await thirdPartyPage.fillValidThirdPartyData({
-    name: 'Jane Smith',
-    phone: '07700900456',
-    email: 'jane.smith@example.com',
-    relationshipValue: 'PARENT_GUARDIAN',
-    safeToCall: true,
-    hasPassphrase: false
-  });
+  await thirdPartyPage.fillValidThirdPartyData({ name: 'Jane Smith', phone: '07700900456', email: 'jane.smith@example.com', relationshipValue: 'PARENT_GUARDIAN', safeToCall: true, hasPassphrase: false });
 
   // Submit the form
   await thirdPartyPage.clickSave();
@@ -57,6 +50,14 @@ test('save button should redirect to client details when valid data submitted', 
   await thirdPartyPage.expectSuccessfulSubmission();
 
   // Assert the new 3rd party details are shown.
+  await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
+  // Assert third party details summary card is visible with data
+  await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: true, changeHref: '/client-details/change/third-party', removeHref: '/confirm/remove-third-party' });
+  // Assert the correct data is displayed in the third party data summary card
+  await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Jane Smith', 'Phone number': '07700900456', 'Email address': 'jane.smith@example.com', 'Relationship to client': 'Parent or guardian' });
+
+  // Check error summary is not present
+  await expect(page.locator('.govuk-error-summary')).not.toBeVisible();
   //TODO
 });
 
@@ -93,15 +94,7 @@ test('edit third party form displays postcode validation errors correctly', asyn
   await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
 
   // Update third party details
-  await thirdPartyPage.fillValidThirdPartyData({
-    name: 'Jane Smith',
-    phone: '07700900456',
-    email: 'jane.smith@example.com',
-    relationshipValue: 'PARENT_GUARDIAN',
-    safeToCall: true,
-    hasPassphrase: false,
-    postcode: "TEST567890123" // Invalid postcode input 
-  });
+  await thirdPartyPage.fillValidThirdPartyData({ name: 'Jane Smith', phone: '07700900456', email: 'jane.smith@example.com', relationshipValue: 'PARENT_GUARDIAN', safeToCall: true, hasPassphrase: false, postcode: "TEST567890123" }); // Invalid postcode 
 
   // Submit the form
   await thirdPartyPage.clickSave();
@@ -126,10 +119,22 @@ test('unchanged fields show "no changes" banner and redirect', async ({ page }) 
   await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
 
   // Click save without making any changes
-  await Promise.all([page.waitForURL(clientDetailsUrl),thirdPartyPage.clickSave()]);
+  await thirdPartyPage.clickSave();
 
-  // Check "no changes" banner appears on client details page
-  await expect(page.getByText('No changes were made')).toBeVisible();
+  // Redirect to client details page
+  await thirdPartyPage.expectSuccessfulSubmission();
+
+  // Assert the no change warning banner is displayed
+  const warningBanner = page.getByRole('region', { name: 'warning: No changes were made' });
+  await expect(warningBanner).toBeVisible();
+  await expect(warningBanner).toContainText('No changes were made');
+
+  // Assert support needs summary card is visible with no data 
+  await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
+  // Assert third party details summary card is visible with data
+  await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: true, changeHref: '/client-details/change/third-party', removeHref: '/confirm/remove-third-party' });
+  // Assert the correct data is displayed in the third party data summary card
+  await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Jane Smith', 'Phone number': '07700900456', 'Email address': 'jane.smith@example.com', 'Relationship to client': 'Parent or guardian' });
 
   // Check error summary is not present
   await expect(page.locator('.govuk-error-summary')).not.toBeVisible();

@@ -54,6 +54,7 @@ export function transformClientDetailsItem(item: unknown): ClientDetailsResponse
   // Transform state note
   const state_note = transformStateNote(item.state_note);
 
+  console.log('[MSW] tranforming client support needs', item.adaptation_details);
   // Transform client support needs
   const clientSupportNeeds = transformClientSupportNeeds(item.adaptation_details);
 
