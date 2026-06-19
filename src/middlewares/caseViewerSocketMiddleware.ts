@@ -202,8 +202,28 @@ declare const window: WindowWithIO;
     const alertContainerRow = document.getElementById('case-viewer-alert-row');
     const alertContainerColumn = document.getElementById('case-viewer-alert-column');
     const alertContainer = document.getElementById('case-viewer-alert');
-    const alertHeading = alertContainer?.querySelector('.moj-alert__heading');
-    const alertText = alertContainer?.querySelector('.moj-alert__paragraph');
+    const alertContent = alertContainer?.querySelector('.moj-alert__content');
+
+    if (!alertContent) {
+      devWarn('[CaseViewer] Alert content not found');
+      return;
+    }
+
+    // Have to create these elements as they don't exist on the template
+    let alertHeading = alertContent.querySelector('.moj-alert__heading') as HTMLElement | null;
+    let alertText = alertContent.querySelector('.moj-alert__paragraph') as HTMLElement | null;
+
+    if (!alertHeading) {
+      alertHeading = document.createElement('h2');
+      alertHeading.className = 'moj-alert__heading';
+      alertContent.appendChild(alertHeading);
+    }
+
+    if (!alertText) {
+      alertText = document.createElement('p');
+      alertText.className = 'moj-alert__paragraph';
+      alertContent.appendChild(alertText);
+    }
 
     if (!alertContainerRow || !alertContainerColumn || !alertContainer || !alertHeading || !alertText) {
       devWarn('[CaseViewer] Alert container or templates not found in DOM');

@@ -30,9 +30,8 @@ describe('caseViewerSocketMiddleware', () => {
       <div class="govuk-grid-row" id="case-viewer-alert-row" hidden>
         <div class="govuk-grid-column-two-thirds" id="case-viewer-alert-column" hidden>
           <div id="case-viewer-alert" class="govuk-!-margin-bottom-4" hidden>
-            <div class="moj-alert moj-alert--warning">
-              <h2 class="moj-alert__heading"></h2>
-              <p class="moj-alert__paragraph"></p>
+            <div role="region" class="moj-alert moj-alert--warning" aria-label="warning: " data-module="moj-alert">
+              <div class="moj-alert__content"></div>
             </div>
           </div>
         </div>
@@ -86,5 +85,15 @@ describe('caseViewerSocketMiddleware', () => {
     handler({ viewerCount: 4, firstViewerName: 'Alex Arnold Chamberlain' });
 
     expect(dom.window.document.querySelector('#case-viewer-alert .moj-alert__heading')?.textContent).to.equal('Multiple users are currently viewing this case');
+  });
+
+  it('hides viewer alert when no other users are viewing the case', () => {
+    const handler = socketHandlers['viewers-updated'] as ViewerUpdateHandler;
+
+    handler({ viewerCount: 1 });
+
+    expect(dom.window.document.getElementById('case-viewer-alert-row')?.hidden).to.equal(true);
+    expect(dom.window.document.getElementById('case-viewer-alert-column')?.hidden).to.equal(true);
+    expect(dom.window.document.getElementById('case-viewer-alert')?.hidden).to.equal(true);
   });
 });
