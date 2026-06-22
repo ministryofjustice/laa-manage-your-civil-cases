@@ -41,8 +41,8 @@
   {% endif %}
 
   {# Container for real-time viewer alert - populated by Socket.IO client #}
-  <div class="govuk-grid-row" id="case-viewer-alert-row" hidden>
-    <div class="govuk-grid-column-two-thirds" id="case-viewer-alert-column" hidden>
+  <div class="govuk-grid-row mcc-alert-summary" id="case-viewer-alert-row" hidden>
+    <div class="govuk-grid-column-two-thirds mcc-error-banner" id="case-viewer-alert-column" hidden>
       <div id="case-viewer-alert" class="govuk-!-margin-bottom-4" hidden>
         {# JS will update the title #}
         {{ mojAlert({

@@ -27,8 +27,8 @@ describe('caseViewerSocketMiddleware', () => {
         data-user-name="Specialist Provider">
       </div>
 
-      <div class="govuk-grid-row" id="case-viewer-alert-row" hidden>
-        <div class="govuk-grid-column-two-thirds" id="case-viewer-alert-column" hidden>
+      <div class="govuk-grid-row mcc-alert-summary" id="case-viewer-alert-row" hidden>
+        <div class="govuk-grid-column-two-thirds mcc-error-banner" id="case-viewer-alert-column" hidden>
           <div id="case-viewer-alert" class="govuk-!-margin-bottom-4" hidden>
             <div role="region" class="moj-alert moj-alert--warning" aria-label="warning: " data-module="moj-alert">
               <div class="moj-alert__content"></div>
