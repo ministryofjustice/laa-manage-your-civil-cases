@@ -127,20 +127,20 @@ export const getViewerCount = async (
   return viewers.length;
 };
 
-/** 
- * Gets the name of the first viewer, when a second person is viewing the case.
+/**
+ * Gets the name of the first viewer other than the current user.
  * @async
  * @param {RedisClientType} redisClient - Redis client instance
  * @param {string} caseReference - The unique reference number of the case
- * @returns {Promise<string | undefined>} User name or `undefined`
+ * @param {string} currentSessionId - Current user's session identifier to exclude
+ * @returns {Promise<string | undefined>} Other viewer name or `undefined`
  */
-export const getFirstViewerName = async (
+export const getTheOtherViewerName = async (
   redisClient: RedisClientType,
-  caseReference: string
+  caseReference: string,
+  currentSessionId: string
 ): Promise<string | undefined> => {
-  const viewers = await getCaseViewers(redisClient, caseReference, '');
-
-  const firstViewer = viewers.sort((a, b) => a.joinedAt - b.joinedAt)[0];
-
-  return firstViewer?.userName;
+  const viewers = await getCaseViewers(redisClient, caseReference, currentSessionId);
+  const firstOtherViewer = viewers.sort((a, b) => a.joinedAt - b.joinedAt)[0];
+  return firstOtherViewer?.userName;
 };

@@ -158,6 +158,7 @@ export async function saveProviderNote(req: Request, res: Response, next: NextFu
           characterThreshold: CHARACTER_THRESHOLD,
           caseReference,
           csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,
+          sessionID: req.sessionID,
           error: {
             inputErrors,
             errorSummaryList

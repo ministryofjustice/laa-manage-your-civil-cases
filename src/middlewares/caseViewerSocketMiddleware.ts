@@ -61,7 +61,7 @@ declare const window: WindowWithIO;
 
     socketInstance.on('viewers-updated', function (data: ViewersUpdatedData) {
       devLog('[CaseViewer] Received viewers-updated: ' + JSON.stringify(data));
-      updateViewerAlert(data.viewerCount, data.firstViewerName);
+      updateViewerAlert(data.viewerCount, data.otherViewerName);
     });
 
     socketInstance.on('heartbeat-ack', function () {
@@ -195,14 +195,23 @@ declare const window: WindowWithIO;
    * Updates the MOJ Alert banner showing how many other users are viewing the case.
    * Hides alert when no other viewers, shows warning alert otherwise.
    * @param {number} viewerCount - Total number of viewers including current user
-   * @param {string} firstViewerName - The name of the first person viewing the case
+   * @param {string} otherViewerName - The name of the first person viewing the case
    * @returns {void}
    */
-  function updateViewerAlert(viewerCount: number, firstViewerName?: string): void {
+  function updateViewerAlert(viewerCount: number, otherViewerName?: string): void {
+    const caseElement = document.querySelector('[data-case-reference]') as HTMLElement | null;
+    const isErrorShown = caseElement?.dataset.hasError === 'true';
     const alertContainerRow = document.getElementById('case-viewer-alert-row');
     const alertContainerColumn = document.getElementById('case-viewer-alert-column');
     const alertContainer = document.getElementById('case-viewer-alert');
     const alertContent = alertContainer?.querySelector('.moj-alert__content');
+
+    if (isErrorShown) {
+      if (alertContainerRow) {alertContainerRow.hidden = true;}
+      if (alertContainerColumn) { alertContainerColumn.hidden = true;}
+      if (alertContainer) { alertContainer.hidden = true;}
+      return;
+    }
 
     if (!alertContent) {
       devWarn('[CaseViewer] Alert content not found');
@@ -247,7 +256,7 @@ declare const window: WindowWithIO;
     alertContainer.hidden = false;
 
     if (otherViewers === 1) {
-      alertHeading.textContent = `${firstViewerName ?? 'Another user'} is currently viewing this case`;
+      alertHeading.textContent = `${otherViewerName ?? 'Another user'} is currently viewing this case`;
       alertText.textContent = 'You will both be able to make changes to this case.';
       return;
     }

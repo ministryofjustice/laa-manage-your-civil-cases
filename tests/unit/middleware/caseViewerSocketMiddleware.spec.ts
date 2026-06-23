@@ -4,7 +4,7 @@ import { JSDOM } from 'jsdom';
 import path from 'path';
 import { pathToFileURL } from 'url';
 
-type ViewerUpdateHandler = (data: { viewerCount: number; firstViewerName?: string }) => void;
+type ViewerUpdateHandler = (data: { viewerCount: number; otherViewerName?: string }) => void;
 
 describe('caseViewerSocketMiddleware', () => {
   let dom: JSDOM;
@@ -21,11 +21,6 @@ describe('caseViewerSocketMiddleware', () => {
     dom = new JSDOM(`
       <meta name="user-email" content="viewer@example.com" />
 
-      <div
-        data-case-reference="HW-0000-0000"
-        data-session-id="session-123"
-        data-user-name="Specialist Provider">
-      </div>
 
       <div class="govuk-grid-row mcc-alert-summary" id="case-viewer-alert-row" hidden>
         <div class="govuk-grid-column-two-thirds mcc-error-banner" id="case-viewer-alert-column" hidden>
@@ -36,6 +31,8 @@ describe('caseViewerSocketMiddleware', () => {
           </div>
         </div>
       </div>
+
+      <div data-case-reference="HW-0000-0000" data-session-id="session-123" data-user-name="Specialist Provider" data-has-error="false"> </div>
     `);
 
     socketHandlers = {};
@@ -70,7 +67,7 @@ describe('caseViewerSocketMiddleware', () => {
     const handler = socketHandlers['viewers-updated'] as ViewerUpdateHandler;
     expect(handler).to.be.a('function');
 
-    handler({ viewerCount: 2, firstViewerName: 'Alex Arnold Chamberlain' });
+    handler({ viewerCount: 2, otherViewerName: 'Alex Arnold Chamberlain' });
 
     expect(dom.window.document.getElementById('case-viewer-alert-row')?.hidden).to.equal(false);
     expect(dom.window.document.getElementById('case-viewer-alert-column')?.hidden).to.equal(false);
@@ -82,7 +79,7 @@ describe('caseViewerSocketMiddleware', () => {
     const handler = socketHandlers['viewers-updated'] as ViewerUpdateHandler;
     expect(handler).to.be.a('function');
 
-    handler({ viewerCount: 4, firstViewerName: 'Alex Arnold Chamberlain' });
+    handler({ viewerCount: 4, otherViewerName: 'Alex Arnold Chamberlain' });
 
     expect(dom.window.document.querySelector('#case-viewer-alert .moj-alert__heading')?.textContent).to.equal('Multiple users are currently viewing this case');
   });
@@ -91,6 +88,18 @@ describe('caseViewerSocketMiddleware', () => {
     const handler = socketHandlers['viewers-updated'] as ViewerUpdateHandler;
 
     handler({ viewerCount: 1 });
+
+    expect(dom.window.document.getElementById('case-viewer-alert-row')?.hidden).to.equal(true);
+    expect(dom.window.document.getElementById('case-viewer-alert-column')?.hidden).to.equal(true);
+    expect(dom.window.document.getElementById('case-viewer-alert')?.hidden).to.equal(true);
+  });
+
+  it('does not show viewer alert component on error pages', () => {
+    const caseElement = dom.window.document.querySelector('[data-case-reference]') as HTMLElement;
+    caseElement.dataset.hasError = 'true';
+
+    const handler = socketHandlers['viewers-updated'] as ViewerUpdateHandler;
+    handler({ viewerCount: 2, otherViewerName: 'Alex Arnold Chamberlain' });
 
     expect(dom.window.document.getElementById('case-viewer-alert-row')?.hidden).to.equal(true);
     expect(dom.window.document.getElementById('case-viewer-alert-column')?.hidden).to.equal(true);

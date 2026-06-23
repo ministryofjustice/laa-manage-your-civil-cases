@@ -11,7 +11,7 @@ import {
   removeCaseViewer,
   refreshViewerHeartbeat,
   getViewerCount,
-  getFirstViewerName
+  getTheOtherViewerName
 } from './caseViewerService.js';
 import type { SocketData } from '#types/socket-io-types.js';
 import { devError, devLog } from '#src/scripts/helpers/devLogger.js';
@@ -101,6 +101,31 @@ const configureSocketIORedisAdapter = async (io: SocketIOServer, redisConfig: Re
 };
 
 /**
+ * Emits viewer updates to each socket with a first viewer name that excludes the recipient.
+ * @param {SocketIOServer} io - Socket.IO server instance
+ * @param {RedisClientType} redisClient - Redis client for viewer tracking
+ * @param {string} caseReference - Case reference for room and Redis key
+ * @returns {Promise<void>}
+ */
+const emitViewersUpdated = async (io: SocketIOServer, redisClient: RedisClientType, caseReference: string): Promise<void> => {
+  const roomName = `case:${caseReference}`;
+  const viewerCount = await getViewerCount(redisClient, caseReference, '');
+  const roomSockets = await io.in(roomName).fetchSockets();
+
+  await Promise.all(
+    roomSockets.map(async roomSocket => {
+      const roomSocketData = roomSocket.data as SocketData;
+      const otherViewerName = await getTheOtherViewerName(redisClient, caseReference, roomSocketData.sessionId ?? '');
+      roomSocket.emit('viewers-updated', {
+        caseReference,
+        viewerCount,
+        otherViewerName
+      });
+    })
+  );
+};
+
+/**
  * Sets up Socket.IO server with Redis adapter for distributed architecture.
  * Configures event handlers for case viewer tracking and real-time notifications.
  * @param {HTTPServer} httpServer - Node.js HTTP server instance
@@ -147,15 +172,7 @@ export const setupSocketIO = (
         if (redisClient) {
           // Add viewer to Redis
           await addCaseViewer(redisClient, caseReference, userId, sessionId, userName);
-          const viewerCount = await getViewerCount(redisClient, caseReference, ''); // Get total viewer count (use empty string to get all viewers)
-          const firstViewerName = await getFirstViewerName(redisClient, caseReference); // Get the name of the person who first viewed the case
-
-          // Notify all users in the room
-          io.to(`case:${caseReference}`).emit('viewers-updated', {
-            caseReference,
-            viewerCount,
-            firstViewerName
-          });
+          await emitViewersUpdated(io, redisClient, caseReference);
         }
 
         devLog(chalk.blue(`👀 User ${userId} joined case ${caseReference}`));
@@ -195,13 +212,7 @@ export const setupSocketIO = (
         if (redisClient) {
           // Remove viewer from Redis
           await removeCaseViewer(redisClient, caseReference, sessionId);
-          const viewerCount = await getViewerCount(redisClient, caseReference, ''); // Get total viewer count (use empty string to get all viewers)
-          const firstViewerName = await getFirstViewerName(redisClient, caseReference); // Get the name of the person who first viewed the case
-          io.to(`case:${caseReference}`).emit('viewers-updated', {
-            caseReference,
-            viewerCount,
-            firstViewerName 
-          });
+          await emitViewersUpdated(io, redisClient, caseReference);
         }
 
         devLog(chalk.blue(`👋 User left case ${caseReference}`));
@@ -217,13 +228,7 @@ export const setupSocketIO = (
 
         if (caseReference && sessionId && redisClient) {
           await removeCaseViewer(redisClient, caseReference, sessionId);
-          const viewerCount = await getViewerCount(redisClient, caseReference, ''); // Get total viewer count (use empty string to get all viewers)
-          const firstViewerName = await getFirstViewerName(redisClient, caseReference); // Get the name of the person who first viewed the case
-          io.to(`case:${caseReference}`).emit('viewers-updated', {
-            caseReference,
-            viewerCount,
-            firstViewerName
-          });
+          await emitViewersUpdated(io, redisClient, caseReference);
           devLog(chalk.blue(`🔌 User disconnected from case ${caseReference}`));
         }
       } catch (error) {

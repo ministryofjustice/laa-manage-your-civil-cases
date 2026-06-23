@@ -55,7 +55,7 @@
       </div>
 
       {# Hidden data attributes for Socket.IO client #}
-      <div data-case-reference="{{ caseReference }}" data-session-id="{{ sessionID }}" data-user-name="{{ userName }}" hidden></div>
+      <div data-case-reference="{{ caseReference }}" data-session-id="{{ sessionID }}" data-user-name="{{ userName }}" data-has-error="{{ 'true' if error else 'false' }}" hidden></div>
     </div>
   </div>
 

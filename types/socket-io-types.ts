@@ -23,7 +23,7 @@ export interface Socket {
 export interface ViewersUpdatedData {
   caseReference: string;
   viewerCount: number;
-  firstViewerName: string;
+  otherViewerName?: string;
 }
 
 /**
