@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
-import { devLog, createProcessedError, safeString, validCaseReference, formatValidationError, safeBodyString, t, fetchProviderNameAndDetail } from '#src/scripts/helpers/index.js';
+import { devLog, createProcessedError, safeString, validCaseReference, formatValidationError, safeBodyString, t, fetchProviderNameAndDetail, getSessionString } from '#src/scripts/helpers/index.js';
 import { validationResult } from 'express-validator';
 import { HTTP } from '#src/services/api/base/constants.js';
 import config from '#config.js';
@@ -42,6 +42,10 @@ export async function getChangeCategoryOfLaw(req: Request, res: Response, next: 
       placeholderText: t('pages.caseDetails.changeCategoryOfLaw.categoryPlaceholder'),
       excludeCode: currentCategoryCode
     });
+
+    if (categoryItems.length <= 1) { 
+      return res.redirect(`/cases/${caseReference}/client-details`);
+    }
 
     res.render('case_details/change-category-of-law.njk', {
       caseReference,
@@ -128,7 +132,7 @@ export async function submitChangeCategoryOfLawForm(req: Request, res: Response,
   }
 
   try {
-    const response = await apiService.changeCaseCategory(req.axiosMiddleware, caseReference, category, notes );
+    const response = await apiService.changeCaseCategory(req.axiosMiddleware, caseReference, category, notes);
 
     if (response.status === 'error') {
       throw new Error(response.message || 'Failed to change category');
@@ -139,7 +143,7 @@ export async function submitChangeCategoryOfLawForm(req: Request, res: Response,
     return res.redirect(`/cases/${caseReference}/case-details`);
 
   } catch (error) {
-    const processedError = createProcessedError( error, `changing category for case ${caseReference}`);
+    const processedError = createProcessedError(error, `changing category for case ${caseReference}`);
 
     return next(processedError);
   }
