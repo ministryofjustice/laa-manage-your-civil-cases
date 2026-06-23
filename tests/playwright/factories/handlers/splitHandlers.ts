@@ -44,6 +44,31 @@ export const createSplitHandlers = (
         });
       }
 
+      if (id === "14") {
+        return HttpResponse.json({
+          id: "14",
+          name: "Generic Provider Public Law",
+          law_category: [
+            {
+              code: "discrimination",
+              name: "Discrimination, disability and other issues",
+              description: "Discrimination",
+
+            },
+            {
+              code: "debt",
+              name: "Debt, money problems and bankruptcy",
+              description: ""
+            },
+            {
+              code: "housing",
+              name: "Housing, eviction and homelessness",
+              description: ""
+            }
+          ]
+        });
+      }
+
       return HttpResponse.json({ detail: "Provider not found" }, { status: HTTP.NOT_FOUND });
     });
   };

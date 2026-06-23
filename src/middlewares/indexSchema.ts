@@ -5,8 +5,6 @@
  * import { validateEditClientName } from '#src/middlewares/index.js';
  */
 
-import { validateClientRiskOfAbuse } from './clientRiskOfAbuseSchema.js';
-
 export {
   validateEditClientName
 } from './clientNameSchema.js';
@@ -74,3 +72,6 @@ export {
 export {
   validateClientRiskOfAbuse
 } from './clientRiskOfAbuseSchema.js'
+
+export { validateChangeCategoryOfLaw
+} from './changeCategoryOfLawSchema.js'

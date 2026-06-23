@@ -55,14 +55,12 @@ env:
   RATE_LIMIT_MAX: 500
   RATE_WINDOW_MS: 300000
   NODE_ENV: "production"
-
-  # This values need to be updated, when we go live
-  API_URL: "https://laa-cla-backend-uat.apps.live-1.cloud-platform.service.justice.gov.uk"
+  API_URL: "http://cla-backend-app.laa-cla-backend-production.svc.cluster.local"
   API_PREFIX: "/cla_provider/api/v1"
   REDIS_ENABLED: false
   REDIS_TLS_ENABLED: false
-  ENTRA_REDIRECT_URI: "https://manage-your-civil-cases-staging.cloud-platform.service.justice.gov.uk/auth/login/callback"
-  ENTRA_POST_LOGOUT_REDIRECT_URI: "https://manage-your-civil-cases-staging.cloud-platform.service.justice.gov.uk/auth/logout/callback"
+  ENTRA_REDIRECT_URI: "https://manage-your-civil-cases.cloud-platform.service.justice.gov.uk/auth/login/callback"
+  ENTRA_POST_LOGOUT_REDIRECT_URI: "https://manage-your-civil-cases.cloud-platform.service.justice.gov.uk/auth/logout/callback"
 
 ingress:
   enabled: true
