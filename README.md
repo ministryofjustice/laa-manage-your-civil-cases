@@ -19,6 +19,7 @@ corepack enable
 yarn install
 ```
 
+
 ### Running the Application
 
 **Development mode:**
