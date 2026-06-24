@@ -1057,20 +1057,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/core@npm:10.59.0":
-  version: 10.59.0
-  resolution: "@sentry/core@npm:10.59.0"
-  checksum: 10c0/98ae0502b1147e8ad1501e4dc954cd3e44643573d99839ea70f9b43523495c4b7175fef8eef366a2e4dfe99f72e34de02def1d15158fa92345637cbbc24bc0e7
-  languageName: node
-  linkType: hard
-
-"@sentry/node-core@npm:10.59.0":
-  version: 10.59.0
-  resolution: "@sentry/node-core@npm:10.59.0"
-  dependencies:
-    "@sentry/conventions": "npm:^0.12.0"
-    "@sentry/core": "npm:10.59.0"
-    "@sentry/opentelemetry": "npm:10.59.0"
 "@sentry/core@npm:10.60.0":
   version: 10.60.0
   resolution: "@sentry/core@npm:10.60.0"
@@ -1103,18 +1089,11 @@ __metadata:
       optional: true
     "@opentelemetry/sdk-trace-base":
       optional: true
-  checksum: 10c0/972d5388280b032bf0ca212fa07f48bf925550ca702389dffc36d323ae38614f9ac018fe5dfa23ee14e6612a8dbbe49874dec81dd8264de744a9c45315fac12b
-  languageName: node
-  linkType: hard
-
-"@sentry/node@npm:^10.59.0":
-  version: 10.59.0
-  resolution: "@sentry/node@npm:10.59.0"
   checksum: 10c0/a8fc6203bf5e7012416f9902d69c8e21dc006b26cd9df1b71fc7955c622c2e733225b340bf1d54707144fc4896dbd0e50936b83328d1451ad7740800d5787e2f
   languageName: node
   linkType: hard
 
-"@sentry/node@npm:^10.57.0":
+"@sentry/node@npm:^10.59.0":
   version: 10.60.0
   resolution: "@sentry/node@npm:10.60.0"
   dependencies:
@@ -1122,21 +1101,6 @@ __metadata:
     "@opentelemetry/instrumentation": "npm:^0.214.0"
     "@opentelemetry/sdk-trace-base": "npm:^2.6.1"
     "@opentelemetry/semantic-conventions": "npm:^1.40.0"
-    "@sentry/core": "npm:10.59.0"
-    "@sentry/node-core": "npm:10.59.0"
-    "@sentry/opentelemetry": "npm:10.59.0"
-    "@sentry/server-utils": "npm:10.59.0"
-    import-in-the-middle: "npm:^3.0.0"
-  checksum: 10c0/5c480d38010812efa05bb83b4f44e6a3932f6833b32687d62d6105ab6e3c0ff0bf808afc60ee464d6fb4284de6f17bb5801b83b78fe70c1d70728a89ba9ecde3
-  languageName: node
-  linkType: hard
-
-"@sentry/opentelemetry@npm:10.59.0":
-  version: 10.59.0
-  resolution: "@sentry/opentelemetry@npm:10.59.0"
-  dependencies:
-    "@sentry/conventions": "npm:^0.12.0"
-    "@sentry/core": "npm:10.59.0"
     "@sentry/core": "npm:10.60.0"
     "@sentry/node-core": "npm:10.60.0"
     "@sentry/opentelemetry": "npm:10.60.0"
@@ -1156,13 +1120,6 @@ __metadata:
     "@opentelemetry/api": ^1.9.0
     "@opentelemetry/core": ^1.30.1 || ^2.1.0
     "@opentelemetry/sdk-trace-base": ^1.30.1 || ^2.1.0
-  checksum: 10c0/83e581fa737d750edda3e73d6cf08357b54303580d9d235bd000d3249d2b355810b8fad3aaa3e0e35ce1a747f61b40d0763c171a217b71a35dbfea0e6526682a
-  languageName: node
-  linkType: hard
-
-"@sentry/server-utils@npm:10.59.0":
-  version: 10.59.0
-  resolution: "@sentry/server-utils@npm:10.59.0"
   checksum: 10c0/cdcdb7918876ac1ad01df0ed353d501bcaebe5728e39ffa90f7b774582b96abfcd5f0ee949ddacb3588031f4707f4f56044a9179a62809a06398159737ad2ad9
   languageName: node
   linkType: hard
@@ -1175,14 +1132,6 @@ __metadata:
     "@apm-js-collab/code-transformer-bundler-plugins": "npm:^0.5.0"
     "@apm-js-collab/tracing-hooks": "npm:^0.10.0"
     "@sentry/conventions": "npm:^0.12.0"
-    "@sentry/core": "npm:10.59.0"
-    magic-string: "npm:~0.30.0"
-  peerDependencies:
-    vite: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0
-  peerDependenciesMeta:
-    vite:
-      optional: true
-  checksum: 10c0/6ceeac3b29b1de2296a2b3a474e2ea7a964b8c83d3ad2973b6669c24130bc9ef43fee46b14f9529063cd5c0eefc5910ec6b1f30b8aca60a37c3ec33550f0720a
     "@sentry/core": "npm:10.60.0"
     magic-string: "npm:~0.30.0"
   checksum: 10c0/5cb3f59f74424e14f6ccf2a1c9c75cab079f136ad66d7fd5f9df6255a7a146dfd7da27e3c94e4df52a2fdee0143f97d820fbd1dd34f02fe572cfad28cba84400
@@ -2721,7 +2670,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:^4, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.5, debug@npm:^4.3.7, debug@npm:^4.4.0, debug@npm:^4.4.1, debug@npm:^4.4.3, debug@npm:~4.4.3":
 "debug@npm:4, debug@npm:^4, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.5, debug@npm:^4.3.7, debug@npm:^4.4.0, debug@npm:^4.4.1, debug@npm:^4.4.3, debug@npm:~4.4.1, debug@npm:~4.4.3":
   version: 4.4.3
   resolution: "debug@npm:4.4.3"
@@ -3359,7 +3307,6 @@ __metadata:
   linkType: hard
 
 "eslint-plugin-jsdoc@npm:^63.0.7":
-"eslint-plugin-jsdoc@npm:^63.0.1":
   version: 63.0.7
   resolution: "eslint-plugin-jsdoc@npm:63.0.7"
   dependencies:
@@ -4947,7 +4894,6 @@ __metadata:
     "@ministryofjustice/frontend": "npm:^9.0.0"
     "@playwright/test": "npm:^1.61.0"
     "@sentry/node": "npm:^10.59.0"
-    "@sentry/node": "npm:^10.57.0"
     "@socket.io/redis-adapter": "npm:^8.3.0"
     "@types/chai": "npm:^5.2.3"
     "@types/compression": "npm:^1.7.5"
@@ -5041,7 +4987,6 @@ __metadata:
   linkType: hard
 
 "libphonenumber-js@npm:^1.13.7":
-"libphonenumber-js@npm:^1.13.6":
   version: 1.13.7
   resolution: "libphonenumber-js@npm:1.13.7"
   checksum: 10c0/2064257e26b4a98b098f3d316e92956f0dd06a4e812e7b8b11bce036e01a987a0078a8b3e6aaba639dc98e5eef1fc8c43cf81781f208e9b84bc163cccc72c89a
@@ -5049,7 +4994,6 @@ __metadata:
   linkType: hard
 
 "lint-staged@npm:^17.0.8":
-"lint-staged@npm:^17.0.7":
   version: 17.0.8
   resolution: "lint-staged@npm:17.0.8"
   dependencies:
