@@ -120,7 +120,6 @@ test('save button should redirect to client details when valid data submitted', 
 
 
 test('shows warning banner when no changes are made', async ({ page, i18nSetup }) => {
-  const phoneInput = page.locator('#phoneNumber');
   const saveButton = page.getByRole('button', { name: t('common.save') });
 
   // Go to edit page
@@ -139,7 +138,7 @@ test('shows warning banner when no changes are made', async ({ page, i18nSetup }
   await expect(page).toHaveURL(clientDetailsUrl);
 
   // Assert warning banner appears
-  const warningBanner = page.locator('.moj-alert'); 
+  const warningBanner = page.getByRole('region', { name: 'warning: No changes were made' });
   await expect(warningBanner).toBeVisible();
 
   // Check warning banner contains correct text
