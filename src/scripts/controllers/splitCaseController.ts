@@ -1,48 +1,13 @@
 import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
-import { devLog, createProcessedError, safeString, validCaseReference, formatValidationError, safeBodyString, storeSessionData, clearSessionData, t, capitaliseFirstLetter } from '#src/scripts/helpers/index.js';
+import { devLog, createProcessedError, safeString, validCaseReference, formatValidationError, safeBodyString, storeSessionData, clearSessionData, t, fetchProviderNameAndDetail } from '#src/scripts/helpers/index.js';
 import { validationResult } from 'express-validator';
-import type { ProviderDetail, ProviderSplitChoicesApiResponse } from '#types/api-types.js';
 import { HTTP } from '#src/services/api/base/constants.js';
 import config from '#config.js';
 import { ensureSplitCaseCache, hasSplitCaseCache } from '#src/scripts/helpers/sessionHelpers.js';
+import { buildCategoryItems } from '../helpers/dataTransformers.js';
 
 const { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH, CHARACTER_THRESHOLD }: { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH: number; CHARACTER_THRESHOLD: number } = config;
-
-
-/**
- * Helper function to fetch Provider details
- * @param {Request} req Express request object
- * @param {string} caseReference Case reference number
- * @returns {Promise<ProviderDetail>} Provider details from the API
- * @throws {Error} If providerId is missing or the API call fails
- */
-async function fetchProviderNameAndDetail(req: Request, caseReference: string): Promise<ProviderDetail> {
-  const { clientData } = req;
-
-  const providerId =
-    clientData && typeof clientData === 'object' && 'providerId' in clientData
-      ? safeString((clientData).providerId)
-      : '';
-
-  if (!providerId) {
-    throw createProcessedError(
-      new Error('Missing providerId in clientData'),
-      `fetching provider details, for case ${caseReference}`
-    );
-  }
-
-  const providerResponse: ProviderSplitChoicesApiResponse = await apiService.getProviderChoices(req.axiosMiddleware, providerId);
-
-  if (providerResponse.status === 'error' || providerResponse.data === null) {
-    throw createProcessedError(
-      new Error('Failed to fetch provider name'),
-      `fetching provider details, for case ${caseReference}`
-    );
-  }
-
-  return providerResponse.data;
-}
 
 /**
  * Render the "split this case" form
@@ -190,35 +155,18 @@ export async function getAboutNewCaseForm(req: Request, res: Response, next: Nex
 
       if (allCategoriesResponse.status === 'success' && Array.isArray(allCategoriesResponse.data)) {
 
-        categoryItems = [{
-          value: '',
-          text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
-          selected: !category
-        },
-        ...(await Promise.all(
-          allCategoriesResponse.data.map(async choice => ({
-            value: choice.code,
-            text: capitaliseFirstLetter(
-              choice.code === "none" ? t("allCategoriesAdditions.none") : choice.name
-            ),
-            selected: category === choice.code
-          }))
-        ))];
+        categoryItems = await buildCategoryItems({
+          choices: allCategoriesResponse.data,
+          selectedCategory: category ?? undefined,
+          placeholderText: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
+        });
       }
     } else {
-      categoryItems = [
-        {
-          value: '',
-          text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
-          selected: !category
-        },
-        ...(await Promise.all(
-          provider.law_category.map(async choice => ({
-            value: choice.code,
-            text: capitaliseFirstLetter(choice.name),
-            selected: category === choice.code
-          }))
-       ))];
+      categoryItems = await buildCategoryItems({
+        choices: provider.law_category,
+        selectedCategory: category ?? undefined,
+        placeholderText: t('pages.caseDetails.aboutNewCase.categoryPlaceholder')
+      });
     }
 
     res.render('case_details/split_case/about-new-case.njk', {
@@ -290,6 +238,7 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
     const provider = await fetchProviderNameAndDetail(req, caseReference);
 
     let categoryItems: { value: string; text: string; selected: boolean }[] = [];
+    const formattedCategory = typeof category === 'string' && category.trim() !== '' ? category : undefined;
 
     const operatorSelection = req.session.splitCaseCache && typeof req.session.splitCaseCache === 'object' && effectiveInternal === 'false';
     // If internal is false, assign to operator was selected and the full list should be returned. 
@@ -299,35 +248,18 @@ export async function submitAboutNewCaseForm(req: Request, res: Response, next: 
 
       if (allCategoriesResponse.status === 'success' && Array.isArray(allCategoriesResponse.data)) {
 
-        categoryItems = [{
-          value: '',
-          text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
-          selected: !category
-        },
-        ...(await Promise.all(
-          allCategoriesResponse.data.map(async choice => ({
-            value: choice.code,
-            text: capitaliseFirstLetter(
-              choice.code === "none" ? t("allCategoriesAdditions.none") : choice.name
-            ),
-            selected: category === choice.code
-          }))
-        ))];
+        categoryItems = await buildCategoryItems({
+          choices: allCategoriesResponse.data,
+          selectedCategory: formattedCategory,
+          placeholderText: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
+        });
       }
     } else {
-      categoryItems = [
-        {
-          value: '',
-          text: t('pages.caseDetails.aboutNewCase.categoryPlaceholder'),
-          selected: !category
-        },
-        ...(await Promise.all(
-          provider.law_category.map(async choice => ({
-            value: choice.code,
-            text: capitaliseFirstLetter(choice.name),
-            selected: category === choice.code
-          }))
-        ))];
+      categoryItems = await buildCategoryItems({
+        choices: provider.law_category,
+        selectedCategory: formattedCategory,
+        placeholderText: t('pages.caseDetails.aboutNewCase.categoryPlaceholder')
+      });
     }
 
     return res.status(HTTP.BAD_REQUEST).render('case_details/split_case/about-new-case.njk', {

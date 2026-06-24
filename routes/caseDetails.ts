@@ -4,10 +4,10 @@ import { handleClientDetailsTab } from '#src/scripts/controllers/clientDetailsCo
 import { acceptCase, completeCase, closeCase, getCloseCaseForm, getPendingCaseForm, pendingCase, getReopenCaseForm, reopenCompletedCase, reopenClosedCase } from '#src/scripts/controllers/caseStateController.js';
 import { handleCaseHistoryTab } from '#src/scripts/controllers/caseHistoryController.js';
 import { handleCaseDetailsTab, saveProviderNote } from '#src/scripts/controllers/caseDetailsController.js';
-import { getRemoveThirdPartyConfirmation, deleteThirdParty, getRemoveSupportNeedsConfirmation, deleteClientSupportNeeds } from '#src/scripts/controllers/index.js';
+import { getRemoveThirdPartyConfirmation, deleteThirdParty, getRemoveSupportNeedsConfirmation, deleteClientSupportNeeds, getChangeCategoryOfLaw, submitChangeCategoryOfLawForm } from '#src/scripts/controllers/index.js';
 import { getOperatorFeedbackForm, submitOperatorFeedback, getDoYouWantToGiveFeedbackForm, submitDoYouWantToGiveFeedbackForm } from '#src/scripts/controllers/operatorFeedbackController.js';
 import { getSplitThisCaseForm, submitSplitThisCaseForm, getAboutNewCaseForm, submitAboutNewCaseForm, getCheckSplitCaseAnswersForm, submitCheckSplitCaseAnswersForm, setSplitCaseCacheSettings } from '#src/scripts/controllers/splitCaseController.js';
-import { validateReopenCase, validateCloseCase, validatePendingCase, validateOperatorFeedback, validateProviderNote, fetchClientDetails, validateGiveFeedback, validateSplitThisCase, validateAboutNewCase } from '#src/middlewares/indexSchema.js';
+import { validateReopenCase, validateCloseCase, validatePendingCase, validateOperatorFeedback, validateProviderNote, fetchClientDetails, validateGiveFeedback, validateSplitThisCase, validateAboutNewCase, validateChangeCategoryOfLaw } from '#src/middlewares/indexSchema.js';
 
 
 // Create a new router for case details routes
@@ -137,6 +137,7 @@ router.get('/:caseReference/split-this-case', fetchClientDetails, async (req: Re
 router.post('/:caseReference/split-this-case', fetchClientDetails, validateSplitThisCase(), async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   await submitSplitThisCaseForm(req, res, next);
 });
+
 /* GET about new case form. */
 router.get('/:caseReference/about-new-case', fetchClientDetails, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   await getAboutNewCaseForm(req, res, next);
@@ -160,6 +161,16 @@ router.post('/:caseReference/check-split-case-answers', async (req: Request, res
 /* GET route to set from change flag to true */
 router.get('/:caseReference/change', async (req: Request, res: Response, next: NextFunction): Promise<void> => {  
   await setSplitCaseCacheSettings(req, res, next);
+});
+
+/* GET change category of law form. */
+router.get('/:caseReference/change-law-category', fetchClientDetails, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  await getChangeCategoryOfLaw(req, res, next);
+});
+
+/* POST change category of law form. */
+router.post('/:caseReference/change-law-category', fetchClientDetails, validateChangeCategoryOfLaw(), async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  await submitChangeCategoryOfLawForm(req, res, next);
 });
 
 export default router;

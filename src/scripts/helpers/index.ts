@@ -116,6 +116,7 @@ export {
   extractAndLogError,
 } from './errorHandler.js';
 
+// Validation helpers
 export {
   createChangeDetectionValidator,
   createSessionChangeDetectionValidator,
@@ -123,3 +124,8 @@ export {
   formatValidationError,
   handleValidationErrors,
 } from './ValidationErrorHelpers.js'
+
+// Helper to fetch provider name and details
+export {
+  fetchProviderNameAndDetail
+} from './providerDetailHelper.js';

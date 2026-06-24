@@ -27,7 +27,7 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
     const { clientData } = req;
 
     const caseLogsResponse: CaseLogsApiResponse = await apiService.getClientCaseLogs(req.axiosMiddleware, caseReference);
-    
+
     if (caseLogsResponse.status === 'success' && caseLogsResponse.data !== null) {
 
       const notesFromProvider = clientData && typeof clientData === 'object' && 'notesHistory' in clientData && Array.isArray(clientData.notesHistory) ? clientData.notesHistory : [];
@@ -44,7 +44,7 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
         })),
         ...caseLogs
           // only show the casLogs which have a note
-          .filter(log => log.notes?.trim()) 
+          .filter(log => log.notes?.trim())
           .map(log => ({
             type: 'caseLog',
             code: log.code,
@@ -121,7 +121,7 @@ export async function saveProviderNote(req: Request, res: Response, next: NextFu
       const currentProviderNote = safeBodyString(req.body, 'providerNote');
 
       const caseLogsResponse: CaseLogsApiResponse = await apiService.getClientCaseLogs(req.axiosMiddleware, caseReference);
-      
+
       if (caseLogsResponse.status === 'success' && caseLogsResponse.data !== null) {
         const notesFromProvider = clientData && typeof clientData === 'object' && 'notesHistory' in clientData && Array.isArray(clientData.notesHistory) ? clientData.notesHistory : [];
         const caseLogs = caseLogsResponse.data ?? [];
@@ -137,7 +137,7 @@ export async function saveProviderNote(req: Request, res: Response, next: NextFu
           })),
           ...caseLogs
             // only show the casLogs which have a note
-            .filter(log => log.notes?.trim()) 
+            .filter(log => log.notes?.trim())
             .map(log => ({
               type: 'caseLog',
               code: log.code,
