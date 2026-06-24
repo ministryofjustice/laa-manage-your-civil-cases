@@ -59,9 +59,9 @@ test.describe('Setup auth in beforeEach', () => {
  * Some tests check public pages or the login page itself
  */
 test.describe('No auth needed', () => {
-  test('should display login page', async ({ page }) => {
-    await page.goto('/login');
-    await expect(page.locator('h1')).toContainText('Sign in to Manage your civil cases');
+  test('should redirect unauthenticated users to /auth', async ({ page }) => {
+    await page.goto('/cases/new');
+    await expect(page).toHaveURL(/\/auth/);
   });
 
   test('should access health endpoint', async ({ page }) => {

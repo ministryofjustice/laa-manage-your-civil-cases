@@ -7,56 +7,51 @@
  */
 
 /**
- * Authentication credentials for API access
+ * SILAS user information stored in session
  */
-export interface AuthCredentials {
-  username: string;
-  password: string;
-  client_id: string;
-  client_secret: string;
-}
-
-/**
- * User information from authentication API
- */
-export interface UserInfo {
-  username: string;
-  first_name: string;
-  last_name: string;
+export interface SilasUserInfo {
   email: string;
-  provider: {
-    name: string;
-    id: number;
-  };
-  is_manager: boolean;
-  chs_organisation: string | null;
-  chs_user: string | null;
-  last_login: string;
-  created: string;
-  user_type: string;
+  name?: string;
+  oid?: string;
+  roles?: string[];
+  providerId?: number;
 }
 
 /**
- * Token storage with expiration tracking
+ * SILAS token data stored in session
  */
-export interface TokenStorage {
+export interface SilasSessionAuth {
   accessToken: string;
-  tokenType: string;
-  expiresAt: number; // Unix timestamp
+  idToken?: string;
+  expiresAt: number;
+  oboAccessToken?: string;
+  oboExpiresAt?: number;
   refreshToken?: string;
-  user?: UserInfo; // User information from token response
+  scopes: string[];
 }
 
 /**
- * Validated token response from authentication API
+ * SILAS token exchange result
  */
-export interface ValidatedTokenResponse {
-  access_token: string;
-  token_type: string;
-  expires_in?: number;
-  refresh_token?: string;
-  user?: UserInfo; // User information from login response
-  scope?: string;
+export interface SilasTokenExchangeResult {
+  accessToken: string;
+  idToken?: string;
+  expiresAt: number;
+  email: string;
+  name?: string;
+  oid?: string;
+}
+
+/**
+ * SILAS access token claims
+ */
+export interface AccessTokenClaims {
+  iss?: string;
+  aud?: string;
+  scp?: string;
+  preferred_username?: string;
+  oid?: string;
+  [key: string]: unknown;
 }
 
 /**
@@ -68,39 +63,4 @@ export interface JwtPayload {
   exp?: number; // Expiration time
   scope?: string; // Token scope
   [key: string]: unknown; // Additional claims
-}
-
-/**
- * Authentication result interface
- */
-export interface AuthResult {
-  success: boolean;
-  token?: string;
-  error?: string;
-  expiresAt?: number;
-}
-
-/**
- * Authentication status interface
- */
-export interface AuthStatus {
-  isAuthenticated: boolean;
-  tokenExpiry?: number;
-  hasValidToken: boolean;
-}
-
-/**
- * OAuth2 grant types
- */
-export type GrantType = 'password' | 'client_credentials' | 'refresh_token' | 'authorization_code';
-
-/**
- * Authentication configuration interface
- */
-export interface AuthConfig {
-  baseUrl: string;
-  tokenEndpoint: string;
-  credentials: AuthCredentials;
-  tokenBufferSeconds?: number;
-  defaultTokenExpiry?: number;
 }

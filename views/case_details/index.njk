@@ -40,12 +40,32 @@
     </div>
   {% endif %}
 
+  {# Container for real-time viewer alert - populated by Socket.IO client #}
+  <div class="govuk-grid-row mcc-alert-summary" id="case-viewer-alert-row" hidden>
+    <div class="govuk-grid-column-two-thirds mcc-error-banner" id="case-viewer-alert-column" hidden>
+      <div id="case-viewer-alert" class="govuk-!-margin-bottom-4" hidden>
+        {# JS will update the title #}
+        {{ mojAlert({
+          variant: "warning",
+          title: "",
+          showTitleAsHeading: true,
+          text: "",
+          dismissible: false
+        }) }}
+      </div>
+
+      {# Hidden data attributes for Socket.IO client #}
+      <div data-case-reference="{{ caseReference }}" data-session-id="{{ sessionID }}" data-user-name="{{ userName }}" data-has-error="{{ 'true' if error else 'false' }}" hidden></div>
+    </div>
+  </div>
+
   {% if error %}
     {{ errorSummary(error.errorSummaryList) }}
   {% else %}
     {{ alertBannerComponent(client) }}
   {% endif %}
 {% endblock %}
+
 
 {% block pageContent %}
   {{ caseDetailsHeaderComponent(client) }}

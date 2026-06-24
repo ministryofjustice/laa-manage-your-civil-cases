@@ -2,7 +2,6 @@ import { create } from 'middleware-axios';
 import type { Request, Response, NextFunction } from 'express';
 import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
 import type { InternalAxiosRequestConfig } from 'axios';
-import { createAuthServiceWithCredentials } from '#src/services/authService.js';
 import { devLog, devError } from '#src/scripts/helpers/index.js';
 import '#src/scripts/helpers/sessionHelpers.js';
 
@@ -34,17 +33,16 @@ function toError(error: unknown): Error {
  */
 function isAxiosErrorWithResponse(error: unknown): error is { response: { status: number } } {
   return error !== null &&
-         typeof error === 'object' &&
-         'response' in error &&
-         error.response !== null &&
-         typeof error.response === 'object' &&
-         'status' in error.response &&
-         typeof (error.response as { status: unknown }).status === 'number';
+    typeof error === 'object' &&
+    'response' in error &&
+    error.response !== null &&
+    typeof error.response === 'object' &&
+    'status' in error.response &&
+    typeof (error.response as { status: unknown }).status === 'number';
 }
 
 /**
  * Axios middleware to attach Axios instance to request object.
- *
  * @param {Request} req - The Express request object.
  * @param {Response} res - The Express response object.
  * @param {NextFunction} next - The next middleware function in the stack.
@@ -59,60 +57,39 @@ export const axiosMiddleware = (req: Request, res: Response, next: NextFunction)
     },
   });
 
-  // Get AuthService from session credentials (recreate from stored credentials)
-  let authService = null;
+  const silasAuth = req.session.silasAuth;
+  const userAccessToken = silasAuth?.accessToken;
 
-  // Check if user is authenticated via session
-  if (req.session.authCredentials !== undefined) {
-    // Recreate AuthService from session credentials
-    authService = createAuthServiceWithCredentials(req.session.authCredentials);
-    if (authService !== null) {
-      devLog('Using session-based authentication for API requests');
-    } else {
-      devError('Failed to create AuthService from session credentials');
-    }
-  } else {
-    devLog('No session credentials found - user must login to access API');
+  // Axios runs on every request, so this makes it less noisy by checking routes where SiLAS auth is needed
+  const hasToken = Boolean(userAccessToken?.trim());
+  const needsSilasAuth = req.path.startsWith('/cases') || req.path.startsWith('/search');
+
+  if (!hasToken && needsSilasAuth) {
+    devLog('No SILAS access token found in session - request will proceed without Authorization header');
   }
 
-  // Add JWT authentication interceptor for API calls if user is authenticated
-  if (authService !== null) {
-    // Request interceptor for JWT auth
+  if (hasToken) {
     axiosWrapper.axiosInstance.interceptors.request.use(
-      async (config: InternalAxiosRequestConfig) => {
-        try {
-          config.headers.Authorization = await authService.getAuthHeader();
-          devLog('Added JWT authorization header to API request');
-        } catch (error) {
-          devError(`Failed to add JWT authorization header: ${toError(error).message}`);
-          // Continue without auth header - API will handle 401 response
-        }
+      (config: InternalAxiosRequestConfig) => {
+        config.headers.Authorization = `Bearer ${userAccessToken}`;
+        devLog('Added SILAS bearer token to API request');
+        devLog(`Access token: ${userAccessToken}`)
         return config;
       },
       async (error: unknown) => await Promise.reject(toError(error))
     );
-
-    // Response interceptor for 401 error handling
-    axiosWrapper.axiosInstance.interceptors.response.use(
-      (response) => response,
-      async (error: unknown) => {
-        if (isAxiosErrorWithResponse(error) && error.response.status === HTTP_UNAUTHORIZED) {
-          devError('API returned 401 Unauthorized - clearing cached tokens');
-          authService.clearTokens();
-
-          // If using session auth, clear session credentials and redirect to login
-          if (req.session.authCredentials !== undefined) {
-            req.session.destroy((destroyErr) => {
-              if (destroyErr !== null && destroyErr !== undefined) {
-                devError(`Error destroying session: ${destroyErr instanceof Error ? destroyErr.message : String(destroyErr)}`);
-              }
-            });
-          }
-        }
-        return await Promise.reject(toError(error));
-      }
-    );
   }
+
+  // Response interceptor for 401 error handling
+  axiosWrapper.axiosInstance.interceptors.response.use(
+    (response) => response,
+    async (error: unknown) => {
+      if (isAxiosErrorWithResponse(error) && error.response.status === HTTP_UNAUTHORIZED) {
+        devError('API returned 401 Unauthorized');
+      }
+      return await Promise.reject(toError(error));
+    }
+  );
 
   req.axiosMiddleware = axiosWrapper;
   next();

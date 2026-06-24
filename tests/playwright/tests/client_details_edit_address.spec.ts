@@ -64,11 +64,8 @@ test('unchanged fields should display no change warning banner', async ({ page, 
   await expect(page).toHaveURL(clientDetailsUrl);
 
   // Notification banner should be visible
-  const banner = page.locator('.moj-alert');
+  const banner = page.getByRole('region', { name: 'warning: No changes were made' });
   await expect(banner).toBeVisible();
-
-  // Check banner text
-  await expect(banner).toContainText('No changes were made');
 
   // Error summary should NOT exist
   await expect(errorSummary).toHaveCount(0);

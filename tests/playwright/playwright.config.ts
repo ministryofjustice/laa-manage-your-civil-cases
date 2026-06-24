@@ -55,6 +55,15 @@ export default defineConfig({
       // API client credentials for OAuth2 authentication (required for tests)
       API_CLIENT_ID: 'test-client-id',
       API_CLIENT_SECRET: 'test-client-secret',
+      ENTRA_TENANT_ID: 'test-tenant-id',
+      ENTRA_CLIENT_ID: 'test-client-id',
+      ENTRA_APP_ID: 'test-app-id',
+      ENTRA_CLIENT_SECRET: 'test-client-secret',
+      ENTRA_REDIRECT_URI: 'http://localhost:3001/auth/callback',
+      ENTRA_POST_LOGOUT_REDIRECT_URI: 'http://localhost:3001/auth/logout',
+      ENTRA_AUTHORITY: 'https://login.microsoftonline.com/test-tenant-id',
+      SILAS_SCOPES: 'openid profile email',
+      SILAS_EXPECTED_AUDIENCE: 'test-client-id',
       NODE_OPTIONS: '--no-experimental-webstorage'
     }
   },
