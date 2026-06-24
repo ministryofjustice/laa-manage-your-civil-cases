@@ -1093,7 +1093,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/node@npm:^10.57.0":
+"@sentry/node@npm:^10.59.0":
   version: 10.60.0
   resolution: "@sentry/node@npm:10.60.0"
   dependencies:
@@ -3306,7 +3306,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsdoc@npm:^63.0.1":
+"eslint-plugin-jsdoc@npm:^63.0.7":
   version: 63.0.7
   resolution: "eslint-plugin-jsdoc@npm:63.0.7"
   dependencies:
@@ -4893,7 +4893,7 @@ __metadata:
     "@eslint/js": "npm:^10.0.1"
     "@ministryofjustice/frontend": "npm:^9.0.0"
     "@playwright/test": "npm:^1.61.0"
-    "@sentry/node": "npm:^10.57.0"
+    "@sentry/node": "npm:^10.59.0"
     "@socket.io/redis-adapter": "npm:^8.3.0"
     "@types/chai": "npm:^5.2.3"
     "@types/compression": "npm:^1.7.5"
@@ -4937,7 +4937,7 @@ __metadata:
     eslint: "npm:^10.5.0"
     eslint-config-love: "npm:^154.0.0"
     eslint-config-prettier: "npm:^10.1.8"
-    eslint-plugin-jsdoc: "npm:^63.0.1"
+    eslint-plugin-jsdoc: "npm:^63.0.7"
     express: "npm:^5.2.0"
     express-rate-limit: "npm:^8.5.2"
     express-session: "npm:^1.19.0"
@@ -4951,8 +4951,8 @@ __metadata:
     husky: "npm:^9.1.7"
     i18next: "npm:^26.3.1"
     jsdom: "npm:^29.1.1"
-    libphonenumber-js: "npm:^1.13.6"
-    lint-staged: "npm:^17.0.7"
+    libphonenumber-js: "npm:^1.13.7"
+    lint-staged: "npm:^17.0.8"
     livereload: "npm:^0.10.2"
     middleware-axios: "npm:^3.0.0"
     mocha: "npm:^11.7.6"
@@ -4986,14 +4986,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"libphonenumber-js@npm:^1.13.6":
+"libphonenumber-js@npm:^1.13.7":
   version: 1.13.7
   resolution: "libphonenumber-js@npm:1.13.7"
   checksum: 10c0/2064257e26b4a98b098f3d316e92956f0dd06a4e812e7b8b11bce036e01a987a0078a8b3e6aaba639dc98e5eef1fc8c43cf81781f208e9b84bc163cccc72c89a
   languageName: node
   linkType: hard
 
-"lint-staged@npm:^17.0.7":
+"lint-staged@npm:^17.0.8":
   version: 17.0.8
   resolution: "lint-staged@npm:17.0.8"
   dependencies:
