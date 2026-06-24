@@ -81,6 +81,7 @@ export function getSilasLogoutUrl(): string {
  * so users get a clear message instead of a generic failure later in the journey.
  */
 export class SilasIdentityMappingError extends Error { }
+
 /**
  * Decodes JWT payload claims from an access token.
  * @param {string} token JWT access token.
