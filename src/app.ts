@@ -61,6 +61,18 @@ const createApp = async (): Promise<express.Application> => {
 	// Set up authentication status for templates
 	app.use(setAuthStatus);
 
+	app.post('/feedback', async (req, res) => {
+		await fetch(process.env.POWER_AUTOMATE_URL!, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(req.body),
+		});
+
+		res.sendStatus(200);
+	});
+
 	// Register the main router
 	app.use('/', indexRouter);
 

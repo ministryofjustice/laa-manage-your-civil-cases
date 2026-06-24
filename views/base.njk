@@ -1,6 +1,8 @@
 {% extends "govuk/template.njk" %}
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% block pageTitle %}{{config.SERVICE_NAME}} – GOV.UK{% endblock %}
 
@@ -125,6 +127,80 @@
 {% endblock %}
 
 {% block footer %}
+  <div class="gem-c-feedback__prompt" data-feedback-section="initial">
+    <div class="govuk-width-container">
+      <div class="gem-c-feedback__prompt-question-answer" role="form">
+        <h2 class="govuk-heading-s govuk-!-margin-bottom-0 govuk-!-margin-right-6">
+          Were you satisfied with this service?
+        </h2>
+
+        <form data-feedback-role="satisfaction-form">
+          <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+          {{ govukButton({
+            text: "Yes",
+            type: "submit",
+            attributes: {"data-feedback-role": "initial-trigger"},
+            classes: "govuk-button gem-c-feedback__prompt-link-small-button"
+          }) }}
+
+          {{ govukButton({
+            text: "No",
+            type: "submit",
+            attributes: {"data-feedback-role": "initial-trigger"},
+            classes: "govuk-button gem-c-feedback__prompt-link-small-button"
+          }) }}
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="gem-c-feedback__prompt-white" data-feedback-section="message">
+    <div class="govuk-width-container">
+      <form data-feedback-role="comment-form">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+        {{ govukTextarea({
+          name: "comment",
+          id: "comment",
+          label: { 
+            text: "Your response has been sent, please tell us more",
+            classes: "govuk-label--m",
+            isPageHeading: false
+          },
+          hint: {
+            text: "Don't include personal information."
+          },
+          attributes: { "data-feedback-role": "text-input"},
+          rows: 4
+        }) }}       
+        
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: "Send",
+            type: "submit",
+            attributes: {"data-feedback-role": "submit-text", "data-feedback-section-if-blank": "final"}
+          }) }}
+
+          {{ govukButton({
+            text: "Skip",
+            type: "button",
+            attributes: {"data-feedback-role": "skip"},
+            classes: "govuk-button--secondary gem-c-feedback__close"
+          }) }}
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="gem-c-feedback__prompt" data-feedback-section="final" >
+    <div class="govuk-width-container">
+      <span class="gem-c-feedback__prompt-question-answer">
+        <h2 class="govuk-heading-s govuk-!-margin-bottom-0 govuk-!-margin-right-2" data-feedback-role="final-message">
+          Thank you for your feedback
+        </h2>
+      </span>
+    </div>
+  </div>
+
   {{ govukFooter({
     meta: {
       items: [
