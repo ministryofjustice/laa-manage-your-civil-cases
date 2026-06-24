@@ -59,7 +59,7 @@ env:
   API_PREFIX: "/cla_provider/api/v1"
   REDIS_ENABLED: false
   REDIS_TLS_ENABLED: false
-  ENTRA_REDIRECT_URI: "https://manage-your-civil-cases.cloud-platform.service.justice.gov.uk/auth/login/callback"
+  ENTRA_REDIRECT_URI: "https://manage-your-civil-cases.cloud-platform.service.justice.gov.uk/auth/callback"
   ENTRA_POST_LOGOUT_REDIRECT_URI: "https://manage-your-civil-cases.cloud-platform.service.justice.gov.uk/auth/logout/callback"
 
 ingress:
