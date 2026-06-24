@@ -6,9 +6,10 @@ import express from 'express';
 import chalk from 'chalk';
 import bodyParser from 'body-parser';
 import compression from 'compression';
+import { createServer } from 'http';
 import { setupCsrf, setupMiddlewares, setupConfig, setupLocaleMiddleware, setAuthStatus } from '#src/middlewares/indexSetUp.js';
 import session from 'express-session';
-import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware, displayAsciiBanner } from '#utils/server/index.js';
+import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware, displayAsciiBanner, setupSocketIO, createRedisClient, type RedisClientType} from '#utils/server/index.js';
 import { initializeI18nextSync } from '#src/scripts/helpers/index.js';
 import indexRouter from '#routes/index.js';
 import livereload from 'connect-livereload';
@@ -106,8 +107,26 @@ const createApp = async (): Promise<express.Application> => {
 	// Display ASCII Art banner
 	displayAsciiBanner(config);
 
-	// Starts the Express server on the specified port
-	app.listen(config.app.port, () => {
+  // Create HTTP server and attach Socket.IO
+	const httpServer = createServer(app);
+
+	// Set up Socket.IO; attach Redis adapter if Redis is enabled
+	try {
+		let redisClientForSocket: RedisClientType | undefined;
+		if (config.redis.enabled) {
+			redisClientForSocket = createRedisClient(config.redis);
+			if (!redisClientForSocket.isOpen) {
+				await redisClientForSocket.connect();
+			}
+		}
+		setupSocketIO(httpServer, redisClientForSocket, config.redis);
+		console.log(chalk.green('✓ Socket.IO real-time notifications enabled'));
+	} catch (error) {
+		console.error(chalk.red('❌ Failed to set up Socket.IO:'), error);
+	}
+
+	// Starts the HTTP server on the configured port
+	httpServer.listen(config.app.port, () => {
 		console.log(chalk.yellow(`Listening on port ${config.app.port}...`));
 	});
 

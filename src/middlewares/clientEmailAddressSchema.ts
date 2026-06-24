@@ -1,5 +1,5 @@
 import { checkSchema } from 'express-validator';
-import { createChangeDetectionValidator, TypedValidationError, t } from '#src/scripts/helpers/index.js';
+import { TypedValidationError, t } from '#src/scripts/helpers/index.js';
 
 /**
  * Validation middleware when user edits client's email address.

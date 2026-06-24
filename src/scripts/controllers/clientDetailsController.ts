@@ -44,6 +44,7 @@ export function handleClientDetailsTab(req: Request, res: Response, next: NextFu
       client: clientData,
       showClientSupportNeeds,
       caseReference,
+      sessionID: req.sessionID,
       noChangeWarningBanner
     });
   });

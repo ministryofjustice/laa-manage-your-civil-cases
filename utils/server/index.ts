@@ -9,6 +9,7 @@ import { rateLimitSetUp } from './rateLimitSetUp.js';
 import { axiosMiddleware } from './axiosSetup.js';
 import { displayAsciiBanner } from './displayAsciiBanner.js';
 import { createRedisClient } from './redis.js';
+import { setupSocketIO } from './socketSetup.js';
 import { type RedisClientType } from './session.js';
 
 export {
@@ -20,5 +21,6 @@ export {
     axiosMiddleware,
     displayAsciiBanner,
     createRedisClient,
+    setupSocketIO,
     type RedisClientType
 };

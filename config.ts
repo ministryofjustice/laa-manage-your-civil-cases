@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import type { Config } from '#types/config-types.js';
 dotenv.config();
+import { validateSilasConfig } from './utils/server/silasConfigValidationHelper.js';
 
 const DEFAULT_RATE_LIMIT_MAX = 100;
 const DEFAULT_RATE_WINDOW_MS_MINUTE = 15;
@@ -41,10 +42,11 @@ const config: Config = {
     name: process.env.SESSION_NAME,
     resave: false,
     saveUninitialized: false,
+    rolling: true,                                    // Refresh session expiry on each request
     cookie: {
       secure: process.env.NODE_ENV === 'production',  // HTTPS only in production
-      httpOnly: true,                                  // Prevent XSS attacks
-      sameSite: 'strict' as const,                    // OWASP: Prevent CSRF via strict SameSite
+      httpOnly: true,                                 // Prevent XSS attacks
+      sameSite: 'lax' as const,                       // OAuth2: allow POST from SiLAS but protect against CSRF in other contexts
       maxAge: 1000 * 60 * 60 * 24                     // 24 hours session duration
     }
   },
@@ -84,6 +86,19 @@ const config: Config = {
     auth_token: process.env.REDIS_AUTH_TOKEN,
     tls_enabled: process.env.REDIS_TLS_ENABLED === 'true'
   },
+  // SiLAS / Microsoft Entra configuration
+  silas: {
+    tenantId: process.env.ENTRA_TENANT_ID ?? '',
+    clientId: process.env.ENTRA_CLIENT_ID ?? '',
+    appId: process.env.ENTRA_APP_ID ?? '',
+    clientSecret: process.env.ENTRA_CLIENT_SECRET ?? '',
+    redirectUri: process.env.ENTRA_REDIRECT_URI ?? '',
+    postLogoutRedirectUri: process.env.ENTRA_POST_LOGOUT_REDIRECT_URI ?? '',
+    authority: process.env.ENTRA_AUTHORITY ?? '',
+    // Scopes used for the initial auth code exchange at user sign-in.
+    scopes: (process.env.SILAS_SCOPES ?? '').split(' ').filter(Boolean),
+    expectedAudience: process.env.SILAS_EXPECTED_AUDIENCE ?? ''
+  },
   // Sentry configuration for error tracking
   sentry: {
     dsn: process.env.SENTRY_DSN,
@@ -93,5 +108,7 @@ const config: Config = {
     sentryCspReportUri: process.env.SENTRY_CSP_REPORT_URI ?? null
   }
 };
+
+validateSilasConfig(config.silas);
 
 export default config;

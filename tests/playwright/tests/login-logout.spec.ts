@@ -1,55 +1,24 @@
 import { test, expect } from '../fixtures/index.js';
 
-// Test data
-const TEST_CREDENTIALS = {
-  username: 'test-user',
-  password: 'test-password'
-};
-
-const LOGIN_HEADING = 'Sign in';
-
 test.describe('Login and Logout Flow', () => {
-  test('GET /login/ should display login page', async ({ page, i18nSetup, pages }) => {
-    const loginPage = pages.login;
-    await loginPage.navigate();
-    await loginPage.expectPageLoaded(LOGIN_HEADING);
+  test('GET /auth should redirect to SiLAS (Entra)', async ({ page, i18nSetup }) => {
+    const response = await page.goto('/auth');
+    // SiLAS redirects to Entra and the final URL should no longer be `/auth`
+    expect(page.url()).not.toMatch(/^http:\/\/localhost.*\/auth$/);
   });
 
-  test('POST /login/ should process login and redirect on success', async ({ page, i18nSetup, pages }) => {
-    const loginPage = pages.login;
-    await loginPage.navigate();
-    await loginPage.fillCredentials(TEST_CREDENTIALS.username, TEST_CREDENTIALS.password);
-    await loginPage.clickSignIn();
-    await loginPage.expectSuccessfulLogin();
+  test('GET `/auth/test-session` should seed a valid session and redirect to cases', async ({ page, i18nSetup, pages }) => {
+    // This is for the playwright authentication flow
+    await pages.login.login();
+    await expect(page).toHaveURL(/\/cases\/new/);
   });
 
-  test('POST /login/ with trailing slash should process login', async ({ page, i18nSetup, pages }) => {
-    const loginPage = pages.login;
-    await loginPage.navigate();
-    await loginPage.fillCredentials(TEST_CREDENTIALS.username, TEST_CREDENTIALS.password);
-    
-    // Override the form action to post to /login/ with trailing slash
-    await loginPage.setFormAction('/login/');
+  test('GET `/auth/logout` should clear session', async ({ page, i18nSetup, pages }) => {
+    await pages.login.login();
+    await page.goto('/auth/logout');
 
-    await loginPage.clickSignIn();
-    await loginPage.expectSuccessfulLogin();
-  });
-
-  test('GET /logout should clear session and redirect to login', async ({ page, i18nSetup, pages }) => {
-    const loginPage = pages.login;
-    await loginPage.login();
-    
-    await page.goto('/logout');
-    await expect(page).toHaveURL(/\/login/);
-    await expect(page.locator('h1')).toContainText(LOGIN_HEADING);
-  });
-
-  test('GET /login/logout should clear session and redirect to login', async ({ page, i18nSetup, pages }) => {
-    const loginPage = pages.login;
-    await loginPage.login();
-    
-    await page.goto('/login/logout');
-    await expect(page).toHaveURL(/\/login/);
-    await expect(page.locator('h1')).toContainText(LOGIN_HEADING);
+    // After logout the session is destroyed, so navigating to a protected route (`/cases/new`), should redirect back to `/auth`
+    await page.goto('/cases/new');
+    await expect(page).toHaveURL(/\/auth/);
   });
 });
