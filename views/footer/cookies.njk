@@ -1,11 +1,41 @@
 {% extends "base.njk" %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
 
+{% block pageContent%}
 
 <body>
-    <h1>{{ "Cookies Policy" }}</h1>
+  <h1 class="govuk-heading-xl">{{ t('pages.cookies.heading') }}</h1>
+  <p>{{ t('pages.cookies.intro') }}</p>
+  <p>{{ t('pages.cookies.mccInfo') }}</p>
+  <p>{{ t('pages.cookies.infoStart') }}
+    <a class="govuk-link" href="https://ico.org.uk/for-the-public/online/cookies">
+    {{ t('pages.cookies.infoLink') }}
+    </a>
+    {{ t('pages.cookies.infoEnd') }}
+  </p>
+  <h1 class="govuk-heading-l">{{ t('pages.cookies.subheading') }}</h1>
+  <p>{{ t('pages.cookies.essentialInfo') }}</p>
+  
+  {{ govukTable({
+    caption: t("components.cookiesTable.caption"),
+    captionClasses: t("components.cookiesTable.captionClasses"),
+    firstCellIsHeader: t("components.cookiesTable.firstCellIsHeader"),
+    head: [
+      { text: t("components.cookiesTable.head.name") },
+      { text: t("components.cookiesTable.head.purpose") },
+      { text: t("components.cookiesTable.head.expires") }
+    ],
+    rows: [
+      [
+        { text: t("components.cookiesTable.rows.sessionID") },
+        { text: t("components.cookiesTable.rows.stores") },
+        { text: t("components.cookiesTable.rows.expiry") }
+      ]
+    ]
+  }) }}
 </body>
 
-
+{% endblock %}
 
 
 
