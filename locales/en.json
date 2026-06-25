@@ -404,7 +404,7 @@
     "cookies": {
       "heading": "Cookies",
       "intro": "Cookies are small files saved on your phone, tablet or computer when you visit a website.",
-      "mccInfo": "Manage your civil cases uses a cookie across the service to remember your answers.",
+      "mccCookie": "Manage your civil cases uses a cookie across the service to remember your answers.",
       "infoStart": "Find out",
       "infoLink": "how to manage cookies",
       "infoEnd": "from the Information Commissioner's Office.",

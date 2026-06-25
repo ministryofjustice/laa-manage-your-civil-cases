@@ -4,17 +4,17 @@
 {% block pageContent%}
 
 <body>
-  <h1 class="govuk-heading-xl">{{ t('pages.cookies.heading') }}</h1>
-  <p>{{ t('pages.cookies.intro') }}</p>
-  <p>{{ t('pages.cookies.mccInfo') }}</p>
+  <h1 id="cookies-heading" class="govuk-heading-xl">{{ t('pages.cookies.heading') }}</h1>
+  <p id="cookies-intro">{{ t('pages.cookies.intro') }}</p>
+  <p id="mcc-cookie">{{ t('pages.cookies.mccCookie') }}</p>
   <p>{{ t('pages.cookies.infoStart') }}
     <a class="govuk-link" href="https://ico.org.uk/for-the-public/online/cookies">
     {{ t('pages.cookies.infoLink') }}
     </a>
     {{ t('pages.cookies.infoEnd') }}
   </p>
-  <h1 class="govuk-heading-l">{{ t('pages.cookies.subheading') }}</h1>
-  <p>{{ t('pages.cookies.essentialInfo') }}</p>
+  <h2 id="cookies-subheading" class="govuk-heading-l">{{ t('pages.cookies.subheading') }}</h2>
+  <p id="essential-info">{{ t('pages.cookies.essentialInfo') }}</p>
   
   {{ govukTable({
     caption: t("components.cookiesTable.caption"),
