@@ -32,7 +32,7 @@ export function createThirdPartyHandlers(
         updateData.personal_details?.full_name === null &&
         updateData.pass_phrase === null;
 
-      if (isSoftDelete && caseReference === 'PC-1922-1879') {
+      if (isSoftDelete && caseReference === 'PC-3152-7329') {
         // Return a copy with thirdParty removed - don't mutate shared state
         caseItem.thirdParty =  null ;
         return HttpResponse.json(transformToApiFormat(caseItem));

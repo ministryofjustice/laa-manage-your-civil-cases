@@ -529,6 +529,49 @@
     }
   },
   {
+    "fullName": "George Gregory",
+    "caseReference": "PC-3152-7329",
+    "refCode": "",
+    "dateReceived": "2025-08-07T19:00:00-05:00",
+    "lastModified": "2025-08-08T17:30:00-05:00",
+    "caseStatus": "Completed",
+    "dateOfBirth": "1979-11-12T00:00:00-05:00",
+    "vulnerableUser": true,
+    "language": "Irish",
+    "phoneNumber": "0776829155",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "geroge.greg@outlook.com",
+    "address": "Green Village, Caernarfon",
+    "postcode": "LL57 @WQ",
+    "laaReference": "2850581",
+    "thirdParty": {
+      "fullName": "Benn Beckman",
+      "emailAddress": "b.beckman@redforce.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "Red Force Ship, Grand Line",
+      "postcode": "GL7 2RB",
+      "relationshipToClient": {
+        "selected": [
+          "LEGAL_ADVISOR"
+        ]
+      },
+      "passphraseSetUp": {
+        "selected": [
+          "No, client is a child or patient"
+        ]
+      }
+    },
+    "clientSupportNeeds": {
+      "bslWebcam": "Yes",
+      "textRelay": "No",
+      "callbackPreference": "No",
+      "languageSupportNeeds": "English",
+      "notes": "Client has a calm manner and cooperates well. Missing left arm noted but no mobility concerns."
+    }
+  },
+  {
     "fullName": "Red Haired Shanks",
     "caseReference": "PC-1122-3344",
     "refCode": "",

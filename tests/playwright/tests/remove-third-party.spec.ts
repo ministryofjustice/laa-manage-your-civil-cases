@@ -44,17 +44,22 @@ test('cancel link should navigate back to client details', async ({ page, i18nSe
 });
 
 test('confirm button should delete third party contact and redirect to client details', async ({ page, i18nSetup }) => {
-  await page.goto(clientDetailsUrl);
+
+  const caseURL = '/cases/PC-3152-7329/client-details';
+  const editThirdPartyURL = '/cases/PC-3152-7329/confirm/remove-third-party';
+  await page.goto(caseURL);
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
-  await page.goto(visitUrl);
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "George Gregory", expectedCaseRef: "PC-3152-7329", dateReceived: "8 August 2025", badgeTexts: ['BSL','Translation', 'At risk of abuse', 'Third Party'] });
+  await page.goto(editThirdPartyURL);
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "George Gregory", expectedCaseRef: "PC-3152-7329", dateReceived: "8 August 2025", badgeTexts: ['BSL','Translation', 'At risk of abuse', 'Third Party'] });
   await page.getByRole('button', { name: 'Yes, remove' }).click();
-  await expect(page).toHaveURL(clientDetailsUrl);
+  await expect(page).toHaveURL(caseURL);
 
   // Assert support needs summary card is visible with no data 
-  await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
+  await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: true, addHref: '/client-details/add/support-need' });
+  // Assert the data in the support needs summary card is correct
+  await assertSummaryCardData(page, 'Client support needs', { 'British Sign Language': 'Yes' });
   // Assert third party details summary card is visible with data
   await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: false, addHref: '/client-details/add/third-party' });
 });
