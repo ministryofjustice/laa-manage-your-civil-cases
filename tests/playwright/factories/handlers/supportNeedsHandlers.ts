@@ -20,7 +20,6 @@ export function createSupportNeedsHandlers(
       const updateData = await request.json() as Record<string, any>;
 
       const caseItem = cases.find(c => c.caseReference === caseReference);
-
       if (!caseItem) {
         return HttpResponse.json({ error: 'Case not found' }, { status: HTTP.NOT_FOUND });
       }
@@ -90,17 +89,17 @@ export function createSupportNeedsHandlers(
         return HttpResponse.json(validationErrors, { status: HTTP.BAD_REQUEST });
       }
 
-       if (caseReference === 'PC-1977-1241' || caseReference === 'PC-1122-3344') {
-      caseItem.clientSupportNeeds = {
-        bslWebcam: updateData.bsl_webcam ? 'Yes' : 'No',
-        textRelay: updateData.text_relay ? 'Yes' : 'No',
-        skype: updateData.skype_webcam ?? false,
-        minicom: updateData.minicom ?? false,
-        callbackPreference: updateData.callback_preference ? 'Yes' : 'No',
-        languageSupportNeeds: updateData.language ?? '',
-        notes: updateData.notes ?? ''
-      };
-    }
+      if (caseReference === 'PC-1977-1241' || caseReference === 'PC-1122-3344') {
+        caseItem.clientSupportNeeds = {
+          bslWebcam: updateData.bsl_webcam ? 'Yes' : 'No',
+          textRelay: updateData.text_relay ? 'Yes' : 'No',
+          skype: updateData.skype_webcam ?? false,
+          minicom: updateData.minicom ?? false,
+          callbackPreference: updateData.callback_preference ? 'Yes' : 'No',
+          languageSupportNeeds: updateData.language ?? '',
+          notes: updateData.notes ?? ''
+        };
+      }
       return HttpResponse.json(transformToApiFormat(caseItem));
     })
   ];

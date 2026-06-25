@@ -18,11 +18,9 @@ export function createThirdPartyHandlers(
     http.patch(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/thirdparty_details/`, async ({ params, request }) => {
       const { caseReference } = params;
       const updateData = await request.json() as Record<string, any>;
-      console.log('update date recived: ', updateData)
 
       const caseItem = cases.find(c => c.caseReference === caseReference);
 
-      console.log('CaseItem: ', caseItem?.thirdParty)
       if (!caseItem) {
         return HttpResponse.json({ error: 'Case not found' }, { status: HTTP.NOT_FOUND });
       }
@@ -34,7 +32,7 @@ export function createThirdPartyHandlers(
 
       if (isSoftDelete && caseReference === 'PC-3152-7329') {
         // Return a copy with thirdParty removed - don't mutate shared state
-        caseItem.thirdParty =  null ;
+        caseItem.thirdParty = null;
         return HttpResponse.json(transformToApiFormat(caseItem));
       }
 
@@ -62,7 +60,6 @@ export function createThirdPartyHandlers(
       if (Object.keys(validationErrors).length > 0) {
         return HttpResponse.json(validationErrors, { status: HTTP.BAD_REQUEST });
       }
-
 
       if (caseReference === 'PC-1922-1879') {
         caseItem.thirdParty = {
@@ -115,9 +112,7 @@ export function createThirdPartyHandlers(
       const validationErrors: Record<string, any> = {};
 
       if (typeof thirdPartyData !== 'object' || thirdPartyData === null || Array.isArray(thirdPartyData)) {
-        return HttpResponse.json({ detail: 'Invalid request body format' }, {
-          status: HTTP.BAD_REQUEST
-        });
+        return HttpResponse.json({ detail: 'Invalid request body format' }, { status: HTTP.BAD_REQUEST });
       }
 
       // Validate top-level third party fields
@@ -212,7 +207,6 @@ export function createThirdPartyHandlers(
       if (Object.keys(validationErrors).length > 0) {
         return HttpResponse.json(validationErrors, { status: HTTP.BAD_REQUEST });
       }
-
       return HttpResponse.json(transformToApiFormat(caseItem));
     })
   ];

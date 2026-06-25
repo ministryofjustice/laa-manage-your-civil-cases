@@ -14,8 +14,8 @@ test('add client support needs form should save valid data and redirect to clien
   await page.goto('/cases/PC-1977-1241/client-details/add/support-need');
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Harry Potter', expectedCaseRef: 'PC-1977-1241', dateReceived: '7 July 2025', badgeTexts: ['Urgent', 'At risk of abuse'], });
-  
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Harry Potter', expectedCaseRef: 'PC-1977-1241', dateReceived: '7 July 2025', badgeTexts: ['Urgent', 'At risk of abuse']});
+
   // Expect to see the form heading
   await expect(page.locator('legend.govuk-fieldset__legend')).toContainText('Add a client support need');
 
@@ -36,7 +36,7 @@ test('add client support needs form should save valid data and redirect to clien
   // Should redirect to client details page
   await expect(page).toHaveURL('/cases/PC-1977-1241/client-details');
   // Assert support needs summary card is visible with data 
-  await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: true, changeHref: '/client-details/change/support-need'});
+  await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: true, changeHref: '/client-details/change/support-need' });
   // Assert the data in the support needs summary card is correct
   await assertSummaryCardData(page, 'Client support needs', { 'British Sign Language': 'Yes' });
   // Assert third party details summary card is visible with no data
