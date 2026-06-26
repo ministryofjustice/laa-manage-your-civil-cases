@@ -80,8 +80,7 @@
 
   {% for row in options.rows %}
     {# Extract value from data object using the key #}
-    {% set rawValue = options.data[row.key] if options.data and row.key else 
-      null %}
+    {% set rawValue = options.data[row.key] if options.data and row.key else null %}
 
     {# Apply filter if specified #}
     {% set processedValue = rawValue %}

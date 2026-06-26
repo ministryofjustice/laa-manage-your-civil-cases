@@ -3,35 +3,35 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% set phoneNumberContent %}
-{% if data.safeToCall %}
-  {{ data.phoneNumber }}
-  {% if not data.announceCall %}
-    {{ govukWarningText({
-        text: t('forms.clientDetails.phoneNumber.doNotAnnounce'),
-        iconFallbackText: t.common.warning
-      }) }}
-  {% endif %}
-{% else %}
-  {{ govukWarningText({
-      text: t('forms.clientDetails.phoneNumber.notSafeToCallWarning'),
-      iconFallbackText: t.common.warning
-    }) }}
-{% endif %}
-{% endset %}
-
-{% set phoneNumberContentThirdParty %}
-{% if data.thirdParty.contactNumber %}
-  {% if data.thirdParty.safeToCall %}
-    {{ data.thirdParty.contactNumber }}
+  {% if data.safeToCall %}
+    {{ data.phoneNumber }}
+    {% if not data.announceCall %}
+      {{ govukWarningText({
+          text: t('forms.clientDetails.phoneNumber.doNotAnnounce'),
+          iconFallbackText: t.common.warning
+        }) }}
+    {% endif %}
   {% else %}
     {{ govukWarningText({
         text: t('forms.clientDetails.phoneNumber.notSafeToCallWarning'),
         iconFallbackText: t.common.warning
       }) }}
   {% endif %}
-{% else %}
-  {{ t('pages.caseDetails.notProvided') }}
-{% endif %}
+{% endset %}
+
+{% set phoneNumberContentThirdParty %}
+  {% if data.thirdParty.contactNumber %}
+    {% if data.thirdParty.safeToCall %}
+      {{ data.thirdParty.contactNumber }}
+    {% else %}
+      {{ govukWarningText({
+          text: t('forms.clientDetails.phoneNumber.notSafeToCallWarning'),
+          iconFallbackText: t.common.warning
+        }) }}
+    {% endif %}
+  {% else %}
+    {{ t('pages.caseDetails.notProvided') }}
+  {% endif %}
 {% endset %}
 
 {% macro renderAddress(address, postcode) %}
@@ -69,29 +69,37 @@
   {% endif %}
 {% endset %}
 
+{% set hasSupportNeeds = (data.clientSupportNeeds.bslWebcam | lower == "yes")or(data.clientSupportNeeds.textRelay | lower == "yes")or(data.clientSupportNeeds.callbackPreference | lower == "yes")or(data.clientSupportNeeds.languageSupportNeeds | trim != "")or(data.clientSupportNeeds.notes | trim != "") %}
+{% set supportNeedsAction = { 
+  href: "/cases/" + data.caseReference + ("/client-details/change/support-need" if hasSupportNeeds else "/client-details/add/support-need"),
+  text: t('common.change') if hasSupportNeeds else t('common.add') | capitalize,
+  visuallyHiddenText: t('accessibility.visuallyHiddenText.changeSupportNeeds')
+} %}
+
+{% set hasThirdParty = data.thirdParty and((data.thirdParty.fullName | trim != "")or(data.thirdParty.relationshipToClient | lower != "other")) %}
+
 {# Create enhanced data object with computed phone content #}
-{% set constructedData = {
+{% set constructedData = { 
   fullName: data.fullName,
-  clientRiskOfAbuse: t('common.yes')if data.vulnerableUser else 
-    t('common.no'),
-    dateOfBirth: data.dateOfBirth,
-    email: data.emailAddress,
-    phoneNumber: data.phoneNumber,
-    address: data.address,
-    postcode: data.postcode,
-    computedPhoneNumber: phoneNumberContent,
-    computedAddress: addressWithPostcode,
-    bslWebcam: data.clientSupportNeeds.bslWebcam,
-    textRelay: data.clientSupportNeeds.textRelay,
-    callbackPreference: data.clientSupportNeeds.callbackPreference,
-    languageSupportNeeds: data.clientSupportNeeds.languageSupportNeeds | capitaliseFirstLetter,
-    notes: data.clientSupportNeeds.notes,
-    fullNameThirdParty: data.thirdParty.fullName,
-    computedAddressThirdParty: addressWithPostcodeThirdParty,
-    computedPhoneNumberThirdParty: phoneNumberContentThirdParty,
-    emailAddressThirdParty: data.thirdParty.emailAddress,
-    relationshipToClientThirdParty: relationshipToClient,
-    passphraseContent: passphraseContent
+  clientRiskOfAbuse: t('common.yes')if data.vulnerableUser else t('common.no'),
+  dateOfBirth: data.dateOfBirth,
+  email: data.emailAddress,
+  phoneNumber: data.phoneNumber,
+  address: data.address,
+  postcode: data.postcode,
+  computedPhoneNumber: phoneNumberContent,
+  computedAddress: addressWithPostcode,
+  bslWebcam: data.clientSupportNeeds.bslWebcam,
+  textRelay: data.clientSupportNeeds.textRelay,
+  callbackPreference: data.clientSupportNeeds.callbackPreference,
+  languageSupportNeeds: data.clientSupportNeeds.languageSupportNeeds | capitaliseFirstLetter,
+  notes: data.clientSupportNeeds.notes,
+  fullNameThirdParty: data.thirdParty.fullName,
+  computedAddressThirdParty: addressWithPostcodeThirdParty,
+  computedPhoneNumberThirdParty: phoneNumberContentThirdParty,
+  emailAddressThirdParty: data.thirdParty.emailAddress,
+  relationshipToClientThirdParty: relationshipToClient,
+  passphraseContent: passphraseContent
 } %}
 
 <h2 class="govuk-heading-m">{{ t('pages.caseDetails.tabs.clientDetails') }}</h2>
@@ -202,14 +210,6 @@
 }) }}
 
 {# Support needs summary card #}
-{% set hasSupportNeeds = (data.clientSupportNeeds.bslWebcam | lower == "yes")or(data.clientSupportNeeds.textRelay | lower == "yes")or(data.clientSupportNeeds.callbackPreference | lower == "yes")or(data.clientSupportNeeds.languageSupportNeeds | trim != "")or(data.clientSupportNeeds.notes | trim != "") %}
-
-{% set supportNeedsAction = {
-  href: "/cases/" + data.caseReference + ("/client-details/change/support-need" if hasSupportNeeds else "/client-details/add/support-need"),
-  text: t('common.change') if hasSupportNeeds else t('common.add') | capitalize,
-  visuallyHiddenText: t('accessibility.visuallyHiddenText.changeSupportNeeds')
-} %}
-
 {{ summaryCardComponent({
   data: constructedData,
   card: {
@@ -246,8 +246,6 @@
 }) }}
 
 {# Third party info summary card #}
-{% set hasThirdParty = data.thirdParty and((data.thirdParty.fullName | trim != "")or(data.thirdParty.relationshipToClient | lower != "other")) %}
-
 {% if hasThirdParty %}
   {% set thirdPartyRows = [
     {

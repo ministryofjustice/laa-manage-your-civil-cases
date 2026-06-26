@@ -20,7 +20,6 @@ export function createThirdPartyHandlers(
       const updateData = await request.json() as Record<string, any>;
 
       const caseItem = cases.find(c => c.caseReference === caseReference);
-
       if (!caseItem) {
         return HttpResponse.json({ error: 'Case not found' }, { status: HTTP.NOT_FOUND });
       }
@@ -30,6 +29,7 @@ export function createThirdPartyHandlers(
         updateData.personal_details?.full_name === null &&
         updateData.pass_phrase === null;
 
+      // Restrict the delete function to the required case, George Gregory
       if (isSoftDelete && caseReference === 'PC-3152-7329') {
         // Return a copy with thirdParty removed - don't mutate shared state
         caseItem.thirdParty = null;
@@ -37,7 +37,6 @@ export function createThirdPartyHandlers(
       }
 
       const validationErrors: Record<string, any> = {};
-
       if (typeof updateData !== 'object' || updateData === null || Array.isArray(updateData)) {
         return HttpResponse.json({ detail: 'Invalid request body format' }, { status: HTTP.BAD_REQUEST });
       }
@@ -61,36 +60,17 @@ export function createThirdPartyHandlers(
         return HttpResponse.json(validationErrors, { status: HTTP.BAD_REQUEST });
       }
 
+      // Restrict it to the required test case, Jack Youngs
       if (caseReference === 'PC-1922-1879') {
-        caseItem.thirdParty = {
+        caseItem.thirdParty = { 
           fullName: updateData.personal_details?.full_name ?? '',
-
-          emailAddress:
-            updateData.personal_details?.email ?? '',
-
-          contactNumber:
-            updateData.contact_number ??
-            updateData.personal_details?.mobile_phone ??
-            updateData.mobile_phone ??
-            '',
-
+          emailAddress:updateData.personal_details?.email ?? '',
+          contactNumber: updateData.contact_number ?? updateData.personal_details?.mobile_phone ?? updateData.mobile_phone ?? '',
           safeToCall: true,
-
-          address:
-            updateData.personal_details?.street ??
-            updateData.personal_details?.address ??
-            '',
-
-          postcode:
-            updateData.personal_details?.postcode ?? '',
-
-          relationshipToClient: {
-            selected: [updateData.personal_relationship]
-          },
-          passphraseSetUp: {
-            selected: [updateData.thirdPartyPassphraseSetUp],
-            passphrase: updateData.pass_phrase ?? updateData.thirdPartyPassphrase ?? undefined,
-          }
+          address: updateData.personal_details?.street ?? updateData.personal_details?.address ?? '',
+          postcode: updateData.personal_details?.postcode ?? '',
+          relationshipToClient: { selected: [updateData.personal_relationship] },
+          passphraseSetUp: { selected: [updateData.thirdPartyPassphraseSetUp], passphrase: updateData.pass_phrase ?? updateData.thirdPartyPassphrase ?? undefined }
         };
       }
       return HttpResponse.json(transformToApiFormat(caseItem));
@@ -134,6 +114,7 @@ export function createThirdPartyHandlers(
         return HttpResponse.json(validationErrors, { status: HTTP.BAD_REQUEST });
       }
 
+      // Restrict updating the 3rd party to the required test case James Potter
       if (caseReference === 'PC-1357-1212') {
         caseItem.thirdParty = {
           fullName: thirdPartyData.personal_details?.full_name ?? '',
@@ -178,7 +159,6 @@ export function createThirdPartyHandlers(
       const thirdPartyData = await request.json() as Record<string, any>;
 
       const caseItem = cases.find(c => c.caseReference === caseReference);
-
       if (!caseItem) {
         return HttpResponse.json({ error: 'Case not found' }, { status: HTTP.NOT_FOUND });
       }

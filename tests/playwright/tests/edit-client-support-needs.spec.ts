@@ -43,7 +43,7 @@ test('edit client support needs form should save valid data and redirect to clie
   // Assert support needs summary card is visible with data 
   await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: true, changeHref: '/client-details/change/support-need' });
   // Assert the data in the support needs summary card is correct
-  await assertSummaryCardData(page, 'Client support needs', { 'British Sign Language': 'Yes' });
+  await assertSummaryCardData(page, 'Client support needs', { 'British Sign Language': 'Yes', 'Language – needs interpreter': 'English', 'Other support': 'Here are some notes from the operator!' });
   // Assert third party details summary card is visible with data
   await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: true, changeHref: '/client-details/change/third-party', removeHref: '/confirm/remove-third-party' });
   // Assert the correct data is displayed in the third party data summary card
@@ -118,7 +118,7 @@ test('edit client support needs form should redirect with warning if no changes 
   // Assert support needs summary card is visible with data 
   await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: true, changeHref: '/client-details/change/support-need' });
   // Assert the data in the support needs summary card is correct
-  await assertSummaryCardData(page, 'Client support needs', { 'British Sign Language': 'Yes' });
+  await assertSummaryCardData(page, 'Client support needs', { 'British Sign Language': 'Yes', 'Language – needs interpreter': 'English', 'Other support': 'Here are some notes from the operator!' });
   // Assert third party details summary card is visible with data
   await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: true, changeHref: '/client-details/change/third-party', removeHref: '/confirm/remove-third-party' });
   // Assert the correct data is displayed in the third party data summary card

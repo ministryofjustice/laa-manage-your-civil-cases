@@ -77,48 +77,55 @@ test.describe('Edit Client Name', () => {
       // Assert the case details header is present
       await assertCaseDetailsHeaderPresent(editNamePage.getPage, { withMenuButtons: false, expectedName: "John Updated Smith", expectedCaseRef: "PC-1854-6521", dateReceived: "8 August 2025", badgeTexts: ['At risk of abuse'] });
       expect(editNamePage.expectNoWarningBanner())
-       // Assert support needs summary card is visible with no data 
-      await assertSummaryCardState(editNamePage.getPage, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
+      // Assert support needs summary card is visible with no data 
+      await assertSummaryCardState(editNamePage.getPage, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: true, changeHref: '/client-details/change/support-need' });
+      // Assert the data in the support needs summary card is correct
+      await assertSummaryCardData(editNamePage.getPage, 'Client support needs', { 'British Sign Language': 'Yes', 'Language – needs interpreter': 'English', 'Other support': 'Here are some notes from the operator!' });
       // Assert third party details summary card is visible with data
-      await assertSummaryCardState(editNamePage.getPage, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: false, addHref: '/client-details/add/third-party' });
-  });
-  });
-  test('name form displays validation errors correctly', async ({ pages }) => {
-    const editNamePage = pages.editName;
-    await editNamePage.submitWithEmptyName();
-    await editNamePage.expectErrorSummaryVisible();
+      await assertSummaryCardState(editNamePage.getPage, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: true, changeHref: '/client-details/change/third-party', removeHref: '/confirm/remove-third-party' });
+      // Assert the correct data is displayed in the third party data summary card
+      await assertSummaryCardData(editNamePage.getPage, 'Third party contact', { 'Name': 'Samira Patel', 'Phone number': 'Not provided', 'Email address': 'samira@patel.com', 'Address': '84 Zoo Lane, Birmingham B88 1RW', 'Relationship to client': 'Legal adviser' });
+    });
 
-    // Check individual field error appears
-    await expect(editNamePage.nameError).toBeVisible();
-    await expect(editNamePage.alertBanner).not.toBeVisible();
-  });
+    test('name form displays validation errors correctly', async ({ pages }) => {
+      const editNamePage = pages.editName;
+      await editNamePage.submitWithEmptyName();
+      await editNamePage.expectErrorSummaryVisible();
 
-  test('name form does not display alert banner for validation errors', async ({ pages }) => {
-    const editNamePage = pages.editName;
-    await editNamePage.submitWithEmptyName();
-    await editNamePage.expectErrorSummaryVisible();
+      // Check individual field error appears
+      await expect(editNamePage.nameError).toBeVisible();
+      await expect(editNamePage.alertBanner).not.toBeVisible();
+    });
 
-    // Check alert banner is not present (as this is a validation error takes priority)
-    await expect(editNamePage.alertBanner).not.toBeVisible();
-  });
+    test('name form does not display alert banner for validation errors', async ({ pages }) => {
+      const editNamePage = pages.editName;
+      await editNamePage.submitWithEmptyName();
+      await editNamePage.expectErrorSummaryVisible();
 
-  test('unchanged name triggers no change warning banner', async ({ pages }) => {
-    const editNamePage = pages.editName;
-    await editNamePage.submitWithoutChanges();
-    await editNamePage.expectSuccessfulSubmission();
-    await editNamePage.expectNoChangeWarningBanner('No changes were made');
-     // Assert support needs summary card is visible with no data 
-    await assertSummaryCardState(pages.editName.getPage, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
-    // Assert third party details summary card is visible with data
-    await assertSummaryCardState(pages.editName.getPage, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: true, changeHref: '/client-details/change/third-party', removeHref: '/confirm/remove-third-party' });
-    // Assert the correct data is displayed in the third party data summary card
-    await assertSummaryCardData(pages.editName.getPage, 'Third party contact', { 'Name': 'Sarah Johnson', 'Phone number': 'Warning Not safe to call', 'Email address': 'sarah@johnson.com', 'Address': '45 Main Street, Sheffield S1 2AB', 'Relationship to client': 'Family member or friend' });
-});
+      // Check alert banner is not present (as this is a validation error takes priority)
+      await expect(editNamePage.alertBanner).not.toBeVisible();
+    });
 
-  test('name edit page should be accessible', {
-    tag: '@accessibility',
-  }, async ({ pages, checkAccessibility }) => {
-    await pages.editName.navigate();
-    await checkAccessibility();
+    test('unchanged name triggers no change warning banner', async ({ pages }) => {
+      const editNamePage = pages.editName;
+      await editNamePage.submitWithoutChanges();
+      await editNamePage.expectSuccessfulSubmission();
+      await editNamePage.expectNoChangeWarningBanner('No changes were made');
+      // Assert support needs summary card is visible with no data 
+      await assertSummaryCardState(pages.editName.getPage, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: true, changeHref: '/client-details/change/support-need' });
+      // Assert the data in the support needs summary card is correct
+      await assertSummaryCardData(pages.editName.getPage, 'Client support needs', { 'British Sign Language': 'Yes', 'Language – needs interpreter': 'English', 'Other support': 'Here are some notes from the operator!' });
+      // Assert third party details summary card is visible with data
+      await assertSummaryCardState(pages.editName.getPage, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: true, changeHref: '/client-details/change/third-party', removeHref: '/confirm/remove-third-party' });
+      // Assert the correct data is displayed in the third party data summary card
+      await assertSummaryCardData(editNamePage.getPage, 'Third party contact', { 'Name': 'Samira Patel', 'Phone number': 'Not provided', 'Email address': 'samira@patel.com', 'Address': '84 Zoo Lane, Birmingham B88 1RW', 'Relationship to client': 'Legal adviser' });
+    });
+
+    test('name edit page should be accessible', {
+      tag: '@accessibility',
+    }, async ({ pages, checkAccessibility }) => {
+      await pages.editName.navigate();
+      await checkAccessibility();
+    });
   });
 });

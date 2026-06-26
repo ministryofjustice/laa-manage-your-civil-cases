@@ -30,7 +30,8 @@ export {
 } from './clientThirdPartySchema.js';
 
 export {
-  validateClientSupportNeeds
+  validateClientSupportNeeds,
+  validateClientSupportNeedsAdd
 } from './clientSupportNeedsSchema.js';
 
 export {

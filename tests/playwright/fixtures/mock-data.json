@@ -710,7 +710,32 @@
     "emailAddress": "walter_white@yahoo.com",
     "address": "674 King Road, Nebraska, USA",
     "postcode": "NEE1 1UL",
-    "laaReference": "2850581"
+    "laaReference": "2850581",
+    "thirdParty": {
+      "fullName": "Samira Patel",
+      "emailAddress": "samira@patel.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "LEGAL_ADVISOR"
+        ]
+      },
+      "passphraseSetUp": {
+        "selected": [
+          "No, client is a child or patient"
+        ]
+      }
+    },
+    "clientSupportNeeds": {
+      "bslWebcam": "Yes",
+      "textRelay": "No",
+      "callbackPreference": "No",
+      "languageSupportNeeds": "English",
+      "notes": "Here are some notes from the operator!"
+    }
   },
   {
     "fullName": "Alan Turning",

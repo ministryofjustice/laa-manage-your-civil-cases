@@ -89,7 +89,9 @@ export function createSupportNeedsHandlers(
         return HttpResponse.json(validationErrors, { status: HTTP.BAD_REQUEST });
       }
 
+      // Restrict the updating of support needs to required test cases. (Harry potter or Red Haired Shanks)
       if (caseReference === 'PC-1977-1241' || caseReference === 'PC-1122-3344') {
+        // Update the case item support needs
         caseItem.clientSupportNeeds = {
           bslWebcam: updateData.bsl_webcam ? 'Yes' : 'No',
           textRelay: updateData.text_relay ? 'Yes' : 'No',
@@ -104,4 +106,3 @@ export function createSupportNeedsHandlers(
     })
   ];
 }
-
