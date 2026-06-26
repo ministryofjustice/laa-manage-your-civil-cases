@@ -25,6 +25,7 @@ import { validateProviderNote } from '#src/middlewares/providerNoteSchema.js';
 import { ValidationChain } from '#node_modules/express-validator/lib/index.js';
 // Import to get global type declarations for axiosMiddleware
 import '#utils/server/axiosSetup.js';
+import * as helpers from '#src/scripts/helpers/index.js'
 
 // Define the RequestWithMiddleware interface for testing
 interface RequestWithMiddleware extends Request {
@@ -59,25 +60,45 @@ describe('Case Details Controller', () => {
       axiosMiddleware: {} as any,
       csrfToken: () => 'test-csrf-token'
     } as Partial<RequestWithMiddleware>;
-    
+
     renderStub = sinon.stub();
     redirectStub = sinon.stub();
     statusStub = sinon.stub().returns({ render: renderStub });
-    
+
     res = {
       render: renderStub,
       redirect: redirectStub,
       status: statusStub
     };
-    
+
     next = sinon.stub();
-    
+
     // Stub the API service
     apiServiceStub = sinon.stub(apiService, 'getClientDetails');
     updateProviderNotesStub = sinon.stub(apiService, 'updateProviderNotes');
     getClientCaseLogsStub = sinon.stub(apiService, 'getClientCaseLogs').resolves({
       status: 'success',
       data: []
+    });
+
+    sinon.stub(apiService, 'getProviderChoices').resolves({
+      status: 'success',
+      data: {
+        id: 12,
+        name: "Generic Provider Public Law",
+        law_category: [
+          {
+            code: "housing",
+            name: "Housing, eviction and homelessness",
+            description: ""
+          },
+          {
+            code: "debt",
+            name: "Debt, money problems and bankruptcy",
+            description: ""
+          }
+        ]
+      }
     });
   });
 
@@ -91,9 +112,10 @@ describe('Case Details Controller', () => {
       const mockClientData = {
         fullName: 'John Doe',
         caseReference: 'TEST123',
-        dateOfBirth: '1990-01-01'
+        dateOfBirth: '1990-01-01',
+        providerId: 12
       };
-      
+
       // Mock client data from middleware
       req.clientData = mockClientData;
 

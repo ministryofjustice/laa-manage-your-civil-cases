@@ -127,5 +127,6 @@ export {
 
 // Helper to fetch provider name and details
 export {
-  fetchProviderNameAndDetail
+  fetchProviderNameAndDetail,
+  hasMoreThanOneCategory
 } from './providerDetailHelper.js';

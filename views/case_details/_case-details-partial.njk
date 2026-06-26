@@ -153,14 +153,14 @@
         {{ t('pages.caseDetails.changeCategoryOfLaw.h3') | replace(":", "") }}
       </h3>
 
-        <a href="/cases/{{ data.caseReference }}/change-law-category"
-     class="govuk-link">
+      {% if moreThanOneCategory %}
+        <a href="/cases/{{ data.caseReference }}/change-law-category" class="govuk-link">
           {{ t('common.change') }}
           <span class="govuk-visually-hidden">
             {{ t('accessibility.visuallyHiddenText.changeCategory') }}
           </span>
         </a>
-
+      {% endif %}
     </div>
 
     {# Build rows #}
@@ -175,7 +175,9 @@
     ] %}
 
     {# Add Note row only if MCC note exists #}
-    {% if mccNote and mccNote.notes.trim() %}
+    {% if mccNote and mccNote
+      .notes
+      .trim() %}
       {% set rows = rows.concat([
         [
           {
@@ -193,13 +195,12 @@
     classes: "govuk-!-margin-bottom-3",
     rows: rows
   }) }}
-  
-{% if mccNote %}
-  <p class = "govuk-hint govuk-!-font-size-16">
-    Changed by {{ mccNote.createdBy }} on {{ mccNote.created }}
-  </p>
-{% endif %}
 
+    {% if mccNote %}
+      <p class = "govuk-hint govuk-!-font-size-16">
+    Changed by {{ mccNote.createdBy }} on {{ mccNote.created }}
+      </p>
+    {% endif %}
 
   {% endif %}
 

@@ -217,6 +217,17 @@
     "postcode": "G1 2LQ",
     "laaReference": "1731666",
     "outcomeCode": "SPOR",
+    "diagnosis": {
+     "nodes": [
+       {
+         "key": "Housing, eviction and homelessness"
+       },
+       {
+         "key": "The client has been discriminated against, or they've been treated badly because they complained about discrimination or supported someone else’s discrimination claim\n\nIt is against the law to discriminate against anyone because of:\n\n* age\n* gender reassignment\n* being married or in a civil partnership\n* being pregnant or having recently given birth\n* disability\n* race including colour, nationality, ethnic or national origin\n* religion, belief or lack of religion or belief\n* sex\n* sexual orientation"
+       }
+      ],
+     "category": "housing"
+   },
     "thirdParty": {
       "fullName": "Sarah Johnson",
       "emailAddress": "sarah@johnson.com",
@@ -494,10 +505,11 @@
   {
     "fullName": "Grace Baker",
     "caseReference": "PC-1869-9154",
+    "providerId": "12",
     "refCode": "",
     "dateReceived": "2025-08-07T19:00:00-05:00",
     "lastModified": "2025-08-08T17:30:00-05:00",
-    "caseStatus": "Opened",
+    "caseStatus": "Pending",
     "dateOfBirth": "1979-11-12T00:00:00-05:00",
     "vulnerableUser": true,
     "language": "Polish",
