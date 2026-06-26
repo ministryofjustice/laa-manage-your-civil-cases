@@ -41,7 +41,7 @@ export function createSupportNeedsHandlers(
       if (updateData.no_adaptations_required === true) {
 
         // Verify all required fields are present for soft delete
-        const requiredFields = ['bsl_webcam', 'minicom', 'text_relay', 'skype_webcam', 'callback_preference', 'language', 'notes'];
+        const requiredFields = ['bsl_webcam', 'text_relay', 'callback_preference', 'language', 'notes'];
         const missingFields = requiredFields.filter(field => !(field in updateData));
 
         if (missingFields.length > 0) {
@@ -51,9 +51,7 @@ export function createSupportNeedsHandlers(
         // Verify fields are properly cleared (all booleans false, language null, notes empty)
         const expectedClearPayload = {
           bsl_webcam: false,
-          minicom: false,
           text_relay: false,
-          skype_webcam: false,
           callback_preference: false,
           language: null,
           notes: '',
