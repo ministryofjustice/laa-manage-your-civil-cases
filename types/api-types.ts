@@ -345,3 +345,21 @@ export interface SplitCaseSubmissionApiResponse {
   status: 'success' | 'error';
   message?: string;
 }
+
+/**
+ * Interface for financial eligiblity data
+ */
+export interface FinancialEligibilityData {
+  hasPartner: boolean;
+  isUnder17: boolean;
+  isOver60: boolean;
+}
+
+/**
+ * Response type for financial eligibility data
+ */
+export interface GetFinancialEligibilityApiResponse {
+  data: FinancialEligibilityData | null;
+  status: 'success' | 'error';
+  message?: string;
+}
