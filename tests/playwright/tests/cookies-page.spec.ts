@@ -64,8 +64,8 @@ test('cookies page should have rendered correctly', async ({ page, i18nSetup }) 
   await expect(mccCookie).toHaveText('Manage your civil cases uses a cookie across the service to remember your answers.');
   
   // Verify the text for how to manage cookies from the ICO
-
-  // Check link to ICO works
+  const icoInfo = page.locator('#icoInfo');
+  await expect(icoInfo).toHaveText("Find out how to manage cookies from the Information Commissioner's Office.");
 
   // Check for the subheading on the cookies page
   await expect(page.getByRole('heading', { level: 2, name: t('pages.cookies.subheading') })).toBeVisible();
@@ -78,10 +78,36 @@ test('cookies page should have rendered correctly', async ({ page, i18nSetup }) 
   const essentialInfo = page.locator('#essential-info')
   await expect(essentialInfo).toHaveText('We use an essential cookie to remember your answers as you use the service.');
   
+  // Check the table is visible
+  const table = page.getByRole('table');
+  await expect(table).toBeVisible();
+
   // Verify the text for the table caption
+  await expect(page.getByText('Essential cookies we use'))
 
   // Verify the text for the column headers on table
+  await expect(page.getByRole('columnheader', { name: 'Name' })).toBeVisible();
+  await expect(page.getByRole('columnheader', { name: 'Purpose' })).toBeVisible();
+  await expect(page.getByRole('columnheader', { name: 'Expires' })).toBeVisible();
+
+  // Check that only one row is visible
+  const rows = page.locator('tbody tr');
+  await expect(rows).toHaveCount(1);
 
   // Verify the text for the row on table
+  await expect(page.getByText('sessionID')).toBeVisible();
+  await expect(page.getByText('Stores user-provided form data')).toBeVisible();
+  await expect(page.getByText('24 hours')).toBeVisible();
 
+});
+
+test('cookies link goes to ICO site', async ({ page }) => {
+  // Navigate to the search page
+  await page.goto(visitUrl);
+
+  // Check link to ICO works
+  const link = page.locator('a[href="https://ico.org.uk/for-the-public/online/cookies"]');
+  await expect(link).toBeVisible();
+  await Promise.all([page.waitForURL(/ico\.org\.uk/), link.click(),]);
+  await expect(page).toHaveURL(/ico\.org\.uk/);
 });
