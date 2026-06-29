@@ -88,6 +88,10 @@ const clientSupportNeedsAddSchema = {
 
   clientSupportNeeds: {
     notEmpty: {
+      /**
+       * Adds a check for empty fields when a user is adding support needs
+       * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+       */
       errorMessage: () =>
         new TypedValidationError({
           summaryMessage: t('forms.clientDetails.clientSupportNeeds.validationError.notEmpty'),

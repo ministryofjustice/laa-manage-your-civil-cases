@@ -149,8 +149,7 @@ export async function postEditClientThirdParty(req: Request, res: Response, next
         {
           current: thirdPartyData,
           existing: existing
-        }
-      ];
+        }];
       if (handleNoChangeRedirect(req, res, caseReference, fields)) return;
     }
 
