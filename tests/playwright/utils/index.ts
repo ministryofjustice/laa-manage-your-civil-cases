@@ -3,3 +3,4 @@ export { getClientDetailsUrlByStatus } from './test_urls.js';
 export { login, loginAndNavigate, isAuthenticated, logout, setupAuth } from './auth.js';
 export { assertCaseDetailsHeaderPresent } from './case-details-helper.js';
 export { assertSummaryCardState, assertSummaryCardData } from './client-details-helper.js';
+export { expectPropertyTableRows, expectCaptionTableRows } from './financial-details-helper.js';

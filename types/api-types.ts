@@ -346,6 +346,62 @@ export interface SplitCaseSubmissionApiResponse {
   message?: string;
 }
 
+export interface MoneyPerInterval {
+  amount: number,
+  time: 'per_month' | 'per_year' | 'per_week' | 'per_4week' | 'per_2week' 
+}
+
+/**
+ * Interface for savings data
+ */
+export interface SavingsData {
+  bankBalance: number,
+  investmentBalance: number,
+  assetBalance: number,
+  creditBalance: number,
+  total: number
+}
+
+/**
+ * Interface for deduction data
+ */
+export interface DeductionData {
+  incomeTax: string,
+  nationalInsurance: string,
+  maintenance: string,
+  childcare: string,
+  mortgage: string,
+  rent: string,
+  criminalContributions: string,
+  total: number
+}
+
+/**
+ * Interface for income data 
+ */
+export interface IncomeData {
+  earnings: string,
+  selfEmploymentDrawings: string,
+  benefits: string,
+  taxCredits: string,
+  childBenefit: string,
+  maintenanceReceived: string,
+  pension: string,
+  otherIncome: string,
+  selfEmployed: boolean,
+  total: number
+}
+/**
+ * Interface for property data
+ */
+export interface PropertySetData {
+  value: number,
+  mortgageLeft: number,
+  share: number,
+  disputed: boolean,
+  main: boolean
+}
+
 /**
  * Interface for financial eligiblity data
  */
@@ -353,6 +409,29 @@ export interface FinancialEligibilityData {
   hasPartner: boolean;
   isUnder17: boolean;
   isOver60: boolean;
+
+  specificBenefits: {
+    pensionCredit: boolean;
+    jobSeekers: boolean;
+    employmentSupport: boolean;
+    universalCredit: boolean;
+    incomeSupport: boolean;
+  }
+  propertySet: PropertySetData[]
+  clientData: {
+    income: IncomeData,
+    savings: SavingsData,
+    deductions: DeductionData
+  }
+  partnerData: {
+    partnerIncome: IncomeData,
+    partnerSavings: SavingsData,
+    partnerDeductions: DeductionData
+  }
+  disregards: string[];
+  depedantsYoung: number;
+  depedantsOld: number;
+
 }
 
 /**

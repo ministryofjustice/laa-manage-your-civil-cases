@@ -94,7 +94,7 @@ env:
   API_PREFIX: "/cla_provider/api/v1"
   REDIS_ENABLED: true
   REDIS_TLS_ENABLED: true
-  ENTRA_REDIRECT_URI: "https://main-manage-your-civil-cases-uat.cloud-platform.service.justice.gov.uk/auth/callback" # This will need to be adjusted for the UAT branch you're on and added to the redirect uri's via the MicroSoft Entra Admin center.`
+  ENTRA_REDIRECT_URI: "https://el-2835-view-only-mcc-uat.cloud-platform.service.justice.gov.uk/auth/callback" # This will need to be adjusted for the UAT branch you're on and added to the redirect uri's via the MicroSoft Entra Admin center.`
   ENTRA_POST_LOGOUT_REDIRECT_URI: "https://main-manage-your-civil-cases-uat.cloud-platform.service.justice.gov.uk/auth/logout/callback" 
 
 autoscaling:

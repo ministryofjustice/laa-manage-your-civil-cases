@@ -1,10 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
-import { 
-  handleGetEditForm, 
-  handlePostEditForm,
-  extractFormFields
-} from '#src/scripts/helpers/index.js';
+import { handleGetEditForm, handlePostEditForm,extractFormFields } from '#src/scripts/helpers/index.js';
 
 /**
  * Renders the edit clients risk of abuse status.
