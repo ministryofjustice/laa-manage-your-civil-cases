@@ -48,11 +48,13 @@ export async function handleClientDetailsTab(req: Request, res: Response, next: 
       financialEligibility = null;
     }
 
+    console.log('financial eligibility: ', financialEligibility)
+
     res.render('case_details/index.njk', {
       activeTab,
       client: clientData,
       showClientSupportNeeds,
-       caseReference,
+      caseReference,
       financialEligibility,
       sessionID: req.sessionID,
       noChangeWarningBanner

@@ -4,8 +4,10 @@
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 
+<pre>{{ financialEligibility | dump }}</pre>
+
 {% set editAssessmentButtonHtml %}
-  {{
+{{
     govukButton({
       text: "Edit assessment",
       classes: "govuk-button--secondary",
@@ -15,42 +17,51 @@
 {% endset %}
 
 {% set detailsHtml %}
-  {% if financialEligibility.isUnder17 %}
-   {% set under17Text = "Yes" %}
-  {% else %}
-   {% set under17Text = "No" %}
-  {% endif %}
+  {% set under17Text = "Yes" if financialEligibility.isUnder17 else "No" %}
+  {% set partnerText = "Yes" if financialEligibility.hasPartner else  "No" %}
+  {% set over60Text = "Yes" if financialEligibility.isOver60 else "No"%}
+  {% set universalCredit = "Yes" if financialEligibility.specificBenefits.universalCredit else "No"%}
+  {% set pensionCredit = "Yes" if financialEligibility.specificBenefits.pensionCredit else "No"%}
+  {% set jobSeekers = "Yes" if financialEligibility.specificBenefits.jobSeekers else "No"%}
+  {% set employmentSupport = "Yes" if financialEligibility.specificBenefits.employmentSupport else "No"%}
+  {% set incomeSupport = "Yes" if financialEligibility.specificBenefits.incomeSupport else "No"%}
 
-  {% if financialEligibility.hasPartner %}
-    {% set partnerText = "Yes" %}
-  {% else %}
-    {% set partnerText = "No" %}
-  {% endif %}
+{% set rows = [
+  [
+    {
+      text: "Are you aged 17 or under?"
+    }, {
+      text: under17Text
+    }
+  ]
+] %}
+{% if not financialEligibility.isUnder17 %}
+  {% set rows = rows.concat([
+    [
+      {
+        text: "Do you have a partner?"
+      }, {
+        text: partnerText
+      }
+    ],
+    [
+      {
+        text: "Are you aged 60 or over?"
+      }, {
+        text: over60Text
+      }
+    ]
+  ]) %}
+{% endif %}
 
-  {% if financialEligibility.isOver60 %}
-    {% set over60Text = "Yes" %}
-  {% else %}
-    {% set over60Text = "No" %}
-  {% endif %}
-
-  {% set rows = [
-    [{ text: "Are you aged 17 or under?" }, { text: under17Text }]
-  ] %}
-  {% if not financialEligibility.isUnder17 %}
-    {% set rows = rows.concat([
-      [{ text: "Do you have a partner?" }, { text: partnerText }],
-      [{ text: "Are you aged 60 or over?" }, { text: over60Text }]
-    ]) %}
-  {% endif %}
-
-  {{ govukTable({
+{{ govukTable({
     caption: "About you",
     captionClasses: "govuk-table__caption--m",
     firstCellIsHeader: true,
     rows: rows
   }) }}
 
-  {{ govukTable({
+{{ govukTable({
     caption: "Benefits",
     captionClasses: "govuk-table__caption--m",
     firstCellIsHeader: true,
@@ -60,7 +71,7 @@
           text: "Universal Credit"
         },
         {
-          text: "Yes"
+          text: universalCredit
         }
       ],
       [
@@ -68,7 +79,7 @@
           text: "Income Support"
         },
         {
-          text: "No"
+          text: incomeSupport
         }
       ],
       [
@@ -76,7 +87,7 @@
           text: "Income-based Job Seekers Allowance"
         },
         {
-          text: "No"
+          text: jobSeekers
         }
       ],
       [
@@ -84,7 +95,7 @@
           text: "Guarantee State Pension Credit"
         },
         {
-          text: "No"
+          text: pensionCredit
         }
       ],
       [
@@ -92,17 +103,18 @@
           text: "Income-related Employment and Support Allowance"
         },
         {
-          text: "No"
+          text: employmentSupport
         }
       ]
     ]
   }) }}
 
-  <div> {{ editAssessmentButtonHtml | safe }}</div>
+<div>
+  {{ editAssessmentButtonHtml | safe }}</div>
 {% endset -%}
 
 {% set financesHtml %}
-  {{ govukTable({
+{{ govukTable({
     caption: "Finances",
     captionClasses: "govuk-table__caption--m",
     firstCellIsHeader: true,
@@ -118,11 +130,12 @@
     ]
   }) }}
 
-  <div> {{ editAssessmentButtonHtml | safe }}</div>
+<div>
+  {{ editAssessmentButtonHtml | safe }}</div>
 {% endset -%}
 
 {% set incomeHtml %}
-  {{ govukTable({
+{{ govukTable({
     caption: "Income",
     captionClasses: "govuk-table__caption--m",
     firstCellIsHeader: true,
@@ -138,11 +151,12 @@
     ]
   }) }}
 
-  <div> {{ editAssessmentButtonHtml | safe }}</div>
+<div>
+  {{ editAssessmentButtonHtml | safe }}</div>
 {% endset -%}
 
 {% set expensesHtml %}
-  {{ govukTable({
+{{ govukTable({
     caption: "Expenses",
     captionClasses: "govuk-table__caption--m",
     firstCellIsHeader: true,
@@ -158,9 +172,9 @@
     ]
   }) }}
 
-  <div> {{ editAssessmentButtonHtml | safe }}</div>
+<div>
+  {{ editAssessmentButtonHtml | safe }}</div>
 {% endset -%}
-
 
 <p> NOTE: This will show the existing financial eligibility for this case from `cla_backend`</p>
 

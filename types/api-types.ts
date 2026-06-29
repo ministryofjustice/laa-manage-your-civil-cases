@@ -347,12 +347,32 @@ export interface SplitCaseSubmissionApiResponse {
 }
 
 /**
+ * Interface for property data
+ */
+export interface PropertySetData {
+  value: number,
+  mortgageLeft: number,
+  share: number,
+  disputed: boolean, 
+  main: boolean
+}
+
+/**
  * Interface for financial eligiblity data
  */
 export interface FinancialEligibilityData {
   hasPartner: boolean;
   isUnder17: boolean;
   isOver60: boolean;
+
+  specificBenefits: {
+    pensionCredit: boolean;
+    jobSeekers: boolean;
+    employmentSupport: boolean;
+    universalCredit: boolean;
+    incomeSupport: boolean;
+  }
+  propertySet: PropertySetData[]
 }
 
 /**
