@@ -117,7 +117,7 @@ describe('Client Details Controller', () => {
       renderStub.throws(new Error('Render error'));
 
       // Act
-      handleClientDetailsTab(
+      await handleClientDetailsTab(
         req as Request,
         res as Response,
         next,

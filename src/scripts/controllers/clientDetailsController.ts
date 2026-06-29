@@ -52,7 +52,7 @@ export async function handleClientDetailsTab(req: Request, res: Response, next: 
       activeTab,
       client: clientData,
       showClientSupportNeeds,
-       caseReference,
+      caseReference,
       financialEligibility,
       sessionID: req.sessionID,
       noChangeWarningBanner
