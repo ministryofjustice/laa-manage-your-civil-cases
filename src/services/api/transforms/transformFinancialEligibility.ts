@@ -36,18 +36,25 @@ export function transformFinancialEligilibilityItem(item: unknown): FinancialEli
     }))
     : [];
 
-const clientData = isRecord(item.you) ? item.you : {};
-const partnerData = isRecord(item.partner) ? item.partner : {};
+  const clientData = isRecord(item.you) ? item.you : {};
+  const partnerData = isRecord(item.partner) ? item.partner : {};
 
-const income = formatIncomeData(clientData.income);
-const savings = formatSavingsData(clientData.savings);
-const deductions = formatDeductionsData(clientData.deductions);
+  const income = formatIncomeData(clientData.income);
+  const savings = formatSavingsData(clientData.savings);
+  const deductions = formatDeductionsData(clientData.deductions);
 
-const partnerIncome = formatIncomeData(partnerData.income);
-const partnerSavings = formatSavingsData(partnerData.savings);
-console.log("transformed partner savings data: ", partnerSavings)
-const partnerDeductions = formatDeductionsData(partnerData.deductions);
+  const partnerIncome = formatIncomeData(partnerData.income);
+  const partnerSavings = formatSavingsData(partnerData.savings);
+  const partnerDeductions = formatDeductionsData(partnerData.deductions);
 
+
+  const disregards = isRecord(item.disregards)
+    ? Object.entries(item.disregards)
+      .filter(([, value]) => Boolean(value))
+      .map(([key]) => t(`common.financialDisregards.${key}`))
+    : [];
+
+  console.log("disregards: ", disregards)
   return {
     hasPartner,
     isUnder17,
@@ -55,7 +62,8 @@ const partnerDeductions = formatDeductionsData(partnerData.deductions);
     specificBenefits,
     propertySet,
     clientData: { income, savings, deductions },
-    partnerData: { partnerIncome, partnerSavings, partnerDeductions}
+    partnerData: { partnerIncome, partnerSavings, partnerDeductions },
+    disregards
   };
 }
 
@@ -70,7 +78,7 @@ function formatIntervalValue(value: unknown): string {
     return String(value ?? '');
   }
 
-return `${value.per_interval_value ?? 0} ${t(`common.intervalPeriod.${value.interval_period}`)}`;
+  return `${value.per_interval_value ?? 0} ${t(`common.intervalPeriod.${value.interval_period}`)}`;
 }
 
 
@@ -96,13 +104,13 @@ function formatDeductionsData(deductions: unknown): DeductionData {
 
   return {
     incomeTax: formatIntervalValue(deductions.income_tax),
-      nationalInsurance: formatIntervalValue(deductions.national_insurance),
-      maintenance: formatIntervalValue(deductions.maintenance),
-      childcare: formatIntervalValue(deductions.childcare),
-      mortgage: formatIntervalValue(deductions.mortgage),
-      rent: formatIntervalValue(deductions.rent),
-      criminalContributions: `${deductions.criminal_legalaid_contributions ?? 0} per month`,
-      total: Number(deductions.total ?? 0),
+    nationalInsurance: formatIntervalValue(deductions.national_insurance),
+    maintenance: formatIntervalValue(deductions.maintenance),
+    childcare: formatIntervalValue(deductions.childcare),
+    mortgage: formatIntervalValue(deductions.mortgage),
+    rent: formatIntervalValue(deductions.rent),
+    criminalContributions: `${deductions.criminal_legalaid_contributions ?? 0} per month`,
+    total: Number(deductions.total ?? 0),
   };
 }
 
@@ -113,14 +121,14 @@ function formatIncomeData(income: unknown): IncomeData {
 
   return {
     earnings: formatIntervalValue(income.earnings),
-      selfEmploymentDrawings: formatIntervalValue(income.self_employment_drawings),
-      benefits: formatIntervalValue(income.benefits),
-      taxCredits: formatIntervalValue(income.tax_credits),
-      childBenefit: formatIntervalValue(income.child_benefits),
-      maintenanceReceived: formatIntervalValue(income.maintenance_received),
-      pension: formatIntervalValue(income.pension),
-      otherIncome: formatIntervalValue(income.other_income),
-      selfEmployed: Boolean(income.self_employed),
-      total: Number(income.total ?? 0),
+    selfEmploymentDrawings: formatIntervalValue(income.self_employment_drawings),
+    benefits: formatIntervalValue(income.benefits),
+    taxCredits: formatIntervalValue(income.tax_credits),
+    childBenefit: formatIntervalValue(income.child_benefits),
+    maintenanceReceived: formatIntervalValue(income.maintenance_received),
+    pension: formatIntervalValue(income.pension),
+    otherIncome: formatIntervalValue(income.other_income),
+    selfEmployed: Boolean(income.self_employed),
+    total: Number(income.total ?? 0),
   };
 }
