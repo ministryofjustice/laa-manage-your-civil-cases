@@ -1,30 +1,27 @@
 import { test, expect } from '../fixtures/index.js';
-import { t } from '../utils/index.js'
+import { t, setupAuth } from '../utils/index.js'
 
-test('homepage login screen should have the correct title & warning text', async ({ page, i18nSetup }) => {
+test('cookies page has correct title header', async ({ page, i18nSetup }) => {
   // Navigate to the homepage
-  await page.goto('/');
+  await page.goto('/cookies');
 
   // Check for the title of the application
   await expect(page).toHaveTitle(/.*Manage your civil cases.*/);
 });
 
-test('homepage login screen should display LAA header', async ({ page, i18nSetup }) => {
+test('cookies page should display LAA header', async ({ page, i18nSetup }) => {
   // Navigate to the homepage
-  await page.goto('/');
+  await page.goto('/cookies');
 
   const header = page.getByRole('banner');
-  const sign_in_button = page.getByRole('button', { name: t('pages.login.signInButton') });
 
   // Check for the header with LAA branding
   await expect(header).toBeVisible();
-  // Check sign in button
-  await expect(sign_in_button).toBeVisible();
 });
 
-test('homepage should display phase banner with hello content', async ({ page, i18nSetup }) => {
+test('cookies page should display phase banner with hello content', async ({ page, i18nSetup }) => {
   // Navigate to the homepage
-  await page.goto('/');
+  await page.goto('/cookies');
 
   // Target the phase banner
   const phaseBanner = page.locator('.govuk-phase-banner');
@@ -36,17 +33,34 @@ test('homepage should display phase banner with hello content', async ({ page, i
   await expect(phaseBanner).toContainText(t('components.phaseBanner.feedbackText'));
 });
 
-test('homepage should be accessible', {
-  tag: '@accessibility',
-}, async ({ page, checkAccessibility }) => {
-  await page.goto('/');
-  await checkAccessibility();
+test('footer is visible with expected links', async ({ page }) => {  
+  await page.goto('/cookies');
+
+  const footer = page.locator('.govuk-footer');
+  await expect(footer).toBeVisible();
+  await expect(footer.getByRole('link', { name: 'Help' })).toBeVisible();
+  await expect(footer.getByRole('link', { name: 'Feedback' })).toBeVisible();
+  await expect(footer.getByRole('link', { name: 'Updates' })).toBeVisible();
+  await expect(footer.getByRole('link', { name: 'Privacy Policy' })).toBeVisible();
+  await expect(footer.getByRole('link', { name: 'Cookie policy' })).toBeVisible();
+  await expect(footer.getByRole('link', { name: 'Accessibility' })).toBeVisible();
 });
 
 const visitUrl = '/cookies';
 test('cookies page should have rendered correctly', async ({ page, i18nSetup }) => {
   // Navigate to the search page
   await page.goto(visitUrl);
+  
+  // Check nav bar exists
+  const nav = page.locator('.govuk-service-navigation');
+  await expect(nav).toBeVisible();
+
+  // Check service name is visible in the navigation section of the screen
+  await expect(nav).toContainText('Manage your civil cases');
+
+  // Check the links are not in the nav bar
+  await expect(page.getByRole('link', { name: 'Your cases' })).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'Search' })).toHaveCount(0);
 
   // Check for the heading of the cookies page
   await expect(page.getByRole('heading', { level: 1, name: t('pages.cookies.heading') })).toBeVisible();
@@ -110,4 +124,25 @@ test('cookies link goes to ICO site', async ({ page }) => {
   await expect(link).toBeVisible();
   await Promise.all([page.waitForURL(/ico\.org\.uk/), link.click(),]);
   await expect(page).toHaveURL(/ico\.org\.uk/);
+});
+
+test('nav links are hidden on cookies page when logged in', async ({ page }) => {
+  await setupAuth(page);
+  await page.goto('/');
+  // navigate like a real user to cookie page
+  await page.getByRole('link', { name: 'Cookie Policy' }).click();
+  
+  // assert we are on cookies page
+  await expect(page).toHaveURL(/cookies/);
+
+  // Check nav bar exists
+  const nav = page.locator('.govuk-service-navigation');
+  await expect(nav).toBeVisible();
+
+  // Check service name is visible in the navigation section of the screen
+  await expect(nav).toContainText('Manage your civil cases');
+
+  // Check the links are not in the nav bar
+  await expect(page.getByRole('link', { name: 'Your cases' })).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'Search' })).toHaveCount(0);
 });
