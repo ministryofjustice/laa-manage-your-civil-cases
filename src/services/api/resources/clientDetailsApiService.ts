@@ -261,6 +261,7 @@ export async function getFinancialEligibility(axiosMiddleware: AxiosInstanceWrap
     console.log("Income data: ", response.data.you.income)
     console.log("Savings data: ", response.data.you.savings)
     console.log("deduction data: ", response.data.you.deductions)
+    console.log("partner data: ", response.data.partner.savings)
     
     devLog(`API: Get financial eligibility response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
     return {

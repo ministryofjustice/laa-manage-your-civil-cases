@@ -45,6 +45,7 @@ const deductions = formatDeductionsData(clientData.deductions);
 
 const partnerIncome = formatIncomeData(partnerData.income);
 const partnerSavings = formatSavingsData(partnerData.savings);
+console.log("transformed partner savings data: ", partnerSavings)
 const partnerDeductions = formatDeductionsData(partnerData.deductions);
 
   return {
@@ -78,6 +79,7 @@ function formatSavingsData(savings: unknown): SavingsData {
     return {} as SavingsData;
   }
 
+  console.log("transforming savings data: ", savings)
   return {
     bankBalance: Number(savings.bank_balance ?? 0),
     investmentBalance: Number(savings.investment_balance ?? 0),

@@ -5,6 +5,7 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
 
 <pre>{{ financialEligibility | dump }}</pre>
+<pre>{{ financialEligibility.partnerData.savings | dump }}</pre>
 
 {% set editAssessmentButtonHtml %}
 {{
@@ -162,12 +163,9 @@
 
 {% endif %}
 
-
 <h2 class="govuk-heading-m">Your savings</h2>
 
 {% set savings = financialEligibility.clientData.savings %}
-
-{% if savings.bankBalance or savings.investmentBalance or savings.assetBalance or savings.creditBalance %}
 
   {{ govukTable({
     firstCellIsHeader: true,
@@ -207,30 +205,50 @@
     ]
   }) }}
 
-{% else %}
+{% if financialEligibility.hasPartner %}
+<h2 class="govuk-heading-m">Your savings</h2>
 
-  <p class="govuk-body">No savings data</p>
+{% set partnerSavings = financialEligibility.partnerData.savings %}
 
-{% endif %}
-
-
-{{ govukTable({
-    caption: "Properties",
-    captionClasses: "govuk-table__caption--m",
+  {{ govukTable({
     firstCellIsHeader: true,
     rows: [
       [
         {
-          text: "Do you have any??"
+          text: "How much was in your partners bank account/building society before their last payment went in?"
         },
         {
-          text: "No"
+          text: "£" + savings.bankBalance
+        }
+      ],
+      [
+        {
+          text: "Do your partner have any investments, shares or ISAs?"
+        },
+        {
+          text: "£" + savings.investmentBalance
+        }
+      ],
+      [
+        {
+          text: "Do your partner have any valuable items worth over £500 each?"
+        },
+        {
+          text: "£" + savings.assetBalance
+        }
+      ],
+      [
+        {
+          text: "Do your partner have any money owed to them?"
+        },
+        {
+          text: "£" + savings.creditBalance
         }
       ]
     ]
   }) }}
+{% endif %}
 
-<div>
   {{ editAssessmentButtonHtml | safe }}</div>
 {% endset -%}
 
