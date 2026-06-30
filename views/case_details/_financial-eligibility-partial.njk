@@ -4,8 +4,6 @@
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 
-<pre>{{ financialEligibility | dump }}</pre>
-
 {% set editAssessmentButtonHtml %}
 {{
     govukButton({
@@ -17,14 +15,17 @@
 {% endset %}
 
 {% set detailsHtml %}
-  {% set under17Text = "Yes" if financialEligibility.isUnder17 else "No" %}
-  {% set partnerText = "Yes" if financialEligibility.hasPartner else  "No" %}
-  {% set over60Text = "Yes" if financialEligibility.isOver60 else "No"%}
-  {% set universalCredit = "Yes" if financialEligibility.specificBenefits.universalCredit else "No"%}
-  {% set pensionCredit = "Yes" if financialEligibility.specificBenefits.pensionCredit else "No"%}
-  {% set jobSeekers = "Yes" if financialEligibility.specificBenefits.jobSeekers else "No"%}
-  {% set employmentSupport = "Yes" if financialEligibility.specificBenefits.employmentSupport else "No"%}
-  {% set incomeSupport = "Yes" if financialEligibility.specificBenefits.incomeSupport else "No"%}
+
+{% set under17Text = "Yes" if financialEligibility.isUnder17 else 
+  "No" %}
+{% set partnerText = "Yes" if financialEligibility.hasPartner else 
+  "No" %}
+{% set over60Text = "Yes" if financialEligibility.isOver60 else "No"%}
+{% set universalCredit = "Yes" if financialEligibility.specificBenefits.universalCredit else "No"%}
+{% set pensionCredit = "Yes" if financialEligibility.specificBenefits.pensionCredit else "No"%}
+{% set jobSeekers = "Yes" if financialEligibility.specificBenefits.jobSeekers else "No"%}
+{% set employmentSupport = "Yes" if financialEligibility.specificBenefits.employmentSupport else "No"%}
+{% set incomeSupport = "Yes" if financialEligibility.specificBenefits.incomeSupport else "No"%}
 
 {% set rows = [
   [
@@ -116,7 +117,7 @@
 {% set financesHtml %}
 
 <h2 class="govuk-heading-m">Properties</h2>
-{% if financialEligibility.propertySet.length %}
+{% if financialEligibility.propertySet and financialEligibility.propertySet.length %}
 
   {% for property in financialEligibility.propertySet %}
 
@@ -162,14 +163,11 @@
 
 {% endif %}
 
-
 <h2 class="govuk-heading-m">Your savings</h2>
 
 {% set savings = financialEligibility.clientData.savings %}
 
-{% if savings.bankBalance or savings.investmentBalance or savings.assetBalance or savings.creditBalance %}
-
-  {{ govukTable({
+{{ govukTable({
     firstCellIsHeader: true,
     rows: [
       [
@@ -177,7 +175,7 @@
           text: "How much was in your bank account/building society before your last payment went in?"
         },
         {
-          text: "£" + savings.bankBalance
+          text: "£" ~ savings.bankBalance
         }
       ],
       [
@@ -185,7 +183,7 @@
           text: "Do you have any investments, shares or ISAs?"
         },
         {
-          text: "£" + savings.investmentBalance
+          text: "£" ~ savings.investmentBalance
         }
       ],
       [
@@ -193,7 +191,7 @@
           text: "Do you have any valuable items worth over £500 each?"
         },
         {
-          text: "£" + savings.assetBalance
+          text: "£" ~ savings.assetBalance
         }
       ],
       [
@@ -201,82 +199,407 @@
           text: "Do you have any money owed to you?"
         },
         {
-          text: "£" + savings.creditBalance
+          text: "£" ~ savings.creditBalance
         }
       ]
     ]
   }) }}
 
-{% else %}
+{% if financialEligibility.hasPartner %}
+  <h2 class="govuk-heading-m">Your partners savings</h2>
 
-  <p class="govuk-body">No savings data</p>
+  {% set partnerSavings = financialEligibility.partnerData.partnerSavings %}
+
+  {{ govukTable({
+    firstCellIsHeader: true,
+    rows: [
+      [
+        {
+          text: "How much was in your partners bank account/building society before their last payment went in?"
+        },
+        {
+          text: "£" ~ partnerSavings.bankBalance
+        }
+      ],
+      [
+        {
+          text: "Dooes your partner have any investments, shares or ISAs?"
+        },
+        {
+          text: "£" ~ partnerSavings.investmentBalance
+        }
+      ],
+      [
+        {
+          text: "Dooes your partner have any valuable items worth over £500 each?"
+        },
+        {
+          text: "£" ~ partnerSavings.assetBalance
+        }
+      ],
+      [
+        {
+          text: "Does your partner have any money owed to them?"
+        },
+        {
+          text: "£" ~ partnerSavings.creditBalance
+        }
+      ]
+    ]
+  }) }}
+{% endif %}
+
+{% if financialEligibility.disregards and financialEligibility.disregards.length %}
+
+  <h2 class="govuk-heading-m">Disregards</h2>
+
+  <table class="govuk-table">
+    <tbody class="govuk-table__body">
+      {% for disregard in financialEligibility.disregards %}
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell">
+            {{ disregard }}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
 {% endif %}
 
-
-{{ govukTable({
-    caption: "Properties",
-    captionClasses: "govuk-table__caption--m",
-    firstCellIsHeader: true,
-    rows: [
-      [
-        {
-          text: "Do you have any??"
-        },
-        {
-          text: "No"
-        }
-      ]
-    ]
-  }) }}
-
-<div>
-  {{ editAssessmentButtonHtml | safe }}</div>
+{{ editAssessmentButtonHtml | safe }}
 {% endset -%}
+
+{% set income = financialEligibility.clientData.income %}
+{% set deductions = financialEligibility.clientData.deductions %}
 
 {% set incomeHtml %}
 {{ govukTable({
-    caption: "Income",
+    caption: "Your income",
     captionClasses: "govuk-table__caption--m",
     firstCellIsHeader: true,
     rows: [
       [
         {
-          text: "Do you have any??"
+          text: "Are you self employed?"
         },
         {
-          text: "No"
+          text: "Yes" if income.selfEmployed else "No"
+        }
+      ],
+      [
+        {
+          text: "What did you earn before tax? (Check your most recent payslips)"
+        },
+        {
+          text: "£" ~ income.earnings
+        }
+      ],
+      [
+        {
+          text: "How much tax do you pay?"
+        },
+        {
+          text: "£" ~ deductions.incomeTax
+        }
+      ],
+      [
+        {
+          text: "How much National Insurance do you pay?"
+        },
+        {
+          text: "£" ~ deductions.nationalInsurance
+        }
+      ],
+      [
+        {
+          text: "Self employed drawings (before tax)"
+        },
+        {
+          text: "£" ~ income.selfEmploymentDrawings
+        }
+      ],
+      [
+        {
+          text: "Benefits"
+        },
+        {
+          text: "£" ~ income.benefits
+        }
+      ],
+      [
+        {
+          text: "Tax credits"
+        },
+        {
+          text: "£" ~ income.taxCredits
+        }
+      ],
+        [
+        {
+          text: "Child benefit (for household)"
+        },
+        {
+          text: "£" ~ income.childBenefit
+        }
+      ],
+         [
+        {
+          text: "Maintenance received"
+        },
+        {
+          text: "£" ~ income.maintenanceReceived
+        }
+      ],
+         [
+        {
+          text: "Pension income"
+        },
+        {
+          text: "£" ~ income.pension
+        }
+      ],
+      [
+        {
+          text: "Other income"
+        },
+        {
+          text: "£" ~ income.otherIncome
         }
       ]
     ]
   }) }}
 
-<div>
-  {{ editAssessmentButtonHtml | safe }}</div>
+{% set partnerIncome = financialEligibility.partnerData.partnerIncome %}
+{% set partnerDeductions = financialEligibility.partnerData.partnerDeductions %}
+
+{% if financialEligibility.hasPartner %}
+  {{ govukTable({
+    caption: "Partner's income",
+    captionClasses: "govuk-table__caption--m",
+    firstCellIsHeader: true,
+    rows: [
+      [
+        {
+          text: "Are you self employed?"
+        },
+        {
+          text: "Yes" if partnerIncome.selfEmployed else "No"
+        }
+      ],
+      [
+        {
+          text: "What did you earn before tax? (Check your most recent payslips)"
+        },
+        {
+          text: "£" ~ partnerIncome.earnings
+        }
+      ],
+      [
+        {
+          text: "How much tax do you pay?"
+        },
+        {
+          text: "£" ~ partnerDeductions.incomeTax
+        }
+      ],
+      [
+        {
+          text: "How much National Insurance do you pay?"
+        },
+        {
+          text: "£" ~ partnerDeductions.nationalInsurance
+        }
+      ],
+      [
+        {
+          text: "Self employed drawings (before tax)"
+        },
+        {
+          text: "£" ~ partnerIncome.selfEmploymentDrawings
+        }
+      ],
+      [
+        {
+          text: "Benefits"
+        },
+        {
+          text: "£" ~ partnerIncome.benefits
+        }
+      ],
+      [
+        {
+          text: "Tax credits"
+        },
+        {
+          text: "£" ~ partnerIncome.taxCredits
+        }
+      ],
+        [
+        {
+          text: "Child benefit (for household)"
+        },
+        {
+          text: "£" ~ partnerIncome.childBenefit
+        }
+      ],
+         [
+        {
+          text: "Maintenance received"
+        },
+        {
+          text: "£" ~ partnerIncome.maintenanceReceived
+        }
+      ],
+         [
+        {
+          text: "Pension income"
+        },
+        {
+          text: "£" ~ partnerIncome.pension
+        }
+      ],
+      [
+        {
+          text: "Other income"
+        },
+        {
+          text: "£" ~ partnerIncome.otherIncome
+        }
+      ]
+    ]
+  }) }}
+
+{% endif %}
+
+{{ govukTable({
+    caption: "Dependants",
+    captionClasses: "govuk-table__caption--m",
+    firstCellIsHeader: true,
+    rows: [
+      [
+        {
+          text: "Do you have any dependants aged 16 and over?"
+        },
+        {
+          text: financialEligibility.depedantsOld
+        }
+      ],
+      [
+        {
+          text: "Do you have any dependants aged 15 and under?"
+        },
+        {
+          text: financialEligibility.depedantsYoung
+        }
+      ]
+    ]
+  }) }}
+
+{{ editAssessmentButtonHtml | safe }}
 {% endset -%}
 
 {% set expensesHtml %}
 {{ govukTable({
-    caption: "Expenses",
+    caption: "Your expenses",
     captionClasses: "govuk-table__caption--m",
     firstCellIsHeader: true,
     rows: [
       [
         {
-          text: "Do you have any??"
+          text: "How much do you pay for your mortgage?"
         },
         {
-          text: "No"
+          text: "£" ~ deductions.mortgage
+        }
+      ],
+       [
+        {
+          text: "How much do you pay for rent? The amount entered should not include any housing benefit or payment for bills"
+        },
+        {
+          text: "£" ~deductions.rent
+        }
+      ],
+       [
+        {
+          text: "How much maintenance have you paid during the last calendar month?"
+        },
+        {
+          text: "£" ~deductions.maintenance
+        }
+      ],
+       [
+        {
+          text: "Do you have any childcare costs because of work or study? If so, how much?"
+        },
+        {
+          text: "£" ~ deductions.childcare
+        }
+      ],
+       [
+        {
+          text: "Are you currently paying towards legal aid for criminal defence? If so, how much have you paid in the last calendar month?"
+        },
+        {
+          text: "£" ~ deductions.criminalContributions
         }
       ]
     ]
   }) }}
 
-<div>
-  {{ editAssessmentButtonHtml | safe }}</div>
-{% endset -%}
+{% if financialEligibility.hasPartner %}
+  {{ govukTable({
+    caption: "Your partner's expenses",
+    captionClasses: "govuk-table__caption--m",
+    firstCellIsHeader: true,
+    rows: [
+      [
+        {
+          text: "How much does your partnerpay for their mortgage?"
+        },
+        {
+          text: "£" ~ partnerDeductions.mortgage
+        }
+      ],
+       [
+        {
+          text: "How much does your partner pay for their rent? The amount entered should not include any housing benefit or payment for bills"
+        },
+        {
+          text: "£" ~ partnerDeductions.rent
+        }
+      ],
+       [
+        {
+          text: "How much maintenance has your partner paid during the last calendar month?"
+        },
+        {
+          text: "£" ~ partnerDeductions.maintenance
+        }
+      ],
+       [
+        {
+          text: "Does your partner have any childcare costs because of work or study? If so, how much?"
+        },
+        {
+          text: "£" ~ partnerDeductions.childcare
+        }
+      ],
+       [
+        {
+          text: "Is your partner currently paying towards legal aid for criminal defence? If so, how much has your partner paid in the last calendar month?"
+        },
+        {
+          text: "£" ~ partnerDeductions.criminalContributions
+        }
+      ]
+    ]
+  }) }}
 
-<p> NOTE: This will show the existing financial eligibility for this case from `cla_backend`</p>
+{% endif %}
+  {{ editAssessmentButtonHtml | safe }}
+{% endset -%}
 
 {{ govukTabs({
     id: "about-you-tabs",

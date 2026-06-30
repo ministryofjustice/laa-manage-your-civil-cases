@@ -165,6 +165,24 @@
       "per_year": "per year",
       "per_2week": "every 2 weeks",
       "per_4week": "every 4 weeks"
+    },
+    "financialDisregards": {
+      "vaccine_damage": "Vaccine damage payment",
+      "national_emergencies": "National emergencies trust",
+      "overseas_terrorism": "Victims of Overseas Terrorism Compensation Scheme (VOTCS)",
+      "child_maintenance": "Backdated child maintenance payments",
+      "infected_blood": "Infected Blood Support Scheme",
+      "benefit_payments": "Backdated benefit payments",
+      "child_abuse": "Scotland and Northern Ireland redress schemes for historical child abuse",
+      "grenfell_tower": "Grenfell Tower compensation",
+      "london_emergencies": "London Emergencies Trust",
+      "justice_compensation": "Miscarriage of justice compensation",
+      "love_manchester": "We Love Manchester Emergency Fund",
+      "vcjd_trust": "vCJD Trust",
+      "energy_prices": "The Energy Support Scheme payments (2022 and 2023)",
+      "criminal_injuries": "Criminal Injuries Compensation Scheme",
+      "modern_slavery": "Modern Slavery Victim Care Contract or National Referral Mechanism (NRM)",
+      "cost_living": "Cost of living payments"
     }
   },
   "navigation": {
