@@ -114,8 +114,108 @@
 {% endset -%}
 
 {% set financesHtml %}
+
+<h2 class="govuk-heading-m">Properties</h2>
+{% if financialEligibility.propertySet.length %}
+
+  {% for property in financialEligibility.propertySet %}
+
+    <h3 class="govuk-heading-s">
+      {% if loop.index == 1 %}
+        1st property
+      {% elseif loop.index == 2 %}
+        2nd property
+      {% elseif loop.index == 3 %}
+        3rd property
+      {% else %}
+        {{ loop.index }}th property
+      {% endif %}
+    </h3>
+
+    {{ govukTable({
+      firstCellIsHeader: true,
+      rows: [
+        [
+          { text: "What is the current market value of the property?" },
+          { text: property.value }
+        ],
+        [
+          { text: "How much is left to pay on the mortgage?" },
+          { text: property.mortgageLeft }
+        ],
+        [
+          { text: "Is this your main property?" },
+          { text: "Yes" if property.main else "No" }
+        ],
+        [
+          { text: "What percentage of the property do you and/or your partner own?" },
+          { text: property.share + "%" }
+        ]
+      ]
+    }) }}
+
+  {% endfor %}
+
+{% else %}
+
+  <p class="govuk-body">No property data</p>
+
+{% endif %}
+
+
+<h2 class="govuk-heading-m">Your savings</h2>
+
+{% set savings = financialEligibility.clientData.savings %}
+
+{% if savings.bankBalance or savings.investmentBalance or savings.assetBalance or savings.creditBalance %}
+
+  {{ govukTable({
+    firstCellIsHeader: true,
+    rows: [
+      [
+        {
+          text: "How much was in your bank account/building society before your last payment went in?"
+        },
+        {
+          text: "£" + savings.bankBalance
+        }
+      ],
+      [
+        {
+          text: "Do you have any investments, shares or ISAs?"
+        },
+        {
+          text: "£" + savings.investmentBalance
+        }
+      ],
+      [
+        {
+          text: "Do you have any valuable items worth over £500 each?"
+        },
+        {
+          text: "£" + savings.assetBalance
+        }
+      ],
+      [
+        {
+          text: "Do you have any money owed to you?"
+        },
+        {
+          text: "£" + savings.creditBalance
+        }
+      ]
+    ]
+  }) }}
+
+{% else %}
+
+  <p class="govuk-body">No savings data</p>
+
+{% endif %}
+
+
 {{ govukTable({
-    caption: "Finances",
+    caption: "Properties",
     captionClasses: "govuk-table__caption--m",
     firstCellIsHeader: true,
     rows: [

@@ -158,6 +158,13 @@
       "variant": "warning",
       "title": "No changes were made",
       "dismissible": true
+    },
+    "intervalPeriod": {
+      "per_month": "per month",
+      "per_week": "per week",
+      "per_year": "per year",
+      "per_2week": "every 2 weeks",
+      "per_4week": "every 4 weeks"
     }
   },
   "navigation": {

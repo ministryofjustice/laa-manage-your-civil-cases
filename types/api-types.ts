@@ -347,13 +347,53 @@ export interface SplitCaseSubmissionApiResponse {
 }
 
 /**
+ * Interface for savings data
+ */
+export interface SavingsData {
+  bankBalance: number,
+  investmentBalance: number,
+  assetBalance: number,
+  creditBalance: number,
+  total: number
+}
+
+/**
+ * Interface for deduction data
+ */
+export interface DeductionData {
+  incomeTax: string,
+  nationalInsurance: string,
+  maintenance: string,
+  childcare: string,
+  mortgage: string,
+  rent: string,
+  criminalContributions: string,
+  total: number
+}
+
+/**
+ * Interface for income data 
+ */
+export interface IncomeData {
+  earnings: string,
+  selfEmploymentDrawings: string,
+  benefits: string,
+  taxCredits: string,
+  childBenefit: string,
+  maintenanceReceived: string,
+  pension: string,
+  otherIncome: string,
+  selfEmployed: boolean,
+  total: number
+}
+/**
  * Interface for property data
  */
 export interface PropertySetData {
   value: number,
   mortgageLeft: number,
   share: number,
-  disputed: boolean, 
+  disputed: boolean,
   main: boolean
 }
 
@@ -373,6 +413,16 @@ export interface FinancialEligibilityData {
     incomeSupport: boolean;
   }
   propertySet: PropertySetData[]
+  clientData: {
+    income: IncomeData,
+    savings: SavingsData,
+    deductions: DeductionData
+  }
+  partnerData: {
+    partnerIncome: IncomeData,
+    partnerSavings: SavingsData,
+    partnerDeductions: DeductionData
+  }
 }
 
 /**
