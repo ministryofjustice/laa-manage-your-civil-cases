@@ -40,6 +40,7 @@ export async function handleClientDetailsTab(req: Request, res: Response, next: 
     const { clientSupportNeeds } = clientData as { clientSupportNeeds?: ClientSupportNeeds; };
     const showClientSupportNeeds = clientSupportNeeds?.bslWebcam === 'Yes' || clientSupportNeeds?.textRelay === 'Yes' || clientSupportNeeds?.callbackPreference === 'Yes' || clientSupportNeeds?.languageSupportNeeds !== '' || clientSupportNeeds?.notes !== '';
 
+    // Set the financial eligibility data
     let financialEligibility;
     if (activeTab === 'financial_eligibility') {
       const response = await apiService.getFinancialEligibility(req.axiosMiddleware, caseReference);
