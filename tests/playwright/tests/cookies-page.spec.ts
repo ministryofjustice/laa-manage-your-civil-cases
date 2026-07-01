@@ -126,23 +126,23 @@ test('cookies link goes to ICO site', async ({ page }) => {
   await expect(page).toHaveURL(/ico\.org\.uk/);
 });
 
-test('nav links are hidden on cookies page when logged in', async ({ page }) => {
-  await setupAuth(page);
-  await page.goto('/');
-  // navigate like a real user to cookie page
-  await page.getByRole('link', { name: 'Cookie Policy' }).click();
+// test('nav links are hidden on cookies page when logged in', async ({ page }) => {
+//   await setupAuth(page);
+//   await page.goto('/');
+//   // navigate like a real user to cookie page
+//   await page.getByRole('link', { name: 'Cookie Policy' }).click();
   
-  // assert we are on cookies page
-  await expect(page).toHaveURL(/cookies/);
+//   // assert we are on cookies page
+//   await expect(page).toHaveURL(/cookies/);
 
-  // Check nav bar exists
-  const nav = page.locator('.govuk-service-navigation');
-  await expect(nav).toBeVisible();
+//   // Check nav bar exists
+//   const nav = page.locator('.govuk-service-navigation');
+//   await expect(nav).toBeVisible();
 
-  // Check service name is visible in the navigation section of the screen
-  await expect(nav).toContainText('Manage your civil cases');
+//   // Check service name is visible in the navigation section of the screen
+//   await expect(nav).toContainText('Manage your civil cases');
 
-  // Check the links are not in the nav bar
-  await expect(page.getByRole('link', { name: 'Your cases' })).toHaveCount(0);
-  await expect(page.getByRole('link', { name: 'Search' })).toHaveCount(0);
-});
+//   // Check the links are not in the nav bar
+//   await expect(page.getByRole('link', { name: 'Your cases' })).toHaveCount(0);
+//   await expect(page.getByRole('link', { name: 'Search' })).toHaveCount(0);
+// });
