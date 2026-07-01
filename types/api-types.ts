@@ -423,7 +423,10 @@ export interface FinancialEligibilityData {
     partnerSavings: SavingsData,
     partnerDeductions: DeductionData
   }
-  disregards: string[]
+  disregards: string[];
+  depedantsYoung: number;
+  depedantsOld: number;
+
 }
 
 /**
