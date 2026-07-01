@@ -40,6 +40,7 @@ describe('Client Details Controller', () => {
   let renderStub: sinon.SinonStub;
   let statusStub: sinon.SinonStub;
   let apiServiceStub: sinon.SinonStub;
+  let financialEligibilityStub: sinon.SinonStub;
 
   beforeEach(() => {
     req = {
@@ -57,6 +58,7 @@ describe('Client Details Controller', () => {
     };
     
     next = sinon.stub();
+    financialEligibilityStub = sinon.stub(apiService, 'getFinancialEligibility');
     
     // Stub the API service
     apiServiceStub = sinon.stub(apiService, 'getClientDetails');
@@ -350,4 +352,52 @@ describe('Client Details Controller', () => {
       expect(redirectStub.calledOnce).to.be.true;
     });
   });
+
+
+it('should fetch financial eligibility data when financial_eligibility tab is active', async () => {
+  // Arrange
+  const mockClientData = {
+    fullName: 'John Doe',
+    caseReference: 'TEST123'
+  };
+
+  const mockFinancialEligibility = {
+    hasPartner: true,
+    isUnder17: false
+  };
+
+  req.clientData = mockClientData;
+
+  financialEligibilityStub.resolves({
+    data: mockFinancialEligibility
+  });
+
+  // Act
+  await handleClientDetailsTab(
+    req as Request,
+    res as Response,
+    next,
+    'financial_eligibility'
+  );
+
+  // Assert
+  expect(financialEligibilityStub.calledOnce).to.be.true;
+
+  expect(
+    financialEligibilityStub.calledWith(
+      req.axiosMiddleware,
+      'TEST123'
+    )
+  ).to.be.true;
+
+  expect(renderStub.calledOnce).to.be.true;
+
+  const renderArgs = renderStub.firstCall.args;
+
+  expect(renderArgs[0]).to.equal('case_details/index.njk');
+  expect(renderArgs[1].financialEligibility).to.deep.equal(
+    mockFinancialEligibility
+  );
+});
+
 });
