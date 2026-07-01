@@ -54,7 +54,6 @@ export function transformFinancialEligilibilityItem(item: unknown): FinancialEli
       .map(([key]) => t(`common.financialDisregards.${key}`))
     : [];
 
-  console.log("disregards: ", disregards)
   return {
     hasPartner,
     isUnder17,
