@@ -84,7 +84,7 @@
       {% endif %}
     </div>
   </header>
-
+  {% block serviceNavigation %}
   {% if isAuthenticated %}
     {{ govukServiceNavigation({
     serviceName: config.SERVICE_NAME,
@@ -103,6 +103,7 @@
       ]
     }) }}
   {% endif %}
+  {% endblock %}
 {% endblock %}
 
 {% block beforeContent %}
@@ -145,7 +146,7 @@
           text: t('navigation.footer.privacyPolicy')
         },
         {
-          href: "#",
+          href: "/cookies",
           text: t('navigation.footer.cookiePolicy')
         },
         {
