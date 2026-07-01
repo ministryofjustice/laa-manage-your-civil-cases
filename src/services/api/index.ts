@@ -14,8 +14,7 @@ import {
 } from './resources/thirdPartyApiService.js';
 import {
   addClientSupportNeeds,
-  updateClientSupportNeeds,
-  deleteClientSupportNeeds
+  updateClientSupportNeeds
 } from './resources/supportNeedsApiService.js';
 import { getFeedbackChoices, submitOperatorFeedback } from './resources/operatorFeedbackApiService.js';
 import { getProviderChoices, getAllCategories, submitSplitCase } from './resources/splitCaseApiService.js';
@@ -42,7 +41,6 @@ export const apiService = {
   deleteThirdPartyContact,
   addClientSupportNeeds,
   updateClientSupportNeeds,
-  deleteClientSupportNeeds,
   getClientCaseLogs,
   getClientHistoryDetails,
   getFeedbackChoices,

@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures/index.js';
-import { setupAuth, assertCaseDetailsHeaderPresent, getClientDetailsUrlByStatus, logout } from '../utils/index.js';
+import { setupAuth, assertCaseDetailsHeaderPresent, getClientDetailsUrlByStatus, logout, assertSummaryCardState, assertSummaryCardData } from '../utils/index.js';
 import { CheckSplitCaseAnswersPage } from '../pages/CheckSplitCaseAnswersFormPage.js';
 import { SplitThisCaseFormPage } from '../pages/SplitCaseFormPage.js';
 import { AboutNewSplitCaseFormPage } from '../pages/AboutNewSplitCaseFormPage.js';
@@ -70,7 +70,12 @@ test('cancel link should navigate back to client details', async ({ page }) => {
 
   // Expect
   await expect(page).toHaveURL(`/cases/${caseReference}/client-details`);
-
+  // Assert support needs summary card is visible with no data 
+  await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
+  // Assert third party details summary card is visible with no data
+  await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: true, changeHref: '/client-details/change/third-party', removeHref: '/confirm/remove-third-party' });
+  // Assert the data in the third party details summary card is correct
+  await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Sarah Johnson', 'Phone number': 'Warning Not safe to call', 'Email address': 'sarah@johnson.com', 'Address': '45 Main Street, Sheffield S1 2AB', 'Relationship to client': 'Family member or friend', 'Passphrase': 'TestPass123' });
 });
 
 test('cancel link after clicking change link should navigate back to the check your answers form', async ({ page }) => {
@@ -199,6 +204,13 @@ test('confirm split button should submit the form', async ({ page }) => {
   await expect(checkSplitCaseAnswersPage.confirmSplitButton).toBeVisible();
   await checkSplitCaseAnswersPage.confirmSplitButton.click();
   await expect(page).toHaveURL(`/cases/${caseReference}/client-details`);
+
+  // Assert support needs summary card is visible with no data 
+  await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
+  // Assert third party details summary card is visible with no data
+  await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: true, changeHref: '/client-details/change/third-party', removeHref: '/confirm/remove-third-party' });
+  // Assert the data in the third party details summary card is correct
+  await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Sarah Johnson', 'Phone number': 'Warning Not safe to call', 'Email address': 'sarah@johnson.com', 'Address': '45 Main Street, Sheffield S1 2AB', 'Relationship to client': 'Family member or friend', 'Passphrase': 'TestPass123' });
 });
 
 test('confirm correct `operatorReassignment` text shown when selecting `operatorReassignment` radio button', async ({ page }) => {

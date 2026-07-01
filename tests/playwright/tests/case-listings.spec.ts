@@ -63,7 +63,7 @@ test.describe('new cases listing page', () => {
     await expect(translation).toBeVisible()
 
     // Check for `BSL` flag 
-    const bsl = page.getByText('BSL', { exact: true })
+    const bsl = page.getByText('BSL', { exact: true }).first()
     await expect(bsl).toBeVisible()
 
     // Check for `TextRelay` flag 

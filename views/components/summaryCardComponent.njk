@@ -75,7 +75,8 @@
   {# Build the rows array for govukSummaryList #}
   {% set summaryRows = [] %}
   {% set hasAnyData = false %}
-  {% set isSupportNeedsSummaryCard = options.card and options.card.id == "client-support-needs" %} 
+  {% set isSupportNeedsSummaryCard = options.card and options.card.id == "client-support-needs" %}
+  {% set isThirdPartyCard = options.card and options.card.id == "third-party-contact" %}
 
   {% for row in options.rows %}
     {# Extract value from data object using the key #}
@@ -98,16 +99,25 @@
     {% endif %}
 
     {# Check if this row has actual data (trim whitespace and check for meaningful content) #}
-    {% set trimmedValue = processedValue | trim if processedValue else '' %}
+    {% set trimmedValue = processedValue | trim if processedValue else 
+      '' %}
     {% if trimmedValue %}
       {% set hasAnyData = true %}
     {% endif %}
 
     {# Use processed value or fallback to "No data" #}
-    {% set finalValue = trimmedValue if trimmedValue else t('pages.caseDetails.notProvided') %}
+    {% set finalValue = trimmedValue if trimmedValue else 
+      t('pages.caseDetails.notProvided') %}
 
     {# Check if finalValue contains HTML or if html flag is set #}
-    {% set isHtml = row.html === true or (finalValue and ('<' in finalValue)) %}
+    {% set isHtml = row.html == true or(finalValue and('<' in finalValue)) %}
+
+    {# Decide when to skip row in `Client third party details` summary card component #}
+    {% if isThirdPartyCard %}
+      {% if not trimmedValue %}
+        {% set skipRow = true %}
+      {% endif %}
+    {% endif %}
 
     {# Decide when to skip row in `Client support needs` summary card component #}
     {% set skipRow = false %}
@@ -146,22 +156,37 @@
     {% endif %}
   {% endfor %}
 
-  {# Only render the card if there's actual data to show #}
-  {% if hasAnyData %}
-    {# Build the final configuration for govukSummaryList #}
-    {% set summaryConfig = {
-      rows: summaryRows
-    } %}
+  {# If no rows, show "No support needs" #}
 
-    {# Add card configuration if provided #}
-    {% if options.card %}
-      {% set summaryConfig = {
-        rows: summaryRows,
-        card: options.card
-      } %}
+  {% if summaryRows | length == 0 %}
+    {% if isSupportNeedsSummaryCard %}
+      {% set emptyText = "No support needs" %}
+    {% elif isThirdPartyCard %}
+      {% set emptyText = "No third party contact required" %}
+    {% else %}
+      {% set emptyText = t('pages.caseDetails.notProvided') %}
     {% endif %}
 
-    {# Render the summary list #}
-    {{ govukSummaryList(summaryConfig) }}
+    {% set summaryRows = [
+      {
+        key: {
+          text: emptyText
+        },
+        value: {
+          text: ""
+        }
+      }
+    ] %}
   {% endif %}
+
+  {# Add card configuration if provided #}
+  {% if options.card %}
+    {% set summaryConfig = {
+      rows: summaryRows,
+      card: options.card
+    } %}
+  {% endif %}
+
+  {# Render the summary list #}
+  {{ govukSummaryList(summaryConfig) }}
 {% endmacro %}

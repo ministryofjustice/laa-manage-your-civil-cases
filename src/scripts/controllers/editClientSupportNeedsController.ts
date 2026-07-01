@@ -112,6 +112,8 @@ export async function postEditClientSupportNeeds(req: Request, res: Response, ne
     // Prepare the client support needs data for the API
     const clientSupportNeeds = prepareClientSupportNeedsData(formFields);
 
+    console.log('client support needs: ', clientSupportNeeds);
+
     const original = req.session.clientSupportNeedsOriginal;
 
     if (isRecord(original)) {
