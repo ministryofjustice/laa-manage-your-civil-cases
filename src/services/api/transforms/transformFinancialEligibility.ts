@@ -47,15 +47,15 @@ export function transformFinancialEligilibilityItem(item: unknown): FinancialEli
   const partnerSavings = formatSavingsData(partnerData.savings);
   const partnerDeductions = formatDeductionsData(partnerData.deductions);
 
-  const depedantsYoung = Number(item.dependants_under_16 ?? 0);
-  const depedantsOld = Number(item.dependants_over_16 ?? 0);
+  const depedantsYoung = Number(item.dependants_young ?? 0);
+  const depedantsOld = Number(item.dependants_old ?? 0);
 
   const disregards = isRecord(item.disregards)
     ? Object.entries(item.disregards)
       .filter(([, value]) => Boolean(value))
-      .map(([key]) => t(`common.financialDisregards.${key}`)): [];
+      .map(([key]) => t(`common.financialDisregards.${key}`)) : [];
 
-    // TODO earnings is currently coming in as pence and needs converting to pounds. 
+  // TODO earnings is currently coming in as pence and needs converting to pounds. 
   return {
     hasPartner,
     isUnder17,

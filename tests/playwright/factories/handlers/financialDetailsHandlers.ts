@@ -307,8 +307,8 @@ export function createFinancialEligibilityHandlers(
                 total: 38000
               }
             },
-            dependants_young: 0,
-            dependants_old: 0,
+            dependants_young: 1,
+            dependants_old: 2,
             is_you_or_your_partner_over_60: false,
             has_partner: true,
             is_you_under_18: false,

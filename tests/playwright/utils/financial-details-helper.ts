@@ -39,3 +39,28 @@ export async function expectPropertyTableRows(
     await expect(row).toContainText(value);
   }
 }
+
+
+export async function expectCaptionTableRows(
+  page: Page,
+  captionText: string,
+  rows: Record<string, string>
+) {
+  const caption = page.locator('caption').filter({
+    hasText: captionText
+  });
+
+  await expect(caption).toBeVisible();
+
+  const table = caption.locator('xpath=ancestor::table');
+
+  for (const [label, value] of Object.entries(rows)) {
+    const row = table.locator('tr').filter({
+      hasText: label
+    });
+
+    await expect(row).toContainText(label);
+    await expect(row).toContainText(value);
+  }
+}
+
