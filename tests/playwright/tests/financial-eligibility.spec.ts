@@ -1,6 +1,6 @@
 
 import { test, expect } from '../fixtures/index.js';
-import { setupAuth, logout, assertCaseDetailsHeaderPresent, expectTableRows, expectPropertyTableRows, expectCaptionTableRows } from '../utils/index.js';
+import { setupAuth, logout, assertCaseDetailsHeaderPresent, expectPropertyTableRows, expectCaptionTableRows } from '../utils/index.js';
 import { ClientDetailsPage } from '../pages/index.js';
 
 test.describe('Details tab', () => {
@@ -192,8 +192,8 @@ test.describe('Income tab', () => {
     await expectCaptionTableRows(page, 'Your income', {
       'Are you self employed?': 'No',
       'What did you earn before tax? (Check your most recent payslips)': '£150 per month',
-      'How much tax do you pay?': '£0 every 4 weeks',
-      'How much National Insurance do you pay?': '£0 every 2 weeks',
+      'How much tax do you pay?': '£100 every 4 weeks',
+      'How much National Insurance do you pay?': '£200 every 2 weeks',
       'Self employed drawings (before tax)': '£100 per week',
       'Benefits': '£50 per year',
       'Tax credits': '£200 per month',
@@ -274,4 +274,63 @@ test.describe('Expenses tab', () => {
     await setupAuth(page);
   });
 
+   test('should display expenses tab content with correct data when there is no partner', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1879');
+    // Navingate to client details page
+    await clientDetails.navigate();
+    // click to financial eligibility tab
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    // click the income section
+    await page.getByRole('tab', { name: 'Expenses' }).click();
+    // Assert the case details header is present
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+    // Assert the your income heading is visible. 
+    await expect(page.locator('caption').filter({ hasText: 'Your expenses' })).toBeVisible();
+
+    // Assert the correct data is displayed in the income table.
+    await expectCaptionTableRows(page, 'Your expenses', {
+      'How much do you pay for your mortgage?':	'£200 per month',
+      'How much do you pay for rent? The amount entered should not include any housing benefit or payment for bills': '£0 per month',
+      'How much maintenance have you paid during the last calendar month?': '£50 per month',
+      'Do you have any childcare costs because of work or study? If so, how much?': '£20 per month',
+      'Are you currently paying towards legal aid for criminal defence? If so, how much have you paid in the last calendar month?': '£10 per month'
+    });
+
+    // Assert the edit assessment button is visible.
+    await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+  });
+
+    test('should display income tab content with correct data when there is a partner', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1869-9154');
+    // Navingate to client details page
+    await clientDetails.navigate();
+    // navigated to financial eligibility tab
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    // click the income section
+    await page.getByRole('tab', { name: 'Expenses' }).click();
+    // Assert the case details header is present
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 August 2025", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'] });
+  
+     // Assert the your income heading is visible. 
+    await expect(page.locator('caption').filter({ hasText: 'Your expenses' })).toBeVisible();
+    await expect(page.locator('caption').filter({ hasText: "Your partner's expenses" })).toBeVisible();
+
+    // Assert the correct data is displayed in the income table.
+    await expectCaptionTableRows(page, 'Your expenses', {
+      'How much do you pay for your mortgage?':	'£350 per month',
+      'How much do you pay for rent? The amount entered should not include any housing benefit or payment for bills': '£250 per month',
+      'How much maintenance have you paid during the last calendar month?': '£20 per month',
+      'Do you have any childcare costs because of work or study? If so, how much?': '£50 per month',
+      'Are you currently paying towards legal aid for criminal defence? If so, how much have you paid in the last calendar month?': '£20 per month'
+    });
+    // Assert the correct data is displayed in the income table.
+    await expectCaptionTableRows(page, "Your partner's expenses", {
+      'How much does your partner pay for their mortgage?':	'£300 per month',
+      'How much does your partner pay for their rent? The amount entered should not include any housing benefit or payment for bills': '£200 per month',
+      'How much maintenance has your partner paid during the last calendar month?': '£40 per month',
+      'Does your partner have any childcare costs because of work or study? If so, how much?': '£30 per month',
+      'Is your partner currently paying towards legal aid for criminal defence? If so, how much has your partner paid in the last calendar month?': '£10 per month'
+    });
+    await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+  });
 });

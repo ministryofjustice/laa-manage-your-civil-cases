@@ -82,11 +82,11 @@ export function createFinancialEligibilityHandlers(
               },
               deductions: {
                 income_tax: {
-                  per_interval_value: 0,
+                  per_interval_value: 10000,
                   interval_period: "per_4week"
                 },
                 national_insurance: {
-                  per_interval_value: 0,
+                  per_interval_value: 20000,
                   interval_period: "per_2week"
                 },
                 maintenance: {
@@ -102,7 +102,7 @@ export function createFinancialEligibilityHandlers(
                   interval_period: "per_month"
                 },
                 rent: {
-                  per_interval_value: 10000,
+                  per_interval_value: 0,
                   interval_period: "per_month"
                 },
                 criminal_legalaid_contributions: 1000,
@@ -147,7 +147,6 @@ export function createFinancialEligibilityHandlers(
           });
         }
         if (caseReference === 'PC-1869-9154') {
-          console.log('MSW: returning financial eligibility for PC-1869-9154');
           return HttpResponse.json({
             reference: 'bb071589c0254a0e939c4040d7a8a1bf',
             category: 'discrimination',
@@ -215,22 +214,22 @@ export function createFinancialEligibilityHandlers(
                   interval_period: "per_2week"
                 },
                 maintenance: {
-                  per_interval_value: 4000,
+                  per_interval_value: 2000,
                   interval_period: "per_month"
                 },
                 childcare: {
-                  per_interval_value: 3000,
+                  per_interval_value: 5000,
                   interval_period: "per_month"
                 },
                 mortgage: {
-                  per_interval_value: 30000,
+                  per_interval_value: 35000,
                   interval_period: "per_month"
                 },
                 rent: {
-                  per_interval_value: 20000,
+                  per_interval_value: 25000,
                   interval_period: "per_month"
                 },
-                criminal_legalaid_contributions: 1000,
+                criminal_legalaid_contributions: 2000,
                 total: 38000
               }
             },

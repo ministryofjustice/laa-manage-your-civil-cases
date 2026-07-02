@@ -1,22 +1,11 @@
 import { expect, Page } from '@playwright/test';
 
-export async function expectTableRows(
-  page: Page,
-  panelId: string,
-  rows: Record<string, string>
-) {
-  const panel = page.locator(`#${panelId}`);
-
-  for (const [label, value] of Object.entries(rows)) {
-    const row = panel.locator('tr').filter({
-      has: page.getByText(label, { exact: true })
-    });
-
-    await expect(row).toContainText(label);
-    await expect(row).toContainText(value);
-  }
-}
-
+/**
+ * Helper to assert financial details elements, tables and captions. 
+ * @param page page to be checked for financial detials
+ * @param propertyHeading heading to be checked in financial details section
+ * @param rows row within financial details table to be checked
+ */
 export async function expectPropertyTableRows(
   page: Page,
   propertyHeading: string,
@@ -40,7 +29,12 @@ export async function expectPropertyTableRows(
   }
 }
 
-
+/**
+ * Checks that a table with a specific caption contains the expected rows and values.
+ * @param page page to be checked for financial detials
+ * @param captionText caption text to be checked in financial details section
+ * @param rows rows within financial details table to be checked
+ */
 export async function expectCaptionTableRows(
   page: Page,
   captionText: string,

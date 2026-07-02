@@ -1,7 +1,6 @@
 import type { FinancialEligibilityData, PropertySetData, SavingsData, IncomeData, DeductionData } from '#types/api-types.js';
 import { isRecord, t } from '#src/scripts/helpers/index.js';
 
-
 /**
  * Transforms raw financial eligibility API data to display format
  * @param {unknown} item Raw financial eligibility item
@@ -15,9 +14,18 @@ export function transformFinancialEligilibilityItem(item: unknown): FinancialEli
   const isUnder17 = Boolean(item.is_you_under_18);
   const isOver60 = Boolean(item.is_you_or_your_partner_over_60);
   const hasPartner = Boolean(item.has_partner);
-
   const benefits = isRecord(item.specific_benefits) ? item.specific_benefits : {};
-
+  const clientData = isRecord(item.you) ? item.you : {};
+  const partnerData = isRecord(item.partner) ? item.partner : {};
+  const income = formatIncomeData(clientData.income);
+  const savings = formatSavingsData(clientData.savings);
+  const deductions = formatDeductionsData(clientData.deductions);
+  const partnerIncome = formatIncomeData(partnerData.income);
+  const partnerSavings = formatSavingsData(partnerData.savings);
+  const partnerDeductions = formatDeductionsData(partnerData.deductions);
+  const depedantsYoung = Number(item.dependants_young ?? 0);
+  const depedantsOld = Number(item.dependants_old ?? 0);
+  const disregards = isRecord(item.disregards) ? Object.entries(item.disregards).filter(([, value]) => Boolean(value)).map(([key]) => t(`common.financialDisregards.${key}`)) : [];
   const specificBenefits = {
     pensionCredit: Boolean(benefits.pension_credit),
     jobSeekers: Boolean(benefits.job_seekers_allowance),
@@ -25,7 +33,6 @@ export function transformFinancialEligilibilityItem(item: unknown): FinancialEli
     universalCredit: Boolean(benefits.universal_credit),
     incomeSupport: Boolean(benefits.income_support),
   };
-
   const propertySet: PropertySetData[] = Array.isArray(item.property_set)
     ? item.property_set.map((property) => ({
       value: Number(property.value),
@@ -33,29 +40,8 @@ export function transformFinancialEligilibilityItem(item: unknown): FinancialEli
       share: Number(property.share),
       disputed: Boolean(property.disputed),
       main: Boolean(property.main),
-    }))
-    : [];
+    })) : [];
 
-  const clientData = isRecord(item.you) ? item.you : {};
-  const partnerData = isRecord(item.partner) ? item.partner : {};
-
-  const income = formatIncomeData(clientData.income);
-  const savings = formatSavingsData(clientData.savings);
-  const deductions = formatDeductionsData(clientData.deductions);
-
-  const partnerIncome = formatIncomeData(partnerData.income);
-  const partnerSavings = formatSavingsData(partnerData.savings);
-  const partnerDeductions = formatDeductionsData(partnerData.deductions);
-
-  const depedantsYoung = Number(item.dependants_young ?? 0);
-  const depedantsOld = Number(item.dependants_old ?? 0);
-
-  const disregards = isRecord(item.disregards)
-    ? Object.entries(item.disregards)
-      .filter(([, value]) => Boolean(value))
-      .map(([key]) => t(`common.financialDisregards.${key}`)) : [];
-
-  // TODO earnings is currently coming in as pence and needs converting to pounds. 
   return {
     hasPartner,
     isUnder17,
@@ -72,19 +58,22 @@ export function transformFinancialEligilibilityItem(item: unknown): FinancialEli
 
 /**
  * Function to format interval value 
- * @param value 
- * @returns 
+ * @param value number value to be formatted as a string with an interval period applied.
+ * @returns a string with an number and interval period applied
  */
 function formatIntervalValue(value: unknown): string {
   console.log("formatting value", value)
   if (!isRecord(value)) {
     return String(value ?? '');
   }
-
   return `${convertPenceToPounds(Number(value.per_interval_value ?? 0))} ${t(`common.intervalPeriod.${value.interval_period}`)}`;
 }
 
-
+/**
+ * Function to format savings data
+ * @param savings savings data to be formatted
+ * @returns formatted savings data
+ */
 function formatSavingsData(savings: unknown): SavingsData {
   if (!isRecord(savings)) {
     return {} as SavingsData;
@@ -100,11 +89,15 @@ function formatSavingsData(savings: unknown): SavingsData {
   };
 }
 
+/**
+ * Function to format deductions data
+ * @param deductions deductions data to be formatted
+ * @returns formatted deductions data
+ */
 function formatDeductionsData(deductions: unknown): DeductionData {
   if (!isRecord(deductions)) {
     return {} as DeductionData;
   }
-
   return {
     incomeTax: formatIntervalValue(deductions.income_tax),
     nationalInsurance: formatIntervalValue(deductions.national_insurance),
@@ -117,11 +110,15 @@ function formatDeductionsData(deductions: unknown): DeductionData {
   };
 }
 
+/**
+ * Function to format income data
+ * @param income income data to be formatted
+ * @returns formatted income data
+ */
 function formatIncomeData(income: unknown): IncomeData {
   if (!isRecord(income)) {
     return {} as IncomeData;
   }
-
   return {
     earnings: formatIntervalValue(income.earnings),
     selfEmploymentDrawings: formatIntervalValue(income.self_employment_drawings),
@@ -136,6 +133,11 @@ function formatIncomeData(income: unknown): IncomeData {
   };
 }
 
+/**
+ * Function to convert pence to pounds
+ * @param pence amount in pence to be converted to pounds
+ * @returns pounds amount as a number
+ */
 function convertPenceToPounds(pence: number): number {
   return pence / 100;
 }
