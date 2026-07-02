@@ -16,3 +16,26 @@ export async function expectTableRows(
     await expect(row).toContainText(value);
   }
 }
+
+export async function expectPropertyTableRows(
+  page: Page,
+  propertyHeading: string,
+  rows: Record<string, string>
+) {
+  const heading = page.getByRole('heading', {
+    name: propertyHeading
+  });
+
+  await expect(heading).toBeVisible();
+
+  const table = heading.locator('xpath=following-sibling::table[1]');
+
+  for (const [label, value] of Object.entries(rows)) {
+    const row = table.locator('tr').filter({
+      hasText: label
+    });
+
+    await expect(row).toContainText(label);
+    await expect(row).toContainText(value);
+  }
+}
