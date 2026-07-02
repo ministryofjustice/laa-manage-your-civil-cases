@@ -58,8 +58,8 @@ export function transformFinancialEligilibilityItem(item: unknown): FinancialEli
 
 /**
  * Function to format interval value 
- * @param value number value to be formatted as a string with an interval period applied.
- * @returns a string with an number and interval period applied
+ * @param {unknown} value number value to be formatted as a string with an interval period applied.
+ * @returns {string} a string with an number and interval period applied
  */
 function formatIntervalValue(value: unknown): string {
   console.log("formatting value", value)
@@ -91,8 +91,8 @@ function formatSavingsData(savings: unknown): SavingsData {
 
 /**
  * Function to format deductions data
- * @param deductions deductions data to be formatted
- * @returns formatted deductions data
+ * @param {unknown} deductions deductions data to be formatted
+ * @returns {DeductionData} formatted deductions data
  */
 function formatDeductionsData(deductions: unknown): DeductionData {
   if (!isRecord(deductions)) {
@@ -112,8 +112,8 @@ function formatDeductionsData(deductions: unknown): DeductionData {
 
 /**
  * Function to format income data
- * @param income income data to be formatted
- * @returns formatted income data
+ * @param {unknown} income income data to be formatted
+ * @returns {IncomeData} formatted income data
  */
 function formatIncomeData(income: unknown): IncomeData {
   if (!isRecord(income)) {
@@ -135,8 +135,8 @@ function formatIncomeData(income: unknown): IncomeData {
 
 /**
  * Function to convert pence to pounds
- * @param pence amount in pence to be converted to pounds
- * @returns pounds amount as a number
+ * @param {number} pence amount in pence to be converted to pounds
+ * @returns {number} pounds amount as a number
  */
 function convertPenceToPounds(pence: number): number {
   return pence / 100;
