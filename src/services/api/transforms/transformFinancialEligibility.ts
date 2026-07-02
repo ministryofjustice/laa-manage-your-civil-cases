@@ -71,8 +71,8 @@ function formatIntervalValue(value: unknown): string {
 
 /**
  * Function to format savings data
- * @param savings savings data to be formatted
- * @returns formatted savings data
+ * @param {unknown} savings savings data to be formatted
+ * @returns {SavingsData} formatted savings data
  */
 function formatSavingsData(savings: unknown): SavingsData {
   if (!isRecord(savings)) {
