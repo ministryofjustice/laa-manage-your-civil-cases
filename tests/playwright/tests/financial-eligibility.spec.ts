@@ -83,14 +83,14 @@ test.describe('Finances tab', () => {
 
     // Assert the correct data is displayed in the properties table for the 1st and 2nd properties.
     await expectPropertyTableRows(page, '1st property', {
-      'What is the current market value of the property?': '13000000',
-      'How much is left to pay on the mortgage?': '5000000',
+      'What is the current market value of the property?': '130000',
+      'How much is left to pay on the mortgage?': '50000',
       'Is this your main property?': 'No',
       'What percentage of the property do you and/or your partner own?': '100%'
     });
     await expectPropertyTableRows(page, '2nd property', {
-      'What is the current market value of the property?': '12000000',
-      'How much is left to pay on the mortgage?': '6000000',
+      'What is the current market value of the property?': '120000',
+      'How much is left to pay on the mortgage?': '60000',
       'Is this your main property?': 'Yes',
       'What percentage of the property do you and/or your partner own?': '100%'
     });
@@ -140,8 +140,8 @@ test.describe('Finances tab', () => {
 
     // Assert the correct data is displayed in the properties table for one property.
     await expectPropertyTableRows(page, '1st property', {
-      'What is the current market value of the property?': '15000000',
-      'How much is left to pay on the mortgage?': '6000000',
+      'What is the current market value of the property?': '150000',
+      'How much is left to pay on the mortgage?': '60000',
       'Is this your main property?': 'Yes',
       'What percentage of the property do you and/or your partner own?': '100%'
     });
@@ -247,10 +247,10 @@ test.describe('Income tab', () => {
 
     // Assert the correct data is displayed in the partner's income table.
     await expectCaptionTableRows(page, "Partner's income", {
-      'Are you self employed?': 'No',
-      'What did you earn before tax? (Check your most recent payslips)': '£130 per month',
-      'How much tax do you pay?': '£0 every 4 weeks',
-      'How much National Insurance do you pay?': '£0 every 2 weeks',
+      'Is your partner self employed?': 'No',
+      'What did your partner earn before tax? (Check your most recent payslips)': '£130 per month',
+      'How much tax does your partner pay?': '£0 every 4 weeks',
+      'How much National Insurance does your partner pay?': '£0 every 2 weeks',
       'Self employed drawings (before tax)': '£100 per week',
       'Benefits': '£500 per year',
       'Tax credits': '£200 per month',

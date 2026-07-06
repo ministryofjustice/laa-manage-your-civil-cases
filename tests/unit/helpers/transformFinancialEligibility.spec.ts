@@ -65,8 +65,8 @@ describe('transformFinancialEligilibilityItem', () => {
 
     expect(result.propertySet).to.deep.equal([
       {
-        value: 100000,
-        mortgageLeft: 50000,
+        value: 1000, // Converted from pence to pounds
+        mortgageLeft: 500, // Converted from pence to pounds
         share: 50,
         disputed: true,
         main: false
@@ -209,7 +209,10 @@ describe('transformFinancialEligilibilityItem', () => {
     });
 
     expect(result.clientData.income.earnings)
-      .to.equal('150 per month');
+      .to.deep.equal({
+        amount: 150,
+        time: 'per_month'
+      });
 
     expect(result.clientData.income.selfEmployed)
       .to.equal(false);
@@ -322,13 +325,22 @@ describe('transformFinancialEligilibilityItem', () => {
     });
 
     expect(result.clientData.deductions.incomeTax)
-      .to.equal('10 per month');
+      .to.deep.equal({
+        amount: 10,
+        time: 'per_month'
+      });
 
     expect(result.clientData.deductions.nationalInsurance)
-      .to.equal('5 per month');
+      .to.deep.equal({
+        amount: 5,
+        time: 'per_month'
+      });
 
     expect(result.clientData.deductions.criminalContributions)
-      .to.equal('25 per month');
+      .to.deep.equal({
+        amount: 25,
+        time: 'per_month'
+      });
 
     expect(result.clientData.deductions.total)
       .to.equal(40);
@@ -347,9 +359,11 @@ describe('transformFinancialEligilibilityItem', () => {
     });
 
     expect(result.clientData.income.earnings)
-      .to.equal('0 per month');
+      .to.deep.equal({
+        amount: 0,
+        time: 'per_month'
+      });
   });
-
 
   it('should default missing savings fields to zero', () => {
     const result = transformFinancialEligilibilityItem({
@@ -367,18 +381,5 @@ describe('transformFinancialEligilibilityItem', () => {
       creditBalance: 0,
       total: 0
     });
-  });
-
-  it('should return primitive income values as strings', () => {
-    const result = transformFinancialEligilibilityItem({
-      you: {
-        income: {
-          earnings: 'manual value'
-        }
-      }
-    });
-
-    expect(result.clientData.income.earnings)
-      .to.equal('manual value');
   });
 });

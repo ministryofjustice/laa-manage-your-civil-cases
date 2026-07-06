@@ -366,13 +366,13 @@ export interface SavingsData {
  * Interface for deduction data
  */
 export interface DeductionData {
-  incomeTax: string,
-  nationalInsurance: string,
-  maintenance: string,
-  childcare: string,
-  mortgage: string,
-  rent: string,
-  criminalContributions: string,
+  incomeTax: MoneyPerInterval,
+  nationalInsurance: MoneyPerInterval,
+  maintenance: MoneyPerInterval,
+  childcare: MoneyPerInterval,
+  mortgage: MoneyPerInterval,
+  rent: MoneyPerInterval,
+  criminalContributions: MoneyPerInterval,
   total: number
 }
 
@@ -380,14 +380,14 @@ export interface DeductionData {
  * Interface for income data 
  */
 export interface IncomeData {
-  earnings: string,
-  selfEmploymentDrawings: string,
-  benefits: string,
-  taxCredits: string,
-  childBenefit: string,
-  maintenanceReceived: string,
-  pension: string,
-  otherIncome: string,
+  earnings: MoneyPerInterval,
+  selfEmploymentDrawings: MoneyPerInterval,
+  benefits: MoneyPerInterval,
+  taxCredits: MoneyPerInterval,
+  childBenefit: MoneyPerInterval,
+  maintenanceReceived: MoneyPerInterval,
+  pension: MoneyPerInterval,
+  otherIncome: MoneyPerInterval,
   selfEmployed: boolean,
   total: number
 }

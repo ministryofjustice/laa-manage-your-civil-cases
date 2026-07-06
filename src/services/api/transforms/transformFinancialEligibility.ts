@@ -35,8 +35,8 @@ export function transformFinancialEligilibilityItem(item: unknown): FinancialEli
   };
   const propertySet: PropertySetData[] = Array.isArray(item.property_set)
     ? item.property_set.map((property) => ({
-      value: Number(property.value),
-      mortgageLeft: Number(property.mortgage_left),
+      value: convertPenceToPounds(Number(property.value)),
+      mortgageLeft: convertPenceToPounds(Number(property.mortgage_left)),
       share: Number(property.share),
       disputed: Boolean(property.disputed),
       main: Boolean(property.main),
@@ -54,19 +54,6 @@ export function transformFinancialEligilibilityItem(item: unknown): FinancialEli
     depedantsYoung,
     depedantsOld
   };
-}
-
-/**
- * Function to format interval value 
- * @param {unknown} value number value to be formatted as a string with an interval period applied.
- * @returns {string} a string with an number and interval period applied
- */
-function formatIntervalValue(value: unknown): string {
-  console.log("formatting value", value)
-  if (!isRecord(value)) {
-    return String(value ?? '');
-  }
-  return `${convertPenceToPounds(Number(value.per_interval_value ?? 0))} ${t(`common.intervalPeriod.${value.interval_period}`)}`;
 }
 
 /**
@@ -97,17 +84,16 @@ function formatDeductionsData(deductions: unknown): DeductionData {
     return {} as DeductionData;
   }
   return {
-    incomeTax: formatIntervalValue(deductions.income_tax),
-    nationalInsurance: formatIntervalValue(deductions.national_insurance),
-    maintenance: formatIntervalValue(deductions.maintenance),
-    childcare: formatIntervalValue(deductions.childcare),
-    mortgage: formatIntervalValue(deductions.mortgage),
-    rent: formatIntervalValue(deductions.rent),
-    criminalContributions: `${convertPenceToPounds(Number(deductions.criminal_legalaid_contributions ?? 0))} per month`,
+    incomeTax: formatMoneyPerInterval(deductions.income_tax),
+    nationalInsurance: formatMoneyPerInterval(deductions.national_insurance),
+    maintenance: formatMoneyPerInterval(deductions.maintenance),
+    childcare: formatMoneyPerInterval(deductions.childcare),
+    mortgage: formatMoneyPerInterval(deductions.mortgage),
+    rent: formatMoneyPerInterval(deductions.rent),
+    criminalContributions: {amount: convertPenceToPounds(Number(deductions.criminal_legalaid_contributions ?? 0)),time: 'per_month'},
     total: convertPenceToPounds(Number(deductions.total ?? 0)),
   };
 }
-
 
 /**
  * Function to format income data
@@ -119,16 +105,35 @@ function formatIncomeData(income: unknown): IncomeData {
     return {} as IncomeData;
   }
   return {
-    earnings: formatIntervalValue(income.earnings),
-    selfEmploymentDrawings: formatIntervalValue(income.self_employment_drawings),
-    benefits: formatIntervalValue(income.benefits),
-    taxCredits: formatIntervalValue(income.tax_credits),
-    childBenefit: formatIntervalValue(income.child_benefits),
-    maintenanceReceived: formatIntervalValue(income.maintenance_received),
-    pension: formatIntervalValue(income.pension),
-    otherIncome: formatIntervalValue(income.other_income),
+    earnings: formatMoneyPerInterval(income.earnings),
+    selfEmploymentDrawings: formatMoneyPerInterval(income.self_employment_drawings),
+    benefits: formatMoneyPerInterval(income.benefits),
+    taxCredits: formatMoneyPerInterval(income.tax_credits),
+    childBenefit: formatMoneyPerInterval(income.child_benefits),
+    maintenanceReceived: formatMoneyPerInterval(income.maintenance_received),
+    pension: formatMoneyPerInterval(income.pension),
+    otherIncome: formatMoneyPerInterval(income.other_income),
     selfEmployed: Boolean(income.self_employed),
     total: convertPenceToPounds(Number(income.total ?? 0)),
+  };
+}
+
+/**
+ * Function to format data using money per interval interface
+ * @param { unknown } value value to be formatted
+ * @returns { MoneyPerInterval } a money per interval object with a value and time interval 
+ */
+function formatMoneyPerInterval(value: unknown): MoneyPerInterval {
+  if (!isRecord(value)) {
+    return {
+      amount: 0,
+      time: 'per_month'
+    };
+  }
+
+  return {
+    amount: convertPenceToPounds(Number(value.per_interval_value ?? 0)),
+    time: value.interval_period as MoneyPerInterval['time']
   };
 }
 

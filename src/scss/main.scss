@@ -10,5 +10,6 @@
 @use "components/search";
 @use "components/case_details_header";
 @use "components/case_details_tab";
+@use "components/financial-eligibility-table";
 
 @include govuk-fonts.gds-transport();
