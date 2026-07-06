@@ -194,21 +194,6 @@
         "lastModified": "Last modified"
       }
     },
-    "cookiesTable": {
-      "caption": "Essential cookies we use",
-      "captionClasses": "govuk-table__caption--s",
-      "firstCellIsHeader": true,
-      "head": {
-        "name": "Name",
-        "purpose": "Purpose",
-        "expires": "Expires"
-      },
-      "rows": {
-        "sessionID": "sessionID",
-        "stores": "Stores user-provided form data",
-        "expiry": "24 hours"
-      }
-    },
     "errorSummary": {
       "title": "There is a problem"
     }
