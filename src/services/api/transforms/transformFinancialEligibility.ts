@@ -118,6 +118,11 @@ function formatIncomeData(income: unknown): IncomeData {
   };
 }
 
+/**
+ * Function to format data using money per interval interface
+ * @param { unknown} value value to be formatted
+ * @returns a money per interval object with a value and time interval 
+ */
 function formatMoneyPerInterval(value: unknown): MoneyPerInterval {
   if (!isRecord(value)) {
     return {
