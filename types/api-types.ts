@@ -366,13 +366,13 @@ export interface SavingsData {
  * Interface for deduction data
  */
 export interface DeductionData {
-  incomeTax: string,
-  nationalInsurance: string,
-  maintenance: string,
-  childcare: string,
-  mortgage: string,
-  rent: string,
-  criminalContributions: string,
+  incomeTax: MoneyPerInterval,
+  nationalInsurance: MoneyPerInterval,
+  maintenance: MoneyPerInterval,
+  childcare: MoneyPerInterval,
+  mortgage: MoneyPerInterval,
+  rent: MoneyPerInterval,
+  criminalContributions: MoneyPerInterval,
   total: number
 }
 

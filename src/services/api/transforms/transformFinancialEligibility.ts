@@ -20,6 +20,7 @@ export function transformFinancialEligilibilityItem(item: unknown): FinancialEli
   const income = formatIncomeData(clientData.income);
   const savings = formatSavingsData(clientData.savings);
   const deductions = formatDeductionsData(clientData.deductions);
+  console.log("new formatted deduction data: ", deductions);
   const partnerIncome = formatIncomeData(partnerData.income);
   const partnerSavings = formatSavingsData(partnerData.savings);
   const partnerDeductions = formatDeductionsData(partnerData.deductions);
@@ -97,13 +98,13 @@ function formatDeductionsData(deductions: unknown): DeductionData {
     return {} as DeductionData;
   }
   return {
-    incomeTax: formatIntervalValue(deductions.income_tax),
-    nationalInsurance: formatIntervalValue(deductions.national_insurance),
-    maintenance: formatIntervalValue(deductions.maintenance),
-    childcare: formatIntervalValue(deductions.childcare),
-    mortgage: formatIntervalValue(deductions.mortgage),
-    rent: formatIntervalValue(deductions.rent),
-    criminalContributions: `${convertPenceToPounds(Number(deductions.criminal_legalaid_contributions ?? 0))} per month`,
+    incomeTax: formatMoneyPerInterval(deductions.income_tax),
+    nationalInsurance: formatMoneyPerInterval(deductions.national_insurance),
+    maintenance: formatMoneyPerInterval(deductions.maintenance),
+    childcare: formatMoneyPerInterval(deductions.childcare),
+    mortgage: formatMoneyPerInterval(deductions.mortgage),
+    rent: formatMoneyPerInterval(deductions.rent),
+    criminalContributions: {amount: convertPenceToPounds(Number(deductions.criminal_legalaid_contributions ?? 0)),time: 'per_month'},
     total: convertPenceToPounds(Number(deductions.total ?? 0)),
   };
 }
@@ -129,6 +130,20 @@ function formatIncomeData(income: unknown): IncomeData {
     otherIncome: formatIntervalValue(income.other_income),
     selfEmployed: Boolean(income.self_employed),
     total: convertPenceToPounds(Number(income.total ?? 0)),
+  };
+}
+
+function formatMoneyPerInterval(value: unknown): MoneyPerInterval {
+  if (!isRecord(value)) {
+    return {
+      amount: 0,
+      time: 'per_month'
+    };
+  }
+
+  return {
+    amount: convertPenceToPounds(Number(value.per_interval_value ?? 0)),
+    time: value.interval_period as MoneyPerInterval['time']
   };
 }
 

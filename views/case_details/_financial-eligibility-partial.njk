@@ -296,7 +296,7 @@
           text: "How much tax do you pay?"
         },
         {
-          text: "£" ~ deductions.incomeTax
+          text: "£" ~ deductions.incomeTax.amount ~ " " ~ t("common.intervalPeriod." ~ deductions.incomeTax.time)
         }
       ],
       [
@@ -304,7 +304,7 @@
           text: "How much National Insurance do you pay?"
         },
         {
-          text: "£" ~ deductions.nationalInsurance
+          text: "£" ~ deductions.nationalInsurance.amount ~ " " ~ t("common.intervalPeriod." ~ deductions.nationalInsurance.time)
         }
       ],
       [
@@ -396,7 +396,7 @@
           text: "How much tax do you pay?"
         },
         {
-          text: "£" ~ partnerDeductions.incomeTax
+          text: "£" ~ partnerDeductions.incomeTax.amount ~ " " ~ t("common.intervalPeriod." ~ partnerDeductions.incomeTax.time)
         }
       ],
       [
@@ -404,7 +404,7 @@
           text: "How much National Insurance do you pay?"
         },
         {
-          text: "£" ~ partnerDeductions.nationalInsurance
+          text: "£" ~ partnerDeductions.nationalInsurance.amount ~ " " ~ t("common.intervalPeriod." ~ partnerDeductions.nationalInsurance.time)
         }
       ],
       [
@@ -506,7 +506,7 @@
           text: "How much do you pay for your mortgage?"
         },
         {
-          text: "£" ~ deductions.mortgage
+          text: "£" ~ deductions.mortgage.amount ~ " " ~ t("common.intervalPeriod." ~ deductions.mortgage.time)
         }
       ],
        [
@@ -514,7 +514,7 @@
           text: "How much do you pay for rent? The amount entered should not include any housing benefit or payment for bills"
         },
         {
-          text: "£" ~deductions.rent
+          text: "£" ~deductions.rent.amount ~ " " ~ t("common.intervalPeriod." ~ deductions.rent.time)
         }
       ],
        [
@@ -522,7 +522,7 @@
           text: "How much maintenance have you paid during the last calendar month?"
         },
         {
-          text: "£" ~deductions.maintenance
+          text: "£" ~deductions.maintenance.amount ~ " " ~ t("common.intervalPeriod." ~ deductions.maintenance.time)
         }
       ],
        [
@@ -530,7 +530,7 @@
           text: "Do you have any childcare costs because of work or study? If so, how much?"
         },
         {
-          text: "£" ~ deductions.childcare
+          text: "£" ~ deductions.childcare.amount ~ " " ~ t("common.intervalPeriod." ~ deductions.childcare.time)
         }
       ],
        [
@@ -538,7 +538,7 @@
           text: "Are you currently paying towards legal aid for criminal defence? If so, how much have you paid in the last calendar month?"
         },
         {
-          text: "£" ~ deductions.criminalContributions
+          text: "£" ~ deductions.criminalContributions.amount ~ " " ~ t("common.intervalPeriod." ~ deductions.criminalContributions.time)
         }
       ]
     ]
@@ -555,7 +555,7 @@
           text: "How much does your partner pay for their mortgage?"
         },
         {
-          text: "£" ~ partnerDeductions.mortgage
+          text: "£" ~ partnerDeductions.mortgage.amount ~ " " ~ t("common.intervalPeriod." ~ partnerDeductions.mortgage.time)
         }
       ],
        [
@@ -563,7 +563,7 @@
           text: "How much does your partner pay for their rent? The amount entered should not include any housing benefit or payment for bills"
         },
         {
-          text: "£" ~ partnerDeductions.rent
+          text: "£" ~ partnerDeductions.rent.amount ~ " " ~ t("common.intervalPeriod." ~ partnerDeductions.rent.time)
         }
       ],
        [
@@ -571,7 +571,7 @@
           text: "How much maintenance has your partner paid during the last calendar month?"
         },
         {
-          text: "£" ~ partnerDeductions.maintenance
+          text: "£" ~ partnerDeductions.maintenance.amount ~ " " ~ t("common.intervalPeriod." ~ partnerDeductions.maintenance.time)
         }
       ],
        [
@@ -579,7 +579,7 @@
           text: "Does your partner have any childcare costs because of work or study? If so, how much?"
         },
         {
-          text: "£" ~ partnerDeductions.childcare
+          text: "£" ~ partnerDeductions.childcare.amount ~ " " ~ t("common.intervalPeriod." ~ partnerDeductions.childcare.time)
         }
       ],
        [
@@ -587,7 +587,7 @@
           text: "Is your partner currently paying towards legal aid for criminal defence? If so, how much has your partner paid in the last calendar month?"
         },
         {
-          text: "£" ~ partnerDeductions.criminalContributions
+          text: "£" ~ partnerDeductions.criminalContributions.amount ~ " " ~ t("common.intervalPeriod." ~ partnerDeductions.criminalContributions.time)
         }
       ]
     ]
