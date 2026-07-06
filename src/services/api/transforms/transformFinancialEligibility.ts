@@ -1,4 +1,4 @@
-import type { FinancialEligibilityData, PropertySetData, SavingsData, IncomeData, DeductionData } from '#types/api-types.js';
+import type { FinancialEligibilityData, PropertySetData, SavingsData, IncomeData, DeductionData, MoneyPerInterval } from '#types/api-types.js';
 import { isRecord, t } from '#src/scripts/helpers/index.js';
 
 /**
@@ -78,8 +78,6 @@ function formatSavingsData(savings: unknown): SavingsData {
   if (!isRecord(savings)) {
     return {} as SavingsData;
   }
-
-  console.log("transforming savings data: ", savings)
   return {
     bankBalance: convertPenceToPounds(Number(savings.bank_balance ?? 0)),
     investmentBalance: convertPenceToPounds(Number(savings.investment_balance ?? 0)),
@@ -109,6 +107,7 @@ function formatDeductionsData(deductions: unknown): DeductionData {
     total: convertPenceToPounds(Number(deductions.total ?? 0)),
   };
 }
+
 
 /**
  * Function to format income data
