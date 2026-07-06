@@ -138,11 +138,11 @@
       rows: [
         [
           { text: "What is the current market value of the property?" },
-          { text: property.value }
+          { text: "£" ~property.value }
         ],
         [
           { text: "How much is left to pay on the mortgage?" },
-          { text: property.mortgageLeft }
+          { text: "£" ~ property.mortgageLeft }
         ],
         [
           { text: "Is this your main property?" },
@@ -288,7 +288,7 @@
           text: "What did you earn before tax? (Check your most recent payslips)"
         },
         {
-          text: "£" ~ income.earnings
+          text: "£" ~ income.earnings.amount ~ " " ~ t("common.intervalPeriod." ~ income.earnings.time)
         }
       ],
       [
@@ -312,7 +312,7 @@
           text: "Self employed drawings (before tax)"
         },
         {
-          text: "£" ~ income.selfEmploymentDrawings
+          text: "£" ~ income.selfEmploymentDrawings.amount ~ " " ~ t("common.intervalPeriod." ~ income.selfEmploymentDrawings.time)
         }
       ],
       [
@@ -320,7 +320,7 @@
           text: "Benefits"
         },
         {
-          text: "£" ~ income.benefits
+          text: "£" ~ income.benefits.amount ~ " " ~ t("common.intervalPeriod." ~ income.benefits.time)
         }
       ],
       [
@@ -328,7 +328,7 @@
           text: "Tax credits"
         },
         {
-          text: "£" ~ income.taxCredits
+          text: "£" ~ income.taxCredits.amount ~ " " ~ t("common.intervalPeriod." ~ income.taxCredits.time)
         }
       ],
         [
@@ -336,7 +336,7 @@
           text: "Child benefit (for household)"
         },
         {
-          text: "£" ~ income.childBenefit
+          text: "£" ~ income.childBenefit.amount ~ " " ~ t("common.intervalPeriod." ~ income.childBenefit.time)
         }
       ],
          [
@@ -344,7 +344,7 @@
           text: "Maintenance received"
         },
         {
-          text: "£" ~ income.maintenanceReceived
+          text: "£" ~ income.maintenanceReceived.amount ~ " " ~ t("common.intervalPeriod." ~ income.maintenanceReceived.time)
         }
       ],
          [
@@ -352,7 +352,7 @@
           text: "Pension income"
         },
         {
-          text: "£" ~ income.pension
+          text: "£" ~ income.pension.amount ~ " " ~ t("common.intervalPeriod." ~ income.pension.time)
         }
       ],
       [
@@ -360,7 +360,7 @@
           text: "Other income"
         },
         {
-          text: "£" ~ income.otherIncome
+          text: "£" ~ income.otherIncome.amount ~ " " ~ t("common.intervalPeriod." ~ income.otherIncome.time)
         }
       ]
     ]
@@ -388,7 +388,7 @@
           text: "What did you earn before tax? (Check your most recent payslips)"
         },
         {
-          text: "£" ~ partnerIncome.earnings
+          text: "£" ~ partnerIncome.earnings.amount ~ " " ~ t("common.intervalPeriod." ~ partnerIncome.earnings.time)
         }
       ],
       [
@@ -412,7 +412,7 @@
           text: "Self employed drawings (before tax)"
         },
         {
-          text: "£" ~ partnerIncome.selfEmploymentDrawings
+          text: "£" ~ partnerIncome.selfEmploymentDrawings.amount ~ " " ~ t("common.intervalPeriod." ~ partnerIncome.selfEmploymentDrawings.time)
         }
       ],
       [
@@ -420,7 +420,7 @@
           text: "Benefits"
         },
         {
-          text: "£" ~ partnerIncome.benefits
+          text: "£" ~ partnerIncome.benefits.amount ~ " " ~ t("common.intervalPeriod." ~ partnerIncome.benefits.time)
         }
       ],
       [
@@ -428,7 +428,7 @@
           text: "Tax credits"
         },
         {
-          text: "£" ~ partnerIncome.taxCredits
+          text: "£" ~ partnerIncome.taxCredits.amount ~ " " ~ t("common.intervalPeriod." ~ partnerIncome.taxCredits.time)
         }
       ],
         [
@@ -436,7 +436,7 @@
           text: "Child benefit (for household)"
         },
         {
-          text: "£" ~ partnerIncome.childBenefit
+          text: "£" ~ partnerIncome.childBenefit.amount ~ " " ~ t("common.intervalPeriod." ~ partnerIncome.childBenefit.time)
         }
       ],
          [
@@ -444,7 +444,7 @@
           text: "Maintenance received"
         },
         {
-          text: "£" ~ partnerIncome.maintenanceReceived
+          text: "£" ~ partnerIncome.maintenanceReceived.amount ~ " " ~ t("common.intervalPeriod." ~ partnerIncome.maintenanceReceived.time)
         }
       ],
          [
@@ -452,7 +452,7 @@
           text: "Pension income"
         },
         {
-          text: "£" ~ partnerIncome.pension
+          text: "£" ~ partnerIncome.pension.amount ~ " " ~ t("common.intervalPeriod." ~ partnerIncome.pension.time)
         }
       ],
       [
@@ -460,7 +460,7 @@
           text: "Other income"
         },
         {
-          text: "£" ~ partnerIncome.otherIncome
+          text: "£" ~ partnerIncome.otherIncome.amount ~ " " ~ t("common.intervalPeriod." ~ partnerIncome.otherIncome.time)
         }
       ]
     ]

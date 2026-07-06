@@ -20,7 +20,6 @@ export function transformFinancialEligilibilityItem(item: unknown): FinancialEli
   const income = formatIncomeData(clientData.income);
   const savings = formatSavingsData(clientData.savings);
   const deductions = formatDeductionsData(clientData.deductions);
-  console.log("new formatted deduction data: ", deductions);
   const partnerIncome = formatIncomeData(partnerData.income);
   const partnerSavings = formatSavingsData(partnerData.savings);
   const partnerDeductions = formatDeductionsData(partnerData.deductions);
@@ -36,8 +35,8 @@ export function transformFinancialEligilibilityItem(item: unknown): FinancialEli
   };
   const propertySet: PropertySetData[] = Array.isArray(item.property_set)
     ? item.property_set.map((property) => ({
-      value: Number(property.value),
-      mortgageLeft: Number(property.mortgage_left),
+      value: convertPenceToPounds(Number(property.value)),
+      mortgageLeft: convertPenceToPounds(Number(property.mortgage_left)),
       share: Number(property.share),
       disputed: Boolean(property.disputed),
       main: Boolean(property.main),
@@ -55,19 +54,6 @@ export function transformFinancialEligilibilityItem(item: unknown): FinancialEli
     depedantsYoung,
     depedantsOld
   };
-}
-
-/**
- * Function to format interval value 
- * @param {unknown} value number value to be formatted as a string with an interval period applied.
- * @returns {string} a string with an number and interval period applied
- */
-function formatIntervalValue(value: unknown): string {
-  console.log("formatting value", value)
-  if (!isRecord(value)) {
-    return String(value ?? '');
-  }
-  return `${convertPenceToPounds(Number(value.per_interval_value ?? 0))} ${t(`common.intervalPeriod.${value.interval_period}`)}`;
 }
 
 /**
@@ -109,7 +95,6 @@ function formatDeductionsData(deductions: unknown): DeductionData {
   };
 }
 
-
 /**
  * Function to format income data
  * @param {unknown} income income data to be formatted
@@ -120,14 +105,14 @@ function formatIncomeData(income: unknown): IncomeData {
     return {} as IncomeData;
   }
   return {
-    earnings: formatIntervalValue(income.earnings),
-    selfEmploymentDrawings: formatIntervalValue(income.self_employment_drawings),
-    benefits: formatIntervalValue(income.benefits),
-    taxCredits: formatIntervalValue(income.tax_credits),
-    childBenefit: formatIntervalValue(income.child_benefits),
-    maintenanceReceived: formatIntervalValue(income.maintenance_received),
-    pension: formatIntervalValue(income.pension),
-    otherIncome: formatIntervalValue(income.other_income),
+    earnings: formatMoneyPerInterval(income.earnings),
+    selfEmploymentDrawings: formatMoneyPerInterval(income.self_employment_drawings),
+    benefits: formatMoneyPerInterval(income.benefits),
+    taxCredits: formatMoneyPerInterval(income.tax_credits),
+    childBenefit: formatMoneyPerInterval(income.child_benefits),
+    maintenanceReceived: formatMoneyPerInterval(income.maintenance_received),
+    pension: formatMoneyPerInterval(income.pension),
+    otherIncome: formatMoneyPerInterval(income.other_income),
     selfEmployed: Boolean(income.self_employed),
     total: convertPenceToPounds(Number(income.total ?? 0)),
   };
