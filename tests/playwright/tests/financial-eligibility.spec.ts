@@ -247,10 +247,10 @@ test.describe('Income tab', () => {
 
     // Assert the correct data is displayed in the partner's income table.
     await expectCaptionTableRows(page, "Partner's income", {
-      'Are you self employed?': 'No',
-      'What did you earn before tax? (Check your most recent payslips)': '£130 per month',
-      'How much tax do you pay?': '£0 every 4 weeks',
-      'How much National Insurance do you pay?': '£0 every 2 weeks',
+      'Is your partner self employed?': 'No',
+      'What did your partner earn before tax? (Check your most recent payslips)': '£130 per month',
+      'How much tax does your partner pay?': '£0 every 4 weeks',
+      'How much National Insurance does your partner pay?': '£0 every 2 weeks',
       'Self employed drawings (before tax)': '£100 per week',
       'Benefits': '£500 per year',
       'Tax credits': '£200 per month',

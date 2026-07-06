@@ -30,7 +30,7 @@
 {% set rows = [
   [
     {
-      text: "Are you aged 17 or under?"
+      text: t("common.financialEligibility.details.age17OrUnder")
     }, {
       text: under17Text
     }
@@ -40,14 +40,14 @@
   {% set rows = rows.concat([
     [
       {
-        text: "Do you have a partner?"
+        text: t("common.financialEligibility.details.hasPartner")
       }, {
         text: partnerText
       }
     ],
     [
       {
-        text: "Are you aged 60 or over?"
+        text: t("common.financialEligibility.details.age60OrOver")
       }, {
         text: over60Text
       }
@@ -69,7 +69,7 @@
     rows: [
       [
         {
-          text: "Universal Credit"
+          text: t("common.financialEligibility.details.universalCredit")
         },
         {
           text: universalCredit
@@ -77,7 +77,7 @@
       ],
       [
         {
-          text: "Income Support"
+          text: t("common.financialEligibility.details.incomeSupport")
         },
         {
           text: incomeSupport
@@ -85,7 +85,7 @@
       ],
       [
         {
-          text: "Income-based Job Seekers Allowance"
+          text: t("common.financialEligibility.details.incomeBasedJSA")
         },
         {
           text: jobSeekers
@@ -93,7 +93,7 @@
       ],
       [
         {
-          text: "Guarantee State Pension Credit"
+          text: t("common.financialEligibility.details.pensionCredit")
         },
         {
           text: pensionCredit
@@ -101,7 +101,7 @@
       ],
       [
         {
-          text: "Income-related Employment and Support Allowance"
+          text: t("common.financialEligibility.details.employmentSupport")
         },
         {
           text: employmentSupport
@@ -137,19 +137,19 @@
       firstCellIsHeader: true,
       rows: [
         [
-          { text: "What is the current market value of the property?" },
-          { text: "£" ~property.value }
+          { text: t("common.financialEligibility.finances.propertyValue") },
+          { text: "£" ~ property.value }
         ],
         [
-          { text: "How much is left to pay on the mortgage?" },
+          { text: t("common.financialEligibility.finances.mortgageLeft") },
           { text: "£" ~ property.mortgageLeft }
         ],
         [
-          { text: "Is this your main property?" },
+          { text: t("common.financialEligibility.finances.mainProperty") },
           { text: "Yes" if property.main else "No" }
         ],
         [
-          { text: "What percentage of the property do you and/or your partner own?" },
+          { text: t("common.financialEligibility.finances.propertyShare") },
           { text: property.share + "%" }
         ]
       ]
@@ -172,7 +172,7 @@
     rows: [
       [
         {
-          text: "How much was in your bank account/building society before your last payment went in?"
+          text: t("common.financialEligibility.finances.savingsBalance")
         },
         {
           text: "£" ~ savings.bankBalance
@@ -180,7 +180,7 @@
       ],
       [
         {
-          text: "Do you have any investments, shares or ISAs?"
+          text: t("common.financialEligibility.finances.investmentBalance")
         },
         {
           text: "£" ~ savings.investmentBalance
@@ -188,7 +188,7 @@
       ],
       [
         {
-          text: "Do you have any valuable items worth over £500 each?"
+          text: t("common.financialEligibility.finances.assetBalance")
         },
         {
           text: "£" ~ savings.assetBalance
@@ -196,7 +196,7 @@
       ],
       [
         {
-          text: "Do you have any money owed to you?"
+          text: t("common.financialEligibility.finances.creditBalance")
         },
         {
           text: "£" ~ savings.creditBalance
@@ -215,7 +215,7 @@
     rows: [
       [
         {
-          text: "How much was in your partners bank account/building society before their last payment went in?"
+          text: t("common.financialEligibility.finances.partnerSavingsBalance")
         },
         {
           text: "£" ~ partnerSavings.bankBalance
@@ -223,7 +223,7 @@
       ],
       [
         {
-          text: "Does your partner have any investments, shares or ISAs?"
+          text: t("common.financialEligibility.finances.partnerInvestmentBalance")
         },
         {
           text: "£" ~ partnerSavings.investmentBalance
@@ -231,7 +231,7 @@
       ],
       [
         {
-          text: "Does your partner have any valuable items worth over £500 each?"
+          text: t("common.financialEligibility.finances.partnerAssetBalance")
         },
         {
           text: "£" ~ partnerSavings.assetBalance
@@ -239,7 +239,7 @@
       ],
       [
         {
-          text: "Does your partner have any money owed to them?"
+          text: t("common.financialEligibility.finances.partnerCreditBalance")
         },
         {
           text: "£" ~ partnerSavings.creditBalance
@@ -277,7 +277,7 @@
     rows: [
       [
         {
-          text: "Are you self employed?"
+          text: t("common.financialEligibility.income.selfEmployed")
         },
         {
           text: "Yes" if income.selfEmployed else "No"
@@ -285,7 +285,7 @@
       ],
       [
         {
-          text: "What did you earn before tax? (Check your most recent payslips)"
+          text: t("common.financialEligibility.income.earnings")
         },
         {
           text: "£" ~ income.earnings.amount ~ " " ~ t("common.intervalPeriod." ~ income.earnings.time)
@@ -293,7 +293,7 @@
       ],
       [
         {
-          text: "How much tax do you pay?"
+          text: t("common.financialEligibility.income.tax")
         },
         {
           text: "£" ~ deductions.incomeTax.amount ~ " " ~ t("common.intervalPeriod." ~ deductions.incomeTax.time)
@@ -301,7 +301,7 @@
       ],
       [
         {
-          text: "How much National Insurance do you pay?"
+          text: t("common.financialEligibility.income.nationalInsurance")
         },
         {
           text: "£" ~ deductions.nationalInsurance.amount ~ " " ~ t("common.intervalPeriod." ~ deductions.nationalInsurance.time)
@@ -309,7 +309,7 @@
       ],
       [
         {
-          text: "Self employed drawings (before tax)"
+          text:t("common.financialEligibility.income.selfEmployedDrawings")
         },
         {
           text: "£" ~ income.selfEmploymentDrawings.amount ~ " " ~ t("common.intervalPeriod." ~ income.selfEmploymentDrawings.time)
@@ -317,7 +317,7 @@
       ],
       [
         {
-          text: "Benefits"
+          text: t("common.financialEligibility.income.benefits")
         },
         {
           text: "£" ~ income.benefits.amount ~ " " ~ t("common.intervalPeriod." ~ income.benefits.time)
@@ -325,7 +325,7 @@
       ],
       [
         {
-          text: "Tax credits"
+          text: t("common.financialEligibility.income.taxCredits")
         },
         {
           text: "£" ~ income.taxCredits.amount ~ " " ~ t("common.intervalPeriod." ~ income.taxCredits.time)
@@ -333,7 +333,7 @@
       ],
         [
         {
-          text: "Child benefit (for household)"
+          text: t("common.financialEligibility.income.childBenefit")
         },
         {
           text: "£" ~ income.childBenefit.amount ~ " " ~ t("common.intervalPeriod." ~ income.childBenefit.time)
@@ -341,7 +341,7 @@
       ],
          [
         {
-          text: "Maintenance received"
+          text: t("common.financialEligibility.income.maintenanceReceived")
         },
         {
           text: "£" ~ income.maintenanceReceived.amount ~ " " ~ t("common.intervalPeriod." ~ income.maintenanceReceived.time)
@@ -349,7 +349,7 @@
       ],
          [
         {
-          text: "Pension income"
+          text: t("common.financialEligibility.income.pension")
         },
         {
           text: "£" ~ income.pension.amount ~ " " ~ t("common.intervalPeriod." ~ income.pension.time)
@@ -357,7 +357,7 @@
       ],
       [
         {
-          text: "Other income"
+          text: t("common.financialEligibility.income.otherIncome")
         },
         {
           text: "£" ~ income.otherIncome.amount ~ " " ~ t("common.intervalPeriod." ~ income.otherIncome.time)
@@ -377,7 +377,7 @@
     rows: [
       [
         {
-          text: "Are you self employed?"
+          text: t("common.financialEligibility.income.partnerSelfEmployed")
         },
         {
           text: "Yes" if partnerIncome.selfEmployed else "No"
@@ -385,7 +385,7 @@
       ],
       [
         {
-          text: "What did you earn before tax? (Check your most recent payslips)"
+          text: t("common.financialEligibility.income.partnerEarnings")
         },
         {
           text: "£" ~ partnerIncome.earnings.amount ~ " " ~ t("common.intervalPeriod." ~ partnerIncome.earnings.time)
@@ -393,7 +393,7 @@
       ],
       [
         {
-          text: "How much tax do you pay?"
+          text: t("common.financialEligibility.income.partnerTax")
         },
         {
           text: "£" ~ partnerDeductions.incomeTax.amount ~ " " ~ t("common.intervalPeriod." ~ partnerDeductions.incomeTax.time)
@@ -401,7 +401,7 @@
       ],
       [
         {
-          text: "How much National Insurance do you pay?"
+          text: t("common.financialEligibility.income.partnerNationalInsurance")
         },
         {
           text: "£" ~ partnerDeductions.nationalInsurance.amount ~ " " ~ t("common.intervalPeriod." ~ partnerDeductions.nationalInsurance.time)
@@ -409,7 +409,7 @@
       ],
       [
         {
-          text: "Self employed drawings (before tax)"
+          text: t("common.financialEligibility.income.selfEmployedDrawings")
         },
         {
           text: "£" ~ partnerIncome.selfEmploymentDrawings.amount ~ " " ~ t("common.intervalPeriod." ~ partnerIncome.selfEmploymentDrawings.time)
@@ -417,7 +417,7 @@
       ],
       [
         {
-          text: "Benefits"
+          text: t("common.financialEligibility.income.benefits")
         },
         {
           text: "£" ~ partnerIncome.benefits.amount ~ " " ~ t("common.intervalPeriod." ~ partnerIncome.benefits.time)
@@ -425,7 +425,7 @@
       ],
       [
         {
-          text: "Tax credits"
+          text: t("common.financialEligibility.income.taxCredits")
         },
         {
           text: "£" ~ partnerIncome.taxCredits.amount ~ " " ~ t("common.intervalPeriod." ~ partnerIncome.taxCredits.time)
@@ -433,7 +433,7 @@
       ],
         [
         {
-          text: "Child benefit (for household)"
+          text: t("common.financialEligibility.income.childBenefit")
         },
         {
           text: "£" ~ partnerIncome.childBenefit.amount ~ " " ~ t("common.intervalPeriod." ~ partnerIncome.childBenefit.time)
@@ -441,7 +441,7 @@
       ],
          [
         {
-          text: "Maintenance received"
+          text: t("common.financialEligibility.income.maintenanceReceived")
         },
         {
           text: "£" ~ partnerIncome.maintenanceReceived.amount ~ " " ~ t("common.intervalPeriod." ~ partnerIncome.maintenanceReceived.time)
@@ -449,7 +449,7 @@
       ],
          [
         {
-          text: "Pension income"
+          text: t("common.financialEligibility.income.pension")
         },
         {
           text: "£" ~ partnerIncome.pension.amount ~ " " ~ t("common.intervalPeriod." ~ partnerIncome.pension.time)
@@ -457,7 +457,7 @@
       ],
       [
         {
-          text: "Other income"
+          text: t("common.financialEligibility.income.otherIncome")
         },
         {
           text: "£" ~ partnerIncome.otherIncome.amount ~ " " ~ t("common.intervalPeriod." ~ partnerIncome.otherIncome.time)
@@ -475,7 +475,7 @@
     rows: [
       [
         {
-          text: "Do you have any dependants aged 16 and over?"
+          text: t("common.financialEligibility.income.dependantsOld")
         },
         {
           text: financialEligibility.depedantsOld
@@ -483,7 +483,7 @@
       ],
       [
         {
-          text: "Do you have any dependants aged 15 and under?"
+          text: t("common.financialEligibility.income.dependantsYoung")
         },
         {
           text: financialEligibility.depedantsYoung
@@ -503,7 +503,7 @@
     rows: [
       [
         {
-          text: "How much do you pay for your mortgage?"
+          text: t("common.financialEligibility.expenses.mortgageCost")
         },
         {
           text: "£" ~ deductions.mortgage.amount ~ " " ~ t("common.intervalPeriod." ~ deductions.mortgage.time)
@@ -511,7 +511,7 @@
       ],
        [
         {
-          text: "How much do you pay for rent? The amount entered should not include any housing benefit or payment for bills"
+          text: t("common.financialEligibility.expenses.rentCost")
         },
         {
           text: "£" ~deductions.rent.amount ~ " " ~ t("common.intervalPeriod." ~ deductions.rent.time)
@@ -519,7 +519,7 @@
       ],
        [
         {
-          text: "How much maintenance have you paid during the last calendar month?"
+          text: t("common.financialEligibility.expenses.maintenanceCost")
         },
         {
           text: "£" ~deductions.maintenance.amount ~ " " ~ t("common.intervalPeriod." ~ deductions.maintenance.time)
@@ -527,7 +527,7 @@
       ],
        [
         {
-          text: "Do you have any childcare costs because of work or study? If so, how much?"
+          text: t("common.financialEligibility.expenses.childCareCost")
         },
         {
           text: "£" ~ deductions.childcare.amount ~ " " ~ t("common.intervalPeriod." ~ deductions.childcare.time)
@@ -535,7 +535,7 @@
       ],
        [
         {
-          text: "Are you currently paying towards legal aid for criminal defence? If so, how much have you paid in the last calendar month?"
+          text: t("common.financialEligibility.expenses.legalAidCost")
         },
         {
           text: "£" ~ deductions.criminalContributions.amount ~ " " ~ t("common.intervalPeriod." ~ deductions.criminalContributions.time)
@@ -552,7 +552,7 @@
     rows: [
       [
         {
-          text: "How much does your partner pay for their mortgage?"
+          text: t("common.financialEligibility.expenses.partnerMortgageCost")
         },
         {
           text: "£" ~ partnerDeductions.mortgage.amount ~ " " ~ t("common.intervalPeriod." ~ partnerDeductions.mortgage.time)
@@ -560,7 +560,7 @@
       ],
        [
         {
-          text: "How much does your partner pay for their rent? The amount entered should not include any housing benefit or payment for bills"
+          text: t("common.financialEligibility.expenses.partnerRentCost")
         },
         {
           text: "£" ~ partnerDeductions.rent.amount ~ " " ~ t("common.intervalPeriod." ~ partnerDeductions.rent.time)
@@ -568,7 +568,7 @@
       ],
        [
         {
-          text: "How much maintenance has your partner paid during the last calendar month?"
+          text: t("common.financialEligibility.expenses.partnerMaintenanceCost")
         },
         {
           text: "£" ~ partnerDeductions.maintenance.amount ~ " " ~ t("common.intervalPeriod." ~ partnerDeductions.maintenance.time)
@@ -576,7 +576,7 @@
       ],
        [
         {
-          text: "Does your partner have any childcare costs because of work or study? If so, how much?"
+          text: t("common.financialEligibility.expenses.partnerChildCareCost")
         },
         {
           text: "£" ~ partnerDeductions.childcare.amount ~ " " ~ t("common.intervalPeriod." ~ partnerDeductions.childcare.time)
@@ -584,7 +584,7 @@
       ],
        [
         {
-          text: "Is your partner currently paying towards legal aid for criminal defence? If so, how much has your partner paid in the last calendar month?"
+          text: t("common.financialEligibility.expenses.partnerLegalAidCost")
         },
         {
           text: "£" ~ partnerDeductions.criminalContributions.amount ~ " " ~ t("common.intervalPeriod." ~ partnerDeductions.criminalContributions.time)
