@@ -83,14 +83,14 @@ test.describe('Finances tab', () => {
 
     // Assert the correct data is displayed in the properties table for the 1st and 2nd properties.
     await expectPropertyTableRows(page, '1st property', {
-      'What is the current market value of the property?': '13000000',
-      'How much is left to pay on the mortgage?': '5000000',
+      'What is the current market value of the property?': '130000',
+      'How much is left to pay on the mortgage?': '50000',
       'Is this your main property?': 'No',
       'What percentage of the property do you and/or your partner own?': '100%'
     });
     await expectPropertyTableRows(page, '2nd property', {
-      'What is the current market value of the property?': '12000000',
-      'How much is left to pay on the mortgage?': '6000000',
+      'What is the current market value of the property?': '120000',
+      'How much is left to pay on the mortgage?': '60000',
       'Is this your main property?': 'Yes',
       'What percentage of the property do you and/or your partner own?': '100%'
     });
@@ -140,8 +140,8 @@ test.describe('Finances tab', () => {
 
     // Assert the correct data is displayed in the properties table for one property.
     await expectPropertyTableRows(page, '1st property', {
-      'What is the current market value of the property?': '15000000',
-      'How much is left to pay on the mortgage?': '6000000',
+      'What is the current market value of the property?': '150000',
+      'How much is left to pay on the mortgage?': '60000',
       'Is this your main property?': 'Yes',
       'What percentage of the property do you and/or your partner own?': '100%'
     });
