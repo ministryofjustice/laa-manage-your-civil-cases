@@ -78,7 +78,7 @@ test('cookies page should have rendered correctly', async ({ page, i18nSetup }) 
   await expect(mccCookie).toHaveText('Manage your civil cases uses a cookie across the service to remember your answers.');
   
   // Verify the text for how to manage cookies from the ICO
-  const icoInfo = page.locator('#icoInfo');
+  const icoInfo = page.locator('#ico-info');
   await expect(icoInfo).toHaveText("Find out how to manage cookies from the Information Commissioner's Office.");
 
   // Check for the subheading on the cookies page
