@@ -6,7 +6,7 @@ import { isRecord, t } from '#src/scripts/helpers/index.js';
  * @param {unknown} item Raw financial eligibility item
  * @returns {FinancialEligibilityData} Transformed financial eligibility item
  */
-export function transformFinancialEligilibilityItem(item: unknown): FinancialEligibilityData {
+export function transformFinancialEligibilityItem(item: unknown): FinancialEligibilityData {
   if (!isRecord(item)) {
     throw new Error('Invalid financial eligibility item: expected object');
   }
@@ -14,7 +14,7 @@ export function transformFinancialEligilibilityItem(item: unknown): FinancialEli
   const isUnder17 = Boolean(item.is_you_under_18);
   const isOver60 = Boolean(item.is_you_or_your_partner_over_60);
   const hasPartner = Boolean(item.has_partner);
-  const benefits = isRecord(item.specific_benefits) ? item.specific_benefits : {};
+  const benefitsData = isRecord(item.specific_benefits) ? item.specific_benefits : {};
   const clientData = isRecord(item.you) ? item.you : {};
   const partnerData = isRecord(item.partner) ? item.partner : {};
   const income = formatIncomeData(clientData.income);
@@ -23,15 +23,15 @@ export function transformFinancialEligilibilityItem(item: unknown): FinancialEli
   const partnerIncome = formatIncomeData(partnerData.income);
   const partnerSavings = formatSavingsData(partnerData.savings);
   const partnerDeductions = formatDeductionsData(partnerData.deductions);
-  const depedantsYoung = Number(item.dependants_young ?? 0);
-  const depedantsOld = Number(item.dependants_old ?? 0);
+  const dependantsYoung = Number(item.dependants_young ?? 0);
+  const dependantsOld = Number(item.dependants_old ?? 0);
   const disregards = isRecord(item.disregards) ? Object.entries(item.disregards).filter(([, value]) => Boolean(value)).map(([key]) => t(`common.financialDisregards.${key}`)) : [];
   const specificBenefits = {
-    pensionCredit: Boolean(benefits.pension_credit),
-    jobSeekers: Boolean(benefits.job_seekers_allowance),
-    employmentSupport: Boolean(benefits.employment_support),
-    universalCredit: Boolean(benefits.universal_credit),
-    incomeSupport: Boolean(benefits.income_support),
+    pensionCredit: Boolean(benefitsData.pension_credit),
+    jobSeekers: Boolean(benefitsData.job_seekers_allowance),
+    employmentSupport: Boolean(benefitsData.employment_support),
+    universalCredit: Boolean(benefitsData.universal_credit),
+    incomeSupport: Boolean(benefitsData.income_support),
   };
   const propertySet: PropertySetData[] = Array.isArray(item.property_set)
     ? item.property_set.map((property) => ({
@@ -51,8 +51,8 @@ export function transformFinancialEligilibilityItem(item: unknown): FinancialEli
     clientData: { income, savings, deductions },
     partnerData: { partnerIncome, partnerSavings, partnerDeductions },
     disregards,
-    depedantsYoung,
-    depedantsOld
+    dependantsYoung,
+    dependantsOld
   };
 }
 

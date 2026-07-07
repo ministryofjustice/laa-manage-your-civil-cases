@@ -2,7 +2,7 @@ import { expect, Page } from '@playwright/test';
 
 /**
  * Helper to assert financial details elements, tables and captions. 
- * @param page page to be checked for financial detials
+ * @param page page to be checked for financial details
  * @param propertyHeading heading to be checked in financial details section
  * @param rows row within financial details table to be checked
  */

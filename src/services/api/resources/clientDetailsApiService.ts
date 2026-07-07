@@ -11,7 +11,7 @@ import { transformClientHistoryLogs } from '../transforms/transformClientHistory
 import { transformClientCaseLogs } from '../transforms/transformClientCaseLogs.js';
 import { configureAxiosInstance } from '../base/BaseApiService.js';
 import { API_PREFIX, JSON_INDENT } from '../base/constants.js';
-import { transformFinancialEligilibilityItem } from '../transforms/transformFinancialEligibility.js';
+import { transformFinancialEligibilityItem } from '../transforms/transformFinancialEligibility.js';
 
 /**
  * Get client details by case reference
@@ -258,7 +258,7 @@ export async function getFinancialEligibility(axiosMiddleware: AxiosInstanceWrap
     
     devLog(`API: Get financial eligibility response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
     return {
-      data: transformFinancialEligilibilityItem(response.data),
+      data: transformFinancialEligibilityItem(response.data),
       status: 'success'
     };
   } catch (error) {

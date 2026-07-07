@@ -429,8 +429,8 @@ export interface FinancialEligibilityData {
     partnerDeductions: DeductionData
   }
   disregards: string[];
-  depedantsYoung: number;
-  depedantsOld: number;
+  dependantsYoung: number;
+  dependantsOld: number;
 
 }
 
