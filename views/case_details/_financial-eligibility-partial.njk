@@ -59,6 +59,7 @@
     caption: "About you",
     captionClasses: "govuk-table__caption--m",
     firstCellIsHeader: true,
+    classes: "eligibility-table",
     rows: rows
   }) }}
 
@@ -66,6 +67,7 @@
     caption: "Benefits",
     captionClasses: "govuk-table__caption--m",
     firstCellIsHeader: true,
+    classes: "eligibility-table",
     rows: [
       [
         {
@@ -110,8 +112,7 @@
     ]
   }) }}
 
-<div>
-  {{ editAssessmentButtonHtml | safe }}</div>
+<div>{{ editAssessmentButtonHtml | safe }}</div>
 {% endset -%}
 
 {% set financesHtml %}
@@ -135,6 +136,7 @@
 
     {{ govukTable({
       firstCellIsHeader: true,
+      classes: "eligibility-table",
       rows: [
         [
           { text: t("common.financialEligibility.finances.propertyValue") },
@@ -169,6 +171,7 @@
 
 {{ govukTable({
     firstCellIsHeader: true,
+    classes: "eligibility-table",
     rows: [
       [
         {
@@ -212,6 +215,7 @@
 
   {{ govukTable({
     firstCellIsHeader: true,
+    classes: "eligibility-table",
     rows: [
       [
         {
@@ -263,7 +267,7 @@
     </tbody>
   </table>
 
-{{ editAssessmentButtonHtml | safe }}
+<div>{{ editAssessmentButtonHtml | safe }}</div>
 {% endset -%}
 
 {% set income = financialEligibility.clientData.income %}
@@ -274,6 +278,7 @@
     caption: "Your income",
     captionClasses: "govuk-table__caption--m",
     firstCellIsHeader: true,
+    classes: "eligibility-table",
     rows: [
       [
         {
@@ -373,6 +378,7 @@
   {{ govukTable({
     caption: "Partner's income",
     captionClasses: "govuk-table__caption--m",
+    classes: "eligibility-table",
     firstCellIsHeader: true,
     rows: [
       [
@@ -470,6 +476,7 @@
 
 {{ govukTable({
     caption: "Dependants",
+    classes: "eligibility-table",
     captionClasses: "govuk-table__caption--m",
     firstCellIsHeader: true,
     rows: [
@@ -492,12 +499,13 @@
     ]
   }) }}
 
-{{ editAssessmentButtonHtml | safe }}
+<div>{{ editAssessmentButtonHtml | safe }}</div>
 {% endset -%}
 
 {% set expensesHtml %}
 {{ govukTable({
     caption: "Your expenses",
+    classes: "eligibility-table",
     captionClasses: "govuk-table__caption--m",
     firstCellIsHeader: true,
     rows: [
@@ -547,6 +555,7 @@
 {% if financialEligibility.hasPartner %}
   {{ govukTable({
     caption: "Your partner's expenses",
+    classes: "eligibility-table",
     captionClasses: "govuk-table__caption--m",
     firstCellIsHeader: true,
     rows: [
@@ -594,7 +603,7 @@
   }) }}
 
 {% endif %}
-  {{ editAssessmentButtonHtml | safe }}
+<div>{{ editAssessmentButtonHtml | safe }}</div>
 {% endset -%}
 
 {{ govukTabs({
