@@ -811,3 +811,31 @@ export async function buildCategoryItems({
     }))
   ];
 }
+
+/**
+ * Format either:
+ * - a monetary value: 1000 -> £1000
+ * - a MoneyPerInterval object: { amount: 1000, time: 'monthly' }
+ *   -> £1000 per month
+ */
+export function formatFinancialData(value: unknown): string {
+  if (value === null || value === undefined) {
+    return '';
+  }
+
+  // MoneyPerInterval object
+  if (
+    isRecord(value) &&
+    typeof value.amount === 'number' &&
+    typeof value.time === 'string'
+  ) {
+    return `£${value.amount} ${t(`common.intervalPeriod.${value.time}`)}`;
+  }
+
+  // Plain number
+  if (typeof value === 'number') {
+    return `£${value}`;
+  }
+
+  return '';
+}

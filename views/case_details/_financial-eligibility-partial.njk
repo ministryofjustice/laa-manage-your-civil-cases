@@ -16,10 +16,8 @@
 
 {% set detailsHtml %}
 
-{% set under17Text = "Yes" if financialEligibility.isUnder17 else 
-  "No" %}
-{% set partnerText = "Yes" if financialEligibility.hasPartner else 
-  "No" %}
+{% set under17Text = "Yes" if financialEligibility.isUnder17 else "No" %}
+{% set partnerText = "Yes" if financialEligibility.hasPartner else "No" %}
 {% set over60Text = "Yes" if financialEligibility.isOver60 else "No"%}
 {% set universalCredit = "Yes" if financialEligibility.specificBenefits.universalCredit else "No"%}
 {% set pensionCredit = "Yes" if financialEligibility.specificBenefits.pensionCredit else "No"%}
@@ -122,6 +120,7 @@
 
   {% for property in financialEligibility.propertySet %}
 
+  {# Loop function will only work up to 22nd property - it is assumed if a client has 22 properties they are likely ineligible for support #}
     <h3 class="govuk-heading-s">
       {% if loop.index == 1 %}
         1st property
@@ -140,11 +139,11 @@
       rows: [
         [
           { text: t("common.financialEligibility.finances.propertyValue") },
-          { text: "£" ~ property.value }
+          { text: (property.value | formatFinancialData) }
         ],
         [
           { text: t("common.financialEligibility.finances.mortgageLeft") },
-          { text: "£" ~ property.mortgageLeft }
+          { text: (property.mortgageLeft | formatFinancialData) }
         ],
         [
           { text: t("common.financialEligibility.finances.mainProperty") },
@@ -178,7 +177,7 @@
           text: t("common.financialEligibility.finances.savingsBalance")
         },
         {
-          text: "£" ~ savings.bankBalance
+          text: (savings.bankBalance | formatFinancialData)
         }
       ],
       [
@@ -186,7 +185,7 @@
           text: t("common.financialEligibility.finances.investmentBalance")
         },
         {
-          text: "£" ~ savings.investmentBalance
+          text: (savings.investmentBalance | formatFinancialData)
         }
       ],
       [
@@ -194,7 +193,7 @@
           text: t("common.financialEligibility.finances.assetBalance")
         },
         {
-          text: "£" ~ savings.assetBalance
+          text: (savings.assetBalance | formatFinancialData)
         }
       ],
       [
@@ -202,7 +201,7 @@
           text: t("common.financialEligibility.finances.creditBalance")
         },
         {
-          text: "£" ~ savings.creditBalance
+          text: (savings.creditBalance | formatFinancialData)
         }
       ]
     ]
@@ -222,7 +221,7 @@
           text: t("common.financialEligibility.finances.partnerSavingsBalance")
         },
         {
-          text: "£" ~ partnerSavings.bankBalance
+          text: (partnerSavings.bankBalance | formatFinancialData)
         }
       ],
       [
@@ -230,7 +229,7 @@
           text: t("common.financialEligibility.finances.partnerInvestmentBalance")
         },
         {
-          text: "£" ~ partnerSavings.investmentBalance
+          text: (partnerSavings.investmentBalance | formatFinancialData)
         }
       ],
       [
@@ -238,7 +237,7 @@
           text: t("common.financialEligibility.finances.partnerAssetBalance")
         },
         {
-          text: "£" ~ partnerSavings.assetBalance
+          text:(partnerSavings.assetBalance | formatFinancialData)
         }
       ],
       [
@@ -246,7 +245,7 @@
           text: t("common.financialEligibility.finances.partnerCreditBalance")
         },
         {
-          text: "£" ~ partnerSavings.creditBalance
+          text: (partnerSavings.creditBalance | formatFinancialData)
         }
       ]
     ]
@@ -293,7 +292,7 @@
           text: t("common.financialEligibility.income.earnings")
         },
         {
-          text: "£" ~ income.earnings.amount ~ " " ~ t("common.intervalPeriod." ~ income.earnings.time)
+          text: (income.earnings | formatFinancialData)
         }
       ],
       [
@@ -301,7 +300,7 @@
           text: t("common.financialEligibility.income.tax")
         },
         {
-          text: "£" ~ deductions.incomeTax.amount ~ " " ~ t("common.intervalPeriod." ~ deductions.incomeTax.time)
+          text: (deductions.incomeTax | formatFinancialData)
         }
       ],
       [
@@ -309,7 +308,7 @@
           text: t("common.financialEligibility.income.nationalInsurance")
         },
         {
-          text: "£" ~ deductions.nationalInsurance.amount ~ " " ~ t("common.intervalPeriod." ~ deductions.nationalInsurance.time)
+          text: (deductions.nationalInsurance | formatFinancialData)
         }
       ],
       [
@@ -317,7 +316,7 @@
           text:t("common.financialEligibility.income.selfEmployedDrawings")
         },
         {
-          text: "£" ~ income.selfEmploymentDrawings.amount ~ " " ~ t("common.intervalPeriod." ~ income.selfEmploymentDrawings.time)
+          text: (income.selfEmploymentDrawings | formatFinancialData)
         }
       ],
       [
@@ -325,7 +324,7 @@
           text: t("common.financialEligibility.income.benefits")
         },
         {
-          text: "£" ~ income.benefits.amount ~ " " ~ t("common.intervalPeriod." ~ income.benefits.time)
+          text: (income.benefits | formatFinancialData)
         }
       ],
       [
@@ -333,7 +332,7 @@
           text: t("common.financialEligibility.income.taxCredits")
         },
         {
-          text: "£" ~ income.taxCredits.amount ~ " " ~ t("common.intervalPeriod." ~ income.taxCredits.time)
+          text: (income.taxCredits | formatFinancialData)
         }
       ],
         [
@@ -341,7 +340,7 @@
           text: t("common.financialEligibility.income.childBenefit")
         },
         {
-          text: "£" ~ income.childBenefit.amount ~ " " ~ t("common.intervalPeriod." ~ income.childBenefit.time)
+          text: (income.childBenefit | formatFinancialData)
         }
       ],
          [
@@ -349,7 +348,7 @@
           text: t("common.financialEligibility.income.maintenanceReceived")
         },
         {
-          text: "£" ~ income.maintenanceReceived.amount ~ " " ~ t("common.intervalPeriod." ~ income.maintenanceReceived.time)
+          text: (income.maintenanceReceived | formatFinancialData)
         }
       ],
          [
@@ -357,7 +356,7 @@
           text: t("common.financialEligibility.income.pension")
         },
         {
-          text: "£" ~ income.pension.amount ~ " " ~ t("common.intervalPeriod." ~ income.pension.time)
+          text: (income.pension | formatFinancialData)
         }
       ],
       [
@@ -365,7 +364,7 @@
           text: t("common.financialEligibility.income.otherIncome")
         },
         {
-          text: "£" ~ income.otherIncome.amount ~ " " ~ t("common.intervalPeriod." ~ income.otherIncome.time)
+          text: (income.otherIncome | formatFinancialData)
         }
       ]
     ]
@@ -394,7 +393,7 @@
           text: t("common.financialEligibility.income.partnerEarnings")
         },
         {
-          text: "£" ~ partnerIncome.earnings.amount ~ " " ~ t("common.intervalPeriod." ~ partnerIncome.earnings.time)
+          text: (partnerIncome.earnings | formatFinancialData)
         }
       ],
       [
@@ -402,7 +401,7 @@
           text: t("common.financialEligibility.income.partnerTax")
         },
         {
-          text: "£" ~ partnerDeductions.incomeTax.amount ~ " " ~ t("common.intervalPeriod." ~ partnerDeductions.incomeTax.time)
+          text: (partnerDeductions.incomeTax | formatFinancialData)
         }
       ],
       [
@@ -410,7 +409,7 @@
           text: t("common.financialEligibility.income.partnerNationalInsurance")
         },
         {
-          text: "£" ~ partnerDeductions.nationalInsurance.amount ~ " " ~ t("common.intervalPeriod." ~ partnerDeductions.nationalInsurance.time)
+          text: (partnerDeductions.nationalInsurance | formatFinancialData)
         }
       ],
       [
@@ -418,7 +417,7 @@
           text: t("common.financialEligibility.income.selfEmployedDrawings")
         },
         {
-          text: "£" ~ partnerIncome.selfEmploymentDrawings.amount ~ " " ~ t("common.intervalPeriod." ~ partnerIncome.selfEmploymentDrawings.time)
+          text: (partnerIncome.selfEmploymentDrawings | formatFinancialData)
         }
       ],
       [
@@ -426,7 +425,7 @@
           text: t("common.financialEligibility.income.benefits")
         },
         {
-          text: "£" ~ partnerIncome.benefits.amount ~ " " ~ t("common.intervalPeriod." ~ partnerIncome.benefits.time)
+          text: (partnerIncome.benefits | formatFinancialData)
         }
       ],
       [
@@ -434,7 +433,7 @@
           text: t("common.financialEligibility.income.taxCredits")
         },
         {
-          text: "£" ~ partnerIncome.taxCredits.amount ~ " " ~ t("common.intervalPeriod." ~ partnerIncome.taxCredits.time)
+          text: (partnerIncome.taxCredits | formatFinancialData)
         }
       ],
         [
@@ -442,7 +441,7 @@
           text: t("common.financialEligibility.income.childBenefit")
         },
         {
-          text: "£" ~ partnerIncome.childBenefit.amount ~ " " ~ t("common.intervalPeriod." ~ partnerIncome.childBenefit.time)
+          text: (partnerIncome.childBenefit | formatFinancialData)
         }
       ],
          [
@@ -450,7 +449,7 @@
           text: t("common.financialEligibility.income.maintenanceReceived")
         },
         {
-          text: "£" ~ partnerIncome.maintenanceReceived.amount ~ " " ~ t("common.intervalPeriod." ~ partnerIncome.maintenanceReceived.time)
+          text: (partnerIncome.maintenanceReceived | formatFinancialData)
         }
       ],
          [
@@ -458,7 +457,7 @@
           text: t("common.financialEligibility.income.pension")
         },
         {
-          text: "£" ~ partnerIncome.pension.amount ~ " " ~ t("common.intervalPeriod." ~ partnerIncome.pension.time)
+          text: (partnerIncome.pension | formatFinancialData)
         }
       ],
       [
@@ -466,7 +465,7 @@
           text: t("common.financialEligibility.income.otherIncome")
         },
         {
-          text: "£" ~ partnerIncome.otherIncome.amount ~ " " ~ t("common.intervalPeriod." ~ partnerIncome.otherIncome.time)
+          text: (partnerIncome.otherIncome | formatFinancialData)
         }
       ]
     ]
@@ -485,7 +484,7 @@
           text: t("common.financialEligibility.income.dependantsOld")
         },
         {
-          text: financialEligibility.depedantsOld
+          text: financialEligibility.dependantsOld
         }
       ],
       [
@@ -493,7 +492,7 @@
           text: t("common.financialEligibility.income.dependantsYoung")
         },
         {
-          text: financialEligibility.depedantsYoung
+          text: financialEligibility.dependantsYoung
         }
       ]
     ]
@@ -514,7 +513,7 @@
           text: t("common.financialEligibility.expenses.mortgageCost")
         },
         {
-          text: "£" ~ deductions.mortgage.amount ~ " " ~ t("common.intervalPeriod." ~ deductions.mortgage.time)
+          text: (deductions.mortgage | formatFinancialData)
         }
       ],
        [
@@ -522,7 +521,7 @@
           text: t("common.financialEligibility.expenses.rentCost")
         },
         {
-          text: "£" ~deductions.rent.amount ~ " " ~ t("common.intervalPeriod." ~ deductions.rent.time)
+          text: (deductions.rent | formatFinancialData)
         }
       ],
        [
@@ -530,7 +529,7 @@
           text: t("common.financialEligibility.expenses.maintenanceCost")
         },
         {
-          text: "£" ~deductions.maintenance.amount ~ " " ~ t("common.intervalPeriod." ~ deductions.maintenance.time)
+          text: (deductions.maintenance | formatFinancialData)
         }
       ],
        [
@@ -538,7 +537,7 @@
           text: t("common.financialEligibility.expenses.childCareCost")
         },
         {
-          text: "£" ~ deductions.childcare.amount ~ " " ~ t("common.intervalPeriod." ~ deductions.childcare.time)
+          text: (deductions.childcare | formatFinancialData)
         }
       ],
        [
@@ -546,7 +545,7 @@
           text: t("common.financialEligibility.expenses.legalAidCost")
         },
         {
-          text: "£" ~ deductions.criminalContributions.amount ~ " " ~ t("common.intervalPeriod." ~ deductions.criminalContributions.time)
+          text: (deductions.criminalContributions | formatFinancialData)
         }
       ]
     ]
@@ -564,7 +563,7 @@
           text: t("common.financialEligibility.expenses.partnerMortgageCost")
         },
         {
-          text: "£" ~ partnerDeductions.mortgage.amount ~ " " ~ t("common.intervalPeriod." ~ partnerDeductions.mortgage.time)
+          text: (partnerDeductions.mortgage | formatFinancialData)
         }
       ],
        [
@@ -572,7 +571,7 @@
           text: t("common.financialEligibility.expenses.partnerRentCost")
         },
         {
-          text: "£" ~ partnerDeductions.rent.amount ~ " " ~ t("common.intervalPeriod." ~ partnerDeductions.rent.time)
+          text: (partnerDeductions.rent | formatFinancialData)
         }
       ],
        [
@@ -580,7 +579,7 @@
           text: t("common.financialEligibility.expenses.partnerMaintenanceCost")
         },
         {
-          text: "£" ~ partnerDeductions.maintenance.amount ~ " " ~ t("common.intervalPeriod." ~ partnerDeductions.maintenance.time)
+          text: (partnerDeductions.maintenance | formatFinancialData)
         }
       ],
        [
@@ -588,7 +587,7 @@
           text: t("common.financialEligibility.expenses.partnerChildCareCost")
         },
         {
-          text: "£" ~ partnerDeductions.childcare.amount ~ " " ~ t("common.intervalPeriod." ~ partnerDeductions.childcare.time)
+          text: (partnerDeductions.childcare | formatFinancialData)
         }
       ],
        [
@@ -596,7 +595,7 @@
           text: t("common.financialEligibility.expenses.partnerLegalAidCost")
         },
         {
-          text: "£" ~ partnerDeductions.criminalContributions.amount ~ " " ~ t("common.intervalPeriod." ~ partnerDeductions.criminalContributions.time)
+          text: (partnerDeductions.criminalContributions | formatFinancialData)
         }
       ]
     ]
@@ -607,7 +606,7 @@
 {% endset -%}
 
 {{ govukTabs({
-    id: "about-you-tabs",
+    id: "financial-eligibility-tabs",
     items: [
       {
           label: "Details",

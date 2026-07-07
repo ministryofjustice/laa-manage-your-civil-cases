@@ -15,14 +15,8 @@ export async function handleFinancialEligibilityTab(req: Request, res: Response,
     // Client details already fetched by middleware, available at req.clientData
     const { clientData } = req;
 
-    // Set the financial eligibility data
-    let financialEligibility;
-    if (activeTab === 'financial_eligibility') {
-      const response = await apiService.getFinancialEligibility(req.axiosMiddleware, caseReference);
-      financialEligibility = response.data;
-    } else {
-      financialEligibility = null;
-    }
+    const response = await apiService.getFinancialEligibility(req.axiosMiddleware, caseReference);
+    let financialEligibility = response.data;
 
     res.render('case_details/index', {
       activeTab,

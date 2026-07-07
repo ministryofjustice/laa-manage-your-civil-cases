@@ -3,6 +3,7 @@ import path from 'node:path';
 import type { Application } from 'express';
 import { getLatestBuildFile } from './buildHelper.js';
 import { formatDate, formatLongFormDate, formatDateLongMonth, nunjucksT, capitaliseFirstLetter } from '#src/scripts/helpers/index.js';
+import { formatFinancialData } from '#src/scripts/helpers/dataTransformers.js';
 
 /**
  * Sets up Nunjucks as the template engine for the given Express application.
@@ -53,6 +54,7 @@ export const nunjucksSetup = (app: Application): void => {
   nunjucksEnv.addFilter('formatDateLongMonth', formatDateLongMonth);
   nunjucksEnv.addFilter('mojDate', formatLongFormDate);  // required for MOJ Timeline component, to set the style choice
   nunjucksEnv.addFilter('capitaliseFirstLetter', capitaliseFirstLetter);
+  nunjucksEnv.addFilter('formatFinancialData', formatFinancialData);
 
   // Add global variables
   nunjucksEnv.addGlobal('t', nunjucksT);

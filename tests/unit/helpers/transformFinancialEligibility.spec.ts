@@ -46,8 +46,8 @@ describe('transformFinancialEligilibilityItem', () => {
       dependants_old: 2
     });
 
-    expect(result.depedantsYoung).to.equal(1);
-    expect(result.depedantsOld).to.equal(2);
+    expect(result.dependantsYoung).to.equal(1);
+    expect(result.dependantsOld).to.equal(2);
   });
 
   it('should transform property set', () => {
