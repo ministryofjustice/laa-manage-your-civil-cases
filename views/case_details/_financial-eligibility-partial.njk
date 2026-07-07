@@ -5,252 +5,245 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
 
 {% set editAssessmentButtonHtml %}
-{{
-    govukButton({
-      text: "Edit assessment",
-      classes: "govuk-button--secondary",
-      href: "/cases/" + caseReference + "/financial-eligibility/change"
-    })
-  }}
+  {{
+      govukButton({
+        text: "Edit assessment",
+        classes: "govuk-button--secondary",
+        href: "/cases/" + caseReference + "/financial-eligibility/change"
+      })
+    }}
 {% endset %}
 
 {% set detailsHtml %}
 
-{% set under17Text = "Yes" if financialEligibility.isUnder17 else "No" %}
-{% set partnerText = "Yes" if financialEligibility.hasPartner else "No" %}
-{% set over60Text = "Yes" if financialEligibility.isOver60 else "No"%}
-{% set universalCredit = "Yes" if financialEligibility.specificBenefits.universalCredit else "No"%}
-{% set pensionCredit = "Yes" if financialEligibility.specificBenefits.pensionCredit else "No"%}
-{% set jobSeekers = "Yes" if financialEligibility.specificBenefits.jobSeekers else "No"%}
-{% set employmentSupport = "Yes" if financialEligibility.specificBenefits.employmentSupport else "No"%}
-{% set incomeSupport = "Yes" if financialEligibility.specificBenefits.incomeSupport else "No"%}
+  {% set under17Text = "Yes" if financialEligibility.isUnder17 else "No" %}
+  {% set partnerText = "Yes" if financialEligibility.hasPartner else "No" %}
+  {% set over60Text = "Yes" if financialEligibility.isOver60 else "No"%}
+  {% set universalCredit = "Yes" if financialEligibility.specificBenefits.universalCredit else "No"%}
+  {% set pensionCredit = "Yes" if financialEligibility.specificBenefits.pensionCredit else "No"%}
+  {% set jobSeekers = "Yes" if financialEligibility.specificBenefits.jobSeekers else "No"%}
+  {% set employmentSupport = "Yes" if financialEligibility.specificBenefits.employmentSupport else "No"%}
+  {% set incomeSupport = "Yes" if financialEligibility.specificBenefits.incomeSupport else "No"%}
 
-{% set rows = [
-  [
-    {
-      text: t("common.financialEligibility.details.age17OrUnder")
-    }, {
-      text: under17Text
-    }
-  ]
-] %}
-{% if not financialEligibility.isUnder17 %}
-  {% set rows = rows.concat([
+  {% set rows = [
     [
       {
-        text: t("common.financialEligibility.details.hasPartner")
+        text: t("common.financialEligibility.details.age17OrUnder")
       }, {
-        text: partnerText
-      }
-    ],
-    [
-      {
-        text: t("common.financialEligibility.details.age60OrOver")
-      }, {
-        text: over60Text
+        text: under17Text
       }
     ]
-  ]) %}
-{% endif %}
-
-{{ govukTable({
-    caption: "About you",
-    captionClasses: "govuk-table__caption--m",
-    firstCellIsHeader: true,
-    classes: "eligibility-table",
-    rows: rows
-  }) }}
-
-{{ govukTable({
-    caption: "Benefits",
-    captionClasses: "govuk-table__caption--m",
-    firstCellIsHeader: true,
-    classes: "eligibility-table",
-    rows: [
+  ] %}
+  {% if not financialEligibility.isUnder17 %}
+    {% set rows = rows.concat([
       [
         {
-          text: t("common.financialEligibility.details.universalCredit")
-        },
-        {
-          text: universalCredit
+          text: t("common.financialEligibility.details.hasPartner")
+        }, {
+          text: partnerText
         }
       ],
       [
         {
-          text: t("common.financialEligibility.details.incomeSupport")
-        },
-        {
-          text: incomeSupport
-        }
-      ],
-      [
-        {
-          text: t("common.financialEligibility.details.incomeBasedJSA")
-        },
-        {
-          text: jobSeekers
-        }
-      ],
-      [
-        {
-          text: t("common.financialEligibility.details.pensionCredit")
-        },
-        {
-          text: pensionCredit
-        }
-      ],
-      [
-        {
-          text: t("common.financialEligibility.details.employmentSupport")
-        },
-        {
-          text: employmentSupport
+          text: t("common.financialEligibility.details.age60OrOver")
+        }, {
+          text: over60Text
         }
       ]
-    ]
-  }) }}
+    ]) %}
+  {% endif %}
 
-<div>{{ editAssessmentButtonHtml | safe }}</div>
-{% endset -%}
+  {{ govukTable({
+      caption: "About you",
+      captionClasses: "govuk-table__caption--m",
+      firstCellIsHeader: true,
+      classes: "eligibility-table",
+      rows: rows
+    }) }}
 
-{% set financesHtml %}
-
-<h2 class="govuk-heading-m">Properties</h2>
-{% if financialEligibility.propertySet and financialEligibility.propertySet.length %}
-
-  {% for property in financialEligibility.propertySet %}
-
-  {# Loop function will only work up to 22nd property - it is assumed if a client has 22 properties they are likely ineligible for support #}
-    <h3 class="govuk-heading-s">
-      {% if loop.index == 1 %}
-        1st property
-      {% elseif loop.index == 2 %}
-        2nd property
-      {% elseif loop.index == 3 %}
-        3rd property
-      {% else %}
-        {{ loop.index }}th property
-      {% endif %}
-    </h3>
-
-    {{ govukTable({
+  {{ govukTable({
+      caption: "Benefits",
+      captionClasses: "govuk-table__caption--m",
       firstCellIsHeader: true,
       classes: "eligibility-table",
       rows: [
         [
-          { text: t("common.financialEligibility.finances.propertyValue") },
-          { text: (property.value | formatFinancialData) }
+          {
+            text: t("common.financialEligibility.details.universalCredit")
+          },
+          {
+            text: universalCredit
+          }
         ],
         [
-          { text: t("common.financialEligibility.finances.mortgageLeft") },
-          { text: (property.mortgageLeft | formatFinancialData) }
+          {
+            text: t("common.financialEligibility.details.incomeSupport")
+          },
+          {
+            text: incomeSupport
+          }
         ],
         [
-          { text: t("common.financialEligibility.finances.mainProperty") },
-          { text: "Yes" if property.main else "No" }
+          {
+            text: t("common.financialEligibility.details.incomeBasedJSA")
+          },
+          {
+            text: jobSeekers
+          }
         ],
         [
-          { text: t("common.financialEligibility.finances.propertyShare") },
-          { text: property.share + "%" }
+          {
+            text: t("common.financialEligibility.details.pensionCredit")
+          },
+          {
+            text: pensionCredit
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.details.employmentSupport")
+          },
+          {
+            text: employmentSupport
+          }
         ]
       ]
     }) }}
 
-  {% endfor %}
+  <div>{{ editAssessmentButtonHtml | safe }}</div>
+{% endset -%}
 
-{% else %}
+{% set financesHtml %}
 
-  <p class="govuk-body">No property data</p>
+  <h2 class="govuk-heading-m">Properties</h2>
+  {% if financialEligibility.propertySet and financialEligibility.propertySet.length %}
+    {% for property in financialEligibility.propertySet %}
+      {# Loop function will only work up to 22nd property - it is assumed if a client has 22 properties they are likely ineligible for support #}
+      <h3 class="govuk-heading-s">
+        {% if loop.index == 1 %}
+          1st property
+        {% elseif loop.index == 2 %}
+          2nd property
+        {% elseif loop.index == 3 %}
+          3rd property
+        {% else %}
+          {{ loop.index }}th property
+        {% endif %}
+      </h3>
 
-{% endif %}
+      {{ govukTable({
+        firstCellIsHeader: true,
+        classes: "eligibility-table",
+        rows: [
+          [
+            { text: t("common.financialEligibility.finances.propertyValue") },
+            { text: (property.value | formatFinancialData) }
+          ],
+          [
+            { text: t("common.financialEligibility.finances.mortgageLeft") },
+            { text: (property.mortgageLeft | formatFinancialData) }
+          ],
+          [
+            { text: t("common.financialEligibility.finances.mainProperty") },
+            { text: "Yes" if property.main else "No" }
+          ],
+          [
+            { text: t("common.financialEligibility.finances.propertyShare") },
+            { text: property.share + "%" }
+          ]
+        ]
+      }) }}
+    {% endfor %}
+  {% else %}
+    <p class="govuk-body">No property data</p>
+  {% endif %}
 
-<h2 class="govuk-heading-m">Your savings</h2>
-
-{% set savings = financialEligibility.clientData.savings %}
-
-{{ govukTable({
-    firstCellIsHeader: true,
-    classes: "eligibility-table",
-    rows: [
-      [
-        {
-          text: t("common.financialEligibility.finances.savingsBalance")
-        },
-        {
-          text: (savings.bankBalance | formatFinancialData)
-        }
-      ],
-      [
-        {
-          text: t("common.financialEligibility.finances.investmentBalance")
-        },
-        {
-          text: (savings.investmentBalance | formatFinancialData)
-        }
-      ],
-      [
-        {
-          text: t("common.financialEligibility.finances.assetBalance")
-        },
-        {
-          text: (savings.assetBalance | formatFinancialData)
-        }
-      ],
-      [
-        {
-          text: t("common.financialEligibility.finances.creditBalance")
-        },
-        {
-          text: (savings.creditBalance | formatFinancialData)
-        }
-      ]
-    ]
-  }) }}
-
-{% if financialEligibility.hasPartner %}
-  <h2 class="govuk-heading-m">Your partners savings</h2>
-
-  {% set partnerSavings = financialEligibility.partnerData.partnerSavings %}
+  <h2 class="govuk-heading-m">Your savings</h2>
+  {% set savings = financialEligibility.clientData.savings %}
 
   {{ govukTable({
-    firstCellIsHeader: true,
-    classes: "eligibility-table",
-    rows: [
-      [
-        {
-          text: t("common.financialEligibility.finances.partnerSavingsBalance")
-        },
-        {
-          text: (partnerSavings.bankBalance | formatFinancialData)
-        }
-      ],
-      [
-        {
-          text: t("common.financialEligibility.finances.partnerInvestmentBalance")
-        },
-        {
-          text: (partnerSavings.investmentBalance | formatFinancialData)
-        }
-      ],
-      [
-        {
-          text: t("common.financialEligibility.finances.partnerAssetBalance")
-        },
-        {
-          text:(partnerSavings.assetBalance | formatFinancialData)
-        }
-      ],
-      [
-        {
-          text: t("common.financialEligibility.finances.partnerCreditBalance")
-        },
-        {
-          text: (partnerSavings.creditBalance | formatFinancialData)
-        }
+      firstCellIsHeader: true,
+      classes: "eligibility-table",
+      rows: [
+        [
+          {
+            text: t("common.financialEligibility.finances.savingsBalance")
+          },
+          {
+            text: (savings.bankBalance | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.finances.investmentBalance")
+          },
+          {
+            text: (savings.investmentBalance | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.finances.assetBalance")
+          },
+          {
+            text: (savings.assetBalance | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.finances.creditBalance")
+          },
+          {
+            text: (savings.creditBalance | formatFinancialData)
+          }
+        ]
       ]
-    ]
-  }) }}
-{% endif %}
+    }) }}
+
+  {% if financialEligibility.hasPartner %}
+    <h2 class="govuk-heading-m">Your partners savings</h2>
+
+    {% set partnerSavings = financialEligibility.partnerData.partnerSavings %}
+
+    {{ govukTable({
+     firstCellIsHeader: true,
+      classes: "eligibility-table",
+      rows: [
+        [
+          {
+            text: t("common.financialEligibility.finances.partnerSavingsBalance")
+          },
+          {
+            text: (partnerSavings.bankBalance | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.finances.partnerInvestmentBalance")
+          },
+          {
+            text: (partnerSavings.investmentBalance | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.finances.partnerAssetBalance")
+          },
+          {
+            text:(partnerSavings.assetBalance | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.finances.partnerCreditBalance")
+          },
+          {
+            text: (partnerSavings.creditBalance | formatFinancialData)
+          }
+        ]
+      ]
+    }) }}
+  {% endif %}
 
   <h2 class="govuk-heading-m">Disregards</h2>
 
@@ -266,214 +259,214 @@
     </tbody>
   </table>
 
-<div>{{ editAssessmentButtonHtml | safe }}</div>
+  <div>{{ editAssessmentButtonHtml | safe }}</div>
 {% endset -%}
 
 {% set income = financialEligibility.clientData.income %}
 {% set deductions = financialEligibility.clientData.deductions %}
 
 {% set incomeHtml %}
-{{ govukTable({
-    caption: "Your income",
-    captionClasses: "govuk-table__caption--m",
-    firstCellIsHeader: true,
-    classes: "eligibility-table",
-    rows: [
-      [
-        {
-          text: t("common.financialEligibility.income.selfEmployed")
-        },
-        {
-          text: "Yes" if income.selfEmployed else "No"
-        }
-      ],
-      [
-        {
-          text: t("common.financialEligibility.income.earnings")
-        },
-        {
-          text: (income.earnings | formatFinancialData)
-        }
-      ],
-      [
-        {
-          text: t("common.financialEligibility.income.tax")
-        },
-        {
-          text: (deductions.incomeTax | formatFinancialData)
-        }
-      ],
-      [
-        {
-          text: t("common.financialEligibility.income.nationalInsurance")
-        },
-        {
-          text: (deductions.nationalInsurance | formatFinancialData)
-        }
-      ],
-      [
-        {
-          text:t("common.financialEligibility.income.selfEmployedDrawings")
-        },
-        {
-          text: (income.selfEmploymentDrawings | formatFinancialData)
-        }
-      ],
-      [
-        {
-          text: t("common.financialEligibility.income.benefits")
-        },
-        {
-          text: (income.benefits | formatFinancialData)
-        }
-      ],
-      [
-        {
-          text: t("common.financialEligibility.income.taxCredits")
-        },
-        {
-          text: (income.taxCredits | formatFinancialData)
-        }
-      ],
-        [
-        {
-          text: t("common.financialEligibility.income.childBenefit")
-        },
-        {
-          text: (income.childBenefit | formatFinancialData)
-        }
-      ],
-         [
-        {
-          text: t("common.financialEligibility.income.maintenanceReceived")
-        },
-        {
-          text: (income.maintenanceReceived | formatFinancialData)
-        }
-      ],
-         [
-        {
-          text: t("common.financialEligibility.income.pension")
-        },
-        {
-          text: (income.pension | formatFinancialData)
-        }
-      ],
-      [
-        {
-          text: t("common.financialEligibility.income.otherIncome")
-        },
-        {
-          text: (income.otherIncome | formatFinancialData)
-        }
-      ]
-    ]
-  }) }}
-
-{% set partnerIncome = financialEligibility.partnerData.partnerIncome %}
-{% set partnerDeductions = financialEligibility.partnerData.partnerDeductions %}
-
-{% if financialEligibility.hasPartner %}
   {{ govukTable({
-    caption: "Partner's income",
-    captionClasses: "govuk-table__caption--m",
-    classes: "eligibility-table",
-    firstCellIsHeader: true,
-    rows: [
-      [
-        {
-          text: t("common.financialEligibility.income.partnerSelfEmployed")
-        },
-        {
-          text: "Yes" if partnerIncome.selfEmployed else "No"
-        }
-      ],
-      [
-        {
-          text: t("common.financialEligibility.income.partnerEarnings")
-        },
-        {
-          text: (partnerIncome.earnings | formatFinancialData)
-        }
-      ],
-      [
-        {
-          text: t("common.financialEligibility.income.partnerTax")
-        },
-        {
-          text: (partnerDeductions.incomeTax | formatFinancialData)
-        }
-      ],
-      [
-        {
-          text: t("common.financialEligibility.income.partnerNationalInsurance")
-        },
-        {
-          text: (partnerDeductions.nationalInsurance | formatFinancialData)
-        }
-      ],
-      [
-        {
-          text: t("common.financialEligibility.income.selfEmployedDrawings")
-        },
-        {
-          text: (partnerIncome.selfEmploymentDrawings | formatFinancialData)
-        }
-      ],
-      [
-        {
-          text: t("common.financialEligibility.income.benefits")
-        },
-        {
-          text: (partnerIncome.benefits | formatFinancialData)
-        }
-      ],
-      [
-        {
-          text: t("common.financialEligibility.income.taxCredits")
-        },
-        {
-          text: (partnerIncome.taxCredits | formatFinancialData)
-        }
-      ],
+      caption: "Your income",
+      captionClasses: "govuk-table__caption--m",
+      firstCellIsHeader: true,
+      classes: "eligibility-table",
+      rows: [
         [
-        {
-          text: t("common.financialEligibility.income.childBenefit")
-        },
-        {
-          text: (partnerIncome.childBenefit | formatFinancialData)
-        }
-      ],
-         [
-        {
-          text: t("common.financialEligibility.income.maintenanceReceived")
-        },
-        {
-          text: (partnerIncome.maintenanceReceived | formatFinancialData)
-        }
-      ],
-         [
-        {
-          text: t("common.financialEligibility.income.pension")
-        },
-        {
-          text: (partnerIncome.pension | formatFinancialData)
-        }
-      ],
-      [
-        {
-          text: t("common.financialEligibility.income.otherIncome")
-        },
-        {
-          text: (partnerIncome.otherIncome | formatFinancialData)
-        }
+          {
+            text: t("common.financialEligibility.income.selfEmployed")
+          },
+          {
+            text: "Yes" if income.selfEmployed else "No"
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.income.earnings")
+          },
+          {
+            text: (income.earnings | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.income.tax")
+          },
+          {
+            text: (deductions.incomeTax | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.income.nationalInsurance")
+          },
+          {
+            text: (deductions.nationalInsurance | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text:t("common.financialEligibility.income.selfEmployedDrawings")
+          },
+          {
+            text: (income.selfEmploymentDrawings | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.income.benefits")
+          },
+          {
+            text: (income.benefits | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.income.taxCredits")
+          },
+          {
+            text: (income.taxCredits | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.income.childBenefit")
+          },
+          {
+            text: (income.childBenefit | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.income.maintenanceReceived")
+          },
+          {
+            text: (income.maintenanceReceived | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.income.pension")
+          },
+          {
+            text: (income.pension | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.income.otherIncome")
+          },
+          {
+            text: (income.otherIncome | formatFinancialData)
+          }
+        ]
       ]
-    ]
-  }) }}
+    }) }}
 
-{% endif %}
+  {% set partnerIncome = financialEligibility.partnerData.partnerIncome %}
+  {% set partnerDeductions = financialEligibility.partnerData.partnerDeductions %}
 
-{{ govukTable({
+  {% if financialEligibility.hasPartner %}
+    {{ govukTable({
+      caption: "Partner's income",
+      captionClasses: "govuk-table__caption--m",
+      classes: "eligibility-table",
+      firstCellIsHeader: true,
+      rows: [
+        [
+          {
+            text: t("common.financialEligibility.income.partnerSelfEmployed")
+          },
+          {
+            text: "Yes" if partnerIncome.selfEmployed else "No"
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.income.partnerEarnings")
+          },
+          {
+            text: (partnerIncome.earnings | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.income.partnerTax")
+          },
+          {
+            text: (partnerDeductions.incomeTax | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.income.partnerNationalInsurance")
+          },
+          {
+            text: (partnerDeductions.nationalInsurance | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.income.selfEmployedDrawings")
+          },
+          {
+            text: (partnerIncome.selfEmploymentDrawings | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.income.benefits")
+          },
+          {
+            text: (partnerIncome.benefits | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.income.taxCredits")
+          },
+          {
+            text: (partnerIncome.taxCredits | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.income.childBenefit")
+          },
+          {
+            text: (partnerIncome.childBenefit | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.income.maintenanceReceived")
+          },
+          {
+            text: (partnerIncome.maintenanceReceived | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.income.pension")
+          },
+          {
+            text: (partnerIncome.pension | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.income.otherIncome")
+          },
+          {
+            text: (partnerIncome.otherIncome | formatFinancialData)
+          }
+        ]
+      ]
+    }) }}
+
+  {% endif %}
+
+  {{ govukTable({
     caption: "Dependants",
     classes: "eligibility-table",
     captionClasses: "govuk-table__caption--m",
@@ -498,11 +491,11 @@
     ]
   }) }}
 
-<div>{{ editAssessmentButtonHtml | safe }}</div>
+  <div>{{ editAssessmentButtonHtml | safe }}</div>
 {% endset -%}
 
 {% set expensesHtml %}
-{{ govukTable({
+  {{ govukTable({
     caption: "Your expenses",
     classes: "eligibility-table",
     captionClasses: "govuk-table__caption--m",
@@ -516,7 +509,7 @@
           text: (deductions.mortgage | formatFinancialData)
         }
       ],
-       [
+      [
         {
           text: t("common.financialEligibility.expenses.rentCost")
         },
@@ -524,7 +517,7 @@
           text: (deductions.rent | formatFinancialData)
         }
       ],
-       [
+      [
         {
           text: t("common.financialEligibility.expenses.maintenanceCost")
         },
@@ -532,7 +525,7 @@
           text: (deductions.maintenance | formatFinancialData)
         }
       ],
-       [
+      [
         {
           text: t("common.financialEligibility.expenses.childCareCost")
         },
@@ -540,7 +533,7 @@
           text: (deductions.childcare | formatFinancialData)
         }
       ],
-       [
+      [
         {
           text: t("common.financialEligibility.expenses.legalAidCost")
         },
@@ -551,90 +544,89 @@
     ]
   }) }}
 
-{% if financialEligibility.hasPartner %}
-  {{ govukTable({
-    caption: "Your partner's expenses",
-    classes: "eligibility-table",
-    captionClasses: "govuk-table__caption--m",
-    firstCellIsHeader: true,
-    rows: [
-      [
-        {
-          text: t("common.financialEligibility.expenses.partnerMortgageCost")
-        },
-        {
-          text: (partnerDeductions.mortgage | formatFinancialData)
-        }
-      ],
-       [
-        {
-          text: t("common.financialEligibility.expenses.partnerRentCost")
-        },
-        {
-          text: (partnerDeductions.rent | formatFinancialData)
-        }
-      ],
-       [
-        {
-          text: t("common.financialEligibility.expenses.partnerMaintenanceCost")
-        },
-        {
-          text: (partnerDeductions.maintenance | formatFinancialData)
-        }
-      ],
-       [
-        {
-          text: t("common.financialEligibility.expenses.partnerChildCareCost")
-        },
-        {
-          text: (partnerDeductions.childcare | formatFinancialData)
-        }
-      ],
-       [
-        {
-          text: t("common.financialEligibility.expenses.partnerLegalAidCost")
-        },
-        {
-          text: (partnerDeductions.criminalContributions | formatFinancialData)
-        }
+  {% if financialEligibility.hasPartner %}
+    {{ govukTable({
+      caption: "Your partner's expenses",
+      classes: "eligibility-table",
+      captionClasses: "govuk-table__caption--m",
+      firstCellIsHeader: true,
+      rows: [
+        [
+          {
+            text: t("common.financialEligibility.expenses.partnerMortgageCost")
+          },
+          {
+            text: (partnerDeductions.mortgage | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.expenses.partnerRentCost")
+          },
+          {
+            text: (partnerDeductions.rent | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.expenses.partnerMaintenanceCost")
+          },
+          {
+            text: (partnerDeductions.maintenance | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.expenses.partnerChildCareCost")
+          },
+          {
+            text: (partnerDeductions.childcare | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.expenses.partnerLegalAidCost")
+          },
+          {
+            text: (partnerDeductions.criminalContributions | formatFinancialData)
+          }
+        ]
       ]
-    ]
-  }) }}
-
-{% endif %}
-<div>{{ editAssessmentButtonHtml | safe }}</div>
+    }) }}
+  {% endif %}
+  <div>{{ editAssessmentButtonHtml | safe }}</div>
 {% endset -%}
 
 {{ govukTabs({
     id: "financial-eligibility-tabs",
     items: [
       {
-          label: "Details",
-          id: "details",
-          panel: {
-              html: detailsHtml
-          }
+        label: "Details",
+        id: "details",
+        panel: {
+            html: detailsHtml
+        }
       },
       {
-          label: "Finances",
-          id: "finances",
-          panel: {
-              html: financesHtml
-          }
+        label: "Finances",
+        id: "finances",
+        panel: {
+            html: financesHtml
+        }
       },
       {
-          label: "Income",
-          id: "income",
-          panel: {
-              html: incomeHtml
-          }
+        label: "Income",
+        id: "income",
+        panel: {
+            html: incomeHtml
+        }
       },
       {
-          label: "Expenses",
-          id: "expenses",
-          panel: {
-              html: expensesHtml
-          }
+        label: "Expenses",
+        id: "expenses",
+        panel: {
+             html: expensesHtml
+        }
       }
     ]
 }) }}

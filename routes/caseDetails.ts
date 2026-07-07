@@ -19,7 +19,7 @@ router.get('/:caseReference/client-details', fetchClientDetails, (req: Request, 
 });
 
 /* GET case details details for a specific case. */
-router.get('/:caseReference/case-details', fetchClientDetails, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+router.get('/:caseReference/case-details', fetchClientDetails, (req: Request, res: Response, next: NextFunction): void => {
   handleCaseDetailsTab(req, res, next, 'case_details');
 });
 
