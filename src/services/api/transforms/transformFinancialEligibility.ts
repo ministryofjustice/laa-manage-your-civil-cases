@@ -6,7 +6,7 @@ import { isRecord, t } from '#src/scripts/helpers/index.js';
  * @param {unknown} item Raw financial eligibility item
  * @returns {FinancialEligibilityData} Transformed financial eligibility item
  */
-export function transformFinancialEligilibilityItem(item: unknown): FinancialEligibilityData {
+export function transformFinancialEligibilityItem(item: unknown): FinancialEligibilityData {
   if (!isRecord(item)) {
     throw new Error('Invalid financial eligibility item: expected object');
   }

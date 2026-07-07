@@ -18,4 +18,5 @@ export * from './editClientSupportNeedsController.js';
 export * from './removeClientSupportNeeds.js';
 export * from './editRiskOfAbuseController.js';
 export * from './editCategoryOfLawController.js';
+export * from './financialEligibilityController.js';
 

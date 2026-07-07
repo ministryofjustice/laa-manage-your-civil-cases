@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { transformFinancialEligilibilityItem } from '#src/services/api/transforms/transformFinancialEligibility.js';
+import { transformFinancialEligibilityItem} from '#src/services/api/transforms/transformFinancialEligibility.js';
 import en from '../../../locales/en.json' with { type: 'json' };
 import { t } from '#src/scripts/helpers/index.js';
 import { i18next } from '#src/scripts/helpers/i18nLoader.js';
@@ -22,14 +22,14 @@ describe('transformFinancialEligilibilityItem', () => {
 
   it('should throw when item is not an object', () => {
     expect(() =>
-      transformFinancialEligilibilityItem(null)
+      transformFinancialEligibilityItem(null)
     ).to.throw(
       'Invalid financial eligibility item: expected object'
     );
   });
 
   it('should transform details flags', () => {
-    const result = transformFinancialEligilibilityItem({
+    const result = transformFinancialEligibilityItem({
       has_partner: true,
       is_you_under_18: true,
       is_you_or_your_partner_over_60: false
@@ -41,7 +41,7 @@ describe('transformFinancialEligilibilityItem', () => {
   });
 
   it('should transform dependant values', () => {
-    const result = transformFinancialEligilibilityItem({
+    const result = transformFinancialEligibilityItem({
       dependants_young: 1,
       dependants_old: 2
     });
@@ -51,7 +51,7 @@ describe('transformFinancialEligilibilityItem', () => {
   });
 
   it('should transform property set', () => {
-    const result = transformFinancialEligilibilityItem({
+    const result = transformFinancialEligibilityItem({
       property_set: [
         {
           value: 100000,
@@ -75,7 +75,7 @@ describe('transformFinancialEligilibilityItem', () => {
   });
 
   it('should convert savings from pence to pounds', () => {
-    const result = transformFinancialEligilibilityItem({
+    const result = transformFinancialEligibilityItem({
       you: {
         savings: {
           bank_balance: 20000,
@@ -97,7 +97,7 @@ describe('transformFinancialEligilibilityItem', () => {
   });
 
   it('should transform benefits flags', () => {
-    const result = transformFinancialEligilibilityItem({
+    const result = transformFinancialEligibilityItem({
       specific_benefits: {
         pension_credit: true,
         job_seekers_allowance: false,
@@ -117,7 +117,7 @@ describe('transformFinancialEligilibilityItem', () => {
   });
 
   it('should transform disregards', () => {
-    const result = transformFinancialEligilibilityItem({
+    const result = transformFinancialEligibilityItem({
       disregards: {
         cost_living: true,
         vaccine_damage: false,
@@ -132,7 +132,7 @@ describe('transformFinancialEligilibilityItem', () => {
   });
 
   it('should transform income values', () => {
-    const result = transformFinancialEligilibilityItem({
+    const result = transformFinancialEligibilityItem({
       you: {
         income: {
           earnings: {
@@ -222,13 +222,13 @@ describe('transformFinancialEligilibilityItem', () => {
   });
 
   it('should return empty arrays when property_set is missing', () => {
-    const result = transformFinancialEligilibilityItem({});
+    const result = transformFinancialEligibilityItem({});
 
     expect(result.propertySet).to.deep.equal([]);
   });
 
   it('should transform partner data', () => {
-    const result = transformFinancialEligilibilityItem({
+    const result = transformFinancialEligibilityItem({
       has_partner: true,
       partner: {
         savings: {
@@ -251,7 +251,7 @@ describe('transformFinancialEligilibilityItem', () => {
   });
 
   it('should handle missing client data', () => {
-    const result = transformFinancialEligilibilityItem({});
+    const result = transformFinancialEligibilityItem({});
 
     expect(result.clientData.income).to.deep.equal({});
     expect(result.clientData.savings).to.deep.equal({});
@@ -260,7 +260,7 @@ describe('transformFinancialEligilibilityItem', () => {
 
 
   it('should handle missing partner data', () => {
-    const result = transformFinancialEligilibilityItem({
+    const result = transformFinancialEligibilityItem({
       has_partner: true
     });
 
@@ -271,7 +271,7 @@ describe('transformFinancialEligilibilityItem', () => {
 
 
   it('should return an empty disregards array when none are selected', () => {
-    const result = transformFinancialEligilibilityItem({
+    const result = transformFinancialEligibilityItem({
       disregards: {
         cost_living: false,
         vaccine_damage: false
@@ -283,7 +283,7 @@ describe('transformFinancialEligilibilityItem', () => {
 
 
   it('should transform multiple properties', () => {
-    const result = transformFinancialEligilibilityItem({
+    const result = transformFinancialEligibilityItem({
       property_set: [
         {
           value: 100000,
@@ -307,7 +307,7 @@ describe('transformFinancialEligilibilityItem', () => {
 
 
   it('should transform deductions correctly', () => {
-    const result = transformFinancialEligilibilityItem({
+    const result = transformFinancialEligibilityItem({
       you: {
         deductions: {
           income_tax: {
@@ -348,7 +348,7 @@ describe('transformFinancialEligilibilityItem', () => {
 
 
   it('should default missing interval values to zero', () => {
-    const result = transformFinancialEligilibilityItem({
+    const result = transformFinancialEligibilityItem({
       you: {
         income: {
           earnings: {
@@ -366,7 +366,7 @@ describe('transformFinancialEligilibilityItem', () => {
   });
 
   it('should default missing savings fields to zero', () => {
-    const result = transformFinancialEligilibilityItem({
+    const result = transformFinancialEligibilityItem({
       you: {
         savings: {
           bank_balance: 10000
