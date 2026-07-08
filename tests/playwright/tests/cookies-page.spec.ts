@@ -146,3 +146,20 @@ test('nav links are hidden on cookies page when logged in', async ({ page }) => 
   await expect(page.getByRole('link', { name: 'Your cases' })).toHaveCount(0);
   await expect(page.getByRole('link', { name: 'Search' })).toHaveCount(0);
 });
+
+test('cookies page can be accessed after signing out', async ({ page }) => {
+  await setupAuth(page);
+  await page.goto('/');
+
+  // Sign out
+  await page.getByRole('link', { name: 'Sign out' }).click();
+
+  // Navigate to cookies page
+  await page.goto('/cookies');
+
+  // Verify user is on the cookies page
+  await expect(page).toHaveURL(/cookies/);
+
+  // Verify the cookies page heading is displayed
+  await expect(page.getByRole('heading', { level: 1, name: t('pages.cookies.heading') })).toBeVisible();
+});
