@@ -85,24 +85,24 @@
     </div>
   </header>
   {% block serviceNavigation %}
-  {% if isAuthenticated %}
-    {{ govukServiceNavigation({
-    serviceName: config.SERVICE_NAME,
-    serviceUrl: "/cases/new",
-    navigation: [
-      {
-        href: "/cases/new",
-        text: t('navigation.mainNav.yourCases'),
-        active: not request or not request.originalUrl or not request.originalUrl.startsWith('/search')
-      },
-      {
-        href: "/search",
-        text: t('navigation.mainNav.search'),
-        active: request and request.originalUrl and request.originalUrl.startsWith('/search')
-      }
-      ]
-    }) }}
-  {% endif %}
+    {% if isAuthenticated %}
+      {{ govukServiceNavigation({
+      serviceName: config.SERVICE_NAME,
+      serviceUrl: "/cases/new",
+      navigation: [
+        {
+          href: "/cases/new",
+          text: t('navigation.mainNav.yourCases'),
+          active: not request or not request.originalUrl or not request.originalUrl.startsWith('/search')
+        },
+        {
+          href: "/search",
+          text: t('navigation.mainNav.search'),
+          active: request and request.originalUrl and request.originalUrl.startsWith('/search')
+        }
+        ]
+      }) }}
+    {% endif %}
   {% endblock %}
 {% endblock %}
 
