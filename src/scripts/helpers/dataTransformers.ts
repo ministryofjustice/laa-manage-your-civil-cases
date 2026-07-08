@@ -813,10 +813,9 @@ export async function buildCategoryItems({
 }
 
 /**
- * Format either:
- * - a monetary value: 1000 -> £1000
- * - a MoneyPerInterval object: { amount: 1000, time: 'monthly' }
- *   -> £1000 per month
+ * format financial data to include £ and interval period (per month, per week etc)
+ * @param {unknown} value - value to be formatted
+ * @returns { string } returns a string with the formatted value 
  */
 export function formatFinancialData(value: unknown): string {
   if (value === null || value === undefined) {
