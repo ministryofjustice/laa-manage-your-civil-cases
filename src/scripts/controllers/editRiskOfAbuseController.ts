@@ -1,9 +1,9 @@
 import type { Request, Response, NextFunction } from 'express';
 import 'csrf-sync'; // Import to ensure CSRF types are loaded
-import {
+import { 
   handleGetEditForm, 
-  handlePostEditForm, 
-  extractFormFields 
+  handlePostEditForm,
+  extractFormFields
 } from '#src/scripts/helpers/index.js';
 
 /**
