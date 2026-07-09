@@ -17,6 +17,8 @@
 {% set detailsHtml %}
 
   {% set under17Text = "Yes" if financialEligibility.isUnder17 else "No" %}
+  {% set under18RegularPayment = "Yes" if financialEligibility.under18RegularPayment else "No" %}
+  {% set under18HasValuables = "Yes" if financialEligibility.under18HasValuables else "No" %}
   {% set partnerText = "Yes" if financialEligibility.hasPartner else "No" %}
   {% set over60Text = "Yes" if financialEligibility.isOver60 else "No"%}
   {% set universalCredit = "Yes" if financialEligibility.specificBenefits.universalCredit else "No"%}
@@ -32,26 +34,36 @@
       }, {
         text: under17Text
       }
+    ],
+    [
+      {
+        text: t("common.financialEligibility.details.under18RegularPayment")
+      }, {
+        text: under18RegularPayment
+      }
+    ],
+    [
+      {
+        text: t("common.financialEligibility.details.under18HasValuables")
+      }, {
+        text: under18HasValuables
+      }
+    ],
+    [
+      {
+        text: t("common.financialEligibility.details.hasPartner")
+      }, {
+        text: partnerText
+      }
+    ],
+    [
+      {
+        text: t("common.financialEligibility.details.age60OrOver")
+      }, {
+        text: over60Text
+      }
     ]
   ] %}
-  {% if not financialEligibility.isUnder17 %}
-    {% set rows = rows.concat([
-      [
-        {
-          text: t("common.financialEligibility.details.hasPartner")
-        }, {
-          text: partnerText
-        }
-      ],
-      [
-        {
-          text: t("common.financialEligibility.details.age60OrOver")
-        }, {
-          text: over60Text
-        }
-      ]
-    ]) %}
-  {% endif %}
 
   {{ govukTable({
       caption: "About you",
@@ -150,6 +162,10 @@
           [
             { text: t("common.financialEligibility.finances.propertyShare") },
             { text: property.share + "%" }
+          ],
+          [
+            { text: t("common.financialEligibility.finances.disputedProperty")}, 
+            { text: "Yes" if property.disputed else "No" }
           ]
         ]
       }) }}
@@ -245,19 +261,67 @@
     }) }}
   {% endif %}
 
-  <h2 class="govuk-heading-m">Disregards</h2>
+  {% if financialEligibility.disputedSavings %}
+    <h2 class="govuk-heading-m">Your disputed savings</h2>
 
-  <table class="govuk-table">
-    <tbody class="govuk-table__body">
-      {% for disregard in financialEligibility.disregards %}
-        <tr class="govuk-table__row">
-          <td class="govuk-table__cell">
-            {{ disregard }}
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+    {% set disputedSavings = financialEligibility.disputedSavings %}
+
+    {{ govukTable({
+     firstCellIsHeader: true,
+      classes: "eligibility-table",
+      rows: [
+        [
+          {
+            text: t("common.financialEligibility.finances.savingsBalance")
+          },
+          {
+            text: (disputedSavings.bankBalance | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.finances.investmentBalance")
+          },
+          {
+            text: (disputedSavings.investmentBalance | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.finances.assetBalance")
+          },
+          {
+            text:(disputedSavings.assetBalance | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.finances.creditBalance")
+          },
+          {
+            text: (disputedSavings.creditBalance | formatFinancialData)
+          }
+        ]
+      ]
+    }) }}
+  {% endif %}
+
+  <h2 class="govuk-heading-m">Disregards</h2>
+  {% if financialEligibility.disregards and financialEligibility.disregards.length > 0 %}
+    <table class="govuk-table">
+      <tbody class="govuk-table__body">
+        {% for disregard in financialEligibility.disregards %}
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell">
+              {{ disregard }}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p> {{t("common.notProvided")}} </p>
+  {% endif %}
 
   <div>{{ editAssessmentButtonHtml | safe }}</div>
 {% endset -%}
@@ -431,14 +495,6 @@
         ],
         [
           {
-            text: t("common.financialEligibility.income.childBenefit")
-          },
-          {
-            text: (partnerIncome.childBenefit | formatFinancialData)
-          }
-        ],
-        [
-          {
             text: t("common.financialEligibility.income.maintenanceReceived")
           },
           {
@@ -596,6 +652,8 @@
   {% endif %}
   <div>{{ editAssessmentButtonHtml | safe }}</div>
 {% endset -%}
+
+<h2 class="govuk-heading-m">{{ t('pages.caseDetails.tabs.financialEligibility') }}</h2>
 
 {{ govukTabs({
     id: "financial-eligibility-tabs",

@@ -346,15 +346,29 @@ export interface SplitCaseSubmissionApiResponse {
   message?: string;
 }
 
+/**
+ * Interface for money per interval object 
+ */
 export interface MoneyPerInterval {
-  amount: number,
-  time: 'per_month' | 'per_year' | 'per_week' | 'per_4week' | 'per_2week' 
+  amount: number | null,
+  time: 'per_month' | 'per_year' | 'per_week' | 'per_4week' | 'per_2week' | null 
 }
 
 /**
  * Interface for savings data
  */
 export interface SavingsData {
+  bankBalance: number,
+  investmentBalance: number,
+  assetBalance: number,
+  creditBalance: number,
+  total: number
+}
+
+/**
+ * Interface for disputed savings data
+ */
+export interface DisputedSavingsData {
   bankBalance: number,
   investmentBalance: number,
   assetBalance: number,
@@ -428,10 +442,12 @@ export interface FinancialEligibilityData {
     partnerSavings: SavingsData,
     partnerDeductions: DeductionData
   }
+  disputedSavings: DisputedSavingsData;
   disregards: string[];
   dependantsYoung: number;
   dependantsOld: number;
-
+  under18RegularPayment?: boolean;
+  under18HasValuables?: boolean
 }
 
 /**

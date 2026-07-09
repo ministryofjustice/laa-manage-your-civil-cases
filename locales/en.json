@@ -194,13 +194,16 @@
         "jobSeekers": "Job Seekers Allowance",
         "employmentSupport": "Income-related Employment and Support Allowance",
         "incomeSupport": "Income Support",
-        "incomeBasedJSA": "Income-based Job Seekers Allowance"
+        "incomeBasedJSA": "Income-based Job Seekers Allowance",
+        "under18RegularPayment": "Do you receive any money on a regular basis?",
+        "under18HasValuables": "Do you have any savings, items of value or investments totalling £2500 or more?"
       },
       "finances": {
         "propertyValue":"What is the current market value of the property?",
         "mortgageLeft":"How much is left to pay on the mortgage?",
         "mainProperty":"Is this your main property?",
         "propertyShare":"What percentage of the property do you and/or your partner own?",
+        "disputedProperty": "Is the property disputed?",
         "savingsBalance": "How much was in your bank account/building society before your last payment went in?",
         "investmentBalance": "Do you have any investments, shares or ISAs?",
         "assetBalance": "Do you have any valuable items worth over £500 each?",
