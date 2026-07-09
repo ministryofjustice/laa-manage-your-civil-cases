@@ -818,10 +818,6 @@ export async function buildCategoryItems({
  * @returns { string } returns a string with the formatted value 
  */
 export function formatFinancialData(value: unknown): string {
-  if (value === null || value === undefined) {
-    return '';
-  }
-
   // MoneyPerInterval object
   if (
     isRecord(value) &&
@@ -834,16 +830,18 @@ export function formatFinancialData(value: unknown): string {
   if (typeof value === 'number') {
     return `£${value}`;
   }
-
-  return '';
+  return 'Not provided';
 }
 
 /**
- * 
- * @param {number} value 
- * @returns {string} returns a string with the formatted number and £ sign 
+ * Function to format number values and add £ sign
+ * @param {number} value The numeric value to format as GBP currency.
+ * @returns {string} A formatted currency string with a £ sign.
  */
 const formatCurrency = (value: number): string => {
-  const hasDecimals = value % 1 !== 0;
-
-  return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP', minimumFractionDigits: hasDecimals ? 2 : 0, maximumFractionDigits: 2 }).format(value);};
+  return new Intl.NumberFormat('en-GB', {
+  style: 'currency',
+  currency: 'GBP',
+  trailingZeroDisplay: 'stripIfInteger',
+}).format(value);
+}

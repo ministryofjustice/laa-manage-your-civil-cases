@@ -38,7 +38,7 @@ const caseStatusHandlers = createCaseStatusHandlers(API_BASE_URL, API_PREFIX, ca
 const feedbackHandlers = createFeedbackHandlers(API_BASE_URL, API_PREFIX, cases);
 const splitHandlers = createSplitHandlers(API_BASE_URL, API_PREFIX);
 const changeCategoryHandlers = createChangeCategoryHandler(API_BASE_URL, API_PREFIX, cases);
-const financialEligibilityHandlers = createFinancialEligibilityHandlers(API_BASE_URL, API_PREFIX);
+const financialEligibilityHandlers = createFinancialEligibilityHandlers(API_BASE_URL, API_PREFIX, cases);
 
 // Combine all handlers into a single export
 export const handlers = [

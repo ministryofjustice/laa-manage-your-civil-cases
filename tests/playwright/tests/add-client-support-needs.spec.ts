@@ -39,8 +39,11 @@ test('add client support needs form should save valid data and redirect to clien
   await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: true, changeHref: '/client-details/change/support-need' });
   // Assert the data in the support needs summary card is correct
   await assertSummaryCardData(page, 'Client support needs', { 'British Sign Language': 'Yes' });
-  // Assert third party details summary card is visible with no data
-  await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: false, addHref: '/client-details/add/third-party' });
+  // Assert third party details summary card is visible with data
+  await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: true, changeHref: '/client-details/change/third-party', removeHref: '/confirm/remove-third-party' });
+  // Assert the data in the third party summary card is correct
+  await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Sarah Johnson', 'Phone number': '0787123456', 'Email address': 'sarah@johnson.com', 'Address': '45 Main Street, Sheffield S1 2AB', 'Relationship to client': 'Family member or friend', 'Passphrase': 'TestPass123' });
+
 });
 
 test('add client support needs form should show validation error if no option selected', async ({ page, i18nSetup }) => {
