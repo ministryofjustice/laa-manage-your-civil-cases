@@ -839,11 +839,14 @@ export function formatFinancialData(value: unknown): string {
 }
 
 /**
- * 
  * @param {number} value 
  * @returns {string} returns a string with the formatted number and £ sign 
  */
 const formatCurrency = (value: number): string => {
-  const hasDecimals = value % 1 !== 0;
 
-  return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP', minimumFractionDigits: hasDecimals ? 2 : 0, maximumFractionDigits: 2 }).format(value);};
+  return new Intl.NumberFormat('en-GB', {
+  style: 'currency',
+  currency: 'GBP',
+  trailingZeroDisplay: 'stripIfInteger',
+}).format(value);
+}
