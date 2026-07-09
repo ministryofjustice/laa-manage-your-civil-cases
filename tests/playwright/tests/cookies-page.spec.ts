@@ -42,7 +42,7 @@ test('footer is visible with expected links', async ({ page }) => {
   await expect(footer.getByRole('link', { name: 'Feedback' })).toBeVisible();
   await expect(footer.getByRole('link', { name: 'Updates' })).toBeVisible();
   await expect(footer.getByRole('link', { name: 'Privacy Policy' })).toBeVisible();
-  await expect(footer.getByRole('link', { name: 'Cookie policy' })).toBeVisible();
+  await expect(footer.getByRole('link', { name: 'Cookies' })).toBeVisible();
   await expect(footer.getByRole('link', { name: 'Accessibility' })).toBeVisible();
 });
 
@@ -130,7 +130,7 @@ test('nav links are hidden on cookies page when logged in', async ({ page }) => 
   await setupAuth(page);
   await page.goto('/');
   // navigate like a real user to cookie page
-  await page.getByRole('link', { name: 'Cookie Policy' }).click();
+  await page.getByRole('link', { name: 'Cookies' }).click();
   
   // assert we are on cookies page
   await expect(page).toHaveURL(/cookies/);
