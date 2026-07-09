@@ -346,6 +346,9 @@ export interface SplitCaseSubmissionApiResponse {
   message?: string;
 }
 
+/**
+ * Interface for money per interval object 
+ */
 export interface MoneyPerInterval {
   amount: number,
   time: 'per_month' | 'per_year' | 'per_week' | 'per_4week' | 'per_2week' 
@@ -431,7 +434,6 @@ export interface FinancialEligibilityData {
   disregards: string[];
   dependantsYoung: number;
   dependantsOld: number;
-
 }
 
 /**
