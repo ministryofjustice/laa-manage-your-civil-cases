@@ -3,7 +3,7 @@ import path from 'node:path';
 import type { Application } from 'express';
 import { getLatestBuildFile } from './buildHelper.js';
 import { formatDate, formatLongFormDate, formatDateLongMonth, nunjucksT, capitaliseFirstLetter } from '#src/scripts/helpers/index.js';
-import { formatFinancialData } from '#src/scripts/helpers/dataTransformers.js';
+import { formatFinancialData } from '#src/scripts/helpers/index.js';
 
 /**
  * Sets up Nunjucks as the template engine for the given Express application.
