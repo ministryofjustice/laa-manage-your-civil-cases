@@ -44,7 +44,6 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
     })) : [];
   const under18RegularPayment = Boolean(item.under_18_receive_regular_payment);
   const under18HasValuables = Boolean(item.under_18_has_valuables);
-  console.log("disregards", disregards);
 
   return {
     hasPartner,
