@@ -839,6 +839,7 @@ export function formatFinancialData(value: unknown): string {
 }
 
 /**
+ * Function to format number values and add £ sign
  * @param {number} value 
  * @returns {string} returns a string with the formatted number and £ sign 
  */

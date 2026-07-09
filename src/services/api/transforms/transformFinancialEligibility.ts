@@ -23,6 +23,7 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
   const partnerIncome = formatIncomeData(partnerData.income);
   const partnerSavings = formatSavingsData(partnerData.savings);
   const partnerDeductions = formatDeductionsData(partnerData.deductions);
+  const disputedSavings = formatSavingsData(item.disputed_savings)
   const dependantsYoung = Number(item.dependants_young ?? 0);
   const dependantsOld = Number(item.dependants_old ?? 0);
   const disregards = isRecord(item.disregards) ? Object.entries(item.disregards).filter(([, value]) => Boolean(value)).map(([key]) => t(`common.financialDisregards.${key}`)) : [];
@@ -41,7 +42,11 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
       disputed: Boolean(property.disputed),
       main: Boolean(property.main),
     })) : [];
+  const under18RegularPayment = Boolean(item.under_18_receive_regular_payment);
+  const under18HasValuables = Boolean(item.under_18_has_valuables);
 
+  console.log("under 18 data: ", under18HasValuables);
+  console.log("under 18 Vdata: ", under18RegularPayment);
   return {
     hasPartner,
     isUnder17,
@@ -52,7 +57,10 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
     partnerData: { partnerIncome, partnerSavings, partnerDeductions },
     disregards,
     dependantsYoung,
-    dependantsOld
+    dependantsOld,
+    under18RegularPayment,
+    under18HasValuables,
+    disputedSavings
   };
 }
 

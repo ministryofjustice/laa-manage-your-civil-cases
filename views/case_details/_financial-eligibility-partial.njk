@@ -17,6 +17,8 @@
 {% set detailsHtml %}
 
   {% set under17Text = "Yes" if financialEligibility.isUnder17 else "No" %}
+  {% set under18RegularPayment = "Yes" if financialEligibility.under18RegularPayment else "No" %}
+  {% set under18HasValuables = "Yes" if financialEligibility.under18HasValuables else "No" %}
   {% set partnerText = "Yes" if financialEligibility.hasPartner else "No" %}
   {% set over60Text = "Yes" if financialEligibility.isOver60 else "No"%}
   {% set universalCredit = "Yes" if financialEligibility.specificBenefits.universalCredit else "No"%}
@@ -50,7 +52,29 @@
           text: over60Text
         }
       ]
-    ]) %}
+    ]) %} 
+  {% endif %}
+  {% if financialEligibility.under18RegularPayment %}
+    {% set rows = rows.concat([
+      [
+        {
+          text: t("common.financialEligibility.details.under18RegularPayment")
+        }, {
+          text: under18RegularPayment
+        }
+      ]
+    ]) %} 
+  {% endif %}
+  {% if financialEligibility.under18HasValuables %}
+    {% set rows = rows.concat([
+      [
+        {
+          text: t("common.financialEligibility.details.under18HasValuables")
+        }, {
+          text: under18HasValuables
+        }
+      ]
+    ]) %} 
   {% endif %}
 
   {{ govukTable({

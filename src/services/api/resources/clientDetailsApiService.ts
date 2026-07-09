@@ -255,7 +255,7 @@ export async function getFinancialEligibility(axiosMiddleware: AxiosInstanceWrap
     
     const configuredAxios = configureAxiosInstance(axiosMiddleware);
     const response = await configuredAxios.get(`${API_PREFIX}/case/${caseReference}/eligibility_check/`);
-    
+    console.log("financial data: ", response.data)
     devLog(`API: Get financial eligibility response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
     return {
       data: transformFinancialEligibilityItem(response.data),

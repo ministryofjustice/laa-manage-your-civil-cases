@@ -194,7 +194,9 @@
         "jobSeekers": "Job Seekers Allowance",
         "employmentSupport": "Income-related Employment and Support Allowance",
         "incomeSupport": "Income Support",
-        "incomeBasedJSA": "Income-based Job Seekers Allowance"
+        "incomeBasedJSA": "Income-based Job Seekers Allowance",
+        "under18RegularPayment": "Do you receive any money on a regular basis?",
+        "under18HasValuables": "Do you have any savings, items of value or investments totalling £2500 or more?"
       },
       "finances": {
         "propertyValue":"What is the current market value of the property?",
