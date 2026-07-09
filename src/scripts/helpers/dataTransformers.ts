@@ -840,8 +840,8 @@ export function formatFinancialData(value: unknown): string {
 
 /**
  * Function to format number values and add £ sign
- * @param {number} value 
- * @returns {string} returns a string with the formatted number and £ sign 
+ * @param {number} value The numeric value to format as GBP currency.
+ * @returns {string} A formatted currency string with a £ sign.
  */
 const formatCurrency = (value: number): string => {
 
