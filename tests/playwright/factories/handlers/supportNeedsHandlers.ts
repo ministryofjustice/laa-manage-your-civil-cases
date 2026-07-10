@@ -18,6 +18,14 @@ export function createSupportNeedsHandlers(
     http.patch(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/adaptation_details/`, async ({ params, request }) => {
       const { caseReference } = params;
       const updateData = await request.json() as Record<string, any>;
+      const allFields = { 
+        bslWebcam: 'bsl_webcam', 
+        textRelay: 'text_relay', 
+        callbackPreference: 'callback_preference',
+        language: 'language',
+        notes: 'notes',
+        noAdaptationsRequired: 'no_adaptations_required',
+      } as const;
 
       const caseItem = cases.find(c => c.caseReference === caseReference);
       if (!caseItem) {
@@ -31,17 +39,17 @@ export function createSupportNeedsHandlers(
       }
 
       // Validate boolean fields
-      const booleanFields = ['bsl_webcam', 'minicom', 'text_relay', 'skype_webcam', 'callback_preference'];
+      const booleanFields = [allFields.bslWebcam, allFields.textRelay, allFields.callbackPreference];
       booleanFields.forEach(field => validateBooleanField(updateData, field, validationErrors));
 
       // Validate nullable boolean field
-      validateNullableBooleanField(updateData, 'no_adaptations_required', validationErrors);
+      validateNullableBooleanField(updateData, allFields.noAdaptationsRequired, validationErrors);
 
       // Validation for soft delete (remove support needs)
       if (updateData.no_adaptations_required === true) {
 
         // Verify all required fields are present for soft delete
-        const requiredFields = ['bsl_webcam', 'text_relay', 'callback_preference', 'language', 'notes'];
+        const requiredFields = [allFields.bslWebcam, allFields.textRelay, allFields.callbackPreference, allFields.language, allFields.notes];
         const missingFields = requiredFields.filter(field => !(field in updateData));
 
         if (missingFields.length > 0) {
@@ -70,7 +78,7 @@ export function createSupportNeedsHandlers(
       }
 
       // Validate language field
-      if ('language' in updateData) {
+      if (allFields.language in updateData) {
         if (updateData.language !== null && updateData.language !== '' && typeof updateData.language !== 'string') {
           validationErrors.language = ['Must be a string, empty string, or null'];
         } else if (typeof updateData.language === 'string' && updateData.language.length > 30) {
@@ -79,7 +87,7 @@ export function createSupportNeedsHandlers(
       }
 
       // Validate notes field
-      if ('notes' in updateData && typeof updateData.notes !== 'string') {
+      if (allFields.notes in updateData && typeof updateData.notes !== 'string') {
         validationErrors.notes = ['Must be a string'];
       }
 
@@ -93,8 +101,6 @@ export function createSupportNeedsHandlers(
         caseItem.clientSupportNeeds = {
           bslWebcam: updateData.bsl_webcam ? 'Yes' : 'No',
           textRelay: updateData.text_relay ? 'Yes' : 'No',
-          skype: updateData.skype_webcam ?? false,
-          minicom: updateData.minicom ?? false,
           callbackPreference: updateData.callback_preference ? 'Yes' : 'No',
           languageSupportNeeds: updateData.language ?? '',
           notes: updateData.notes ?? ''
