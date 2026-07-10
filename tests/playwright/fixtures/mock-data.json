@@ -260,9 +260,9 @@
       "is_you_under_18": false,
       "specific_benefits": {
         "pension_credit": false,
-        "job_seekers_allowance": false,
+        "job_seekers_allowance": true,
         "employment_support": false,
-        "universal_credit": false,
+        "universal_credit": true,
         "income_support": false
       },
       "disregards": {

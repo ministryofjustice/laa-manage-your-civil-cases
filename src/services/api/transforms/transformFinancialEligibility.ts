@@ -45,8 +45,6 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
   const under18RegularPayment = Boolean(item.under_18_receive_regular_payment);
   const under18HasValuables = Boolean(item.under_18_has_valuables);
 
-  console.log("under 18 data: ", under18HasValuables);
-  console.log("under 18 Vdata: ", under18RegularPayment);
   return {
     hasPartner,
     isUnder17,
@@ -134,8 +132,8 @@ function formatIncomeData(income: unknown): IncomeData {
 function formatMoneyPerInterval(value: unknown): MoneyPerInterval {
   if (!isRecord(value)) {
     return {
-      amount: 0,
-      time: 'per_month'
+      amount: null,
+      time: null
     };
   }
 

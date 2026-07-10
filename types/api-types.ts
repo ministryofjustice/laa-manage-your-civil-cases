@@ -350,8 +350,8 @@ export interface SplitCaseSubmissionApiResponse {
  * Interface for money per interval object 
  */
 export interface MoneyPerInterval {
-  amount: number,
-  time: 'per_month' | 'per_year' | 'per_week' | 'per_4week' | 'per_2week' 
+  amount: number | null,
+  time: 'per_month' | 'per_year' | 'per_week' | 'per_4week' | 'per_2week' | null 
 }
 
 /**
