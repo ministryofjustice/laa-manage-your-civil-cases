@@ -12,7 +12,7 @@
       text: "Client does not qualify for legal aid"
     }) }}
 
-  {% else %}
+  {% elseif state == "unknown" %}
     {{ mojAlert({
       variant: "information",
        title: "Means test incomplete",
