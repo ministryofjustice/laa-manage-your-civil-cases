@@ -334,7 +334,7 @@
       "no_adaptations_required": false
     },
     "lastModified": "2025-07-06T19:00:00-05:00",
-    "financialElibility": {
+    "financialEligibility": {
       "state": "unknown"
     }
   },
@@ -397,7 +397,10 @@
       "notes": "",
       "no_adaptations_required": false
     },
-    "lastModified": "2025-07-06T19:00:00-05:00"
+    "lastModified": "2025-07-06T19:00:00-05:00",
+    "financialEligibility": {
+      "state": "no"
+    }
   },
   {
     "fullName": "Katie Young",
