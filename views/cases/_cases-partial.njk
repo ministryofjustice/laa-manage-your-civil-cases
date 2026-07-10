@@ -40,7 +40,6 @@
   {# Render the sortable table with dynamic configuration #}
   {{ sortableTableComponent({
       id: tableId,
-      classes: "moj-sortable-table",
       data: data,
       columns: [
         { key: "fullName", text: t('components.table.columns.name'), link: "/cases/{{caseReference}}/client-details" },

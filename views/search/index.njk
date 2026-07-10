@@ -110,7 +110,6 @@
 
         {{ sortableTableComponent({
           id: "search-results-table",
-          classes: "moj-sortable-table",
           data: searchResults,
           columns: [
             { key: "fullName", text: t('components.table.columns.name'), link: "/cases/{{caseReference}}/client-details" },

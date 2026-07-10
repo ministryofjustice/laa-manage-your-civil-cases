@@ -23,14 +23,3 @@
   align-items: flex-start;
   gap: 4px;
 }
-
-.moj-sortable-table {
-  table-layout: fixed;
-  width: 100%;
-}
-
-.moj-sortable-table th,
-.moj-sortable-table td {
-  width: auto;
-  overflow-wrap: break-word;
-}
