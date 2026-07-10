@@ -269,6 +269,51 @@
     }) }}
   {% endif %}
 
+  {% if financialEligibility.disputedSavings %}
+    <h2 class="govuk-heading-m">Your disputed savings</h2>
+
+    {% set disputedSavings = financialEligibility.disputedSavings %}
+
+    {{ govukTable({
+     firstCellIsHeader: true,
+      classes: "eligibility-table",
+      rows: [
+        [
+          {
+            text: t("common.financialEligibility.finances.savingsBalance")
+          },
+          {
+            text: (disputedSavings.bankBalance | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.finances.investmentBalance")
+          },
+          {
+            text: (disputedSavings.investmentBalance | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.finances.assetBalance")
+          },
+          {
+            text:(disputedSavings.assetBalance | formatFinancialData)
+          }
+        ],
+        [
+          {
+            text: t("common.financialEligibility.finances.creditBalance")
+          },
+          {
+            text: (disputedSavings.creditBalance | formatFinancialData)
+          }
+        ]
+      ]
+    }) }}
+  {% endif %}
+
   <h2 class="govuk-heading-m">Disregards</h2>
 
   <table class="govuk-table">

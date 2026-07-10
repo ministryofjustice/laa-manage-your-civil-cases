@@ -372,7 +372,8 @@ export interface DisputedSavingsData {
   bankBalance: number,
   investmentBalance: number,
   assetBalance: number,
-  creditBalance: number
+  creditBalance: number,
+  total: number
 }
 
 /**
