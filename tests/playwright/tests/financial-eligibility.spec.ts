@@ -57,6 +57,10 @@ test.describe('Details tab', () => {
     });
     // Assert the edit assessment button is visible.
     await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+    // Assert the success warning is displayed when state is yes
+    const alert = page.locator('.moj-alert--success');
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText('Client qualifies for civil legal aid');
   });
 
   test('should display no for About You data when assessment does not exist', async ({ page }) => {
@@ -69,9 +73,9 @@ test.describe('Details tab', () => {
     await page.getByRole('link', { name: 'Financial eligibility' }).click();
 
     // Verify header information
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party']});
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party'] });
 
-     // Assert the correct data is displayed in the about you section
+    // Assert the correct data is displayed in the about you section
     await expectCaptionTableRows(page, 'About you', {
       'Are you aged 17 or under?': 'No',
       'Do you have a partner?': 'No',
@@ -210,7 +214,7 @@ test.describe('Finances tab', () => {
     await page.getByRole('tab', { name: 'Finances' }).click();
 
     // Verify header information
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party']});
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party'] });
 
     // Assert the Properties heading is visible.
     await expect(page.getByRole('heading', { name: 'Properties' })).toBeVisible();
@@ -342,9 +346,9 @@ test.describe('Income tab', () => {
     await page.getByRole('tab', { name: 'Income' }).click();
 
     // Verify header information
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party']});
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party'] });
 
-     // Assert the your income heading is visible. 
+    // Assert the your income heading is visible. 
     await expect(page.locator('caption').filter({ hasText: 'Your income' })).toBeVisible();
     // Assert the dependants heading is visible.
     await expect(page.locator('caption').filter({ hasText: 'Dependants' })).toBeVisible();
@@ -444,9 +448,9 @@ test.describe('Expenses tab', () => {
     await page.getByRole('tab', { name: 'Expenses' }).click();
 
     // Verify header information
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party']});
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party'] });
 
-     // Assert the your expenses heading is visible. 
+    // Assert the your expenses heading is visible. 
     await expect(page.locator('caption').filter({ hasText: 'Your expenses' })).toBeVisible();
 
     // Assert the correct data is displayed in the expenses table.

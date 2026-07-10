@@ -1,6 +1,5 @@
 {% from "moj/components/alert/macro.njk" import mojAlert %}
 {% macro financialEligibilityAlert(state) %}
-  
 {% if state == "yes" %}
     {{ mojAlert({
       variant: "success",
@@ -22,5 +21,4 @@
     }) }}
 
   {% endif %}
-
 {% endmacro %}

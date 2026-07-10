@@ -257,6 +257,7 @@
       "dependants_old": 0,
       "is_you_or_your_partner_over_60": false,
       "has_partner": false,
+      "state": "yes",
       "is_you_under_18": false,
       "specific_benefits": {
         "pension_credit": false,
@@ -332,7 +333,10 @@
       "notes": "",
       "no_adaptations_required": false
     },
-    "lastModified": "2025-07-06T19:00:00-05:00"
+    "lastModified": "2025-07-06T19:00:00-05:00",
+    "financialElibility": {
+      "state": "unknown"
+    }
   },
   {
     "fullName": "Barbra white",
