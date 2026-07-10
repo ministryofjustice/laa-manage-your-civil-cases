@@ -1051,9 +1051,7 @@
       "address": "1 Hadamard Gate, Oxford",
       "postcode": "OX1 1AW",
       "relationshipToClient": {
-        "selected": [
-          "OTHER"
-        ]
+        "selected": ["OTHER"]
       },
       "passphraseSetUp": {
         "selected": [

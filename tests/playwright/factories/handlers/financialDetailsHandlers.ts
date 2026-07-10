@@ -22,12 +22,7 @@ export function createFinancialEligibilityHandlers(
         return HttpResponse.json({ error: 'Case not found' }, { status: HTTP.NOT_FOUND });
       }
 
-      if (caseReference === 'PC-1922-1879') {
-         return HttpResponse.json(caseItem.financialElibility);
-      }
-      if (caseReference === 'PC-1869-9154') {
-         return HttpResponse.json(caseItem.financialElibility);
-      }
+      return HttpResponse.json(caseItem.financialElibility);
   
     })
   ];

@@ -274,7 +274,7 @@ test.describe('Expenses tab', () => {
     await setupAuth(page);
   });
 
-   test('should display expenses tab content with correct data when there is no partner', async ({ page }) => {
+  test('should display expenses tab content with correct data when there is no partner', async ({ page }) => {
     const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1879');
     // Navingate to client details page
     await clientDetails.navigate();
@@ -289,7 +289,7 @@ test.describe('Expenses tab', () => {
 
     // Assert the correct data is displayed in the income table.
     await expectCaptionTableRows(page, 'Your expenses', {
-      'How much do you pay for your mortgage?':	'£200 per month',
+      'How much do you pay for your mortgage?': '£200 per month',
       'How much do you pay for rent? The amount entered should not include any housing benefit or payment for bills': '£0 per month',
       'How much maintenance have you paid during the last calendar month?': '£50 per month',
       'Do you have any childcare costs because of work or study? If so, how much?': '£20 per month',
@@ -300,7 +300,7 @@ test.describe('Expenses tab', () => {
     await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
   });
 
-    test('should display income tab content with correct data when there is a partner', async ({ page }) => {
+  test('should display income tab content with correct data when there is a partner', async ({ page }) => {
     const clientDetails = ClientDetailsPage.forCase(page, 'PC-1869-9154');
     // Navingate to client details page
     await clientDetails.navigate();
@@ -310,14 +310,14 @@ test.describe('Expenses tab', () => {
     await page.getByRole('tab', { name: 'Expenses' }).click();
     // Assert the case details header is present
     await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 August 2025", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'] });
-  
-     // Assert the your income heading is visible. 
+
+    // Assert the your income heading is visible. 
     await expect(page.locator('caption').filter({ hasText: 'Your expenses' })).toBeVisible();
     await expect(page.locator('caption').filter({ hasText: "Your partner's expenses" })).toBeVisible();
 
     // Assert the correct data is displayed in the income table.
     await expectCaptionTableRows(page, 'Your expenses', {
-      'How much do you pay for your mortgage?':	'£350 per month',
+      'How much do you pay for your mortgage?': '£350 per month',
       'How much do you pay for rent? The amount entered should not include any housing benefit or payment for bills': '£250 per month',
       'How much maintenance have you paid during the last calendar month?': '£20 per month',
       'Do you have any childcare costs because of work or study? If so, how much?': '£50 per month',
@@ -325,7 +325,7 @@ test.describe('Expenses tab', () => {
     });
     // Assert the correct data is displayed in the income table.
     await expectCaptionTableRows(page, "Your partner's expenses", {
-      'How much does your partner pay for their mortgage?':	'£300 per month',
+      'How much does your partner pay for their mortgage?': '£300 per month',
       'How much does your partner pay for their rent? The amount entered should not include any housing benefit or payment for bills': '£200 per month',
       'How much maintenance has your partner paid during the last calendar month?': '£40 per month',
       'Does your partner have any childcare costs because of work or study? If so, how much?': '£30 per month',
@@ -333,4 +333,41 @@ test.describe('Expenses tab', () => {
     });
     await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
   });
+
+/** 
+  test('should display no financial eligibility data when assessment does not exist', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-7755-4557');
+
+    // Navigate to client details page
+    await clientDetails.navigate();
+
+    // Open financial eligibility tab
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+
+    // Verify header information
+    await assertCaseDetailsHeaderPresent(page, {
+      withMenuButtons: false,
+      expectedName: 'Alan Turning',
+      expectedCaseRef: 'PC-7755-4557',
+      dateReceived: '9 January 2025',
+      badgeTexts: ['At risk of abuse', 'Third Party']
+    });
+
+    // Verify empty state is shown
+    await expect(
+      page.getByText('No financial eligibility assessment available')
+    ).toBeVisible();
+
+    // Verify assessment sections are not rendered
+    await expect(page.getByText('About you')).not.toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Finances' })).not.toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Income' })).not.toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Expenses' })).not.toBeVisible();
+
+    // Edit button should not be displayed
+    await expect(
+      page.getByRole('button', { name: 'Edit assessment' })
+    ).not.toBeVisible();
+  });
+  */
 });
