@@ -72,7 +72,7 @@ export interface MockCase {
     languageSupportNeeds?: string;
     notes?: string;
   };
-  financialElibility?: {
+  financialEligibility?: {
     hasPartner?: boolean;
     isUnder17?: boolean;
     isOver60?: boolean;
