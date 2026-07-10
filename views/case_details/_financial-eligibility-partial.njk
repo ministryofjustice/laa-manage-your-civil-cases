@@ -3,6 +3,9 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
+{% include "components/financialEligibilityAlert.njk" %}
+{% from "moj/components/alert/macro.njk" import mojAlert %}
+{% from "components/financialEligibilityAlert.njk" import financialEligibilityAlert %}
 
 {% set editAssessmentButtonHtml %}
   {{
@@ -564,6 +567,7 @@
 {% endset -%}
 
 {% set expensesHtml %}
+
   {{ govukTable({
     caption: "Your expenses",
     classes: "eligibility-table",
@@ -667,6 +671,8 @@
 {% endset -%}
 
 <h2 class="govuk-heading-m">{{ t('pages.caseDetails.tabs.financialEligibility') }}</h2>
+
+{{ financialEligibilityAlert(financialEligibility.state) }}
 
 {{ govukTabs({
     id: "financial-eligibility-tabs",
