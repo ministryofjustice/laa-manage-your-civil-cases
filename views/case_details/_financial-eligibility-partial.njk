@@ -71,64 +71,63 @@
       ]
     ]) %} 
   {% endif %}
-
   {{ govukTable({
-      caption: "About you",
-      captionClasses: "govuk-table__caption--m",
-      firstCellIsHeader: true,
-      classes: "eligibility-table",
-      rows: rows
-    }) }}
-
-  {{ govukTable({
-      caption: "Benefits",
-      captionClasses: "govuk-table__caption--m",
-      firstCellIsHeader: true,
-      classes: "eligibility-table",
-      rows: [
-        [
-          {
-            text: t("common.financialEligibility.details.universalCredit")
-          },
-          {
-            text: universalCredit
-          }
-        ],
-        [
-          {
-            text: t("common.financialEligibility.details.incomeSupport")
-          },
-          {
-            text: incomeSupport
-          }
-        ],
-        [
-          {
-            text: t("common.financialEligibility.details.incomeBasedJSA")
-          },
-          {
-            text: jobSeekers
-          }
-        ],
-        [
-          {
-            text: t("common.financialEligibility.details.pensionCredit")
-          },
-          {
-            text: pensionCredit
-          }
-        ],
-        [
-          {
-            text: t("common.financialEligibility.details.employmentSupport")
-          },
-          {
+    caption: "About you",
+    captionClasses: "govuk-table__caption--m",
+    firstCellIsHeader: true,
+    classes: "eligibility-table",
+    rows: rows
+  }) }}
+  {% if not financialEligibility.under18passportedBenefits %}
+    {{ govukTable({
+        caption: "Benefits",
+        captionClasses: "govuk-table__caption--m",
+        firstCellIsHeader: true,
+        classes: "eligibility-table",
+        rows: [
+          [
+            {
+              text: t("common.financialEligibility.details.universalCredit")
+            },
+            {
+              text: universalCredit
+            }
+          ],
+          [
+            {
+              text: t("common.financialEligibility.details.incomeSupport")
+            },
+            {
+              text: incomeSupport
+            }
+          ],
+          [
+            {
+              text: t("common.financialEligibility.details.incomeBasedJSA")
+            },
+            {
+              text: jobSeekers
+            }
+          ],
+          [
+            {
+              text: t("common.financialEligibility.details.pensionCredit")
+            },
+            {
+              text: pensionCredit
+            }
+          ],
+          [
+            {
+              text: t("common.financialEligibility.details.employmentSupport")
+            },
+            {
             text: employmentSupport
-          }
+           }
+          ]
         ]
-      ]
-    }) }}
-
+      }) }}
+  {% endif %}
   <div>{{ editAssessmentButtonHtml | safe }}</div>
 {% endset -%}
 
