@@ -29,6 +29,7 @@ export interface CaseData {
   // Client information
   address?: string;
   postcode?: string;
+  category?: string;
   outcomeDescription?: string;
   // Case flags
   isUrgent?: boolean,

@@ -136,7 +136,7 @@
           {% if row.safeToCall %}
             {{ row[column.key] }}
           {% else %}
-            Not safe to call
+            {{ t('components.table.notSafeToCall') }}
           {% endif %}
         {% elif column.key == "case_flags" %}
           <div class="stack-case-flags">
@@ -156,6 +156,7 @@
           {% if row[column.key] %}
             {{ row[column.key] | safe }}
           {% else %}
+            {{ t('components.table.notProvided') }}
             <span class="govuk-visually-hidden">{{ t('components.table.noData') }}</span>
           {% endif %}
         {% endif %}

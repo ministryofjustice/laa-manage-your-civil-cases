@@ -43,8 +43,10 @@
       data: data,
       columns: [
         { key: "fullName", text: t('components.table.columns.name'), link: "/cases/{{caseReference}}/client-details" },
-        { key: "caseReference", text: t('components.table.columns.caseId') },
+        { key: "laaReference", text: t('components.table.columns.laaReference') },
         { key: "dateOfBirth", text: t('components.table.columns.dateOfBirth') },
+        { key: "postcode", text: t('components.table.columns.postcode') },
+        { key: "category", text: t('components.table.columns.category') },
         dateColumn,
         { key: "case_flags", text: t('components.table.columns.details') }
       ],

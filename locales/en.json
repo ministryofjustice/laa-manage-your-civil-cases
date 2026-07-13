@@ -181,10 +181,15 @@
     },
     "table": {
       "noData": "No data",
+      "notProvided": "Not provided",
+      "notSafeToCall": "Not safe to call",
       "columns": {
         "name": "Name",
+        "laaReference": "LAA reference",
         "caseId": "Case ID",
         "dateOfBirth": "Date of birth",
+        "postcode": "Postcode",
+        "category": "Category of law",
         "details": "Details",
         "dateModified": "Date modified",
         "dateClosed": "Date closed",
