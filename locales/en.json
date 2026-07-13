@@ -170,7 +170,7 @@
       "feedback": "Feedback",
       "updates": "Updates",
       "privacyPolicy": "Privacy Policy",
-      "cookiePolicy": "Cookie Policy",
+      "cookies": "Cookies",
       "accessibility": "Accessibility"
     }
   },
@@ -386,6 +386,16 @@
         "heading": "No results found",
         "body": "There are no results that match the search criteria"
       }
+    },
+    "cookies": {
+      "heading": "Cookies",
+      "intro": "Cookies are small files saved on your phone, tablet or computer when you visit a website.",
+      "mccCookie": "Manage your civil cases uses a cookie across the service to remember your answers.",
+      "icoStart": "Find out",
+      "icoLink": "how to manage cookies",
+      "icoEnd": "from the Information Commissioner's Office.",
+      "subheading": "Essential cookies (strictly necessary)",
+      "essentialInfo": "We use an essential cookie to remember your answers as you use the service."
     },
     "login": {
       "heading": "Sign in to Manage your civil cases",

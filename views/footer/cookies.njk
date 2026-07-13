@@ -1,0 +1,47 @@
+{% extends "base.njk" %}
+{%  from "govuk/components/table/macro.njk" import govukTable %}
+
+{% block serviceNavigation %} 
+  {{ govukServiceNavigation({
+    serviceName: config.SERVICE_NAME,
+    serviceUrl: "/cases/new",
+    navigation: []
+  }) }}
+{% endblock %}
+
+{% block pageContent %}
+  <h1 id="cookies-heading" class="govuk-heading-xl">{{ t('pages.cookies.heading') }}</h1>
+  <p id="cookies-intro">{{ t('pages.cookies.intro') }}</p>
+  <p id="mcc-cookie">{{ t('pages.cookies.mccCookie') }}</p>
+  <p id="ico-info">{{ t('pages.cookies.icoStart') }}
+    <a class="govuk-link" href="https://ico.org.uk/for-the-public/online/cookies">
+    {{ t('pages.cookies.icoLink') }}
+    </a>
+    {{ t('pages.cookies.icoEnd') }}
+  </p>
+  <h2 id="cookies-subheading" class="govuk-heading-l govuk-!-margin-top-8">{{ t('pages.cookies.subheading') }}</h2>
+  <p id="essential-info">{{ t('pages.cookies.essentialInfo') }}</p>
+
+  {{ govukTable({
+    caption: "Essential cookies we use",
+    captionClasses: "govuk-table__caption--s",
+    firstCellIsHeader: true,
+    head: [
+      { text: "Name" },
+      { text: "Purpose" },
+      { text: "Expires" }
+    ],
+    rows: [
+      [
+        { text: "sessionId" },
+        { text: "Stores user-provided form data" },
+        { text: "24 hours" }
+      ]
+    ]
+  }) }}
+
+{% endblock %}
+
+
+
+
