@@ -69,9 +69,9 @@ test.describe('Details tab', () => {
     await page.getByRole('link', { name: 'Financial eligibility' }).click();
 
     // Verify header information
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party']});
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party'] });
 
-     // Assert the correct data is displayed in the about you section
+    // Assert the correct data is displayed in the about you section
     await expectCaptionTableRows(page, 'About you', {
       'Are you aged 17 or under?': 'No',
       'Do you have a partner?': 'No',
@@ -210,7 +210,7 @@ test.describe('Finances tab', () => {
     await page.getByRole('tab', { name: 'Finances' }).click();
 
     // Verify header information
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party']});
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party'] });
 
     // Assert the Properties heading is visible.
     await expect(page.getByRole('heading', { name: 'Properties' })).toBeVisible();
@@ -341,9 +341,9 @@ test.describe('Income tab', () => {
     await page.getByRole('tab', { name: 'Income' }).click();
 
     // Verify header information
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party']});
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party'] });
 
-     // Assert the your income heading is visible. 
+    // Assert the your income heading is visible. 
     await expect(page.locator('caption').filter({ hasText: 'Your income' })).toBeVisible();
     // Assert the dependants heading is visible.
     await expect(page.locator('caption').filter({ hasText: 'Dependants' })).toBeVisible();
@@ -443,9 +443,9 @@ test.describe('Expenses tab', () => {
     await page.getByRole('tab', { name: 'Expenses' }).click();
 
     // Verify header information
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party']});
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party'] });
 
-     // Assert the your expenses heading is visible. 
+    // Assert the your expenses heading is visible. 
     await expect(page.locator('caption').filter({ hasText: 'Your expenses' })).toBeVisible();
 
     // Assert the correct data is displayed in the expenses table.
@@ -457,5 +457,32 @@ test.describe('Expenses tab', () => {
       'Are you currently paying towards legal aid for criminal defence? If so, how much have you paid in the last calendar month?': 'Not provided'
     });
     await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+  });
+});
+
+test.describe('Conditional logic views', () => {
+  test.beforeEach(async ({ page }) => {
+    await setupAuth(page);
+  });
+
+  test('when has_passported_proceedings_letter = true no financial information is shown', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-4575-7150');
+    // Navingate to client details page
+    await clientDetails.navigate();
+    // Click the financial eligiblity tab
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    // Assert the URL has change to financial eligibility tab
+    await expect(page).toHaveURL(/financial-eligibility/);
+
+    // Tabs should not be displayed
+    await expect(page.getByRole('tab', { name: 'Details' })).toHaveCount(0);
+    await expect(page.getByRole('tab', { name: 'Finances' })).toHaveCount(0);
+    await expect(page.getByRole('tab', { name: 'Income' })).toHaveCount(0);
+    await expect(page.getByRole('tab', { name: 'Expenses' })).toHaveCount(0);
+
+    // Message should be displayed
+    await expect(page.getByText('No means test required')).toBeVisible();
+
+    await expect(page.getByText('The means of the foster parents or approved prospective adoptive parents are exempt from the determination of financial eligibility.')).toBeVisible();
   });
 });

@@ -532,7 +532,10 @@
         "passphrase": "LetMeIn"
       }
     },
-    "lastModified": "2025-01-05T19:00:00-05:00"
+    "lastModified": "2025-01-05T19:00:00-05:00",
+    "financialEligibility": {
+      "has_passported_proceedings_letter": true
+    }
   },
   {
     "fullName": "Zechariah Twelve",

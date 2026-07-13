@@ -254,7 +254,7 @@ describe('transformFinancialEligilibilityItem', () => {
     const result = transformFinancialEligibilityItem({});
 
     expect(result.clientData.income).to.deep.equal({});
-    expect(result.clientData.savings).to.deep.equal({});
+    expect(result.clientData.savings).to.deep.equal(null);
     expect(result.clientData.deductions).to.deep.equal({});
   });
 
@@ -265,7 +265,7 @@ describe('transformFinancialEligilibilityItem', () => {
     });
 
     expect(result.partnerData.partnerIncome).to.deep.equal({});
-    expect(result.partnerData.partnerSavings).to.deep.equal({});
+    expect(result.partnerData.partnerSavings).to.deep.equal(null);
     expect(result.partnerData.partnerDeductions).to.deep.equal({});
   });
 
