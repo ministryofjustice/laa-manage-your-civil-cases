@@ -47,6 +47,7 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
   const hasPassportedProceedingsLetter = Boolean(item.has_passported_proceedings_letter);
   const passportedBenefits = Boolean(item.on_passported_benefits);
   const under18passportedBenefits = Boolean(item.under_18_passported);
+  console.log("disputed savings:", disputedSavings);
 
   return {
     hasPartner,
@@ -73,9 +74,9 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
  * @param {unknown} savings savings data to be formatted
  * @returns {SavingsData} formatted savings data
  */
-function formatSavingsData(savings: unknown): SavingsData {
-  if (!isRecord(savings)) {
-    return {} as SavingsData;
+function formatSavingsData(savings: unknown): SavingsData | null {
+if (!isRecord(savings)) {
+    return null;
   }
   return {
     bankBalance: convertPenceToPounds(Number(savings.bank_balance ?? 0)),

@@ -150,32 +150,40 @@
         {% endif %}
       </h3>
 
+      {% set propertyRows = [
+        [
+          { text: t("common.financialEligibility.finances.propertyValue") },
+          { text: (property.value | formatFinancialData) }
+        ],
+        [
+          { text: t("common.financialEligibility.finances.mortgageLeft") },
+          { text: (property.mortgageLeft | formatFinancialData) }
+        ],
+        [
+          { text: t("common.financialEligibility.finances.mainProperty") },
+          { text: "Yes" if property.main else "No" }
+        ],
+        [
+          { text: t("common.financialEligibility.finances.propertyShare") },
+          { text: property.share + "%" }
+        ]
+      ] %}
+      
+      {% if financialEligibility.disputedSavings is not null %}
+        {% set propertyRows = propertyRows.concat([
+          [
+            { text: t("common.financialEligibility.finances.disputedProperty") },
+            { text: "Yes" if property.disputed else "No" }
+          ]
+        ]) %}
+      {% endif %}
+
       {{ govukTable({
         firstCellIsHeader: true,
         classes: "eligibility-table",
-        rows: [
-          [
-            { text: t("common.financialEligibility.finances.propertyValue") },
-            { text: (property.value | formatFinancialData) }
-          ],
-          [
-            { text: t("common.financialEligibility.finances.mortgageLeft") },
-            { text: (property.mortgageLeft | formatFinancialData) }
-          ],
-          [
-            { text: t("common.financialEligibility.finances.mainProperty") },
-            { text: "Yes" if property.main else "No" }
-          ],
-          [
-            { text: t("common.financialEligibility.finances.propertyShare") },
-            { text: property.share + "%" }
-          ],
-          [
-            { text: t("common.financialEligibility.finances.disputedProperty")}, 
-            { text: "Yes" if property.disputed else "No" }
-          ]
-        ]
+        rows: propertyRows
       }) }}
+
     {% endfor %}
   {% else %}
     <p class="govuk-body">No property data</p>

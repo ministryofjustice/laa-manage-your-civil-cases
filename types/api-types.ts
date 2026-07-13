@@ -366,17 +366,6 @@ export interface SavingsData {
 }
 
 /**
- * Interface for disputed savings data
- */
-export interface DisputedSavingsData {
-  bankBalance: number,
-  investmentBalance: number,
-  assetBalance: number,
-  creditBalance: number,
-  total: number
-}
-
-/**
  * Interface for deduction data
  */
 export interface DeductionData {
@@ -434,15 +423,15 @@ export interface FinancialEligibilityData {
   propertySet: PropertySetData[]
   clientData: {
     income: IncomeData,
-    savings: SavingsData,
+    savings: SavingsData | null,
     deductions: DeductionData
   }
   partnerData: {
     partnerIncome: IncomeData,
-    partnerSavings: SavingsData,
+    partnerSavings: SavingsData | null,
     partnerDeductions: DeductionData
   }
-  disputedSavings: DisputedSavingsData;
+  disputedSavings: SavingsData | null;
   disregards: string[];
   dependantsYoung: number;
   dependantsOld: number;
