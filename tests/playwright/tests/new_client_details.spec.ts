@@ -11,8 +11,8 @@ test('client details selected from new cases tab has correct page elements', asy
   await page.goto(getClientDetailsUrlByStatus('new'));
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
-  
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+
   const new_tag = page.getByText('New', { exact: true });
   const changeStatusButton = page.getByRole('button', { name: 'Change status' });
   const advisingMenuItem = page.getByRole('button', { name: 'Advising' });
@@ -30,12 +30,12 @@ test('client details selected from new cases tab has correct page elements', asy
   await expect(closedMenuItem).toBeVisible();
 });
 
-test('client support needs card is not shown on new case when `skype_webcam` is true', async ({ page, i18nSetup }) => {
+test('client support needs card is shown with no Support needs', async ({ page, i18nSetup }) => {
   // Navigate to the client details
   await page.goto(getClientDetailsUrlByStatus('new'));
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, {withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
 
   const new_tag = page.getByText('New', { exact: true });
   const changeStatusButton = page.getByRole('button', { name: 'Change status' });
@@ -54,8 +54,14 @@ test('client support needs card is not shown on new case when `skype_webcam` is 
   await expect(closedMenuItem).toBeVisible();
 
   // 'Jack Youngs' clientSupportNeeds data in `tests/playwright/fixtures/mock-data.json`, has been adjusted to mock this scenario
-  const clientSupportNeedsButton = page.getByRole('button', { name: 'Add client support need' });
-  await expect(clientSupportNeedsButton).toBeVisible();
+  
+const clientSupportNeedsLink = page.locator(
+  'a[href*="/client-details/add/support-need"]'
+);
+
+  await expect(clientSupportNeedsLink).toBeVisible();
+  await expect(page.getByText('No support needs')).toBeVisible();
+
 });
 
 

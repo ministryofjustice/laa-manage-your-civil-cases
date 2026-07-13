@@ -16,7 +16,7 @@ test('viewing "split this case" form should display expected elements', async ({
   await splitCasePage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(splitCasePage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(splitCasePage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse'] });
 
   // Assert the page heading is correct 
   const heading = splitCasePage.getHeadingLocator();
@@ -71,7 +71,7 @@ test('continue button should hit post split case form end point', async ({ page,
   await splitCasePage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(splitCasePage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(splitCasePage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse'] });
 
   // Select the "Generic Provider Public Law" radio option
   const radioInternalTrue = page.getByRole('radio', { name: 'Generic Provider Public Law' });
@@ -92,7 +92,7 @@ test('we should see error validations, when no data entered', async ({ page, i18
   await splitCasePage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(splitCasePage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(splitCasePage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse'] });
 
   // Click the continue button
   const continueButton = page.getByRole('button', { name: 'Continue' });

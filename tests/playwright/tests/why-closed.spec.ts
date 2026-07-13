@@ -11,7 +11,7 @@ test.describe('why-closed page', () => {
     await page.goto('/cases/PC-1922-1879/why-closed');
 
     // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse'] }); 
 
     const radioMeriOption = page.getByRole('radio', { name: 'Merits - not eligible' })
     const radioMisOosOption = page.getByRole('radio', { name: 'Client signposted to other' })

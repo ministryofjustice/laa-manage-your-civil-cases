@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures/index.js';
-import { getClientDetailsUrlByStatus, setupAuth, assertCaseDetailsHeaderPresent } from '../utils/index.js';
+import { getClientDetailsUrlByStatus, setupAuth, assertCaseDetailsHeaderPresent, assertSummaryCardData, assertSummaryCardState } from '../utils/index.js';
 
 const caseReference = 'PC-1922-1879';
 const visitUrl = `/cases/${caseReference}/confirm/remove-third-party`;
@@ -12,11 +12,11 @@ test.beforeEach(async ({ page }) => {
 test('viewing remove third party confirmation should display expected elements', async ({ page, i18nSetup }) => {
   await page.goto(clientDetailsUrl);
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
 
   await expect(page.locator('h2.govuk-heading-m')).toContainText('Remove third party?');
   await expect(page.getByRole('button', { name: 'Yes, remove' })).toBeVisible();
@@ -27,33 +27,50 @@ test('viewing remove third party confirmation should display expected elements',
 test('cancel link should navigate back to client details', async ({ page, i18nSetup }) => {
   await page.goto(clientDetailsUrl);
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
   await page.goto(visitUrl);
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
 
   await page.getByRole('button', { name: 'No, go back to client details' }).click();
   await expect(page).toHaveURL(clientDetailsUrl);
+
+  // Assert support needs summary card is visible with no data 
+  await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
+  // Assert third party details summary card is visible with data
+  await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: true, changeHref: '/client-details/change/third-party', removeHref: '/confirm/remove-third-party' });
+  // Assert the correct data is displayed in the third party data summary card
+  await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Jane Smith', 'Phone number': '07700900456', 'Email address': 'jane.smith@example.com', 'Relationship to client': 'Parent or guardian' });
 });
 
 test('confirm button should delete third party contact and redirect to client details', async ({ page, i18nSetup }) => {
-  await page.goto(clientDetailsUrl);
+
+  const caseURL = '/cases/PC-3152-7329/client-details';
+  const editThirdPartyURL = '/cases/PC-3152-7329/confirm/remove-third-party';
+  await page.goto(caseURL);
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
-  await page.goto(visitUrl);
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "George Gregory", expectedCaseRef: "PC-3152-7329", dateReceived: "8 August 2025", badgeTexts: ['BSL','Translation', 'At risk of abuse', 'Third Party'] });
+  await page.goto(editThirdPartyURL);
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "George Gregory", expectedCaseRef: "PC-3152-7329", dateReceived: "8 August 2025", badgeTexts: ['BSL','Translation', 'At risk of abuse', 'Third Party'] });
   await page.getByRole('button', { name: 'Yes, remove' }).click();
-  await expect(page).toHaveURL(clientDetailsUrl);
+  await expect(page).toHaveURL(caseURL);
+
+  // Assert support needs summary card is visible with no data 
+  await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: true, addHref: '/client-details/add/support-need' });
+  // Assert the data in the support needs summary card is correct
+  await assertSummaryCardData(page, 'Client support needs', { 'British Sign Language': 'Yes' });
+  // Assert third party details summary card is visible with data
+  await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: false, addHref: '/client-details/add/third-party' });
 });
 
 test('confirmation page shows warning text about removing third party contact', async ({ page, i18nSetup }) => {
   await page.goto(clientDetailsUrl);
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse'] });
   await page.goto(visitUrl);
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] }); 
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse'] });
   await expect(page.locator('h2.govuk-heading-m')).toContainText('Remove third party?');
   await expect(page.getByText('This will permanently delete all information about the third party.')).toBeVisible();
 });

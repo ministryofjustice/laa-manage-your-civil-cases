@@ -142,27 +142,6 @@ describe('Edit Client Support Needs Controller', () => {
       expect(redirectStub.calledWith('/cases/TEST123/client-details')).to.be.true;
     });
 
-    it('should handle validation errors and re-render form', async () => {
-      // Arrange
-      req.body = {
-        clientSupportNeeds: '' // Empty checkboxes should trigger validation
-      };
-
-      await runSchema(req as any, validateClientSupportNeeds());
-
-      // Stub a successful getClientDetails response so handleAddClientSupportNeedsErrors thinks it has info
-      apiServiceGetStub.resolves({
-        status: 'success'
-      });
-
-      // Act
-      await postEditClientSupportNeeds(req as RequestWithMiddleware, res as Response, next);
-
-      // Assert - Should configure form response with errors, not redirect
-      expect(redirectStub.called).to.be.false;
-      expect(renderStub.calledWith('case_details/client_support_needs/change-client-support-needs.njk')).to.be.true;
-    });
-
     it('should set no change banner and redirect when no changes are made', async () => {
 
       req.session!.clientSupportNeedsOriginal = {

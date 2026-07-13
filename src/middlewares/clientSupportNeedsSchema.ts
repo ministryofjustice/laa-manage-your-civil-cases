@@ -7,18 +7,6 @@ import { TypedValidationError, t, createSessionChangeDetectionValidator, normali
  * Contains all validation rules for client support needs form fields.
  */
 const clientSupportNeedsBaseSchema = {
-  clientSupportNeeds: {
-    notEmpty: {
-      /**
-       * Custom error message for empty client supports needs checkbox
-       * @returns {TypedValidationError} Returns TypedValidationError with structured error data
-       */
-      errorMessage: () => new TypedValidationError({
-        summaryMessage: t('forms.clientDetails.clientSupportNeeds.validationError.notEmpty'),
-        inlineMessage: t('forms.clientDetails.clientSupportNeeds.validationError.notEmpty')
-      })
-    },
-  },
   languageSupportNeeds: {
     trim: true,
     custom: {
@@ -74,7 +62,6 @@ const clientSupportNeedsBaseSchema = {
      */
     errorMessage: (value: string) => {
       const MAX_LENGTH = 255;
-
       // Too long
       if (typeof value === "string" && value.trim().length > MAX_LENGTH) {
         return new TypedValidationError({
@@ -92,8 +79,38 @@ const clientSupportNeedsBaseSchema = {
   },
 };
 
+
+/**
+ * Extended schema for ADD (includes required checkbox validation)
+ */
+const clientSupportNeedsAddSchema = {
+  ...clientSupportNeedsBaseSchema,
+
+  clientSupportNeeds: {
+    notEmpty: {
+      /**
+       * Adds a check for empty fields when a user is adding support needs
+       * @returns {TypedValidationError} Returns TypedValidationError with structured error data
+       */
+      errorMessage: () =>
+        new TypedValidationError({
+          summaryMessage: t('forms.clientDetails.clientSupportNeeds.validationError.notEmpty'),
+          inlineMessage: t('forms.clientDetails.clientSupportNeeds.validationError.notEmpty'),
+        }),
+    },
+  },
+};
+
 /**
  * Validation middleware when user adds client support needs form.
+ * @returns {Error} Validation schema for express-validator
+ */
+export const validateClientSupportNeedsAdd = (): ReturnType<typeof checkSchema> =>
+  checkSchema(clientSupportNeedsAddSchema);
+
+
+/**
+ * Validation middleware when user edits client support needs form.
  * @returns {Error} Validation schema for express-validator
  */
 export const validateClientSupportNeeds = (): ReturnType<typeof checkSchema> =>

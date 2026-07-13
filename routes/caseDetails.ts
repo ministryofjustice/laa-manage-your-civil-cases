@@ -4,7 +4,7 @@ import { handleClientDetailsTab } from '#src/scripts/controllers/clientDetailsCo
 import { acceptCase, completeCase, closeCase, getCloseCaseForm, getPendingCaseForm, pendingCase, getReopenCaseForm, reopenCompletedCase, reopenClosedCase } from '#src/scripts/controllers/caseStateController.js';
 import { handleCaseHistoryTab } from '#src/scripts/controllers/caseHistoryController.js';
 import { handleCaseDetailsTab, saveProviderNote } from '#src/scripts/controllers/caseDetailsController.js';
-import { getRemoveThirdPartyConfirmation, deleteThirdParty, getRemoveSupportNeedsConfirmation, deleteClientSupportNeeds, getChangeCategoryOfLaw, submitChangeCategoryOfLawForm } from '#src/scripts/controllers/index.js';
+import { getRemoveThirdPartyConfirmation, deleteThirdParty, getChangeCategoryOfLaw, submitChangeCategoryOfLawForm } from '#src/scripts/controllers/index.js';
 import { getOperatorFeedbackForm, submitOperatorFeedback, getDoYouWantToGiveFeedbackForm, submitDoYouWantToGiveFeedbackForm } from '#src/scripts/controllers/operatorFeedbackController.js';
 import { getSplitThisCaseForm, submitSplitThisCaseForm, getAboutNewCaseForm, submitAboutNewCaseForm, getCheckSplitCaseAnswersForm, submitCheckSplitCaseAnswersForm, setSplitCaseCacheSettings } from '#src/scripts/controllers/splitCaseController.js';
 import { validateReopenCase, validateCloseCase, validatePendingCase, validateOperatorFeedback, validateProviderNote, fetchClientDetails, validateGiveFeedback, validateSplitThisCase, validateAboutNewCase, validateChangeCategoryOfLaw } from '#src/middlewares/indexSchema.js';
@@ -46,16 +46,6 @@ router.get('/:caseReference/confirm/remove-third-party', fetchClientDetails, (re
 /* DELETE third party contact. */
 router.post('/:caseReference/confirm/remove-third-party', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   await deleteThirdParty(req, res, next);
-});
-
-/* GET confirmation page for removing client support needs. */
-router.get('/:caseReference/confirm/remove-support-need', fetchClientDetails, (req: Request, res: Response, next: NextFunction): void => {
-  getRemoveSupportNeedsConfirmation(req, res, next);
-});
-
-/* DELETE client support needs. */
-router.post('/:caseReference/confirm/remove-support-need', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  await deleteClientSupportNeeds(req, res, next);
 });
 
 /* POST accept case (change status to advising). */
