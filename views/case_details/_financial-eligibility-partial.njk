@@ -34,36 +34,43 @@
       }, {
         text: under17Text
       }
-    ],
-    [
-      {
-        text: t("common.financialEligibility.details.under18RegularPayment")
-      }, {
-        text: under18RegularPayment
-      }
-    ],
-    [
-      {
-        text: t("common.financialEligibility.details.under18HasValuables")
-      }, {
-        text: under18HasValuables
-      }
-    ],
-    [
-      {
-        text: t("common.financialEligibility.details.hasPartner")
-      }, {
-        text: partnerText
-      }
-    ],
-    [
-      {
-        text: t("common.financialEligibility.details.age60OrOver")
-      }, {
-        text: over60Text
-      }
     ]
   ] %}
+  {% if financialEligibility.under18passportedBenefits %}
+    {% set rows = rows.concat([
+      [
+        {
+          text: t("common.financialEligibility.details.under18RegularPayment")
+        }, {
+          text: under18RegularPayment
+        }
+      ], 
+      [
+        {
+          text: t("common.financialEligibility.details.under18HasValuables")
+        }, {
+          text: under18HasValuables
+        }
+      ]
+    ]) %} 
+  {% else %}
+    {% set rows = rows.concat([
+      [
+        {
+          text: t("common.financialEligibility.details.hasPartner")
+        }, {
+          text: partnerText
+        }
+      ],
+      [
+        {
+          text: t("common.financialEligibility.details.age60OrOver")
+        }, {
+          text: over60Text
+        }
+      ]
+    ]) %} 
+  {% endif %}
 
   {{ govukTable({
       caption: "About you",
@@ -653,38 +660,86 @@
   <div>{{ editAssessmentButtonHtml | safe }}</div>
 {% endset -%}
 
+{% set tabs = [
+  {
+    label: "Details",
+    id: "details",
+    panel: {
+      html: detailsHtml
+    }
+  },
+  {
+    label: "Finances",
+    id: "finances",
+    panel: {
+      html: financesHtml
+    }
+  },
+  {
+    label: "Income",
+    id: "income",
+    panel: {
+      html: incomeHtml
+    }
+  },
+  {
+    label: "Expenses",
+    id: "expenses",
+    panel: {
+      html: expensesHtml
+    }
+  }
+] %}
+
+{% if financialEligibility.under18passportedBenefits %}
+
+  {% set tabs = tabs.slice(0, 1) %}
+
+{% elseif financialEligibility.passportedBenefits %}
+
+  {% set tabs = tabs.slice(0, 2) %}
+
+{% endif %}
+
 <h2 class="govuk-heading-m">{{ t('pages.caseDetails.tabs.financialEligibility') }}</h2>
 
-{{ govukTabs({
+{% if financialEligibility.hasPassportedProceedingsLetter %}
+
+  <p class="govuk-body govuk-!-font-weight-bold">
+    {{ t('common.financialEligibility.message.noMeansTestTitle') }}
+  </p>
+
+  <p class="govuk-body">
+    {{ t('common.financialEligibility.message.noMeansTestBody') }}
+  </p>
+
+{% else %}
+
+  {% if financialEligibility.under18passportedBenefits %}
+
+    <p class="govuk-body govuk-!-font-weight-bold">
+      {{ t('common.financialEligibility.message.fullTestNotRequiredTitle') }}
+    </p>
+
+    <p class="govuk-body">
+      {{ t('common.financialEligibility.message.fullTestNotRequiredBody') }}
+    </p>
+
+  {% elseif financialEligibility.passportedBenefits %}
+
+    <p class="govuk-body govuk-!-font-weight-bold">
+      {{ t('common.financialEligibility.message.incomeAssessmentNotRequiredTitle') }}
+    </p>
+
+    <p class="govuk-body">
+      {{ t('common.financialEligibility.message.incomeAssessmentNotRequiredBody') }}
+    </p>
+
+  {% endif %}
+
+  {{ govukTabs({
     id: "financial-eligibility-tabs",
-    items: [
-      {
-        label: "Details",
-        id: "details",
-        panel: {
-            html: detailsHtml
-        }
-      },
-      {
-        label: "Finances",
-        id: "finances",
-        panel: {
-            html: financesHtml
-        }
-      },
-      {
-        label: "Income",
-        id: "income",
-        panel: {
-            html: incomeHtml
-        }
-      },
-      {
-        label: "Expenses",
-        id: "expenses",
-        panel: {
-             html: expensesHtml
-        }
-      }
-    ]
-}) }}
+    items: tabs
+  }) }}
+
+{% endif %}

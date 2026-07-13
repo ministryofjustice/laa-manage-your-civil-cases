@@ -447,7 +447,10 @@ export interface FinancialEligibilityData {
   dependantsYoung: number;
   dependantsOld: number;
   under18RegularPayment?: boolean;
-  under18HasValuables?: boolean
+  under18HasValuables?: boolean;
+  hasPassportedProceedingsLetter: boolean;
+  passportedBenefits: boolean;
+  under18passportedBenefits: boolean;
 }
 
 /**
