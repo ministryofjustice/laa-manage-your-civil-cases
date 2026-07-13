@@ -447,7 +447,8 @@ export interface FinancialEligibilityData {
   dependantsYoung: number;
   dependantsOld: number;
   under18RegularPayment?: boolean;
-  under18HasValuables?: boolean
+  under18HasValuables?: boolean;
+  state: String;
 }
 
 /**

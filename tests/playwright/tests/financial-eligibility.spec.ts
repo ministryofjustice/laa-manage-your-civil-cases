@@ -1,4 +1,3 @@
-
 import { test, expect } from '../fixtures/index.js';
 import { setupAuth, logout, assertCaseDetailsHeaderPresent, expectPropertyTableRows, expectCaptionTableRows } from '../utils/index.js';
 import { ClientDetailsPage } from '../pages/index.js';
@@ -69,9 +68,9 @@ test.describe('Details tab', () => {
     await page.getByRole('link', { name: 'Financial eligibility' }).click();
 
     // Verify header information
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party']});
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party'] });
 
-     // Assert the correct data is displayed in the about you section
+    // Assert the correct data is displayed in the about you section
     await expectCaptionTableRows(page, 'About you', {
       'Are you aged 17 or under?': 'No',
       'Do you have a partner?': 'No',
@@ -210,7 +209,7 @@ test.describe('Finances tab', () => {
     await page.getByRole('tab', { name: 'Finances' }).click();
 
     // Verify header information
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party']});
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party'] });
 
     // Assert the Properties heading is visible.
     await expect(page.getByRole('heading', { name: 'Properties' })).toBeVisible();
@@ -341,9 +340,9 @@ test.describe('Income tab', () => {
     await page.getByRole('tab', { name: 'Income' }).click();
 
     // Verify header information
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party']});
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party'] });
 
-     // Assert the your income heading is visible. 
+    // Assert the your income heading is visible. 
     await expect(page.locator('caption').filter({ hasText: 'Your income' })).toBeVisible();
     // Assert the dependants heading is visible.
     await expect(page.locator('caption').filter({ hasText: 'Dependants' })).toBeVisible();
@@ -443,9 +442,9 @@ test.describe('Expenses tab', () => {
     await page.getByRole('tab', { name: 'Expenses' }).click();
 
     // Verify header information
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party']});
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party'] });
 
-     // Assert the your expenses heading is visible. 
+    // Assert the your expenses heading is visible. 
     await expect(page.locator('caption').filter({ hasText: 'Your expenses' })).toBeVisible();
 
     // Assert the correct data is displayed in the expenses table.
@@ -457,5 +456,87 @@ test.describe('Expenses tab', () => {
       'Are you currently paying towards legal aid for criminal defence? If so, how much have you paid in the last calendar month?': 'Not provided'
     });
     await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+  });
+});
+
+test.describe('Financial Eligibility result', () => {
+  test.beforeEach(async ({ page }) => {
+    await setupAuth(page);
+  });
+   test('should show success banner on every tab of financial eligibility when state is yes', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1879');
+    // Navingate to client details page
+    await clientDetails.navigate();
+    const alert = page.locator('.moj-alert--success');
+
+    // Click the financial eligiblity tab
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    // Assert the success warning is displayed when state is yes
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText('Client qualifies for civil legal aid');
+     // click the finances section
+    await page.getByRole('tab', { name: 'Finances' }).click();
+    // Assert the success warning is displayed when state is yes
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText('Client qualifies for civil legal aid');
+    // click the income section
+    await page.getByRole('tab', { name: 'Income' }).click();
+    // Assert the success warning is displayed when state is yes
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText('Client qualifies for civil legal aid');
+      // click the expenses section
+    await page.getByRole('tab', { name: 'Expenses' }).click();
+    // Assert the success warning is displayed when state is yes
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText('Client qualifies for civil legal aid');
+  });
+   test('should show warning banner on every tab of financial eligibility when state is no', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1122-1349');
+    // Navingate to client details page
+    await clientDetails.navigate();
+
+    // Click the financial eligiblity tab
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    // Assert the warning is displayed when state is no
+    await expect(page.getByText('Client does not qualify for legal aid')).toBeVisible();
+     // click the finances section
+    await page.getByRole('tab', { name: 'Finances' }).click();
+    // Assert the warning is displayed when state is no
+    await expect(page.getByText('Client does not qualify for legal aid')).toBeVisible();
+    // click the income section
+    await page.getByRole('tab', { name: 'Income' }).click();
+    // Assert the warning is displayed when state is no
+    await expect(page.getByText('Client does not qualify for legal aid')).toBeVisible();
+      // click the expenses section
+    await page.getByRole('tab', { name: 'Expenses' }).click();
+    // Assert the warning is displayed when state is no
+    await expect(page.getByText('Client does not qualify for legal aid')).toBeVisible();
+  });
+  test('should show information banner on every tab of financial eligibility when state is unknown', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1977-1241');
+    // Navingate to client details page
+    await clientDetails.navigate();
+    const alert = page.locator('.moj-alert--information');
+
+    // Click the financial eligiblity tab
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    // Assert the information warning is displayed when state is unknown
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText('Select edit assessment to view required information');
+    // click the finances section
+    await page.getByRole('tab', { name: 'Finances' }).click();
+    // Assert the information warning is displayed when state is unknown
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText('Select edit assessment to view required information');
+    // click the income section
+    await page.getByRole('tab', { name: 'Income' }).click();
+    // Assert the information warning is displayed when state is unknown
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText('Select edit assessment to view required information');
+    // click the expenses section
+    await page.getByRole('tab', { name: 'Expenses' }).click();
+    // Assert the information warning is displayed when state is unknown
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText('Select edit assessment to view required information');
   });
 });

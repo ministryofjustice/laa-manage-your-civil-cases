@@ -1,17 +1,4 @@
-/**
- * Client Details Controller Tests
- * 
- * Tests the Express.js controller for individual case detail viewing functionality.
- * Covers case detail page routing and data presentation including:
- * - Tab-based navigation handling (details, notes, history)
- * - API integration for case-specific data retrieval
- * - Error handling and user feedback
- * - Template rendering with case context
- * 
- * Testing Level: Unit (Controller Layer)
- * Component: Express.js Client Details Controllers
- * Dependencies: apiService, case detail templates
- */
+ /* Dependencies: apiService, case detail templates */
 
 import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
