@@ -47,11 +47,12 @@ export function transformHistoryLogToTimelineItem(log: ClientHistoryLogItem, t: 
   byline: { text: string };
 } {
   const outcomeDescription = log.code !== '' ? t(`common.outcomeCode.${log.code}`) : '';
+  const bespokeLabel = ['MERI', 'MIS', 'MIS-OOS', 'MIS-MEANS', 'COI', 'DUPL', 'CLOT'].includes(log.code) ? `Case closed: ${outcomeDescription}` : outcomeDescription;
   const filteredNotes = log.code !== 'MT_CHANGED' && log.code !== 'MT_CREATED' ? log.notes : '';
 
   return {
     label: {
-      text: outcomeDescription
+      text: bespokeLabel
     },
     text: filteredNotes,
     datetime: {

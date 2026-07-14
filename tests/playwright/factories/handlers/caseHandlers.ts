@@ -245,6 +245,16 @@ function createGetCaseHistoryAndLogsHandler(
           level: '29',
           timer: null,
           patch: null
+        },
+        {
+          code: 'MIS-OOS',
+          created_by: 'test_operator',
+          created: '2025-12-09T17:10:11.530Z',
+          notes: '',
+          type: 'outcome',
+          level: '29',
+          timer: null,
+          patch: null
         }
       ]);
     }
