@@ -459,3 +459,84 @@ test.describe('Expenses tab', () => {
     await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
   });
 });
+  test.describe('Financial Eligibility result', () => {
+  test.beforeEach(async ({ page }) => {
+    await setupAuth(page);
+  });
+   test('should show success banner on every tab of financial eligibility when state is yes', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1879');
+    // Navingate to client details page
+    await clientDetails.navigate();
+    const alert = page.locator('.moj-alert--success');
+
+    // Click the financial eligiblity tab
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    // Assert the success warning is displayed when state is yes
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText('Client qualifies for civil legal aid');
+     // click the finances section
+    await page.getByRole('tab', { name: 'Finances' }).click();
+    // Assert the success warning is displayed when state is yes
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText('Client qualifies for civil legal aid');
+    // click the income section
+    await page.getByRole('tab', { name: 'Income' }).click();
+    // Assert the success warning is displayed when state is yes
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText('Client qualifies for civil legal aid');
+      // click the expenses section
+    await page.getByRole('tab', { name: 'Expenses' }).click();
+    // Assert the success warning is displayed when state is yes
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText('Client qualifies for civil legal aid');
+  });
+   test('should show warning banner on every tab of financial eligibility when state is no', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1122-1349');
+    // Navingate to client details page
+    await clientDetails.navigate();
+
+    // Click the financial eligiblity tab
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    // Assert the warning is displayed when state is no
+    await expect(page.getByText('Client does not qualify for legal aid')).toBeVisible();
+     // click the finances section
+    await page.getByRole('tab', { name: 'Finances' }).click();
+    // Assert the warning is displayed when state is no
+    await expect(page.getByText('Client does not qualify for legal aid')).toBeVisible();
+    // click the income section
+    await page.getByRole('tab', { name: 'Income' }).click();
+    // Assert the warning is displayed when state is no
+    await expect(page.getByText('Client does not qualify for legal aid')).toBeVisible();
+      // click the expenses section
+    await page.getByRole('tab', { name: 'Expenses' }).click();
+    // Assert the warning is displayed when state is no
+    await expect(page.getByText('Client does not qualify for legal aid')).toBeVisible();
+  });
+  test('should show information banner on every tab of financial eligibility when state is unknown', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1977-1241');
+    // Navingate to client details page
+    await clientDetails.navigate();
+    const alert = page.locator('.moj-alert--information');
+
+    // Click the financial eligiblity tab
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    // Assert the information warning is displayed when state is unknown
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText('Select edit assessment to view required information');
+    // click the finances section
+    await page.getByRole('tab', { name: 'Finances' }).click();
+    // Assert the information warning is displayed when state is unknown
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText('Select edit assessment to view required information');
+    // click the income section
+    await page.getByRole('tab', { name: 'Income' }).click();
+    // Assert the information warning is displayed when state is unknown
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText('Select edit assessment to view required information');
+    // click the expenses section
+    await page.getByRole('tab', { name: 'Expenses' }).click();
+    // Assert the information warning is displayed when state is unknown
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText('Select edit assessment to view required information');
+  });
+});

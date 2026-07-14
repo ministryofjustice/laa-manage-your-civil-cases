@@ -44,7 +44,7 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
     })) : [];
   const under18RegularPayment = Boolean(item.under_18_receive_regular_payment);
   const under18HasValuables = Boolean(item.under_18_has_valuables);
-  console.log("disregards", disregards);
+  const state = String(item.state);
 
   return {
     hasPartner,
@@ -59,7 +59,8 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
     dependantsOld,
     under18RegularPayment,
     under18HasValuables,
-    disputedSavings
+    disputedSavings,
+    state
   };
 }
 

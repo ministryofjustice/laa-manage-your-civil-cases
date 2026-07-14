@@ -1,0 +1,24 @@
+{% from "moj/components/alert/macro.njk" import mojAlert %}
+{% macro financialEligibilityAlert(state) %}
+{% if state == "yes" %}
+    {{ mojAlert({
+      variant: "success",
+      text: "Client qualifies for civil legal aid"
+    }) }}
+
+  {% elseif state == "no" %}
+    {{ mojAlert({
+      variant: "warning",
+      text: "Client does not qualify for legal aid"
+    }) }}
+
+  {% elseif state == "unknown" %}
+    {{ mojAlert({
+      variant: "information",
+       title: "Means test incomplete",
+      showTitleAsHeading: true,
+      text: "Select edit assessment to view required information"
+    }) }}
+
+  {% endif %}
+{% endmacro %}
