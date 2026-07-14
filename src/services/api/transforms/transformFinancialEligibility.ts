@@ -45,6 +45,9 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
   const under18RegularPayment = Boolean(item.under_18_receive_regular_payment);
   const under18HasValuables = Boolean(item.under_18_has_valuables);
   const state = String(item.state);
+  const hasPassportedProceedingsLetter = Boolean(item.has_passported_proceedings_letter);
+  const passportedBenefits = Boolean(item.on_passported_benefits);
+  const under18passportedBenefits = Boolean(item.under_18_passported);
 
   return {
     hasPartner,
@@ -60,7 +63,10 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
     under18RegularPayment,
     under18HasValuables,
     disputedSavings,
-    state
+    state,
+    hasPassportedProceedingsLetter,
+    passportedBenefits,
+    under18passportedBenefits
   };
 }
 
@@ -69,9 +75,9 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
  * @param {unknown} savings savings data to be formatted
  * @returns {SavingsData} formatted savings data
  */
-function formatSavingsData(savings: unknown): SavingsData {
+function formatSavingsData(savings: unknown): SavingsData | null {
   if (!isRecord(savings)) {
-    return {} as SavingsData;
+    return null;
   }
   return {
     bankBalance: convertPenceToPounds(Number(savings.bank_balance ?? 0)),

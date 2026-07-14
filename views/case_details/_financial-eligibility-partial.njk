@@ -36,94 +36,100 @@
       }, {
         text: under17Text
       }
-    ],
-    [
-      {
-        text: t("common.financialEligibility.details.under18RegularPayment")
-      }, {
-        text: under18RegularPayment
-      }
-    ],
-    [
-      {
-        text: t("common.financialEligibility.details.under18HasValuables")
-      }, {
-        text: under18HasValuables
-      }
-    ],
-    [
-      {
-        text: t("common.financialEligibility.details.hasPartner")
-      }, {
-        text: partnerText
-      }
-    ],
-    [
-      {
-        text: t("common.financialEligibility.details.age60OrOver")
-      }, {
-        text: over60Text
-      }
     ]
   ] %}
-
-  {{ govukTable({
-      caption: "About you",
-      captionClasses: "govuk-table__caption--m",
-      firstCellIsHeader: true,
-      classes: "eligibility-table",
-      rows: rows
-    }) }}
-
-  {{ govukTable({
-      caption: "Benefits",
-      captionClasses: "govuk-table__caption--m",
-      firstCellIsHeader: true,
-      classes: "eligibility-table",
-      rows: [
-        [
-          {
-            text: t("common.financialEligibility.details.universalCredit")
-          },
-          {
-            text: universalCredit
-          }
-        ],
-        [
-          {
-            text: t("common.financialEligibility.details.incomeSupport")
-          },
-          {
-            text: incomeSupport
-          }
-        ],
-        [
-          {
-            text: t("common.financialEligibility.details.incomeBasedJSA")
-          },
-          {
-            text: jobSeekers
-          }
-        ],
-        [
-          {
-            text: t("common.financialEligibility.details.pensionCredit")
-          },
-          {
-            text: pensionCredit
-          }
-        ],
-        [
-          {
-            text: t("common.financialEligibility.details.employmentSupport")
-          },
-          {
-            text: employmentSupport
-          }
-        ]
+  {% if financialEligibility.under18passportedBenefits %}
+    {% set rows = rows.concat([
+      [
+        {
+          text: t("common.financialEligibility.details.under18RegularPayment")
+        }, {
+          text: under18RegularPayment
+        }
+      ], 
+      [
+        {
+          text: t("common.financialEligibility.details.under18HasValuables")
+        }, {
+          text: under18HasValuables
+        }
       ]
-    }) }}
-
+    ]) %} 
+  {% else %}
+    {% set rows = rows.concat([
+      [
+        {
+          text: t("common.financialEligibility.details.hasPartner")
+        }, {
+          text: partnerText
+        }
+      ],
+      [
+        {
+          text: t("common.financialEligibility.details.age60OrOver")
+        }, {
+          text: over60Text
+        }
+      ]
+    ]) %} 
+  {% endif %}
+  {{ govukTable({
+    caption: "About you",
+    captionClasses: "govuk-table__caption--m",
+    firstCellIsHeader: true,
+    classes: "eligibility-table",
+    rows: rows
+  }) }}
+  {% if not financialEligibility.under18passportedBenefits %}
+    {{ govukTable({
+        caption: "Benefits",
+        captionClasses: "govuk-table__caption--m",
+        firstCellIsHeader: true,
+        classes: "eligibility-table",
+        rows: [
+          [
+            {
+              text: t("common.financialEligibility.details.universalCredit")
+            },
+            {
+              text: universalCredit
+            }
+          ],
+          [
+            {
+              text: t("common.financialEligibility.details.incomeSupport")
+            },
+            {
+              text: incomeSupport
+            }
+          ],
+          [
+            {
+              text: t("common.financialEligibility.details.incomeBasedJSA")
+            },
+            {
+              text: jobSeekers
+            }
+          ],
+          [
+            {
+              text: t("common.financialEligibility.details.pensionCredit")
+            },
+            {
+              text: pensionCredit
+            }
+          ],
+          [
+            {
+              text: t("common.financialEligibility.details.employmentSupport")
+            },
+            {
+            text: employmentSupport
+           }
+          ]
+        ]
+      }) }}
+  {% endif %}
   <div>{{ editAssessmentButtonHtml | safe }}</div>
 {% endset -%}
 
@@ -145,32 +151,40 @@
         {% endif %}
       </h3>
 
+      {% set propertyRows = [
+        [
+          { text: t("common.financialEligibility.finances.propertyValue") },
+          { text: (property.value | formatFinancialData) }
+        ],
+        [
+          { text: t("common.financialEligibility.finances.mortgageLeft") },
+          { text: (property.mortgageLeft | formatFinancialData) }
+        ],
+        [
+          { text: t("common.financialEligibility.finances.mainProperty") },
+          { text: "Yes" if property.main else "No" }
+        ],
+        [
+          { text: t("common.financialEligibility.finances.propertyShare") },
+          { text: property.share + "%" }
+        ]
+      ] %}
+      
+      {% if financialEligibility.disputedSavings is not null %}
+        {% set propertyRows = propertyRows.concat([
+          [
+            { text: t("common.financialEligibility.finances.disputedProperty") },
+            { text: "Yes" if property.disputed else "No" }
+          ]
+        ]) %}
+      {% endif %}
+
       {{ govukTable({
         firstCellIsHeader: true,
         classes: "eligibility-table",
-        rows: [
-          [
-            { text: t("common.financialEligibility.finances.propertyValue") },
-            { text: (property.value | formatFinancialData) }
-          ],
-          [
-            { text: t("common.financialEligibility.finances.mortgageLeft") },
-            { text: (property.mortgageLeft | formatFinancialData) }
-          ],
-          [
-            { text: t("common.financialEligibility.finances.mainProperty") },
-            { text: "Yes" if property.main else "No" }
-          ],
-          [
-            { text: t("common.financialEligibility.finances.propertyShare") },
-            { text: property.share + "%" }
-          ],
-          [
-            { text: t("common.financialEligibility.finances.disputedProperty")}, 
-            { text: "Yes" if property.disputed else "No" }
-          ]
-        ]
+        rows: propertyRows
       }) }}
+
     {% endfor %}
   {% else %}
     <p class="govuk-body">No property data</p>
@@ -655,41 +669,89 @@
   <div>{{ editAssessmentButtonHtml | safe }}</div>
 {% endset -%}
 
+{% set tabs = [
+  {
+    label: "Details",
+    id: "details",
+    panel: {
+      html: detailsHtml
+    }
+  },
+  {
+    label: "Finances",
+    id: "finances",
+    panel: {
+      html: financesHtml
+    }
+  },
+  {
+    label: "Income",
+    id: "income",
+    panel: {
+      html: incomeHtml
+    }
+  },
+  {
+    label: "Expenses",
+    id: "expenses",
+    panel: {
+      html: expensesHtml
+    }
+  }
+] %}
+
+{% if financialEligibility.under18passportedBenefits %}
+
+  {% set tabs = tabs.slice(0, 1) %}
+
+{% elseif financialEligibility.passportedBenefits %}
+
+  {% set tabs = tabs.slice(0, 2) %}
+
+{% endif %}
+
 <h2 class="govuk-heading-m">{{ t('pages.caseDetails.tabs.financialEligibility') }}</h2>
 <div class="financial-eligibility-alert">
 {{ financialEligibilityAlert(financialEligibility.state) }}
 </div>
 
-{{ govukTabs({
+{% if financialEligibility.hasPassportedProceedingsLetter %}
+
+  <p class="govuk-body govuk-!-font-weight-bold">
+    {{ t('common.financialEligibility.message.noMeansTestTitle') }}
+  </p>
+
+  <p class="govuk-body">
+    {{ t('common.financialEligibility.message.noMeansTestBody') }}
+  </p>
+
+{% else %}
+
+  {% if financialEligibility.under18passportedBenefits %}
+
+    <p class="govuk-body govuk-!-font-weight-bold">
+      {{ t('common.financialEligibility.message.fullTestNotRequiredTitle') }}
+    </p>
+
+    <p class="govuk-body">
+      {{ t('common.financialEligibility.message.fullTestNotRequiredBody') }}
+    </p>
+
+  {% elseif financialEligibility.passportedBenefits %}
+
+    <p class="govuk-body govuk-!-font-weight-bold">
+      {{ t('common.financialEligibility.message.incomeAssessmentNotRequiredTitle') }}
+    </p>
+
+    <p class="govuk-body">
+      {{ t('common.financialEligibility.message.incomeAssessmentNotRequiredBody') }}
+    </p>
+
+  {% endif %}
+
+  {{ govukTabs({
     id: "financial-eligibility-tabs",
-    items: [
-      {
-        label: "Details",
-        id: "details",
-        panel: {
-            html: detailsHtml
-        }
-      },
-      {
-        label: "Finances",
-        id: "finances",
-        panel: {
-            html: financesHtml
-        }
-      },
-      {
-        label: "Income",
-        id: "income",
-        panel: {
-            html: incomeHtml
-        }
-      },
-      {
-        label: "Expenses",
-        id: "expenses",
-        panel: {
-             html: expensesHtml
-        }
-      }
-    ]
-}) }}
+    items: tabs
+  }) }}
+
+{% endif %}

@@ -249,6 +249,14 @@
         "warning": "Client does not qualify for legal aid",
         "information": "Review the financial eligibility information and check if you can update any marked 'not provided'",
         "informationTitle": "Means test incomplete"
+      },
+      "message": {
+        "noMeansTestTitle": "No means test required",
+        "noMeansTestBody": "The means of the foster parents or approved prospective adoptive parents are exempt from the determination of financial eligibility. See regulation 5 of the Civil Legal Aid (Financial Resources and Payment for Services) Regulations 2013, as amended by the Criminal and Civil Legal Aid (Amendment) Regulations 2023 for more information.",
+        "fullTestNotRequiredTitle": "Full means test not required",
+        "fullTestNotRequiredBody": "Client is under 18, they don't have assets worth £2,500 or more, and they don't get regular income. This makes them eligible without a full means test.",
+        "incomeAssessmentNotRequiredTitle": "Income assessment not required",
+        "incomeAssessmentNotRequiredBody": "Client receives a passporting benefit so they will not need an income assessment."
       }
     }
   },
