@@ -345,3 +345,116 @@ export interface SplitCaseSubmissionApiResponse {
   status: 'success' | 'error';
   message?: string;
 }
+
+/**
+ * Interface for money per interval object 
+ */
+export interface MoneyPerInterval {
+  amount: number | null,
+  time: 'per_month' | 'per_year' | 'per_week' | 'per_4week' | 'per_2week' | null 
+}
+
+/**
+ * Interface for savings data
+ */
+export interface SavingsData {
+  bankBalance: number,
+  investmentBalance: number,
+  assetBalance: number,
+  creditBalance: number,
+  total: number
+}
+
+/**
+ * Interface for disputed savings data
+ */
+export interface DisputedSavingsData {
+  bankBalance: number,
+  investmentBalance: number,
+  assetBalance: number,
+  creditBalance: number,
+  total: number
+}
+
+/**
+ * Interface for deduction data
+ */
+export interface DeductionData {
+  incomeTax: MoneyPerInterval,
+  nationalInsurance: MoneyPerInterval,
+  maintenance: MoneyPerInterval,
+  childcare: MoneyPerInterval,
+  mortgage: MoneyPerInterval,
+  rent: MoneyPerInterval,
+  criminalContributions: MoneyPerInterval,
+  total: number
+}
+
+/**
+ * Interface for income data 
+ */
+export interface IncomeData {
+  earnings: MoneyPerInterval,
+  selfEmploymentDrawings: MoneyPerInterval,
+  benefits: MoneyPerInterval,
+  taxCredits: MoneyPerInterval,
+  childBenefit: MoneyPerInterval,
+  maintenanceReceived: MoneyPerInterval,
+  pension: MoneyPerInterval,
+  otherIncome: MoneyPerInterval,
+  selfEmployed: boolean,
+  total: number
+}
+/**
+ * Interface for property data
+ */
+export interface PropertySetData {
+  value: number,
+  mortgageLeft: number,
+  share: number,
+  disputed: boolean,
+  main: boolean
+}
+
+/**
+ * Interface for financial eligiblity data
+ */
+export interface FinancialEligibilityData {
+  hasPartner: boolean;
+  isUnder17: boolean;
+  isOver60: boolean;
+
+  specificBenefits: {
+    pensionCredit: boolean;
+    jobSeekers: boolean;
+    employmentSupport: boolean;
+    universalCredit: boolean;
+    incomeSupport: boolean;
+  }
+  propertySet: PropertySetData[]
+  clientData: {
+    income: IncomeData,
+    savings: SavingsData,
+    deductions: DeductionData
+  }
+  partnerData: {
+    partnerIncome: IncomeData,
+    partnerSavings: SavingsData,
+    partnerDeductions: DeductionData
+  }
+  disputedSavings: DisputedSavingsData;
+  disregards: string[];
+  dependantsYoung: number;
+  dependantsOld: number;
+  under18RegularPayment?: boolean;
+  under18HasValuables?: boolean
+}
+
+/**
+ * Response type for financial eligibility data
+ */
+export interface GetFinancialEligibilityApiResponse {
+  data: FinancialEligibilityData | null;
+  status: 'success' | 'error';
+  message?: string;
+}

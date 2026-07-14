@@ -4,7 +4,7 @@ import { handleClientDetailsTab } from '#src/scripts/controllers/clientDetailsCo
 import { acceptCase, completeCase, closeCase, getCloseCaseForm, getPendingCaseForm, pendingCase, getReopenCaseForm, reopenCompletedCase, reopenClosedCase } from '#src/scripts/controllers/caseStateController.js';
 import { handleCaseHistoryTab } from '#src/scripts/controllers/caseHistoryController.js';
 import { handleCaseDetailsTab, saveProviderNote } from '#src/scripts/controllers/caseDetailsController.js';
-import { getRemoveThirdPartyConfirmation, deleteThirdParty, getChangeCategoryOfLaw, submitChangeCategoryOfLawForm } from '#src/scripts/controllers/index.js';
+import { getRemoveThirdPartyConfirmation, deleteThirdParty, getChangeCategoryOfLaw, submitChangeCategoryOfLawForm, handleFinancialEligibilityTab } from '#src/scripts/controllers/index.js';
 import { getOperatorFeedbackForm, submitOperatorFeedback, getDoYouWantToGiveFeedbackForm, submitDoYouWantToGiveFeedbackForm } from '#src/scripts/controllers/operatorFeedbackController.js';
 import { getSplitThisCaseForm, submitSplitThisCaseForm, getAboutNewCaseForm, submitAboutNewCaseForm, getCheckSplitCaseAnswersForm, submitCheckSplitCaseAnswersForm, setSplitCaseCacheSettings } from '#src/scripts/controllers/splitCaseController.js';
 import { validateReopenCase, validateCloseCase, validatePendingCase, validateOperatorFeedback, validateProviderNote, fetchClientDetails, validateGiveFeedback, validateSplitThisCase, validateAboutNewCase, validateChangeCategoryOfLaw } from '#src/middlewares/indexSchema.js';
@@ -29,8 +29,8 @@ router.post('/:caseReference/case-details', fetchClientDetails, validateProvider
 });
 
 /* GET financial eligibility details for a specific case. */
-router.get('/:caseReference/financial-eligibility', fetchClientDetails, (req: Request, res: Response, next: NextFunction): void => {
-  handleClientDetailsTab(req, res, next, 'financial_eligibility');
+router.get('/:caseReference/financial-eligibility', fetchClientDetails, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  await handleFinancialEligibilityTab(req, res, next, 'financial_eligibility');
 });
 
 /* GET history for a specific case. */

@@ -45,7 +45,8 @@ export {
   transformNotesHistory,
   buildOrderingParamFields,
   isSoftDeletedThirdParty,
-  trimOrUndefined
+  trimOrUndefined,
+  formatFinancialData
 } from './dataTransformers.js';
 
 // Date formatting utilities

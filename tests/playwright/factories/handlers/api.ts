@@ -16,6 +16,7 @@ import { createCaseStatusHandlers } from './caseStatusHandlers.js';
 import { createFeedbackHandlers } from './feedbackHandlers.js';
 import { createSplitHandlers } from './splitHandlers.js';
 import { createChangeCategoryHandler } from './changeCategoryHandler.js';
+import { createFinancialEligibilityHandlers } from './financialDetailsHandlers.js';
 
 // Load official mock data from laa-civil-case-api (relative to project root)
 const mockDataPath = join(process.cwd(), 'tests/playwright/fixtures/mock-data.json');
@@ -37,6 +38,7 @@ const caseStatusHandlers = createCaseStatusHandlers(API_BASE_URL, API_PREFIX, ca
 const feedbackHandlers = createFeedbackHandlers(API_BASE_URL, API_PREFIX, cases);
 const splitHandlers = createSplitHandlers(API_BASE_URL, API_PREFIX);
 const changeCategoryHandlers = createChangeCategoryHandler(API_BASE_URL, API_PREFIX, cases);
+const financialEligibilityHandlers = createFinancialEligibilityHandlers(API_BASE_URL, API_PREFIX, cases);
 
 // Combine all handlers into a single export
 export const handlers = [
@@ -48,4 +50,5 @@ export const handlers = [
   ...feedbackHandlers,
   ...splitHandlers,
   ...changeCategoryHandlers,
+  ...financialEligibilityHandlers,
 ];

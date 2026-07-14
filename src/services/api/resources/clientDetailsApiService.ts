@@ -4,13 +4,14 @@
  */
 
 import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
-import type { ClientDetailsResponse, ClientDetailsApiResponse, CaseLogsApiResponse, ClientHistoryApiResponse } from '#types/api-types.js';
+import type { ClientDetailsResponse, ClientDetailsApiResponse, CaseLogsApiResponse, ClientHistoryApiResponse, GetFinancialEligibilityApiResponse } from '#types/api-types.js';
 import { devLog, extractAndLogError } from '#src/scripts/helpers/index.js';
 import { transformClientDetailsItem } from '../transforms/transformClientDetails.js';
 import { transformClientHistoryLogs } from '../transforms/transformClientHistoryLogs.js';
 import { transformClientCaseLogs } from '../transforms/transformClientCaseLogs.js';
 import { configureAxiosInstance } from '../base/BaseApiService.js';
 import { API_PREFIX, JSON_INDENT } from '../base/constants.js';
+import { transformFinancialEligibilityItem } from '../transforms/transformFinancialEligibility.js';
 
 /**
  * Get client details by case reference
@@ -238,6 +239,35 @@ export async function changeCaseCategory(
       data: null,
       status: 'error',
       message: errorMessage
+    };
+  }
+}
+
+/**
+ * Get financial eligibility data for a case
+ * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+ * @param {string} caseReference - Case reference number
+ * @returns {Promise<GetFinancialEligibilityApiResponse>} Financial eligibility data or null if error occurs
+ */
+export async function getFinancialEligibility(axiosMiddleware: AxiosInstanceWrapper, caseReference: string): Promise<GetFinancialEligibilityApiResponse> {
+  try {
+    devLog(`API: GET ${API_PREFIX}/case/${caseReference}/eligibility_check/`);
+    
+    const configuredAxios = configureAxiosInstance(axiosMiddleware);
+    const response = await configuredAxios.get(`${API_PREFIX}/case/${caseReference}/eligibility_check/`);
+    console.log("financial data: ", response.data)
+    devLog(`API: Get financial eligibility response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+    return {
+      data: transformFinancialEligibilityItem(response.data),
+      status: 'success'
+    };
+  } catch (error) {
+    const errorMessage = extractAndLogError(error, 'API error');
+    devLog(`Error fetching financial eligibility data: ${errorMessage}`);
+    return {
+      data: null,
+      status: 'error',
+      message: errorMessage,
     };
   }
 }

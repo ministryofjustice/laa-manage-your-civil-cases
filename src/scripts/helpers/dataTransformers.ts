@@ -811,3 +811,37 @@ export async function buildCategoryItems({
     }))
   ];
 }
+
+/**
+ * format financial data to include £ and interval period (per month, per week etc)
+ * @param {unknown} value - value to be formatted
+ * @returns { string } returns a string with the formatted value 
+ */
+export function formatFinancialData(value: unknown): string {
+  // MoneyPerInterval object
+  if (
+    isRecord(value) &&
+    typeof value.amount === 'number' &&
+    typeof value.time === 'string'
+  ) {
+    return `${formatCurrency(value.amount)} ${t(`common.intervalPeriod.${value.time}`)}`;}
+
+  // Plain number
+  if (typeof value === 'number') {
+    return `£${value}`;
+  }
+  return 'Not provided';
+}
+
+/**
+ * Function to format number values and add £ sign
+ * @param {number} value The numeric value to format as GBP currency.
+ * @returns {string} A formatted currency string with a £ sign.
+ */
+const formatCurrency = (value: number): string => {
+  return new Intl.NumberFormat('en-GB', {
+  style: 'currency',
+  currency: 'GBP',
+  trailingZeroDisplay: 'stripIfInteger',
+}).format(value);
+}

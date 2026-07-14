@@ -241,7 +241,7 @@ const buildCaseViewerSocket = async (watch = false): Promise<esbuild.BuildContex
 		entryPoints: ['src/middlewares/caseViewerSocketMiddleware.ts'],
 		bundle: true,
 		platform: 'browser',
-		target: 'es2015',
+		target: 'es2022',
 		format: 'iife',
 		sourcemap: process.env.NODE_ENV !== 'production',
 		minify: process.env.NODE_ENV === 'production',

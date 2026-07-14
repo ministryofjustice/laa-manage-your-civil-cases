@@ -158,6 +158,92 @@
       "variant": "warning",
       "title": "No changes were made",
       "dismissible": true
+    },
+    "intervalPeriod": {
+      "per_month": "per month",
+      "per_week": "per week",
+      "per_year": "per year",
+      "per_2week": "every 2 weeks",
+      "per_4week": "every 4 weeks"
+    },
+    "financialDisregards": {
+      "vaccine_damage": "Vaccine damage payment",
+      "national_emergencies": "National emergencies trust",
+      "overseas_terrorism": "Victims of Overseas Terrorism Compensation Scheme (VOTCS)",
+      "child_maintenance": "Backdated child maintenance payments",
+      "infected_blood": "Infected Blood Support Scheme",
+      "benefit_payments": "Backdated benefit payments",
+      "child_abuse": "Scotland and Northern Ireland redress schemes for historical child abuse",
+      "grenfell_tower": "Grenfell Tower compensation",
+      "london_emergencies": "London Emergencies Trust",
+      "justice_compensation": "Miscarriage of justice compensation",
+      "love_manchester": "We Love Manchester Emergency Fund",
+      "vcjd_trust": "vCJD Trust",
+      "energy_prices": "The Energy Support Scheme payments (2022 and 2023)",
+      "criminal_injuries": "Criminal Injuries Compensation Scheme",
+      "modern_slavery": "Modern Slavery Victim Care Contract or National Referral Mechanism (NRM)",
+      "cost_living": "Cost of living payments"
+    },
+    "financialEligibility": {
+      "details":  {
+        "age17OrUnder": "Are you aged 17 or under?",
+        "hasPartner": "Do you have a partner?",
+        "age60OrOver": "Are you aged 60 or over?",
+        "universalCredit": "Universal Credit",
+        "pensionCredit": "Guarantee State Pension Credit",
+        "jobSeekers": "Job Seekers Allowance",
+        "employmentSupport": "Income-related Employment and Support Allowance",
+        "incomeSupport": "Income Support",
+        "incomeBasedJSA": "Income-based Job Seekers Allowance",
+        "under18RegularPayment": "Do you receive any money on a regular basis?",
+        "under18HasValuables": "Do you have any savings, items of value or investments totalling £2500 or more?"
+      },
+      "finances": {
+        "propertyValue":"What is the current market value of the property?",
+        "mortgageLeft":"How much is left to pay on the mortgage?",
+        "mainProperty":"Is this your main property?",
+        "propertyShare":"What percentage of the property do you and/or your partner own?",
+        "disputedProperty": "Is the property disputed?",
+        "savingsBalance": "How much was in your bank account/building society before your last payment went in?",
+        "investmentBalance": "Do you have any investments, shares or ISAs?",
+        "assetBalance": "Do you have any valuable items worth over £500 each?",
+        "creditBalance": "Do you have any money owed to you?",
+        "partnerSavingsBalance": "How much was in your partners bank account/building society before their last payment went in?",
+        "partnerInvestmentBalance": "Does your partner have any investments, shares or ISAs?",
+        "partnerAssetBalance": "Does your partner have any valuable items worth over £500 each?",
+        "partnerCreditBalance":  "Does your partner have any money owed to them?"
+      },
+      "income": {
+        "selfEmployed": "Are you self employed?",
+        "earnings": "What did you earn before tax? (Check your most recent payslips)",
+        "tax": "How much tax do you pay?",
+        "nationalInsurance": "How much National Insurance do you pay?",
+        "selfEmployedDrawings": "Self employed drawings (before tax)",
+        "benefits": "Benefits",
+        "taxCredits": "Tax credits",
+        "childBenefit": "Child benefit (for household)",
+        "maintenanceReceived": "Maintenance received",
+        "pension": "Pension income",
+        "otherIncome": "Other income",
+        "partnerSelfEmployed": "Is your partner self employed?",
+        "partnerEarnings": "What did your partner earn before tax? (Check your most recent payslips)",
+        "partnerTax": "How much tax does your partner pay?",
+        "partnerNationalInsurance": "How much National Insurance does your partner pay?",
+        "dependantsYoung": "Do you have any dependants aged 15 and under?",
+        "dependantsOld": "Do you have any dependants aged 16 and over?"
+      },
+      "expenses": {
+        "mortgageCost": "How much do you pay for your mortgage?",
+        "rentCost": "How much do you pay for rent? The amount entered should not include any housing benefit or payment for bills",
+        "maintenanceCost": "How much maintenance have you paid during the last calendar month?",
+        "childCareCost": "Do you have any childcare costs because of work or study? If so, how much?",
+        "legalAidCost": "Are you currently paying towards legal aid for criminal defence? If so, how much have you paid in the last calendar month?",
+        "partnerMortgageCost": "How much does your partner pay for their mortgage?",
+        "partnerRentCost": "How much does your partner pay for their rent? The amount entered should not include any housing benefit or payment for bills",
+        "partnerMaintenanceCost": "How much maintenance has your partner paid during the last calendar month?",
+        "partnerChildCareCost": "Does your partner have any childcare costs because of work or study? If so, how much?",
+        "partnerLegalAidCost": "Is your partner currently paying towards legal aid for criminal defence? If so, how much has your partner paid in the last calendar month?"
+      }
     }
   },
   "navigation": {
