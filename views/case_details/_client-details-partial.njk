@@ -15,12 +15,12 @@
     {% if not data.announceCall %}
       {{ govukWarningText({
           text: t('forms.clientDetails.phoneNumber.doNotAnnounce'),
-          iconFallbackText: t.common.warning
+          iconFallbackText: t.common.warnings
         }) }}
     {% endif %}
   {% else %}
     {{ govukWarningText({
-        text: t('forms.clientDetails.phoneNumber.notSafeToCallWarning'),
+        text: t('common.no'),
         iconFallbackText: t.common.warning
       }) }}
   {% endif %}

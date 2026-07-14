@@ -536,7 +536,7 @@
       },
       "phoneNumber": {
         "label": "Phone number",
-        "labelSafeToCall": "Safe to call?",
+        "labelSafeToCall": "Is it safe to call this client?",
         "title": "Change client phone details",
         "pageTitle": "Change client phone details – {caseReference} – {serviceName} – GOV.UK",
         "phoneNumber": "Phone number",
@@ -649,7 +649,7 @@
       "changeName": "Change Name",
       "changeDateOfBirth": "Change Date of birth",
       "changePhoneNumber": "Change Phone number",
-      "changeSafeToCall": "Change Safe to call",
+      "changeSafeToCall": "Change Is it safe to call this client?",
       "changeEmail": "Change Email",
       "changeAddress": "Change Address",
       "changeLanguage": "Change Language",
