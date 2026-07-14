@@ -5,6 +5,13 @@
 {% set phoneNumberContent %}
   {% if data.safeToCall %}
     {{ data.phoneNumber }}
+  {% else %}
+    {{ t('forms.clientDetails.phoneNumber.numberHidden') }}
+  {% endif %}
+{% endset %}
+
+{% set safeToCallContent %}
+  {% if data.safeToCall %}
     {% if not data.announceCall %}
       {{ govukWarningText({
           text: t('forms.clientDetails.phoneNumber.doNotAnnounce'),
@@ -88,6 +95,7 @@
   address: data.address,
   postcode: data.postcode,
   computedPhoneNumber: phoneNumberContent,
+  computedPhoneNumberSafeToCall: safeToCallContent,
   computedAddress: addressWithPostcode,
   bslWebcam: data.clientSupportNeeds.bslWebcam,
   textRelay: data.clientSupportNeeds.textRelay,
@@ -175,6 +183,20 @@
             href: "/cases/" + data.caseReference + "/client-details/change/phone-number",
             text: t('common.change'),
             visuallyHiddenText: t('accessibility.visuallyHiddenText.changePhoneNumber')
+          }
+        ]
+      }
+    },
+    {
+      label: t('forms.clientDetails.phoneNumber.labelSafeToCall'),
+      key: "computedPhoneNumberSafeToCall",
+      html: true,
+      actions: {
+        items: [
+          {
+            href: "/cases/" + data.caseReference + "/client-details/change/phone-number",
+            text: t('common.change'),
+            visuallyHiddenText: t('accessibility.visuallyHiddenText.changeSafeToCall')
           }
         ]
       }
