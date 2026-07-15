@@ -622,6 +622,7 @@
       },
       "phoneNumber": {
         "label": "Phone number",
+        "labelSafeToCall": "Is it safe to call this client?",
         "title": "Change client phone details",
         "pageTitle": "Change client phone details – {caseReference} – {serviceName} – GOV.UK",
         "phoneNumber": "Phone number",
@@ -629,6 +630,7 @@
         "announceCall": "Can you say the call is from Civil Legal Advice?",
         "notSafeToCallWarning": "Not safe to call",
         "doNotAnnounce": "Do not say the call is from Civil Legal Advice",
+        "numberHidden": "Number hidden",
         "validationError": {
           "invalidFormat": "Enter the phone number in the correct format",
           "notEmpty": "Enter the client phone number"
@@ -733,6 +735,7 @@
       "changeName": "Change Name",
       "changeDateOfBirth": "Change Date of birth",
       "changePhoneNumber": "Change Phone number",
+      "changeSafeToCall": "Change Is it safe to call this client?",
       "changeEmail": "Change Email",
       "changeAddress": "Change Address",
       "changeLanguage": "Change Language",
