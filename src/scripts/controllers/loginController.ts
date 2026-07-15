@@ -5,8 +5,8 @@ import config from '#config.js';
 import { HTTP } from '#src/services/api/base/constants.js';
 import { randomUUID } from 'node:crypto';
 import { getSilasLoginUrl, exchangeSilasCodeForToken, getSilasLogoutUrl, SilasIdentityMappingError } from '#src/services/silasAuthService.js';
-import { createRelayState, isAllowedRelayTarget, parseRelayState, verifyRelayState } from '#utils/server/auth.relay.js';
-import { handleRelay } from '#src/scripts/helpers/auth.js';
+import { createRelayState } from '#utils/server/index.js';
+import { handleRelay } from '#src/scripts/helpers/index.js';
 
 /**
  * Generates a random CSRF-style state value for the SiLAS auth redirect flow.

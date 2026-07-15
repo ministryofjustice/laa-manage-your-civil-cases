@@ -130,3 +130,7 @@ export {
   fetchProviderNameAndDetail,
   hasMoreThanOneCategory
 } from './providerDetailHelper.js';
+
+export {
+  handleRelay
+} from './auth.js';
