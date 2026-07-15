@@ -3,21 +3,21 @@
 {% if state == "yes" %}
     {{ mojAlert({
       variant: "success",
-      text: "Client qualifies for civil legal aid"
+      text: t("common.financialEligibility.alert.success")
     }) }}
 
   {% elseif state == "no" %}
     {{ mojAlert({
       variant: "warning",
-      text: "Client does not qualify for legal aid"
+      text: t("common.financialEligibility.alert.warning")
     }) }}
 
   {% elseif state == "unknown" %}
     {{ mojAlert({
       variant: "information",
-       title: "Means test incomplete",
+      title: t("common.financialEligibility.alert.informationTitle"),
       showTitleAsHeading: true,
-      text: "Select edit assessment to view required information"
+      text: t("common.financialEligibility.alert.information")
     }) }}
 
   {% endif %}

@@ -243,6 +243,12 @@
         "partnerMaintenanceCost": "How much maintenance has your partner paid during the last calendar month?",
         "partnerChildCareCost": "Does your partner have any childcare costs because of work or study? If so, how much?",
         "partnerLegalAidCost": "Is your partner currently paying towards legal aid for criminal defence? If so, how much has your partner paid in the last calendar month?"
+      },
+      "alert": {
+        "success": "Client qualifies for civil legal aid",
+        "warning": "Client does not qualify for legal aid",
+        "information": "Select edit assessment to view required information",
+        "informationTitle": "Means test incomplete"
       }
     }
   },
