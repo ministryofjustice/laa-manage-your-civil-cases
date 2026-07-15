@@ -5,6 +5,7 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "moj/components/alert/macro.njk" import mojAlert %}
 {% from "components/financialEligibilityAlert.njk" import financialEligibilityAlert %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 
 {% set editAssessmentButtonHtml %}
   {{
@@ -717,35 +718,25 @@
 
 {% if financialEligibility.hasPassportedProceedingsLetter %}
 
-  <p class="govuk-body govuk-!-font-weight-bold">
-    {{ t('common.financialEligibility.message.noMeansTestTitle') }}
-  </p>
-
-  <p class="govuk-body">
+  {% call govukInsetText() %}
+    <strong>{{ t('common.financialEligibility.message.noMeansTestTitle') }}</strong><br>
     {{ t('common.financialEligibility.message.noMeansTestBody') }}
-  </p>
+  {% endcall %}
 
 {% else %}
-
   {% if financialEligibility.under18passportedBenefits %}
 
-    <p class="govuk-body govuk-!-font-weight-bold">
-      {{ t('common.financialEligibility.message.fullTestNotRequiredTitle') }}
-    </p>
-
-    <p class="govuk-body">
+    {% call govukInsetText() %}
+      <strong>{{ t('common.financialEligibility.message.fullTestNotRequiredTitle') }}</strong><br>
       {{ t('common.financialEligibility.message.fullTestNotRequiredBody') }}
-    </p>
+    {% endcall %}
 
   {% elseif financialEligibility.passportedBenefits %}
 
-    <p class="govuk-body govuk-!-font-weight-bold">
-      {{ t('common.financialEligibility.message.incomeAssessmentNotRequiredTitle') }}
-    </p>
-
-    <p class="govuk-body">
+    {% call govukInsetText() %}
+      <strong>{{ t('common.financialEligibility.message.incomeAssessmentNotRequiredTitle') }}</strong><br>
       {{ t('common.financialEligibility.message.incomeAssessmentNotRequiredBody') }}
-    </p>
+    {% endcall %}
 
   {% endif %}
 
@@ -753,5 +744,4 @@
     id: "financial-eligibility-tabs",
     items: tabs
   }) }}
-
 {% endif %}

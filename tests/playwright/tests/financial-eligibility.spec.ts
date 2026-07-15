@@ -548,9 +548,9 @@ test.describe('Conditional logic views', () => {
 
   test('when has_passported_proceedings_letter = true no financial information is shown', async ({ page }) => {
     const clientDetails = ClientDetailsPage.forCase(page, 'PC-4575-7150');
-    // Navingate to client details page
+    // Navigate to client details page
     await clientDetails.navigate();
-    // Click the financial eligiblity tab
+    // Click the financial eligibility tab
     await page.getByRole('link', { name: 'Financial eligibility' }).click();
     // Assert the URL has change to financial eligibility tab
     await expect(page).toHaveURL(/financial-eligibility/);
