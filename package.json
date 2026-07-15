@@ -29,7 +29,7 @@
     "coverage": "c8 yarn test:unit --check-coverage"
   },
   "engines": {
-    "node": "26.4.0"
+    "node": "26.5.0"
   },
   "dependencies": {
     "@azure/msal-node": "^5.0.6",
