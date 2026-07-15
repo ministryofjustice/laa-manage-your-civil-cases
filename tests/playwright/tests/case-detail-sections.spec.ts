@@ -44,6 +44,7 @@ test('history page should display correctly', async ({ page, i18nSetup }) => {
   const mainContent = page.locator('main');
   await expect(page.getByRole('heading', { name: 'History' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Manually allocated by operator' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Case closed: Client signposted to other help – not in scope' })).toBeVisible(); // This simulates events which are closed and have additional bits added to label
   await expect(mainContent).toBeVisible();
 });
 
