@@ -656,7 +656,9 @@
 {% endset -%}
 
 <h2 class="govuk-heading-m">{{ t('pages.caseDetails.tabs.financialEligibility') }}</h2>
+<div class="financial-eligibility-alert">
 {{ financialEligibilityAlert(financialEligibility.state) }}
+</div>
 
 {{ govukTabs({
     id: "financial-eligibility-tabs",
