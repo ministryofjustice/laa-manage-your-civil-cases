@@ -5,6 +5,8 @@ import config from '#config.js';
 import { HTTP } from '#src/services/api/base/constants.js';
 import { randomUUID } from 'node:crypto';
 import { getSilasLoginUrl, exchangeSilasCodeForToken, getSilasLogoutUrl, SilasIdentityMappingError } from '#src/services/silasAuthService.js';
+import { createRelayState } from '#utils/server/index.js';
+import { handleRelay } from '#src/scripts/helpers/index.js';
 
 /**
  * Generates a random CSRF-style state value for the SiLAS auth redirect flow.
@@ -35,7 +37,10 @@ function renderLoginError(res: Response, error: string, status: number): void {
  * @returns {Promise<void>}
  */
 export async function startSilasLogin(req: Request, res: Response): Promise<void> {
-  const state = generateState();
+  const state = req.hostname !== new URL(config.silas.redirectUri).hostname ?
+    createRelayState(randomUUID(), `https://${req.hostname}`, config.session.secret) :
+    generateState();
+  
   req.session.silasLoginState = state;
 
   try {
@@ -64,6 +69,11 @@ export async function startSilasLogin(req: Request, res: Response): Promise<void
 export async function handleSilasCallback(req: Request, res: Response): Promise<void> {
   const code = typeof req.query.code === 'string' ? req.query.code : '';
   const state = typeof req.query.state === 'string' ? req.query.state : '';
+
+  // exit early if callback is relayed to ephemeral env
+  if (handleRelay({ code, state }, req, res)) {
+    return;
+  }
 
   if (!code || !state || state !== req.session.silasLoginState) {
     renderLoginError(res, 'Invalid authentication callback.', HTTP.BAD_REQUEST);

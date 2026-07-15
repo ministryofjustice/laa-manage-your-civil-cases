@@ -24,3 +24,10 @@ export {
     setupSocketIO,
     type RedisClientType
 };
+
+export {
+    createRelayState,
+    isAllowedRelayTarget,
+    parseRelayState,
+    verifyRelayState,
+} from './auth.relay.js';
