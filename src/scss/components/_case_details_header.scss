@@ -1,6 +1,12 @@
 // Case details header
-.moj-button-menu__wrapper {
-  margin-top: -5px !important;
+.moj-button-menu .moj-button-menu__toggle-button {
+  margin-bottom: 0px;
+}
+
+@media only screen and (max-width: 640px) {
+  .split-case-button {
+    margin-top: 20px;
+  }
 }
 
 .mcc-error-or-alert {
