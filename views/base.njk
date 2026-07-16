@@ -19,7 +19,7 @@
    {# Socket.IO client for real-time case viewer notifications #}
   <script nonce="{{ cspNonce }}" src="/socket.io/socket.io.js"></script>
   <script nonce="{{ cspNonce }}" src="/js/{{getAsset('caseViewerSocket','min.js')}}"></script>
-  <script type="text/javascript">
+  <script type="text/javascript" nonce="{{ cspNonce }}">
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
         t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
