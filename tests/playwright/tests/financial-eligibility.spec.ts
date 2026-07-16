@@ -523,21 +523,21 @@ test.describe('Financial Eligibility result', () => {
     await page.getByRole('link', { name: 'Financial eligibility' }).click();
     // Assert the information warning is displayed when state is unknown
     await expect(alert).toBeVisible();
-    await expect(alert).toContainText('Select edit assessment to view required information');
+    await expect(alert).toContainText("Review the financial eligibility information and check if you can update any marked 'not provided'");
     // click the finances section
     await page.getByRole('tab', { name: 'Finances' }).click();
     // Assert the information warning is displayed when state is unknown
     await expect(alert).toBeVisible();
-    await expect(alert).toContainText('Select edit assessment to view required information');
+    await expect(alert).toContainText("Review the financial eligibility information and check if you can update any marked 'not provided'");
     // click the income section
     await page.getByRole('tab', { name: 'Income' }).click();
     // Assert the information warning is displayed when state is unknown
     await expect(alert).toBeVisible();
-    await expect(alert).toContainText('Select edit assessment to view required information');
+    await expect(alert).toContainText("Review the financial eligibility information and check if you can update any marked 'not provided'");
     // click the expenses section
     await page.getByRole('tab', { name: 'Expenses' }).click();
     // Assert the information warning is displayed when state is unknown
     await expect(alert).toBeVisible();
-    await expect(alert).toContainText('Select edit assessment to view required information');
+    await expect(alert).toContainText("Review the financial eligibility information and check if you can update any marked 'not provided'");
   });
 });

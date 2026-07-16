@@ -247,7 +247,7 @@
       "alert": {
         "success": "Client qualifies for civil legal aid",
         "warning": "Client does not qualify for legal aid",
-        "information": "Select edit assessment to view required information",
+        "information": "Review the financial eligibility information and check if you can update any marked 'not provided'",
         "informationTitle": "Means test incomplete"
       }
     }
