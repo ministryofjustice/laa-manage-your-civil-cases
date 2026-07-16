@@ -51,6 +51,7 @@ export const helmetSetup = (app: Application): void => {
             "https://www.clarity.ms"
           ],
           styleSrc: ["'self'", "'unsafe-inline'"], // Allow inline styles if needed
+          scriptSrcElem: ["'self'", "https://www.clarity.ms"],
           fontSrc: ["'self'", "data:"], // Allow data: URIs for fonts
           imgSrc: ["'self'", "data:", "https://www.clarity.ms"], // Allow data: URIs for images
           connectSrc: ["'self'", "https://www.clarity.ms"],
