@@ -40,6 +40,7 @@ export const helmetSetup = (app: Application): void => {
           scriptSrc: [
             "'self'",
             'https://www.clarity.ms',
+            'https://scripts.clarity.ms',
             // Dynamic nonce function for CSP - using the correct helmet function signature
             (req: IncomingMessage, res: ServerResponse) => {
               // Type guard to check if res has locals property (Express response)
