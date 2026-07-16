@@ -47,12 +47,13 @@ export const helmetSetup = (app: Application): void => {
                 return typeof cspNonce === 'string' ? `'nonce-${cspNonce}'` : "'unsafe-inline'";
               }
               return "'unsafe-inline'";
-            }
+            },
+            "https://www.clarity.ms"
           ],
           styleSrc: ["'self'", "'unsafe-inline'"], // Allow inline styles if needed
           fontSrc: ["'self'", "data:"], // Allow data: URIs for fonts
-          imgSrc: ["'self'", "data:"], // Allow data: URIs for images
-          connectSrc: ["'self'"],
+          imgSrc: ["'self'", "data:", "https://www.clarity.ms"], // Allow data: URIs for images
+          connectSrc: ["'self'", "https://www.clarity.ms"],
           objectSrc: ["'none'"], // Restrict <object>, <embed>, and <applet> elements
           mediaSrc: ["'self'"], // Restrict media
           frameSrc: ["'none'"], // Restrict frames
