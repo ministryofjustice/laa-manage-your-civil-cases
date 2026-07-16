@@ -15,6 +15,9 @@
   {% if userEmail %}
     <meta name="user-email" content="{{ userEmail }}">
   {% endif %}
+  {% if clarityUserId %}
+    <meta name="clarity-user-id" content="{{ clarityUserId }}">
+  {% endif %}
   <script type="module" nonce="{{ cspNonce }}" src="/js/{{getAsset('custom','min.js')}}"></script>
    {# Socket.IO client for real-time case viewer notifications #}
   <script nonce="{{ cspNonce }}" src="/socket.io/socket.io.js"></script>
