@@ -30,6 +30,15 @@
           y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
       })(window, document, "clarity", "script", "xmwcwzk8bj");
     </script>
+    <script type="text/javascript" nonce="{{ cspNonce }}">
+      (function () {
+        var clarityUserMeta = document.querySelector('meta[name="clarity-user-id"]');
+        var userId = clarityUserMeta && clarityUserMeta.content;
+        if (typeof window.clarity === 'function' && userId) {
+          window.clarity('identify', userId);
+        }
+      })();
+    </script>
    {% endif %}
 {% endblock %}
 
