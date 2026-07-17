@@ -1,19 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import { createHmac } from 'node:crypto';
 import '#src/scripts/helpers/sessionHelpers.js';
-import config from '#config.js';
-
-/**
- * Create a stable pseudonym identifier for Clarity from a raw user OID
- * @param {string | undefined} userOid - Raw user OID from identity provider.
- * @returns {string | null} Stable pseudonymous identifier, or null when unavailable.
- */
-function getClarityUserId(userOid: string | undefined): string | null {
-  if (userOid === undefined || userOid === '') {
-    return null;
-  }
-  return createHmac('sha256', config.session.secret).update(userOid).digest('hex');
-}
 
 /**
  * Authentication middleware to check if user is logged in
@@ -48,6 +34,5 @@ export const setAuthStatus = (req: Request, res: Response, next: NextFunction): 
   res.locals.isAuthenticated = silasAuth !== undefined && silasAuth.expiresAt > Date.now();
   res.locals.userEmail = req.session.user?.email ?? null;
   res.locals.userName = req.session.user?.name ?? null;
-  res.locals.clarityUserId = getClarityUserId(req.session.user?.oid);
   next();
 };

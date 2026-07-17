@@ -15,13 +15,12 @@
   {% if userEmail %}
     <meta name="user-email" content="{{ userEmail }}">
   {% endif %}
-  {% if clarityUserId %}
-    <meta name="clarity-user-id" content="{{ clarityUserId }}">
-  {% endif %}
   <script type="module" nonce="{{ cspNonce }}" src="/js/{{getAsset('custom','min.js')}}"></script>
    {# Socket.IO client for real-time case viewer notifications #}
   <script nonce="{{ cspNonce }}" src="/socket.io/socket.io.js"></script>
   <script nonce="{{ cspNonce }}" src="/js/{{getAsset('caseViewerSocket','min.js')}}"></script>
+  {# BY DEFAULT THIS GIVES CONSENT TO MS CLARITY - WE NEED TO LINK WITH OUR COOKIES POLICY #}
+  {# WILL NEED TO ASSOCIATE THE PROJECT ID, WITH EACH ENVIRONMENT #}
   {% if config.app.environment == 'uat' or config.app.environment == 'staging' or config.app.environment == 'production' %}
     <script type="text/javascript" nonce="{{ cspNonce }}">
       (function(c,l,a,r,i,t,y){
@@ -32,11 +31,16 @@
     </script>
     <script type="text/javascript" nonce="{{ cspNonce }}">
       (function () {
-        var clarityUserMeta = document.querySelector('meta[name="clarity-user-id"]');
-        var userId = clarityUserMeta && clarityUserMeta.content;
-        if (typeof window.clarity === 'function' && userId) {
-          window.clarity('identify', userId);
-        }
+        document.addEventListener('DOMContentLoaded', function () {
+          var errorSummaryVisible = document.querySelector('.clarity-error-summary-visible');
+          if (typeof window.clarity === 'function' && errorSummaryVisible) {
+            window.clarity('consentv2', {
+              ad_Storage: 'denied',
+              analytics_Storage: 'granted'
+            });
+            window.clarity("event", "errorSummary");
+          }
+        });
       })();
     </script>
    {% endif %}
