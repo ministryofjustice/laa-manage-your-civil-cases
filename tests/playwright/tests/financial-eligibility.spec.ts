@@ -583,7 +583,6 @@ test.describe('Conditional logic views', () => {
 
     // Only Details tab displayed
     await expect(page.getByRole('tab', { name: 'Details' })).toBeVisible();
-
     await expect(page.getByRole('tab', { name: 'Finances' })).toHaveCount(0);
     await expect(page.getByRole('tab', { name: 'Income' })).toHaveCount(0);
     await expect(page.getByRole('tab', { name: 'Expenses' })).toHaveCount(0);
@@ -598,6 +597,37 @@ test.describe('Conditional logic views', () => {
 
     await expect(aboutYouTable).toContainText('Do you have any savings, items of value or investments totalling £2500 or more?');
     await expect(aboutYouTable).toContainText('No');
+  });
+
+  test('when client is under 18 and gets regular payments has partner and over 60 questions are shown', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1854-6521');
+
+    await clientDetails.navigate();
+
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+
+    await expect(page).toHaveURL(/financial-eligibility/);
+
+    // Assert the 'About you' header is visible
+    await expect(page.getByText('About you')).toBeVisible();
+    // Assert the 'Benefits' header is visible
+    await expect(page.locator('caption').filter({ hasText: 'Benefits' })).toBeVisible();
+
+     // Assert the financial eligibility tabs are visible
+    await expect(page.getByRole('tab', { name: 'Details' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Finances' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Income' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Expenses' })).toBeVisible();
+
+    const aboutYouTable = page.getByRole('table').first();
+
+     // Assert the correct data is displayed in the about you section
+    await expectCaptionTableRows(page, 'About you', {
+      'Are you aged 17 or under?': 'Yes',
+      'Do you receive any money on a regular basis?': 'Yes',
+      'Do you have a partner?': 'No',
+      'Are you aged 60 or over?': 'No'
+    });
   });
 
   test('when on_passported_benefits = true only details and finances tabs are shown', async ({ page }) => {

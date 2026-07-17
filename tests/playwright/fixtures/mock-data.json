@@ -1266,6 +1266,19 @@
       "callbackPreference": "No",
       "languageSupportNeeds": "English",
       "notes": "Here are some notes from the operator!"
+    },
+    "financialEligibility": {
+      "under_18_passported": false,
+      "is_you_under_18": true,
+      "under_18_receive_regular_payment": true,
+      "under_18_has_valuables": false,
+      "specific_benefits": {
+        "pension_credit": false,
+        "job_seekers_allowance": false,
+        "employment_support": false,
+        "universal_credit": false,
+        "income_support": false
+      }
     }
   },
   {
