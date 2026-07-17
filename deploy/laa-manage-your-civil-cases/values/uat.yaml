@@ -20,7 +20,8 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: "mcc-github-action-service-account"
 
-podAnnotations: {}
+podAnnotations:
+  testAnnotation: "test-value"
 podLabels: {}
 
 podSecurityContext:
