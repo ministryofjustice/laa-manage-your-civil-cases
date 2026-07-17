@@ -39,7 +39,7 @@
       }
     ]
   ] %}
-  {% if financialEligibility.under18passportedBenefits %}
+  {% if financialEligibility.isUnder17 %}
     {% set rows = rows.concat([
       [
         {
@@ -47,15 +47,19 @@
         }, {
           text: under18RegularPayment
         }
-      ], 
-      [
-        {
-          text: t("common.financialEligibility.details.under18HasValuables")
-        }, {
-          text: under18HasValuables
-        }
       ]
-    ]) %} 
+    ]) %}
+    {% if financialEligibility.isUnder17 and financialEligibility.under18RegularPayment %}
+      {% set rows = rows.concat([ 
+        [
+          {
+            text: t("common.financialEligibility.details.under18HasValuables")
+          }, {
+            text: under18HasValuables
+          }
+        ]
+      ]) %} 
+    {% endif %}
   {% else %}
     {% set rows = rows.concat([
       [
