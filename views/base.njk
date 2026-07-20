@@ -42,13 +42,13 @@
     </script>
     {# SEND CLARITY API EVENT WHEN CSS FOR ERROR SUMMARY IS ON THE SCREEN #}
     <script type="text/javascript" nonce="{{ cspNonce }}">
-      function showErrorSummary() {
+      function errorSummarySeen() {
         const errorSummary = document.querySelector('.clarity-error-summary-visible');
         if (!errorSummary) { return; }
         if (typeof window.clarity !== 'function') { return; }
         window.clarity('event', 'errorSummary');
       }
-      document.addEventListener('DOMContentLoaded', showErrorSummary);
+      document.addEventListener('DOMContentLoaded', errorSummarySeen);
     </script>
   {% endif %}
 {% endblock %}
