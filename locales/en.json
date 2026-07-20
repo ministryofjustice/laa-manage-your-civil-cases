@@ -268,11 +268,10 @@
     },
     "footer": {
       "help": "Help",
-      "feedback": "Feedback",
-      "updates": "Updates",
-      "privacyPolicy": "Privacy Policy",
+      "privacy": "Privacy",
       "cookies": "Cookies",
-      "accessibility": "Accessibility"
+      "accessibility": "Accessibility",
+      "termsAndConditions": "Terms and conditions"
     }
   },
   "components": {
