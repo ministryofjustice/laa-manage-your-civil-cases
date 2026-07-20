@@ -30,14 +30,15 @@
     </script>
     {# BY DEFAULT THIS GIVES CONSENT TO MS CLARITY - WE NEED TO LINK WITH OUR COOKIES POLICY #}
     <script type="text/javascript" nonce="{{ cspNonce }}">
-      document.addEventListener('DOMContentLoaded', function () {
+      function setDefaultCookies() {
         if (typeof window.clarity === 'function') {
           window.clarity('consentv2', {
             ad_Storage: 'denied',
             analytics_Storage: 'granted'
           });
         }
-      });
+      }
+      document.addEventListener('DOMContentLoaded', setDefaultCookies);
     </script>
     {# SEND CLARITY API EVENT WHEN CSS FOR ERROR SUMMARY IS ON THE SCREEN #}
     <script type="text/javascript" nonce="{{ cspNonce }}">
