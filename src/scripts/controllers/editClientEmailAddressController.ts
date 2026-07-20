@@ -26,6 +26,10 @@ export async function getEditClientEmailAddress(req: Request, res: Response, nex
  * @returns {Promise<void>}
  */
 export async function postEditClientEmailAddress(req: Request, res: Response, next: NextFunction): Promise<void> {
+
+console.log(req.body.emailAddress);
+console.log(JSON.stringify(req.body.emailAddress));
+
   const formFields = extractFormFields(req.body, ['emailAddress', 'existingEmailAddress']);
 
   await handlePostEditForm(req, res, next, {

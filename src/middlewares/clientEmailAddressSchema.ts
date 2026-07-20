@@ -10,7 +10,6 @@ export const validateEditClientEmailAddress = (): ReturnType<typeof checkSchema>
     emailAddress: {
       trim: true,
       optional: { options: { checkFalsy: true } },
-      normalizeEmail: true,
       isEmail: {
         /**
          * Custom error message for invalid e-mail format
@@ -20,6 +19,6 @@ export const validateEditClientEmailAddress = (): ReturnType<typeof checkSchema>
           summaryMessage: t('forms.clientDetails.email.validationError.invalidFormat'),
           inlineMessage: t('forms.clientDetails.email.validationError.invalidFormat')
         })
-      },
+      }
     },
   });
