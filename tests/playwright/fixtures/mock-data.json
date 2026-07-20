@@ -62,7 +62,7 @@
     "refCode": "",
     "dateReceived": "2025-01-14T19:00:00-05:00",
     "caseStatus": "New",
-    "category": "Housing, eviction and homelessness",
+    "category": "Family, marriage, separation and children",
     "isUrgent": true,
     "dateOfBirth": "1993-11-15T00:00:00-05:00",
     "vulnerableUser": false,
@@ -102,7 +102,34 @@
       "notes": "",
       "no_adaptations_required": false
     },
-    "lastModified": "2025-07-06T19:00:00-05:00"
+    "lastModified": "2025-07-06T19:00:00-05:00",
+    "financialEligibility": {
+       "category": "family",
+       "savings": {
+          "bank_balance": 20000,
+          "investment_balance": 10000,
+          "asset_balance": 50000,
+          "credit_balance": 20000,
+          "total": 100000
+        },
+      "disputed_savings": {
+          "bank_balance": 20000,
+          "investment_balance": 10000,
+          "asset_balance": 50000,
+          "credit_balance": 20000,
+          "total": 100000
+      },
+       "property_set": [
+        {
+          "value": 13000000,
+          "mortgage_left": 5000000,
+          "share": 100,
+          "id": 1361,
+          "disputed": true,
+          "main": false
+        }
+      ]
+    }
   },
   {
     "fullName": "Jack Youngs",
@@ -335,7 +362,27 @@
     },
     "lastModified": "2025-07-06T19:00:00-05:00",
     "financialEligibility": {
-      "state": "unknown"
+      "disputed_savings": null,
+       "state": "unknown",
+       "category": "debt",
+       "property_set": [
+        {
+          "value": 13000000,
+          "mortgage_left": 5000000,
+          "share": 100,
+          "id": 1361,
+          "disputed": true,
+          "main": false
+        },
+        {
+          "value": 12000000,
+          "mortgage_left": 6000000,
+          "share": 100,
+          "id": 1360,
+          "disputed": false,
+          "main": true
+        }
+      ]
     }
   },
   {
@@ -345,7 +392,7 @@
     "refCode": "",
     "dateReceived": "2025-07-06T19:00:00-05:00",
     "caseStatus": "New",
-    "category": "Housing, eviction and homelessness",
+    "category": "Debt, money problems and bankruptcy",
     "isUrgent": true,
     "dateOfBirth": "1981-08-18T00:00:00-05:00",
     "vulnerableUser": true,
@@ -356,7 +403,34 @@
     "address": "871 Holyhead Lane, Bangor",
     "postcode": "LL53 2AD",
     "laaReference": "8196672",
-    "lastModified": "2025-07-06T19:00:00-05:00"
+    "lastModified": "2025-07-06T19:00:00-05:00",
+    "financialEligibility": {
+       "category": "debt",
+       "savings": {
+          "bank_balance": 20000,
+          "investment_balance": 10000,
+          "asset_balance": 50000,
+          "credit_balance": 20000,
+          "total": 100000
+        },
+      "disputed_savings": {
+          "bank_balance": 20000,
+          "investment_balance": 10000,
+          "asset_balance": 50000,
+          "credit_balance": 20000,
+          "total": 100000
+      },
+       "property_set": [
+        {
+          "value": 13000000,
+          "mortgage_left": 5000000,
+          "share": 100,
+          "id": 1361,
+          "disputed": true,
+          "main": false
+        }
+      ]
+    }
   },
   {
     "fullName": "Barbra white",
@@ -539,7 +613,10 @@
         "passphrase": "LetMeIn"
       }
     },
-    "lastModified": "2025-01-05T19:00:00-05:00"
+    "lastModified": "2025-01-05T19:00:00-05:00",
+    "financialEligibility": {
+      "has_passported_proceedings_letter": true
+    }
   },
   {
     "fullName": "Zechariah Twelve",
@@ -626,7 +703,13 @@
       "notes": "",
       "no_adaptations_required": false
     },
-    "lastModified": "2025-01-05T19:00:00-05:00"
+    "lastModified": "2025-01-05T19:00:00-05:00",
+     "financialEligibility": {
+      "under_18_passported": true,
+      "is_you_under_18": true,
+      "under_18_receive_regular_payment": false,
+      "under_18_has_valuables": false
+    }
   },
   {
     "fullName": "Ian Phillips",
@@ -662,6 +745,123 @@
         "selected": [
           "No, client is a child or patient"
         ]
+      }
+    },
+    "financialEligibility": {
+      "your_problem_notes": "",
+      "reference": "PC-9173-4826",
+      "notes": "",
+      "category": "family",
+      "property_set": [
+        {
+          "value": 15000000,
+          "mortgage_left": 6000000,
+          "share": 100,
+          "id": 1362,
+          "disputed": false,
+          "main": true
+        }
+      ],
+      "you": {
+        "income": {
+          "earnings": {
+            "per_interval_value": 12000,
+            "interval_period": "per_month"
+          },
+          "self_employment_drawings": {
+            "per_interval_value": 20000,
+            "interval_period": "per_week"
+          },
+          "benefits": {
+            "per_interval_value": 50000,
+            "interval_period": "per_year"
+          },
+          "tax_credits": {
+            "per_interval_value": 10000,
+            "interval_period": "per_month"
+          },
+          "child_benefits": {
+            "per_interval_value": 20000,
+            "interval_period": "per_month"
+          },
+          "maintenance_received": {
+            "per_interval_value": 10000,
+            "interval_period": "per_month"
+          },
+          "pension": {
+            "per_interval_value": 10000,
+            "interval_period": "per_month"
+          },
+          "other_income": {
+            "per_interval_value": 0,
+            "interval_period": "per_month"
+          },
+          "self_employed": false,
+          "total": 88749
+        },
+        "savings": {
+          "bank_balance": 10000,
+          "investment_balance": 30000,
+          "asset_balance": 50000,
+          "credit_balance": 10000,
+          "total": 90000
+        },
+        "deductions": {
+          "income_tax": {
+            "per_interval_value": 0,
+            "interval_period": "per_4week"
+          },
+          "national_insurance": {
+            "per_interval_value": 0,
+            "interval_period": "per_2week"
+          },
+          "maintenance": {
+            "per_interval_value": 5000,
+            "interval_period": "per_month"
+          },
+          "childcare": {
+            "per_interval_value": 5000,
+            "interval_period": "per_month"
+          },
+          "mortgage": {
+            "per_interval_value": 35000,
+            "interval_period": "per_month"
+          },
+          "rent": {
+            "per_interval_value": 25000,
+            "interval_period": "per_month"
+          },
+          "criminal_legalaid_contributions": 2000,
+          "total": 38000
+        }
+      },
+      "partner": {
+        "income": {},
+        "savings": {},
+        "deductions": {}
+      },
+      "disputed_savings": {
+          "bank_balance": 10000,
+          "investment_balance": 30000,
+          "asset_balance": 50000,
+          "credit_balance": 10000,
+          "total": 90000
+        },
+      "dependants_young": 1,
+      "dependants_old": 2,
+      "is_you_or_your_partner_over_60": false,
+      "has_partner": true,
+      "on_passported_benefits": true,
+      "is_you_under_18": false,
+      "specific_benefits": {
+        "pension_credit": false,
+        "job_seekers_allowance": false,
+        "employment_support": false,
+        "universal_credit": false,
+        "income_support": false
+      },
+      "disregards": {
+        "cost_living": true
       }
     }
   },
@@ -972,6 +1172,123 @@
       "callbackPreference": "No",
       "languageSupportNeeds": "English",
       "notes": "Client has a calm manner and cooperates well. Missing left arm noted but no mobility concerns."
+    },
+    "financialEligibility": {
+      "your_problem_notes": "",
+      "reference": "PC-1922-1879",
+      "state": "yes",
+      "notes": "",
+      "category": "family",
+      "disputed_savings": null,
+      "property_set": [
+        {
+          "value": 13000000,
+          "mortgage_left": 5000000,
+          "share": 100,
+          "id": 1361,
+          "disputed": false,
+          "main": false
+        },
+        {
+          "value": 12000000,
+          "mortgage_left": 6000000,
+          "share": 100,
+          "id": 1360,
+          "disputed": false,
+          "main": true
+        }
+      ],
+      "you": {
+        "income": {
+          "earnings": {
+            "per_interval_value": 15000,
+            "interval_period": "per_month"
+          },
+          "self_employment_drawings": {
+            "per_interval_value": 10000,
+            "interval_period": "per_week"
+          },
+          "benefits": {
+            "per_interval_value": 5000,
+            "interval_period": "per_year"
+          },
+          "tax_credits": {
+            "per_interval_value": 20000,
+            "interval_period": "per_month"
+          },
+          "child_benefits": {
+            "per_interval_value": 10000,
+            "interval_period": "per_month"
+          },
+          "maintenance_received": {
+            "per_interval_value": 0,
+            "interval_period": "per_month"
+          },
+          "pension": {
+            "per_interval_value": 0,
+            "interval_period": "per_month"
+          },
+          "other_income": {
+            "per_interval_value": 0,
+            "interval_period": "per_month"
+          },
+          "self_employed": false,
+          "total": 88749
+        },
+        "savings": {
+          "bank_balance": 20000,
+          "investment_balance": 10000,
+          "asset_balance": 50000,
+          "credit_balance": 20000,
+          "total": 100000
+        },
+        "deductions": {
+          "income_tax": {
+            "per_interval_value": 10000,
+            "interval_period": "per_4week"
+          },
+          "national_insurance": {
+            "per_interval_value": 20000,
+            "interval_period": "per_2week"
+          },
+          "maintenance": {
+            "per_interval_value": 5000,
+            "interval_period": "per_month"
+          },
+          "childcare": {
+            "per_interval_value": 2000,
+            "interval_period": "per_month"
+          },
+          "mortgage": {
+            "per_interval_value": 20000,
+            "interval_period": "per_month"
+          },
+          "rent": {
+            "per_interval_value": 0,
+            "interval_period": "per_month"
+          },
+          "criminal_legalaid_contributions": 1000,
+          "total": 38000
+        }
+      },
+      "partner": {
+        "income": {},
+        "savings": {},
+        "deductions": {}
+      },
+      "dependants_young": 0,
+      "dependants_old": 0,
+      "is_you_or_your_partner_over_60": false,
+      "has_partner": false,
+      "is_you_under_18": false,
+      "specific_benefits": {
+        "pension_credit": false,
+        "job_seekers_allowance": true,
+        "employment_support": false,
+        "universal_credit": true,
+        "income_support": false
+      },
+      "disregards": null
     }
   },
   {
@@ -1052,6 +1369,19 @@
       "callbackPreference": "No",
       "languageSupportNeeds": "English",
       "notes": "Client becomes flustered when speaking; may require calm communication approach."
+    },
+     "financialEligibility": {
+      "under_18_passported": false,
+      "is_you_under_18": true,
+      "under_18_receive_regular_payment": false,
+      "under_18_has_valuables": true,
+      "specific_benefits": {
+        "pension_credit": false,
+        "job_seekers_allowance": false,
+        "employment_support": false,
+        "universal_credit": false,
+        "income_support": false
+      }
     }
   },
   {
@@ -1095,6 +1425,19 @@
       "callbackPreference": "No",
       "languageSupportNeeds": "English",
       "notes": "Here are some notes from the operator!"
+    },
+    "financialEligibility": {
+      "under_18_passported": false,
+      "is_you_under_18": true,
+      "under_18_receive_regular_payment": true,
+      "under_18_has_valuables": false,
+      "specific_benefits": {
+        "pension_credit": false,
+        "job_seekers_allowance": false,
+        "employment_support": false,
+        "universal_credit": false,
+        "income_support": false
+      }
     }
   },
   {
