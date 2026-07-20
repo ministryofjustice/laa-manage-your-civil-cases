@@ -48,6 +48,7 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
   const hasPassportedProceedingsLetter = Boolean(item.has_passported_proceedings_letter);
   const passportedBenefits = Boolean(item.on_passported_benefits);
   const under18passportedBenefits = Boolean(item.under_18_passported);
+  const category = String(item.category);
 
   return {
     hasPartner,
@@ -66,7 +67,8 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
     state,
     hasPassportedProceedingsLetter,
     passportedBenefits,
-    under18passportedBenefits
+    under18passportedBenefits,
+    category
   };
 }
 

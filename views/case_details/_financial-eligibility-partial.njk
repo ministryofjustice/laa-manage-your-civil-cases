@@ -146,7 +146,6 @@
 {% endset -%}
 
 {% set financesHtml %}
-
   <h2 class="govuk-heading-m">Properties</h2>
   {% if financialEligibility.propertySet and financialEligibility.propertySet.length %}
     {% for property in financialEligibility.propertySet %}
@@ -182,7 +181,7 @@
         ]
       ] %}
       
-      {% if financialEligibility.disputedSavings is not null %}
+      {% if financialEligibility.category == 'debt' or financialEligibility.category == 'family' %}
         {% set propertyRows = propertyRows.concat([
           [
             { text: t("common.financialEligibility.finances.disputedProperty") },
@@ -289,7 +288,7 @@
     }) }}
   {% endif %}
 
-  {% if financialEligibility.disputedSavings %}
+  {% if financialEligibility.category == 'debt' or financialEligibility.category == 'family' %}
     <h2 class="govuk-heading-m">Your disputed savings</h2>
 
     {% set disputedSavings = financialEligibility.disputedSavings %}
@@ -348,7 +347,7 @@
       </tbody>
     </table>
   {% else %}
-    <p> {{t("common.notProvided")}} </p>
+    <p> {{t("common.none")}} </p>
   {% endif %}
 
   <div>{{ editAssessmentButtonHtml | safe }}</div>

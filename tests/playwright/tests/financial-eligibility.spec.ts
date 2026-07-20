@@ -630,6 +630,38 @@ test.describe('Conditional logic views', () => {
     });
   });
 
+   test('when client is under 18 and doesnt get regular payments but has valuables is true has partner and over 60 questions are shown', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-2211-4466');
+
+    await clientDetails.navigate();
+
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+
+    await expect(page).toHaveURL(/financial-eligibility/);
+
+    // Assert the 'About you' header is visible
+    await expect(page.getByText('About you')).toBeVisible();
+    // Assert the 'Benefits' header is visible
+    await expect(page.locator('caption').filter({ hasText: 'Benefits' })).toBeVisible();
+
+     // Assert the financial eligibility tabs are visible
+    await expect(page.getByRole('tab', { name: 'Details' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Finances' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Income' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Expenses' })).toBeVisible();
+
+    const aboutYouTable = page.getByRole('table').first();
+
+     // Assert the correct data is displayed in the about you section
+    await expectCaptionTableRows(page, 'About you', {
+      'Are you aged 17 or under?': 'Yes',
+      'Do you receive any money on a regular basis?': 'No',
+      'Do you have any savings, items of value or investments totalling £2500 or more?': 'Yes',
+      'Do you have a partner?': 'No',
+      'Are you aged 60 or over?': 'No'
+    });
+  });
+
   test('when on_passported_benefits = true only details and finances tabs are shown', async ({ page }) => {
     const clientDetails = ClientDetailsPage.forCase(page, 'PC-9173-4826');
 
@@ -687,7 +719,7 @@ test.describe('Conditional logic views', () => {
     await expect(page.getByText("Your partner's expenses")).toHaveCount(0);
   });
 
-  test('when disputed_savings is null disputed savings information is not shown', async ({ page }) => {
+  test('when category is debt and disputed_savings is null disputed savings information is not shown', async ({ page }) => {
     const clientDetails = ClientDetailsPage.forCase(page, 'PC-1977-1241');
 
     await clientDetails.navigate();
@@ -697,15 +729,40 @@ test.describe('Conditional logic views', () => {
 
     await page.getByRole('tab', { name: 'Finances' }).click();
 
-    // Disputed savings section should not be rendered
-    await expect(page.getByRole('heading', { name: 'Your disputed savings' })).toHaveCount(0);
+    // Disputed savings section should be rendered
+    await expect(page.getByRole('heading', { name: 'Your disputed savings' })).toHaveCount(1);
 
-    // Disputed property row should not be rendered
-    await expect(page.getByText('Is the property disputed?')).toHaveCount(0);
+    // Disputed savings should have none
+    await expect(page.getByText('None')).toHaveCount(1);
+
+    // Disputed property row should be rendered and display value (mock data has 2 properties)
+    await expect(page.getByText('Is the property disputed?')).toHaveCount(2);
   });
 
-   test('when disputed_savings is not null disputed savings information is shown', async ({ page }) => {
+   test('when category is debt and disputed_savings is not null disputed savings information is shown', async ({ page }) => {
     const clientDetails = ClientDetailsPage.forCase(page, 'PC-1357-1212');
+
+    await clientDetails.navigate();
+
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    await expect(page).toHaveURL(/financial-eligibility/);
+
+    await page.getByRole('tab', { name: 'Finances' }).click();
+
+    // Disputed savings section should be rendered
+    await expect(page.getByRole('heading', { name: 'Your disputed savings' })).toHaveCount(1);
+
+    // Assert the correct data is displayed in the your disputed savings table.
+    await expectPropertyTableRows(page, 'Your disputed savings', {
+      'How much was in your bank account/building society before your last payment went in?': '£200',
+      'Do you have any investments, shares or ISAs?': '£100',
+      'Do you have any valuable items worth over £500 each?': '£500',
+      'Do you have any money owed to you?': '£200'
+    });
+  });
+
+   test('when category is family and disputed_savings is not null disputed savings information is shown', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-9173-4826');
 
     await clientDetails.navigate();
 
@@ -717,7 +774,32 @@ test.describe('Conditional logic views', () => {
     // Disputed savings section should not be rendered
     await expect(page.getByRole('heading', { name: 'Your disputed savings' })).toHaveCount(1);
 
-    // Disputed property row should not be rendered
-    await expect(page.getByText('Is the property disputed?')).toHaveCount(1);
+    // Assert the correct data is displayed in the your disputed savings table.
+    await expectPropertyTableRows(page, 'Your disputed savings', {
+      'How much was in your bank account/building society before your last payment went in?': '£100',
+      'Do you have any investments, shares or ISAs?': '£300',
+      'Do you have any valuable items worth over £500 each?': '£500',
+      'Do you have any money owed to you?': '£100'
+    });
+  });
+
+    test('when category is family and disputed_savings is null disputed savings information is not shown', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1122-3344');
+
+    await clientDetails.navigate();
+
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    await expect(page).toHaveURL(/financial-eligibility/);
+
+    await page.getByRole('tab', { name: 'Finances' }).click();
+
+    // Disputed savings section should not be rendered
+    await expect(page.getByRole('heading', { name: 'Your disputed savings' })).toHaveCount(1);
+
+    // Disputed savings should have none
+    await expect(page.getByText('None')).toHaveCount(1);
+
+    // Disputed property row should be rendered
+    await expect(page.getByText('Is the property disputed?')).toHaveCount(2);
   });
 });

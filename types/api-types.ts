@@ -441,6 +441,7 @@ export interface FinancialEligibilityData {
   hasPassportedProceedingsLetter: boolean;
   passportedBenefits: boolean;
   under18passportedBenefits: boolean;
+  category: string;
 }
 
 /**
