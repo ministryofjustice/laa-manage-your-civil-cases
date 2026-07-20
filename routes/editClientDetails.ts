@@ -1,5 +1,4 @@
 import express from 'express';
-import type { Request, Response, NextFunction } from 'express';
 
 import {
   getEditClientName,
@@ -48,10 +47,7 @@ router.get('/:caseReference/client-details/change/phone-number', getEditClientPh
 router.post('/:caseReference/client-details/change/phone-number', validateEditClientPhoneNumber(), postEditClientPhoneNumber);
 
 router.get('/:caseReference/client-details/change/email-address', getEditClientEmailAddress);
-router.post('/:caseReference/client-details/change/email-address', (req: Request, res: Response, next: NextFunction) => {
-  console.log('BEFORE VALIDATION:', req.body.emailAddress);
-  next();
-}, validateEditClientEmailAddress(), postEditClientEmailAddress);
+router.post('/:caseReference/client-details/change/email-address', validateEditClientEmailAddress(), postEditClientEmailAddress);
 
 router.get('/:caseReference/client-details/change/address', getEditClientAddress);
 router.post('/:caseReference/client-details/change/address', validateEditClientAddress(), postEditClientAddress);
