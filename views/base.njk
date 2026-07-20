@@ -19,7 +19,6 @@
    {# Socket.IO client for real-time case viewer notifications #}
   <script nonce="{{ cspNonce }}" src="/socket.io/socket.io.js"></script>
   <script nonce="{{ cspNonce }}" src="/js/{{getAsset('caseViewerSocket','min.js')}}"></script>
-  {# BY DEFAULT THIS GIVES CONSENT TO MS CLARITY - WE NEED TO LINK WITH OUR COOKIES POLICY #}
   {# WILL NEED TO ASSOCIATE THE PROJECT ID, WITH EACH ENVIRONMENT #}
   {% if config.app.environment == 'uat' or config.app.environment == 'staging' or config.app.environment == 'production' %}
     <script type="text/javascript" nonce="{{ cspNonce }}">
@@ -29,21 +28,28 @@
           y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
       })(window, document, "clarity", "script", "xmwcwzk8bj");
     </script>
+    {# BY DEFAULT THIS GIVES CONSENT TO MS CLARITY - WE NEED TO LINK WITH OUR COOKIES POLICY #}
     <script type="text/javascript" nonce="{{ cspNonce }}">
-      (function () {
-        document.addEventListener('DOMContentLoaded', function () {
-          var errorSummaryVisible = document.querySelector('.clarity-error-summary-visible');
-          if (typeof window.clarity === 'function' && errorSummaryVisible) {
-            window.clarity('consentv2', {
-              ad_Storage: 'denied',
-              analytics_Storage: 'granted'
-            });
-            window.clarity("event", "errorSummary");
-          }
-        });
-      })();
+      document.addEventListener('DOMContentLoaded', function () {
+        if (typeof window.clarity === 'function') {
+          window.clarity('consentv2', {
+            ad_Storage: 'denied',
+            analytics_Storage: 'granted'
+          });
+        }
+      });
     </script>
-   {% endif %}
+    {# SEND CLARITY API EVENT WHEN CSS FOR ERROR SUMMARY IS ON THE SCREEN #}
+    <script type="text/javascript" nonce="{{ cspNonce }}">
+      function showErrorSummary() {
+        const errorSummary = document.querySelector('.clarity-error-summary-visible');
+        if (!errorSummary) { return; }
+        if (typeof window.clarity !== 'function') { return; }
+        window.clarity('event', 'errorSummary');
+      }
+      document.addEventListener('DOMContentLoaded', showErrorSummary);
+    </script>
+  {% endif %}
 {% endblock %}
 
 {% block bodyStart %}
