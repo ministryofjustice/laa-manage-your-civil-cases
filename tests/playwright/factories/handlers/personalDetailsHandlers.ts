@@ -54,6 +54,9 @@ export function createPersonalDetailsHandlers(
           }
         }
       }
+      if(!validationErrors.email) {
+        caseItem.emailAddress = updateData.email
+      }
 
       // Validate choice field
       validateChoiceField(updateData, 'safe_to_contact', ['SAFE', 'DONT_CALL'], validationErrors);
