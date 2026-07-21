@@ -39,11 +39,10 @@ test('footer is visible with expected links', async ({ page }) => {
   const footer = page.locator('.govuk-footer');
   await expect(footer).toBeVisible();
   await expect(footer.getByRole('link', { name: 'Help' })).toBeVisible();
-  await expect(footer.getByRole('link', { name: 'Feedback' })).toBeVisible();
-  await expect(footer.getByRole('link', { name: 'Updates' })).toBeVisible();
-  await expect(footer.getByRole('link', { name: 'Privacy Policy' })).toBeVisible();
+  await expect(footer.getByRole('link', { name: 'Privacy' })).toBeVisible();
   await expect(footer.getByRole('link', { name: 'Cookies' })).toBeVisible();
   await expect(footer.getByRole('link', { name: 'Accessibility' })).toBeVisible();
+  await expect(footer.getByRole('link', { name: 'Terms and conditions' })).toBeVisible();
 });
 
 const visitUrl = '/cookies';
