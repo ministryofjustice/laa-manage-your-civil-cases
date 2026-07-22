@@ -19,6 +19,38 @@
    {# Socket.IO client for real-time case viewer notifications #}
   <script nonce="{{ cspNonce }}" src="/socket.io/socket.io.js"></script>
   <script nonce="{{ cspNonce }}" src="/js/{{getAsset('caseViewerSocket','min.js')}}"></script>
+  {# WILL NEED TO ASSOCIATE THE PROJECT ID, WITH EACH ENVIRONMENT #}
+  {% if config.app.environment == 'uat' or config.app.environment == 'staging' or config.app.environment == 'production' %}
+    <script type="text/javascript" nonce="{{ cspNonce }}">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "xmwcwzk8bj");
+    </script>
+    {# BY DEFAULT THIS GIVES CONSENT TO MS CLARITY - WE NEED TO LINK WITH OUR COOKIES POLICY #}
+    <script type="text/javascript" nonce="{{ cspNonce }}">
+      function setDefaultCookies() {
+        if (typeof window.clarity === 'function') {
+          window.clarity('consentv2', {
+            ad_Storage: 'denied',
+            analytics_Storage: 'granted'
+          });
+        }
+      }
+      document.addEventListener('DOMContentLoaded', setDefaultCookies);
+    </script>
+    {# SEND CLARITY API EVENT WHEN CSS FOR ERROR SUMMARY IS ON THE SCREEN #}
+    <script type="text/javascript" nonce="{{ cspNonce }}">
+      function errorSummarySeen() {
+        const errorSummary = document.querySelector('.clarity-error-summary-visible');
+        if (!errorSummary) { return; }
+        if (typeof window.clarity !== 'function') { return; }
+        window.clarity('event', 'errorSummary');
+      }
+      document.addEventListener('DOMContentLoaded', errorSummarySeen);
+    </script>
+  {% endif %}
 {% endblock %}
 
 {% block bodyStart %}
