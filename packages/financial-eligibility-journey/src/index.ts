@@ -1,6 +1,6 @@
-import { createForgePackage } from '@ministryofjustice/hmpps-forge/core/authoring'
+import { createForgePackage, type ForgePackage } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { eligibilityJourney } from './journey.js'
-import { FinancialEligibilityEffectsImplementations } from './effects.js'
+import { FinancialEligibilityEffectsRegistry } from './effects.js'
 import { type Deps } from './api.js'
 
 /**
@@ -9,9 +9,7 @@ import { type Deps } from './api.js'
  */
 export default createForgePackage<Deps>({
     journey: eligibilityJourney,
-    functions: {
-      ...FinancialEligibilityEffectsImplementations
-    },
+    functions: FinancialEligibilityEffectsRegistry,
   })
 
 export * from './api.js'

@@ -48,10 +48,10 @@ function mapApiValueToForgeValue(apiValue: unknown, stepCode: string): unknown {
 
 /**
  * Utility function to map user answers from the Forge journey to the API payload format
- * @param {Record<string, any>} answers - The user's answers keyed by step code
+ * @param {Record<string, unknown>} answers - The user's answers keyed by step code
  * @returns {Record<string, unknown>} The API payload with mapped field names and values
  */
-function mapAnswersToApiPayload(answers: Record<string, any>): Record<string, unknown> {
+function mapAnswersToApiPayload(answers: Record<string, unknown>): Record<string, unknown> {
     const payload: Record<string, unknown> = {};
     for (const [stepCode, answer] of Object.entries(answers)) {
         const apiField = mapStepCodeToApiField(stepCode);

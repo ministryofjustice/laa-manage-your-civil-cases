@@ -1,4 +1,4 @@
-import { defineEffectFunctions } from "@ministryofjustice/hmpps-forge/core/authoring";
+import { EffectRegistry } from "@ministryofjustice/hmpps-forge/core/authoring";
 import { access, redirect, Condition, Session } from '@ministryofjustice/hmpps-forge/core/authoring'
 import type { EffectFunctionContext, EffectFunctionExpr } from "@ministryofjustice/hmpps-forge/core/authoring";
 import { type Deps } from '@ministryofjustice/financial-eligibility-journey';
@@ -16,56 +16,85 @@ export interface FinancialEligibilityEffectShape {
   SaveNewAnswerIfAnswered: () => EffectFunctionExpr;
 }
 
-export const {
-  effects: FinancialEligibilityEffects,
-  implementations: FinancialEligibilityEffectsImplementations,
-} = defineEffectFunctions<FinancialEligibilityEffectShape, Deps>({
+type FinancialEligibilityEffectImplementation = (
+  deps: Deps,
+) => (context: EffectFunctionContext) => void | Promise<void>;
+
+export const FinancialEligibilityEffectsImplementations: Record<
+  keyof FinancialEligibilityEffectShape,
+  FinancialEligibilityEffectImplementation
+> = {
   /**
    * Loads case details from the API and stores them in the context, for use in the journey.
-   * @param {unknown} _deps Effect dependencies supplied by Forge, expected to include a fetchClientDetails function
+   * @param {unknown} deps Effect dependencies supplied by Forge, expected to include a fetchClientDetails function
    * @returns {(context: EffectFunctionContext) => Promise<void>} Async function to load case details and store in context
    */
-  LoadCaseDetails: (_deps) => async (context: EffectFunctionContext) => {
-    await _deps.effectsWithDeps.LoadCaseDetails(_deps, context);
+  LoadCaseDetails: (deps) => async (context: EffectFunctionContext) => {
+    await deps.effectsWithDeps.LoadCaseDetails(deps, context);
   },
 
   /**
    * Loads financial eligibility data from the API, checks if any questions have been answered so that they take precedence over the API data, and stores the results in Forge's answers.
-   * @param {unknown} _deps Effect dependencies supplied by Forge, expected to include a getFinancialEligibility function
+   * @param {unknown} deps Effect dependencies supplied by Forge, expected to include a getFinancialEligibility function
    * @returns {(context: EffectFunctionContext) => Promise<void>} Async function to load financial eligibility data and store in context
    */
-  LoadCaseFinancialEligibility: (_deps) => async (context: EffectFunctionContext) => {
-    await _deps.effectsWithDeps.LoadCaseFinancialEligibility(_deps, context);
+  LoadCaseFinancialEligibility: (deps) => async (context: EffectFunctionContext) => {
+    await deps.effectsWithDeps.LoadCaseFinancialEligibility(deps, context);
   },
 
   /**
    * Submit saved answers from session to cla_backend
-   * @param {unknown} _deps Effect dependencies supplied by Forge
+   * @param {unknown} deps Effect dependencies supplied by Forge
    * @returns {(context: EffectFunctionContext) => Promise<void>} Async function to submit saved answers to cla_backend
    */
-  PersistSavedAnswers: (_deps) => async (context: EffectFunctionContext) => {
-    await _deps.effectsWithDeps.PersistSavedAnswers(_deps, context);
+  PersistSavedAnswers: (deps) => async (context: EffectFunctionContext) => {
+    await deps.effectsWithDeps.PersistSavedAnswers(deps, context);
   },
 
   /**
    * Clears draft financial eligibility answers, in the session
-   * @param {unknown} _deps Effect dependencies supplied by Forge
+   * @param {unknown} deps Effect dependencies supplied by Forge
    * @returns {(context: EffectFunctionContext) => void} Function to clear stored draft answers to the context
    */
-  ClearDraftAnswers: (_deps) => async (context: EffectFunctionContext) => {
-    await _deps.effectsWithDeps.ClearDraftAnswers(_deps, context);
+  ClearDraftAnswers: (deps) => async (context: EffectFunctionContext) => {
+    await deps.effectsWithDeps.ClearDraftAnswers(deps, context);
   },
 
   /**
    * Saves a new answer if it has been answered, by checking the post data for any answers and saving them to the session as drafts
-   * @param {unknown} _deps Effect dependencies supplied by Forge
+   * @param {unknown} deps Effect dependencies supplied by Forge
    * @returns {(context: EffectFunctionContext) => void} Function to save new answers to the session as drafts
    */
-  SaveNewAnswerIfAnswered: (_deps) => (context: EffectFunctionContext) => {
-    _deps.effectsWithDeps.SaveNewAnswerIfAnswered(_deps, context);
+  SaveNewAnswerIfAnswered: (deps) => (context: EffectFunctionContext) => {
+    void deps.effectsWithDeps.SaveNewAnswerIfAnswered(deps, context);
   }
 
-});
+};
+
+export const FinancialEligibilityEffectsRegistry = new EffectRegistry<Deps>();
+
+export const FinancialEligibilityEffects: FinancialEligibilityEffectShape = {
+  LoadCaseDetails: FinancialEligibilityEffectsRegistry.register(
+    'LoadCaseDetails',
+    FinancialEligibilityEffectsImplementations.LoadCaseDetails,
+  ),
+  LoadCaseFinancialEligibility: FinancialEligibilityEffectsRegistry.register(
+    'LoadCaseFinancialEligibility',
+    FinancialEligibilityEffectsImplementations.LoadCaseFinancialEligibility,
+  ),
+  PersistSavedAnswers: FinancialEligibilityEffectsRegistry.register(
+    'PersistSavedAnswers',
+    FinancialEligibilityEffectsImplementations.PersistSavedAnswers,
+  ),
+  ClearDraftAnswers: FinancialEligibilityEffectsRegistry.register(
+    'ClearDraftAnswers',
+    FinancialEligibilityEffectsImplementations.ClearDraftAnswers,
+  ),
+  SaveNewAnswerIfAnswered: FinancialEligibilityEffectsRegistry.register(
+    'SaveNewAnswerIfAnswered',
+    FinancialEligibilityEffectsImplementations.SaveNewAnswerIfAnswered,
+  ),
+};
 
 /**
  * Make sure that these pages can't be viewed unless logged in
@@ -75,7 +104,7 @@ export const requireAuth = () =>
   access({
     next: [
       redirect({
-        when: Session('authCredentials').not.match(Condition.IsRequired()),
+        when: Session('silasAuth').not.match(Condition.IsRequired()),
         goto: '/',
       }),
     ],

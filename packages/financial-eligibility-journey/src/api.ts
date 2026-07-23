@@ -1,4 +1,6 @@
 import type { EffectFunctionContext } from "@ministryofjustice/hmpps-forge/core/authoring";
+import type { AxiosInstanceWrapper } from "#types/axios-instance-wrapper.js";
+import type { ClientDetailsApiResponse, FinancialEligibilityData } from "#types/api-types.js";
 
 export interface Deps {
     effectsWithDeps: FinancialEligibilityEffectsWithDeps;
@@ -13,6 +15,10 @@ export interface FinancialEligibilityEffectsWithDeps {
 }
 
 export interface FinancialEligibilityApiService {
-    getClientDetails: (caseReference: string, axiosMiddleware?: any) => Promise<any>;
-    updateFinancialEligibility: (caseReference: string, updateData: Record<string, any>, axiosMiddleware?: any) => Promise<any>;
+    getClientDetails: (axiosMiddleware: AxiosInstanceWrapper, caseReference: string) => Promise<ClientDetailsApiResponse>;
+    updateFinancialEligibility: (
+        axiosMiddleware: AxiosInstanceWrapper,
+        caseReference: string,
+        updateData: Partial<FinancialEligibilityData>
+    ) => Promise<ClientDetailsApiResponse>;
 }
