@@ -39,6 +39,7 @@ export async function fetchClientDetails(req: Request, res: Response, next: Next
       // Attach client data to request object for use by controllers
       const { data } = response;
       req.clientData = data;
+      res.locals['client'] = data;
       next();
     } else {
       devError(`[Middleware] Client details not found for case: ${caseReference}. API response: ${response.message ?? 'Unknown error'}`);
