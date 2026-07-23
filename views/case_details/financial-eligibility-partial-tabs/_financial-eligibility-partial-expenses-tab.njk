@@ -1,0 +1,76 @@
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% set changeExpensesLinkHtml %}
+  <a class="govuk-link" href="/cases/{{ caseReference }}/financial-eligibility/change/??">{{ t('common.change') }}</a>
+{% endset %}
+
+{% set changePartnerExpensesLinkHtml %}
+  <a class="govuk-link" href="/cases/{{ caseReference }}/financial-eligibility/change/??">{{ t('common.change') }}</a>
+{% endset %}
+
+{% set deductions = financialEligibility.clientData.deductions %}
+{% set partnerDeductions = financialEligibility.partnerData.partnerDeductions %}
+
+{{ govukTable({
+  caption: "Your expenses",
+  classes: "eligibility-table",
+  captionClasses: "govuk-table__caption--m",
+  firstCellIsHeader: true,
+  rows: [
+    [
+      { text: t("common.financialEligibility.expenses.mortgageCost") },
+      { text: (deductions.mortgage | formatFinancialData) }
+    ],
+    [
+      { text: t("common.financialEligibility.expenses.rentCost") },
+      { text: (deductions.rent | formatFinancialData) }
+    ],
+    [
+      { text: t("common.financialEligibility.expenses.maintenanceCost") },
+      { text: (deductions.maintenance | formatFinancialData) }
+    ],
+    [
+      { text: t("common.financialEligibility.expenses.childCareCost") },
+      { text: (deductions.childcare | formatFinancialData) }
+    ],
+    [
+      { text: t("common.financialEligibility.expenses.legalAidCost") },
+      { text: (deductions.criminalContributions | formatFinancialData) }
+    ]
+  ]
+}) }}
+
+<div>{{ changeExpensesLinkHtml | safe }}</div>
+
+{% if financialEligibility.hasPartner %}
+  {{ govukTable({
+    caption: "Your partner's expenses",
+    classes: "eligibility-table",
+    captionClasses: "govuk-table__caption--m",
+    firstCellIsHeader: true,
+    rows: [
+      [
+        { text: t("common.financialEligibility.expenses.partnerMortgageCost") },
+        { text: (partnerDeductions.mortgage | formatFinancialData)  }
+      ],
+      [
+        { text: t("common.financialEligibility.expenses.partnerRentCost") },
+        { text: (partnerDeductions.rent | formatFinancialData) }
+      ],
+      [
+        { text: t("common.financialEligibility.expenses.partnerMaintenanceCost") },
+        { text: (partnerDeductions.maintenance | formatFinancialData) }
+      ],
+      [
+        { text: t("common.financialEligibility.expenses.partnerChildCareCost") },
+        { text: (partnerDeductions.childcare | formatFinancialData) }
+      ],
+      [
+        { text: t("common.financialEligibility.expenses.partnerLegalAidCost") },
+        { text: (partnerDeductions.criminalContributions | formatFinancialData) }
+      ]
+    ]
+  }) }}
+
+  <div>{{ changePartnerExpensesLinkHtml | safe }}</div>
+{% endif %}
