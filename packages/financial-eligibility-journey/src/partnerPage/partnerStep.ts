@@ -1,6 +1,6 @@
 import { submit, redirect, Answer, Condition } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { step, type StepDefinition } from '../authoring.js'
-import { continueButton, discardChangesButton } from '../commonBlocks.js'
+import { continueButton, discardChangesButton, discardChangesButtonSubmit } from '../commonBlocks.js'
 import { partnerFieldHeading, partnerField } from './partnerBlock.js'
 import { FinancialEligibilityEffects } from '../effects.js'
 import { over60Step } from '../over60Page/over60Step.js'
@@ -15,6 +15,7 @@ export const partnerStep: StepDefinition = step({
   reachability: { entryWhen: true },
   blocks: [partnerFieldHeading, partnerField, continueButton, discardChangesButton],
   onSubmission: [
+    discardChangesButtonSubmit(),
     submit({
       validate: true,
       onValid: {
