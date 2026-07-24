@@ -1,4 +1,4 @@
-import { submit, redirect, Answer, Condition } from '@ministryofjustice/hmpps-forge/core/authoring'
+import { submit, redirect } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { step, type StepDefinition } from '../authoring.js'
 import { continueButton, discardChangesButton } from '../commonBlocks.js'
 import { under18HasValuablesHeading, under18HasValuablesField } from './under18HasValuablesBlock.js'
@@ -17,8 +17,8 @@ export const under18HasValuablesStep: StepDefinition = step({
     submit({
       validate: true,
       onValid: {
-        effects: [ FinancialEligibilityEffects.SaveNewAnswerIfAnswered()],
-        next: [ redirect({ goto: partnerStep.code }) ],
+        effects: [FinancialEligibilityEffects.SaveNewAnswerIfAnswered()],
+        next: [redirect({ goto: partnerStep.code })],
       },
     }),
   ],

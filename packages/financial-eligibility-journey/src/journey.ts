@@ -5,6 +5,8 @@ import { under18RegularPaymentStep }from './under18RegularPaymentPage/under18Reg
 import { under18HasValuablesStep }from './under18HasValuablesPage/under18HasValuablesStep.js'
 import { partnerStep } from './partnerPage/partnerStep.js'
 import { over60Step } from './over60Page/over60Step.js'
+import { over60StepWithPartnerStep } from './over60PWithPartnerPage/over60WithPartnerStep.js'
+import { benefitsStep } from './benefitsPage/benefitsStep.js'
 import { checkAnswersStep } from './checkAnswersPage/checkAnswersStep.js'
 
 // The loads any stored draft answers on every access, so switching between branches preserves earlier input.
@@ -29,6 +31,8 @@ export const eligibilityJourney = journey({
     under18HasValuablesStep,
     partnerStep,
     over60Step,
+    over60StepWithPartnerStep,
+    benefitsStep,
     checkAnswersStep,
   ],
 })

@@ -10,6 +10,7 @@ export const checkAnswersStep: StepDefinition = step({
   code: STEP_CODE,
   path: '/check-answers',
   title: 'Check your answers',
+  reachability: { entryWhen: true },
   blocks: [heading, summaryList, submitButton],
   onSubmission: [
     submit({

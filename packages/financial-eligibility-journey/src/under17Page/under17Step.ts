@@ -21,9 +21,7 @@ export const under17Step: StepDefinition = step({
     submit({
       validate: true,
       onValid: {
-        effects: [
-          FinancialEligibilityEffects.SaveNewAnswerIfAnswered(),
-        ],
+        effects: [FinancialEligibilityEffects.SaveNewAnswerIfAnswered()],
         next: [
           redirect({
             when: Answer(STEP_CODE).match(Condition.Equals('yes')),
