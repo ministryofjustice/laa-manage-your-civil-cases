@@ -6,7 +6,7 @@ import { GovUKSummaryList } from '@ministryofjustice/hmpps-forge/govuk-component
 // only the branch the user actually took appears on the summary. Answers
 // from other branches stay in the session (so switching back shows the
 // previous value pre-filled) but are not displayed here.
-const under17Label = match(Answer('under17'))
+const under17Label = match(Answer('under-17'))
   .branch(Condition.Equals('yes'), 'Yes')
   .branch(Condition.Equals('no'), 'No')
   .otherwise('')
@@ -28,7 +28,7 @@ export const summaryList = GovUKSummaryList({
       },
     },
     Conditional({
-      when: Answer('under17').match(Condition.Equals('no')),
+      when: Answer('under-17').match(Condition.Equals('no')),
       then: {
         key: { text: 'Do you have a partner?' },
         value: { text: Answer('partner').pipe(Transformer.String.Capitalize()) },
@@ -38,7 +38,7 @@ export const summaryList = GovUKSummaryList({
       },
     }),
     Conditional({
-      when: Answer('under17').match(Condition.Equals('no')),
+      when: Answer('under-17').match(Condition.Equals('no')),
       then: {
         key: { text: 'Are you aged 60 or over?' },
         value: { text: Answer('over-60').pipe(Transformer.String.Capitalize()) },

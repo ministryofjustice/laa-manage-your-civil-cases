@@ -1,18 +1,16 @@
 import { Self, Condition, validation } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { GovUKHeading, GovUKRadioInput , GovUKUtilityClasses } from '@ministryofjustice/hmpps-forge/govuk-components'
 
-// A plain radio with two options. The selected value drives the redirect in
-// the step's submit hook, so the field only needs a required rule here.
-export const under17FieldHeading=GovUKHeading({
+export const under18HasValuablesHeading=GovUKHeading({
   text: 'About you',
   size: 'm',
 })
 
-export const under17Field=GovUKRadioInput({
-  code: 'under-17',
+export const under18HasValuablesField= GovUKRadioInput({
+  code: 'under18HasValuables',
   fieldset: {
     legend: {
-      text: 'Are you aged 17 or under?',
+      text: 'Do you have any savings, items of value or investments totalling £2500 or more?',
       isPageHeading: true,
     },
   },
@@ -24,7 +22,7 @@ export const under17Field=GovUKRadioInput({
   validWhen: [
     validation({
       condition: Self().match(Condition.IsRequired()),
-      message: 'Select yes if you are aged 17 or under',
+      message: 'Select yes if you have any savings, items of value or investments totalling £2500 or more',
     }),
   ],
 })

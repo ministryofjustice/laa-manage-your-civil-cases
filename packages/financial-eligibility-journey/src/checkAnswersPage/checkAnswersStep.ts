@@ -4,7 +4,6 @@ import { summaryList } from './checkAnswersBlock.js'
 import { FinancialEligibilityEffects } from '../effects.js'
 import { type StepDefinition } from '../authoring.js'
 
-
 const STEP_CODE = 'check-answers'
 
 export const checkAnswersStep: StepDefinition = step({

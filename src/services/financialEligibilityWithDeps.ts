@@ -1,7 +1,7 @@
 import type { EffectFunctionContext } from "@ministryofjustice/hmpps-forge/core";
 import { type FinancialEligibilityEffectsWithDeps, type Deps } from '#packages/financial-eligibility-journey/src/api.js';
 import { type FinancialEligibilitySession } from '#packages/financial-eligibility-journey/src/context.type.js';
-import { over60Step, partnerStep, under17GroupStep } from "#packages/financial-eligibility-journey/src/index.js";
+import { over60Step, partnerStep, under17Step } from "#packages/financial-eligibility-journey/src/index.js";
 import { type FinancialEligibilityData } from "#types/api-types.js";
 
 /**
@@ -12,7 +12,7 @@ import { type FinancialEligibilityData } from "#types/api-types.js";
 function mapStepCodeToApiField(stepCode: string): string | null {
     const mapping: Record<string, string> = {
         [over60Step.code]: 'is_you_or_your_partner_over_60',
-        [under17GroupStep.code]: 'is_you_under_18',
+        [under17Step.code]: 'is_you_under_18',
         [partnerStep.code]: 'has_partner',
     };
 
@@ -27,7 +27,7 @@ function mapStepCodeToApiField(stepCode: string): string | null {
 function mapFinancialEligibilityApiDataToStepCodes(financialEligibilityData: FinancialEligibilityData): Record<string, unknown> {
     return {
         [over60Step.code]: financialEligibilityData.isOver60,
-        [under17GroupStep.code]: financialEligibilityData.isUnder17,
+        [under17Step.code]: financialEligibilityData.isUnder17,
         [partnerStep.code]: financialEligibilityData.hasPartner,
     }
 }
@@ -41,7 +41,7 @@ function mapFinancialEligibilityApiDataToStepCodes(financialEligibilityData: Fin
 function mapApiValueToForgeValue(apiValue: unknown, stepCode: string): unknown {
     return {
         [over60Step.code]: apiValue ? 'yes' : 'no',
-        [under17GroupStep.code]: apiValue ? 'yes' : 'no',
+        [under17Step.code]: apiValue ? 'yes' : 'no',
         [partnerStep.code]: apiValue ? 'yes' : 'no',
     }[stepCode];
 }

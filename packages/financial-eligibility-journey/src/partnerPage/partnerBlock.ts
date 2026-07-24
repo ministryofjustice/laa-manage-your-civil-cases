@@ -1,16 +1,20 @@
 import { Self, Condition, validation} from '@ministryofjustice/hmpps-forge/core/authoring'
-import { GovUKRadioInput, GovUKUtilityClasses } from '@ministryofjustice/hmpps-forge/govuk-components'
+import { GovUKHeading, GovUKRadioInput, GovUKUtilityClasses } from '@ministryofjustice/hmpps-forge/govuk-components'
+
+export const partnerFieldHeading=GovUKHeading({
+  text: 'About you',
+  size: 'm',
+})
 
 export const partnerField = GovUKRadioInput({
   code: 'partner',
   fieldset: {
     legend: {
-      text: 'About you',
-      classes: GovUKUtilityClasses.Fieldset.MediumLabel,
+      text: 'Do you have a partner?',
       isPageHeading: true,
     },
   },
-  hint: { text: 'Do you have a partner?' },
+  classes: GovUKUtilityClasses.Radios.Inline,
   items: [
     { value: 'yes', text: 'Yes' },
     { value: 'no', text: 'No' },
