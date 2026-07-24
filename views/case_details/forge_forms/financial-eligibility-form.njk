@@ -5,11 +5,18 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      {% if fieldValidationErrors | length %}
-        {{ govukErrorSummary({
-          titleText: "There is a problem",
-          errorList: fieldValidationErrors
-        }) }}
+      {% set errorList = [] %}
+
+      {% for error in fieldValidationErrors %}
+        {% set errorList = errorList.concat([{ text: error.message, href: "#" + error.blockCode }]) %}
+      {% endfor %}
+
+      {% for error in domainValidationErrors %}
+        {% set errorList = errorList.concat([{ text: error.message }]) %}
+      {% endfor %}
+
+      {% if errorList | length %}
+        {{ govukErrorSummary({ titleText: "There is a problem", errorList: errorList }) }}
       {% endif %}
 
       {{ caseDetailsHeaderComponent(client, hideStatusButton = true) }}
