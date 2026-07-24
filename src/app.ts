@@ -8,6 +8,7 @@ import bodyParser from 'body-parser';
 import compression from 'compression';
 import { createServer } from 'http';
 import { setupCsrf, setupMiddlewares, setupConfig, setupLocaleMiddleware, setAuthStatus } from '#src/middlewares/indexSetUp.js';
+import { fetchClientDetails } from '#src/middlewares/caseDetailsMiddleware.js';
 import session from 'express-session';
 import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware, displayAsciiBanner, setupSocketIO, createRedisClient, type RedisClientType} from '#utils/server/index.js';
 import { initializeI18nextSync } from '#src/scripts/helpers/index.js';
@@ -16,6 +17,16 @@ import livereload from 'connect-livereload';
 import { buildSessionConfig } from '#utils/server/session.js';
 import { errorHandler404, errorHandlerGlobalCatchAll } from '#src/middlewares/errorHandlers.js';
 import { setupSentry } from '#utils/server/sentrySetup.js';
+
+// Forge related packages and setup
+import { Forge } from '@ministryofjustice/hmpps-forge/core';
+import { createExpressRouter, nunjucksFunctions } from '@ministryofjustice/hmpps-forge/express-nunjucks';
+import { govukComponents } from '@ministryofjustice/hmpps-forge/govuk-components'
+import { mojComponents } from '@ministryofjustice/hmpps-forge/moj-components'
+import createEligibilityPackage from '@ministryofjustice/financial-eligibility-journey';
+import { apiService } from '#src/services/api/index.js';
+import { type Deps } from '#packages/financial-eligibility-journey/src/api.js';
+import { FinancialEligibilityEffectsWithDepsImpl } from '#src/services/financialEligibilityWithDeps.js';
 
 const TRUST_FIRST_PROXY = 1;
 
@@ -44,7 +55,7 @@ const createApp = async (): Promise<express.Application> => {
 	app.use(axiosMiddleware);
 	
 	// Set up Nunjucks as the template engine
-	nunjucksSetup(app);
+	const nunjucksEnv = nunjucksSetup(app);
 
 	// Set up common middleware for handling cookies, body parsing, etc.
 	await setupMiddlewares(app);
@@ -54,6 +65,26 @@ const createApp = async (): Promise<express.Application> => {
 
 	// Set up Cross-Site Request Forgery (CSRF) protection
 	setupCsrf(app);
+
+	// Set up Forge
+	const forge = new Forge({});
+
+	forge
+		.registerGlobalComponents(govukComponents)
+		.registerGlobalComponents(mojComponents)
+		.registerGlobalFunctions(nunjucksFunctions)
+		.registerPackage<Deps>(
+			createEligibilityPackage,
+			{
+				effectsWithDeps: new FinancialEligibilityEffectsWithDepsImpl(apiService),
+			}
+		);
+
+	// Forge routes set-up
+	app.use(express.urlencoded({ extended: true }));
+	// Fetch client details for Forge journey routes
+	app.use('/cases/:caseReference/financial-eligibility/change', fetchClientDetails);
+	app.use('/', createExpressRouter(forge, { nunjucksEnv }));
 
 	// Set up locale middleware for internationalisation
 	app.use(setupLocaleMiddleware);

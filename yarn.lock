@@ -675,6 +675,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ministryofjustice/hmpps-forge@npm:0.3.2":
+  version: 0.3.2
+  resolution: "@ministryofjustice/hmpps-forge@npm:0.3.2"
+  dependencies:
+    express: "npm:^4.21.0 || ^5.0.0"
+    http-errors: "npm:^2.0.0"
+    nunjucks: "npm:^3.2.4"
+    ws: "npm:^8.18.0"
+    zod: "npm:^4.1.5"
+  checksum: 10c0/4c61db4b85c61439f75be12108d60c17c9554ff1148d1451cde5bd9fe1dda6de8f898f521f8dcb1d805c5ec14e6658fd7f98669fe1e9b3e25d4fc9149cbef8e1
+  languageName: node
+  linkType: hard
+
 "@mswjs/interceptors@npm:^0.41.3":
   version: 0.41.9
   resolution: "@mswjs/interceptors@npm:0.41.9"
@@ -3492,7 +3505,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express@npm:^5.2.0":
+"express@npm:^4.21.0 || ^5.0.0, express@npm:^5.2.0":
   version: 5.2.1
   resolution: "express@npm:5.2.1"
   dependencies:
@@ -4807,6 +4820,7 @@ __metadata:
     "@azure/msal-node": "npm:^5.4.0"
     "@eslint/js": "npm:^10.0.1"
     "@ministryofjustice/frontend": "npm:^10.0.0"
+    "@ministryofjustice/hmpps-forge": "npm:0.3.2"
     "@playwright/test": "npm:^1.61.0"
     "@sentry/node": "npm:^10.67.0"
     "@socket.io/redis-adapter": "npm:^8.3.0"
@@ -7672,7 +7686,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^4.4.3":
+"zod@npm:^4.1.5, zod@npm:^4.4.3":
   version: 4.4.3
   resolution: "zod@npm:4.4.3"
   checksum: 10c0/7ea31b558e88f9faf44f31dd185e2e1cbf51fed3081787fb96cc2534749b50c0acfc6da7f0922a7353ed092dd358c7d50c28ea96c94d04af64191bd33152eca3

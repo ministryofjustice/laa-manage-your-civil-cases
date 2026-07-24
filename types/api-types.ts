@@ -406,7 +406,7 @@ export interface PropertySetData {
 }
 
 /**
- * Interface for financial eligiblity data
+ * Interface for financial eligibility data
  */
 export interface FinancialEligibilityData {
   hasPartner: boolean;

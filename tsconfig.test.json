@@ -12,6 +12,7 @@
 		"routes/**/*.ts",
 		"src/**/*.ts",
 		"middleware/**/*.ts",
-		"utils/**/*.ts"
+		"utils/**/*.ts",
+		"packages/**/*.ts"
 	]
 }
