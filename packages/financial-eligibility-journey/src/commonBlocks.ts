@@ -6,4 +6,6 @@ export const heading = GovUKHeading({
 
 export const continueButton = GovUKButton({ text: 'Continue' })
 
+export const discardChangesButton = GovUKButton({ text: 'Discard changes', classes: 'govuk-button--warning govuk-!-margin-left-3' })
+
 export const submitButton = GovUKButton({ text: 'Submit' })

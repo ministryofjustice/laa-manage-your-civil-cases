@@ -1,6 +1,6 @@
 import { submit, redirect, Answer, Condition } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { step, type StepDefinition } from '../authoring.js'
-import { continueButton } from '../commonBlocks.js'
+import { continueButton, discardChangesButton } from '../commonBlocks.js'
 import { under17Field } from './under17Block.js'
 import { FinancialEligibilityEffects } from '../effects.js'
 import { partnerStep } from '../partnerPage/partnerStep.js'
@@ -17,7 +17,7 @@ export const under17GroupStep: StepDefinition = step({
   path: '/under-17',
   title: 'Are you aged 17 or under?',
   reachability: { entryWhen: true },
-  blocks: [under17Field, continueButton],
+  blocks: [under17Field, continueButton, discardChangesButton],
   onSubmission: [
     submit({
       validate: true,

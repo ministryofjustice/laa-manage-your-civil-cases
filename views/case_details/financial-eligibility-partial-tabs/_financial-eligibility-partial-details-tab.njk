@@ -1,0 +1,105 @@
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% set changeAboutYouLinkHtml %}
+  <p class="govuk-!-margin-bottom-8">
+    <a class="govuk-link" href="/cases/{{ caseReference }}/financial-eligibility/change">{{ t('common.change') }}</a>
+  </p>
+{% endset %}
+
+{% set changeBenefitsLinkHtml %}
+  <a class="govuk-link" href="/cases/{{ caseReference }}/financial-eligibility/change/benefits">{{ t('common.change') }}</a>
+{% endset %}
+
+{% set under17Text = "Yes" if financialEligibility.isUnder17 else "No" %}
+{% set under18RegularPayment = "Yes" if financialEligibility.under18RegularPayment else "No" %}
+{% set under18HasValuables = "Yes" if financialEligibility.under18HasValuables else "No" %}
+{% set partnerText = "Yes" if financialEligibility.hasPartner else "No" %}
+{% set over60Text = "Yes" if financialEligibility.isOver60 else "No"%}
+{% set universalCredit = "Yes" if financialEligibility.specificBenefits.universalCredit else "No"%}
+{% set pensionCredit = "Yes" if financialEligibility.specificBenefits.pensionCredit else "No"%}
+{% set jobSeekers = "Yes" if financialEligibility.specificBenefits.jobSeekers else "No"%}
+{% set employmentSupport = "Yes" if financialEligibility.specificBenefits.employmentSupport else "No"%}
+{% set incomeSupport = "Yes" if financialEligibility.specificBenefits.incomeSupport else "No"%}
+
+{% set partnerAndAgeRows = [
+  [
+    { text: t("common.financialEligibility.details.hasPartner") },
+    { text: partnerText }
+  ],
+  [
+    { text: t("common.financialEligibility.details.age60OrOver") },
+    { text: over60Text }
+  ]
+] %}
+
+{% set rows = [
+  [
+    { text: t("common.financialEligibility.details.age17OrUnder") }, 
+    { text: under17Text }
+  ]
+] %}
+
+{% if financialEligibility.isUnder17 %}
+  {% set rows = rows.concat([
+    [
+      { text: t("common.financialEligibility.details.under18RegularPayment") }, 
+      { text: under18RegularPayment }
+    ]
+  ]) %}
+  {% if not financialEligibility.under18RegularPayment %}
+    {% set rows = rows.concat([ 
+      [
+        { text: t("common.financialEligibility.details.under18HasValuables") }, 
+        { text: under18HasValuables }
+      ]
+    ]) %} 
+  {% endif %}
+  {% if financialEligibility.under18HasValuables or financialEligibility.under18RegularPayment %}
+    {% set rows = rows.concat(partnerAndAgeRows) %}
+  {% endif %}
+{% else %}
+    {% set rows = rows.concat(partnerAndAgeRows) %}
+{% endif %}
+
+{{ govukTable({
+  caption: "About you",
+  captionClasses: "govuk-table__caption--m",
+  firstCellIsHeader: true,
+  classes: "eligibility-table",
+  rows: rows
+}) }}
+
+<div>{{ changeAboutYouLinkHtml | safe }}</div>
+
+{% if not financialEligibility.under18passportedBenefits %}
+  {{ govukTable({
+      caption: "Benefits",
+      captionClasses: "govuk-table__caption--m",
+      firstCellIsHeader: true,
+      classes: "eligibility-table",
+      rows: [
+        [
+          { text: t("common.financialEligibility.details.universalCredit") },
+          { text: universalCredit }
+        ],
+        [
+          { text: t("common.financialEligibility.details.incomeSupport") },
+          { text: incomeSupport }
+        ],
+        [
+          { text: t("common.financialEligibility.details.incomeBasedJSA") },
+          { text: jobSeekers }
+        ],
+        [
+          { text: t("common.financialEligibility.details.pensionCredit") },
+          { text: pensionCredit }
+        ],
+        [
+          { text: t("common.financialEligibility.details.employmentSupport") },
+          { text: employmentSupport }
+        ]
+      ]
+  }) }}
+
+  <div>{{ changeBenefitsLinkHtml | safe }}</div>
+{% endif %}

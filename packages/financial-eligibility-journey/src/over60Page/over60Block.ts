@@ -1,4 +1,4 @@
-import { Self, Condition, validation, Transformer} from '@ministryofjustice/hmpps-forge/core/authoring'
+import { Self, Condition, validation } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { GovUKRadioInput, GovUKUtilityClasses } from '@ministryofjustice/hmpps-forge/govuk-components'
 
 export const over60Field = GovUKRadioInput({

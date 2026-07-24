@@ -1,0 +1,153 @@
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% set changeIncomeLinkHtml %}
+  <p class="govuk-!-margin-bottom-8"> 
+    <a class="govuk-link" href="/cases/{{ caseReference }}/financial-eligibility/change/??">{{ t('common.change') }}</a>
+  </p>
+{% endset %}
+
+{% set changePartnerIncomeLinkHtml %}
+  <p class="govuk-!-margin-bottom-8"> 
+    <a class="govuk-link" href="/cases/{{ caseReference }}/financial-eligibility/change/??">{{ t('common.change') }}</a>
+  </p>
+{% endset %}
+
+{% set changeDependantsLinkHtml %}
+  <a class="govuk-link" href="/cases/{{ caseReference }}/financial-eligibility/change/??">{{ t('common.change') }}</a>
+{% endset %}
+
+{% set income = financialEligibility.clientData.income %}
+{% set deductions = financialEligibility.clientData.deductions %}
+
+{{ govukTable({
+    caption: "Your income",
+    captionClasses: "govuk-table__caption--m",
+    firstCellIsHeader: true,
+    classes: "eligibility-table",
+    rows: [
+      [
+        { text: t("common.financialEligibility.income.selfEmployed") },
+        { text: "Yes" if income.selfEmployed else "No" }
+      ],
+      [
+        { text: t("common.financialEligibility.income.earnings") },
+        { text: (income.earnings | formatFinancialData) }
+      ],
+      [
+        { text: t("common.financialEligibility.income.tax") },
+        { text: (deductions.incomeTax | formatFinancialData) }
+      ],
+      [
+        { text: t("common.financialEligibility.income.nationalInsurance") },
+        { text: (deductions.nationalInsurance | formatFinancialData) }
+      ],
+      [
+        { text: t("common.financialEligibility.income.selfEmployedDrawings") },
+        { text: (income.selfEmploymentDrawings | formatFinancialData) }
+      ],
+      [
+        { text: t("common.financialEligibility.income.benefits") },
+        { text: (income.benefits | formatFinancialData) }
+      ],
+      [
+        { text: t("common.financialEligibility.income.taxCredits") },
+        { text: (income.taxCredits | formatFinancialData) }
+      ],
+      [
+        { text: t("common.financialEligibility.income.childBenefit") },
+        { text: (income.childBenefit | formatFinancialData) }
+      ],
+      [
+        { text: t("common.financialEligibility.income.maintenanceReceived") },
+        { text: (income.maintenanceReceived | formatFinancialData) }
+      ],
+      [
+        { text: t("common.financialEligibility.income.pension") },
+        { text: (income.pension | formatFinancialData) }
+      ],
+      [
+        { text: t("common.financialEligibility.income.otherIncome") },
+        { text: (income.otherIncome | formatFinancialData) }
+      ]
+    ]
+}) }}
+
+<div>{{ changeIncomeLinkHtml | safe }}</div>
+
+{% set partnerIncome = financialEligibility.partnerData.partnerIncome %}
+{% set partnerDeductions = financialEligibility.partnerData.partnerDeductions %}
+
+{% if financialEligibility.hasPartner %}
+  {{ govukTable({
+    caption: "Partner's income",
+    captionClasses: "govuk-table__caption--m",
+    classes: "eligibility-table",
+    firstCellIsHeader: true,
+    rows: [
+      [
+        { text: t("common.financialEligibility.income.partnerSelfEmployed") },
+        { text: "Yes" if partnerIncome.selfEmployed else "No" }
+      ],
+      [
+        { text: t("common.financialEligibility.income.partnerEarnings") },
+        { text: (partnerIncome.earnings | formatFinancialData) }
+      ],
+      [
+        { text: t("common.financialEligibility.income.partnerTax") },
+        { text: (partnerDeductions.incomeTax | formatFinancialData) }
+      ],
+      [
+        { text: t("common.financialEligibility.income.partnerNationalInsurance") },
+        { text: (partnerDeductions.nationalInsurance | formatFinancialData) }
+      ],
+      [
+        { text: t("common.financialEligibility.income.selfEmployedDrawings") },
+        { text: (partnerIncome.selfEmploymentDrawings | formatFinancialData) }
+      ],
+      [
+        { text: t("common.financialEligibility.income.benefits") },
+        { text: (partnerIncome.benefits | formatFinancialData) }
+      ],
+      [
+        { text: t("common.financialEligibility.income.taxCredits") },
+        { text: (partnerIncome.taxCredits | formatFinancialData) }
+      ],
+      [
+        { text: t("common.financialEligibility.income.maintenanceReceived") },
+        { text: (partnerIncome.maintenanceReceived | formatFinancialData) }
+      ],
+      [
+        { text: t("common.financialEligibility.income.pension") },
+        { text: (partnerIncome.pension | formatFinancialData) }
+      ],
+      [
+        { text: t("common.financialEligibility.income.otherIncome") },
+        { text: (partnerIncome.otherIncome | formatFinancialData) }
+      ]
+    ]
+  }) }}
+
+  <div>{{ changePartnerIncomeLinkHtml | safe }}</div>
+{% endif %}
+
+
+
+{{ govukTable({
+  caption: "Dependants",
+  classes: "eligibility-table",
+  captionClasses: "govuk-table__caption--m",
+  firstCellIsHeader: true,
+  rows: [
+    [
+      { text: t("common.financialEligibility.income.dependantsOld") },
+      { text: financialEligibility.dependantsOld }
+    ],
+    [
+      { text: t("common.financialEligibility.income.dependantsYoung") },
+      { text: financialEligibility.dependantsYoung }
+    ]
+  ]
+}) }}
+
+<div>{{ changeDependantsLinkHtml | safe }}</div>
+
