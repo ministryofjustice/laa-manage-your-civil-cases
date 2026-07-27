@@ -850,7 +850,7 @@
       "dependants_young": 1,
       "dependants_old": 2,
       "is_you_or_your_partner_over_60": false,
-      "has_partner": true,
+      "has_partner": false,
       "on_passported_benefits": true,
       "is_you_under_18": false,
       "specific_benefits": {

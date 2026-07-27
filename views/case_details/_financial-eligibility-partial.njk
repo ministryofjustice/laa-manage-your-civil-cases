@@ -40,8 +40,8 @@
       }
     ],
     [
-      {
-        text: t("common.financialEligibility.details.age60OrOver")
+      { 
+        text: ( t("common.financialEligibility.details.partnerAge60OrOver") if financialEligibility.hasPartner else t("common.financialEligibility.details.age60OrOver"))
       },
       {
         text: over60Text
@@ -176,7 +176,7 @@
           { text: "Yes" if property.main else "No" }
         ],
         [
-          { text: t("common.financialEligibility.finances.propertyShare") },
+          { text: ( t("common.financialEligibility.finances.partnerPropertyShare") if financialEligibility.hasPartner else t("common.financialEligibility.finances.propertyShare")) },
           { text: property.share + "%" }
         ]
       ] %}
