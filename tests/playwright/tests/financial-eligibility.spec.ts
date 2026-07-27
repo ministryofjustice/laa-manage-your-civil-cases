@@ -323,8 +323,8 @@ test.describe('Income tab', () => {
 
     // Assert the correct data is displayed in the dependants table.
     await expectCaptionTableRows(page, 'Dependants', {
-      'Do you have any dependants aged 16 and over?': '2',
-      'Do you have any dependants aged 15 and under?': '1'
+      'Do you or your partner have any dependants aged 16 and over?': '2',
+      'Do you or your partner have any dependants aged 15 and under?': '1'
     });
     await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
   });
@@ -696,7 +696,7 @@ test.describe('Conditional logic views', () => {
 
     // Open finances tab
     await page.getByRole('tab', { name: 'Finances' }).click();
-    await expect(page.getByText('Your savings')).toBeVisible();
+    await expect(page.getByText('Your undisputed savings')).toBeVisible();
     await expect(page.getByText('Cost of living payment')).toBeVisible();
   });
 
@@ -752,6 +752,26 @@ test.describe('Conditional logic views', () => {
     // Disputed savings section should be rendered
     await expect(page.getByRole('heading', { name: 'Your disputed savings' })).toHaveCount(1);
 
+    // Undisputed savings section should be rendered
+    await expect(page.getByRole('heading', { name: 'Your undisputed savings' })).toHaveCount(1);
+    await expect(page.getByRole('heading', { name: 'Your partners undisputed savings' })).toHaveCount(1);
+
+    // Assert the correct data is displayed in your undisputed savings table.
+    await expectPropertyTableRows(page, 'Your undisputed savings', {
+      'How much was in your bank account/building society before your last payment went in?': '£100',
+      'Do you have any investments, shares or ISAs?': '£300',
+      'Do you have any valuable items worth over £500 each?': '£500',
+      'Do you have any money owed to you?': '£100'
+    });
+
+    // Assert the correct data is displayed in your partners undisputed savings table.
+    await expectPropertyTableRows(page, 'Your partners undisputed savings', {
+      'How much was in your partners bank account/building society before their last payment went in?': '£100',
+      'Does your partner have any investments, shares or ISAs?': '£300',
+      'Does your partner have any valuable items worth over £500 each?': '£500',
+      'Does your partner have any money owed to them?': '£100'
+    });
+
     // Assert the correct data is displayed in the your disputed savings table.
     await expectPropertyTableRows(page, 'Your disputed savings', {
       'How much was in your bank account/building society before your last payment went in?': '£200',
@@ -773,6 +793,17 @@ test.describe('Conditional logic views', () => {
 
     // Disputed savings section should not be rendered
     await expect(page.getByRole('heading', { name: 'Your disputed savings' })).toHaveCount(1);
+
+    // Undisputed savings section should not be rendered
+    await expect(page.getByRole('heading', { name: 'Your undisputed savings' })).toHaveCount(1);
+
+    // Assert the correct data is displayed in the your undisputed savings table.
+    await expectPropertyTableRows(page, 'Your undisputed savings', {
+      'How much was in your bank account/building society before your last payment went in?': '£100',
+      'Do you have any investments, shares or ISAs?': '£300',
+      'Do you have any valuable items worth over £500 each?': '£500',
+      'Do you have any money owed to you?': '£100'
+    });
 
     // Assert the correct data is displayed in the your disputed savings table.
     await expectPropertyTableRows(page, 'Your disputed savings', {
