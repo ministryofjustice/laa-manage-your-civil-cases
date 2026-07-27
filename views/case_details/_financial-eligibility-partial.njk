@@ -201,7 +201,7 @@
     <p class="govuk-body">No property data</p>
   {% endif %}
 
-  {% set savingsHeading = "Your undisputed savings" if financialEligibility.category == "debt" or financialEligibility.category == "family" else "Your savings" %}
+  {% set savingsHeading = t("common.financialEligibility.finances.undisputedSavings") if financialEligibility.category == "debt" or financialEligibility.category == "family" else t("common.financialEligibility.finances.yourSavings") %}
 
   <h2 class="govuk-heading-m">{{ savingsHeading }}</h2>
   {% set savings = financialEligibility.clientData.savings %}
@@ -246,7 +246,7 @@
     }) }}
 
   {% if financialEligibility.hasPartner %}
-    {% set partnerSavingsHeading = "Your partners undisputed savings" if financialEligibility.category == "debt" or financialEligibility.category == "family" else "Your partners savings" %}
+    {% set partnerSavingsHeading = t("common.financialEligibility.finances.undisputedPartner") if financialEligibility.category == "debt" or financialEligibility.category == "family" else t("common.financialEligibility.finances.partnerSavings") %}
     <h2 class="govuk-heading-m">{{ partnerSavingsHeading }}</h2>
 
     {% set partnerSavings = financialEligibility.partnerData.partnerSavings %}
