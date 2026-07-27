@@ -1,0 +1,22 @@
+{% extends "base.njk" %}
+
+{% block serviceNavigation %} 
+  {{ govukServiceNavigation({
+    serviceName: config.SERVICE_NAME,
+    serviceUrl: "/cases/new",
+    navigation: []
+  }) }}
+{% endblock %}
+
+{% block pageContent %}
+  <h1 id="help-heading" class="govuk-heading-xl">{{ t('pages.help.heading') }}</h1>
+  <h2 id="tech-support-subheading" class="govuk-heading-m">{{ t('pages.help.techSupportSubheading') }}</h2>
+  <p id="support-info">{{ t('pages.help.supportStart') }}
+    <a class="govuk-link" href="mailto:MCC.Queries@justice.gov.uk">
+      {{ t('pages.help.supportEmail') }}
+    </a>
+    {{ t('pages.help.supportEnd')}}
+  </p>
+  <h2 id="case-enquiries-subheading" class="govuk-heading-m">{{ t('pages.help.caseEnquiriesSubheading') }}</h2>
+  <p id="case-enquiries-info">{{ t('pages.help.caseEnquiriesInfo') }}</p>
+{% endblock %}
