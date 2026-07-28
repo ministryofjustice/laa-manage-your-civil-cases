@@ -26,7 +26,9 @@
     "test:e2e:debug": "yarn playwright test --config=tests/playwright/playwright.config.ts --debug",
     "test:accessibility": "yarn playwright test --config=tests/playwright/playwright.config.ts --grep @accessibility",
     "test:specific": "yarn playwright test --config=tests/playwright/playwright.config.ts --grep",
-    "coverage": "c8 yarn test:unit --check-coverage"
+    "coverage": "c8 yarn test:unit --check-coverage",
+    "format": "yarn prettier . --write",
+    "format:check": "yarn prettier . --check"
   },
   "engines": {
     "node": "26.5.0"

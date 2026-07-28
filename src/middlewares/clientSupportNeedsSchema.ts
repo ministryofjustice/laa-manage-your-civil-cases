@@ -1,6 +1,6 @@
 import { checkSchema } from 'express-validator';
 import type { Meta } from 'express-validator';
-import { TypedValidationError, t, createSessionChangeDetectionValidator, normaliseSelectedCheckbox, safeBodyString } from '#src/scripts/helpers/index.js';
+import { TypedValidationError, t, normaliseSelectedCheckbox, safeBodyString } from '#src/scripts/helpers/index.js';
 
 /**
  * Base schema object for client support needs validation.
