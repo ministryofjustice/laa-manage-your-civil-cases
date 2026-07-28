@@ -102,7 +102,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@azure/msal-node@npm:^5.4.2":
+"@azure/msal-node@npm:^5.4.0":
   version: 5.4.2
   resolution: "@azure/msal-node@npm:5.4.2"
   dependencies:
@@ -211,16 +211,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@es-joy/jsdoccomment@npm:~0.90.0":
-  version: 0.90.0
-  resolution: "@es-joy/jsdoccomment@npm:0.90.0"
+"@es-joy/jsdoccomment@npm:~0.91.0":
+  version: 0.91.0
+  resolution: "@es-joy/jsdoccomment@npm:0.91.0"
   dependencies:
     "@types/estree": "npm:^1.0.9"
     "@typescript-eslint/types": "npm:^8.65.0"
     comment-parser: "npm:1.4.7"
     esquery: "npm:^1.7.0"
-    jsdoc-type-pratt-parser: "npm:~7.3.0"
-  checksum: 10c0/2a362fe4f76c5a5608377df4f67f9f5a80d01dc3db11f20a5516ae9934f5d7119ce7bdcde6ebf15547a485acdff4004b383377b0600323f58033ba09edfed946
+    jsdoc-type-pratt-parser: "npm:~8.0.0"
+  checksum: 10c0/b209efec5f9c79b0322c0d9a12e29bc5f38ea68a90f25e8d81fb6c2e0f5a769378bd8d000940d7775a59cfbacb4c9faed38a86c271f97f262898b29df63bf560
   languageName: node
   linkType: hard
 
@@ -993,7 +993,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:^1.62.0":
+"@playwright/test@npm:^1.61.0":
   version: 1.62.0
   resolution: "@playwright/test@npm:1.62.0"
   dependencies:
@@ -1109,7 +1109,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/node@npm:^10.68.0":
+"@sentry/node@npm:^10.67.0":
   version: 10.68.0
   resolution: "@sentry/node@npm:10.68.0"
   dependencies:
@@ -1606,7 +1606,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^8.65.0":
+"@typescript-eslint/eslint-plugin@npm:^8.64.0":
   version: 8.65.0
   resolution: "@typescript-eslint/eslint-plugin@npm:8.65.0"
   dependencies:
@@ -1642,7 +1642,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:^8.65.0":
+"@typescript-eslint/parser@npm:^8.64.0":
   version: 8.65.0
   resolution: "@typescript-eslint/parser@npm:8.65.0"
   dependencies:
@@ -2539,7 +2539,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"concurrently@npm:^10.0.4":
+"concurrently@npm:^10.0.3":
   version: 10.0.4
   resolution: "concurrently@npm:10.0.4"
   dependencies:
@@ -2563,13 +2563,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"connect-redis@npm:^10.0.0":
-  version: 10.0.0
-  resolution: "connect-redis@npm:10.0.0"
+"connect-redis@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "connect-redis@npm:9.0.0"
   peerDependencies:
     express-session: ">=1"
     redis: ">=5"
-  checksum: 10c0/effe2806fb6a2f0a1b8902728203dd2214fa1510e42cad7652927524582be162a95d4353adde8c7dbe4a015cc88766cd94fa2b43548b8fdca4e1e7b01baf48c5
+  checksum: 10c0/85616db0760f7974ed14f0676488dab168c111ae2068fae645a8b1acd0acf72d3c57d2252deb50eff662c22db72a6028e1635d9ff8450f3cac853278aa64051a
   languageName: node
   linkType: hard
 
@@ -3395,11 +3395,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsdoc@npm:^63.3.1":
-  version: 63.3.1
-  resolution: "eslint-plugin-jsdoc@npm:63.3.1"
+"eslint-plugin-jsdoc@npm:^63.2.0":
+  version: 63.3.2
+  resolution: "eslint-plugin-jsdoc@npm:63.3.2"
   dependencies:
-    "@es-joy/jsdoccomment": "npm:~0.90.0"
+    "@es-joy/jsdoccomment": "npm:~0.91.0"
     "@es-joy/resolve.exports": "npm:1.2.0"
     are-docs-informative: "npm:^0.0.2"
     comment-parser: "npm:1.4.7"
@@ -3415,7 +3415,7 @@ __metadata:
     to-valid-identifier: "npm:^1.0.0"
   peerDependencies:
     eslint: ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
-  checksum: 10c0/e27da2ae00599c0ce70354e4aff06d6dcacf56cde2c405fcd52ecaa6fe5b61a7d90becbdcdc8a3516c27bf8ebc55eacb62dc1e24067df9c5ecc5ccf955a9ddbf
+  checksum: 10c0/bc0649d035b84d4f01d620289c58994b57e6d541c84250c4bcfc71a1e64ed8fdbc359ec181ba9fdcb3b2339642840d6f77339047f6d821ec1cb756a090672612
   languageName: node
   linkType: hard
 
@@ -3455,19 +3455,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-unused-imports@npm:^4.4.1":
-  version: 4.4.1
-  resolution: "eslint-plugin-unused-imports@npm:4.4.1"
-  peerDependencies:
-    "@typescript-eslint/eslint-plugin": ^8.0.0-0 || ^7.0.0 || ^6.0.0 || ^5.0.0
-    eslint: ^10.0.0 || ^9.0.0 || ^8.0.0
-  peerDependenciesMeta:
-    "@typescript-eslint/eslint-plugin":
-      optional: true
-  checksum: 10c0/bef630eedc3c239ca1c0a11c6af60485310e3934bd0819d3eb51e0acabdafc722c97d35457750a957541f5cc6a99aa78abb359eb3837d3702d836b6d24cbd573
-  languageName: node
-  linkType: hard
-
 "eslint-scope@npm:^9.1.2":
   version: 9.1.2
   resolution: "eslint-scope@npm:9.1.2"
@@ -3494,7 +3481,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^10.8.0":
+"eslint@npm:^10.7.0":
   version: 10.8.0
   resolution: "eslint@npm:10.8.0"
   dependencies:
@@ -3603,7 +3590,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-rate-limit@npm:^8.6.1":
+"express-rate-limit@npm:^8.6.0":
   version: 8.6.1
   resolution: "express-rate-limit@npm:8.6.1"
   dependencies:
@@ -3773,14 +3760,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"figlet@npm:^1.11.3":
-  version: 1.11.3
-  resolution: "figlet@npm:1.11.3"
+"figlet@npm:^1.11.2":
+  version: 1.11.4
+  resolution: "figlet@npm:1.11.4"
   dependencies:
     commander: "npm:^14.0.0"
   bin:
     figlet: bin/index.js
-  checksum: 10c0/9aaff7e7e5cdfe15df50b3a6204f74096c1afd2bc18e22e6f4bf6468b827313c100ab43e58bb23bcc66523c7fd9c87ad19ff6d3d58807b619a32a9c9bef3bd23
+  checksum: 10c0/2eed162bff098ab827ec4f1006f1362cc874a74293383b0fe7c44a029cc46c8dffbdc0cd3ecb6a20ecf5f4d85b585cd7faed2dc98dfad9aac432682b83b193f5
   languageName: node
   linkType: hard
 
@@ -3930,7 +3917,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fs-extra@npm:^11.4.0":
+"fs-extra@npm:^11.3.6":
   version: 11.4.0
   resolution: "fs-extra@npm:11.4.0"
   dependencies:
@@ -4118,7 +4105,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:^17.8.0":
+"globals@npm:^17.6.0":
   version: 17.8.0
   resolution: "globals@npm:17.8.0"
   checksum: 10c0/e31b36cef3befd446487674dc6ca7b8f8e62a3b76aadd975dbf80ffa732366b3ac58df8941999eb6b1406d97480103711db85d2a49c955da47ff5ec688bee9b5
@@ -4796,7 +4783,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:>=5.2.2":
+"js-yaml@npm:>=3.15.0":
   version: 5.2.2
   resolution: "js-yaml@npm:5.2.2"
   dependencies:
@@ -4807,10 +4794,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsdoc-type-pratt-parser@npm:~7.3.0":
-  version: 7.3.0
-  resolution: "jsdoc-type-pratt-parser@npm:7.3.0"
-  checksum: 10c0/752bf1d1083d4fdd3a1273ec7c29778290364424bdd6e06c9423726ab8cd18996517cfe420030d0da8165aafe9dd2e7f03e65c3bcdb0507ff8f327eae6d510ff
+"jsdoc-type-pratt-parser@npm:~8.0.0":
+  version: 8.0.0
+  resolution: "jsdoc-type-pratt-parser@npm:8.0.0"
+  checksum: 10c0/0b383c48cb6e3c9726430017b37a838826ad3f5fa15062b44d6fcca8b7a7b26cd392b6902e7f1f872b65bdf9df76a64dfc2c0600977a7160f06f62f9af2a1925
   languageName: node
   linkType: hard
 
@@ -4953,11 +4940,11 @@ __metadata:
   resolution: "laa-manage-your-civil-cases@workspace:."
   dependencies:
     "@axe-core/playwright": "npm:^4.11.3"
-    "@azure/msal-node": "npm:^5.4.2"
+    "@azure/msal-node": "npm:^5.4.0"
     "@eslint/js": "npm:^10.0.1"
     "@ministryofjustice/frontend": "npm:^10.0.0"
-    "@playwright/test": "npm:^1.62.0"
-    "@sentry/node": "npm:^10.68.0"
+    "@playwright/test": "npm:^1.61.0"
+    "@sentry/node": "npm:^10.67.0"
     "@socket.io/redis-adapter": "npm:^8.3.0"
     "@types/chai": "npm:^5.2.3"
     "@types/compression": "npm:^1.7.5"
@@ -4976,8 +4963,8 @@ __metadata:
     "@types/sinon": "npm:^22.0.0"
     "@types/supertest": "npm:^7.2.1"
     "@types/validator": "npm:^13.15.4"
-    "@typescript-eslint/eslint-plugin": "npm:^8.65.0"
-    "@typescript-eslint/parser": "npm:^8.65.0"
+    "@typescript-eslint/eslint-plugin": "npm:^8.64.0"
+    "@typescript-eslint/parser": "npm:^8.64.0"
     "@x-govuk/govuk-prototype-components": "npm:^6.0.0"
     axe-core: "npm:^4.12.1"
     axios: "npm:1.18.1"
@@ -4987,9 +4974,9 @@ __metadata:
     chalk: "npm:^5.6.2"
     chokidar: "npm:5.0.0"
     compression: "npm:^1.8.1"
-    concurrently: "npm:^10.0.4"
+    concurrently: "npm:^10.0.3"
     connect-livereload: "npm:^0.6.1"
-    connect-redis: "npm:^10.0.0"
+    connect-redis: "npm:^9.0.0"
     cookie-parser: "npm:~1.4.6"
     cross-env: "npm:^10.1.0"
     csrf-sync: "npm:^4.2.1"
@@ -4998,18 +4985,17 @@ __metadata:
     esbuild: "npm:^0.28.1"
     esbuild-plugin-copy: "npm:^2.1.1"
     esbuild-sass-plugin: "npm:^3.7.0"
-    eslint: "npm:^10.8.0"
+    eslint: "npm:^10.7.0"
     eslint-config-love: "npm:^154.1.0"
     eslint-config-prettier: "npm:^10.1.8"
-    eslint-plugin-jsdoc: "npm:^63.3.1"
-    eslint-plugin-unused-imports: "npm:^4.4.1"
+    eslint-plugin-jsdoc: "npm:^63.2.0"
     express: "npm:^5.2.0"
-    express-rate-limit: "npm:^8.6.1"
+    express-rate-limit: "npm:^8.6.0"
     express-session: "npm:^1.19.0"
     express-validator: "npm:^7.3.0"
-    figlet: "npm:^1.11.3"
-    fs-extra: "npm:^11.4.0"
-    globals: "npm:^17.8.0"
+    figlet: "npm:^1.11.2"
+    fs-extra: "npm:^11.3.6"
+    globals: "npm:^17.6.0"
     govuk-frontend: "npm:^6.4.0"
     helmet: "npm:^8.3.0"
     http-errors: "npm:~2.0.0"
@@ -5017,7 +5003,7 @@ __metadata:
     i18next: "npm:^26.3.6"
     jsdom: "npm:^29.1.1"
     libphonenumber-js: "npm:^1.13.9"
-    lint-staged: "npm:^17.2.0"
+    lint-staged: "npm:^17.1.0"
     livereload: "npm:^0.10.2"
     middleware-axios: "npm:^3.0.0"
     mocha: "npm:^11.7.6"
@@ -5026,13 +5012,13 @@ __metadata:
     msw: "npm:^2.15.0"
     nodemon: "npm:^3.1.14"
     nunjucks: "npm:^3.2.4"
-    playwright-core: "npm:^1.62.0"
-    prettier: "npm:^3.9.6"
+    playwright-core: "npm:^1.61.0"
+    prettier: "npm:^3.9.5"
     redis: "npm:^5.12.1"
     rimraf: "npm:^6.1.3"
-    sass: "npm:^1.102.0"
+    sass: "npm:^1.101.0"
     sass-embedded: "npm:^1.100.0"
-    sinon: "npm:^22.1.0"
+    sinon: "npm:^22.0.0"
     socket.io: "npm:^4.8.3"
     supertest: "npm:^7.2.2"
     ts-node: "npm:^10.9.2"
@@ -5059,7 +5045,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:^17.2.0":
+"lint-staged@npm:^17.1.0":
   version: 17.2.0
   resolution: "lint-staged@npm:17.2.0"
   dependencies:
@@ -5884,7 +5870,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright-core@npm:1.62.0, playwright-core@npm:^1.62.0":
+"playwright-core@npm:1.62.0, playwright-core@npm:^1.61.0":
   version: 1.62.0
   resolution: "playwright-core@npm:1.62.0"
   bin:
@@ -5922,7 +5908,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^3.9.6":
+"prettier@npm:^3.9.5":
   version: 3.9.6
   resolution: "prettier@npm:3.9.6"
   bin:
@@ -6515,7 +6501,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.102.0":
+"sass@npm:^1.101.0":
   version: 1.102.0
   resolution: "sass@npm:1.102.0"
   dependencies:
@@ -6771,7 +6757,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sinon@npm:^22.1.0":
+"sinon@npm:^22.0.0":
   version: 22.1.0
   resolution: "sinon@npm:22.1.0"
   dependencies:
