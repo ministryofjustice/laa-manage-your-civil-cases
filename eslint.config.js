@@ -3,6 +3,7 @@ import jsdocPlugin from 'eslint-plugin-jsdoc';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import love from 'eslint-config-love';
+import unusedImports from 'eslint-plugin-unused-imports';
 
 // Alter this config file to meet your project's needs and standards.
 
@@ -41,7 +42,8 @@ export default [
       },
     },
     plugins: {
-      jsdoc: jsdocPlugin
+      jsdoc: jsdocPlugin,
+      'unused-imports': unusedImports,
     },
     rules: {
       'indent': 'off', // Prettier is handling this
@@ -51,6 +53,7 @@ export default [
       'no-console': 'off', // Stops complaining about putting messages in the console
       'no-param-reassign': ['error', { props: false }], // Allow modifying properties of function parameters (common in Express middleware and reducers)
       'no-negated-condition': 'off', // Allow negated conditions as they can improve readability in certain contexts
+      'unused-imports/no-unused-imports': 'error',
       'jsdoc/check-alignment': 'error',
       'jsdoc/check-param-names': 'error',
       'jsdoc/check-tag-names': 'error',

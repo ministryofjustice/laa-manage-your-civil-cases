@@ -9,7 +9,7 @@ import compression from 'compression';
 import { createServer } from 'http';
 import { setupCsrf, setupMiddlewares, setupConfig, setupLocaleMiddleware, setAuthStatus } from '#src/middlewares/indexSetUp.js';
 import session from 'express-session';
-import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware, displayAsciiBanner, setupSocketIO, createRedisClient, type RedisClientType} from '#utils/server/index.js';
+import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware, displayAsciiBanner, setupSocketIO, createRedisClient, type RedisClientType } from '#utils/server/index.js';
 import { initializeI18nextSync } from '#src/scripts/helpers/index.js';
 import indexRouter from '#routes/index.js';
 import livereload from 'connect-livereload';
@@ -26,117 +26,117 @@ const TRUST_FIRST_PROXY = 1;
  * @returns {Promise<import('express').Application>} The configured Express application
  */
 const createApp = async (): Promise<express.Application> => {
-	
-	// Initialize i18next synchronously before setting up the app
-	initializeI18nextSync();
-	
-	const app = express();
+  // Initialize i18next synchronously before setting up the app
+  initializeI18nextSync();
 
-	// Set up application-specific configurations
-	setupConfig(app);
+  const app = express();
 
-	// Set up security headers
-	helmetSetup(app);
+  // Set up application-specific configurations
+  setupConfig(app);
 
-	app.use(session(await buildSessionConfig(config)));
+  // Set up security headers
+  helmetSetup(app);
 
-	// Set up axios middleware AFTER session middleware so req.session is available
-	app.use(axiosMiddleware);
-	
-	// Set up Nunjucks as the template engine
-	nunjucksSetup(app);
+  app.use(session(await buildSessionConfig(config)));
 
-	// Set up common middleware for handling cookies, body parsing, etc.
-	await setupMiddlewares(app);
+  // Set up axios middleware AFTER session middleware so req.session is available
+  app.use(axiosMiddleware);
 
-	// Set up rate limiting
-	rateLimitSetUp(app, config);
+  // Set up Nunjucks as the template engine
+  nunjucksSetup(app);
 
-	// Set up Cross-Site Request Forgery (CSRF) protection
-	setupCsrf(app);
+  // Set up common middleware for handling cookies, body parsing, etc.
+  await setupMiddlewares(app);
 
-	// Set up locale middleware for internationalisation
-	app.use(setupLocaleMiddleware);
+  // Set up rate limiting
+  rateLimitSetUp(app, config);
 
-	// Set up authentication status for templates
-	app.use(setAuthStatus);
+  // Set up Cross-Site Request Forgery (CSRF) protection
+  setupCsrf(app);
 
-	// Register the main router
-	app.use('/', indexRouter);
+  // Set up locale middleware for internationalisation
+  app.use(setupLocaleMiddleware);
 
-	// The Sentry error handler must be registered before any other error middleware and after all controller
-	setupSentry(app, config);
+  // Set up authentication status for templates
+  app.use(setAuthStatus);
 
-	// Error handlers
-	app.use(errorHandler404);
-	app.use(errorHandlerGlobalCatchAll);
+  // Register the main router
+  app.use('/', indexRouter);
 
-	// Parses URL-encoded bodies (form submissions)
-	app.use(bodyParser.urlencoded({ extended: true }));
+  // The Sentry error handler must be registered before any other error middleware and after all controller
+  setupSentry(app, config);
 
-	// Response compression setup
-	app.use(compression({
-		/**
-		 * Custom filter for compression.
-		 * Prevents compression if the 'x-no-compression' header is set in the request.
-		 *
-		 * @param {import('express').Request} req - The Express request object
-		 * @param {import('express').Response} res - The Express response object
-		 * @returns {boolean} True if compression should be applied, false otherwise
-		 */
-		filter: (req: Request, res: Response): boolean => {
-			if ('x-no-compression' in req.headers) {
-				return false;
-			}
-			return compression.filter(req, res);
-		}
-	}));
+  // Error handlers
+  app.use(errorHandler404);
+  app.use(errorHandlerGlobalCatchAll);
 
-	// Reducing fingerprinting by removing the 'x-powered-by' header
-	app.disable('x-powered-by');
+  // Parses URL-encoded bodies (form submissions)
+  app.use(bodyParser.urlencoded({ extended: true }));
 
-	// Set up cookie security for sessions
-	app.set('trust proxy', TRUST_FIRST_PROXY);
+  // Response compression setup
+  app.use(
+    compression({
+      /**
+       * Custom filter for compression.
+       * Prevents compression if the 'x-no-compression' header is set in the request.
+       *
+       * @param {import('express').Request} req - The Express request object
+       * @param {import('express').Response} res - The Express response object
+       * @returns {boolean} True if compression should be applied, false otherwise
+       */
+      filter: (req: Request, res: Response): boolean => {
+        if ('x-no-compression' in req.headers) {
+          return false;
+        }
+        return compression.filter(req, res);
+      }
+    })
+  );
 
+  // Reducing fingerprinting by removing the 'x-powered-by' header
+  app.disable('x-powered-by');
 
-	// Enable live-reload middleware in development mode
-	if (process.env.NODE_ENV === 'development') {
-		app.use(livereload());
-	}
+  // Set up cookie security for sessions
+  app.set('trust proxy', TRUST_FIRST_PROXY);
 
-	// Display ASCII Art banner
-	displayAsciiBanner(config);
+  // Enable live-reload middleware in development mode
+  if (process.env.NODE_ENV === 'development') {
+    app.use(livereload());
+  }
+
+  // Display ASCII Art banner
+  displayAsciiBanner(config);
 
   // Create HTTP server and attach Socket.IO
-	const httpServer = createServer(app);
+  const httpServer = createServer(app);
 
-	// Set up Socket.IO; attach Redis adapter if Redis is enabled
-	try {
-		let redisClientForSocket: RedisClientType | undefined;
-		if (config.redis.enabled) {
-			redisClientForSocket = createRedisClient(config.redis);
-			if (!redisClientForSocket.isOpen) {
-				await redisClientForSocket.connect();
-			}
-		}
-		setupSocketIO(httpServer, redisClientForSocket, config.redis);
-		console.log(chalk.green('✓ Socket.IO real-time notifications enabled'));
-	} catch (error) {
-		console.error(chalk.red('❌ Failed to set up Socket.IO:'), error);
-	}
+  // Set up Socket.IO; attach Redis adapter if Redis is enabled
+  try {
+    let redisClientForSocket: RedisClientType | undefined;
+    if (config.redis.enabled) {
+      redisClientForSocket = createRedisClient(config.redis);
+      if (!redisClientForSocket.isOpen) {
+        await redisClientForSocket.connect();
+      }
+    }
+    setupSocketIO(httpServer, redisClientForSocket, config.redis);
+    console.log(chalk.green('✓ Socket.IO real-time notifications enabled'));
+  } catch (error) {
+    console.error(chalk.red('❌ Failed to set up Socket.IO:'), error);
+  }
 
-	// Starts the HTTP server on the configured port
-	httpServer.listen(config.app.port, () => {
-		console.log(chalk.yellow(`Listening on port ${config.app.port}...`));
-	});
+  // Starts the HTTP server on the configured port
+  httpServer.listen(config.app.port, () => {
+    console.log(chalk.yellow(`Listening on port ${config.app.port}...`));
+  });
 
-	return app;
+  return app;
 };
 
 // Self-execute the app directly to allow app.js to be executed directly
 createApp().catch((error) => {
-	console.error(chalk.red('Failed to start application:'), error);
-	process.exit(1);
+  console.error(chalk.red('Failed to start application:'), error);
+  process.exit(1);
 });
 
 // Export the createApp function for testing/import purposes

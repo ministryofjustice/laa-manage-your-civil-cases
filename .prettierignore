@@ -1,0 +1,6 @@
+node_modules
+coverage
+public
+playwright-report
+test-results
+deploy/laa-manage-your-civil-cases/templates/**

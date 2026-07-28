@@ -2,7 +2,6 @@
  * API Service Constants
  */
 
-import e from '#node_modules/@types/express/index.js';
 import config from '../../../../config.js';
 const { pagination: { defaultPage, defaultLimit } } = config;
 
