@@ -4,3 +4,5 @@ public
 playwright-report
 test-results
 deploy/laa-manage-your-civil-cases/templates/**
+views/case_details/client_support_needs/languages.json
+tests/playwright/fixtures/mock-data.json
