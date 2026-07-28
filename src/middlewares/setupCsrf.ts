@@ -233,6 +233,12 @@ export const setupCsrf = (app: Application): void => {
    * @param {NextFunction} next - Callback to pass control to the next middleware.
    */
   app.use((req: Request, res: Response, next: NextFunction): void => {
+    // Health/Status probs are GET-only, unautenticated, render no templates -
+    // skip CSRF token generation for these routes to avoid unnecessary session creation to Redis.
+    if (req.path === '/health' || req.path === '/status') {
+      next();
+      return;
+    }
     if (typeof req.csrfToken === "function") {
       res.locals.csrfToken = req.csrfToken(); // Makes CSRF token available in views
     }
