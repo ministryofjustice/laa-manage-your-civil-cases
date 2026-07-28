@@ -6,7 +6,6 @@
 import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
 import type { ClientDetailsApiResponse } from '#types/api-types.js';
 import { patchAndRefetch } from '../base/BaseApiService.js';
-import { getClientDetails } from './clientDetailsApiService.js';
 
 /**
  * Add client support needs for a case

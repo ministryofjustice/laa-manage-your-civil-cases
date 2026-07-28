@@ -18,7 +18,7 @@ export function handleClientDetailsTab(req: Request, res: Response, next: NextFu
     const { clientData } = req;
 
     // Clear splitCaseCache
-    clearSessionData(req, "splitCaseCache");
+    clearSessionData(req, 'splitCaseCache');
 
     if (clientData !== null && typeof clientData === 'object' && 'thirdParty' in clientData) {
       // Cache soft-deleted third party state in session to optimize add/remove operations
@@ -36,8 +36,13 @@ export function handleClientDetailsTab(req: Request, res: Response, next: NextFu
     const noChangeWarningBanner = getSessionValue(req, 'noChangeWarningCache') as NoChangeWarningCache;
     clearSessionData(req, 'noChangeWarningCache');
 
-    const { clientSupportNeeds } = clientData as { clientSupportNeeds?: ClientSupportNeeds; };
-    const showClientSupportNeeds = clientSupportNeeds?.bslWebcam === 'Yes' || clientSupportNeeds?.textRelay === 'Yes' || clientSupportNeeds?.callbackPreference === 'Yes' || clientSupportNeeds?.languageSupportNeeds !== '' || clientSupportNeeds?.notes !== '';
+    const { clientSupportNeeds } = clientData as { clientSupportNeeds?: ClientSupportNeeds };
+    const showClientSupportNeeds =
+      clientSupportNeeds?.bslWebcam === 'Yes' ||
+      clientSupportNeeds?.textRelay === 'Yes' ||
+      clientSupportNeeds?.callbackPreference === 'Yes' ||
+      clientSupportNeeds?.languageSupportNeeds !== '' ||
+      clientSupportNeeds?.notes !== '';
 
     res.render('case_details/index.njk', {
       activeTab,

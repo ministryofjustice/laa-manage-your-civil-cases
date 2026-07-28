@@ -2,7 +2,7 @@ name: Deploy with Helm
 
 on:
   push:
-    branches: ["**"]
+    branches: ['**']
   workflow_dispatch: # Allows manual triggering of the workflow
 
 permissions: {}
@@ -18,6 +18,9 @@ jobs:
       - name: Reusable Set up app
         uses: ./.github/actions/set_up_app
 
+      - name: Check formatting
+        run: yarn format:check
+
       - name: Run ESLint
         run: yarn lint
 
@@ -27,7 +30,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        
+
       - name: Reusable Set up app
         uses: ./.github/actions/set_up_app
 
@@ -151,7 +154,7 @@ jobs:
           silas_expected_audience: ${{ secrets.SILAS_EXPECTED_AUDIENCE }}
           sentry_dsn: ${{ secrets.SENTRY_DSN }}
           sentry_csp_report_uri: ${{ secrets.SENTRY_CSP_REPORT_URI }}
-  
+
   deploy-staging:
     environment: staging
     runs-on: ubuntu-latest
