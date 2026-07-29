@@ -53,11 +53,9 @@ describe('Financial eligibility Forge routing', () => {
       .map((outcome) => ('goto' in outcome ? outcome.goto : null))
       .filter((goto): goto is string => goto !== null);
 
-    expect(redirectGoesTo).to.have.length(4);
-    expect(redirectGoesTo[0]).to.equal(benefitsStep.code);
-    expect(redirectGoesTo[1]).to.equal(over60StepWithPartnerStep.code);
-    expect(redirectGoesTo[2]).to.equal(benefitsStep.code);
-    expect(redirectGoesTo[3]).to.equal(over60Step.code);
+    expect(redirectGoesTo).to.have.length(2);
+    expect(redirectGoesTo[0]).to.equal(over60StepWithPartnerStep.code);
+    expect(redirectGoesTo[1]).to.equal(over60Step.code);
   });
 
   it('routes 60-or-over answers to the correct next steps', () => {

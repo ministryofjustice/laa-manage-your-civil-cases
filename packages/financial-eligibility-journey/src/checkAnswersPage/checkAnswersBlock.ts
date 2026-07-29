@@ -45,18 +45,12 @@ export const aboutYouSummaryList = GovUKSummaryList({
     {
       key: { text: 'Are you or your partner aged 60 or over?' },
       value: { text: Answer('60-or-over-with-partner').pipe(Transformer.String.Capitalize()) },
-      visibleWhen: and(
-        Answer('under-18').match(Condition.Equals('no')),
-        Answer('has-partner').match(Condition.Equals('yes')),
-      ),
+      visibleWhen: Answer('has-partner').match(Condition.Equals('yes')),
     },
     {
       key: { text: 'Are you aged over 60?' },
       value: { text: Answer('60-or-over').pipe(Transformer.String.Capitalize()) },
-      visibleWhen: and(
-        Answer('under-18').match(Condition.Equals('no')),
-        Answer('has-partner').match(Condition.Equals('no')),
-      ),
+      visibleWhen: Answer('has-partner').match(Condition.Equals('no')),
     },
   ] as GovUKSummaryList['rows'],
 })
