@@ -7,7 +7,7 @@ import searchRouter from './search.js';
 import loginAndLogoutRouter from './loginAndLogout.js';
 import { requireAuth } from '#src/middlewares/indexSetUp.js';
 import { HTTP } from '#src/services/api/base/constants.js';
-import footerPagesRouter from './footerPages.js'
+import footerPagesRouter from './footerPages.js';
 
 // Create a new router
 const router = express.Router();
