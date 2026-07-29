@@ -3927,7 +3927,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fs-extra@npm:^11.3.6":
+"fs-extra@npm:^11.4.0":
   version: 11.4.0
   resolution: "fs-extra@npm:11.4.0"
   dependencies:
@@ -5000,7 +5000,6 @@ __metadata:
     eslint-config-love: "npm:^154.1.0"
     eslint-config-prettier: "npm:^10.1.8"
     eslint-plugin-jsdoc: "npm:^63.3.3"
-    eslint-plugin-unused-imports: "npm:^4.4.1"
     express: "npm:^5.2.0"
     express-rate-limit: "npm:^8.6.2"
     express-session: "npm:^1.19.0"
@@ -5921,7 +5920,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^3.9.5":
+"prettier@npm:^3.9.6":
   version: 3.9.6
   resolution: "prettier@npm:3.9.6"
   bin:
@@ -6514,7 +6513,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.102.0, sass@npm:^1.97.3":
+"sass@npm:^1.101.0, sass@npm:^1.97.3":
   version: 1.102.0
   resolution: "sass@npm:1.102.0"
   dependencies:
