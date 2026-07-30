@@ -73,7 +73,7 @@ test('help page should have rendered correctly', async ({ page, i18nSetup }) => 
 
   // Verify the text for the subheading on the help page
   const techSupportSubheading = page.locator('#tech-support-subheading')
-  await expect(techSupportSubheading).toHaveText('Technical Support');
+  await expect(techSupportSubheading).toHaveText('Technical support');
 
   // Verify the text for how to request technical support
   const supportInfo = page.locator('#support-info');
