@@ -7,7 +7,7 @@ import searchRouter from './search.js';
 import loginAndLogoutRouter from './loginAndLogout.js';
 import { requireAuth } from '#src/middlewares/indexSetUp.js';
 import { HTTP } from '#src/services/api/base/constants.js';
-import cookiesRouter from './footerPages.js';
+import footerPagesRouter from './footerPages.js';
 
 // Create a new router
 const router = express.Router();
@@ -35,8 +35,8 @@ router.use('/cases', requireAuth, editClientDetailsRouter);
 // Mount the search routes (auth required)
 router.use('/search', requireAuth, searchRouter);
 
-// Mount the cookies route (auth required)
-router.use('/cookies', cookiesRouter);
+// Mount the footer page information routes
+router.use('/', footerPagesRouter);
 
 /* GET liveness and readiness probes for Helm deployments */
 router.get('/status', (req: Request, res: Response): void => {
