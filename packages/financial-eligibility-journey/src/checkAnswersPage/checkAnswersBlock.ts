@@ -14,12 +14,12 @@ export const aboutYouSummaryList = GovUKSummaryList({
   },
   rows: [
     {
-      key: { 
-        text: 'Are you aged 17 or under?',  
+      key: {
+        text: 'Are you aged 17 or under?',
         classes: GovUKUtilityClasses.Width.TwoThirds,
       },
       value: {
-        text: Answer('under-18').pipe(Transformer.String.Capitalize()) 
+        text: Answer('under-18').pipe(Transformer.String.Capitalize())
       },
     },
     {
@@ -45,12 +45,30 @@ export const aboutYouSummaryList = GovUKSummaryList({
     {
       key: { text: 'Are you or your partner aged 60 or over?' },
       value: { text: Answer('60-or-over-with-partner').pipe(Transformer.String.Capitalize()) },
-      visibleWhen: Answer('has-partner').match(Condition.Equals('yes')),
+      visibleWhen: and(
+        Answer('has-partner').match(Condition.Equals('yes')),
+        not(
+          and(
+            Answer('under-18').match(Condition.Equals('yes')),
+            Answer('under-18-receives-regular-payment').match(Condition.Equals('no')),
+            Answer('under-18-has-valuables').match(Condition.Equals('no'))
+          )
+        )
+      )
     },
     {
       key: { text: 'Are you aged over 60?' },
       value: { text: Answer('60-or-over').pipe(Transformer.String.Capitalize()) },
-      visibleWhen: Answer('has-partner').match(Condition.Equals('no')),
+      visibleWhen: and(
+        Answer('has-partner').match(Condition.Equals('no')),
+        not(
+          and(
+            Answer('under-18').match(Condition.Equals('yes')),
+            Answer('under-18-receives-regular-payment').match(Condition.Equals('no')),
+            Answer('under-18-has-valuables').match(Condition.Equals('no'))
+          )
+        )
+      ),
     },
   ] as GovUKSummaryList['rows'],
 })
@@ -75,7 +93,7 @@ export const benefitsSummaryList = GovUKSummaryList({
   },
   rows: [
     {
-      key: { 
+      key: {
         text: 'Universal Credit',
         classes: GovUKUtilityClasses.Width.TwoThirds,
       },
