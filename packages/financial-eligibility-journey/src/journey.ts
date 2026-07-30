@@ -1,5 +1,5 @@
 import { journey, access } from '@ministryofjustice/hmpps-forge/core/authoring'
-import { FinancialEligibilityEffects, requireAuth } from './effects.js'
+import { FinancialEligibilityEffects } from './effects.js'
 import { under18Step } from './under18Page/under18Step.js'
 import { under18RegularPaymentStep }from './under18RegularPaymentPage/under18RegularPaymentStep.js'
 import { under18HasValuablesStep }from './under18HasValuablesPage/under18HasValuablesStep.js'
@@ -13,7 +13,7 @@ import { checkAnswersStep } from './checkAnswersPage/checkAnswersStep.js'
 // The summary page filters rows to the  branch the user is currently on.
 export const eligibilityJourney = journey({
   code: 'financial-eligibility',
-  title: 'Financial eligibility, based on an earlier answer',
+  title: 'Financial eligibility',
   path: '/cases/:caseReference/financial-eligibility/change',
   onAccess: [
     access({
@@ -22,7 +22,6 @@ export const eligibilityJourney = journey({
         FinancialEligibilityEffects.LoadCaseFinancialEligibility(),
       ],
     }),
-    requireAuth()
   ],
   view: { template: 'case_details/forge_forms/financial-eligibility-form' },
   steps: [

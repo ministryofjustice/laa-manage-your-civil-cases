@@ -3,6 +3,7 @@ import { type FinancialEligibilityEffectsWithDeps, type Deps } from '#packages/f
 import { type FinancialEligibilitySession } from '#packages/financial-eligibility-journey/src/context.type.js';
 import { under18Step, under18HasValuablesStep, under18RegularPaymentStep, partnerStep, over60Step, over60StepWithPartnerStep } from "#packages/financial-eligibility-journey/src/index.js";
 import { type FinancialEligibilityData } from "#types/api-types.js";
+import { devLog, devError, devWarn } from '#src/scripts/helpers/index.js';
 
 /**
  * Utility function to map step codes to API field names for financial eligibility data
@@ -112,10 +113,7 @@ function mapAnswersToApiPayload(answers: Record<string, unknown>): Record<string
     }
 
     // Default `under_18_passported` to false unless conditions met
-    payload.under_18_passported =
-        payload.is_you_under_18 === true &&
-        payload.under_18_receive_regular_payment === false &&
-        payload.under_18_has_valuables === false;
+    payload.under_18_passported = payload.is_you_under_18 === true && payload.under_18_receive_regular_payment === false && payload.under_18_has_valuables === false;
 
     return payload;
 }
@@ -137,26 +135,30 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
     }
 
     /**
-     * Loads case details from the API and stores them in the context, for use in the journey.
-     * @param {Deps} _deps Effect dependencies supplied by Forge, expected to include a fetchClientDetails function
+     * Loads case details from the middleware and stores them in the context, for use in the journey
+     * The client data has already been fetched by fetchClientDetails middleware to avoid duplicate API calls
+     * @param {Deps} _deps Effect dependencies supplied by Forge
      * @param {EffectFunctionContext} context The context of the effect function, providing access to request parameters and session data
      */
     LoadCaseDetails = async (_deps: Deps, context: EffectFunctionContext): Promise<void> => {
         const caseReference = context.getRequestParam('caseReference');
 
         if (caseReference === undefined) {
-            console.error('No case reference found in path');
+            devError('No case reference found in path');
             return;
         }
 
-        const axiosMiddleware = context.getState('authenticatedAxios')
-        if (!axiosMiddleware) {
-            console.warn('Authenticated Axios middleware not found in state; API call may fail if it is required by the service implementation.');
-        }
-        const details = await this.apiService.getClientDetails(axiosMiddleware, caseReference);
+        // Get client data from res.locals (set by fetchClientDetails middleware)
+        // This avoids a duplicate API call since the middleware already fetched it
+        const clientData = context.getState('client');
         
-        console.log('Fetched case details for case reference', caseReference, details);
-        context.setData('caseDetails', details);
+        if (!clientData) {
+            devError('Client data not found in state; fetchClientDetails middleware may not have run');
+            return;
+        }
+        
+        devLog(`Using pre-fetched case details for case reference ${caseReference}`);
+        context.setData('caseDetails', { status: 'success', data: clientData });
     }
 
     /**
@@ -169,19 +171,19 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
         const caseReference = context.getRequestParam('caseReference');
 
         if (caseReference === undefined) {
-            console.error('No case reference found in path');
+            devError('No case reference found in path');
             return;
         }
 
         const axiosMiddleware = context.getState('authenticatedAxios')
         if (!axiosMiddleware) {
-            console.warn('Authenticated Axios middleware not found in state; API call may fail if it is required by the service implementation.');
+            devWarn('Authenticated Axios middleware not found in state; API call may fail if it is required by the service implementation.');
         }
         const financialEligibilityResponse = await this.apiService.getFinancialEligibility(axiosMiddleware, caseReference);
         
         const session = context.getSession() as FinancialEligibilitySession | undefined;
         if (!session) {
-            console.error('No session found; cannot load financial eligibility data');
+            devError('No session found; cannot load financial eligibility data');
             return;
         }
 
@@ -211,7 +213,7 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
      * @param {EffectFunctionContext} context The context of the effect function, providing access to request parameters and session data
      */
     PersistSavedAnswers = async (_deps: Deps, context: EffectFunctionContext): Promise<void> => {
-        console.log(`Saving FE answers in session...`, context.getAllAnswers());
+        devLog(`Saving FE answers in session... ${JSON.stringify(context.getAllAnswers())}`);
         
         const session = context.getSession() as FinancialEligibilitySession | undefined;
     
@@ -221,7 +223,7 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
     
         const caseReference = context.getRequestParam('caseReference')
         if (caseReference === undefined) {
-            console.error('No case reference found in path; cannot submit draft answers');
+            devError('No case reference found in path; cannot submit draft answers');
             return;
         }
     
@@ -232,7 +234,7 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
         // Make API call to CLA backend with the apiService.
         const axiosMiddleware = context.getState('authenticatedAxios')
         if (!axiosMiddleware) {
-            console.warn("Authenticated Axios middleware not found in state; API call may fail if it is required by the service implementation.");
+            devWarn("Authenticated Axios middleware not found in state; API call may fail if it is required by the service implementation.");
         }
         await this.apiService.updateFinancialEligibility(
             axiosMiddleware,
@@ -240,7 +242,7 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
             mapAnswersToApiPayload(session.financialEligibilityDrafts[caseReference])
         );
     
-        console.log(`Submitted FE answers in session, to cla_backend:`, session.financialEligibilityDrafts[caseReference]);
+        devLog(`Submitted FE answers in session, to cla_backend: ${JSON.stringify(session.financialEligibilityDrafts[caseReference])}`);
     }
 
     /**
@@ -253,7 +255,7 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
 
         const caseReference = context.getRequestParam('caseReference')
         if (caseReference === undefined) {
-            console.error('No case reference found in path; cannot clear draft answers');
+            devError('No case reference found in path; cannot clear draft answers');
             return;
         }
 
@@ -278,7 +280,7 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
 
         const caseReference = context.getRequestParam('caseReference')
         if (caseReference === undefined) {
-            console.error('No case reference found in path; cannot save new answer');
+            devError('No case reference found in path; cannot save new answer');
             return;
         }
         const session = context.getSession() as FinancialEligibilitySession | undefined;
@@ -301,8 +303,8 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
             }
         }
 
-        console.log(`Saved new FE answers in session...`, session.financialEligibilityDrafts);
-        console.log('Current state of all FE answers in session:', session.financialEligibilityDrafts);
+        devLog(`Saved new FE answers in session... ${JSON.stringify(session.financialEligibilityDrafts)}`);
+        devLog(`Current state of all FE answers in session: ${JSON.stringify(session.financialEligibilityDrafts)}`);
     }
 
 }

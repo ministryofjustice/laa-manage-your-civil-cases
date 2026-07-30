@@ -16,7 +16,7 @@ export const aboutYouSummaryList = GovUKSummaryList({
     {
       key: { 
         text: 'Are you aged 17 or under?',  
-        classes: GovUKUtilityClasses.Width.TwoThirds, // This adjusts the column width, as forge component has one-third default
+        classes: GovUKUtilityClasses.Width.TwoThirds,
       },
       value: {
         text: Answer('under-18').pipe(Transformer.String.Capitalize()) 
@@ -77,7 +77,7 @@ export const benefitsSummaryList = GovUKSummaryList({
     {
       key: { 
         text: 'Universal Credit',
-        classes: GovUKUtilityClasses.Width.TwoThirds, // This adjusts the column width, as forge component has one-third default
+        classes: GovUKUtilityClasses.Width.TwoThirds,
       },
       value: { text: Answer('universal-credit').pipe(Transformer.String.Capitalize()) },
     },

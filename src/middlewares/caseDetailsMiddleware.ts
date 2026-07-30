@@ -39,6 +39,7 @@ export async function fetchClientDetails(req: Request, res: Response, next: Next
       // Attach client data to request object for use by controllers
       const { data } = response;
       req.clientData = data;
+      // Set in res.locals for template rendering (standard Express routes AND Forge templates)
       res.locals['client'] = data;
       next();
     } else {

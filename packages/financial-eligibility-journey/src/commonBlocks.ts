@@ -19,7 +19,7 @@ export const discardChangesButton = GovUKButton({ text: 'Discard changes', class
  * Clears the financial eligibility draft answers and redirects the user back to the financial eligibility page
  * @returns {Promise<void>} The submit discard changes action
  */
-export const discardChangesButtonSubmit = () => submit({
+export const ifPressedDiscardChanges = () => submit({
   when: Post('action').match(Condition.Equals('discard-changes')),
   onAlways: {
     effects: [FinancialEligibilityEffects.ClearDraftAnswers()],

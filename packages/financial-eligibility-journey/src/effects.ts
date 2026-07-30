@@ -3,12 +3,11 @@ import { access, redirect, Condition, Session } from '@ministryofjustice/hmpps-f
 import type { EffectFunctionContext, EffectFunctionExpr } from "@ministryofjustice/hmpps-forge/core/authoring";
 import { type Deps } from '@ministryofjustice/financial-eligibility-journey';
 
-export interface FinancialEligibilityEffectShape {
-  /** Clears draft answers for this pattern (used after committing drafts to the store). */
+export interface FinancialEligibilityEffectShape {  /** Clears draft answers for this pattern (used after committing drafts to the store). */
   ClearDraftAnswers: () => EffectFunctionExpr;
   /** Submit saved answers from session to cla_backend  */
   PersistSavedAnswers: () => EffectFunctionExpr;
-  /** Loads case details from the API and stores them in the context, for use in the journey. */
+  /** Loads case details from middleware (already fetched by fetchClientDetails) and stores them in the context for use in the journey. */
   LoadCaseDetails: () => EffectFunctionExpr;
   /** Loads financial eligibility data from the API, checks if any questions have been answered so that they take precedence over the API data, and stores the results in Forge's answers. */
   LoadCaseFinancialEligibility: () => EffectFunctionExpr;
@@ -25,9 +24,10 @@ export const FinancialEligibilityEffectsImplementations: Record<
   FinancialEligibilityEffectImplementation
 > = {
   /**
-   * Loads case details from the API and stores them in the context, for use in the journey.
-   * @param {unknown} deps Effect dependencies supplied by Forge, expected to include a fetchClientDetails function
-   * @returns {(context: EffectFunctionContext) => Promise<void>} Async function to load case details and store in context
+   * Loads case details from middleware and stores them in the context, for use in the journey.
+   * The data has already been fetched by fetchClientDetails middleware to avoid duplicate API calls.
+   * @param {unknown} deps Effect dependencies supplied by Forge
+   * @returns {(context: EffectFunctionContext) => Promise<void>} Async function to load case details from state
    */
   LoadCaseDetails: (deps) => async (context: EffectFunctionContext) => {
     await deps.effectsWithDeps.LoadCaseDetails(deps, context);
@@ -95,17 +95,3 @@ export const FinancialEligibilityEffects: FinancialEligibilityEffectShape = {
     FinancialEligibilityEffectsImplementations.SaveNewAnswerIfAnswered,
   ),
 };
-
-/**
- * Make sure that these pages can't be viewed unless logged in
- * @returns {EffectFunctionExpr} Access control definition that enforces authentication
- */
-export const requireAuth = () =>
-  access({
-    next: [
-      redirect({
-        when: Session('silasAuth').not.match(Condition.IsRequired()),
-        goto: '/',
-      }),
-    ],
-  })

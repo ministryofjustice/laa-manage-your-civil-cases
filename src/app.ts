@@ -7,7 +7,7 @@ import chalk from 'chalk';
 import bodyParser from 'body-parser';
 import compression from 'compression';
 import { createServer } from 'http';
-import { setupCsrf, setupMiddlewares, setupConfig, setupLocaleMiddleware, setAuthStatus } from '#src/middlewares/indexSetUp.js';
+import { setupCsrf, setupMiddlewares, setupConfig, setupLocaleMiddleware, setAuthStatus, requireAuth } from '#src/middlewares/indexSetUp.js';
 import { fetchClientDetails } from '#src/middlewares/caseDetailsMiddleware.js';
 import session from 'express-session';
 import { nunjucksSetup, rateLimitSetUp, helmetSetup, axiosMiddleware, displayAsciiBanner, setupSocketIO, createRedisClient, type RedisClientType} from '#utils/server/index.js';
@@ -89,7 +89,7 @@ const createApp = async (): Promise<express.Application> => {
 	// Forge routes set-up
 	app.use(express.urlencoded({ extended: true }));
 	// Fetch client details for Forge journey routes
-	app.use('/cases/:caseReference/financial-eligibility/change', fetchClientDetails);
+	app.use('/cases/:caseReference/financial-eligibility/change', requireAuth, fetchClientDetails);
 	app.use('/', createExpressRouter(forge, { nunjucksEnv }));
 
 	// Register the main router

@@ -1,6 +1,6 @@
 import { submit, redirect, Answer, Condition } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { step, type StepDefinition } from '../authoring.js'
-import { continueButton, discardChangesButton, discardChangesButtonSubmit } from '../commonBlocks.js'
+import { continueButton, discardChangesButton, ifPressedDiscardChanges } from '../commonBlocks.js'
 import { under18RegularPaymentHeading, under18RegularPaymentField } from './under18RegularPaymentBlock.js'
 import { FinancialEligibilityEffects } from '../effects.js'
 import { under18HasValuablesStep } from '../under18HasValuablesPage/under18HasValuablesStep.js'
@@ -15,7 +15,7 @@ export const under18RegularPaymentStep: StepDefinition = step({
   reachability: { entryWhen: true },
   blocks: [under18RegularPaymentHeading, under18RegularPaymentField, continueButton, discardChangesButton],
   onSubmission: [
-    discardChangesButtonSubmit(),
+    ifPressedDiscardChanges(),
     submit({
       validate: true,
       onValid: {
