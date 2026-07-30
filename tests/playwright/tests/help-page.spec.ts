@@ -112,7 +112,7 @@ test('nav links are hidden on help page when logged in', async ({ page }) => {
   await expect(page.getByRole('link', { name: 'Search' })).toHaveCount(0);
 });
 
-test('cookies page can be accessed after signing out', async ({ page }) => {
+test('help page can be accessed after signing out', async ({ page }) => {
   await setupAuth(page);
   await page.goto('/');
 
