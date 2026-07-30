@@ -7,6 +7,7 @@ import express, { type Application } from 'express';
 import { expect } from 'chai';
 import request from 'supertest';
 import cookieParser from 'cookie-parser';
+import session from 'express-session';
 
 describe('CSRF Protection Middleware', () => {
   describe('Middleware Setup', () => {
@@ -271,5 +272,36 @@ describe('CSRF Protection Middleware', () => {
       expect(mockError.message).to.include('csrf');
     });
   });
-});
 
+  describe('Probe path exclusion', () => {
+    let app: Application;
+
+    beforeEach(() => {
+      app = express();
+      app.set('trust proxy', 1);
+      app.use(session({ secret: 'test-secret', resave: false, saveUninitialized: false, cookie: { secure: true } }));
+      setupCsrf(app);
+      app.get('/health', (req, res) => res.status(200).send('Healthy'));
+      app.get('/status', (req, res) => res.status(200).send('OK'));
+      app.get('/other', (req, res) => res.status(200).send('other'));
+    });
+
+    it('does not set a session cookie for /health', async () => {
+      const response = await request(app).get('/health').set('X-Forwarded-Proto', 'https');
+      expect(response.status).to.equal(200);
+      expect(response.headers['set-cookie']).to.be.undefined;
+    });
+
+    it('does not set a session cookie for /status', async () => {
+      const response = await request(app).get('/status').set('X-Forwarded-Proto', 'https');
+      expect(response.status).to.equal(200);
+      expect(response.headers['set-cookie']).to.be.undefined;
+    });
+
+    it('still exposes a CSRF token for non-probe GET routes', async () => {
+      const response = await request(app).get('/other').set('X-Forwarded-Proto', 'https');
+      expect(response.status).to.equal(200);
+      expect(response.headers['set-cookie']).to.not.be.undefined;
+    });
+  });
+});

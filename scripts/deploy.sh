@@ -15,6 +15,7 @@ deploy_branch() {
                 --install --wait \
                 --namespace="${K8S_NAMESPACE}" \
                 --values ./deploy/laa-manage-your-civil-cases/values/"$ENVIRONMENT".yaml \
+                --set podAnnotations.uat-environment="branch" \
                 --set image.repository="$REGISTRY/$REPOSITORY" \
                 --set image.tag="$IMAGE_TAG" \
                 --set ingress.annotations."external-dns\.alpha\.kubernetes\.io/set-identifier"="$IDENTIFIER" \
