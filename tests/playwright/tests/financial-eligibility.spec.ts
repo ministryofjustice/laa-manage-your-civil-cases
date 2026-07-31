@@ -55,8 +55,9 @@ test.describe('Details tab', () => {
       'Guarantee State Pension Credit': 'No',
       'Income-related Employment and Support Allowance': 'No'
     });
-    // Assert the edit assessment button is visible.
-    await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+    // Assert the change links are visible.
+    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
   });
 
   test('should display no for About You data when assessment does not exist', async ({ page }) => {
@@ -85,8 +86,9 @@ test.describe('Details tab', () => {
       'Guarantee State Pension Credit': 'No',
       'Income-related Employment and Support Allowance': 'No'
     });
-    // Assert the edit assessment button is visible.
-    await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+    // Assert the change links are visible.
+    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
   });
 });
 
@@ -151,8 +153,11 @@ test.describe('Finances tab', () => {
     await expect(page.getByText('Criminal Injuries Compensation Scheme')).toBeVisible();
     await expect(page.getByText('Modern Slavery Victim Care Contract or National Referral Mechanism (NRM)')).toBeVisible();
 
-    // Assert the edit assessment button is visible.
-    await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+    // Assert the change links are visible.
+    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(2)).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(3)).toBeVisible();
   });
 
   test('should display finances tab content with correct data when there is a partner', async ({ page }) => {
@@ -195,7 +200,11 @@ test.describe('Finances tab', () => {
     });
     // Assert the correct disregards are displayed in the disregards table.
     await expect(page.getByText('Cost of living payments')).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+    // Assert the change links are visible.
+    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(2)).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(3)).toBeVisible();
   });
 
   test('should display not provided for finances data when assessment does not exist', async ({ page }) => {
@@ -227,7 +236,9 @@ test.describe('Finances tab', () => {
       'Do you have any valuable items worth over £500 each?': 'Not provided',
       'Do you have any money owed to you?': 'Not provided'
     });
-    await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+    // Assert the change links are visible.
+    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
   });
 });
 
@@ -271,8 +282,9 @@ test.describe('Income tab', () => {
       'Do you have any dependants aged 15 and under?': '0'
     });
 
-    // Assert the edit assessment button is visible.
-    await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+    // Assert the change links are visible.
+    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
   });
 
   test('should display income tab content with correct data when there is a partner', async ({ page }) => {
@@ -326,7 +338,10 @@ test.describe('Income tab', () => {
       'Do you have any dependants aged 16 and over?': '2',
       'Do you have any dependants aged 15 and under?': '1'
     });
-    await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+    // Assert the change links are visible.
+    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(2)).toBeVisible();
   });
 
   test('should display not provided for income data when assessment does not exist', async ({ page }) => {
@@ -362,7 +377,9 @@ test.describe('Income tab', () => {
       'Pension income': 'Not provided',
       'Other income': 'Not provided'
     });
-    await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+    // Assert the change links are visible.
+    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
   });
 });
 
@@ -393,8 +410,8 @@ test.describe('Expenses tab', () => {
       'Are you currently paying towards legal aid for criminal defence? If so, how much have you paid in the last calendar month?': '£10 per month'
     });
 
-    // Assert the edit assessment button is visible.
-    await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+    // Assert the change links are visible.
+    await expect(page.getByRole('link', { name: 'Change' })).toBeVisible();
   });
 
   test('should display income tab content with correct data when there is a partner', async ({ page }) => {
@@ -429,7 +446,9 @@ test.describe('Expenses tab', () => {
       'Does your partner have any childcare costs because of work or study? If so, how much?': '£30 per month',
       'Is your partner currently paying towards legal aid for criminal defence? If so, how much has your partner paid in the last calendar month?': '£10 per month'
     });
-    await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+    // Assert the change links are visible.
+    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
   });
 
   test('should display not provided for expenses data when assessment does not exist', async ({ page }) => {
@@ -456,7 +475,8 @@ test.describe('Expenses tab', () => {
       'Do you have any childcare costs because of work or study? If so, how much?': 'Not provided',
       'Are you currently paying towards legal aid for criminal defence? If so, how much have you paid in the last calendar month?': 'Not provided'
     });
-    await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+    // Assert the change links are visible.
+    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
   });
 });
 

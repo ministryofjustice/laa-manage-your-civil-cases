@@ -73,49 +73,49 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       {{ tabComponent({
-    activeTab: activeTab,
-    containerId: "cases-tab-container",
-    data: client,
-    combinedHistoryAndCaseLogNotes: combinedHistoryAndCaseLogNotes,
-    moreThanOneCategory: moreThanOneCategory, 
-    showClientSupportNeeds: showClientSupportNeeds,
-    history: history,
-    financialEligibility: financialEligibility,
-    pagination: pagination,
-    timelineItems: timelineItems,
-    csrfToken: csrfToken,
-    maxProviderNoteLength: maxProviderNoteLength,
-    characterThreshold: characterThreshold,
-    currentProviderNote: currentProviderNote,
-    caseReference: caseReference,
-    error: error,
-    tabs: [
-      {
-        id: "client_details",
-        text: t('pages.caseDetails.tabs.clientDetails'),
-        href: "/cases/" + caseReference + "/client-details",
-        partial: "case_details/_client-details-partial.njk"
-      },
-      {
-        id: "case_details",
-        text: t('pages.caseDetails.tabs.caseDetails'),
-        href: "/cases/" + caseReference + "/case-details",
-        partial: "case_details/_case-details-partial.njk"
-      },
-      {
-        id: "financial_eligibility",
-        text: t('pages.caseDetails.tabs.financialEligibility'),
-        href: "/cases/" + caseReference + "/financial-eligibility/",
-        partial: "case_details/_financial-eligibility-partial.njk"
-      },
-      {
-        id: "history",
-        text: t('pages.caseDetails.tabs.history'),
-        href:"/cases/" + caseReference + "/history",
-        partial: "case_details/_history-partial.njk"
-      }
-    ]
-  }) }}
+        activeTab: activeTab,
+        containerId: "cases-tab-container",
+        data: client,
+        combinedHistoryAndCaseLogNotes: combinedHistoryAndCaseLogNotes,
+        moreThanOneCategory: moreThanOneCategory, 
+        showClientSupportNeeds: showClientSupportNeeds,
+        history: history,
+        pagination: pagination,
+        timelineItems: timelineItems,
+        csrfToken: csrfToken,
+        maxProviderNoteLength: maxProviderNoteLength,
+        characterThreshold: characterThreshold,
+        currentProviderNote: currentProviderNote,
+        caseReference: caseReference,
+        financialEligibility: financialEligibility,
+        error: error,
+        tabs: [
+          {
+            id: "client_details",
+            text: t('pages.caseDetails.tabs.clientDetails'),
+            href: "/cases/" + caseReference + "/client-details",
+            partial: "case_details/_client-details-partial.njk"
+          },
+          {
+            id: "case_details",
+            text: t('pages.caseDetails.tabs.caseDetails'),
+            href: "/cases/" + caseReference + "/case-details",
+            partial: "case_details/_case-details-partial.njk"
+          },
+          {
+            id: "financial_eligibility",
+            text: t('pages.caseDetails.tabs.financialEligibility'),
+            href: "/cases/" + caseReference + "/financial-eligibility/",
+            partial: "case_details/_financial-eligibility-partial.njk"
+          },
+          {
+            id: "history",
+            text: t('pages.caseDetails.tabs.history'),
+            href:"/cases/" + caseReference + "/history",
+            partial: "case_details/_history-partial.njk"
+          }
+        ]
+      }) }}
     </div>
   </div>
 {% endblock %}
