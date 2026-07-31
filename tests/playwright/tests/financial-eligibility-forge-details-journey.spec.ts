@@ -20,26 +20,26 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Under 18 regular payment: Yes
-      await expect(page).toHaveURL(/\/under-18-receives-regular-payment/);
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/under-18-receives-regular-payment');
       await expect(page.getByRole('heading', { name: 'Do you receive any money on a regular basis?' })).toBeVisible();
       await page.getByRole('radio', { name: 'Yes' }).check();
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Partner: No
-      await expect(page).toHaveURL(/\/has-partner/);
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/has-partner');
       await expect(page.getByRole('heading', { name: 'Do you have a partner?' })).toBeVisible();
       await page.getByRole('radio', { name: 'No' }).check();
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Over 60: Yes: No
-      await expect(page).toHaveURL(/\/60-or-over/);
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/60-or-over');
       await expect(page.getByRole('heading', { name: 'Are you aged over 60?' })).toBeVisible();
       await page.getByRole('radio', { name: 'No' }).check();
       await page.getByRole('button', { name: 'Continue' }).click();
 
 
       // Benefits
-      await expect(page).toHaveURL(/\/benefits/);
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/benefits');
       await expect(page.getByRole('heading', { name: 'Benefits' })).toBeVisible();
       await page.getByRole('group', { name: 'Universal Credit' }).getByLabel('Yes').check()
       await page.getByRole('group', { name: 'Income Support' }).getByLabel('Yes').check()
@@ -49,7 +49,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Check answers
-      await expect(page).toHaveURL(/\/check-answers/);
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/check-answers');
       await expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
       
       // Verify summary displays correct answers
@@ -60,7 +60,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('button', { name: 'Submit' }).click();
 
       // Should redirect back to financial eligibility tab
-      await expect(page).toHaveURL(/\/financial-eligibility/);
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/');
     });
 
     test('should navigate through under-18 NO to valuables path: under18 -> regularPayment NO -> valuables -> check answers', async ({ page }) => {
@@ -71,18 +71,18 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Under 18 regular payment: No
-      await expect(page).toHaveURL(/\/under-18-receives-regular-payment/);
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/under-18-receives-regular-payment');
       await page.getByRole('radio', { name: 'No' }).check();
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Under 18 valuables: No
-      await expect(page).toHaveURL(/\/under-18-has-valuables/);
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/under-18-has-valuables');
       await expect(page.getByRole('heading', { name: 'Do you have any savings,' })).toBeVisible();
       await page.getByRole('radio', { name: 'No' }).check();
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Should skip to check answers as passported (bypassing partner and over60)
-      await expect(page).toHaveURL(/\/check-answers/);
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/check-answers');
       await expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
     });
 
@@ -94,7 +94,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Should go directly to partner question
-      await expect(page).toHaveURL(/\/has-partner/);
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/has-partner');
       await expect(page.getByRole('heading', { name: 'Do you have a partner?' })).toBeVisible();
     });
   });
@@ -108,7 +108,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Partner: Yes
-      await expect(page).toHaveURL(/\/has-partner/);
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/has-partner');
       await page.getByRole('radio', { name: 'Yes' }).check();
       await page.getByRole('button', { name: 'Continue' }).click();
 
@@ -125,7 +125,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Partner: No
-      await expect(page).toHaveURL(/\/has-partner/);
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/has-partner');
       await page.getByRole('radio', { name: 'No' }).check();
       await page.getByRole('button', { name: 'Continue' }).click();
 
@@ -150,7 +150,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Benefits step - select multiple benefits
-      await expect(page).toHaveURL(/\/benefits/);
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/benefits');
       await page.getByRole('group', { name: 'Universal Credit' }).getByLabel('Yes').check()
       await page.getByRole('group', { name: 'Income Support' }).getByLabel('Yes').check()
       await page.getByRole('group', { name: 'Income-based Job Seekers' }).getByLabel('Yes').check()
@@ -159,7 +159,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Verify we reach check answers
-      await expect(page).toHaveURL(/\/check-answers/);
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/check-answers');
     });
   });
 
@@ -185,7 +185,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Check answers page
-      await expect(page).toHaveURL(/\/check-answers/);
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/check-answers');
       
       // Verify summary sections are present
       await expect(page.getByRole('heading', { name: 'About you' })).toBeVisible();
@@ -195,8 +195,8 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('button', { name: 'Submit' }).click();
 
       // Should redirect to financial eligibility tab
-      await expect(page).toHaveURL(/\/financial-eligibility/);
-      await expect(page).not.toHaveURL(/\/change/);
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/');
+      await expect(page).not.toHaveURL('/cases/PC-1922-1879/financial-eligibility/change');
     });
 
     test('should allow changing answers from check answers page', async ({ page }) => {
@@ -220,14 +220,14 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // At check answers page
-      await expect(page).toHaveURL(/\/check-answers/);
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/check-answers');
 
       // Click a change link
       const changeLink = page.getByRole('link', { name: 'Change' }).first();
       await changeLink.click();
       
       // Should navigate back to a previous step
-      await expect(page).not.toHaveURL(/\/check-answers/);
+      await expect(page).not.toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/check-answers');
       
       // Make a change and continue
       await page.getByRole('radio').first().check();

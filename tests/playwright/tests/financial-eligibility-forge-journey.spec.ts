@@ -17,8 +17,8 @@ test.describe('Financial Eligibility Forge Journey', () => {
       const discardButton = page.getByRole('button', { name: 'Discard changes' });
       await discardButton.click();
 
-      // Should return to financial eligibility overview (not the /change path)
-      await expect(page).toHaveURL(/\/financial-eligibility/);
+      // Should return to financial eligibility overview (not the `/change` path)
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/');
       await expect(page).not.toHaveURL(/\/change/);
     });
 
@@ -29,14 +29,14 @@ test.describe('Financial Eligibility Forge Journey', () => {
       await page.getByRole('radio', { name: 'No' }).check();
       await page.getByRole('button', { name: 'Continue' }).click();
 
-      await expect(page).toHaveURL(/\/has-partner/);
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/has-partner');
       
       // Discard from this step
       const discardButton = page.getByRole('button', { name: 'Discard changes'});
       await discardButton.click();
 
       // Should return to financial eligibility overview
-      await expect(page).toHaveURL(/\/financial-eligibility/);
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/');
           
     });
   });
@@ -50,15 +50,15 @@ test.describe('Financial Eligibility Forge Journey', () => {
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Answer second question
-      await expect(page).toHaveURL(/\/has-partner/);
-      await page.getByRole('radio', { name: 'Yes' }).check();
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/has-partner');
+      await page.getByRole('radio', { name: 'Yes' }).check(); // Partner = Yes
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Navigate back using browser back button
       await page.goBack();
 
       // Verify the answer is still selected
-      await expect(page).toHaveURL(/\/has-partner/);
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/has-partner');
       const yesRadio = page.getByRole('radio', { name: 'Yes' });
       await expect(yesRadio).toBeChecked();
     });
@@ -73,21 +73,21 @@ test.describe('Financial Eligibility Forge Journey', () => {
     test('partner step should be accessible', async ({ page, checkAccessibility }) => {
       // Navigate to partner step
       await page.goto('/cases/PC-1922-1879/financial-eligibility/change/has-partner');
-      await expect(page).toHaveURL(/\/has-partner/);
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/has-partner');
       await checkAccessibility();
     });
 
     test('benefits step should be accessible', async ({ page, checkAccessibility }) => {
       // Navigate to benefits step
       await page.goto('/cases/PC-1922-1879/financial-eligibility/change/benefits');
-      await expect(page).toHaveURL(/\/benefits/);
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/benefits');
       await checkAccessibility();
     });
 
     test('check answers page should be accessible', async ({ page, checkAccessibility }) => {
       // Navigate to check answers
       await page.goto('/cases/PC-1922-1879/financial-eligibility/change/check-answers');
-      await expect(page).toHaveURL(/\/check-answers/);
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/check-answers');
       await checkAccessibility();
     });
   });
