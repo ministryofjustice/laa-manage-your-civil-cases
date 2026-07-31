@@ -492,6 +492,15 @@
         "body": "There are no results that match the search criteria"
       }
     },
+    "help": {
+      "heading": "Help",
+      "techSupportSubheading": "Technical support",
+      "supportStart": "Contact",
+      "supportEmail": "MCC.Queries@justice.gov.uk",
+      "supportEnd": "for technical support.",
+      "caseEnquiriesSubheading": "Case enquiries",
+      "caseEnquiriesInfo": "Contact your contract manager for any non-technical support questions."
+    },
     "cookies": {
       "heading": "Cookies",
       "intro": "Cookies are small files saved on your phone, tablet or computer when you visit a website.",

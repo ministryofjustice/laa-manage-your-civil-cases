@@ -1,11 +1,15 @@
 import express from 'express';
+import { showHelpPage } from '#src/scripts/controllers/footerController.js';
 import { showCookiesPage } from '#src/scripts/controllers/cookiesController.js';
 
 // Create a new router for cookies
 const router = express.Router();
 
-/* GET cookies page. */
-router.get('/', showCookiesPage);
+/* GET help page. */
+router.get('/help', showHelpPage);
 
-export default router
+/* GET cookies page. */
+router.get('/cookies', showCookiesPage);
+
+export default router;
 
