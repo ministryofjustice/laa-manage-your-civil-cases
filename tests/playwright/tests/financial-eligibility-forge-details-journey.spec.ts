@@ -31,12 +31,11 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('radio', { name: 'No' }).check();
       await page.getByRole('button', { name: 'Continue' }).click();
 
-      // Over 60: Yes: No
+      // Over 60: No
       await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/60-or-over');
       await expect(page.getByRole('heading', { name: 'Are you aged over 60?' })).toBeVisible();
       await page.getByRole('radio', { name: 'No' }).check();
       await page.getByRole('button', { name: 'Continue' }).click();
-
 
       // Benefits
       await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/benefits');
@@ -46,6 +45,27 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('group', { name: 'Income-based Job Seekers' }).getByLabel('Yes').check()
       await page.getByRole('group', { name: 'Guarantee State Pension Credit' }).getByLabel('No').check()
       await page.getByRole('group', { name: 'Income-related Employment and' }).getByLabel('No').check()    
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      // Properties: Continue
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/properties');
+      await expect(page.getByRole('heading', { name: 'Properties' })).toBeVisible();
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      // Savings: Enter '0' and continue
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/savings');
+      await expect(page.getByRole('heading', { name: 'Your savings' })).toBeVisible();
+
+      await page.getByRole('spinbutton', { name: 'How much was in your bank' }).fill('0');
+      await page.getByRole('spinbutton', { name: 'Do you have any investments,' }).fill('0');
+      await page.getByRole('spinbutton', { name: 'Do you have any valuable' }).fill('0');
+      await page.getByRole('spinbutton', { name: 'Do you have any money owed to' }).fill('0');
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      // Disregards: Continue
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/disregards');
+      await expect(page.getByRole('heading', { name: 'Disregards' })).toBeVisible();
+      await page.getByRole('checkbox', { name: 'None' }).check();
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Check answers
@@ -158,6 +178,27 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('group', { name: 'Income-related Employment and' }).getByLabel('No').check()      
       await page.getByRole('button', { name: 'Continue' }).click();
 
+      // Properties: Continue
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/properties');
+      await expect(page.getByRole('heading', { name: 'Properties' })).toBeVisible();
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      // Savings: Enter '0' and continue
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/savings');
+      await expect(page.getByRole('heading', { name: 'Your savings' })).toBeVisible();
+
+      await page.getByRole('spinbutton', { name: 'How much was in your bank' }).fill('0');
+      await page.getByRole('spinbutton', { name: 'Do you have any investments,' }).fill('0');
+      await page.getByRole('spinbutton', { name: 'Do you have any valuable' }).fill('0');
+      await page.getByRole('spinbutton', { name: 'Do you have any money owed to' }).fill('0');
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      // Disregards: Continue
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/disregards');
+      await expect(page.getByRole('heading', { name: 'Disregards' })).toBeVisible();
+      await page.getByRole('checkbox', { name: 'None' }).check();
+      await page.getByRole('button', { name: 'Continue' }).click();
+
       // Verify we reach check answers
       await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/check-answers');
     });
@@ -171,7 +212,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('radio', { name: 'No' }).check(); // Under 18 = No
       await page.getByRole('button', { name: 'Continue' }).click();
 
-      await page.getByRole('radio', { name: 'Yes' }).check(); // Partner = No
+      await page.getByRole('radio', { name: 'No' }).check(); // Partner = No
       await page.getByRole('button', { name: 'Continue' }).click();
 
       await page.getByRole('radio', { name: 'Yes' }).check(); // Over 60 = Yes
@@ -182,6 +223,26 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('group', { name: 'Income-based Job Seekers' }).getByLabel('Yes').check()
       await page.getByRole('group', { name: 'Guarantee State Pension Credit' }).getByLabel('No').check()
       await page.getByRole('group', { name: 'Income-related Employment and' }).getByLabel('No').check()    
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      // Properties: Continue
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/properties');
+      await expect(page.getByRole('heading', { name: 'Properties' })).toBeVisible();
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      // Savings: Enter '0' and continue
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/savings');
+      await expect(page.getByRole('heading', { name: 'Your savings' })).toBeVisible();
+      await page.getByRole('spinbutton', { name: 'How much was in your bank' }).fill('0');
+      await page.getByRole('spinbutton', { name: 'Do you have any investments,' }).fill('0');
+      await page.getByRole('spinbutton', { name: 'Do you have any valuable' }).fill('0');
+      await page.getByRole('spinbutton', { name: 'Do you have any money owed to' }).fill('0');
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      // Disregards: Continue
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/disregards');
+      await expect(page.getByRole('heading', { name: 'Disregards' })).toBeVisible();
+      await page.getByRole('checkbox', { name: 'None' }).check();
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Check answers page
@@ -217,6 +278,27 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('group', { name: 'Income-based Job Seekers' }).getByLabel('Yes').check()
       await page.getByRole('group', { name: 'Guarantee State Pension Credit' }).getByLabel('No').check()
       await page.getByRole('group', { name: 'Income-related Employment and' }).getByLabel('No').check()    
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      // Properties: Continue
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/properties');
+      await expect(page.getByRole('heading', { name: 'Properties' })).toBeVisible();
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      // Savings: Enter '0' and continue
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/savings');
+      await expect(page.getByRole('heading', { name: 'Your savings' })).toBeVisible();
+
+      await page.getByRole('spinbutton', { name: 'How much was in your bank' }).fill('0');
+      await page.getByRole('spinbutton', { name: 'Do you have any investments,' }).fill('0');
+      await page.getByRole('spinbutton', { name: 'Do you have any valuable' }).fill('0');
+      await page.getByRole('spinbutton', { name: 'Do you have any money owed to' }).fill('0');
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      // Disregards: Continue
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/disregards');
+      await expect(page.getByRole('heading', { name: 'Disregards' })).toBeVisible();
+      await page.getByRole('checkbox', { name: 'None' }).check();
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // At check answers page

@@ -35,6 +35,7 @@ function mapStepCodeToApiField(stepCode: string): string | null {
  */
 function mapFinancialEligibilityApiDataToStepCodes(financialEligibilityData: FinancialEligibilityData): Record<string, unknown> {
     return {
+        category: financialEligibilityData.category,
         [under18Step.code]: financialEligibilityData.isUnder17,
         [under18RegularPaymentStep.code]: financialEligibilityData.under18RegularPayment,
         [under18HasValuablesStep.code]: financialEligibilityData.under18HasValuables,
@@ -57,11 +58,13 @@ function mapFinancialEligibilityApiDataToStepCodes(financialEligibilityData: Fin
  */
 function mapApiValueToForgeValue(apiValue: unknown, stepCode: string): unknown {
     return {
+        category: String(apiValue ?? '').toLowerCase(),
         [under18Step.code]: apiValue ? 'yes' : 'no',
         [under18RegularPaymentStep.code]: apiValue ? 'yes' : 'no',
         [under18HasValuablesStep.code]: apiValue ? 'yes' : 'no',
         [partnerStep.code]: apiValue ? 'yes' : 'no',
         [over60Step.code]: apiValue ? 'yes' : 'no',
+        [over60StepWithPartnerStep.code]: apiValue ? 'yes' : 'no',
         'universal-credit': apiValue ? 'yes' : 'no',
         'income-support': apiValue ? 'yes' : 'no',
         'income-based-jsa': apiValue ? 'yes' : 'no',
@@ -114,6 +117,9 @@ export function mapAnswersToApiPayload(answers: Record<string, unknown>): Record
 
     // Default `under_18_passported` to false unless conditions met
     payload.under_18_passported = payload.is_you_under_18 === true && payload.under_18_receive_regular_payment === false && payload.under_18_has_valuables === false;
+
+    // Default `on_passported_benefits` to false unless conditions met
+    payload.on_passported_benefits = payload.universal_credit === true || payload.income_support === true || payload.job_seekers_allowance === true || payload.pension_credit === true || payload.employment_support === true;
 
     return payload;
 }
