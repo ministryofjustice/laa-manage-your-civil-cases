@@ -1,0 +1,90 @@
+{% extends "base.njk" %}
+
+{% block serviceNavigation %} 
+  {{ govukServiceNavigation({
+    serviceName: config.SERVICE_NAME,
+    serviceUrl: "/cases/new",
+    navigation: []
+  }) }}
+{% endblock %}
+
+{% block pageContent %}
+  <div>
+    <h1 id="help-heading" class="govuk-heading-xl">{{ t('pages.accessibility.heading') }}</h1>
+    <p id="accessibility-intro">{{ t('pages.accessibility.intro') }}</p>
+  </div>
+  <div>
+    <p id="service-statement" class="multiline-text">{{ t('pages.accessibility.service.statement') }}</p>
+    <ul id="examples" class="govuk-list govuk-list--bullet">
+      <li>{{ t('pages.accessibility.service.examples.changeColours') }}</li>
+      <li>{{ t('pages.accessibility.service.examples.zoom') }}</li>
+      <li>
+        <span class="multiline-text">{{ t('pages.accessibility.service.examples.navigate') }}</span>
+      </li>
+      <li>
+        <span class="multiline-text">{{ t('pages.accessibility.service.examples.listen') }}</span>
+      </li>
+    </ul>
+    <p id="statement-end">{{ t('pages.accessibility.service.statementEnd') }}</p>
+    <p id="abilityNet-info">
+      <a class="govuk-link" href="https://mcmw.abilitynet.org.uk/">
+      {{ t('pages.accessibility.service.abilityNetLink') }}
+      </a>
+      <span class="multiline-text">{{ t('pages.accessibility.service.abilityNetInfo') }}</span>
+    </p>
+    <h2 id="how-accessibke-subheading" class="govuk-heading-m">{{ t('pages.accessibility.service.howAccessibleSubheading') }}</h2>
+    <p id="how-accessible-info">
+      {{ t('pages.accessibility.service.howAccessibleStart') }}<a 
+      class="govuk-link multiline-text" 
+      href="https://www.w3.org/TR/WCAG22/"
+      >{{ t('pages.accessibility.service.howAccessibleLink') }}</a>{{ t('pages.accessibility.service.howAccessibleEnd') }}
+    </p>
+    <h2 id="feedback-subheading" class="govuk-heading-m">{{ t('pages.accessibility.feedback.subheading') }}</h2>
+    <p id="feedback-info">
+      <span class="multiline-text">{{ t('pages.accessibility.feedback.infoStart') }}</span>
+      <a href="mailto:MCC.LAADigital@justice.gov.uk">
+        {{ t('MCC.LAADigital@justice.gov.uk') }}</a>{{ t('pages.accessibility.feedback.infoEnd') }}
+    </p>
+    <h2 id="enforcement-subheading" class="govuk-heading-m multiline-text">{{ t('pages.accessibility.enforcement.subheading') }}</h2>
+    <p id="enforcement-info">
+      <span class="multiline-text">{{ t('pages.accessibility.enforcement.info') }}</span>
+      <a href="https://www.equalityadvisoryservice.com/">
+      <span class="multiline-text">{{ t('pages.accessibility.enforcement.link') }}</span></a>{{ t('pages.accessibility.enforcement.fullstop') }}
+    </p>
+    <h2 id="technical-info-subheading" class="govuk-heading-m">{{ t('pages.accessibility.technicalInfo.subheading') }}</h2>
+    <p id="technical-info" class="multiline-text">{{ t('pages.accessibility.technicalInfo.statement') }}</p>
+    <h2 id="compliance-info-subheading" class="govuk-heading-m">{{ t('pages.accessibility.compliance.subheading') }}</h2>
+    <p id="compliance-info">
+      {{ t('pages.accessibility.compliance.infoStart') }}<a
+      class="multiline-text"
+      href="https://www.w3.org/TR/WCAG22/"
+      >{{ t('pages.accessibility.compliance.link') }}</a>{{ t('pages.accessibility.compliance.infoEnd') }}
+    </p>
+    <h2 id="preparation-info-subheading" class="govuk.heading-m">{{ t('pages.accessibility.preparation.subheading') }}</h2>
+    <p id="preparation-info">
+      {{ t('pages.accessibility.preparation.statement.start') }}
+      <strong id="date-published" class="app-error-text">
+        {{ t('pages.accessibility.preparation.statement.datePublished') }}</strong><span class="multiline-text">{{ t('pages.accessibility.preparation.statement.end') }}</span>
+      <strong id="date-reviewed" class="app-error-text">
+        {{ t('pages.accessibility.preparation.statement.dateReviewed') }}</strong>{{ t('pages.accessibility.preparation.statement.fullstop') }}
+    </p>
+    <p id="service-preparation-info">
+      {{ t('pages.accessibility.preparation.service.start') }}
+      <strong id="date-tested" class="app-error-text">
+        {{ t('pages.accessibility.preparation.service.dateTested') }}
+      </strong>
+      <span class="multiline-text">{{ t('pages.accessibility.preparation.service.end') }}</span>
+    </p>
+    <p id="temporary-text">
+      <strong class="app-error-text multiline-text">{{ t('pages.accessibility.preparation.externalAudit.temporaryText') }}</strong>
+    </p>
+    <p id="external-audit-info">
+      {{ t('pages.accessibility.preparation.externalAudit.infoStart') }}
+      <strong id="date-audited" class="app-error-text">
+        {{ t('pages.accessibility.preparation.externalAudit.dateAudited') }}</strong><span class="multiline-text">{{ t('pages.accessibility.preparation.externalAudit.infoEnd') }}</span>
+      <a class="govuk-link" href="">
+        {{ t('pages.accessibility.preparation.externalAudit.link') }}</a>{{ t('pages.accessibility.preparation.externalAudit.fullstop') }}
+    </p>
+  </div>
+  
+{% endblock %}
