@@ -108,6 +108,35 @@ test.describe('Edit Client Risk of Abuse', () => {
     await clientDetailsPage.expectRiskOfAbuse('No');
   });
 
+  test('saving updates vulnerable_user to Yes', async ({ page }) => {
+    const caseRef = 'PC-9173-4826';
+
+    const riskOfAbusePage = EditRiskOfAbusePage.forCase(page, caseRef);
+    await riskOfAbusePage.navigate();
+
+    // Precondition
+    await expect(riskOfAbusePage.noRadio).toBeChecked();
+
+    // Change value
+    await riskOfAbusePage.yesRadio.check();
+    await riskOfAbusePage.saveButton.click();
+
+    // Redirect happened
+    const clientDetailsPage = ClientDetailsPage.forCase(page, caseRef);
+    await expect(page).toHaveURL(clientDetailsPage.url);
+
+    // Assert the case details header is present
+    await assertCaseDetailsHeaderPresent(riskOfAbusePage.getPage, { withMenuButtons: false, expectedName: 'Ian Phillips', expectedCaseRef: 'PC-9173-4826', dateReceived: '15 January 2025', badgeTexts: [] });
+    // Assert support needs summary card is visible with no data 
+    await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
+    // Assert third party details summary card is visible with data
+    await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: true, changeHref: '/client-details/change/third-party', removeHref: '/confirm/remove-third-party' });
+    // Assert the correct data is displayed in the third party data summary card
+    await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Samira Patel', 'Phone number': 'Not provided', 'Email address': 'samira@patel.com', 'Address': '5 Maple Avenue, Manchester M1 2AB', 'Relationship to client': 'Parent or guardian' });
+
+    await clientDetailsPage.expectRiskOfAbuse('Yes');
+  });
+
   test('address edit page should be accessible', {
     tag: '@accessibility',
   }, async ({ page, checkAccessibility }) => {
