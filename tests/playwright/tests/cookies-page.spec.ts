@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures/index.js';
-import { t, setupAuth } from '../utils/index.js'
+import { t, setupAuth } from '../utils/index.js';
 
 test('cookies page has correct title header', async ({ page, i18nSetup }) => {
   // Navigate to the homepage
@@ -47,7 +47,7 @@ test('footer is visible with expected links', async ({ page }) => {
 
 const visitUrl = '/cookies';
 test('cookies page should have rendered correctly', async ({ page, i18nSetup }) => {
-  // Navigate to the search page
+  // Navigate to the cookies page
   await page.goto(visitUrl);
   
   // Check nav bar exists
