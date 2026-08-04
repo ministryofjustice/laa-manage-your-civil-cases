@@ -98,6 +98,12 @@ test('save button should redirect to client details when valid data submitted', 
 
   // Should redirect to client details page
   await expect(page).toHaveURL(clientDetailsUrl);
+  // Assert contact details card data
+  const contactDetailsCard = page.locator('.govuk-summary-card').filter({has: page.getByRole('heading', { name: 'Contact details' }),});
+
+  await expect(contactDetailsCard.locator('.govuk-summary-list__row').filter({ has: page.getByText('Address', { exact: true }) }).locator('.govuk-summary-list__value')).toHaveText('123 New Street London SW1A 1AA');
+
+  //await assertSummaryCardData(page, 'Contact details', { 'Phone number': 'Number hidden', 'Is it safe to call this client?': '! Warning No', 'Email address': 'jack@young.com', 'Address': '123 New Street London SW1A 1AA', });
 
   // Assert support needs summary card is visible with no data 
   await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });

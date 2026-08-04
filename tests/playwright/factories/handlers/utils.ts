@@ -194,3 +194,44 @@ export function paginateResults(data: MockCase[], page = 1, limit = 20) {
     }
   };
 }
+
+/**
+ * 
+ * @param updateData 
+ * @returns 
+ */
+export function buildPersonalDetailsUpdates(
+  updateData: Record<string, unknown>
+): Partial<MockCase> {
+  const updates: Partial<MockCase> = {};
+
+  const fieldMappings: Record<
+    string,
+    (value: unknown) => Partial<MockCase>
+  > = {
+    full_name: value => ({ fullName: value as string }),
+    street: value => ({ address: value as string }),
+    postcode: value => ({ postcode: value as string }),
+    email: value => ({ emailAddress: value as string }),
+    home_phone: value => ({ phoneNumber: value as string }),
+    mobile_phone: value => ({ phoneNumber: value as string }),
+    announce_call: value => ({ announceCall: value as boolean }),
+    safe_to_contact: value => ({ safeToCall: value === 'SAFE' }),
+    vulnerable_user: value => ({ vulnerableUser: value === true || value === 'true' }),
+    dob: value => { const dob = value as { day: string; month: string; year: string; };
+      return {
+        dateOfBirth: `${dob.day}/${dob.month}/${dob.year}`
+      };
+    }
+  };
+
+  for (const [field, value] of Object.entries(updateData)) {
+    const mapper = fieldMappings[field];
+
+    if (mapper) {
+      Object.assign(updates, mapper(value));
+    }
+  }
+
+  return updates;
+}
