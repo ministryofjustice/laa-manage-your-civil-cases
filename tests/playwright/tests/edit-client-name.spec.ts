@@ -53,13 +53,18 @@ test.describe('Edit Client Name', () => {
     await editNamePage.fillName(tooLongName);
     await editNamePage.clickSave();
 
-    // The app currently redirects despite the error (not ideal, but current behavior)
-    await page.waitForURL(/client-details/, { timeout: 5000 });
+    // Should stay on the edit page
+    await expect(page).toHaveURL(/\/cases\/PC-1922-1879\/client-details\/change\/name$/);
 
-    // Verify the name was NOT updated - should still show original name
-    const currentName = await page.locator('.govuk-summary-list__value').first().textContent();
-    expect(currentName).toBe(originalName);
-    expect(currentName).not.toContain('AAAA'); // Should not contain the rejected long name
+    // Error summary should be displayed
+    await expect(page.locator('.govuk-error-summary')).toBeVisible();
+    await expect(page.locator('.govuk-error-summary')).toContainText('Name should be between 1 and 400 characters');
+
+    // Field-level error should be displayed
+    await expect(page.locator('#fullName-error')).toContainText('Name should be between 1 and 400 characters');
+
+    // Value should be preserved
+    await expect(page.locator('#fullName')).toHaveValue(tooLongName);
   });
 
 

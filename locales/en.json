@@ -607,7 +607,8 @@
         "title": "Client name",
         "pageTitle": "Client name – {caseReference} – {serviceName} – GOV.UK",
         "validationError": {
-          "notEmpty": "Enter the client name"
+          "notEmpty": "Enter the client name",
+          "isLength": "Name should be between 1 and 400 characters"
         }
       },
       "dateOfBirth": {
