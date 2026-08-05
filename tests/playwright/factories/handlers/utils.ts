@@ -135,7 +135,7 @@ export function transformToApiFormat(caseItem: MockCase): object {
       scope_answers: [
         ...(caseItem.scopeTraversal.category ? [{ type: 'category', answer: caseItem.scopeTraversal.category }] : []),
         ...(caseItem.scopeTraversal.subCategory ? [{ type: 'sub_category', answer: caseItem.scopeTraversal.subCategory }] : []),
-        ...((caseItem.scopeTraversal.onwardQuestion ?? []).map(q => ({ type: 'onward_question', question: q.question, answer: q.answer,}))),
+        ...((caseItem.scopeTraversal.onwardQuestion ?? []).map(q => ({ type: 'onward_question', question: q.question, answer: q.answer, }))),
       ],
       financial_assessment_status: caseItem.scopeTraversal.financialAssessmentStatus,
       created: caseItem.scopeTraversal.created,
@@ -213,12 +213,13 @@ export function buildPersonalDetailsUpdates(
     street: value => ({ address: value as string }),
     postcode: value => ({ postcode: value as string }),
     email: value => ({ emailAddress: value as string }),
-    home_phone: value => ({ phoneNumber: value as string }),
-    mobile_phone: value => ({ phoneNumber: value as string }),
+    home_phone: value => typeof value === 'string' && value.length > 0 ? { phoneNumber: value } : {},
+    mobile_phone: value => typeof value === 'string' && value.length > 0 ? { phoneNumber: value } : {},
     announce_call: value => ({ announceCall: value as boolean }),
     safe_to_contact: value => ({ safeToCall: value === 'SAFE' }),
     vulnerable_user: value => ({ vulnerableUser: value === true || value === 'true' }),
-    dob: value => { const dob = value as { day: string; month: string; year: string; };
+    dob: value => {
+      const dob = value as { day: string; month: string; year: string; };
       return {
         dateOfBirth: `${dob.day}/${dob.month}/${dob.year}`
       };

@@ -1485,7 +1485,7 @@
     "language": "Welsh",
     "phoneNumber": "0763813717",
     "safeToCall": true,
-    "announceCall": false,
+    "announceCall": true,
     "emailAddress": "llewparry@outlook.com",
     "address": "255 Welsh lane, Wales",
     "postcode": "LL71 7RB",
