@@ -48,7 +48,6 @@ test.describe('Edit Client Name', () => {
     await editNamePage.navigate();
 
     // Try to submit a name that's too long (> 400 characters)
-    // MSW will reject this with a 400 error
     const tooLongName = 'A'.repeat(401);
     await editNamePage.fillName(tooLongName);
     await editNamePage.clickSave();
@@ -58,10 +57,10 @@ test.describe('Edit Client Name', () => {
 
     // Error summary should be displayed
     await expect(page.locator('.govuk-error-summary')).toBeVisible();
-    await expect(page.locator('.govuk-error-summary')).toContainText('Name should be between 1 and 400 characters');
+    await expect(page.locator('.govuk-error-summary')).toContainText('Client name must be 400 characters or less');
 
     // Field-level error should be displayed
-    await expect(page.locator('#fullName-error')).toContainText('Name should be between 1 and 400 characters');
+    await expect(page.locator('#fullName-error')).toContainText('Client name must be 400 characters or less');
 
     // Value should be preserved
     await expect(page.locator('#fullName')).toHaveValue(tooLongName);
