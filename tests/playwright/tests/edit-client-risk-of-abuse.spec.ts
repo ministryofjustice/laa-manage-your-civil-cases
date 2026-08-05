@@ -50,7 +50,7 @@ test.describe('Edit Client Risk of Abuse', () => {
   });
 
     test('unchanged risk of abuse triggers no change warning banner', async ({ page }) => {
-    const caseRef = 'PC-1977-1241';
+    const caseRef = 'PC-7445-2319';
     const riskOfAbusePage = EditRiskOfAbusePage.forCase(page, caseRef);
     await riskOfAbusePage.navigate();
 
@@ -64,16 +64,12 @@ test.describe('Edit Client Risk of Abuse', () => {
    
     await riskOfAbusePage.expectNoChangeWarningBanner('No changes were made');
     // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Harry Potter', expectedCaseRef: 'PC-1977-1241', dateReceived: '7 July 2025', badgeTexts: ['Urgent', 'At risk of abuse'], });
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Llywelyn AP Parry', expectedCaseRef: 'PC-7445-2319', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse'], });
     // Assert support needs summary card is visible with data 
-    await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: true, changeHref: '/client-details/change/support-need' });
-    // Assert the data in the support needs summary card is correct
-    await assertSummaryCardData(page, 'Client support needs', { 'British Sign Language': 'Yes' });
+    await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
     // Assert third party details summary card is visible with data
-    await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: true, changeHref: '/client-details/change/third-party', removeHref: '/confirm/remove-third-party' });
-    // Assert the data in the third party summary card is correct
-    await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Sarah Johnson', 'Phone number': '0787123456', 'Email address': 'sarah@johnson.com', 'Address': '45 Main Street, Sheffield S1 2AB', 'Relationship to client': 'Family member or friend', 'Passphrase': 'TestPass123' });
-
+    await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: false, addHref: '/client-details/add/third-party' });
+   
     await clientDetailsPage.expectRiskOfAbuse('Yes');
   });
 
