@@ -1,17 +1,17 @@
 import { test, expect } from '../fixtures/index.js';
 import { t, setupAuth } from '../utils/index.js';
 
-test('help page has correct title header', async ({ page, i18nSetup }) => {
-    // Navigate to homepage
-    await page.goto('/help');
+test('accessibility page has correct title header', async ({ page, i18nSetup }) => {
+    // Navigate directly to the accessibility page
+    await page.goto('/accessibility');
 
-    // Check for the title fo the application
+    // Check for the title for the application
     await expect(page).toHaveTitle(/.*Manage your civil cases.*/);
 });
 
-test('help page should display LAA header', async ({ page, i18nSetup }) => {
-  // Navigate to the homepage
-  await page.goto('/help');
+test('accessibility page should display LAA header', async ({ page, i18nSetup }) => {
+  // Navigate directly to the accessibility page
+  await page.goto('/accessibility');
 
   const header = page.getByRole('banner');
 
@@ -19,9 +19,9 @@ test('help page should display LAA header', async ({ page, i18nSetup }) => {
   await expect(header).toBeVisible();
 });
 
-test('help page should display phase banner with hello content', async ({ page, i18nSetup }) => {
-  // Navigate to the homepage
-  await page.goto('/help');
+test('accessibility page should display phase banner with hello content', async ({ page, i18nSetup }) => {
+  // Navigate directly to the accessibility page
+  await page.goto('/accessibility');
 
   // Target the phase banner
   const phaseBanner = page.locator('.govuk-phase-banner');
@@ -33,8 +33,18 @@ test('help page should display phase banner with hello content', async ({ page, 
   await expect(phaseBanner).toContainText(t('components.phaseBanner.feedbackText'));
 });
 
+test('accessibility page should not display nav bar with service name and nav links when user has not signed in', async ({ page }) => {
+  // Navigate directly to the accessibility page
+  await page.goto('/accessibility');
+
+  // Check nav bar with service name and nav links is not present
+  const nav = page.locator('.govuk-service-navigation');
+  await expect(nav).toHaveCount(0);
+});
+
 test('footer is visible with expected links', async ({ page }) => {  
-  await page.goto('/help');
+  // Navigate directly to the accessibility page
+  await page.goto('/accessibility');
 
   const footer = page.locator('.govuk-footer');
   await expect(footer).toBeVisible();
@@ -46,29 +56,18 @@ test('footer is visible with expected links', async ({ page }) => {
 });
 
 const visitUrl = '/accessibility';
-test('help page should have rendered correctly', async ({ page, i18nSetup }) => {
+test('accessibility page should have rendered correctly', async ({ page, i18nSetup }) => {
   // Navigate to the accessibility page
   await page.goto(visitUrl);
 
-   // Check nav bar exists
-  const nav = page.locator('.govuk-service-navigation');
-  await expect(nav).toBeVisible();
-
-   // Check service name is visible in the navigation section of the screen
-  await expect(nav).toContainText('Manage your civil cases');
-
-  // Check the links are not in the nav bar
-  await expect(page.getByRole('link', { name: 'Your cases' })).toHaveCount(0);
-  await expect(page.getByRole('link', { name: 'Search' })).toHaveCount(0);
-
-  // Check for the heading of the help page
+  // Check for the heading of the accessibility page
   await expect(page.getByRole('heading', { level: 1, name: t('pages.accessibility.heading') })).toBeVisible();
 
-   // Verify the text of the heading of the accessibility page
+  // Verify the text of the heading of the accessibility page
   const accessibilityHeading = page.locator('#accessibility-heading');
   await expect(accessibilityHeading).toHaveText('Accessibility statement');
 
-   // Verify the text for the accessibility intro
+  // Verify the text for the accessibility intro
   const accessibilityIntro = page.locator('#accessibility-intro');
   await expect(accessibilityIntro).toHaveText("This accessibility statement applies to the 'Manage your civil cases' service.");
 
@@ -226,7 +225,7 @@ test('external audit link goes to user vision site', async ({ page }) => {
   // Navigate to the accessibility page
   await page.goto(visitUrl);
 
-  // Check link to eqaulity advisory service works
+  // Check link to equality advisory service works
   const link = page.locator('a[href="https://uservision.co.uk/"]');
   await expect(link).toBeVisible();
   await Promise.all([page.waitForURL(/uservision\.co\.uk/), link.click(),]);
@@ -269,4 +268,25 @@ test('accessibility page can be accessed after signing out', async ({ page }) =>
 
   // Verify the accessibility page heading is displayed
   await expect(page.getByRole('heading', { level: 1, name: t('pages.accessibility.heading') })).toBeVisible();
+});
+
+test('accessibility page does not display navbar after signing out', async ({ page }) => {
+  await setupAuth(page);
+  await page.goto('/');
+
+  // Sign out
+  await page.getByRole('link', { name: 'Sign out' }).click();
+
+  // Navigate to accessibility page
+  await page.goto('/accessibility');
+
+  // Verify user is on the accessibility page
+  await expect(page).toHaveURL(/accessibility/);
+
+  // Verify the accessibility page heading is displayed
+  await expect(page.getByRole('heading', { level: 1, name: t('pages.accessibility.heading') })).toBeVisible();
+
+  // Check nav bar with service name and nav links is not present
+  const nav = page.locator('.govuk-service-navigation');
+  await expect(nav).toHaveCount(0);
 });
