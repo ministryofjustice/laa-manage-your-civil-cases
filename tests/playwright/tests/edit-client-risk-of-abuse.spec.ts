@@ -2,24 +2,36 @@
 import { test, expect } from '../fixtures/index.js';
 import { EditRiskOfAbusePage } from '../pages/EditRiskOfAbusePage.js';
 import { ClientDetailsPage } from '../pages/index.js';
-import { setupAuth, assertCaseDetailsHeaderPresent, assertSummaryCardData, assertSummaryCardState } from '../utils/index.js';
+import { setupAuth, assertCaseDetailsHeaderPresent, assertSummaryCardData, assertSummaryCardState, getClientDetailsUrlByStatus} from '../utils/index.js';
 
 test.describe('Edit Client Risk of Abuse', () => {
   test.beforeEach(async ({ page }) => {
     await setupAuth(page);
   });
 
+  test('cancel link should navigate back to client details', async ({ page }) => {
+    const riskOfAbusePage = EditRiskOfAbusePage.forCase(page, 'PC-1977-1241');
+    await riskOfAbusePage.expectCancelNavigatesBack();
+    // Assert the case details header is present
+    await assertCaseDetailsHeaderPresent(riskOfAbusePage.getPage, { withMenuButtons: false, expectedName: 'Harry Potter', expectedCaseRef: 'PC-1977-1241', dateReceived: '7 July 2025', badgeTexts: ['Urgent', 'At risk of abuse'], });
+    // Assert support needs summary card is visible with data 
+    await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: true, changeHref: '/client-details/change/support-need' });
+    // Assert the data in the support needs summary card is correct
+    await assertSummaryCardData(page, 'Client support needs', { 'British Sign Language': 'Yes' });
+    // Assert third party details summary card is visible with data
+    await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: true, changeHref: '/client-details/change/third-party', removeHref: '/confirm/remove-third-party' });
+    // Assert the data in the third party summary card is correct
+    await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Sarah Johnson', 'Phone number': '0787123456', 'Email address': 'sarah@johnson.com', 'Address': '45 Main Street, Sheffield S1 2AB', 'Relationship to client': 'Family member or friend', 'Passphrase': 'TestPass123' });
+  });
+
   test('should display all expected form elements', async ({ page }) => {
     const riskOfAbusePage = EditRiskOfAbusePage.forCase(page, 'PC-1977-1241');
-
     await riskOfAbusePage.navigate();
 
-    // Case header
+    // Assert the case details header is present
     await assertCaseDetailsHeaderPresent(riskOfAbusePage.getPage, { withMenuButtons: false, expectedName: 'Harry Potter', expectedCaseRef: 'PC-1977-1241', dateReceived: '7 July 2025', badgeTexts: ['Urgent', 'At risk of abuse'], });
-
     // Heading
     await expect(riskOfAbusePage.heading).toHaveText(riskOfAbusePage.getExpectedHeading());
-
     // Informational text
     await expect(riskOfAbusePage.informationText).toBeVisible();
 
@@ -37,9 +49,32 @@ test.describe('Edit Client Risk of Abuse', () => {
     await expect(riskOfAbusePage.cancelLink).toBeVisible();
   });
 
+    test('unchanged risk of abuse triggers no change warning banner', async ({ page }) => {
+    const caseRef = 'PC-7445-2319';
+    const riskOfAbusePage = EditRiskOfAbusePage.forCase(page, caseRef);
+    await riskOfAbusePage.navigate();
 
-test('saving updates vulnerable_user to No', async ({ page }) => {
-  const caseRef = 'PC-1977-1241';
+    // Save without making any changes
+    await expect(riskOfAbusePage.yesRadio).toBeChecked();
+    await riskOfAbusePage.saveButton.click();
+
+    // Redirect happened
+    const clientDetailsPage = ClientDetailsPage.forCase(page, caseRef);
+    await expect(page).toHaveURL(clientDetailsPage.url);
+   
+    await riskOfAbusePage.expectNoChangeWarningBanner('No changes were made');
+    // Assert the case details header is present
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Llywelyn AP Parry', expectedCaseRef: 'PC-7445-2319', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse'], });
+    // Assert support needs summary card is visible with data 
+    await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
+    // Assert third party details summary card is visible with data
+    await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: false, addHref: '/client-details/add/third-party' });
+   
+    await clientDetailsPage.expectRiskOfAbuse('Yes');
+  });
+
+  test('saving updates vulnerable_user to No', async ({ page }) => {
+    const caseRef = 'PC-1977-1241';
 
     const riskOfAbusePage = EditRiskOfAbusePage.forCase(page, caseRef);
     await riskOfAbusePage.navigate();
@@ -55,6 +90,8 @@ test('saving updates vulnerable_user to No', async ({ page }) => {
     const clientDetailsPage = ClientDetailsPage.forCase(page, caseRef);
     await expect(page).toHaveURL(clientDetailsPage.url);
 
+    // Assert the case details header is present
+    await assertCaseDetailsHeaderPresent(riskOfAbusePage.getPage, { withMenuButtons: false, expectedName: 'Harry Potter', expectedCaseRef: 'PC-1977-1241', dateReceived: '7 July 2025', badgeTexts: ['Urgent'], });
     // Assert support needs summary card is visible with no data 
     await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: true, changeHref: '/client-details/change/support-need' });
     // Assert the data in the support needs summary card is correct
@@ -65,5 +102,42 @@ test('saving updates vulnerable_user to No', async ({ page }) => {
     await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Sarah Johnson', 'Phone number': '0787123456', 'Email address': 'sarah@johnson.com', 'Address': '45 Main Street, Sheffield S1 2AB', 'Relationship to client': 'Family member or friend', 'Passphrase': 'TestPass123' });
 
     await clientDetailsPage.expectRiskOfAbuse('No');
+  });
+
+  test('saving updates vulnerable_user to Yes', async ({ page }) => {
+    const caseRef = 'PC-9173-4826';
+
+    const riskOfAbusePage = EditRiskOfAbusePage.forCase(page, caseRef);
+    await riskOfAbusePage.navigate();
+
+    // Precondition
+    await expect(riskOfAbusePage.noRadio).toBeChecked();
+
+    // Change value
+    await riskOfAbusePage.yesRadio.check();
+    await riskOfAbusePage.saveButton.click();
+
+    // Redirect happened
+    const clientDetailsPage = ClientDetailsPage.forCase(page, caseRef);
+    await expect(page).toHaveURL(clientDetailsPage.url);
+
+    // Assert the case details header is present
+    await assertCaseDetailsHeaderPresent(riskOfAbusePage.getPage, { withMenuButtons: false, expectedName: 'Ian Phillips', expectedCaseRef: 'PC-9173-4826', dateReceived: '15 January 2025', badgeTexts: [] });
+    // Assert support needs summary card is visible with no data 
+    await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
+    // Assert third party details summary card is visible with data
+    await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: true, changeHref: '/client-details/change/third-party', removeHref: '/confirm/remove-third-party' });
+    // Assert the correct data is displayed in the third party data summary card
+    await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Samira Patel', 'Phone number': 'Not provided', 'Email address': 'samira@patel.com', 'Address': '5 Maple Avenue, Manchester M1 2AB', 'Relationship to client': 'Parent or guardian' });
+
+    await clientDetailsPage.expectRiskOfAbuse('Yes');
+  });
+
+  test('address edit page should be accessible', {
+    tag: '@accessibility',
+  }, async ({ page, checkAccessibility }) => {
+    const visitUrl = getClientDetailsUrlByStatus('default') + '/change/risk-of-abuse';
+    await page.goto(visitUrl);
+    await checkAccessibility();
   });
 });

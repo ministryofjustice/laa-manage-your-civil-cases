@@ -1473,5 +1473,23 @@
       }
     },
     "lastModified": "2025-01-08T19:00:00-05:00"
+  },
+  {
+    "fullName": "Llywelyn AP Parry",
+    "caseReference": "PC-7445-2319",
+    "refCode": "",
+    "dateReceived": "2025-01-08T19:00:00-05:00",
+    "caseStatus": "New",
+    "dateOfBirth": "1977-06-10T00:00:00-05:00",
+    "vulnerableUser": true,
+    "language": "Welsh",
+    "phoneNumber": "0763813717",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "llewparry@outlook.com",
+    "address": "255 Welsh lane, Wales",
+    "postcode": "LL71 7RB",
+    "laaReference": "7921179",
+    "lastModified": "2025-01-08T19:00:00-05:00"
   }
 ]

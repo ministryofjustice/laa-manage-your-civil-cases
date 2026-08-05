@@ -4,11 +4,12 @@
 
 import { http, HttpResponse } from 'msw';
 import type { MockCase } from './types.js';
-import { transformToApiFormat } from './utils.js';
+import { transformToApiFormat, findMockCase, updateCaseState, buildPersonalDetailsUpdates } from './utils.js';
 import {
   validateStringField,
   validateNullableBooleanField,
-  validateChoiceField
+  validateChoiceField,
+  validatePersonalDetails
 } from './validationHelpers.js';
 import { HTTP } from '#src/services/api/base/constants.js';
 
@@ -20,76 +21,30 @@ export function createPersonalDetailsHandlers(
   return [
     // PATCH /case/:caseReference/personal_details/
     http.patch(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/personal_details/`, async ({ params, request }) => {
+
       const { caseReference } = params;
       const updateData = await request.json() as Record<string, any>;
-      
       const caseItem = cases.find(c => c.caseReference === caseReference);
+      console.log('req.body', request.body);
       
       if (!caseItem) {
         return HttpResponse.json({ error: 'Case not found' }, { status: HTTP.NOT_FOUND });
       }
 
-      // Validate request data structure
-      const validationErrors: Record<string, string[]> = {};
-
-      if (typeof updateData !== 'object' || updateData === null || Array.isArray(updateData)) {
-        return HttpResponse.json({ detail: 'Invalid request body format' }, { status: HTTP.BAD_REQUEST });
-      }
-
-      // Validate string fields with max length
-      validateStringField(updateData, 'full_name', HTTP.BAD_REQUEST, validationErrors);
-      validateStringField(updateData, 'postcode', 12, validationErrors);
-      validateStringField(updateData, 'street', 255, validationErrors);
-      validateStringField(updateData, 'mobile_phone', 20, validationErrors);
-      validateStringField(updateData, 'home_phone', 20, validationErrors);
-
-      // Validate email field
-      if ('email' in updateData) {
-        if (typeof updateData.email !== 'string') {
-          validationErrors.email = ['Must be a string'];
-        } else if (updateData.email.length > 0) {
-          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if (!emailRegex.test(updateData.email)) {
-            validationErrors.email = ['Enter a valid email address.'];
-          }
-        }
-      }
-      if(!validationErrors.email) {
-        caseItem.emailAddress = updateData.email
-      }
-
-      // Validate choice field
-      validateChoiceField(updateData, 'safe_to_contact', ['SAFE', 'DONT_CALL'], validationErrors);
-
-      // Validate nullable boolean field
-      validateNullableBooleanField(updateData, 'announce_call', validationErrors);
-
-      // Validate date of birth
-      if ('dob' in updateData) {
-        if (typeof updateData.dob !== 'object' || updateData.dob === null) {
-          validationErrors.dob = ['Must be an object with day, month, year'];
-        } else {
-          const { day, month, year } = updateData.dob;
-          if (!day || !month || !year) {
-            validationErrors.dob = ['Must include day, month, and year'];
-          }
-        }
-      }
+      const validationErrors = validatePersonalDetails(updateData);
 
       if (Object.keys(validationErrors).length > 0) {
-        return HttpResponse.json(validationErrors, { status: HTTP.BAD_REQUEST });
+        return HttpResponse.json(validationErrors, {
+          status: HTTP.BAD_REQUEST
+        });
       }
 
-      if ('full_name' in updateData) {
-        caseItem.fullName = updateData.full_name;
-      }
+      console.log('update data: ', updateData);
+      updateCaseState(caseReference as string, buildPersonalDetailsUpdates(updateData));
 
-      // Update the vulnerable user flag for this case
-      if (caseReference === 'PC-1977-1241') {
-        caseItem.vulnerableUser = updateData.vulnerable_user === 'true' || updateData.vulnerable_user === true;
-      }
-      
-      return HttpResponse.json(transformToApiFormat(caseItem));
+      const updatedCase = findMockCase(caseReference as string, cases);
+
+      return HttpResponse.json(transformToApiFormat(updatedCase!));
     })
   ];
 }

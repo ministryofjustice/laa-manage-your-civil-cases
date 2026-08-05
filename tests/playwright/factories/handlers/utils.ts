@@ -135,7 +135,7 @@ export function transformToApiFormat(caseItem: MockCase): object {
       scope_answers: [
         ...(caseItem.scopeTraversal.category ? [{ type: 'category', answer: caseItem.scopeTraversal.category }] : []),
         ...(caseItem.scopeTraversal.subCategory ? [{ type: 'sub_category', answer: caseItem.scopeTraversal.subCategory }] : []),
-        ...((caseItem.scopeTraversal.onwardQuestion ?? []).map(q => ({ type: 'onward_question', question: q.question, answer: q.answer,}))),
+        ...((caseItem.scopeTraversal.onwardQuestion ?? []).map(q => ({ type: 'onward_question', question: q.question, answer: q.answer, }))),
       ],
       financial_assessment_status: caseItem.scopeTraversal.financialAssessmentStatus,
       created: caseItem.scopeTraversal.created,
@@ -193,4 +193,46 @@ export function paginateResults(data: MockCase[], page = 1, limit = 20) {
       totalPages: Math.ceil(data.length / limit)
     }
   };
+}
+
+/**
+ * 
+ * @param updateData 
+ * @returns 
+ */
+export function buildPersonalDetailsUpdates(
+  updateData: Record<string, unknown>
+): Partial<MockCase> {
+  const updates: Partial<MockCase> = {};
+
+  const fieldMappings: Record<
+    string,
+    (value: unknown) => Partial<MockCase>
+  > = {
+    full_name: value => ({ fullName: value as string }),
+    street: value => ({ address: value as string }),
+    postcode: value => ({ postcode: value as string }),
+    email: value => ({ emailAddress: value as string }),
+    home_phone: value => typeof value === 'string' && value.length > 0 ? { phoneNumber: value } : {},
+    mobile_phone: value => typeof value === 'string' && value.length > 0 ? { phoneNumber: value } : {},
+    announce_call: value => ({ announceCall: value as boolean }),
+    safe_to_contact: value => ({ safeToCall: value === 'SAFE' }),
+    vulnerable_user: value => ({ vulnerableUser: value === true || value === 'true' }),
+    dob: value => {
+      const dob = value as { day: string; month: string; year: string; };
+      return {
+        dateOfBirth: `${dob.day}/${dob.month}/${dob.year}`
+      };
+    }
+  };
+
+  for (const [field, value] of Object.entries(updateData)) {
+    const mapper = fieldMappings[field];
+
+    if (mapper) {
+      Object.assign(updates, mapper(value));
+    }
+  }
+
+  return updates;
 }
