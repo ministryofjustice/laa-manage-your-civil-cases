@@ -28,7 +28,7 @@ export const buildSessionConfig = async (
 		if (!client.isOpen) {
 			await client.connect();
 		}
-		store = new RedisStore({ client });
+		store = new RedisStore({ client, serializer: { parse: JSON.parse, stringify: JSON.stringify } });
 	} else {
 		console.log(chalk.yellow('⚠️  Using in-memory session store (not suitable for production environments)'));
 		store = new MemoryStore();
