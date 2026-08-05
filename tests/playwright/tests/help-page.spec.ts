@@ -65,14 +65,14 @@ test('help page should have rendered correctly', async ({ page, i18nSetup }) => 
   await expect(page.getByRole('heading', { level: 1, name: t('pages.help.heading') })).toBeVisible();
 
   // Verify the text of the heading of the help page
-  const helpHeading = page.locator('#help-heading')
+  const helpHeading = page.locator('#help-heading');
   await expect(helpHeading).toHaveText('Help');
 
   // Check for the tech support subheading on the help page
   await expect(page.getByRole('heading', { level: 2, name: t('pages.help.techSupportSubheading') })).toBeVisible();
 
   // Verify the text for the subheading on the help page
-  const techSupportSubheading = page.locator('#tech-support-subheading')
+  const techSupportSubheading = page.locator('#tech-support-subheading');
   await expect(techSupportSubheading).toHaveText('Technical support');
 
   // Verify the text for how to request technical support
