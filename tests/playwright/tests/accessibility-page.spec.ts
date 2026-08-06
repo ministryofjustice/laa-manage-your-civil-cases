@@ -199,11 +199,11 @@ test('accessibility guidelines link goes to W3 site', async ({ page }) => {
   await expect(page).toHaveURL(/www\.w3\.org/);
 });
 
-test('enforcment link goes to equality advisory service site', async ({ page }) => {
+test('enforcement link goes to equality advisory service site', async ({ page }) => {
   // Navigate to the accessibility page
   await page.goto(visitUrl);
 
-  // Check link to eqaulity advisory service works
+  // Check link to equality advisory service works
   const link = page.locator('a[href="https://www.equalityadvisoryservice.com/"]');
   await expect(link).toBeVisible();
   await Promise.all([page.waitForURL(/www\.equalityadvisoryservice\.com/), link.click(),]);
