@@ -184,7 +184,7 @@
       {% for disregard in financialEligibility.disregards %}
         <tr class="govuk-table__row">
           <td class="govuk-table__cell">
-            {{ disregard }}
+            {{ t("common.financialDisregards." + disregard) }}
           </td>
         </tr>
       {% endfor %}

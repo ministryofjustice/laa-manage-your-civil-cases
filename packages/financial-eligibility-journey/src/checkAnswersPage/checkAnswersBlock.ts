@@ -1,6 +1,7 @@
-import { Answer, Condition, Data, Format, Item, Iterator, Loop, Transformer, and, not, or } from '@ministryofjustice/hmpps-forge/core/authoring'
+import { Answer, Condition, Conditional, Data, Format, Item, Iterator, Literal, Loop, Transformer, and, not, or } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { CollectionBlock } from '@ministryofjustice/hmpps-forge/core/components'
 import { GovUKHeading, GovUKSummaryList, GovUKUtilityClasses } from '@ministryofjustice/hmpps-forge/govuk-components'
+import { disregardsLookupItems } from '../disregardsPage/disregardsBlock.js'
 
 const under18Passported = and(
   Answer('under-18').match(Condition.Equals('yes')),
@@ -295,9 +296,18 @@ export const disregardsSummaryList = GovUKSummaryList({
     {
       key: {
         text: 'Disregards',
-        classes: GovUKUtilityClasses.Width.TwoThirds,
+        classes: GovUKUtilityClasses.Width.OneQuarter,
       },
-      value: { text: Answer('disregards').pipe(Transformer.String.Capitalize()) },
+      value: {
+        text: Conditional({
+          when: Answer('disregards').match(Condition.Equals('none')),
+          then: 'None',
+          else: Literal(disregardsLookupItems)
+            .each(Iterator.Filter(Item().path('value').match(Condition.Array.IsIn(Answer('disregards')))))
+            .each(Iterator.Map(Item().path('text')))
+            .pipe(Transformer.Array.Join(', ')),
+        }),
+      },
     },
   ] as GovUKSummaryList['rows'],
 })

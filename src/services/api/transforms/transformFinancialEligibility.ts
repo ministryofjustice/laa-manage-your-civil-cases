@@ -26,7 +26,7 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
   const disputedSavings = formatSavingsData(item.disputed_savings)
   const dependantsYoung = Number(item.dependants_young ?? 0);
   const dependantsOld = Number(item.dependants_old ?? 0);
-  const disregards = isRecord(item.disregards) ? Object.entries(item.disregards).filter(([, value]) => Boolean(value)).map(([key]) => t(`common.financialDisregards.${key}`)) : [];
+  const disregards = isRecord(item.disregards) ? Object.entries(item.disregards).filter(([, value]) => Boolean(value)).map(([key]) => key) : [];
   const specificBenefits = {
     pensionCredit: Boolean(benefitsData.pension_credit),
     jobSeekers: Boolean(benefitsData.job_seekers_allowance),

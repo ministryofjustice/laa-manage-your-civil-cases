@@ -1,7 +1,7 @@
 import type { EffectFunctionContext } from "@ministryofjustice/hmpps-forge/core";
 import { type FinancialEligibilityEffectsWithDeps, type Deps } from '#packages/financial-eligibility-journey/src/api.js';
 import { type FinancialEligibilitySession } from '#packages/financial-eligibility-journey/src/context.type.js';
-import { under18Step, under18HasValuablesStep, under18RegularPaymentStep, partnerStep, over60Step, over60StepWithPartnerStep } from "#packages/financial-eligibility-journey/src/index.js";
+import { under18Step, under18HasValuablesStep, under18RegularPaymentStep, partnerStep, over60Step, over60StepWithPartnerStep, disregardsStep } from "#packages/financial-eligibility-journey/src/index.js";
 import { type FinancialEligibilityData } from "#types/api-types.js";
 import { devLog, devError, devWarn } from '#src/scripts/helpers/index.js';
 
@@ -35,6 +35,7 @@ function mapStepCodeToApiField(stepCode: string): string | null {
         'investment-balance-disputed': 'investment_balance',
         'asset-balance-disputed': 'asset_balance',
         'credit-balance-disputed': 'credit_balance',
+        [disregardsStep.code]: 'disregards',
     };
 
     return mapping[stepCode] || null;
@@ -71,6 +72,7 @@ function mapFinancialEligibilityApiDataToStepCodes(financialEligibilityData: Fin
         'investment-balance-disputed': financialEligibilityData.disputedSavings?.investmentBalance,
         'asset-balance-disputed': financialEligibilityData.disputedSavings?.assetBalance,
         'credit-balance-disputed': financialEligibilityData.disputedSavings?.creditBalance,
+        'disregards': financialEligibilityData.disregards,
     }
 }
 
@@ -106,6 +108,7 @@ function mapApiValueToForgeValue(apiValue: unknown, stepCode: string): unknown {
         'investment-balance-disputed': apiValue,
         'asset-balance-disputed': apiValue,
         'credit-balance-disputed': apiValue,
+        [disregardsStep.code]: Array.isArray(apiValue) ? apiValue : typeof apiValue === 'object' && apiValue !== null ? Object.entries(apiValue).filter(([, value]) => Boolean(value)).map(([key]) => key) : [],
     }[stepCode];
 }
 
@@ -120,7 +123,9 @@ export function mapAnswersToApiPayload(answers: Record<string, unknown>): Record
     const savings: Record<string, unknown> = {};
     const partnerSavings: Record<string, unknown> = {};
     const disputedSavings: Record<string, unknown> = {};
+    const disregards: Record<string, boolean> = {};
 
+    const under18Fields = ['is_you_under_18', 'under_18_receive_regular_payment', 'under_18_has_valuables'];
     const benefitFields = ['universal_credit', 'income_support', 'job_seekers_allowance', 'pension_credit', 'employment_support'];
     const savingsFields = ['bank_balance', 'investment_balance', 'asset_balance', 'credit_balance'];
     const partnerSavingsFields = ['bank-balance-partner', 'investment-balance-partner', 'asset-balance-partner', 'credit-balance-partner'];
@@ -147,10 +152,23 @@ export function mapAnswersToApiPayload(answers: Record<string, unknown>): Record
                 disputedSavings[apiField] = Math.round(Number(value) * 100);
             } else if (savingsFields.includes(apiField)) {
                 savings[apiField] = Math.round(Number(value) * 100);
+            } else if (stepCode === disregardsStep.code) {
+                if (Array.isArray(value)) {
+                    value.forEach(disregard => {
+                        disregards[disregard] = true;
+                    });
+                }
+                payload[apiField] = disregards;
             } else {
                 payload[apiField] = value;
             }
         }
+    }
+
+    if (Object.keys(specificBenefits).length > 0) {
+        payload.specific_benefits = specificBenefits;
+        // Default `on_passported_benefits` to false unless conditions met
+        payload.on_passported_benefits = benefitFields.some( (field) => specificBenefits[field] === true );
     }
 
     if (Object.keys(savings).length > 0) {
@@ -165,16 +183,10 @@ export function mapAnswersToApiPayload(answers: Record<string, unknown>): Record
         payload.disputed_savings = disputedSavings;
     }
 
-    if (Object.keys(specificBenefits).length > 0) {
-        payload.specific_benefits = specificBenefits;
+    if (under18Fields.some(field => field in payload)) {
+        // Default `under_18_passported` to false unless conditions met
+        payload.under_18_passported = payload.is_you_under_18 === true && payload.under_18_receive_regular_payment === false && payload.under_18_has_valuables === false;
     }
-
-    // Default `under_18_passported` to false unless conditions met
-    payload.under_18_passported = payload.is_you_under_18 === true && payload.under_18_receive_regular_payment === false && payload.under_18_has_valuables === false;
-
-    // Default `on_passported_benefits` to false unless conditions met
-    payload.on_passported_benefits = benefitFields.some( (field) => specificBenefits[field] === true );
-
     return payload;
 }
 
