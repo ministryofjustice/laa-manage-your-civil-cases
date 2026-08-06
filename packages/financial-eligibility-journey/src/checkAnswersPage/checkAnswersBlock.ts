@@ -299,13 +299,13 @@ export const disregardsSummaryList = GovUKSummaryList({
         classes: GovUKUtilityClasses.Width.OneQuarter,
       },
       value: {
-        text: Conditional({
+        html: Conditional({
           when: Answer('disregards').match(Condition.Equals('none')),
           then: 'None',
           else: Literal(disregardsLookupItems)
             .each(Iterator.Filter(Item().path('value').match(Condition.Array.IsIn(Answer('disregards')))))
             .each(Iterator.Map(Item().path('text')))
-            .pipe(Transformer.Array.Join(', ')),
+            .pipe(Transformer.Array.Join('<br>')),
         }),
       },
     },

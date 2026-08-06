@@ -8,7 +8,8 @@ import {
   safeOptionalString,
   isRecord,
   safeStringFromRecord,
-  hasProperty
+  hasProperty,
+  normaliseSelectedKeys
 } from '#src/scripts/helpers/dataTransformers.js';
 
 describe('Data Transformation Helpers', () => {
@@ -93,6 +94,22 @@ describe('Data Transformation Helpers', () => {
       expect(hasProperty(null, 'foo')).to.be.false;
       expect(hasProperty({}, 'foo')).to.be.false;
       expect(hasProperty([], 'foo')).to.be.false;
+    });
+  });
+
+  describe('normaliseSelectedKeys()', () => {
+    it('returns string values when input is an array', () => {
+      expect(normaliseSelectedKeys(['a', 'b', 1, null])).to.deep.equal(['a', 'b']);
+    });
+
+    it('returns keys where object values are truthy', () => {
+      expect(normaliseSelectedKeys({ one: true, two: false, three: 1, four: '' })).to.deep.equal(['one', 'three']);
+    });
+
+    it('returns empty array for non-array and non-object inputs', () => {
+      expect(normaliseSelectedKeys(undefined)).to.deep.equal([]);
+      expect(normaliseSelectedKeys('single')).to.deep.equal([]);
+      expect(normaliseSelectedKeys(null)).to.deep.equal([]);
     });
   });
 

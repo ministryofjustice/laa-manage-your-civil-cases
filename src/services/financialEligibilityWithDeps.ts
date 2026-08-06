@@ -3,7 +3,7 @@ import { type FinancialEligibilityEffectsWithDeps, type Deps } from '#packages/f
 import { type FinancialEligibilitySession } from '#packages/financial-eligibility-journey/src/context.type.js';
 import { under18Step, under18HasValuablesStep, under18RegularPaymentStep, partnerStep, over60Step, over60StepWithPartnerStep, disregardsStep } from "#packages/financial-eligibility-journey/src/index.js";
 import { type FinancialEligibilityData } from "#types/api-types.js";
-import { devLog, devError, devWarn } from '#src/scripts/helpers/index.js';
+import { devLog, devError, devWarn, normaliseSelectedKeys } from '#src/scripts/helpers/index.js';
 
 /**
  * Utility function to map step codes to API field names for financial eligibility data
@@ -108,7 +108,7 @@ function mapApiValueToForgeValue(apiValue: unknown, stepCode: string): unknown {
         'investment-balance-disputed': apiValue,
         'asset-balance-disputed': apiValue,
         'credit-balance-disputed': apiValue,
-        [disregardsStep.code]: Array.isArray(apiValue) ? apiValue : typeof apiValue === 'object' && apiValue !== null ? Object.entries(apiValue).filter(([, value]) => Boolean(value)).map(([key]) => key) : [],
+        [disregardsStep.code]: normaliseSelectedKeys(apiValue),
     }[stepCode];
 }
 

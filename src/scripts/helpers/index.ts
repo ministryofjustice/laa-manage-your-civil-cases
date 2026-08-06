@@ -32,6 +32,7 @@ export {
   safeNestedField,
   extractCurrentFields,
   normaliseSelectedCheckbox,
+  normaliseSelectedKeys,
   isYes,
   capitaliseFirstLetter,
   extractPhoneNumber,

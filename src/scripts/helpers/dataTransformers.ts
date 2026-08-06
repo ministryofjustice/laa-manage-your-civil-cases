@@ -291,6 +291,26 @@ export function normaliseSelectedCheckbox(value: unknown): string[] {
 }
 
 /**
+ * Normalises checkbox-ish data into selected key names
+ * Accepts either an array of selected keys or an object map of key to boolean-like value
+ * @param {unknown} value - Raw checkbox value from API/session
+ * @returns {string[]} Selected key names
+ */
+export function normaliseSelectedKeys(value: unknown): string[] {
+  if (Array.isArray(value)) {
+    return value.filter((x): x is string => typeof x === 'string');
+  }
+
+  if (!isRecord(value)) {
+    return [];
+  }
+
+  return Object.entries(value)
+    .filter(([, selected]) => Boolean(selected))
+    .map(([key]) => key);
+}
+
+/**
  * Normalise truthy "Yes"/"No"/boolean/strings
  * @param {unknown} value - Value of 
  * @returns {boolean} - true or false if it meets comparison

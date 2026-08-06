@@ -1,5 +1,5 @@
 import type { FinancialEligibilityData, PropertySetData, SavingsData, IncomeData, DeductionData, MoneyPerInterval } from '#types/api-types.js';
-import { isRecord, t } from '#src/scripts/helpers/index.js';
+import { isRecord, normaliseSelectedKeys } from '#src/scripts/helpers/index.js';
 
 /**
  * Transforms raw financial eligibility API data to display format
@@ -26,7 +26,7 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
   const disputedSavings = formatSavingsData(item.disputed_savings)
   const dependantsYoung = Number(item.dependants_young ?? 0);
   const dependantsOld = Number(item.dependants_old ?? 0);
-  const disregards = isRecord(item.disregards) ? Object.entries(item.disregards).filter(([, value]) => Boolean(value)).map(([key]) => key) : [];
+  const disregards = normaliseSelectedKeys(item.disregards);
   const specificBenefits = {
     pensionCredit: Boolean(benefitsData.pension_credit),
     jobSeekers: Boolean(benefitsData.job_seekers_allowance),
