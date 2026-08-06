@@ -87,10 +87,10 @@ test('accessibility page should have rendered correctly', async ({ page, i18nSet
   expect(itemCount).toBe(4);
 
   // Verify the text of each example item
-  expect(await exampleItems.nth(0).innerText()).toBe(t('change colours, contrast levels and fonts using browser or device settings'));
-  expect(await exampleItems.nth(1).innerText()).toBe(t('zoom in up to 400% without the text spilling off the screen'));
-  expect(await exampleItems.nth(2).innerText()).toBe(t('navigate most of the service using a keyboard or speech recognition\nsoftware'));
-  expect(await exampleItems.nth(3).innerText()).toBe(t('listen to most of the service using a screen reader (including the most\nrecent versions of JAWS, NVDA and VoiceOver)'));
+  expect(await exampleItems.nth(0).innerText()).toBe(t('pages.accessibility.service.examples.changeColours'));
+  expect(await exampleItems.nth(1).innerText()).toBe(t('pages.accessibility.service.examples.zoom'));
+  expect(await exampleItems.nth(2).innerText()).toBe(t('pages.accessibility.service.examples.navigate'));
+  expect(await exampleItems.nth(3).innerText()).toBe(t('pages.accessibility.service.examples.listen'));
 
   // Verify the text at the end of the accessibility service statement
   const statementEnd = page.locator('#statement-end');
