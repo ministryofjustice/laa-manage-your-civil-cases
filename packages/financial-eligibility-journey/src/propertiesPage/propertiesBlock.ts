@@ -1,7 +1,11 @@
-import { Self, Condition, validation, Iterator, Data, Format, Loop, Item, Transformer, and } from '@ministryofjustice/hmpps-forge/core/authoring'
+import { Self, Answer, Condition, validation, Iterator, Data, Format, Loop, Item, Transformer, or, not } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { GovUKHeading, GovUKTextInput, GovUKBody, GovUKButton, GovUKUtilityClasses, GovUKRadioInput, GovUKSectionBreak, GovUKGridRow } from '@ministryofjustice/hmpps-forge/govuk-components'
 import { CollectionBlock } from '@ministryofjustice/hmpps-forge/core/components'
 
+const categoryIsDebtOrFamily = or(
+  Answer('category').match(Condition.Equals('debt')),
+  Answer('category').match(Condition.Equals('family'))
+)
 
 export const propertiesHeading = GovUKHeading({
   text: 'Properties',
@@ -91,13 +95,14 @@ export const propertySet = CollectionBlock({
           },
         },
         classes: GovUKUtilityClasses.Radios.Inline,
+        visibleWhen: categoryIsDebtOrFamily,
         items: [
           { value: 'yes', text: 'Yes' },
           { value: 'no', text: 'No' },
         ],
         validWhen: [
           validation({
-            condition: Self().match(Condition.IsRequired()),
+            condition: or ( not(categoryIsDebtOrFamily), Self().match(Condition.IsRequired())),
             message: Format('Select yes if property %1 is disputed', Loop.Index()),
           }),
         ],

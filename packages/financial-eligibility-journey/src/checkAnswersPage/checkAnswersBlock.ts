@@ -9,6 +9,11 @@ const under18Passported = and(
   Answer('under-18-has-valuables').match(Condition.Equals('no')),
 )
 
+const categoryIsDebtOrFamily = or(
+  Answer('category').match(Condition.Equals('debt')),
+  Answer('category').match(Condition.Equals('family'))
+)
+
 export const checkYourAnswersHeading = GovUKHeading({
   text: 'Check your answers',
   size: 'm',
@@ -149,6 +154,7 @@ export const propertiesSummaryList = CollectionBlock({
           {
             key: { text: 'Is the property disputed?' },
             value: { text: Item().path('disputed').pipe(Transformer.String.Capitalize()) },
+            visibleWhen: categoryIsDebtOrFamily,
           },
           {
             key: { text: 'Is this your main property?' },
@@ -241,11 +247,8 @@ export const partnerSavingsSummaryList = GovUKSummaryList({
 
 export const disputedSavingsSummaryList = GovUKSummaryList({
   visibleWhen: and(
-    not(under18Passported),
-    or(
-      Answer('category').match(Condition.Equals('debt')),
-      Answer('category').match(Condition.Equals('family'))
-    )
+    categoryIsDebtOrFamily,
+    not(under18Passported)
   ),
   card: {
     title: {
