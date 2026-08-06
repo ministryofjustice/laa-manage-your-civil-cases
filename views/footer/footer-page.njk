@@ -1,0 +1,11 @@
+{% extends "base.njk" %}
+
+{% block serviceNavigation %}
+  {% if isAuthenticated %}
+    {{ govukServiceNavigation({
+    serviceName: config.SERVICE_NAME,
+    serviceUrl: "/",
+    navigation: []
+    }) }}
+  {% endif %}
+{% endblock %}

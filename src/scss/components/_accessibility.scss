@@ -1,0 +1,9 @@
+@use "govuk-frontend/dist/govuk" as govuk;
+
+.multiline-text {
+  white-space: pre-line;
+}
+
+strong.app-error-text {
+  color: govuk.govuk-functional-colour("error");
+}

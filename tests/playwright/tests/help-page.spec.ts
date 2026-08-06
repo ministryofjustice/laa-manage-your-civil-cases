@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures/index.js';
-import { t, setupAuth } from '../utils/index.js'
+import { t, setupAuth } from '../utils/index.js';
 
 test('help page has correct title header', async ({ page, i18nSetup }) => {
     // Navigate to homepage
@@ -45,10 +45,9 @@ test('footer is visible with expected links', async ({ page }) => {
   await expect(footer.getByRole('link', { name: 'Terms and conditions' })).toBeVisible();
 });
 
-const visitUrl = '/help';
 test('help page should have rendered correctly', async ({ page, i18nSetup }) => {
-  // Navigate to the search page
-  await page.goto(visitUrl);
+  // Navigate to the help page
+  await page.goto('/help');
 
    // Check nav bar exists
   const nav = page.locator('.govuk-service-navigation');
@@ -65,14 +64,14 @@ test('help page should have rendered correctly', async ({ page, i18nSetup }) => 
   await expect(page.getByRole('heading', { level: 1, name: t('pages.help.heading') })).toBeVisible();
 
   // Verify the text of the heading of the help page
-  const helpHeading = page.locator('#help-heading')
+  const helpHeading = page.locator('#help-heading');
   await expect(helpHeading).toHaveText('Help');
 
   // Check for the tech support subheading on the help page
   await expect(page.getByRole('heading', { level: 2, name: t('pages.help.techSupportSubheading') })).toBeVisible();
 
   // Verify the text for the subheading on the help page
-  const techSupportSubheading = page.locator('#tech-support-subheading')
+  const techSupportSubheading = page.locator('#tech-support-subheading');
   await expect(techSupportSubheading).toHaveText('Technical support');
 
   // Verify the text for how to request technical support
