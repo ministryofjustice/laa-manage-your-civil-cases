@@ -45,10 +45,9 @@ test('footer is visible with expected links', async ({ page }) => {
   await expect(footer.getByRole('link', { name: 'Terms and conditions' })).toBeVisible();
 });
 
-const visitUrl = '/help';
 test('help page should have rendered correctly', async ({ page, i18nSetup }) => {
   // Navigate to the help page
-  await page.goto(visitUrl);
+  await page.goto('/help');
 
    // Check nav bar exists
   const nav = page.locator('.govuk-service-navigation');
