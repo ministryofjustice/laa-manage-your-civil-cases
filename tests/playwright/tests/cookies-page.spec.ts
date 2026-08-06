@@ -115,7 +115,7 @@ test('cookies page should have rendered correctly', async ({ page, i18nSetup }) 
 });
 
 test('cookies link goes to ICO site', async ({ page }) => {
-  // Navigate to the  page
+  // Navigate to the cookies page
   await page.goto(visitUrl);
 
   // Check link to ICO works

@@ -110,7 +110,7 @@ test('accessibility page should have rendered correctly', async ({ page, i18nSet
   await expect(howAccessibleInfo).toHaveText('This service is fully compliant with Web Content Accessibility\nGuidelines (WCAG) V2.2 Level A and Level AA.');
 
   // Check for the feedback subheading
-  await expect(page.getByRole('heading', { level: 2, name: t('pages.accessibility.feedback.subheading') }));
+  await expect(page.getByRole('heading', { level: 2, name: t('pages.accessibility.feedback.subheading') })).toBeVisible();
 
   // Verify the text for the feedback subheading
   const feedbackSubheading = page.locator('#feedback-subheading');
@@ -121,7 +121,7 @@ test('accessibility page should have rendered correctly', async ({ page, i18nSet
   await expect(feedbackInfo).toHaveText('If you find any problems not listed on this page, or think we’re not meeting\naccessibility requirements, contact us at MCC.LAADigital@justice.gov.uk.');
 
   // Check for the enforcement subheading
-  await expect(page.getByRole('heading', { level: 2, name: t('pages.accessibility.enforcement.subheading') }));
+  await expect(page.getByRole('heading', { level: 2, name: t('pages.accessibility.enforcement.subheading') })).toBeVisible();
 
   // Verify the text for the enforcement subheading
   const enforcementSubheading = page.locator('#enforcement-subheading');
@@ -132,7 +132,7 @@ test('accessibility page should have rendered correctly', async ({ page, i18nSet
   await expect(enforcementInfo).toHaveText('The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the ‘accessibility regulations’). If you’re not happy with how we respond to your complaint, contact the Equality Advisory and Support Service (EASS).');
 
   // Check for the technical info subheading
-  await expect(page.getByRole('heading', { level: 2, name: t('pages.accessibility.technicalInfo.subheading') }));
+  await expect(page.getByRole('heading', { level: 2, name: t('pages.accessibility.technicalInfo.subheading') })).toBeVisible();
 
   // Verify the text for the technical info subheading
   const technicalInfoSubheading = page.locator('#technical-info-subheading');
@@ -143,7 +143,7 @@ test('accessibility page should have rendered correctly', async ({ page, i18nSet
   await expect(technicalInfo).toHaveText('The Legal Aid Agency is committed to making its services accessible, in accordance with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018.');
 
   // Check for the compliance subheading
-  await expect(page.getByRole('heading', { level: 2, name: t('pages.accessibility.compliance.subheading') }));
+  await expect(page.getByRole('heading', { level: 2, name: t('pages.accessibility.compliance.subheading') })).toBeVisible();
 
   // Verify the text for the compliance subheading
   const complianceInfoSubheading = page.locator('#compliance-info-subheading');
@@ -154,7 +154,7 @@ test('accessibility page should have rendered correctly', async ({ page, i18nSet
   await expect(complianceInfo).toHaveText('This service is fully compliant with the Web Content Accessibility Guidelines version 2.2 Level A and AA standard.');
 
   // Check the preparation info subheading
-  await expect(page.getByRole('heading', { level: 2, name: t('pages.accessibility.preparation.subheading') }));
+  await expect(page.getByRole('heading', { level: 2, name: t('pages.accessibility.preparation.subheading') })).toBeVisible();
 
   // Verify the text for the preparation info subheading
   const preparationInfoSubheading = page.locator('#preparation-info-subheading');
