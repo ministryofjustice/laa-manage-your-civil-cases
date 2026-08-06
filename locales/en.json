@@ -522,15 +522,15 @@
       },
       "feedback": {
         "subheading": "Feedback and contact information",
-        "infoStart": "If you find any problems not listed on this page, or think we’re not meeting\naccessibility requirements, contact us at ",
+        "start": "If you find any problems not listed on this page, or think we’re not meeting\naccessibility requirements, contact us at ",
         "link": "MCC.LAADigital@justice.gov.uk",
-        "infoEnd": "."
+        "end": "."
       },
       "enforcement": {
         "subheading": "Enforcement procedure",
-        "info": "The Equality and Human Rights Commission (EHRC) is responsible\nfor enforcing the Public Sector Bodies (Websites and Mobile Applications) (No.\n2) Accessibility Regulations 2018 (the ‘accessibility regulations’). \n\nIf you’re not happy with how we respond to your complaint, ",
+        "start": "The Equality and Human Rights Commission (EHRC) is responsible\nfor enforcing the Public Sector Bodies (Websites and Mobile Applications) (No.\n2) Accessibility Regulations 2018 (the ‘accessibility regulations’). \n\nIf you’re not happy with how we respond to your complaint, ",
         "link": "contact the\nEquality Advisory and Support Service (EASS)",
-        "fullstop": "."
+        "end": "."
       },
       "technicalInfo": {
         "subheading": "Technical information about this service’s accessibility",
@@ -538,18 +538,18 @@
       },
       "compliance": {
         "subheading": "Compliance status",
-        "infoStart": "This service is fully compliant with the ",
+        "start": "This service is fully compliant with the ",
         "link": "Web Content Accessibility Guidelines\nversion 2.2 Level A and AA standard",
-        "infoEnd": "."
+        "end": "."
       },
       "preparation": {
         "subheading": "Preparation of this accessibility statement",
         "statement": {
-          "start": "This statement was prepared on",
+          "published": "This statement was prepared on",
           "datePublished": "[date when it was first published]",
-          "end": ". It was\nlast reviewed on",
+          "reviewed": ". It was\nlast reviewed on",
           "dateReviewed": "[date when it was last reviewed]",
-          "fullstop": "."
+          "end": "."
         },
         "service": {
           "start": "This service was last tested on",
@@ -558,11 +558,11 @@
         },
         "externalAudit": {
           "temporaryText": "[Add below text after full external audit is done, to replace the 2\nsentences above]",
-          "infoStart": "This service was last tested on",
-          "dateAudited": "[audit date]",
-          "infoEnd": ". The test was carried out by\n",
+          "test": "This service was last tested on",
+          "auditDate": "[audit date]",
+          "carriedOut": ". The test was carried out by\n",
           "link": "UserVision",
-          "fullstop": "."
+          "end": "."
         }
       }
     },
