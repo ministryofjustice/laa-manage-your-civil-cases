@@ -156,6 +156,62 @@ describe('mapAnswersToApiPayload', () => {
     });
   });
 
+  describe('Property set mapping', () => {
+    it('should map indexed property fields to property_set', () => {
+      const answers = {
+        'value_0': 350000,
+        'mortgage-left_0': 125000,
+        'disputed_0': 'yes',
+        'main_0': 'no',
+        'share_0': 50,
+      };
+
+      const result = mapAnswersToApiPayload(answers);
+      expect(result.property_set).to.deep.equal([
+        {
+          value: 350000,
+          mortgage_left: 125000,
+          disputed: true,
+          main: false,
+          share: 50,
+        }
+      ]);
+    });
+
+    it('should map multiple indexed properties in index order', () => {
+      const answers = {
+        'value_1': 200000,
+        'mortgage-left_1': 100000,
+        'disputed_1': 'no',
+        'main_1': 'yes',
+        'share_1': 100,
+        'value_0': 350000,
+        'mortgage-left_0': 125000,
+        'disputed_0': 'yes',
+        'main_0': 'no',
+        'share_0': 50,
+      };
+
+      const result = mapAnswersToApiPayload(answers);
+      expect(result.property_set).to.deep.equal([
+        {
+          value: 350000,
+          mortgage_left: 125000,
+          disputed: true,
+          main: false,
+          share: 50,
+        },
+        {
+          value: 200000,
+          mortgage_left: 100000,
+          disputed: false,
+          main: true,
+          share: 100,
+        }
+      ]);
+    });
+  });
+
   describe('`under_18_passported` calculation', () => {
     it('should set `under_18_passported` to `true` when under 18, no regular payment, and no valuables', () => {
       const answers = {

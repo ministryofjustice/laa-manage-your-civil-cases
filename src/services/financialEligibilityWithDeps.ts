@@ -119,7 +119,7 @@ export function mapAnswersToApiPayload(answers: Record<string, unknown>): Record
     payload.under_18_passported = payload.is_you_under_18 === true && payload.under_18_receive_regular_payment === false && payload.under_18_has_valuables === false;
 
     // Default `on_passported_benefits` to false unless conditions met
-    payload.on_passported_benefits = payload.universal_credit === true || payload.income_support === true || payload.job_seekers_allowance === true || payload.pension_credit === true || payload.employment_support === true;
+    payload.on_passported_benefits = benefitFields.some( (field) => specificBenefits[field] === true );
 
     return payload;
 }
