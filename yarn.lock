@@ -660,16 +660,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ministryofjustice/hmpps-forge@npm:0.3.2":
-  version: 0.3.2
-  resolution: "@ministryofjustice/hmpps-forge@npm:0.3.2"
+"@ministryofjustice/hmpps-forge@npm:0.3.4":
+  version: 0.3.4
+  resolution: "@ministryofjustice/hmpps-forge@npm:0.3.4"
   dependencies:
     express: "npm:^4.21.0 || ^5.0.0"
-    http-errors: "npm:^2.0.0"
     nunjucks: "npm:^3.2.4"
     ws: "npm:^8.18.0"
     zod: "npm:^4.1.5"
-  checksum: 10c0/4c61db4b85c61439f75be12108d60c17c9554ff1148d1451cde5bd9fe1dda6de8f898f521f8dcb1d805c5ec14e6658fd7f98669fe1e9b3e25d4fc9149cbef8e1
+  checksum: 10c0/5b437611e5a0aaffe43e16d31783278d95d468ebce6d5f98e30b80ed0fff64e03c4fff089f6b2038fa97481af9a306914b8eb80405fc39f266e06434af2c4558
   languageName: node
   linkType: hard
 
@@ -981,14 +980,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:^1.62.0":
-  version: 1.62.0
-  resolution: "@playwright/test@npm:1.62.0"
+"@playwright/test@npm:^1.62.1":
+  version: 1.62.1
+  resolution: "@playwright/test@npm:1.62.1"
   dependencies:
-    playwright: "npm:1.62.0"
+    playwright: "npm:1.62.1"
   bin:
     playwright: cli.js
-  checksum: 10c0/1132666c5cc4955fb043d41447475b4947e6571bd390e1b7c9fdcc9381cb58563fa7f86509a4a61e572e9b0f7ff2d9d9027eb9ee8b1f24bea7423b52b4308436
+  checksum: 10c0/4b76f2f717723f84a73601f74fde97f5d92e4b5c869cf87c0f5628bf247fa1d18c9dc6c8e136463303233239e8ce58f902513d4281a9fabc3c426e911ded2c83
   languageName: node
   linkType: hard
 
@@ -4803,8 +4802,8 @@ __metadata:
     "@azure/msal-node": "npm:^5.4.3"
     "@eslint/js": "npm:^10.0.1"
     "@ministryofjustice/frontend": "npm:^10.0.0"
-    "@ministryofjustice/hmpps-forge": "npm:0.3.2"
-    "@playwright/test": "npm:^1.62.0"
+    "@ministryofjustice/hmpps-forge": "npm:0.3.4"
+    "@playwright/test": "npm:^1.62.1"
     "@sentry/node": "npm:^10.69.0"
     "@socket.io/redis-adapter": "npm:^8.3.0"
     "@types/chai": "npm:^5.2.3"
@@ -4863,8 +4862,8 @@ __metadata:
     husky: "npm:^9.1.7"
     i18next: "npm:^26.3.6"
     jsdom: "npm:^30.0.0"
-    libphonenumber-js: "npm:^1.13.9"
-    lint-staged: "npm:^17.2.0"
+    libphonenumber-js: "npm:^1.13.10"
+    lint-staged: "npm:^17.3.0"
     livereload: "npm:^0.10.2"
     middleware-axios: "npm:^3.0.0"
     mocha: "npm:^11.7.6"
@@ -4873,7 +4872,7 @@ __metadata:
     msw: "npm:^2.15.0"
     nodemon: "npm:^3.1.14"
     nunjucks: "npm:^3.2.4"
-    playwright-core: "npm:^1.62.0"
+    playwright-core: "npm:^1.62.1"
     prettier: "npm:^3.9.6"
     redis: "npm:^5.12.1"
     rimraf: "npm:^6.1.3"
@@ -4899,16 +4898,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"libphonenumber-js@npm:^1.13.9":
-  version: 1.13.9
-  resolution: "libphonenumber-js@npm:1.13.9"
-  checksum: 10c0/837187fe0bacbcea3b813476cc897233951a6113220e7b2523c6974989f475b380be7c632bf33bbadaa22532375733f3c64d80f7039578b8e1c77ea7dd052f0f
+"libphonenumber-js@npm:^1.13.10":
+  version: 1.13.10
+  resolution: "libphonenumber-js@npm:1.13.10"
+  checksum: 10c0/52f41019234baca302f2b378d2930de208801ab62b2198fd9d7918085549e0ce8645c42ce3a2dc57775845a8548ca3d20f7ccc2cc923a51f2c073898cc6432e6
   languageName: node
   linkType: hard
 
-"lint-staged@npm:^17.2.0":
-  version: 17.2.0
-  resolution: "lint-staged@npm:17.2.0"
+"lint-staged@npm:^17.3.0":
+  version: 17.3.0
+  resolution: "lint-staged@npm:17.3.0"
   dependencies:
     picomatch: "npm:^4.0.5"
     string-argv: "npm:^0.3.2"
@@ -4919,7 +4918,7 @@ __metadata:
       optional: true
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: 10c0/47eb70637304faa5c723a7adee4f7699a78f928b710b09f167240642285656cf0987b316e3ad4ca34bda10466fbad7a1cb4922cfbf470e5ad0d836eb384f2809
+  checksum: 10c0/48703bf88fd834a5575b4f7fc77aadc7be21017ca66db4255b8962515f7b3df523ec23a1f198fb89eddc838268f2472a613723a7b058ad9260367a1698ce76e1
   languageName: node
   linkType: hard
 
@@ -5732,27 +5731,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright-core@npm:1.62.0, playwright-core@npm:^1.62.0":
-  version: 1.62.0
-  resolution: "playwright-core@npm:1.62.0"
+"playwright-core@npm:1.62.1, playwright-core@npm:^1.62.1":
+  version: 1.62.1
+  resolution: "playwright-core@npm:1.62.1"
   bin:
     playwright-core: cli.js
-  checksum: 10c0/bc7c770cc4118a7ea65d2c357fc271aaef49af6b5b8964aa19d765d4ea3473e56af926f693123fd63ed6e580830059905722ac68fbf22a31a5b1533e11600228
+  checksum: 10c0/a37d0f03bb73364cfd0eba704c4b3359b609c4779ae2649a88d8e2b3a29c7357dfcc58bdcf0cb68ddffdef7687abf78902c8356e89f189682c7e19be38e108f0
   languageName: node
   linkType: hard
 
-"playwright@npm:1.62.0":
-  version: 1.62.0
-  resolution: "playwright@npm:1.62.0"
+"playwright@npm:1.62.1":
+  version: 1.62.1
+  resolution: "playwright@npm:1.62.1"
   dependencies:
     fsevents: "npm:2.3.2"
-    playwright-core: "npm:1.62.0"
+    playwright-core: "npm:1.62.1"
   dependenciesMeta:
     fsevents:
       optional: true
   bin:
     playwright: cli.js
-  checksum: 10c0/14d2d2c35e4ef88cf69d9e6c5bf351ff47fe9cd00da09da9f48da8aaf75ebdb266330c073cb217821785fb35d7e5d9d89789220b208329e4934aaaa43da260f3
+  checksum: 10c0/4d3522cd46325f50c46f8874d31f70d036f6983228a9f8b9d68fc249e4c17464edcd97cc4adfbb24e712d1829c1386d3bc24e17f58a1ced94e7c423300c21845
   languageName: node
   linkType: hard
 
