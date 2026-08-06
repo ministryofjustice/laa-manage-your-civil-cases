@@ -173,7 +173,7 @@ export const savingsSummaryList = GovUKSummaryList({
     },
     actions: {
       items: [
-        { href: 'benefits', text: 'Change', visuallyHiddenText: 'Change, Your savings' },
+        { href: 'savings', text: 'Change', visuallyHiddenText: 'Change, Your savings' },
       ],
     },
   },
@@ -211,7 +211,7 @@ export const partnerSavingsSummaryList = GovUKSummaryList({
     },
     actions: {
       items: [
-        { href: 'benefits', text: 'Change', visuallyHiddenText: 'Change, Your partner\'s savings' },
+        { href: 'partner-savings', text: 'Change', visuallyHiddenText: 'Change, Your partner\'s savings' },
       ],
     },
   },
@@ -252,7 +252,7 @@ export const disputedSavingsSummaryList = GovUKSummaryList({
     },
     actions: {
       items: [
-        { href: 'benefits', text: 'Change', visuallyHiddenText: 'Change, Your disputed savings' },
+        { href: 'disputed-savings', text: 'Change', visuallyHiddenText: 'Change, Your disputed savings' },
       ],
     },
   },
@@ -287,7 +287,7 @@ export const disregardsSummaryList = GovUKSummaryList({
     },
     actions: {
       items: [
-        { href: 'benefits', text: 'Change', visuallyHiddenText: 'Change, Disregards' },
+        { href: 'disregards', text: 'Change', visuallyHiddenText: 'Change, Disregards' },
       ],
     },
   },

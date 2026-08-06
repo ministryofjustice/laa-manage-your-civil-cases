@@ -312,6 +312,193 @@ describe('mapAnswersToApiPayload', () => {
     });
   });
 
+  describe('Savings field mapping', () => {
+    describe('Client savings (you.savings)', () => {
+      it('should nest savings fields under `you.savings`', () => {
+        const answers = { 'bank-balance': '56' };
+        const result = mapAnswersToApiPayload(answers);
+
+        expect(result.you).to.exist;
+        expect((result.you as Record<string, unknown>).savings).to.exist;
+      });
+
+      it('should convert bank-balance pounds to pence under `you.savings`', () => {
+        const answers = { 'bank-balance': '56' };
+        const result = mapAnswersToApiPayload(answers);
+
+        const savings = (result.you as Record<string, Record<string, unknown>>).savings;
+        expect(savings.bank_balance).to.equal(5600);
+      });
+
+      it('should convert investment-balance pounds to pence under `you.savings`', () => {
+        const answers = { 'investment-balance': '66' };
+        const result = mapAnswersToApiPayload(answers);
+
+        const savings = (result.you as Record<string, Record<string, unknown>>).savings;
+        expect(savings.investment_balance).to.equal(6600);
+      });
+
+      it('should convert asset-balance pounds to pence under `you.savings`', () => {
+        const answers = { 'asset-balance': '44' };
+        const result = mapAnswersToApiPayload(answers);
+
+        const savings = (result.you as Record<string, Record<string, unknown>>).savings;
+        expect(savings.asset_balance).to.equal(4400);
+      });
+
+      it('should convert credit-balance pounds to pence under `you.savings`', () => {
+        const answers = { 'credit-balance': '56' };
+        const result = mapAnswersToApiPayload(answers);
+
+        const savings = (result.you as Record<string, Record<string, unknown>>).savings;
+        expect(savings.credit_balance).to.equal(5600);
+      });
+
+      it('should round fractional pence correctly', () => {
+        const answers = { 'bank-balance': '12.505' };
+        const result = mapAnswersToApiPayload(answers);
+
+        const savings = (result.you as Record<string, Record<string, unknown>>).savings;
+        expect(savings.bank_balance).to.equal(1251);
+      });
+
+      it('should not create `you.savings` when no savings fields are present', () => {
+        const answers = { 'under-18': 'yes' };
+        const result = mapAnswersToApiPayload(answers);
+
+        expect(result.you).to.be.undefined;
+      });
+
+      it('should group all four savings fields together under `you.savings`', () => {
+        const answers = {
+          'bank-balance': '56',
+          'investment-balance': '66',
+          'asset-balance': '44',
+          'credit-balance': '56',
+        };
+        const result = mapAnswersToApiPayload(answers);
+
+        const savings = (result.you as Record<string, Record<string, unknown>>).savings;
+        expect(savings).to.deep.equal({
+          bank_balance: 5600,
+          investment_balance: 6600,
+          asset_balance: 4400,
+          credit_balance: 5600,
+        });
+      });
+    });
+
+    describe('Partner savings (partner.savings)', () => {
+      it('should nest partner savings fields under `partner.savings`', () => {
+        const answers = { 'bank-balance-partner': '100' };
+        const result = mapAnswersToApiPayload(answers);
+
+        expect(result.partner).to.exist;
+        expect((result.partner as Record<string, unknown>).savings).to.exist;
+      });
+
+      it('should convert bank-balance-partner pounds to pence under `partner.savings`', () => {
+        const answers = { 'bank-balance-partner': '100' };
+        const result = mapAnswersToApiPayload(answers);
+
+        const savings = (result.partner as Record<string, Record<string, unknown>>).savings;
+        expect(savings.bank_balance).to.equal(10000);
+      });
+
+      it('should convert all partner savings fields to pence under `partner.savings`', () => {
+        const answers = {
+          'bank-balance-partner': '10',
+          'investment-balance-partner': '20',
+          'asset-balance-partner': '30',
+          'credit-balance-partner': '40',
+        };
+        const result = mapAnswersToApiPayload(answers);
+
+        const savings = (result.partner as Record<string, Record<string, unknown>>).savings;
+        expect(savings).to.deep.equal({
+          bank_balance: 1000,
+          investment_balance: 2000,
+          asset_balance: 3000,
+          credit_balance: 4000,
+        });
+      });
+
+      it('should not create partner when no partner savings fields are present', () => {
+        const answers = { 'bank-balance': '100' };
+        const result = mapAnswersToApiPayload(answers);
+
+        expect(result.partner).to.be.undefined;
+      });
+
+      it('should not mix partner savings into `you.savings`', () => {
+        const answers = { 'bank-balance': '10', 'bank-balance-partner': '20' };
+        const result = mapAnswersToApiPayload(answers);
+
+        const clientSavings = (result.you as Record<string, Record<string, unknown>>).savings;
+        const partnerSavings = (result.partner as Record<string, Record<string, unknown>>).savings;
+        expect(clientSavings.bank_balance).to.equal(1000);
+        expect(partnerSavings.bank_balance).to.equal(2000);
+      });
+    });
+
+    describe('Disputed savings (disputed_savings)', () => {
+      it('should nest disputed savings fields under disputed_savings', () => {
+        const answers = { 'bank-balance-disputed': '75' };
+        const result = mapAnswersToApiPayload(answers);
+
+        expect(result.disputed_savings).to.exist;
+      });
+
+      it('should convert bank-balance-disputed pounds to pence under disputed_savings', () => {
+        const answers = { 'bank-balance-disputed': '75' };
+        const result = mapAnswersToApiPayload(answers);
+
+        const savings = result.disputed_savings as Record<string, unknown>;
+        expect(savings.bank_balance).to.equal(7500);
+      });
+
+      it('should convert all disputed savings fields to pence under disputed_savings', () => {
+        const answers = {
+          'bank-balance-disputed': '10',
+          'investment-balance-disputed': '20',
+          'asset-balance-disputed': '30',
+          'credit-balance-disputed': '40',
+        };
+        const result = mapAnswersToApiPayload(answers);
+
+        expect(result.disputed_savings).to.deep.equal({
+          bank_balance: 1000,
+          investment_balance: 2000,
+          asset_balance: 3000,
+          credit_balance: 4000,
+        });
+      });
+
+      it('should not create disputed_savings when no disputed savings fields are present', () => {
+        const answers = { 'bank-balance': '100' };
+        const result = mapAnswersToApiPayload(answers);
+
+        expect(result.disputed_savings).to.be.undefined;
+      });
+
+      it('should keep client, partner and disputed savings independent', () => {
+        const answers = {
+          'bank-balance': '10',
+          'bank-balance-partner': '20',
+          'bank-balance-disputed': '30',
+        };
+        const result = mapAnswersToApiPayload(answers);
+
+        const clientSavings = (result.you as Record<string, Record<string, unknown>>).savings;
+        const partnerSavings = (result.partner as Record<string, Record<string, unknown>>).savings;
+        const disputedSavings = result.disputed_savings as Record<string, unknown>;
+        expect(clientSavings.bank_balance).to.equal(1000);
+        expect(partnerSavings.bank_balance).to.equal(2000);
+        expect(disputedSavings.bank_balance).to.equal(3000);
+      });
+    });
+  });
+
   describe('Edge cases', () => {
     it('should handle empty answers object', () => {
       const answers = {};

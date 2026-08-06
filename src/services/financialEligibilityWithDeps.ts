@@ -23,6 +23,18 @@ function mapStepCodeToApiField(stepCode: string): string | null {
         'income-based-jsa': 'job_seekers_allowance',
         'pension-credit': 'pension_credit',
         'employment-support': 'employment_support',
+        'bank-balance': 'bank_balance',
+        'investment-balance': 'investment_balance',
+        'asset-balance': 'asset_balance',
+        'credit-balance': 'credit_balance',
+        'bank-balance-partner': 'bank_balance',
+        'investment-balance-partner': 'investment_balance',
+        'asset-balance-partner': 'asset_balance',
+        'credit-balance-partner': 'credit_balance',
+        'bank-balance-disputed': 'bank_balance',
+        'investment-balance-disputed': 'investment_balance',
+        'asset-balance-disputed': 'asset_balance',
+        'credit-balance-disputed': 'credit_balance',
     };
 
     return mapping[stepCode] || null;
@@ -47,6 +59,18 @@ function mapFinancialEligibilityApiDataToStepCodes(financialEligibilityData: Fin
         'income-based-jsa': financialEligibilityData.specificBenefits.jobSeekers,
         'pension-credit': financialEligibilityData.specificBenefits.pensionCredit,
         'employment-support': financialEligibilityData.specificBenefits.employmentSupport,
+        'bank-balance': financialEligibilityData.clientData.savings?.bankBalance,
+        'investment-balance': financialEligibilityData.clientData.savings?.investmentBalance,
+        'asset-balance': financialEligibilityData.clientData.savings?.assetBalance,
+        'credit-balance': financialEligibilityData.clientData.savings?.creditBalance,
+        'bank-balance-partner': financialEligibilityData.partnerData.partnerSavings?.bankBalance,
+        'investment-balance-partner': financialEligibilityData.partnerData.partnerSavings?.investmentBalance,
+        'asset-balance-partner': financialEligibilityData.partnerData.partnerSavings?.assetBalance,
+        'credit-balance-partner': financialEligibilityData.partnerData.partnerSavings?.creditBalance,
+        'bank-balance-disputed': financialEligibilityData.disputedSavings?.bankBalance,
+        'investment-balance-disputed': financialEligibilityData.disputedSavings?.investmentBalance,
+        'asset-balance-disputed': financialEligibilityData.disputedSavings?.assetBalance,
+        'credit-balance-disputed': financialEligibilityData.disputedSavings?.creditBalance,
     }
 }
 
@@ -70,6 +94,18 @@ function mapApiValueToForgeValue(apiValue: unknown, stepCode: string): unknown {
         'income-based-jsa': apiValue ? 'yes' : 'no',
         'pension-credit': apiValue ? 'yes' : 'no',
         'employment-support': apiValue ? 'yes' : 'no',
+        'bank-balance': apiValue,
+        'investment-balance': apiValue,
+        'asset-balance': apiValue,
+        'credit-balance': apiValue,
+        'bank-balance-partner': apiValue,
+        'investment-balance-partner': apiValue,
+        'asset-balance-partner': apiValue,
+        'credit-balance-partner': apiValue,
+        'bank-balance-disputed': apiValue,
+        'investment-balance-disputed': apiValue,
+        'asset-balance-disputed': apiValue,
+        'credit-balance-disputed': apiValue,
     }[stepCode];
 }
 
@@ -81,14 +117,14 @@ function mapApiValueToForgeValue(apiValue: unknown, stepCode: string): unknown {
 export function mapAnswersToApiPayload(answers: Record<string, unknown>): Record<string, unknown> {
     const payload: Record<string, unknown> = {};
     const specificBenefits: Record<string, unknown> = {};
+    const savings: Record<string, unknown> = {};
+    const partnerSavings: Record<string, unknown> = {};
+    const disputedSavings: Record<string, unknown> = {};
 
-    const benefitFields = [
-        'universal_credit',
-        'income_support',
-        'job_seekers_allowance',
-        'pension_credit',
-        'employment_support',
-    ];
+    const benefitFields = ['universal_credit', 'income_support', 'job_seekers_allowance', 'pension_credit', 'employment_support'];
+    const savingsFields = ['bank_balance', 'investment_balance', 'asset_balance', 'credit_balance'];
+    const partnerSavingsFields = ['bank-balance-partner', 'investment-balance-partner', 'asset-balance-partner', 'credit-balance-partner'];
+    const disputedSavingsFields = ['bank-balance-disputed', 'investment-balance-disputed', 'asset-balance-disputed', 'credit-balance-disputed'];
 
     for (const [stepCode, answer] of Object.entries(answers)) {
         const apiField = mapStepCodeToApiField(stepCode);
@@ -105,10 +141,28 @@ export function mapAnswersToApiPayload(answers: Record<string, unknown>): Record
 
             if (benefitFields.includes(apiField)) {
                 specificBenefits[apiField] = value;
+            } else if (partnerSavingsFields.includes(stepCode)) {
+                partnerSavings[apiField] = Math.round(Number(value) * 100);
+            } else if (disputedSavingsFields.includes(stepCode)) {
+                disputedSavings[apiField] = Math.round(Number(value) * 100);
+            } else if (savingsFields.includes(apiField)) {
+                savings[apiField] = Math.round(Number(value) * 100);
             } else {
                 payload[apiField] = value;
             }
         }
+    }
+
+    if (Object.keys(savings).length > 0) {
+        payload.you = { savings };
+    }
+
+    if (Object.keys(partnerSavings).length > 0) {
+        payload.partner = { savings: partnerSavings };
+    }
+
+    if (Object.keys(disputedSavings).length > 0) {
+        payload.disputed_savings = disputedSavings;
     }
 
     if (Object.keys(specificBenefits).length > 0) {
