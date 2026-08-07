@@ -479,7 +479,7 @@ describe('FinancialEligibilityEffectsWithDepsImpl', () => {
       expect(payloadArg.is_you_under_18).to.equal(true);
     });
 
-    it('initialises an empty draft and submits an empty payload when no answers have been saved yet', async () => {
+    it('initialises an empty draft and submits the default payload when no answers have been saved yet', async () => {
       const context = createTestEffectContext({
         params: { caseReference: 'CASE123' },
         session: { financialEligibilityDrafts: {} }
@@ -489,6 +489,9 @@ describe('FinancialEligibilityEffectsWithDepsImpl', () => {
       await effects.PersistSavedAnswers(deps, context);
 
       expect(updateFinancialEligibilityStub.calledOnce).to.be.true;
+      const [, caseRefArg, payloadArg] = updateFinancialEligibilityStub.firstCall.args as [unknown, unknown, Record<string, unknown>];
+      expect(caseRefArg).to.equal('CASE123');
+      expect(payloadArg.under_18_passported).to.equal(false);
       const session = context.getSession() as FinancialEligibilitySession;
       expect(session.financialEligibilityDrafts.CASE123).to.deep.equal({});
     });
