@@ -3,7 +3,7 @@ import { continueButton, discardChangesButton, ifPressedDiscardChanges } from '.
 import { benefitsHeading, universalCreditField, incomeSupportField, incomeBasedJSAField, pensionCreditField, employmentSupportField } from './benefitsBlock.js'
 import { FinancialEligibilityEffects } from '../effects.js'
 import { step, type StepDefinition } from '../authoring.js'
-import { checkAnswersStep } from '../checkAnswersPage/checkAnswersStep.js'
+import { propertiesStep } from '../propertiesPage/propertiesStep.js'
 
 const STEP_CODE = 'benefits'
 
@@ -19,7 +19,7 @@ export const benefitsStep: StepDefinition = step({
       validate: true,
       onValid: {
         effects: [FinancialEligibilityEffects.SaveNewAnswerIfAnswered()],
-        next: [redirect({ goto: checkAnswersStep.code })],
+        next: [redirect({ goto: propertiesStep.code })],
       },
     }),
   ],

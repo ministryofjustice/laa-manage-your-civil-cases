@@ -6,6 +6,7 @@ import { partnerStep } from '#packages/financial-eligibility-journey/src/partner
 import { over60Step } from '#packages/financial-eligibility-journey/src/over60Page/over60Step.js';
 import { over60StepWithPartnerStep } from '#packages/financial-eligibility-journey/src/over60PWithPartnerPage/over60WithPartnerStep.js';
 import { benefitsStep } from '#packages/financial-eligibility-journey/src/benefitsPage/benefitsStep.js';
+import { propertiesStep } from '#packages/financial-eligibility-journey/src/propertiesPage/propertiesStep.js';
 import { checkAnswersStep } from '#packages/financial-eligibility-journey/src/checkAnswersPage/checkAnswersStep.js';
 
 describe('Financial eligibility Forge routing', () => {
@@ -88,6 +89,6 @@ describe('Financial eligibility Forge routing', () => {
       .filter((goto): goto is string => goto !== null);
 
     expect(redirectGoesTo).to.have.length(1);
-    expect(redirectGoesTo[0]).to.equal(checkAnswersStep.code);
+    expect(redirectGoesTo[0]).to.equal(propertiesStep.code);
   });
 });
