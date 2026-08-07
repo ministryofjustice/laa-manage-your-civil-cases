@@ -7,8 +7,8 @@ import type { Session } from 'express-session'
  */
 
 export type FinancialEligibilitySession = Session & {
-  financialEligibilityDrafts: Record<string, Record<string, unknown>>;
-  patternDrafts?: Record<string, Record<string, unknown[]>>;
+  financialEligibilityDrafts: Record<string, Record<string, unknown>>; // session-stored draft answers for financial eligibility questions, keyed by case reference
+  casePatternDrafts?: Record<string, Record<string, Record<string, unknown[]>>>;  // session-stored draft answers for repeating pattern data in the financial eligibility journey
 }
 
 export type FinancialEligibilityEffectContext = EffectFunctionContext<

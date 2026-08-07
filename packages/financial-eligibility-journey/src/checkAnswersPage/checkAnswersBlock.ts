@@ -298,7 +298,7 @@ export const disregardsSummaryList = GovUKSummaryList({
   rows: [
     {
       key: {
-        text: 'Disregards',
+        text: 'Disregards selected',
         classes: GovUKUtilityClasses.Width.OneQuarter,
       },
       value: {
@@ -308,7 +308,7 @@ export const disregardsSummaryList = GovUKSummaryList({
           else: Literal(disregardsLookupItems)
             .each(Iterator.Filter(Item().path('value').match(Condition.Array.IsIn(Answer('disregards')))))
             .each(Iterator.Map(Item().path('text')))
-            .pipe(Transformer.Array.Join('<br>')),
+            .pipe(Transformer.Array.Join('<br><br>')),
         }),
       },
     },

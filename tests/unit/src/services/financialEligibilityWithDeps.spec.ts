@@ -156,62 +156,6 @@ describe('mapAnswersToApiPayload', () => {
     });
   });
 
-  describe('Property set mapping', () => {
-    it('should map indexed property fields to property_set', () => {
-      const answers = {
-        'value_0': 350000,
-        'mortgage-left_0': 125000,
-        'disputed_0': 'yes',
-        'main_0': 'no',
-        'share_0': 50,
-      };
-
-      const result = mapAnswersToApiPayload(answers);
-      expect(result.property_set).to.deep.equal([
-        {
-          value: 350000,
-          mortgage_left: 125000,
-          disputed: true,
-          main: false,
-          share: 50,
-        }
-      ]);
-    });
-
-    it('should map multiple indexed properties in index order', () => {
-      const answers = {
-        'value_1': 200000,
-        'mortgage-left_1': 100000,
-        'disputed_1': 'no',
-        'main_1': 'yes',
-        'share_1': 100,
-        'value_0': 350000,
-        'mortgage-left_0': 125000,
-        'disputed_0': 'yes',
-        'main_0': 'no',
-        'share_0': 50,
-      };
-
-      const result = mapAnswersToApiPayload(answers);
-      expect(result.property_set).to.deep.equal([
-        {
-          value: 350000,
-          mortgage_left: 125000,
-          disputed: true,
-          main: false,
-          share: 50,
-        },
-        {
-          value: 200000,
-          mortgage_left: 100000,
-          disputed: false,
-          main: true,
-          share: 100,
-        }
-      ]);
-    });
-  });
-
   describe('`under_18_passported` calculation', () => {
     it('should set `under_18_passported` to `true` when under 18, no regular payment, and no valuables', () => {
       const answers = {
@@ -285,22 +229,42 @@ describe('mapAnswersToApiPayload', () => {
         'under-18': 'yes',
         'under-18-receives-regular-payment': 'no',
         'under-18-has-valuables': 'no',
-        'has-partner': 'no',
+        'has-partner': 'yes',
         '60-or-over': 'no',
         'universal-credit': 'yes',
         'income-support': 'no',
         'income-based-jsa': 'no',
         'pension-credit': 'no',
-        'employment-support': 'yes'
+        'employment-support': 'yes',
+        'bank-balance': '56',
+        'investment-balance': '66',
+        'asset-balance': '44',
+        'credit-balance': '56',
+        'bank-balance-partner': '10',
+        'investment-balance-partner': '20',
+        'asset-balance-partner': '30',
+        'credit-balance-partner': '40',
+        'disregards': ['grenfell_tower', 'love_manchester'],
+        propertySet: [
+          {
+            'value': 45,
+            'mortgage-left': 5,
+            'share': 6,
+            'disputed': 'no',
+            'main': 'yes',
+            'id': 1377,
+          },
+        ],
       };
       const result = mapAnswersToApiPayload(answers);
 
       expect(result.is_you_under_18).to.equal(true);
       expect(result.under_18_receive_regular_payment).to.equal(false);
       expect(result.under_18_has_valuables).to.equal(false);
-      expect(result.has_partner).to.equal(false);
+      expect(result.has_partner).to.equal(true);
       expect(result.is_you_or_your_partner_over_60).to.equal(false);
       expect(result.under_18_passported).to.equal(true);
+      expect(result.on_passported_benefits).to.equal(true);
       
       expect(result.specific_benefits).to.exist;
       const benefits = result.specific_benefits as Record<string, unknown>;
@@ -309,6 +273,39 @@ describe('mapAnswersToApiPayload', () => {
       expect(benefits.job_seekers_allowance).to.equal(false);
       expect(benefits.pension_credit).to.equal(false);
       expect(benefits.employment_support).to.equal(true);
+
+      expect(result.you).to.deep.equal({
+        savings: {
+          bank_balance: 5600,
+          investment_balance: 6600,
+          asset_balance: 4400,
+          credit_balance: 5600,
+        },
+      });
+
+      expect(result.partner).to.deep.equal({
+        savings: {
+          bank_balance: 1000,
+          investment_balance: 2000,
+          asset_balance: 3000,
+          credit_balance: 4000,
+        },
+      });
+
+      expect(result.disregards).to.deep.equal({
+        grenfell_tower: true,
+        love_manchester: true,
+      });
+
+      expect(result.property_set).to.deep.equal([
+        {
+          value: 4500,
+          mortgage_left: 500,
+          share: 6,
+          disputed: false,
+          main: true,
+        },
+      ]);
     });
   });
 
@@ -496,6 +493,171 @@ describe('mapAnswersToApiPayload', () => {
         expect(partnerSavings.bank_balance).to.equal(2000);
         expect(disputedSavings.bank_balance).to.equal(3000);
       });
+    });
+  });
+
+  describe('Property set mapping', () => {
+    it('should map indexed property fields to property_set in pence', () => {
+      const answers = {
+        'value_0': 350000,
+        'mortgage-left_0': 125000,
+        'disputed_0': 'yes',
+        'main_0': 'no',
+        'share_0': 50,
+      };
+
+      const result = mapAnswersToApiPayload(answers);
+      expect(result.property_set).to.deep.equal([
+        {
+          value: 35000000,
+          mortgage_left: 12500000,
+          disputed: true,
+          main: false,
+          share: 50,
+        }
+      ]);
+    });
+
+    it('should map multiple indexed properties in index order', () => {
+      const answers = {
+        'value_0': 350000,
+        'mortgage-left_0': 125000,
+        'disputed_0': 'yes',
+        'main_0': 'no',
+        'share_0': 50,
+        'value_1': 200000,
+        'mortgage-left_1': 100000,
+        'disputed_1': 'no',
+        'main_1': 'yes',
+        'share_1': 100,
+      };
+
+      const result = mapAnswersToApiPayload(answers);
+      expect(result.property_set).to.deep.equal([
+        {
+          value: 35000000,
+          mortgage_left: 12500000,
+          disputed: true,
+          main: false,
+          share: 50,
+        },
+        {
+          value: 20000000,
+          mortgage_left: 10000000,
+          disputed: false,
+          main: true,
+          share: 100,
+        }
+      ]);
+    });
+
+    it('should map propertySet collection and omit id', () => {
+      const answers = {
+        propertySet: [
+          {
+            'value': 45,
+            'mortgage-left': 45,
+            'disputed': 'no',
+            'main': 'yes',
+            'share': 45,
+            'id': 1377,
+          },
+        ],
+      };
+
+      const result = mapAnswersToApiPayload(answers);
+      expect(result.property_set).to.deep.equal([
+        {
+          value: 4500,
+          mortgage_left: 4500,
+          disputed: false,
+          main: true,
+          share: 45,
+        },
+      ]);
+    });
+
+    it('should preserve propertySet collection order when both collection and indexed keys exist', () => {
+      const answers = {
+        // stale indexed values should not override canonical collection order
+        'value_0': '666',
+        'mortgage-left_0': '666',
+        'share_0': '6',
+        'disputed_0': 'no',
+        'main_0': 'no',
+        'value_1': '455',
+        'mortgage-left_1': '45',
+        'share_1': '4',
+        'disputed_1': 'no',
+        'main_1': 'no',
+        'value_2': '56',
+        'mortgage-left_2': '56',
+        'share_2': '55',
+        'disputed_2': 'no',
+        'main_2': 'no',
+        propertySet: [
+          { value: '56', 'mortgage-left': '56', share: '55', disputed: 'no', main: 'no', id: 1384 },
+          { value: '455', 'mortgage-left': '45', share: '4', disputed: 'no', main: 'no', id: 1385 },
+          { value: '666', 'mortgage-left': '666', share: '6', disputed: 'no', main: 'no', id: 1386 },
+        ],
+      };
+
+      const result = mapAnswersToApiPayload(answers);
+      expect(result.property_set).to.deep.equal([
+        {
+          value: 5600,
+          mortgage_left: 5600,
+          disputed: false,
+          main: false,
+          share: 55,
+        },
+        {
+          value: 45500,
+          mortgage_left: 4500,
+          disputed: false,
+          main: false,
+          share: 4,
+        },
+        {
+          value: 66600,
+          mortgage_left: 66600,
+          disputed: false,
+          main: false,
+          share: 6,
+        },
+      ]);
+    });
+
+    it('should map explicit empty propertySet to an empty property_set array', () => {
+      const answers = {
+        propertySet: [],
+      };
+
+      const result = mapAnswersToApiPayload(answers);
+      expect(result.property_set).to.deep.equal([]);
+    });
+  });
+
+  describe('Disregards mapping', () => {
+    it('should map single string disregard value to a boolean object', () => {
+      const answers = { disregards: 'grenfell_tower' };
+      const result = mapAnswersToApiPayload(answers);
+
+      expect(result.disregards).to.deep.equal({ grenfell_tower: true });
+    });
+
+    it('should map disregards array values to a boolean object', () => {
+      const answers = { disregards: ['grenfell_tower', 'love_manchester'] };
+      const result = mapAnswersToApiPayload(answers);
+
+      expect(result.disregards).to.deep.equal({ grenfell_tower: true, love_manchester: true });
+    });
+
+    it('should map none disregard selection to a boolean object', () => {
+      const answers = { disregards: ['none'] };
+      const result = mapAnswersToApiPayload(answers);
+
+      expect(result.disregards).to.deep.equal({ none: true });
     });
   });
 

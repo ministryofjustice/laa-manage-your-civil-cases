@@ -2,6 +2,7 @@ import { EffectRegistry } from "@ministryofjustice/hmpps-forge/core/authoring";
 import type { EffectFunctionContext, EffectFunctionExpr } from "@ministryofjustice/hmpps-forge/core/authoring";
 import { type Deps } from '@ministryofjustice/financial-eligibility-journey';
 import type { FinancialEligibilitySession } from './context.type.js';
+import { getOrMigrateCasePatternDrafts } from './casePatternDrafts.js';
 
 export interface FinancialEligibilityEffectShape {  
   /** Clears draft answers for this pattern (used after committing drafts to the store) */
@@ -111,6 +112,21 @@ export interface PatternEffectShape {
 // Type for pattern effect context
 type PatternEffectContext = EffectFunctionContext;
 
+/**
+ * Gets the `caseReference` from url parameters
+ * @param {PatternEffectContext} context The effect function context containing request parameters
+ * @returns {string | undefined} The case reference string if valid, otherwise undefined
+ */
+function getCaseReference(context: PatternEffectContext): string | undefined {
+  const caseReference = context.getRequestParam('caseReference')
+  if (typeof caseReference !== 'string' || caseReference.length === 0) {
+    return undefined
+  }
+
+  return caseReference
+}
+
+// Taken from Forge example in their documentation
 const PatternEffectImplementations = {
   /** Loads a repeating collection from the session, sets it as Data for the iterator, and restores indexed field answers. */
   InitialiseRepeatingFieldset: FinancialEligibilityEffectsRegistry.register(
@@ -123,7 +139,13 @@ const PatternEffectImplementations = {
         fieldCodes: string[],
       ) => {
         const session = context.getSession() as FinancialEligibilitySession | undefined
-        const stored = session?.patternDrafts?.[patternCode]
+        const caseReference = getCaseReference(context)
+        if (!session || !caseReference) {
+          return
+        }
+
+        const casePatternDrafts = getOrMigrateCasePatternDrafts(session, caseReference)
+        const stored = casePatternDrafts[patternCode]
         const collection = (stored?.[collectionCode] ?? []) as Record<string, unknown>[]
 
         if (collection.length === 0) {
@@ -151,20 +173,18 @@ const PatternEffectImplementations = {
         fieldCodes: string[],
       ) => {
         const session = context.getSession() as FinancialEligibilitySession | undefined
+        const caseReference = getCaseReference(context)
 
-        if (!session) {
+        if (!session || !caseReference) {
           return
         }
 
-        if (!session.patternDrafts) {
-          session.patternDrafts = {}
+        const casePatternDrafts = getOrMigrateCasePatternDrafts(session, caseReference)
+        if (!casePatternDrafts[patternCode]) {
+          casePatternDrafts[patternCode] = {}
         }
 
-        if (!session.patternDrafts[patternCode]) {
-          session.patternDrafts[patternCode] = {}
-        }
-
-        const stored = session.patternDrafts[patternCode]
+        const stored = casePatternDrafts[patternCode]
         const collection = (stored[collectionCode] ??
           context.getData(collectionCode) ??
           []) as Record<string, unknown>[]
@@ -203,12 +223,18 @@ const PatternEffectImplementations = {
         fieldCodes: string[],
       ) => {
         const session = context.getSession() as FinancialEligibilitySession | undefined
+        const caseReference = getCaseReference(context)
 
-        if (!session?.patternDrafts?.[patternCode]) {
+        if (!session || !caseReference) {
           return
         }
 
-        const stored = session.patternDrafts[patternCode]
+        const casePatternDrafts = getOrMigrateCasePatternDrafts(session, caseReference)
+        if (!casePatternDrafts[patternCode]) {
+          return
+        }
+
+        const stored = casePatternDrafts[patternCode]
         const collection = (stored[collectionCode] ??
           context.getData(collectionCode) ??
           []) as Record<string, unknown>[]
@@ -256,20 +282,18 @@ const PatternEffectImplementations = {
         fieldCodes: string[],
       ) => {
         const session = context.getSession() as FinancialEligibilitySession | undefined
+        const caseReference = getCaseReference(context)
 
-        if (!session) {
+        if (!session || !caseReference) {
           return
         }
 
-        if (!session.patternDrafts) {
-          session.patternDrafts = {}
+        const casePatternDrafts = getOrMigrateCasePatternDrafts(session, caseReference)
+        if (!casePatternDrafts[patternCode]) {
+          casePatternDrafts[patternCode] = {}
         }
 
-        if (!session.patternDrafts[patternCode]) {
-          session.patternDrafts[patternCode] = {}
-        }
-
-        const stored = session.patternDrafts[patternCode]
+        const stored = casePatternDrafts[patternCode]
         const collection = (stored[collectionCode] ??
           context.getData(collectionCode) ??
           []) as Record<string, unknown>[]
