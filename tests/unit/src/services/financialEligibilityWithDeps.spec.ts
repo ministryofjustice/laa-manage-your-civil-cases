@@ -1,9 +1,14 @@
 /**
- * Unit tests for financialEligibilityWithDeps - mapAnswersToApiPayload function
+ * Unit tests for financialEligibilityWithDeps - mapAnswersToApiPayload function and
+ * the FinancialEligibilityEffectsWithDepsImpl class
  */
 
 import { expect } from 'chai';
-import { mapAnswersToApiPayload } from '#src/services/financialEligibilityWithDeps.js';
+import sinon from 'sinon';
+import { createTestEffectContext } from '@ministryofjustice/hmpps-forge/core/testing';
+import type { Deps } from '#packages/financial-eligibility-journey/src/api.js';
+import type { FinancialEligibilitySession } from '#packages/financial-eligibility-journey/src/context.type.js';
+import { mapAnswersToApiPayload, FinancialEligibilityEffectsWithDepsImpl } from '#src/services/financialEligibilityWithDeps.js';
 
 describe('mapAnswersToApiPayload', () => {
   describe('Basic mapping', () => {
@@ -287,6 +292,353 @@ describe('mapAnswersToApiPayload', () => {
       const answers = { 'under-18': undefined };
       const result = mapAnswersToApiPayload(answers);
       expect(result.is_you_under_18).to.equal(undefined);
+    });
+  });
+});
+
+// getSession() is typed to allow undefined, but the seed helper always defaults session to {}, so force it directly
+function withNoSession(context: ReturnType<typeof createTestEffectContext>): void {
+  sinon.stub(context, 'getSession').returns(undefined);
+}
+
+describe('FinancialEligibilityEffectsWithDepsImpl', () => {
+  const deps = {} as Deps;
+  let getFinancialEligibilityStub: sinon.SinonStub;
+  let updateFinancialEligibilityStub: sinon.SinonStub;
+  let effects: FinancialEligibilityEffectsWithDepsImpl;
+
+  beforeEach(() => {
+    getFinancialEligibilityStub = sinon.stub();
+    updateFinancialEligibilityStub = sinon.stub();
+    effects = new FinancialEligibilityEffectsWithDepsImpl({
+      getFinancialEligibility: getFinancialEligibilityStub,
+      updateFinancialEligibility: updateFinancialEligibilityStub
+    });
+  });
+
+  afterEach(() => {
+    sinon.restore();
+  });
+
+  describe('LoadCaseDetails', () => {
+    it('does not store case details when no case reference is present in the request params', async () => {
+      const context = createTestEffectContext({ params: {} });
+
+      await effects.LoadCaseDetails(deps, context);
+
+      expect(context.getData('caseDetails')).to.be.undefined;
+    });
+
+    it('does not store case details when client data has not been pre-fetched into state', async () => {
+      const context = createTestEffectContext({ params: { caseReference: 'CASE123' } });
+
+      await effects.LoadCaseDetails(deps, context);
+
+      expect(context.getData('caseDetails')).to.be.undefined;
+    });
+
+    it('stores the pre-fetched client data under `caseDetails`', async () => {
+      const clientData = { fullName: 'Jane Doe' };
+      const context = createTestEffectContext({
+        params: { caseReference: 'CASE123' },
+        state: { client: clientData }
+      });
+
+      await effects.LoadCaseDetails(deps, context);
+
+      expect(context.getData('caseDetails')).to.deep.equal({ status: 'success', data: clientData });
+    });
+  });
+
+  describe('LoadCaseFinancialEligibility', () => {
+    const financialEligibilityData = {
+      hasPartner: true,
+      isUnder17: true,
+      isOver60: false,
+      specificBenefits: {
+        universalCredit: true,
+        incomeSupport: false,
+        jobSeekers: true,
+        pensionCredit: false,
+        employmentSupport: true
+      },
+      under18RegularPayment: false,
+      under18HasValuables: false
+    };
+
+    it('does not call the API when no case reference is present in the request params', async () => {
+      const context = createTestEffectContext({ params: {} });
+
+      await effects.LoadCaseFinancialEligibility(deps, context);
+
+      expect(getFinancialEligibilityStub.called).to.be.false;
+      expect(context.getAllAnswers()).to.deep.equal({});
+    });
+
+    it('does not set any answers when getSession returns no session for the request', async () => {
+      const context = createTestEffectContext({ params: { caseReference: 'CASE123' } });
+      withNoSession(context);
+      getFinancialEligibilityStub.resolves({ data: financialEligibilityData });
+
+      await effects.LoadCaseFinancialEligibility(deps, context);
+
+      expect(getFinancialEligibilityStub.calledOnce).to.be.true;
+      expect(context.getAllAnswers()).to.deep.equal({});
+    });
+
+    it('sets Forge answers from the mapped API data when no draft answers exist', async () => {
+      const context = createTestEffectContext({
+        params: { caseReference: 'CASE123' },
+        session: {}
+      });
+      getFinancialEligibilityStub.resolves({ data: financialEligibilityData });
+
+      await effects.LoadCaseFinancialEligibility(deps, context);
+
+      expect(context.getAnswer('under-18')).to.equal('yes');
+      expect(context.getAnswer('under-18-receives-regular-payment')).to.equal('no');
+      expect(context.getAnswer('under-18-has-valuables')).to.equal('no');
+      expect(context.getAnswer('has-partner')).to.equal('yes');
+      expect(context.getAnswer('60-or-over')).to.equal('no');
+      expect(context.getAnswer('universal-credit')).to.equal('yes');
+      expect(context.getAnswer('income-support')).to.equal('no');
+      expect(context.getAnswer('income-based-jsa')).to.equal('yes');
+      expect(context.getAnswer('pension-credit')).to.equal('no');
+      expect(context.getAnswer('employment-support')).to.equal('yes');
+      // Known gap: `60-or-over-with-partner` has no entry in mapApiValueToForgeValue, so it resolves to undefined instead of yes/no
+      expect(context.getAnswer('60-or-over-with-partner')).to.equal(undefined);
+
+      const session = context.getSession() as FinancialEligibilitySession;
+      expect(session.financialEligibilityDrafts).to.deep.equal({ CASE123: {} });
+    });
+
+    it('uses the previously saved draft answer instead of the mapped API value when a draft exists', async () => {
+      const context = createTestEffectContext({
+        params: { caseReference: 'CASE123' },
+        session: { financialEligibilityDrafts: { CASE123: { 'under-18': 'no' } } }
+      });
+      getFinancialEligibilityStub.resolves({ data: financialEligibilityData });
+
+      await effects.LoadCaseFinancialEligibility(deps, context);
+
+      expect(context.getAnswer('under-18')).to.equal('no');
+    });
+  });
+
+  describe('PersistSavedAnswers', () => {
+    it('does not call the API when getSession returns no session for the request', async () => {
+      const context = createTestEffectContext({ params: { caseReference: 'CASE123' } });
+      withNoSession(context);
+
+      await effects.PersistSavedAnswers(deps, context);
+
+      expect(updateFinancialEligibilityStub.called).to.be.false;
+    });
+
+    it('throws when the session has not been initialised with a financialEligibilityDrafts object', async () => {
+      // Unlike LoadCaseFinancialEligibility, this method does not guard against a missing drafts object
+      const context = createTestEffectContext({ params: { caseReference: 'CASE123' }, session: {} });
+      let thrown: unknown;
+
+      try {
+        await effects.PersistSavedAnswers(deps, context);
+      } catch (error) {
+        thrown = error;
+      }
+
+      expect(thrown).to.be.instanceOf(TypeError);
+      expect(updateFinancialEligibilityStub.called).to.be.false;
+    });
+
+    it('does not call the API when there is no case reference', async () => {
+      const context = createTestEffectContext({
+        params: {},
+        session: { financialEligibilityDrafts: {} }
+      });
+
+      await effects.PersistSavedAnswers(deps, context);
+
+      expect(updateFinancialEligibilityStub.called).to.be.false;
+    });
+
+    it('submits the saved draft answers for the current case to the API', async () => {
+      const axiosMiddleware = { get: sinon.stub() };
+      const context = createTestEffectContext({
+        params: { caseReference: 'CASE123' },
+        session: { financialEligibilityDrafts: { CASE123: { 'under-18': 'yes' } } },
+        state: { authenticatedAxios: axiosMiddleware }
+      });
+      updateFinancialEligibilityStub.resolves({});
+
+      await effects.PersistSavedAnswers(deps, context);
+
+      expect(updateFinancialEligibilityStub.calledOnce).to.be.true;
+      const [axiosArg, caseRefArg, payloadArg] = updateFinancialEligibilityStub.firstCall.args as [unknown, unknown, Record<string, unknown>];
+      expect(axiosArg).to.equal(axiosMiddleware);
+      expect(caseRefArg).to.equal('CASE123');
+      expect(payloadArg.is_you_under_18).to.equal(true);
+    });
+
+    it('initialises an empty draft and submits an empty payload when no answers have been saved yet', async () => {
+      const context = createTestEffectContext({
+        params: { caseReference: 'CASE123' },
+        session: { financialEligibilityDrafts: {} }
+      });
+      updateFinancialEligibilityStub.resolves({});
+
+      await effects.PersistSavedAnswers(deps, context);
+
+      expect(updateFinancialEligibilityStub.calledOnce).to.be.true;
+      const session = context.getSession() as FinancialEligibilitySession;
+      expect(session.financialEligibilityDrafts.CASE123).to.deep.equal({});
+    });
+  });
+
+  describe('ClearDraftAnswers', () => {
+    it('does nothing when there is no case reference', async () => {
+      const context = createTestEffectContext({
+        params: {},
+        session: { financialEligibilityDrafts: { CASE123: { 'under-18': 'yes' } } }
+      });
+      const getAllAnswersSpy = sinon.spy(context, 'getAllAnswers');
+
+      await effects.ClearDraftAnswers(deps, context);
+
+      const session = context.getSession() as FinancialEligibilitySession;
+      expect(session.financialEligibilityDrafts.CASE123).to.deep.equal({ 'under-18': 'yes' });
+      expect(getAllAnswersSpy.called).to.be.false;
+    });
+
+    it('does nothing when getSession returns no session for the request', async () => {
+      const context = createTestEffectContext({ params: { caseReference: 'CASE123' } });
+      withNoSession(context);
+      const getAllAnswersSpy = sinon.spy(context, 'getAllAnswers');
+
+      await effects.ClearDraftAnswers(deps, context);
+
+      expect(getAllAnswersSpy.called).to.be.false;
+    });
+
+    it('throws when the session has not been initialised with a financialEligibilityDrafts object', async () => {
+      // The `session?.` optional chain only guards a missing session, not a missing financialEligibilityDrafts object
+      const context = createTestEffectContext({ params: { caseReference: 'CASE123' }, session: {} });
+      let thrown: unknown;
+
+      try {
+        await effects.ClearDraftAnswers(deps, context);
+      } catch (error) {
+        thrown = error;
+      }
+
+      expect(thrown).to.be.instanceOf(TypeError);
+    });
+
+    it('does nothing when there is no draft for the current case', async () => {
+      const context = createTestEffectContext({
+        params: { caseReference: 'CASE123' },
+        session: { financialEligibilityDrafts: {} }
+      });
+      const getAllAnswersSpy = sinon.spy(context, 'getAllAnswers');
+
+      await effects.ClearDraftAnswers(deps, context);
+
+      expect(getAllAnswersSpy.called).to.be.false;
+    });
+
+    it('deletes the draft answers for the current case', async () => {
+      const context = createTestEffectContext({
+        params: { caseReference: 'CASE123' },
+        session: { financialEligibilityDrafts: { CASE123: { 'under-18': 'yes' } } }
+      });
+      const getAllAnswersSpy = sinon.spy(context, 'getAllAnswers');
+
+      await effects.ClearDraftAnswers(deps, context);
+
+      const session = context.getSession() as FinancialEligibilitySession;
+      expect(session.financialEligibilityDrafts.CASE123).to.be.undefined;
+      expect(getAllAnswersSpy.calledOnce).to.be.true;
+    });
+  });
+
+  describe('SaveNewAnswerIfAnswered', () => {
+    it('does nothing when there is no post data', async () => {
+      const context = createTestEffectContext({ post: {} });
+
+      await effects.SaveNewAnswerIfAnswered(deps, context);
+
+      expect(context.getAllAnswers()).to.deep.equal({});
+    });
+
+    it('does not save an answer when there is no case reference', async () => {
+      const context = createTestEffectContext({ post: { 'under-18': 'yes' }, params: {} });
+
+      await effects.SaveNewAnswerIfAnswered(deps, context);
+
+      expect(context.getAllAnswers()).to.deep.equal({});
+    });
+
+    it('does not save an answer when getSession returns no session for the request', async () => {
+      const context = createTestEffectContext({
+        post: { 'under-18': 'yes' },
+        params: { caseReference: 'CASE123' }
+      });
+      withNoSession(context);
+
+      await effects.SaveNewAnswerIfAnswered(deps, context);
+
+      expect(context.getAllAnswers()).to.deep.equal({});
+    });
+
+    it('throws when the session has not been initialised with a financialEligibilityDrafts object', async () => {
+      const context = createTestEffectContext({
+        post: { 'under-18': 'yes' },
+        params: { caseReference: 'CASE123' },
+        session: {}
+      });
+      let thrown: unknown;
+
+      try {
+        await effects.SaveNewAnswerIfAnswered(deps, context);
+      } catch (error) {
+        thrown = error;
+      }
+
+      expect(thrown).to.be.instanceOf(TypeError);
+      expect(context.getAllAnswers()).to.deep.equal({});
+    });
+
+    it('saves answered fields to the session draft and to Forge, skipping unanswered fields', async () => {
+      const context = createTestEffectContext({
+        post: {
+          'under-18': 'yes',
+          'has-partner': '',
+          'universal-credit': null,
+          'income-support': undefined
+        },
+        params: { caseReference: 'CASE123' },
+        session: { financialEligibilityDrafts: {} }
+      });
+
+      await effects.SaveNewAnswerIfAnswered(deps, context);
+
+      expect(context.getAnswer('under-18')).to.equal('yes');
+      expect(context.hasAnswer('has-partner')).to.be.false;
+      const session = context.getSession() as FinancialEligibilitySession;
+      expect(session.financialEligibilityDrafts.CASE123).to.deep.equal({ 'under-18': 'yes' });
+    });
+
+    it('creates a new draft entry for the case when one does not already exist', async () => {
+      const context = createTestEffectContext({
+        post: { 'has-partner': 'no' },
+        params: { caseReference: 'CASE456' },
+        session: { financialEligibilityDrafts: {} }
+      });
+
+      await effects.SaveNewAnswerIfAnswered(deps, context);
+
+      const session = context.getSession() as FinancialEligibilitySession;
+      expect(session.financialEligibilityDrafts.CASE456).to.deep.equal({ 'has-partner': 'no' });
+      expect(context.getAnswer('has-partner')).to.equal('no');
     });
   });
 });
