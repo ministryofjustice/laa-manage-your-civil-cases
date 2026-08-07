@@ -27,12 +27,12 @@ router.get('/callback', (req: Request, res: Response) => {
 router.get('/logout', (req: Request, res: Response) => {
 	// In tests, skip the real Entra logout redirect (an unmocked external network
 	// call) which is a source of flakiness/race conditions in Playwright specs.
-	if (process.env.NODE_ENV === 'test') {
-		req.session.destroy(() => {
-			res.redirect('/auth');
-		});
-		return;
-	}
+	// if (process.env.NODE_ENV === 'test') {
+	// 	req.session.destroy(() => {
+	// 		res.redirect('/auth');
+	// 	});
+	// 	return;
+	// }
 	handleSilasLogout(req, res);
 });
 
