@@ -192,8 +192,8 @@ test.describe('Finances tab', () => {
       'Do you have any money owed to you?': '£100'
     });
     // Assert the correct data is displayed in the your partners savings table.
-    await expectPropertyTableRows(page, 'Your partners savings', {
-      'How much was in your partners bank account/building society before their last payment went in?': '£200',
+    await expectPropertyTableRows(page, "Your partner's savings", {
+      "How much was in your partner's bank account/building society before their last payment went in?": '£200',
       'Does your partner have any investments, shares or ISAs?': '£100',
       'Does your partner have any valuable items worth over £500 each?': '£500',
       'Does your partner have any money owed to them?': '£200'
@@ -335,8 +335,8 @@ test.describe('Income tab', () => {
 
     // Assert the correct data is displayed in the dependants table with the correct partner question.
     await expectCaptionTableRows(page, 'Dependants', {
-      'Do you or your partner have any dependants aged 16 and over?': '2',
-      'Do you or your partner have any dependants aged 15 and under?': '1'
+      'Do you and your partner have any dependants aged 16 and over?': '2',
+      'Do you and your partner have any dependants aged 15 and under?': '1'
     });
     // Assert the change links are visible.
     await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
@@ -901,8 +901,8 @@ test.describe('Conditional logic views', () => {
     });
 
     // Assert the correct data is displayed in the your partners savings table.
-    await expectPropertyTableRows(page, 'Your partners undisputed savings', {
-      'How much was in your partners bank account/building society before their last payment went in?': '£200',
+    await expectPropertyTableRows(page, "Your partner's undisputed savings", {
+      "How much was in your partner's bank account/building society before their last payment went in?": '£200',
       'Does your partner have any investments, shares or ISAs?': '£100',
       'Does your partner have any valuable items worth over £500 each?': '£500',
       'Does your partner have any money owed to them?': '£200'
@@ -939,8 +939,8 @@ test.describe('Conditional logic views', () => {
     });
 
     // Assert the correct data is displayed in the your partners savings table.
-    await expectPropertyTableRows(page, 'Your partners undisputed savings', {
-      'How much was in your partners bank account/building society before their last payment went in?': '£200',
+    await expectPropertyTableRows(page, "Your partner's undisputed savings", {
+      "How much was in your partner's bank account/building society before their last payment went in?": '£200',
       'Does your partner have any investments, shares or ISAs?': '£100',
       'Does your partner have any valuable items worth over £500 each?': '£500',
       'Does your partner have any money owed to them?': '£200'

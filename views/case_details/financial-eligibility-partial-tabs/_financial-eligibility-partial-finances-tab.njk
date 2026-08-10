@@ -28,6 +28,7 @@
   <a class="govuk-link" href="/cases/{{ caseReference }}/financial-eligibility/change/??">{{ t('common.change') }}</a>
 {% endset %}
 
+{% set isDisputedCategory = financialEligibility.category == 'debt' or financialEligibility.category == 'family' %}
 
 <h2 class="govuk-heading-m">Properties</h2>
 {% if financialEligibility.propertySet and financialEligibility.propertySet.length %}
@@ -87,7 +88,7 @@
   <div>{{ changePropertiesLinkHtml | safe }}</div>
 {% endif %}
 
-{% set savingsHeading = t("common.financialEligibility.finances.undisputedSavings") if financialEligibility.category == "debt" or financialEligibility.category == "family" else t("common.financialEligibility.finances.yourSavings") %}
+{% set savingsHeading = t("common.financialEligibility.finances.undisputedSavings") if isDisputedCategory else t("common.financialEligibility.finances.yourSavings") %}
 
 <h2 class="govuk-heading-m">{{ savingsHeading }}</h2>
 {% set savings = financialEligibility.clientData.savings %}
@@ -118,7 +119,7 @@
   <div>{{ changeSavingsLinkHtml | safe }}</div>
 
 {% if financialEligibility.hasPartner %}
-  {% set partnerSavingsHeading = t("common.financialEligibility.finances.undisputedPartner") if financialEligibility.category == "debt" or financialEligibility.category == "family" else t("common.financialEligibility.finances.partnerSavings") %}
+  {% set partnerSavingsHeading = t("common.financialEligibility.finances.undisputedPartnerSavings") if isDisputedCategory else t("common.financialEligibility.finances.partnerSavings") %}
   <h2 class="govuk-heading-m">{{ partnerSavingsHeading }}</h2>
 
   {% set partnerSavings = financialEligibility.partnerData.partnerSavings %}
