@@ -7,11 +7,11 @@ import { partnerSavingsStep } from '../partnerSavingsPage/partnerSavingsStep.js'
 import { disputedSavingsStep } from '../disputedSavingsPage/disputedSavingsStep.js'
 import { disregardsStep } from '../disregardsPage/disregardsStep.js'
 
-const STEP_CODE = 'savings'
+const STEP_CODE = 'your-savings'
 
 export const savingsStep: StepDefinition = step({
   code: STEP_CODE,
-  path: '/savings',
+  path: '/your-savings',
   title: 'Your savings',
   reachability: { entryWhen: true },
   blocks: [savingsHeading, bankBalanceField, investmentBalanceField, assetBalanceField, creditBalanceField, continueButton, discardChangesButton],

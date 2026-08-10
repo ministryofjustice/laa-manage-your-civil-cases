@@ -87,7 +87,7 @@ async function reachSavingsNoPartner(page: Page) {
   await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/properties`);
   await page.getByRole('button', { name: 'Continue' }).click();
 
-  await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/savings`);
+  await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/your-savings`);
 }
 
 async function reachSavingsWithPartner(page: Page) {
@@ -97,7 +97,7 @@ async function reachSavingsWithPartner(page: Page) {
   await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/properties`);
   await page.getByRole('button', { name: 'Continue' }).click();
 
-  await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/savings`);
+  await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/your-savings`);
 }
 
 test.describe('Financial Eligibility Forge Finances Journey', () => {
@@ -114,7 +114,7 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
       await expect(page.getByRole('heading', { name: 'Properties' })).toBeVisible();
       await page.getByRole('button', { name: 'Continue' }).click();
 
-      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/savings`);
+      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/your-savings`);
     });
 
   });
@@ -204,7 +204,7 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
   });
   test.describe('"Your savings" validation', () => {
     test('should show required field errors when all savings fields are empty', async ({ page }) => {
-      await page.goto('/cases/PC-1922-1879/financial-eligibility/change/savings');
+      await page.goto('/cases/PC-1922-1879/financial-eligibility/change/your-savings');
 
       await page.getByRole('spinbutton', { name: 'How much was in your bank' }).fill('');
       await page.getByRole('spinbutton', { name: 'Do you have any investments,' }).fill('');
@@ -219,7 +219,7 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
     });
 
     test('should show validation error when a savings value is negative', async ({ page }) => {
-      await page.goto('/cases/PC-1922-1879/financial-eligibility/change/savings');
+      await page.goto('/cases/PC-1922-1879/financial-eligibility/change/your-savings');
 
       await page.getByRole('spinbutton', { name: 'How much was in your bank' }).fill('-1');
       await page.getByRole('button', { name: 'Continue' }).click();
@@ -264,7 +264,7 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Savings: None
-      await expect(page).toHaveURL('/cases/PC-1357-1212/financial-eligibility/change/savings');
+      await expect(page).toHaveURL('/cases/PC-1357-1212/financial-eligibility/change/your-savings');
       await completeSavingsValues(page);
 
       // Partner Savings: None
@@ -382,8 +382,8 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
       await page.getByRole('button', { name: 'Continue' }).click();
 
       await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/check-answers`);
-      await expect(page.getByRole('heading', { name: 'Property 1' }));
-      await expect(page.getByRole('heading', { name: 'Property 2' }));
+      await expect(page.getByRole('heading', { name: 'Property 1' })).toBeVisible();;
+      await expect(page.getByRole('heading', { name: 'Property 2' })).toBeVisible();;
       await expect(page.getByRole('heading', { name: 'Your savings' })).toBeVisible();
       await expect(page.getByRole('heading', { name: 'Disregards' })).toBeVisible();
 

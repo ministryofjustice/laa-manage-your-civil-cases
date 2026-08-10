@@ -30,7 +30,7 @@ export const disregardsLookupItems = [
 
 export const disregardsField = GovUKCheckboxInput({
   code: 'disregards',
-  hint: 'Select all that apply.',
+  hint: 'Select all that apply',
   classes: GovUKUtilityClasses.Checkboxes.Small,
   items: disregardsLookupItems,
   validWhen: [

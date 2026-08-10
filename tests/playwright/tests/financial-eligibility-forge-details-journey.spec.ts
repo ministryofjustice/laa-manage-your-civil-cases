@@ -53,7 +53,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Savings: Enter '0' and continue
-      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/savings');
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/your-savings');
       await expect(page.getByRole('heading', { name: 'Your savings' })).toBeVisible();
 
       await page.getByRole('spinbutton', { name: 'How much was in your bank' }).fill('0');
@@ -184,7 +184,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Savings: Enter '0' and continue
-      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/savings');
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/your-savings');
       await expect(page.getByRole('heading', { name: 'Your savings' })).toBeVisible();
 
       await page.getByRole('spinbutton', { name: 'How much was in your bank' }).fill('0');
@@ -231,7 +231,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Savings: Enter '0' and continue
-      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/savings');
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/your-savings');
       await expect(page.getByRole('heading', { name: 'Your savings' })).toBeVisible();
       await page.getByRole('spinbutton', { name: 'How much was in your bank' }).fill('0');
       await page.getByRole('spinbutton', { name: 'Do you have any investments,' }).fill('0');
@@ -286,7 +286,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Savings: Enter '0' and continue
-      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/savings');
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/your-savings');
       await expect(page.getByRole('heading', { name: 'Your savings' })).toBeVisible();
 
       await page.getByRole('spinbutton', { name: 'How much was in your bank' }).fill('0');

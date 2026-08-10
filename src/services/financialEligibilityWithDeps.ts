@@ -240,11 +240,11 @@ export function mapAnswersToApiPayload(answers: Record<string, unknown>): Record
             if (benefitFields.includes(apiField)) {
                 specificBenefits[apiField] = value;
             } else if (partnerSavingsFields.includes(stepCode)) {
-                partnerSavings[apiField] = Math.round(Number(value) * 100);
+                partnerSavings[apiField] = Math.round(toNumber(value) * 100);
             } else if (disputedSavingsFields.includes(stepCode)) {
-                disputedSavings[apiField] = Math.round(Number(value) * 100);
+                disputedSavings[apiField] = Math.round(toNumber(value) * 100);
             } else if (savingsFields.includes(apiField)) {
-                savings[apiField] = Math.round(Number(value) * 100);
+                savings[apiField] = Math.round(toNumber(value) * 100);
             } else if (stepCode === disregardsStep.code) {
                 normaliseSelectedCheckbox(value).forEach(disregard => {
                     disregards[disregard] = true;
@@ -440,7 +440,6 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
         }
 
         const submissionPayload = mapAnswersToApiPayload(submissionAnswers);
-        devLog(`FE payload to cla_backend: ${JSON.stringify(submissionPayload)}`);
     
         // Make API call to CLA backend with the apiService.
         const axiosMiddleware = context.getState('authenticatedAxios')

@@ -493,6 +493,23 @@ describe('mapAnswersToApiPayload', () => {
         expect(partnerSavings.bank_balance).to.equal(2000);
         expect(disputedSavings.bank_balance).to.equal(3000);
       });
+
+      it('should map non-numeric savings values to 0 pence for client, partner and disputed savings', () => {
+        const answers = {
+          'bank-balance': 'not-a-number',
+          'bank-balance-partner': 'not-a-number',
+          'bank-balance-disputed': 'not-a-number',
+        };
+        const result = mapAnswersToApiPayload(answers);
+
+        const clientSavings = (result.you as Record<string, Record<string, unknown>>).savings;
+        const partnerSavings = (result.partner as Record<string, Record<string, unknown>>).savings;
+        const disputedSavings = result.disputed_savings as Record<string, unknown>;
+
+        expect(clientSavings.bank_balance).to.equal(0);
+        expect(partnerSavings.bank_balance).to.equal(0);
+        expect(disputedSavings.bank_balance).to.equal(0);
+      });
     });
   });
 

@@ -59,7 +59,7 @@ export const assetBalanceField = GovUKTextInput({
     }),
     validation({
       condition: Self().match(Condition.Number.GreaterThanOrEqual(0)),
-      message: 'The value of valuable items worth over £500 each must only include positive numbers, with or without a decimal point',
+      message: 'The value of any valuable items your partner has worth over £500 each must only include positive numbers, with or without a decimal point',
     }),
   ],
 })
