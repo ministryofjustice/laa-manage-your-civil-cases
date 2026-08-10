@@ -545,18 +545,8 @@
       },
       "preparation": {
         "subheading": "Preparation of this accessibility statement",
-        "statement": {
-          "published": "This statement was prepared on",
-          "datePublished": "[date when it was first published]",
-          "reviewed": ". It was last reviewed on",
-          "dateReviewed": "[date when it was last reviewed]",
-          "end": "."
-        },
-        "service": {
-          "start": "This service was last tested on",
-          "dateTested": "[date]",
-          "end": "against the WCAG 2.2 AA standard. The test was carried out by our internal testing team."
-        }
+        "statement": "This statement was prepared on 10 August 2026.",
+        "service": "This service was last tested on 1 August 2026 against the WCAG 2.2 AA standard. The test was carried out by our internal testing team."
       }
     },
     "cookies": {
