@@ -6,7 +6,7 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       {% set errorList = [] %}
-      {% set seenBlockCodes = [] %} // adding in this logic so we see the first error message when a bunch get triggered
+      {% set seenBlockCodes = [] %} {# // adding in this logic so we see the first error message when a bunch get triggered #}
 
       {% for error in fieldValidationErrors %}
         {% if not (error.blockCode in seenBlockCodes) %}
