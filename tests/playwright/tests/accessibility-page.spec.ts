@@ -166,11 +166,11 @@ test('accessibility page should have rendered correctly', async ({ page, i18nSet
 
   // Verify the text for the preparation info
   const preparationInfo = page.locator('#preparation-info');
-  await expect(preparationInfo).toHaveText('This statement was prepared on [date when it was first published]. It was last reviewed on [date when it was last reviewed].');
+  await expect(preparationInfo).toHaveText('This statement was prepared on 10 August 2026.');
 
   // Verify the text for the service preparation info
   const servicePreparationInfo = page.locator('#service-preparation-info');
-  await expect(servicePreparationInfo).toHaveText('This service was last tested on [date] against the WCAG 2.2 AA standard. The test was carried out by our internal testing team.');
+  await expect(servicePreparationInfo).toHaveText('This service was last tested on 1 August 2026 against the WCAG 2.2 AA standard. The test was carried out by our internal testing team.');
 });
 
 test('AbilityNet link goes to AbilityNet site', async ({ page }) => {
