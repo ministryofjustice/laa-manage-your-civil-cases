@@ -53,12 +53,8 @@ export const propertySet = CollectionBlock({
             message: Format('Enter the current market value of property %1', Loop.Index()),
           }),
           validation({
-            condition: Self().match(Condition.Number.IsNumber()),
-            message: Format('The current market value of the property %1 must be a number, like 100,000', Loop.Index()),
-          }),
-          validation({
             condition: Self().match(Condition.Number.GreaterThanOrEqual(0)),
-            message: Format('The current market value of property %1 must only include numbers, with or without a decimal point', Loop.Index()),
+            message: Format('The current market value of property %1 must only include positive numbers, with or without a decimal point', Loop.Index()),
           }),
         ],
       }),
@@ -76,12 +72,8 @@ export const propertySet = CollectionBlock({
             message: Format('Enter how much is left to pay on the mortgage for property %1, or enter \'0\' if there is nothing left to pay', Loop.Index()),
           }),
           validation({
-            condition: Self().match(Condition.Number.IsNumber()),
-            message: Format('How much is left to pay on the mortgage for property %1 must be a number, like 100,000', Loop.Index()),
-          }),
-          validation({
             condition: Self().match(Condition.Number.GreaterThanOrEqual(0)),
-            message: Format('How much is left to pay on the mortgage for property %1 must only include numbers, with or without a decimal point', Loop.Index()),
+            message: Format('How much is left to pay on the mortgage for property %1 must only include positive numbers, with or without a decimal point', Loop.Index()),
           }),
         ],
       }),
@@ -139,7 +131,7 @@ export const propertySet = CollectionBlock({
         validWhen: [
           validation({
             condition: Self().match(Condition.IsRequired()),
-            message: Format('Enter the percentage you own of property %1, or enter \'0\' if none', Loop.Index()),
+            message: Format('Enter the percentage you own of property %1', Loop.Index()),
           }),
           validation({
             condition: Self().match(Condition.Number.IsNumber()),
@@ -147,11 +139,11 @@ export const propertySet = CollectionBlock({
           }),
           validation({
             condition: Self().match(Condition.Number.LessThanOrEqual(100)),
-            message: Format('The percentage you own of property %1 must be 100 or less', Loop.Index()),
+            message: Format('The percentage you own of property %1 must be a number between 1 and 100', Loop.Index()),
           }),
           validation({
             condition: Self().match(Condition.Number.GreaterThanOrEqual(0)),
-            message: Format('The percentage you own of property %1 must only include numbers, with or without a decimal point', Loop.Index()),
+            message: Format('The percentage you own of property %1 must only include positive numbers, with or without a decimal point', Loop.Index()),
           }),
         ],
       }),

@@ -20,12 +20,8 @@ export const bankBalanceField = GovUKTextInput({
       message: 'Enter how much was in your partner\'s bank account/building society before your last payment went in, or enter \'0\' if none',
     }),
     validation({
-      condition: Self().match(Condition.Number.IsNumber()),
-      message: 'How much was in your partner\'s bank account/building society before your last payment went in must be a number, like 100 or 240.50',
-    }),
-    validation({
       condition: Self().match(Condition.Number.GreaterThanOrEqual(0)),
-      message: 'How much was in your partner\'s bank account/building society before your last payment went in must only include numbers, with or without a decimal point',
+      message: 'How much was in your partner\'s bank account/building society before your last payment went in must only include positive numbers, with or without a decimal point',
     }),
   ],
 })
@@ -43,12 +39,8 @@ export const investmentBalanceField = GovUKTextInput({
       message: 'Enter the value of any investments, shares or ISAs your partner has, or enter \'0\' if none',
     }),
     validation({
-      condition: Self().match(Condition.Number.IsNumber()),
-      message: 'The value of any investments, shares or ISAs your partner has must be a number, like 100 or 240.50',
-    }),
-    validation({
       condition: Self().match(Condition.Number.GreaterThanOrEqual(0)),
-      message: 'The value of any investments, shares or ISAs your partner has must only include numbers, with or without a decimal point',
+      message: 'The value of any investments, shares or ISAs your partner has must only include positive numbers, with or without a decimal point',
     }),
   ],
 })
@@ -66,12 +58,8 @@ export const assetBalanceField = GovUKTextInput({
       message: 'Enter the value of any valuable items your partner has worth over £500 each, or enter \'0\' if none',
     }),
     validation({
-      condition: Self().match(Condition.Number.IsNumber()),
-      message: 'The value of any valuable items your partner has worth over £500 each must be a number, like 100 or 240.50',
-    }),
-    validation({
       condition: Self().match(Condition.Number.GreaterThanOrEqual(0)),
-      message: 'The value of valuable items worth over £500 each must only include numbers, with or without a decimal point',
+      message: 'The value of valuable items worth over £500 each must only include positive numbers, with or without a decimal point',
     }),
   ],
 })
@@ -89,12 +77,8 @@ export const creditBalanceField = GovUKTextInput({
       message: 'Enter the amount of any money owed to your partner, or enter \'0\' if none',
     }),
     validation({
-      condition: Self().match(Condition.Number.IsNumber()),
-      message: 'The amount of any money owed to your partner must be a number, like 100 or 240.50',
-    }),
-    validation({
       condition: Self().match(Condition.Number.GreaterThanOrEqual(0)),
-      message: 'The amount of any money owed to your partner must only include numbers, with or without a decimal point',
+      message: 'The amount of any money owed to your partner must only include positive numbers, with or without a decimal point',
     }),
   ],
 })

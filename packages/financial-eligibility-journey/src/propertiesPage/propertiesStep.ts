@@ -22,7 +22,7 @@ export const propertiesStep: StepDefinition = step({
   validWhen: [
     validation({
       condition: mainPropertiesCount.match(Condition.Number.LessThanOrEqual(1)),
-      message: 'You can only have one main property but you have selected multiple properties as your main property',
+      message: 'Only one property can be your main property',
     }),
   ],
   blocks: [propertiesHeading, propertySet, addAnotherButton, continueButton, discardChangesButton],
