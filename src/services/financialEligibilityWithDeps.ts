@@ -369,10 +369,9 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
         for (const [stepCode, apiValue] of Object.entries(mappedAnswers)) {
             const caseFEDraft = session.financialEligibilityDrafts[caseReference];
             if (stepCode in caseFEDraft) {
-                const draftValue = stepCode === disregardsStep.code
-                    ? normaliseSelectedCheckbox(caseFEDraft[stepCode])
-                    : caseFEDraft[stepCode];
 
+                // If the step code already exists in the session draft, we use that value instead of the API value to ensure that any user-entered data takes precedence over the API data
+                const draftValue = stepCode === disregardsStep.code ? normaliseSelectedCheckbox(caseFEDraft[stepCode]) : caseFEDraft[stepCode];
                 caseFEDraft[stepCode] = draftValue;
                 context.setAnswer(stepCode, draftValue);
             } else {
@@ -392,6 +391,7 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
             return;
         }
 
+        // If there's no existing property collection in the session draft, we use the API value to populate the property collection & in Forge's answers
         const propertyDraftCollection = getPropertyCollectionFromAnswers(session.financialEligibilityDrafts[caseReference]);
         const apiPropertyCollection = normalisePropertyCollectionForForge(mappedAnswers.propertySet);
         const propertyCollectionToStore = propertyDraftCollection.length > 0 ? propertyDraftCollection : apiPropertyCollection;
@@ -428,6 +428,7 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
             session.financialEligibilityDrafts[caseReference] = {};
         }
 
+        // Merge the answers from Forge's context into the session draft for the case reference
         const submissionAnswers: Record<string, unknown> = {
             ...session.financialEligibilityDrafts[caseReference],
         };
@@ -469,9 +470,11 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
             return;
         }
 
+        // Clear the draft answers for the case reference from the session
         if (session?.financialEligibilityDrafts[caseReference]) {
             delete session.financialEligibilityDrafts[caseReference];
 
+            // Also clear any case pattern drafts for the case reference
             if (session.casePatternDrafts?.[caseReference]) {
                 delete session.casePatternDrafts[caseReference];
             }
@@ -511,9 +514,8 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
         for (const key of answerKeys) {
             const value = requestPostData[key];
             if (value !== undefined && value !== null && value !== '') {
-                const normalisedValue = key === disregardsStep.code
-                    ? normaliseSelectedCheckbox(value)
-                    : value;
+                // Normalise the value for disregards step, to handle when only one disregard is selected
+                const normalisedValue = key === disregardsStep.code ? normaliseSelectedCheckbox(value) : value;
 
                 session.financialEligibilityDrafts[caseReference][key] = normalisedValue;
 
