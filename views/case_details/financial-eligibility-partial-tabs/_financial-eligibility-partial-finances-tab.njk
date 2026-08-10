@@ -59,7 +59,7 @@
         { text: "Yes" if property.main else "No" }
       ],
       [
-        { text: t("common.financialEligibility.finances.propertyShare") },
+        { text: t("common.financialEligibility.finances.partnerPropertyShare") if financialEligibility.hasPartner else t("common.financialEligibility.finances.propertyShare") },
         { text: property.share + "%" }
       ]
     ] %}
@@ -87,7 +87,9 @@
   <div>{{ changePropertiesLinkHtml | safe }}</div>
 {% endif %}
 
-<h2 class="govuk-heading-m">Your savings</h2>
+{% set savingsHeading = t("common.financialEligibility.finances.undisputedSavings") if financialEligibility.category == "debt" or financialEligibility.category == "family" else t("common.financialEligibility.finances.yourSavings") %}
+
+<h2 class="govuk-heading-m">{{ savingsHeading }}</h2>
 {% set savings = financialEligibility.clientData.savings %}
 
 {{ govukTable({
@@ -116,7 +118,8 @@
   <div>{{ changeSavingsLinkHtml | safe }}</div>
 
 {% if financialEligibility.hasPartner %}
-  <h2 class="govuk-heading-m">Your partners savings</h2>
+  {% set partnerSavingsHeading = t("common.financialEligibility.finances.undisputedPartner") if financialEligibility.category == "debt" or financialEligibility.category == "family" else t("common.financialEligibility.finances.partnerSavings") %}
+  <h2 class="govuk-heading-m">{{ partnerSavingsHeading }}</h2>
 
   {% set partnerSavings = financialEligibility.partnerData.partnerSavings %}
 
