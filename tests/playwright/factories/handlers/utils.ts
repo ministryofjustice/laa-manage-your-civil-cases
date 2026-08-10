@@ -196,9 +196,9 @@ export function paginateResults(data: MockCase[], page = 1, limit = 20) {
 }
 
 /**
- * 
- * @param updateData 
- * @returns 
+ * Function to build personal details updates from request data
+ * @param updateData data from the request to be updated
+ * @returns partial case with transformed personal details fields from update data 
  */
 export function buildPersonalDetailsUpdates(
   updateData: Record<string, unknown>

@@ -25,7 +25,6 @@ export function createPersonalDetailsHandlers(
       const { caseReference } = params;
       const updateData = await request.json() as Record<string, any>;
       const caseItem = cases.find(c => c.caseReference === caseReference);
-      console.log('req.body', request.body);
       
       if (!caseItem) {
         return HttpResponse.json({ error: 'Case not found' }, { status: HTTP.NOT_FOUND });
@@ -39,12 +38,9 @@ export function createPersonalDetailsHandlers(
         });
       }
 
-      console.log('update data: ', updateData);
       updateCaseState(caseReference as string, buildPersonalDetailsUpdates(updateData));
 
-      const updatedCase = findMockCase(caseReference as string, cases);
-
-      return HttpResponse.json(transformToApiFormat(updatedCase!));
+      return HttpResponse.json(transformToApiFormat(caseItem));
     })
   ];
 }

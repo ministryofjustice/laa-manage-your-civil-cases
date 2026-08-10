@@ -65,9 +65,9 @@ test.describe('Edit Client Risk of Abuse', () => {
     await riskOfAbusePage.expectNoChangeWarningBanner('No changes were made');
     // Assert the case details header is present
     await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Llywelyn AP Parry', expectedCaseRef: 'PC-7445-2319', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse'], });
-    // Assert support needs summary card is visible with data 
+    // Assert support needs summary card is visible with no data 
     await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
-    // Assert third party details summary card is visible with data
+    // Assert third party details summary card is visible with no data
     await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: false, addHref: '/client-details/add/third-party' });
    
     await clientDetailsPage.expectRiskOfAbuse('Yes');
