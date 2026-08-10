@@ -73,7 +73,7 @@ test('accessibility page should have rendered correctly', async ({ page, i18nSet
 
   // Verify the text for the accessibility service statement
   const serviceStatement = page.locator('#service-statement');
-  await expect(serviceStatement).toHaveText("This service is run by the Legal Aid Agency. We want as many people\nas possible to be able to use this service. For example, that means you should be\nable to:");
+  await expect(serviceStatement).toHaveText("This service is run by the Legal Aid Agency. We want as many people as possible to be able to use this service. For example, that means you should be able to:");
 
   // check example section is present 
   const accessibilityExamples = page.locator('#examples');
@@ -96,7 +96,7 @@ test('accessibility page should have rendered correctly', async ({ page, i18nSet
   const statementEnd = page.locator('#statement-end');
   const abilityNetInfo = page.locator('#ability-net-info');
   await expect(statementEnd).toHaveText("We've also made the service text as simple as possible to understand.");
-  await expect(abilityNetInfo).toHaveText("AbilityNet has advice on making your device easier to use if you have a\ndisability.");
+  await expect(abilityNetInfo).toHaveText("AbilityNet has advice on making your device easier to use if you have a disability.");
 
   // Check the how accessible subheading on the accessible page
   await expect(page.getByRole('heading', { level: 2, name: t('pages.accessibility.service.howAccessibleSubheading') })).toBeVisible();
@@ -107,7 +107,7 @@ test('accessibility page should have rendered correctly', async ({ page, i18nSet
 
   // Verify the text for the how accessible info
   const howAccessibleInfo = page.locator('#how-accessible-info');
-  await expect(howAccessibleInfo).toHaveText('This service is fully compliant with Web Content Accessibility\nGuidelines (WCAG) V2.2 Level A and Level AA.');
+  await expect(howAccessibleInfo).toHaveText('This service is fully compliant with Web Content Accessibility Guidelines (WCAG) V2.2 Level A and Level AA.');
 
   // Check for the feedback subheading
   await expect(page.getByRole('heading', { level: 2, name: t('pages.accessibility.feedback.subheading') })).toBeVisible();
@@ -118,7 +118,7 @@ test('accessibility page should have rendered correctly', async ({ page, i18nSet
 
   // Verify the text for the feedback info
   const feedbackInfo = page.locator('#feedback-info');
-  await expect(feedbackInfo).toHaveText('If you find any problems not listed on this page, or think we’re not meeting\naccessibility requirements, contact us at MCC.LAADigital@justice.gov.uk.');
+  await expect(feedbackInfo).toHaveText('If you find any problems not listed on this page, or think we’re not meeting accessibility requirements, contact us at MCC.LAADigital@justice.gov.uk.');
 
   // Check for the enforcement subheading
   await expect(page.getByRole('heading', { level: 2, name: t('pages.accessibility.enforcement.subheading') })).toBeVisible();
@@ -129,7 +129,11 @@ test('accessibility page should have rendered correctly', async ({ page, i18nSet
 
   // Verify the text for the enforcement info
   const enforcementInfo = page.locator('#enforcement-info');
-  await expect(enforcementInfo).toHaveText('The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the ‘accessibility regulations’). If you’re not happy with how we respond to your complaint, contact the Equality Advisory and Support Service (EASS).');
+  await expect(enforcementInfo).toHaveText('The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No.2) Accessibility Regulations 2018 (the ‘accessibility regulations’).');
+
+  // Verify the text for the complaint info
+  const enforcementComplaint = page.locator('#enforcement-complaint');
+  await expect(enforcementComplaint).toHaveText('If you’re not happy with how we respond to your complaint, contact the Equality Advisory and Support Service (EASS).');
 
   // Check for the technical info subheading
   await expect(page.getByRole('heading', { level: 2, name: t('pages.accessibility.technicalInfo.subheading') })).toBeVisible();
@@ -167,14 +171,6 @@ test('accessibility page should have rendered correctly', async ({ page, i18nSet
   // Verify the text for the service preparation info
   const servicePreparationInfo = page.locator('#service-preparation-info');
   await expect(servicePreparationInfo).toHaveText('This service was last tested on [date] against the WCAG 2.2 AA standard. The test was carried out by our internal testing team.');
-
-   // Verify the text for the temporary text
-  const temporaryText = page.locator('#temporary-text');
-  await expect(temporaryText).toHaveText('[Add below text after full external audit is done, to replace the 2 sentences above]');
-
-  // Verify the text for the external audit info
-  const externalAuditInfo = page.locator('#external-audit-info');
-  await expect(externalAuditInfo).toHaveText('This service was last tested on [audit date]. The test was carried out by UserVision.');
 });
 
 test('AbilityNet link goes to AbilityNet site', async ({ page }) => {
@@ -219,17 +215,6 @@ test('compliance link goes to W3 site', async ({ page }) => {
   await expect(link).toBeVisible();
   await Promise.all([page.waitForURL(/www\.w3\.org/), link.click(),]);
   await expect(page).toHaveURL(/www\.w3\.org/);
-});
-
-test('external audit link goes to user vision site', async ({ page }) => {
-  // Navigate to the accessibility page
-  await page.goto(visitUrl);
-
-  // Check link to equality advisory service works
-  const link = page.locator('a[href="https://uservision.co.uk/"]');
-  await expect(link).toBeVisible();
-  await Promise.all([page.waitForURL(/uservision\.co\.uk/), link.click(),]);
-  await expect(page).toHaveURL(/uservision\.co\.uk/);
 });
 
 test('nav links are hidden on accessibility page when logged in', async ({ page }) => {
