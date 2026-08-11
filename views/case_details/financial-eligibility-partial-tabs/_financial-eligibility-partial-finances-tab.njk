@@ -65,7 +65,7 @@
       ]
     ] %}
     
-    {% if financialEligibility.category == 'debt' or financialEligibility.category == 'family' %}
+    {% if isDisputedCategory %}
       {% set propertyRows = propertyRows.concat([
         [
           { text: t("common.financialEligibility.finances.disputedProperty") },
@@ -150,7 +150,7 @@
   <div>{{ changePartnerSavingsLinkHtml | safe }}</div>
 {% endif %}
 
-{% if financialEligibility.category == 'debt' or financialEligibility.category == 'family' %}
+{% if isDisputedCategory %}
   <h2 class="govuk-heading-m">Your disputed savings</h2>
 
   {% set disputedSavings = financialEligibility.disputedSavings %}
