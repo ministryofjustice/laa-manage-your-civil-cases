@@ -183,7 +183,7 @@ export const savingsSummaryList = GovUKSummaryList({
     },
     actions: {
       items: [
-        { href: 'savings', text: 'Change', visuallyHiddenText: 'Change, Your savings' },
+        { href: 'your-savings', text: 'Change', visuallyHiddenText: 'Change, Your savings' },
       ],
     },
   },
