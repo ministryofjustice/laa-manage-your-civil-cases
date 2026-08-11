@@ -785,7 +785,12 @@ describe('FinancialEligibilityEffectsWithDepsImpl', () => {
         employmentSupport: true
       },
       under18RegularPayment: false,
-      under18HasValuables: false
+      under18HasValuables: false,
+      propertySet: [],
+      clientData: { savings: null },
+      partnerData: { partnerSavings: null },
+      disputedSavings: null,
+      disregards: [],
     };
 
     it('does not call the API when no case reference is present in the request params', async () => {
@@ -822,13 +827,12 @@ describe('FinancialEligibilityEffectsWithDepsImpl', () => {
       expect(context.getAnswer('under-18-has-valuables')).to.equal('no');
       expect(context.getAnswer('has-partner')).to.equal('yes');
       expect(context.getAnswer('60-or-over')).to.equal('no');
+      expect(context.getAnswer('60-or-over-with-partner')).to.equal('no');
       expect(context.getAnswer('universal-credit')).to.equal('yes');
       expect(context.getAnswer('income-support')).to.equal('no');
       expect(context.getAnswer('income-based-jsa')).to.equal('yes');
       expect(context.getAnswer('pension-credit')).to.equal('no');
       expect(context.getAnswer('employment-support')).to.equal('yes');
-      // Known gap: `60-or-over-with-partner` has no entry in mapApiValueToForgeValue, so it resolves to undefined instead of yes/no
-      expect(context.getAnswer('60-or-over-with-partner')).to.equal(undefined);
 
       const session = context.getSession() as FinancialEligibilitySession;
       expect(session.financialEligibilityDrafts).to.deep.equal({ CASE123: {} });
