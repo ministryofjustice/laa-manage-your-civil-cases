@@ -152,6 +152,19 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
       await expect(page.getByRole('link', { name: 'The percentage you own of' })).toBeVisible();
     });
 
+    test('should show validation error when property share percentage has decimals', async ({ page }) => {
+      await page.goto('/cases/PC-1854-6521/financial-eligibility/change/properties'); // Walter White has no properties in mock data
+      await page.getByRole('button', { name: 'Add property' }).click();
+
+      await page.getByRole('spinbutton', { name: 'What is the current market value of the property?' }).first().fill('100000');
+      await page.getByRole('spinbutton', { name: 'How much is left to pay on the mortgage?' }).first().fill('0');
+      await page.getByRole('group', { name: 'Is this your main property?' }).first().getByLabel('Yes').check();
+      await page.getByRole('spinbutton', { name: 'What percentage of the property do you own?' }).first().fill('50.5');
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      await expect(page.getByRole('link', { name: 'The percentage you own of property 1 must be a whole number' })).toBeVisible();
+    });
+
     test('should show step-level error when more than one property is marked as main', async ({ page }) => {
       await page.goto('/cases/PC-1854-6521/financial-eligibility/change/properties'); // Walter White has no properties in mock data
       await page.getByRole('button', { name: 'Add property' }).click();
