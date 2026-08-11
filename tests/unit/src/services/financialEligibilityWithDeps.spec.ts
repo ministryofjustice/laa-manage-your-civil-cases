@@ -435,7 +435,7 @@ describe('FinancialEligibilityEffectsWithDepsImpl', () => {
       expect(updateFinancialEligibilityStub.called).to.be.false;
     });
 
-    it('throws when the session has not been initialised with a financialEligibilityDrafts object', async () => {
+    it('throws a TypeError when the session has not been initialised with a financialEligibilityDrafts object', async () => {
       // Unlike LoadCaseFinancialEligibility, this method does not guard against a missing drafts object
       const context = createTestEffectContext({ params: { caseReference: 'CASE123' }, session: {} });
       let thrown: unknown;
@@ -522,7 +522,7 @@ describe('FinancialEligibilityEffectsWithDepsImpl', () => {
       expect(getAllAnswersSpy.called).to.be.false;
     });
 
-    it('throws when the session has not been initialised with a financialEligibilityDrafts object', async () => {
+    it('throws a TypeError when the session has not been initialised with a financialEligibilityDrafts object', async () => {
       // The `session?.` optional chain only guards a missing session, not a missing financialEligibilityDrafts object
       const context = createTestEffectContext({ params: { caseReference: 'CASE123' }, session: {} });
       let thrown: unknown;
@@ -592,7 +592,7 @@ describe('FinancialEligibilityEffectsWithDepsImpl', () => {
       expect(context.getAllAnswers()).to.deep.equal({});
     });
 
-    it('throws when the session has not been initialised with a financialEligibilityDrafts object', async () => {
+    it('throws a TypeError when the session has not been initialised with a financialEligibilityDrafts object', async () => {
       const context = createTestEffectContext({
         post: { 'under-18': 'yes' },
         params: { caseReference: 'CASE123' },
