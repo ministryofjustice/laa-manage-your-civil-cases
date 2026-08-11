@@ -55,7 +55,7 @@ test('save button should redirect to client details when no validation errors', 
 
   // Assert the case details header is present
   await assertCaseDetailsHeaderPresent(editDateOfBirthPage.getPage, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
-  
+
   // Assert support needs summary card is visible with no data 
   await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
   // Assert third party details summary card is visible with data
@@ -63,6 +63,137 @@ test('save button should redirect to client details when no validation errors', 
   // Assert the correct data is displayed in the third party data summary card
   await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Sarah Johnson', 'Phone number': 'Warning Not safe to call', 'Email address': 'sarah@johnson.com', 'Address': '45 Main Street, Sheffield S1 2AB', 'Relationship to client': 'Family member or friend' });
 });
+
+const invalidDates = [
+  '0',
+  '32',
+  '-1',
+  'abc', 
+  '12345'
+];
+for (const invalidDate of invalidDates) {
+  test(`DOB day validation rejects "${invalidDate}"`, async ({ page, i18nSetup }) => {
+
+    const editDateOfBirthPage = new EditDateOfBirthPage(page);
+
+    await editDateOfBirthPage.navigate();
+
+    await editDateOfBirthPage.fillDateWithChange(invalidDate, '5', '1990');
+
+    await editDateOfBirthPage.clickSave();
+
+    // Should remain on edit page
+    await expect(page).toHaveURL('/cases/PC-1922-1879/client-details/change/date-of-birth');
+
+    // Error should be visible 
+    await expect(page.locator('.govuk-error-summary')).toBeVisible();
+    await expect(page.getByText('Day must be between 1 and 31').first()).toBeVisible();
+  });
+}
+
+const blankDates = [
+  '',
+  ' '
+];
+for (const blankDate of blankDates) {
+  test(`DOB blank day validation rejects "${blankDate}"`, async ({ page, i18nSetup }) => {
+
+    const editDateOfBirthPage = new EditDateOfBirthPage(page);
+
+    await editDateOfBirthPage.navigate();
+
+    await editDateOfBirthPage.fillDateWithChange(blankDate, '5', '1990');
+
+    await editDateOfBirthPage.clickSave();
+
+    // Should remain on edit page
+    await expect(page).toHaveURL('/cases/PC-1922-1879/client-details/change/date-of-birth');
+
+    // Error should be visible 
+    await expect(page.locator('.govuk-error-summary')).toBeVisible();
+    await expect(page.getByText('The date of birth must include a day').first()).toBeVisible();
+  });
+}
+
+for (const invalidDate of invalidDates) {
+  test(`DOB month validation rejects "${invalidDate}"`, async ({ page, i18nSetup }) => {
+
+    const editDateOfBirthPage = new EditDateOfBirthPage(page);
+
+    await editDateOfBirthPage.navigate();
+
+    await editDateOfBirthPage.fillDateWithChange('1', invalidDate, '1990');
+
+    await editDateOfBirthPage.clickSave();
+
+    // Should remain on edit page
+    await expect(page).toHaveURL('/cases/PC-1922-1879/client-details/change/date-of-birth');
+
+    // Error should be visible 
+    await expect(page.locator('.govuk-error-summary')).toBeVisible();
+    await expect(page.getByText('Month must be between 1 and 12').first()).toBeVisible();
+  });
+}
+
+for (const blankDate of blankDates) {
+  test(`DOB blank month validation rejects "${blankDate}"`, async ({ page, i18nSetup }) => {
+
+    const editDateOfBirthPage = new EditDateOfBirthPage(page);
+
+    await editDateOfBirthPage.navigate();
+
+    await editDateOfBirthPage.fillDateWithChange('1', blankDate, '1990');
+
+    await editDateOfBirthPage.clickSave();
+
+    // Should remain on edit page
+    await expect(page).toHaveURL('/cases/PC-1922-1879/client-details/change/date-of-birth');
+
+    // Error should be visible 
+    await expect(page.locator('.govuk-error-summary')).toBeVisible();
+    await expect(page.getByText('Date of birth must include a month').first()).toBeVisible();
+  });
+}
+
+for (const invalidDate of invalidDates) {
+  test(`DOB year validation rejects "${invalidDate}"`, async ({ page, i18nSetup }) => {
+
+    const editDateOfBirthPage = new EditDateOfBirthPage(page);
+
+    await editDateOfBirthPage.navigate();
+
+    await editDateOfBirthPage.fillDateWithChange('1', '5', invalidDate);
+
+    await editDateOfBirthPage.clickSave();
+
+    // Should remain on edit page
+    await expect(page).toHaveURL('/cases/PC-1922-1879/client-details/change/date-of-birth');
+
+    // Error should be visible 
+    await expect(page.locator('.govuk-error-summary')).toBeVisible();
+    await expect(page.getByText('Year must include 4 numbers').first()).toBeVisible();
+  });
+}
+
+for (const blankDate of blankDates) {
+  test(`DOB blank year validation rejects "${blankDate}"`, async ({ page, i18nSetup }) => {
+
+    const editDateOfBirthPage = new EditDateOfBirthPage(page);
+
+    await editDateOfBirthPage.navigate();
+
+    await editDateOfBirthPage.fillDateWithChange('1', '5', blankDate);
+
+    await editDateOfBirthPage.clickSave();
+
+    // Should remain on edit page
+    await expect(page).toHaveURL('/cases/PC-1922-1879/client-details/change/date-of-birth');
+
+    // Error should be visible 
+    await expect(page.locator('.govuk-error-summary')).toBeVisible();
+    await expect(page.getByText('The date of birth must include a year').first()).toBeVisible();
+  });
+}
 
 test('date of birth edit page should be accessible', {
   tag: '@accessibility',

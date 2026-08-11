@@ -502,6 +502,54 @@
       "caseEnquiriesSubheading": "Case enquiries",
       "caseEnquiriesInfo": "Contact your contract manager for any non-technical support questions."
     },
+    "accessibility": {
+      "heading": "Accessibility statement",
+      "intro": "This accessibility statement applies to the 'Manage your civil cases' service.",
+      "service": {
+        "statementIntro": "This service is run by the Legal Aid Agency. We want as many people as possible to be able to use this service. For example, that means you should be able to:",
+        "examples": {
+          "changeColours": "change colours, contrast levels and fonts using browser or device settings",
+          "zoom": "zoom in up to 400% without the text spilling off the screen",
+          "navigate": "navigate most of the service using a keyboard or speech recognition software",
+          "listen": "listen to most of the service using a screen reader (including the most recent versions of JAWS, NVDA and VoiceOver)"
+        },
+        "statementEnd": "We've also made the service text as simple as possible to understand.",
+        "abilityNetLink": "AbilityNet",
+        "abilityNetInfo": "has advice on making your device easier to use if you have a disability.",
+        "howAccessibleSubheading": "How accessible this service is",
+        "howAccessibleStart": "This service is fully compliant with ",
+        "howAccessibleLink": "Web Content Accessibility Guidelines (WCAG) V2.2 Level A and Level AA",
+        "howAccessibleEnd": "."
+      },
+      "feedback": {
+        "subheading": "Feedback and contact information",
+        "start": "If you find any problems not listed on this page, or think we’re not meeting accessibility requirements, contact us at ",
+        "link": "MCC.LAADigital@justice.gov.uk",
+        "end": "."
+      },
+      "enforcement": {
+        "subheading": "Enforcement procedure",
+        "info": "The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No.2) Accessibility Regulations 2018 (the ‘accessibility regulations’).",
+        "start": "If you’re not happy with how we respond to your complaint,",
+        "link": "contact the Equality Advisory and Support Service (EASS)",
+        "end": "."
+      },
+      "technicalInfo": {
+        "subheading": "Technical information about this service’s accessibility",
+        "statement": "The Legal Aid Agency is committed to making its services accessible, in accordance with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018."
+      },
+      "compliance": {
+        "subheading": "Compliance status",
+        "start": "This service is fully compliant with the ",
+        "link": "Web Content Accessibility Guidelines version 2.2 Level A and AA standard",
+        "end": "."
+      },
+      "preparation": {
+        "subheading": "Preparation of this accessibility statement",
+        "statement": "This statement was prepared on 10 August 2026.",
+        "service": "This service was last tested on 1 August 2026 against the WCAG 2.2 AA standard. The test was carried out by our internal testing team."
+      }
+    },
     "cookies": {
       "heading": "Cookies",
       "intro": "Cookies are small files saved on your phone, tablet or computer when you visit a website.",
@@ -608,7 +656,8 @@
         "title": "Client name",
         "pageTitle": "Client name – {caseReference} – {serviceName} – GOV.UK",
         "validationError": {
-          "notEmpty": "Enter the client name"
+          "notEmpty": "Enter the client name",
+          "isLength": "Client name must be 400 characters or less"
         }
       },
       "dateOfBirth": {
