@@ -48,7 +48,10 @@ export const aboutYouSummaryList = GovUKSummaryList({
     {
       key: { text: 'Do you have any savings, items of value or investments totalling £2500 or more?' },
       value: { text: Answer('under-18-has-valuables').pipe(Transformer.String.Capitalize()) },
-      visibleWhen: Answer('under-18-receives-regular-payment').match(Condition.Equals('no')),
+      visibleWhen: and(
+        Answer('under-18').match(Condition.Equals('yes')),
+        Answer('under-18-receives-regular-payment').match(Condition.Equals('no')),
+      ),
     },
     {
       key: { text: 'Do you have a partner?' },
