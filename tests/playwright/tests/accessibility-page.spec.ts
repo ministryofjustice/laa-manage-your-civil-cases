@@ -223,7 +223,7 @@ test('nav links are hidden on accessibility page when logged in', async ({ page 
   await page.getByRole('link', { name: 'Accessibility' }).click();
 
   // assert we are on accessibility page
-  await expect(page).toHaveURL(/accessibility/);
+  await expect(page).toHaveURL('/accessibility');
 
   // Check nav bar exists
   const nav = page.locator('.govuk-service-navigation');
@@ -248,7 +248,7 @@ test('accessibility page can be accessed after signing out', async ({ page }) =>
   await page.goto('/accessibility');
 
   // Verify user is on the accessibility page
-  await expect(page).toHaveURL(/accessibility/);
+  await expect(page).toHaveURL('/accessibility');
 
   // Verify the accessibility page heading is displayed
   await expect(page.getByRole('heading', { level: 1, name: t('pages.accessibility.heading') })).toBeVisible();
@@ -265,7 +265,7 @@ test('accessibility page does not display navbar after signing out', async ({ pa
   await page.goto('/accessibility');
 
   // Verify user is on the accessibility page
-  await expect(page).toHaveURL(/accessibility/);
+  await expect(page).toHaveURL('/accessibility');
 
   // Verify the accessibility page heading is displayed
   await expect(page.getByRole('heading', { level: 1, name: t('pages.accessibility.heading') })).toBeVisible();

@@ -128,7 +128,7 @@ test('nav links are hidden on cookies page when logged in', async ({ page }) => 
   await page.getByRole('link', { name: 'Cookies' }).click();
   
   // assert we are on cookies page
-  await expect(page).toHaveURL(/cookies/);
+  await expect(page).toHaveURL('/cookies');
 
   // Check nav bar exists
   const nav = page.locator('.govuk-service-navigation');
@@ -153,7 +153,7 @@ test('cookies page can be accessed after signing out', async ({ page }) => {
   await page.goto('/cookies');
 
   // Verify user is on the cookies page
-  await expect(page).toHaveURL(/cookies/);
+  await expect(page).toHaveURL('/cookies');
 
   // Verify the cookies page heading is displayed
   await expect(page.getByRole('heading', { level: 1, name: t('pages.cookies.heading') })).toBeVisible();
@@ -170,7 +170,7 @@ test('cookies page does not display navbar after signing out', async ({ page }) 
   await page.goto('/cookies');
 
   // Verify user is on the cookies page
-  await expect(page).toHaveURL(/cookies/);
+  await expect(page).toHaveURL('/cookies');
 
   // Verify the cookies page heading is displayed
   await expect(page.getByRole('heading', { level: 1, name: t('pages.cookies.heading') })).toBeVisible();

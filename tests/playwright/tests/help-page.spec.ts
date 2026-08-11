@@ -96,7 +96,7 @@ test('nav links are hidden on help page when logged in', async ({ page }) => {
   await page.getByRole('link', { name: 'Help' }).click();
 
   // assert we are on help page
-  await expect(page).toHaveURL(/help/);
+  await expect(page).toHaveURL('/help');
 
   // Check nav bar exists
   const nav = page.locator('.govuk-service-navigation');
@@ -121,7 +121,7 @@ test('help page can be accessed after signing out', async ({ page }) => {
   await page.goto('/help');
 
   // Verify user is on the help page
-  await expect(page).toHaveURL(/help/);
+  await expect(page).toHaveURL('/help');
 
   // Verify the help page heading is displayed
   await expect(page.getByRole('heading', { level: 1, name: t('pages.help.heading') })).toBeVisible();
@@ -138,7 +138,7 @@ test('help page does not display navbar after signing out', async ({ page }) => 
   await page.goto('/help');
 
   // Verify user is on the help page
-  await expect(page).toHaveURL(/help/);
+  await expect(page).toHaveURL('/help');
 
   // Verify the help page heading is displayed
   await expect(page.getByRole('heading', { level: 1, name: t('pages.help.heading') })).toBeVisible();
