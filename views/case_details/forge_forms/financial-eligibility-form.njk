@@ -6,9 +6,16 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       {% set errorList = [] %}
+      {% set seenBlockCodes = [] %} {# // adding in this logic so we see the first error message when a bunch get triggered #}
 
       {% for error in fieldValidationErrors %}
-        {% set errorList = errorList.concat([{ text: error.message, href: "#" + error.blockCode }]) %}
+        {% if not (error.blockCode in seenBlockCodes) %}
+          {% set seenBlockCodes = seenBlockCodes.concat([error.blockCode]) %}
+          {% set errorList = errorList.concat([{
+            text: error.message,
+            href: "#" + error.blockCode
+          }]) %}
+        {% endif %}
       {% endfor %}
 
       {% for error in domainValidationErrors %}

@@ -81,6 +81,25 @@ export function booleanToString(value: unknown): string {
 }
 
 /**
+ * Convert a value to boolean
+ * @param {unknown} value - Value to convert
+ * @returns {boolean} True if value is truthy, false otherwise
+ */
+export function toBoolean(value: unknown): boolean {
+    return value === true || String(value).toLowerCase() === 'yes' || String(value).toLowerCase() === 'true';
+}
+
+/**
+ * Convert a value to number
+ * @param {unknown} value - Value to convert
+ * @returns {number} Numeric value or 0 if not a number
+ */
+export function toNumber(value: unknown): number {
+    const parsed = Number(value);
+    return Number.isNaN(parsed) ? 0 : parsed;
+}
+
+/**
  * Type guard to check if value is a record object
  * @param {unknown} value Value to check
  * @returns {boolean} True if value is a record object
@@ -291,8 +310,28 @@ export function normaliseSelectedCheckbox(value: unknown): string[] {
 }
 
 /**
+ * Normalises checkbox-ish data into selected key names
+ * Accepts either an array of selected keys or an object map of key to boolean-like value
+ * @param {unknown} value - Raw checkbox value from API/session
+ * @returns {string[]} Selected key names
+ */
+export function normaliseSelectedKeys(value: unknown): string[] {
+  if (Array.isArray(value)) {
+    return value.filter((x): x is string => typeof x === 'string');
+  }
+
+  if (!isRecord(value)) {
+    return [];
+  }
+
+  return Object.entries(value)
+    .filter(([, selected]) => Boolean(selected))
+    .map(([key]) => key);
+}
+
+/**
  * Normalise truthy "Yes"/"No"/boolean/strings
- * @param {unknown} value - Value of 
+ * @param {unknown} value - Value to convert
  * @returns {boolean} - true or false if it meets comparison
  */
 export const isYes = (value: unknown): boolean => {
@@ -302,6 +341,24 @@ export const isYes = (value: unknown): boolean => {
   // fall back: treat non-empty as truthy
   return Boolean(selection);
 };
+
+/**
+ * Convert a boolean or string value to 'yes' or 'no' for form submission
+ * @param {unknown} value - Value to convert
+ * @returns {string} 'yes', 'no', or empty string if value is not boolean-like 
+ */
+export function toYesNo(value: unknown): string {
+    if (value === true || String(value).toLowerCase() === 'yes' || String(value).toLowerCase() === 'true') {
+        return 'yes';
+    }
+
+    if (value === false || String(value).toLowerCase() === 'no' || String(value).toLowerCase() === 'false') {
+        return 'no';
+    }
+
+    return '';
+}
+
 
 /**
  * Extract phone number with mobile priority fallback to home phone

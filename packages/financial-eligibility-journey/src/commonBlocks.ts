@@ -1,12 +1,6 @@
-import { GovUKHeading, GovUKButton } from '@ministryofjustice/hmpps-forge/govuk-components'
+import { GovUKButton } from '@ministryofjustice/hmpps-forge/govuk-components'
 import { submit, redirect, Post, Condition, Format, Params } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { FinancialEligibilityEffects } from './effects.js'
-
-
-export const heading = GovUKHeading({
-  text: 'Check your answers',
-  size: 'm',
-})
 
 export const continueButton = GovUKButton({ text: 'Continue' })
 

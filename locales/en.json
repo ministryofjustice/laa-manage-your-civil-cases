@@ -183,7 +183,8 @@
       "energy_prices": "The Energy Support Scheme payments (2022 and 2023)",
       "criminal_injuries": "Criminal Injuries Compensation Scheme",
       "modern_slavery": "Modern Slavery Victim Care Contract or National Referral Mechanism (NRM)",
-      "cost_living": "Cost of living payments"
+      "cost_living": "Cost of living payments",
+      "none": "None"
     },
     "financialEligibility": {
       "details":  {
