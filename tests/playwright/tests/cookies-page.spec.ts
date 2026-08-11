@@ -2,7 +2,7 @@ import { test, expect } from '../fixtures/index.js';
 import { t, setupAuth } from '../utils/index.js';
 
 test('cookies page has correct title header', async ({ page, i18nSetup }) => {
-  // Navigate to the homepage
+  // Navigate directly to the cookies page
   await page.goto('/cookies');
 
   // Check for the title of the application
@@ -10,7 +10,7 @@ test('cookies page has correct title header', async ({ page, i18nSetup }) => {
 });
 
 test('cookies page should display LAA header', async ({ page, i18nSetup }) => {
-  // Navigate to the homepage
+  // Navigate directly to the cookies page
   await page.goto('/cookies');
 
   const header = page.getByRole('banner');
@@ -20,7 +20,7 @@ test('cookies page should display LAA header', async ({ page, i18nSetup }) => {
 });
 
 test('cookies page should display phase banner with hello content', async ({ page, i18nSetup }) => {
-  // Navigate to the homepage
+  // Navigate to directly to the cookies page
   await page.goto('/cookies');
 
   // Target the phase banner
@@ -31,6 +31,15 @@ test('cookies page should display phase banner with hello content', async ({ pag
 
   // Check if feedback link text is in the phase banner
   await expect(phaseBanner).toContainText(t('components.phaseBanner.feedbackText'));
+});
+
+test('cookies page should not display nav bar with service name and nav links when user has not signed in', async ({ page }) => {
+  // Navigate directly to the cookies page
+  await page.goto('/cookies');
+
+  // Check nav bar with service name and nav links is not present
+  const nav = page.locator('.govuk-service-navigation');
+  await expect(nav).toHaveCount(0);
 });
 
 test('footer is visible with expected links', async ({ page }) => {  
@@ -45,21 +54,9 @@ test('footer is visible with expected links', async ({ page }) => {
   await expect(footer.getByRole('link', { name: 'Terms and conditions' })).toBeVisible();
 });
 
-const visitUrl = '/cookies';
 test('cookies page should have rendered correctly', async ({ page, i18nSetup }) => {
   // Navigate to the cookies page
-  await page.goto(visitUrl);
-  
-  // Check nav bar exists
-  const nav = page.locator('.govuk-service-navigation');
-  await expect(nav).toBeVisible();
-
-  // Check service name is visible in the navigation section of the screen
-  await expect(nav).toContainText('Manage your civil cases');
-
-  // Check the links are not in the nav bar
-  await expect(page.getByRole('link', { name: 'Your cases' })).toHaveCount(0);
-  await expect(page.getByRole('link', { name: 'Search' })).toHaveCount(0);
+  await page.goto('/cookies');
 
   // Check for the heading of the cookies page
   await expect(page.getByRole('heading', { level: 1, name: t('pages.cookies.heading') })).toBeVisible();
@@ -111,12 +108,11 @@ test('cookies page should have rendered correctly', async ({ page, i18nSetup }) 
   await expect(page.getByText('sessionID')).toBeVisible();
   await expect(page.getByText('Stores user-provided form data')).toBeVisible();
   await expect(page.getByText('24 hours')).toBeVisible();
-
 });
 
 test('cookies link goes to ICO site', async ({ page }) => {
   // Navigate to the cookies page
-  await page.goto(visitUrl);
+  await page.goto('/cookies');
 
   // Check link to ICO works
   const link = page.locator('a[href="https://ico.org.uk/for-the-public/online/cookies"]');
@@ -161,4 +157,25 @@ test('cookies page can be accessed after signing out', async ({ page }) => {
 
   // Verify the cookies page heading is displayed
   await expect(page.getByRole('heading', { level: 1, name: t('pages.cookies.heading') })).toBeVisible();
+});
+
+test('cookies page does not display navbar after signing out', async ({ page }) => {
+  await setupAuth(page);
+  await page.goto('/');
+
+  // Sign out
+  await page.getByRole('link', { name: 'Sign out' }).click();
+
+  // Navigate to cookies page
+  await page.goto('/cookies');
+
+  // Verify user is on the cookies page
+  await expect(page).toHaveURL(/cookies/);
+
+  // Verify the cookies page heading is displayed
+  await expect(page.getByRole('heading', { level: 1, name: t('pages.cookies.heading') })).toBeVisible();
+
+  // Check nav bar with service name and nav links is not present
+  const nav = page.locator('.govuk-service-navigation');
+  await expect(nav).toHaveCount(0);
 });

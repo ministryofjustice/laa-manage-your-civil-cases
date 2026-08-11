@@ -1,12 +1,4 @@
-{% extends "base.njk" %}
-
-{% block serviceNavigation %} 
-  {{ govukServiceNavigation({
-    serviceName: config.SERVICE_NAME,
-    serviceUrl: "/cases/new",
-    navigation: []
-  }) }}
-{% endblock %}
+{% extends "footer/footer-page.njk"  %}
 
 {% block pageContent %}
   <h1 id="help-heading" class="govuk-heading-xl">{{ t('pages.help.heading') }}</h1>
