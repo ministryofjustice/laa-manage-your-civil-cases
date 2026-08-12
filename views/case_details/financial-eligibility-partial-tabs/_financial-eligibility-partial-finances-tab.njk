@@ -1,8 +1,10 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
 
+{% set changePropertiesLink = "/cases/" + caseReference + "/financial-eligibility/change/client-partner-properties" if financialEligibility.hasPartner else "/cases/" + caseReference + "/financial-eligibility/change/properties" %}
+
 {% set changePropertiesLinkHtml %}
   <p class="govuk-!-margin-bottom-8">
-    <a class="govuk-link" href="/cases/{{ caseReference }}/financial-eligibility/change/properties">{{ t('common.change') }}</a>
+    <a class="govuk-link" href= "{{ changePropertiesLink }}" >{{ t('common.change') }}</a>
   </p>
 {% endset %}
 

@@ -4,7 +4,7 @@ import { setupAuth, assertCaseDetailsHeaderPresent } from '../utils/index.js';
 
 async function completeIntroToBenefitsNoPartner(page: Page) {
   await page.goto(`/cases/PC-1922-1879/financial-eligibility/change`);
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Jack Youngs', expectedCaseRef: 'PC-1922-1879', dateReceived: '7 July 2025', badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party']});
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Jack Youngs', expectedCaseRef: 'PC-1922-1879', dateReceived: '7 July 2025', badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
 
   // Under 18: No
   await page.getByRole('radio', { name: 'No' }).check();
@@ -35,7 +35,7 @@ async function completeIntroToBenefitsWithPartner(page: Page) {
   await page.getByRole('radio', { name: 'Yes' }).check();
   await page.getByRole('button', { name: 'Continue' }).click();
 
-   // Over 60: No
+  // Over 60: No
   await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/60-or-over-with-partner`);
   await page.getByRole('radio', { name: 'No' }).check();
   await page.getByRole('button', { name: 'Continue' }).click();
@@ -94,7 +94,7 @@ async function reachSavingsWithPartner(page: Page) {
   await completeIntroToBenefitsWithPartner(page);
   await completeBenefits(page);
 
-  await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/properties`);
+  await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/client-partner-properties`);
   await page.getByRole('button', { name: 'Continue' }).click();
 
   await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/your-savings`);
@@ -220,6 +220,24 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
       await expect(page.getByRole('link', { name: 'Enter how much is left to pay' })).toBeVisible();
       await expect(page.getByRole('link', { name: 'Select yes if property 1 is' })).toBeVisible();
       await expect(page.getByRole('link', { name: 'Enter the percentage you own' })).toBeVisible();
+    });
+
+    test('should show partner property question when applicant has a partner', async ({ page }) => {
+      await page.goto('/cases/PC-1869-9154/financial-eligibility/change/client-partner-properties'); // Grace Baker has a partner and property data
+      await expect(page.getByRole('heading', { name: 'Properties' })).toBeVisible();
+      await expect(page.getByLabel('What is the current market value of the property?')).toBeVisible();
+      await expect(page.getByLabel('How much is left to pay on the mortgage?')).toBeVisible();
+      await expect(page.getByText('Is this your main property?')).toBeVisible();
+      await expect(page.getByLabel('What percentage of the property do you and/or your partner own?')).toBeVisible();
+    });
+
+    test('should not show partner property question when applicant does not have a partner', async ({ page }) => {
+      await page.goto('/cases/PC-1924-9560/financial-eligibility/change/properties'); // Lisa NO NOTES Chen has no partner and property data
+      await expect(page.getByRole('heading', { name: 'Properties' })).toBeVisible();
+      await expect(page.getByLabel('What is the current market value of the property?')).toBeVisible();
+      await expect(page.getByLabel('How much is left to pay on the mortgage?')).toBeVisible();
+      await expect(page.getByText('Is this your main property?')).toBeVisible();
+      await expect(page.getByLabel('What percentage of the property do you own?')).toBeVisible();
     });
 
     test('should show validation error when property value is negative', async ({ page }) => {
@@ -363,7 +381,7 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
       await completeBenefits(page);
 
       // Properties: None
-      await expect(page).toHaveURL('/cases/PC-1357-1212/financial-eligibility/change/properties');
+      await expect(page).toHaveURL('/cases/PC-1357-1212/financial-eligibility/change/client-partner-properties');
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Savings: None

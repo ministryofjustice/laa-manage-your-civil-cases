@@ -18,6 +18,7 @@ import { dependantsStep } from './dependantsPage/dependantsStep.js'
 import { expensesStep } from './expensesPage/expensesStep.js'
 import { partnerExpensesStep } from './partnerExpensesPage/partnerExpensesStep.js'
 import { checkAnswersStep } from './checkAnswersPage/checkAnswersStep.js'
+import { propertiesStepPartner } from './propertiesPageWithPartner/propertiesStepPartner.js'
 
 // The loads any stored draft answers on every access, so switching between branches preserves earlier input.
 // The summary page filters rows to the  branch the user is currently on.
@@ -43,6 +44,7 @@ export const eligibilityJourney = journey({
     over60StepWithPartnerStep,
     benefitsStep,
     propertiesStep,
+    propertiesStepPartner,
     savingsStep,
     partnerSavingsStep,
     disputedSavingsStep,

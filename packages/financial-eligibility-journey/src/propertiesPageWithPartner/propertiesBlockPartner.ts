@@ -1,7 +1,6 @@
 import { Self, Answer, Condition, validation, Iterator, Data, Format, Loop, Item, Transformer, or, not } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { GovUKHeading, GovUKTextInput, GovUKBody, GovUKButton, GovUKUtilityClasses, GovUKRadioInput, GovUKSectionBreak, GovUKGridRow } from '@ministryofjustice/hmpps-forge/govuk-components'
 import { CollectionBlock } from '@ministryofjustice/hmpps-forge/core/components'
-import { t } from '#src/scripts/helpers/index.js';
 
 const categoryIsDebtOrFamily = or(
   Answer('category').match(Condition.Equals('debt')),
@@ -123,7 +122,7 @@ export const propertySet = CollectionBlock({
       }),
       GovUKTextInput({
         code: Format('share_%1', Loop.Index0()),
-        label: 'What percentage of the property do you own?',
+        label: 'What percentage of the property do you and/or your partner own?',
         defaultValue: Item().path('share'),
         formatters: [Transformer.String.ToFloat()],
         suffix: { text: '%' },
@@ -132,15 +131,15 @@ export const propertySet = CollectionBlock({
         validWhen: [
           validation({
             condition: Self().match(Condition.IsRequired()),
-            message: Format('Enter the percentage you own of property %1', Loop.Index()),
+            message: Format('Enter the percentage you and/or your partner own of property %1', Loop.Index()),
           }),
           validation({
             condition: Self().match(Condition.Number.IsInteger()),
-            message: Format('The percentage you own of property %1 must be a whole number', Loop.Index()),
+            message: Format('The percentage you and/or your partner own of property %1 must be a whole number', Loop.Index()),
           }),
           validation({
             condition: Self().match(Condition.Number.Between(1, 100)),
-            message: Format('The percentage you own of property %1 must be a number between 1 and 100', Loop.Index()),
+            message: Format('The percentage you and/or your partner own of property %1 must be a number between 1 and 100', Loop.Index()),
           }),
         ],
       }),

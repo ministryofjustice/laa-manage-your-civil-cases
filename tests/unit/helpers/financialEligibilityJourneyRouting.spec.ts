@@ -17,6 +17,7 @@ import { dependantsStep } from '#packages/financial-eligibility-journey/src/depe
 import { expensesStep } from '#packages/financial-eligibility-journey/src/expensesPage/expensesStep.js';
 import { partnerExpensesStep } from '#packages/financial-eligibility-journey/src/partnerExpensesPage/partnerExpensesStep.js';
 import { checkAnswersStep } from '#packages/financial-eligibility-journey/src/checkAnswersPage/checkAnswersStep.js';
+import { propertiesStepPartner } from '#packages/financial-eligibility-journey/src/propertiesPageWithPartner/propertiesStepPartner.js';
 
 describe('Financial eligibility Forge routing', () => {
   it('routes under-18 answers to the correct next steps', () => {
@@ -97,8 +98,9 @@ describe('Financial eligibility Forge routing', () => {
       .map((outcome) => ('goto' in outcome ? outcome.goto : null))
       .filter((goto): goto is string => goto !== null);
 
-    expect(redirectGoesTo).to.have.length(1);
-    expect(redirectGoesTo[0]).to.equal(propertiesStep.code);
+    expect(redirectGoesTo).to.have.length(2);
+    expect(redirectGoesTo[0]).to.equal(propertiesStepPartner.code);
+    expect(redirectGoesTo[1]).to.equal(propertiesStep.code);
   });
 
   it('routes properties answers to the correct next steps', () => {
