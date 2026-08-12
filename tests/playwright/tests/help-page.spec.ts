@@ -2,7 +2,7 @@ import { test, expect } from '../fixtures/index.js';
 import { t, setupAuth } from '../utils/index.js';
 
 test('help page has correct title header', async ({ page, i18nSetup }) => {
-    // Navigate to homepage
+    // Navigate directly to the help page
     await page.goto('/help');
 
     // Check for the title fo the application
@@ -10,7 +10,7 @@ test('help page has correct title header', async ({ page, i18nSetup }) => {
 });
 
 test('help page should display LAA header', async ({ page, i18nSetup }) => {
-  // Navigate to the homepage
+  // Navigate directly to the help page
   await page.goto('/help');
 
   const header = page.getByRole('banner');
@@ -20,7 +20,7 @@ test('help page should display LAA header', async ({ page, i18nSetup }) => {
 });
 
 test('help page should display phase banner with hello content', async ({ page, i18nSetup }) => {
-  // Navigate to the homepage
+  // Navigate directly to the help page
   await page.goto('/help');
 
   // Target the phase banner
@@ -33,7 +33,17 @@ test('help page should display phase banner with hello content', async ({ page, 
   await expect(phaseBanner).toContainText(t('components.phaseBanner.feedbackText'));
 });
 
+test('help page should not display nav bar with service name and nav links when user has not signed in', async ({ page }) => {
+  // Navigate directly to the help page
+  await page.goto('/help');
+
+  // Check nav bar with service name and nav links is not present
+  const nav = page.locator('.govuk-service-navigation');
+  await expect(nav).toHaveCount(0);
+});
+
 test('footer is visible with expected links', async ({ page }) => {  
+  // Navigate directly to the help page
   await page.goto('/help');
 
   const footer = page.locator('.govuk-footer');
@@ -48,17 +58,6 @@ test('footer is visible with expected links', async ({ page }) => {
 test('help page should have rendered correctly', async ({ page, i18nSetup }) => {
   // Navigate to the help page
   await page.goto('/help');
-
-   // Check nav bar exists
-  const nav = page.locator('.govuk-service-navigation');
-  await expect(nav).toBeVisible();
-
-   // Check service name is visible in the navigation section of the screen
-  await expect(nav).toContainText('Manage your civil cases');
-
-  // Check the links are not in the nav bar
-  await expect(page.getByRole('link', { name: 'Your cases' })).toHaveCount(0);
-  await expect(page.getByRole('link', { name: 'Search' })).toHaveCount(0);
 
   // Check for the heading of the help page
   await expect(page.getByRole('heading', { level: 1, name: t('pages.help.heading') })).toBeVisible();
@@ -97,7 +96,7 @@ test('nav links are hidden on help page when logged in', async ({ page }) => {
   await page.getByRole('link', { name: 'Help' }).click();
 
   // assert we are on help page
-  await expect(page).toHaveURL(/help/);
+  await expect(page).toHaveURL('/help');
 
   // Check nav bar exists
   const nav = page.locator('.govuk-service-navigation');
@@ -122,8 +121,29 @@ test('help page can be accessed after signing out', async ({ page }) => {
   await page.goto('/help');
 
   // Verify user is on the help page
-  await expect(page).toHaveURL(/help/);
+  await expect(page).toHaveURL('/help');
 
   // Verify the help page heading is displayed
   await expect(page.getByRole('heading', { level: 1, name: t('pages.help.heading') })).toBeVisible();
+});
+
+test('help page does not display navbar after signing out', async ({ page }) => {
+  await setupAuth(page);
+  await page.goto('/');
+
+  // Sign out
+  await page.getByRole('link', { name: 'Sign out' }).click();
+
+  // Navigate to help page
+  await page.goto('/help');
+
+  // Verify user is on the help page
+  await expect(page).toHaveURL('/help');
+
+  // Verify the help page heading is displayed
+  await expect(page.getByRole('heading', { level: 1, name: t('pages.help.heading') })).toBeVisible();
+
+  // Check nav bar with service name and nav links is not present
+  const nav = page.locator('.govuk-service-navigation');
+  await expect(nav).toHaveCount(0);
 });
