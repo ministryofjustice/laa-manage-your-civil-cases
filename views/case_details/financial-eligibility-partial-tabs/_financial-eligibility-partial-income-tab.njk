@@ -139,11 +139,11 @@
   firstCellIsHeader: true,
   rows: [
     [
-      { text: t("common.financialEligibility.income.dependantsOld") },
+      { text: t("common.financialEligibility.income.partnerDependantsOld") if financialEligibility.hasPartner else t("common.financialEligibility.income.dependantsOld") },
       { text: financialEligibility.dependantsOld }
     ],
     [
-      { text: t("common.financialEligibility.income.dependantsYoung") },
+      { text: t("common.financialEligibility.income.partnerDependantsYoung") if financialEligibility.hasPartner else t("common.financialEligibility.income.dependantsYoung") },
       { text: financialEligibility.dependantsYoung }
     ]
   ]

@@ -27,7 +27,7 @@
     { text: partnerText }
   ],
   [
-    { text: t("common.financialEligibility.details.age60OrOver") },
+    { text: ( t("common.financialEligibility.details.partnerAge60OrOver") if financialEligibility.hasPartner else t("common.financialEligibility.details.age60OrOver")) },
     { text: over60Text }
   ]
 ] %}

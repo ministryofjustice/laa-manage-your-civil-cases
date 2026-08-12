@@ -28,6 +28,7 @@
   <a class="govuk-link" href="/cases/{{ caseReference }}/financial-eligibility/change/disregards">{{ t('common.change') }}</a>
 {% endset %}
 
+{% set isDisputedCategory = financialEligibility.category == 'debt' or financialEligibility.category == 'family' %}
 
 <h2 class="govuk-heading-m">Properties</h2>
 {% if financialEligibility.propertySet and financialEligibility.propertySet.length %}
@@ -59,12 +60,12 @@
         { text: "Yes" if property.main else "No" }
       ],
       [
-        { text: t("common.financialEligibility.finances.propertyShare") },
+        { text: t("common.financialEligibility.finances.partnerPropertyShare") if financialEligibility.hasPartner else t("common.financialEligibility.finances.propertyShare") },
         { text: property.share + "%" }
       ]
     ] %}
     
-    {% if financialEligibility.category == 'debt' or financialEligibility.category == 'family' %}
+    {% if isDisputedCategory %}
       {% set propertyRows = propertyRows.concat([
         [
           { text: t("common.financialEligibility.finances.disputedProperty") },
@@ -87,7 +88,9 @@
   <div>{{ changePropertiesLinkHtml | safe }}</div>
 {% endif %}
 
-<h2 class="govuk-heading-m">Your savings</h2>
+{% set savingsHeading = t("common.financialEligibility.finances.undisputedSavings") if isDisputedCategory else t("common.financialEligibility.finances.yourSavings") %}
+
+<h2 class="govuk-heading-m">{{ savingsHeading }}</h2>
 {% set savings = financialEligibility.clientData.savings %}
 
 {{ govukTable({
@@ -116,7 +119,8 @@
   <div>{{ changeSavingsLinkHtml | safe }}</div>
 
 {% if financialEligibility.hasPartner %}
-  <h2 class="govuk-heading-m">Your partners savings</h2>
+  {% set partnerSavingsHeading = t("common.financialEligibility.finances.undisputedPartnerSavings") if isDisputedCategory else t("common.financialEligibility.finances.partnerSavings") %}
+  <h2 class="govuk-heading-m">{{ partnerSavingsHeading }}</h2>
 
   {% set partnerSavings = financialEligibility.partnerData.partnerSavings %}
 
@@ -146,7 +150,7 @@
   <div>{{ changePartnerSavingsLinkHtml | safe }}</div>
 {% endif %}
 
-{% if financialEligibility.category == 'debt' or financialEligibility.category == 'family' %}
+{% if isDisputedCategory %}
   <h2 class="govuk-heading-m">Your disputed savings</h2>
 
   {% set disputedSavings = financialEligibility.disputedSavings %}

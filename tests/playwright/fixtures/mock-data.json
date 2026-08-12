@@ -850,7 +850,7 @@
       "dependants_young": 1,
       "dependants_old": 2,
       "is_you_or_your_partner_over_60": false,
-      "has_partner": true,
+      "has_partner": false,
       "on_passported_benefits": true,
       "is_you_under_18": false,
       "specific_benefits": {
@@ -1491,5 +1491,465 @@
     "postcode": "LL71 7RB",
     "laaReference": "7921179",
     "lastModified": "2025-01-08T19:00:00-05:00"
+  },
+  {
+    "fullName": "Pamela Doleman",
+    "caseReference": "PC-3667-1139",
+    "providerId": "12",
+    "refCode": "",
+    "category": "Debt, money problems and bankruptcy",
+    "dateReceived": "2025-08-07T19:00:00-05:00",
+    "lastModified": "2025-08-08T17:30:00-05:00",
+    "caseStatus": "Pending",
+    "dateOfBirth": "1979-11-12T00:00:00-05:00",
+    "vulnerableUser": true,
+    "language": "Polish",
+    "phoneNumber": "0777933128",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "pamela_doleman@outlook.com",
+    "address": "543 Queen Street, Newcastle",
+    "postcode": "LE7 2UL",
+    "laaReference": "2850581",
+    "client_notes": "Some notes about beer",
+    "thirdParty": {
+      "fullName": "Samira Patel",
+      "emailAddress": "samira@patel.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "LEGAL_ADVISOR"
+        ]
+      },
+      "passphraseSetUp": {
+        "selected": [
+          "No, client is a child or patient"
+        ]
+      }
+    },
+    "clientSupportNeeds": {
+      "bslWebcam": "Yes",
+      "textRelay": "No",
+      "callbackPreference": "No",
+      "languageSupportNeeds": "English",
+      "notes": "Here are some notes from the operator!"
+    },
+    "financialEligibility": {
+      "your_problem_notes": "",
+      "reference": "PC-3667-1139",
+      "notes": "",
+      "category": "debt",
+      "property_set": [
+        {
+          "value": 15000000,
+          "mortgage_left": 6000000,
+          "share": 100,
+          "id": 1362,
+          "disputed": false,
+          "main": true
+        }
+      ],
+      "you": {
+        "income": {
+          "earnings": {
+            "per_interval_value": 12000,
+            "interval_period": "per_month"
+          },
+          "self_employment_drawings": {
+            "per_interval_value": 20000,
+            "interval_period": "per_week"
+          },
+          "benefits": {
+            "per_interval_value": 50000,
+            "interval_period": "per_year"
+          },
+          "tax_credits": {
+            "per_interval_value": 10000,
+            "interval_period": "per_month"
+          },
+          "child_benefits": {
+            "per_interval_value": 20000,
+            "interval_period": "per_month"
+          },
+          "maintenance_received": {
+            "per_interval_value": 10000,
+            "interval_period": "per_month"
+          },
+          "pension": {
+            "per_interval_value": 10000,
+            "interval_period": "per_month"
+          },
+          "other_income": {
+            "per_interval_value": 0,
+            "interval_period": "per_month"
+          },
+          "self_employed": false,
+          "total": 88749
+        },
+        "savings": {
+          "bank_balance": 10000,
+          "investment_balance": 30000,
+          "asset_balance": 50000,
+          "credit_balance": 10000,
+          "total": 90000
+        },
+        "deductions": {
+          "income_tax": {
+            "per_interval_value": 0,
+            "interval_period": "per_4week"
+          },
+          "national_insurance": {
+            "per_interval_value": 0,
+            "interval_period": "per_2week"
+          },
+          "maintenance": {
+            "per_interval_value": 2000,
+            "interval_period": "per_month"
+          },
+          "childcare": {
+            "per_interval_value": 5000,
+            "interval_period": "per_month"
+          },
+          "mortgage": {
+            "per_interval_value": 35000,
+            "interval_period": "per_month"
+          },
+          "rent": {
+            "per_interval_value": 25000,
+            "interval_period": "per_month"
+          },
+          "criminal_legalaid_contributions": 2000,
+          "total": 38000
+        }
+      },
+      "partner": {
+        "income": {
+          "earnings": {
+            "per_interval_value": 13000,
+            "interval_period": "per_month"
+          },
+          "self_employment_drawings": {
+            "per_interval_value": 10000,
+            "interval_period": "per_week"
+          },
+          "benefits": {
+            "per_interval_value": 50000,
+            "interval_period": "per_year"
+          },
+          "tax_credits": {
+            "per_interval_value": 20000,
+            "interval_period": "per_month"
+          },
+          "child_benefits": {
+            "per_interval_value": 30000,
+            "interval_period": "per_month"
+          },
+          "maintenance_received": {
+            "per_interval_value": 20000,
+            "interval_period": "per_month"
+          },
+          "pension": {
+            "per_interval_value": 20000,
+            "interval_period": "per_month"
+          },
+          "other_income": {
+            "per_interval_value": 0,
+            "interval_period": "per_month"
+          },
+          "self_employed": false,
+          "total": 88749
+        },
+        "savings": {
+          "bank_balance": 20000,
+          "investment_balance": 10000,
+          "asset_balance": 50000,
+          "credit_balance": 20000,
+          "total": 100000
+        },
+        "deductions": {
+          "income_tax": {
+            "per_interval_value": 0,
+            "interval_period": "per_4week"
+          },
+          "national_insurance": {
+            "per_interval_value": 0,
+            "interval_period": "per_2week"
+          },
+          "maintenance": {
+            "per_interval_value": 4000,
+            "interval_period": "per_month"
+          },
+          "childcare": {
+            "per_interval_value": 3000,
+            "interval_period": "per_month"
+          },
+          "mortgage": {
+            "per_interval_value": 30000,
+            "interval_period": "per_month"
+          },
+          "rent": {
+            "per_interval_value": 20000,
+            "interval_period": "per_month"
+          },
+          "criminal_legalaid_contributions": 1000,
+          "total": 38000
+        }
+      },
+      "disputed_savings": {
+          "bank_balance": 20000,
+          "investment_balance": 10000,
+          "asset_balance": 50000,
+          "credit_balance": 20000,
+          "total": 100000
+      },
+      "dependants_young": 1,
+      "dependants_old": 2,
+      "is_you_or_your_partner_over_60": false,
+      "has_partner": true,
+      "is_you_under_18": false,
+      "specific_benefits": {
+        "pension_credit": false,
+        "job_seekers_allowance": false,
+        "employment_support": false,
+        "universal_credit": false,
+        "income_support": false
+      },
+      "disregards": {
+        "cost_living": true
+      }
+    }
+  },
+  {
+    "fullName": "Christina Jones",
+    "caseReference": "PC-7753-8992",
+    "providerId": "12",
+    "refCode": "",
+    "category": "Family, marriage, separation and children",
+    "dateReceived": "2025-08-07T19:00:00-05:00",
+    "lastModified": "2025-08-08T17:30:00-05:00",
+    "caseStatus": "Pending",
+    "dateOfBirth": "1979-11-12T00:00:00-05:00",
+    "vulnerableUser": true,
+    "language": "Polish",
+    "phoneNumber": "0777933128",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "christina_jones@outlook.com",
+    "address": "542 Joker Street, Newcastle",
+    "postcode": "LE3 9AL",
+    "laaReference": "2850581",
+    "client_notes": "Some notes about beer",
+    "thirdParty": {
+      "fullName": "Samira Patel",
+      "emailAddress": "samira@patel.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "LEGAL_ADVISOR"
+        ]
+      },
+      "passphraseSetUp": {
+        "selected": [
+          "No, client is a child or patient"
+        ]
+      }
+    },
+    "clientSupportNeeds": {
+      "bslWebcam": "Yes",
+      "textRelay": "No",
+      "callbackPreference": "No",
+      "languageSupportNeeds": "English",
+      "notes": "Here are some notes from the operator!"
+    },
+    "financialEligibility": {
+      "your_problem_notes": "",
+      "reference": "PC-7753-8992",
+      "notes": "",
+      "category": "family",
+      "property_set": [
+        {
+          "value": 15000000,
+          "mortgage_left": 6000000,
+          "share": 100,
+          "id": 1362,
+          "disputed": false,
+          "main": true
+        }
+      ],
+      "you": {
+        "income": {
+          "earnings": {
+            "per_interval_value": 12000,
+            "interval_period": "per_month"
+          },
+          "self_employment_drawings": {
+            "per_interval_value": 20000,
+            "interval_period": "per_week"
+          },
+          "benefits": {
+            "per_interval_value": 50000,
+            "interval_period": "per_year"
+          },
+          "tax_credits": {
+            "per_interval_value": 10000,
+            "interval_period": "per_month"
+          },
+          "child_benefits": {
+            "per_interval_value": 20000,
+            "interval_period": "per_month"
+          },
+          "maintenance_received": {
+            "per_interval_value": 10000,
+            "interval_period": "per_month"
+          },
+          "pension": {
+            "per_interval_value": 10000,
+            "interval_period": "per_month"
+          },
+          "other_income": {
+            "per_interval_value": 0,
+            "interval_period": "per_month"
+          },
+          "self_employed": false,
+          "total": 88749
+        },
+        "savings": {
+          "bank_balance": 10000,
+          "investment_balance": 30000,
+          "asset_balance": 50000,
+          "credit_balance": 10000,
+          "total": 90000
+        },
+        "deductions": {
+          "income_tax": {
+            "per_interval_value": 0,
+            "interval_period": "per_4week"
+          },
+          "national_insurance": {
+            "per_interval_value": 0,
+            "interval_period": "per_2week"
+          },
+          "maintenance": {
+            "per_interval_value": 2000,
+            "interval_period": "per_month"
+          },
+          "childcare": {
+            "per_interval_value": 5000,
+            "interval_period": "per_month"
+          },
+          "mortgage": {
+            "per_interval_value": 35000,
+            "interval_period": "per_month"
+          },
+          "rent": {
+            "per_interval_value": 25000,
+            "interval_period": "per_month"
+          },
+          "criminal_legalaid_contributions": 2000,
+          "total": 38000
+        }
+      },
+      "partner": {
+        "income": {
+          "earnings": {
+            "per_interval_value": 13000,
+            "interval_period": "per_month"
+          },
+          "self_employment_drawings": {
+            "per_interval_value": 10000,
+            "interval_period": "per_week"
+          },
+          "benefits": {
+            "per_interval_value": 50000,
+            "interval_period": "per_year"
+          },
+          "tax_credits": {
+            "per_interval_value": 20000,
+            "interval_period": "per_month"
+          },
+          "child_benefits": {
+            "per_interval_value": 30000,
+            "interval_period": "per_month"
+          },
+          "maintenance_received": {
+            "per_interval_value": 20000,
+            "interval_period": "per_month"
+          },
+          "pension": {
+            "per_interval_value": 20000,
+            "interval_period": "per_month"
+          },
+          "other_income": {
+            "per_interval_value": 0,
+            "interval_period": "per_month"
+          },
+          "self_employed": false,
+          "total": 88749
+        },
+        "savings": {
+          "bank_balance": 20000,
+          "investment_balance": 10000,
+          "asset_balance": 50000,
+          "credit_balance": 20000,
+          "total": 100000
+        },
+        "deductions": {
+          "income_tax": {
+            "per_interval_value": 0,
+            "interval_period": "per_4week"
+          },
+          "national_insurance": {
+            "per_interval_value": 0,
+            "interval_period": "per_2week"
+          },
+          "maintenance": {
+            "per_interval_value": 4000,
+            "interval_period": "per_month"
+          },
+          "childcare": {
+            "per_interval_value": 3000,
+            "interval_period": "per_month"
+          },
+          "mortgage": {
+            "per_interval_value": 30000,
+            "interval_period": "per_month"
+          },
+          "rent": {
+            "per_interval_value": 20000,
+            "interval_period": "per_month"
+          },
+          "criminal_legalaid_contributions": 1000,
+          "total": 38000
+        }
+      },
+      "disputed_savings": {
+          "bank_balance": 20000,
+          "investment_balance": 10000,
+          "asset_balance": 50000,
+          "credit_balance": 20000,
+          "total": 100000
+      },
+      "dependants_young": 1,
+      "dependants_old": 2,
+      "is_you_or_your_partner_over_60": false,
+      "has_partner": true,
+      "is_you_under_18": false,
+      "specific_benefits": {
+        "pension_credit": false,
+        "job_seekers_allowance": false,
+        "employment_support": false,
+        "universal_credit": false,
+        "income_support": false
+      },
+      "disregards": {
+        "cost_living": true
+      }
+    }
   }
 ]
