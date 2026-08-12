@@ -1,9 +1,10 @@
-import { submit, redirect, Condition, Post, access, validation, Data, Iterator, Answer, Format, Loop, Transformer } from '@ministryofjustice/hmpps-forge/core/authoring'
+import { submit, redirect, Condition, or, Post, access, validation, Data, Iterator, Answer, Format, Loop, Transformer } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { continueButton, discardChangesButton, ifPressedDiscardChanges } from '../commonBlocks.js'
 import { propertiesHeading, propertySet, addAnotherButton } from './propertiesBlock.js'
 import { FinancialEligibilityEffects, PatternEffects } from '../effects.js'
 import { step, type StepDefinition } from '../authoring.js'
 import { savingsStep } from '../savingsPage/savingsStep.js'
+import { undisputedSavingsStep } from '../undisputedSavings/undisputedSavingsStep.js'
 
 const STEP_CODE = 'properties'
 const collectionCode = 'propertySet'
@@ -51,7 +52,18 @@ export const propertiesStep: StepDefinition = step({
       validate: true,
       onValid: {
         effects: [FinancialEligibilityEffects.SaveNewAnswerIfAnswered(), PatternEffects.SaveRepeatingItems(STEP_CODE, collectionCode, fieldCodes)],
-        next: [redirect({ goto: savingsStep.code })],
+        next: [
+          redirect({
+            when: or (
+              Answer('category').match(Condition.Equals('debt')), 
+              Answer('category').match(Condition.Equals('family'))
+            ),
+            goto: undisputedSavingsStep.code
+          }),
+          redirect({
+            goto: savingsStep.code
+          }),
+        ],
       },
     }),
   ],

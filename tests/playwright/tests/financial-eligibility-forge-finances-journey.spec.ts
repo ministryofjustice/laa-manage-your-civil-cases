@@ -385,11 +385,11 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Savings: None
-      await expect(page).toHaveURL('/cases/PC-1357-1212/financial-eligibility/change/your-savings');
+      await expect(page).toHaveURL('/cases/PC-1357-1212/financial-eligibility/change/your-undisputed-savings');
       await completeSavingsValues(page);
 
       // Partner Savings: None
-      await expect(page).toHaveURL('/cases/PC-1357-1212/financial-eligibility/change/partner-savings');
+      await expect(page).toHaveURL('/cases/PC-1357-1212/financial-eligibility/change/partner-undisputed-savings');
       await completePartnerSavingsValues(page);
 
       await expect(page).toHaveURL('/cases/PC-1357-1212/financial-eligibility/change/disputed-savings');
