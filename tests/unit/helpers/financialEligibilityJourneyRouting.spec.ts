@@ -11,6 +11,11 @@ import { savingsStep } from '#packages/financial-eligibility-journey/src/savings
 import { partnerSavingsStep } from '#packages/financial-eligibility-journey/src/partnerSavingsPage/partnerSavingsStep.js';
 import { disputedSavingsStep } from '#packages/financial-eligibility-journey/src/disputedSavingsPage/disputedSavingsStep.js';
 import { disregardsStep } from '#packages/financial-eligibility-journey/src/disregardsPage/disregardsStep.js';
+import { incomeStep } from '#packages/financial-eligibility-journey/src/incomePage/incomeStep.js';
+import { partnerIncomeStep } from '#packages/financial-eligibility-journey/src/partnerIncomePage/partnerIncomeStep.js';
+import { dependantsStep } from '#packages/financial-eligibility-journey/src/dependantsPage/dependantsStep.js';
+import { expensesStep } from '#packages/financial-eligibility-journey/src/expensesPage/expensesStep.js';
+import { partnerExpensesStep } from '#packages/financial-eligibility-journey/src/partnerExpensesPage/partnerExpensesStep.js';
 import { checkAnswersStep } from '#packages/financial-eligibility-journey/src/checkAnswersPage/checkAnswersStep.js';
 
 describe('Financial eligibility Forge routing', () => {
@@ -145,6 +150,63 @@ describe('Financial eligibility Forge routing', () => {
 
   it('routes disregards answers to the correct next steps', () => {
     const submitConfig = disregardsStep.onSubmission?.[1];
+    const next = submitConfig?.onValid?.next;
+    const redirectGoesTo = (next ?? [])
+      .map((outcome) => ('goto' in outcome ? outcome.goto : null))
+      .filter((goto): goto is string => goto !== null);
+
+    expect(redirectGoesTo).to.have.length(1);
+    expect(redirectGoesTo[0]).to.equal(incomeStep.code);
+  });
+
+  it('routes your-income answers to the correct next steps', () => {
+    const submitConfig = incomeStep.onSubmission?.[1];
+    const next = submitConfig?.onValid?.next;
+    const redirectGoesTo = (next ?? [])
+      .map((outcome) => ('goto' in outcome ? outcome.goto : null))
+      .filter((goto): goto is string => goto !== null);
+
+    expect(redirectGoesTo).to.have.length(2);
+    expect(redirectGoesTo[0]).to.equal(partnerIncomeStep.code);
+    expect(redirectGoesTo[1]).to.equal(dependantsStep.code);
+  });
+
+  it('routes partner-income answers to the correct next steps', () => {
+    const submitConfig = partnerIncomeStep.onSubmission?.[1];
+    const next = submitConfig?.onValid?.next;
+    const redirectGoesTo = (next ?? [])
+      .map((outcome) => ('goto' in outcome ? outcome.goto : null))
+      .filter((goto): goto is string => goto !== null);
+
+    expect(redirectGoesTo).to.have.length(1);
+    expect(redirectGoesTo[0]).to.equal(dependantsStep.code);
+  });
+
+  it('routes dependants answers to the correct next steps', () => {
+    const submitConfig = dependantsStep.onSubmission?.[1];
+    const next = submitConfig?.onValid?.next;
+    const redirectGoesTo = (next ?? [])
+      .map((outcome) => ('goto' in outcome ? outcome.goto : null))
+      .filter((goto): goto is string => goto !== null);
+
+    expect(redirectGoesTo).to.have.length(1);
+    expect(redirectGoesTo[0]).to.equal(expensesStep.code);
+  });
+
+  it('routes your-expenses answers to the correct next steps', () => {
+    const submitConfig = expensesStep.onSubmission?.[1];
+    const next = submitConfig?.onValid?.next;
+    const redirectGoesTo = (next ?? [])
+      .map((outcome) => ('goto' in outcome ? outcome.goto : null))
+      .filter((goto): goto is string => goto !== null);
+
+    expect(redirectGoesTo).to.have.length(2);
+    expect(redirectGoesTo[0]).to.equal(partnerExpensesStep.code);
+    expect(redirectGoesTo[1]).to.equal(checkAnswersStep.code);
+  });
+
+  it('routes partner-expenses answers to the correct next steps', () => {
+    const submitConfig = partnerExpensesStep.onSubmission?.[1];
     const next = submitConfig?.onValid?.next;
     const redirectGoesTo = (next ?? [])
       .map((outcome) => ('goto' in outcome ? outcome.goto : null))

@@ -683,6 +683,242 @@ describe('mapAnswersToApiPayload', () => {
     });
   });
 
+  describe('Income and deductions field mapping', () => {
+    describe('Client income (you.income)', () => {
+      it('should nest income fields under `you.income`', () => {
+        const answers = { earnings: '1200', 'earnings-frequency': 'per_month' };
+        const result = mapAnswersToApiPayload(answers);
+
+        expect(result.you).to.exist;
+        expect((result.you as Record<string, unknown>).income).to.exist;
+      });
+
+      it('should convert an amount to pence and keep the chosen frequency', () => {
+        const answers = { earnings: '1200', 'earnings-frequency': 'per_week' };
+        const result = mapAnswersToApiPayload(answers);
+
+        const income = (result.you as Record<string, Record<string, unknown>>).income;
+        expect(income.earnings).to.deep.equal({ per_interval_value: 120000, interval_period: 'per_week' });
+      });
+
+      it('should default the frequency to `per_month` when no frequency answer is present', () => {
+        const answers = { earnings: '1200' };
+        const result = mapAnswersToApiPayload(answers);
+
+        const income = (result.you as Record<string, Record<string, unknown>>).income;
+        expect(income.earnings).to.deep.equal({ per_interval_value: 120000, interval_period: 'per_month' });
+      });
+
+      it('should map all seven income fields under `you.income`', () => {
+        const answers = {
+          earnings: '100',
+          'self-employment-drawings': '200',
+          'income-benefits': '300',
+          'tax-credits': '400',
+          'maintenance-received': '500',
+          'pension-income': '600',
+          'other-income': '700',
+        };
+        const result = mapAnswersToApiPayload(answers);
+
+        const income = (result.you as Record<string, Record<string, unknown>>).income;
+        expect(income).to.deep.equal({
+          earnings: { per_interval_value: 10000, interval_period: 'per_month' },
+          self_employment_drawings: { per_interval_value: 20000, interval_period: 'per_month' },
+          benefits: { per_interval_value: 30000, interval_period: 'per_month' },
+          tax_credits: { per_interval_value: 40000, interval_period: 'per_month' },
+          maintenance_received: { per_interval_value: 50000, interval_period: 'per_month' },
+          pension: { per_interval_value: 60000, interval_period: 'per_month' },
+          other_income: { per_interval_value: 70000, interval_period: 'per_month' },
+        });
+      });
+
+      it('should map `self-employed` yes/no answer to a boolean on `you.income`', () => {
+        const yesResult = mapAnswersToApiPayload({ 'self-employed': 'yes' });
+        const noResult = mapAnswersToApiPayload({ 'self-employed': 'no' });
+
+        expect((yesResult.you as Record<string, Record<string, unknown>>).income.self_employed).to.equal(true);
+        expect((noResult.you as Record<string, Record<string, unknown>>).income.self_employed).to.equal(false);
+      });
+
+      it('should not create `you.income` when no income fields are present', () => {
+        const answers = { 'under-18': 'yes' };
+        const result = mapAnswersToApiPayload(answers);
+
+        expect(result.you).to.be.undefined;
+      });
+
+      it('should nest deduction fields under `you.deductions`, independently of `you.income`', () => {
+        const answers = { 'income-tax': '200', 'income-tax-frequency': 'per_year', 'national-insurance': '100' };
+        const result = mapAnswersToApiPayload(answers);
+
+        const youPayload = result.you as Record<string, Record<string, unknown>>;
+        expect(youPayload.deductions).to.deep.equal({
+          income_tax: { per_interval_value: 20000, interval_period: 'per_year' },
+          national_insurance: { per_interval_value: 10000, interval_period: 'per_month' },
+        });
+        expect(youPayload.income).to.be.undefined;
+      });
+    });
+
+    describe('Partner income (partner.income)', () => {
+      it('should nest partner income fields under `partner.income`, independently of the client', () => {
+        const answers = { 'earnings-partner': '900', 'earnings-partner-frequency': 'per_4week', earnings: '100' };
+        const result = mapAnswersToApiPayload(answers);
+
+        const partnerIncome = (result.partner as Record<string, Record<string, unknown>>).income;
+        const clientIncome = (result.you as Record<string, Record<string, unknown>>).income;
+        expect(partnerIncome.earnings).to.deep.equal({ per_interval_value: 90000, interval_period: 'per_4week' });
+        expect(clientIncome.earnings).to.deep.equal({ per_interval_value: 10000, interval_period: 'per_month' });
+      });
+
+      it('should map `self-employed-partner` yes/no answer to a boolean on `partner.income`', () => {
+        const result = mapAnswersToApiPayload({ 'self-employed-partner': 'yes' });
+
+        expect((result.partner as Record<string, Record<string, unknown>>).income.self_employed).to.equal(true);
+      });
+
+      it('should nest partner deduction fields under `partner.deductions`', () => {
+        const answers = { 'income-tax-partner': '50', 'national-insurance-partner': '25' };
+        const result = mapAnswersToApiPayload(answers);
+
+        const partnerPayload = result.partner as Record<string, Record<string, unknown>>;
+        expect(partnerPayload.deductions).to.deep.equal({
+          income_tax: { per_interval_value: 5000, interval_period: 'per_month' },
+          national_insurance: { per_interval_value: 2500, interval_period: 'per_month' },
+        });
+      });
+
+      it('should not create `partner` when no partner income or deduction fields are present', () => {
+        const answers = { earnings: '100' };
+        const result = mapAnswersToApiPayload(answers);
+
+        expect(result.partner).to.be.undefined;
+      });
+    });
+  });
+
+  describe('Dependants field mapping', () => {
+    it('should map dependants aged 16 and over to `dependants_old` as a plain integer', () => {
+      const answers = { 'dependants-16-over': '2' };
+      const result = mapAnswersToApiPayload(answers);
+
+      expect(result.dependants_old).to.equal(2);
+    });
+
+    it('should map dependants aged 15 and under to `dependants_young` as a plain integer', () => {
+      const answers = { 'dependants-15-under': '3' };
+      const result = mapAnswersToApiPayload(answers);
+
+      expect(result.dependants_young).to.equal(3);
+    });
+
+    it('should map \'0\' to 0 for both dependants fields', () => {
+      const answers = { 'dependants-16-over': '0', 'dependants-15-under': '0' };
+      const result = mapAnswersToApiPayload(answers);
+
+      expect(result.dependants_old).to.equal(0);
+      expect(result.dependants_young).to.equal(0);
+    });
+
+    it('should not apply pence-style multiplication to dependants counts', () => {
+      const answers = { 'dependants-16-over': '5' };
+      const result = mapAnswersToApiPayload(answers);
+
+      expect(result.dependants_old).to.equal(5);
+      expect(result.dependants_old).to.not.equal(500);
+    });
+
+    it('should round a fractional dependants value to the nearest whole number', () => {
+      const answers = { 'dependants-16-over': '2.6' };
+      const result = mapAnswersToApiPayload(answers);
+
+      expect(result.dependants_old).to.equal(3);
+    });
+
+    it('should not nest dependants fields under `you` or `partner`', () => {
+      const answers = { 'dependants-16-over': '2', 'dependants-15-under': '1' };
+      const result = mapAnswersToApiPayload(answers);
+
+      expect(result.you).to.be.undefined;
+      expect(result.partner).to.be.undefined;
+    });
+
+    it('should keep the two dependants fields independent of each other', () => {
+      const answers = { 'dependants-16-over': '4' };
+      const result = mapAnswersToApiPayload(answers);
+
+      expect(result.dependants_old).to.equal(4);
+      expect(result.dependants_young).to.be.undefined;
+    });
+  });
+
+  describe('Expenses field mapping', () => {
+    describe('Client expenses (you.deductions)', () => {
+      it('should nest expense fields under `you.deductions`, converted to pence, alongside income-tax/national-insurance', () => {
+        const answers = {
+          mortgage: '500', 'mortgage-frequency': 'per_month',
+          rent: '300',
+          'maintenance-paid': '100', 'maintenance-paid-frequency': 'per_week',
+          'childcare-costs': '50',
+          'income-tax': '200',
+        };
+        const result = mapAnswersToApiPayload(answers);
+
+        const deductions = (result.you as Record<string, Record<string, unknown>>).deductions;
+        expect(deductions).to.deep.equal({
+          mortgage: { per_interval_value: 50000, interval_period: 'per_month' },
+          rent: { per_interval_value: 30000, interval_period: 'per_month' },
+          maintenance: { per_interval_value: 10000, interval_period: 'per_week' },
+          childcare: { per_interval_value: 5000, interval_period: 'per_month' },
+          income_tax: { per_interval_value: 20000, interval_period: 'per_month' },
+        });
+      });
+
+      it('should map legal aid contributions to `criminal_legalaid_contributions` as a flat pence number', () => {
+        const answers = { 'legal-aid-contributions': '75' };
+        const result = mapAnswersToApiPayload(answers);
+
+        const deductions = (result.you as Record<string, Record<string, unknown>>).deductions;
+        expect(deductions.criminal_legalaid_contributions).to.equal(7500);
+      });
+
+      it('should not create `you.deductions` when no expense or deduction fields are present', () => {
+        const answers = { 'under-18': 'yes' };
+        const result = mapAnswersToApiPayload(answers);
+
+        expect(result.you).to.be.undefined;
+      });
+    });
+
+    describe('Partner expenses (partner.deductions)', () => {
+      it('should nest partner expense fields under `partner.deductions`, independently of the client', () => {
+        const answers = { 'mortgage-partner': '900', 'mortgage-partner-frequency': 'per_4week', mortgage: '100' };
+        const result = mapAnswersToApiPayload(answers);
+
+        const partnerDeductions = (result.partner as Record<string, Record<string, unknown>>).deductions;
+        const clientDeductions = (result.you as Record<string, Record<string, unknown>>).deductions;
+        expect(partnerDeductions.mortgage).to.deep.equal({ per_interval_value: 90000, interval_period: 'per_4week' });
+        expect(clientDeductions.mortgage).to.deep.equal({ per_interval_value: 10000, interval_period: 'per_month' });
+      });
+
+      it('should map the partner\'s legal aid contributions to `criminal_legalaid_contributions` as a flat pence number', () => {
+        const answers = { 'legal-aid-contributions-partner': '40' };
+        const result = mapAnswersToApiPayload(answers);
+
+        const partnerDeductions = (result.partner as Record<string, Record<string, unknown>>).deductions;
+        expect(partnerDeductions.criminal_legalaid_contributions).to.equal(4000);
+      });
+
+      it('should not create `partner` when no partner expense fields are present', () => {
+        const answers = { mortgage: '100' };
+        const result = mapAnswersToApiPayload(answers);
+
+        expect(result.partner).to.be.undefined;
+      });
+    });
+  });
+
   describe('Edge cases', () => {
     it('should handle empty answers object', () => {
       const answers = {};
@@ -848,6 +1084,103 @@ describe('FinancialEligibilityEffectsWithDepsImpl', () => {
       await effects.LoadCaseFinancialEligibility(deps, context);
 
       expect(context.getAnswer('under-18')).to.equal('no');
+    });
+
+    it('maps income, deductions and dependants data from the API onto their Forge answers', async () => {
+      const dataWithIncomeAndDependants = {
+        ...financialEligibilityData,
+        clientData: {
+          ...financialEligibilityData.clientData,
+          income: {
+            earnings: { amount: 1200, time: 'per_week' },
+            selfEmploymentDrawings: { amount: 0, time: 'per_month' },
+            benefits: { amount: 0, time: 'per_month' },
+            taxCredits: { amount: 0, time: 'per_month' },
+            maintenanceReceived: { amount: 0, time: 'per_month' },
+            pension: { amount: 0, time: 'per_month' },
+            otherIncome: { amount: 0, time: 'per_month' },
+            selfEmployed: true,
+          },
+          deductions: {
+            incomeTax: { amount: 200, time: 'per_month' },
+            nationalInsurance: { amount: 100, time: 'per_month' },
+            mortgage: { amount: 500, time: 'per_month' },
+            rent: { amount: 300, time: 'per_week' },
+            maintenance: { amount: 150, time: 'per_month' },
+            childcare: { amount: 80, time: 'per_month' },
+            criminalContributions: { amount: 20, time: 'per_month' },
+          },
+        },
+        partnerData: {
+          ...financialEligibilityData.partnerData,
+          partnerIncome: {
+            earnings: { amount: 900, time: 'per_4week' },
+            selfEmploymentDrawings: { amount: 0, time: 'per_month' },
+            benefits: { amount: 0, time: 'per_month' },
+            taxCredits: { amount: 0, time: 'per_month' },
+            maintenanceReceived: { amount: 0, time: 'per_month' },
+            pension: { amount: 0, time: 'per_month' },
+            otherIncome: { amount: 0, time: 'per_month' },
+            selfEmployed: false,
+          },
+          partnerDeductions: {
+            incomeTax: { amount: 50, time: 'per_month' },
+            nationalInsurance: { amount: 25, time: 'per_month' },
+            mortgage: { amount: 400, time: 'per_month' },
+            rent: { amount: 0, time: 'per_month' },
+            maintenance: { amount: 0, time: 'per_month' },
+            childcare: { amount: 0, time: 'per_month' },
+            criminalContributions: { amount: 10, time: 'per_month' },
+          },
+        },
+        dependantsOld: 2,
+        dependantsYoung: 0,
+      };
+      const context = createTestEffectContext({
+        params: { caseReference: 'CASE123' },
+        session: {}
+      });
+      getFinancialEligibilityStub.resolves({ data: dataWithIncomeAndDependants });
+
+      await effects.LoadCaseFinancialEligibility(deps, context);
+
+      expect(context.getAnswer('earnings')).to.equal(1200);
+      expect(context.getAnswer('earnings-frequency')).to.equal('per_week');
+      expect(context.getAnswer('self-employed')).to.equal('yes');
+      expect(context.getAnswer('income-tax')).to.equal(200);
+      expect(context.getAnswer('national-insurance')).to.equal(100);
+
+      expect(context.getAnswer('earnings-partner')).to.equal(900);
+      expect(context.getAnswer('earnings-partner-frequency')).to.equal('per_4week');
+      expect(context.getAnswer('self-employed-partner')).to.equal('no');
+      expect(context.getAnswer('income-tax-partner')).to.equal(50);
+      expect(context.getAnswer('national-insurance-partner')).to.equal(25);
+
+      expect(context.getAnswer('dependants-16-over')).to.equal(2);
+      expect(context.getAnswer('dependants-15-under')).to.equal(0);
+
+      expect(context.getAnswer('mortgage')).to.equal(500);
+      expect(context.getAnswer('rent')).to.equal(300);
+      expect(context.getAnswer('rent-frequency')).to.equal('per_week');
+      expect(context.getAnswer('maintenance-paid')).to.equal(150);
+      expect(context.getAnswer('childcare-costs')).to.equal(80);
+      expect(context.getAnswer('legal-aid-contributions')).to.equal(20);
+
+      expect(context.getAnswer('mortgage-partner')).to.equal(400);
+      expect(context.getAnswer('legal-aid-contributions-partner')).to.equal(10);
+    });
+
+    it('defaults a money field\'s frequency answer to `per_month` when no income/deductions data exists yet', async () => {
+      const context = createTestEffectContext({
+        params: { caseReference: 'CASE123' },
+        session: {}
+      });
+      getFinancialEligibilityStub.resolves({ data: financialEligibilityData });
+
+      await effects.LoadCaseFinancialEligibility(deps, context);
+
+      expect(context.getAnswer('earnings')).to.equal(null);
+      expect(context.getAnswer('earnings-frequency')).to.equal('per_month');
     });
   });
 
