@@ -12,6 +12,11 @@ import { savingsStep } from './savingsPage/savingsStep.js'
 import { partnerSavingsStep } from './partnerSavingsPage/partnerSavingsStep.js'
 import { disputedSavingsStep } from './disputedSavingsPage/disputedSavingsStep.js'
 import { disregardsStep } from './disregardsPage/disregardsStep.js'
+import { incomeStep } from './incomePage/incomeStep.js'
+import { partnerIncomeStep } from './partnerIncomePage/partnerIncomeStep.js'
+import { dependantsStep } from './dependantsPage/dependantsStep.js'
+import { expensesStep } from './expensesPage/expensesStep.js'
+import { partnerExpensesStep } from './partnerExpensesPage/partnerExpensesStep.js'
 import { checkAnswersStep } from './checkAnswersPage/checkAnswersStep.js'
 
 // The loads any stored draft answers on every access, so switching between branches preserves earlier input.
@@ -42,6 +47,11 @@ export const eligibilityJourney = journey({
     partnerSavingsStep,
     disputedSavingsStep,
     disregardsStep,
+    incomeStep,
+    partnerIncomeStep,
+    dependantsStep,
+    expensesStep,
+    partnerExpensesStep,
     checkAnswersStep,
   ],
 })

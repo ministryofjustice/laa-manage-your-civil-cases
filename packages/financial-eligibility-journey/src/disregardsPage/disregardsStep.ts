@@ -3,7 +3,7 @@ import { continueButton, discardChangesButton, ifPressedDiscardChanges } from '.
 import { disregardsHeading, disregardsField } from './disregardsBlock.js'
 import { FinancialEligibilityEffects } from '../effects.js'
 import { step, type StepDefinition } from '../authoring.js'
-import { checkAnswersStep } from '../checkAnswersPage/checkAnswersStep.js'
+import { incomeStep } from '../incomePage/incomeStep.js'
 
 const STEP_CODE = 'disregards'
 
@@ -19,7 +19,7 @@ export const disregardsStep: StepDefinition = step({
       validate: true,
       onValid: {
         effects: [FinancialEligibilityEffects.SaveNewAnswerIfAnswered()],
-        next: [redirect({ goto: checkAnswersStep.code })],
+        next: [redirect({ goto: incomeStep.code })],
       },
     }),
   ],
