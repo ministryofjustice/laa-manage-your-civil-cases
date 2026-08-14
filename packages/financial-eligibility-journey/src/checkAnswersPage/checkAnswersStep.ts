@@ -1,6 +1,6 @@
 import { step, submit, redirect, access } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { submitButton, discardChangesButton, ifPressedDiscardChanges } from '../commonBlocks.js'
-import { checkYourAnswersHeading, aboutYouSummaryList, benefitsSummaryList, financesHeading, propertiesSummaryList, savingsSummaryList, partnerSavingsSummaryList, disputedSavingsSummaryList, disregardsSummaryList } from './checkAnswersBlock.js'
+import { checkYourAnswersHeading, aboutYouSummaryList, benefitsSummaryList, financesHeading, propertiesSummaryList, savingsSummaryList, partnerSavingsSummaryList, disputedSavingsSummaryList, disregardsSummaryList, incomeSummaryList, partnerIncomeSummaryList, dependantsSummaryList, expensesSummaryList, partnerExpensesSummaryList } from './checkAnswersBlock.js'
 import { FinancialEligibilityEffects, PatternEffects } from '../effects.js'
 import { type StepDefinition } from '../authoring.js'
 
@@ -14,7 +14,7 @@ export const checkAnswersStep: StepDefinition = step({
   path: '/check-answers',
   title: 'Check your answers',
   reachability: { entryWhen: true },
-  blocks: [checkYourAnswersHeading, aboutYouSummaryList, benefitsSummaryList, financesHeading, propertiesSummaryList, savingsSummaryList, partnerSavingsSummaryList, disputedSavingsSummaryList, disregardsSummaryList, submitButton, discardChangesButton],
+  blocks: [checkYourAnswersHeading, aboutYouSummaryList, benefitsSummaryList, financesHeading, propertiesSummaryList, savingsSummaryList, partnerSavingsSummaryList, disputedSavingsSummaryList, disregardsSummaryList, incomeSummaryList, partnerIncomeSummaryList, dependantsSummaryList, expensesSummaryList, partnerExpensesSummaryList, submitButton, discardChangesButton],
   onAccess: [
     access({
       effects: [PatternEffects.InitialiseRepeatingFieldset(propertiesStepCode, propertiesCollectionCode, propertiesFieldCodes)],

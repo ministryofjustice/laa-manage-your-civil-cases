@@ -2,6 +2,7 @@ import { Answer, Condition, Conditional, Data, Format, Item, Iterator, Literal, 
 import { CollectionBlock } from '@ministryofjustice/hmpps-forge/core/components'
 import { GovUKHeading, GovUKSummaryList, GovUKUtilityClasses } from '@ministryofjustice/hmpps-forge/govuk-components'
 import { disregardsLookupItems } from '../disregardsPage/disregardsBlock.js'
+import { frequencyItems } from '../moneyFieldHelpers.js'
 
 const under18Passported = and(
   Answer('under-18').match(Condition.Equals('yes')),
@@ -314,6 +315,237 @@ export const disregardsSummaryList = GovUKSummaryList({
             .pipe(Transformer.Array.Join('<br><br>')),
         }),
       },
+    },
+  ] as GovUKSummaryList['rows'],
+})
+
+/**
+ * Formats a frequency answer for display, matching the frequency dropdown's own label text exactly
+ * @param {string} frequencyCode The Forge answer code for the frequency select
+ * @returns {ChainableExpr} The formatted frequency text
+ */
+function frequencyText(frequencyCode: string) {
+  return Answer(frequencyCode).pipe(
+    ...frequencyItems.map((item) => Transformer.String.Replace(item.value, item.text)),
+  )
+}
+
+export const incomeSummaryList = GovUKSummaryList({
+  visibleWhen: not(under18Passported),
+  card: {
+    title: {
+      text: "Income"
+    },
+    actions: {
+      items: [
+        { href: 'your-income', text: 'Change', visuallyHiddenText: 'Change, Income' },
+      ],
+    },
+  },
+  rows: [
+    {
+      key: {
+        text: 'Are you self employed?',
+        classes: GovUKUtilityClasses.Width.TwoThirds,
+      },
+      value: { text: Answer('self-employed').pipe(Transformer.String.Capitalize()) },
+    },
+    {
+      key: { text: 'What did you earn before tax?' },
+      value: { text: Format('£%1 (%2)', Answer('earnings'), frequencyText('earnings-frequency')) },
+    },
+    {
+      key: { text: 'How much tax do you pay?' },
+      value: { text: Format('£%1 (%2)', Answer('income-tax'), frequencyText('income-tax-frequency')) },
+    },
+    {
+      key: { text: 'How much National Insurance do you pay?' },
+      value: { text: Format('£%1 (%2)', Answer('national-insurance'), frequencyText('national-insurance-frequency')) },
+    },
+    {
+      key: { text: 'Self employed drawings (Before Tax)' },
+      value: { text: Format('£%1 (%2)', Answer('self-employment-drawings'), frequencyText('self-employment-drawings-frequency')) },
+    },
+    {
+      key: { text: 'Benefits' },
+      value: { text: Format('£%1 (%2)', Answer('income-benefits'), frequencyText('income-benefits-frequency')) },
+    },
+    {
+      key: { text: 'Tax credits' },
+      value: { text: Format('£%1 (%2)', Answer('tax-credits'), frequencyText('tax-credits-frequency')) },
+    },
+    {
+      key: { text: 'Maintenance received' },
+      value: { text: Format('£%1 (%2)', Answer('maintenance-received'), frequencyText('maintenance-received-frequency')) },
+    },
+    {
+      key: { text: 'Pension income' },
+      value: { text: Format('£%1 (%2)', Answer('pension-income'), frequencyText('pension-income-frequency')) },
+    },
+    {
+      key: { text: 'Other income' },
+      value: { text: Format('£%1 (%2)', Answer('other-income'), frequencyText('other-income-frequency')) },
+    },
+  ] as GovUKSummaryList['rows'],
+})
+
+export const partnerIncomeSummaryList = GovUKSummaryList({
+  visibleWhen: and(
+    Answer('has-partner').match(Condition.Equals('yes')),
+    not(under18Passported)
+  ),
+  card: {
+    title: {
+      text: "Your partner\'s income"
+    },
+    actions: {
+      items: [
+        { href: 'partner-income', text: 'Change', visuallyHiddenText: 'Change, Your partner\'s income' },
+      ],
+    },
+  },
+  rows: [
+    {
+      key: {
+        text: 'Is your partner self employed?',
+        classes: GovUKUtilityClasses.Width.TwoThirds,
+      },
+      value: { text: Answer('self-employed-partner').pipe(Transformer.String.Capitalize()) },
+    },
+    {
+      key: { text: 'What did your partner earn before tax?' },
+      value: { text: Format('£%1 (%2)', Answer('earnings-partner'), frequencyText('earnings-partner-frequency')) },
+    },
+    {
+      key: { text: 'How much tax does your partner pay?' },
+      value: { text: Format('£%1 (%2)', Answer('income-tax-partner'), frequencyText('income-tax-partner-frequency')) },
+    },
+    {
+      key: { text: 'How much National Insurance does your partner pay?' },
+      value: { text: Format('£%1 (%2)', Answer('national-insurance-partner'), frequencyText('national-insurance-partner-frequency')) },
+    },
+    {
+      key: { text: 'Self employed drawings (Before Tax)' },
+      value: { text: Format('£%1 (%2)', Answer('self-employment-drawings-partner'), frequencyText('self-employment-drawings-partner-frequency')) },
+    },
+    {
+      key: { text: 'Benefits' },
+      value: { text: Format('£%1 (%2)', Answer('income-benefits-partner'), frequencyText('income-benefits-partner-frequency')) },
+    },
+    {
+      key: { text: 'Tax credits' },
+      value: { text: Format('£%1 (%2)', Answer('tax-credits-partner'), frequencyText('tax-credits-partner-frequency')) },
+    },
+    {
+      key: { text: 'Maintenance received' },
+      value: { text: Format('£%1 (%2)', Answer('maintenance-received-partner'), frequencyText('maintenance-received-partner-frequency')) },
+    },
+    {
+      key: { text: 'Pension income' },
+      value: { text: Format('£%1 (%2)', Answer('pension-income-partner'), frequencyText('pension-income-partner-frequency')) },
+    },
+    {
+      key: { text: 'Other income' },
+      value: { text: Format('£%1 (%2)', Answer('other-income-partner'), frequencyText('other-income-partner-frequency')) },
+    },
+  ] as GovUKSummaryList['rows'],
+})
+
+export const dependantsSummaryList = GovUKSummaryList({
+  visibleWhen: not(under18Passported),
+  card: {
+    title: {
+      text: "Dependants"
+    },
+    actions: {
+      items: [
+        { href: 'dependants', text: 'Change', visuallyHiddenText: 'Change, Dependants' },
+      ],
+    },
+  },
+  rows: [
+    {
+      key: { text: 'Do you have any dependants aged 16 and over?' },
+      value: { text: Answer('dependants-16-over') },
+    },
+    {
+      key: { text: 'Do you have any dependants aged 15 and under?' },
+      value: { text: Answer('dependants-15-under') },
+    },
+  ] as GovUKSummaryList['rows'],
+})
+
+export const expensesSummaryList = GovUKSummaryList({
+  visibleWhen: not(under18Passported),
+  card: {
+    title: {
+      text: "Expenses"
+    },
+    actions: {
+      items: [
+        { href: 'your-expenses', text: 'Change', visuallyHiddenText: 'Change, Expenses' },
+      ],
+    },
+  },
+  rows: [
+    {
+      key: { text: 'How much do you pay for your mortgage?' },
+      value: { text: Format('£%1 (%2)', Answer('mortgage'), frequencyText('mortgage-frequency')) },
+    },
+    {
+      key: { text: 'How much do you pay for rent? The amount entered should not include any housing benefit or payments for bills.' },
+      value: { text: Format('£%1 (%2)', Answer('rent'), frequencyText('rent-frequency')) },
+    },
+    {
+      key: { text: 'How much maintenance have you paid during the last calendar month (today back to 17th March, 2026)?' },
+      value: { text: Format('£%1 (%2)', Answer('maintenance-paid'), frequencyText('maintenance-paid-frequency')) },
+    },
+    {
+      key: { text: 'Do you have any childcare costs because of work or study? If so, how much?' },
+      value: { text: Format('£%1 (%2)', Answer('childcare-costs'), frequencyText('childcare-costs-frequency')) },
+    },
+    {
+      key: { text: 'Are you currently paying towards legal aid for criminal defence? If so, how much have you paid during the last calendar month (today back to 17th March, 2026)?' },
+      value: { text: Format('£%1', Answer('legal-aid-contributions')) },
+    },
+  ] as GovUKSummaryList['rows'],
+})
+
+export const partnerExpensesSummaryList = GovUKSummaryList({
+  visibleWhen: and(
+    Answer('has-partner').match(Condition.Equals('yes')),
+    not(under18Passported)
+  ),
+  card: {
+    title: {
+      text: "Your partner\'s expenses"
+    },
+    actions: {
+      items: [
+        { href: 'partner-expenses', text: 'Change', visuallyHiddenText: 'Change, Your partner\'s expenses' },
+      ],
+    },
+  },
+  rows: [
+    {
+      key: { text: 'How much does your partner pay for their mortgage?' },
+      value: { text: Format('£%1 (%2)', Answer('mortgage-partner'), frequencyText('mortgage-partner-frequency')) },
+    },
+    {
+      key: { text: 'How much does your partner pay for their rent? The amount entered should not include any housing benefit or payment for bills' },
+      value: { text: Format('£%1 (%2)', Answer('rent-partner'), frequencyText('rent-partner-frequency')) },
+    },
+    {
+      key: { text: 'How much maintenance has your partner paid during the last calendar month?' },
+      value: { text: Format('£%1 (%2)', Answer('maintenance-paid-partner'), frequencyText('maintenance-paid-partner-frequency')) },
+    },
+    {
+      key: { text: 'Does your partner have any childcare costs because of work or study? If so, how much?' },
+      value: { text: Format('£%1 (%2)', Answer('childcare-costs-partner'), frequencyText('childcare-costs-partner-frequency')) },
+    },
+    {
+      key: { text: 'Is your partner currently paying towards legal aid for criminal defence? If so, how much has your partner paid in the last calendar month?' },
+      value: { text: Format('£%1', Answer('legal-aid-contributions-partner')) },
     },
   ] as GovUKSummaryList['rows'],
 })
