@@ -100,6 +100,96 @@ async function reachSavingsWithPartner(page: Page) {
   await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/your-savings`);
 }
 
+async function completeDisregardsNone(page: Page) {
+  await page.getByRole('checkbox', { name: 'None' }).check();
+  await page.getByRole('button', { name: 'Continue' }).click();
+}
+
+async function completeIncomeValues(page: Page) {
+  await page.getByRole('group', { name: 'Are you self employed?' }).getByLabel('No').check();
+  await page.getByRole('spinbutton', { name: 'What did you earn before tax?' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'How much tax do you pay?' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'How much National Insurance do you pay?' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'Self employed drawings' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'Benefits' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'Tax credits' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'Maintenance received' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'Pension income' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'Other income' }).fill('0');
+  await page.getByRole('button', { name: 'Continue' }).click();
+}
+
+async function completePartnerIncomeValues(page: Page) {
+  await page.getByRole('group', { name: 'Is your partner self employed?' }).getByLabel('No').check();
+  await page.getByRole('spinbutton', { name: 'What did your partner earn before tax?' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'How much tax does your partner pay?' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'How much National Insurance does your partner pay?' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'Self employed drawings' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'Benefits' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'Tax credits' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'Maintenance received' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'Pension income' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'Other income' }).fill('0');
+  await page.getByRole('button', { name: 'Continue' }).click();
+}
+
+async function completeDependantsValues(page: Page) {
+  await page.getByRole('spinbutton', { name: 'Do you have any dependants aged 16 and over?' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'Do you have any dependants aged 15 and under?' }).fill('0');
+  await page.getByRole('button', { name: 'Continue' }).click();
+}
+
+async function completeExpensesValues(page: Page) {
+  await page.getByRole('spinbutton', { name: 'How much do you pay for your mortgage?' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'How much do you pay for rent?' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'How much maintenance have you paid during the last calendar month' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'Do you have any childcare costs because of work or study?' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'Are you currently paying towards legal aid for criminal defence?' }).fill('0');
+  await page.getByRole('button', { name: 'Continue' }).click();
+}
+
+async function completePartnerExpensesValues(page: Page) {
+  await page.getByRole('spinbutton', { name: 'How much does your partner pay for their mortgage?' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'How much does your partner pay for their rent?' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'How much maintenance has your partner paid during the last calendar month' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'Does your partner have any childcare costs because of work or study?' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'Is your partner currently paying towards legal aid for criminal defence?' }).fill('0');
+  await page.getByRole('button', { name: 'Continue' }).click();
+}
+
+async function reachIncomeNoPartner(page: Page) {
+  await reachSavingsNoPartner(page);
+  await completeSavingsValues(page);
+
+  await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/disregards`);
+  await completeDisregardsNone(page);
+
+  await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/your-income`);
+}
+
+async function reachIncomeWithPartner(page: Page) {
+  await reachSavingsWithPartner(page);
+  await completeSavingsValues(page);
+
+  await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/partner-savings`);
+  await completePartnerSavingsValues(page);
+
+  await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/disregards`);
+  await completeDisregardsNone(page);
+
+  await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/your-income`);
+}
+
+async function reachExpensesNoPartner(page: Page) {
+  await reachIncomeNoPartner(page);
+  await completeIncomeValues(page);
+
+  await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/dependants`);
+  await completeDependantsValues(page);
+
+  await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/your-expenses`);
+}
+
 test.describe('Financial Eligibility Forge Finances Journey', () => {
   test.beforeEach(async ({ page }) => {
     await setupAuth(page);
@@ -356,17 +446,16 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
   });
 
   test.describe('Disregards routing paths', () => {
-    test('should route disregards to check answers when none is selected', async ({ page }) => {
+    test('should route disregards to your income when none is selected', async ({ page }) => {
       await reachSavingsNoPartner(page);
       await completeSavingsValues(page);
 
       // Disregards: None
       await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/disregards`);
-      await page.getByRole('checkbox', { name: 'None' }).check();
-      await page.getByRole('button', { name: 'Continue' }).click();
+      await completeDisregardsNone(page);
 
-      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/check-answers`);
-      await expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
+      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/your-income`);
+      await expect(page.getByRole('heading', { name: 'Your income' })).toBeVisible();
     });
 
   });
@@ -384,21 +473,159 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
     });
   });
 
-  test.describe('Check answers and submission', () => {
-    test('should submit finances answers from check answers and return to financial eligibility tab', async ({ page }) => {
-      await reachSavingsNoPartner(page);
-      await completeSavingsValues(page);
+  test.describe('"Your income" validation', () => {
+    test('should show validation error when earnings is negative', async ({ page }) => {
+      await reachIncomeNoPartner(page);
 
-      // Disregards: None
-      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/disregards`);
-      await page.getByRole('checkbox', { name: 'None' }).check();
+      await page.getByRole('group', { name: 'Are you self employed?' }).getByLabel('No').check();
+      await page.getByRole('spinbutton', { name: 'What did you earn before tax?' }).fill('-1');
       await page.getByRole('button', { name: 'Continue' }).click();
 
+      await expect(page.getByRole('link', { name: 'What you earned before tax must be a positive number' })).toBeVisible();
+    });
+  });
+
+  test.describe('"Your income" routing paths', () => {
+    test('should route income to dependants when no partner', async ({ page }) => {
+      await reachIncomeNoPartner(page);
+      await expect(page.getByRole('heading', { name: 'Your income' })).toBeVisible();
+
+      await completeIncomeValues(page);
+
+      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/dependants`);
+      await expect(page.getByRole('heading', { name: 'Dependants' })).toBeVisible();
+    });
+
+    test('should route income to partner income when partner is yes', async ({ page }) => {
+      await reachIncomeWithPartner(page);
+
+      await completeIncomeValues(page);
+
+      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/partner-income`);
+      await expect(page.getByRole('heading', { name: 'Your partner\'s income' })).toBeVisible();
+    });
+  });
+
+  test.describe('"Your partner\'s income" routing paths', () => {
+    test('should route partner income to dependants', async ({ page }) => {
+      await reachIncomeWithPartner(page);
+      await completeIncomeValues(page);
+
+      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/partner-income`);
+      await completePartnerIncomeValues(page);
+
+      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/dependants`);
+      await expect(page.getByRole('heading', { name: 'Dependants' })).toBeVisible();
+    });
+  });
+
+  test.describe('Dependants routing paths', () => {
+    test('should route dependants to your expenses', async ({ page }) => {
+      await reachIncomeNoPartner(page);
+      await completeIncomeValues(page);
+
+      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/dependants`);
+      await completeDependantsValues(page);
+
+      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/your-expenses`);
+      await expect(page.getByRole('heading', { name: 'Your expenses' })).toBeVisible();
+    });
+  });
+
+  test.describe('Dependants validation', () => {
+    test('should show validation error when a dependants value is not a whole number', async ({ page }) => {
+      await reachIncomeNoPartner(page);
+      await completeIncomeValues(page);
+
+      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/dependants`);
+      await page.getByRole('spinbutton', { name: 'Do you have any dependants aged 16 and over?' }).fill('1.5');
+      await page.getByRole('spinbutton', { name: 'Do you have any dependants aged 15 and under?' }).fill('0');
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      await expect(page.getByRole('link', { name: 'The number of dependants you have aged 16 and over must be a whole positive number' })).toBeVisible();
+    });
+  });
+
+  test.describe('"Your expenses" validation', () => {
+    test('should show validation error when mortgage value is negative', async ({ page }) => {
+      await reachExpensesNoPartner(page);
+
+      await page.getByRole('spinbutton', { name: 'How much do you pay for your mortgage?' }).fill('-1');
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      await expect(page.getByRole('link', { name: 'How much you pay for your mortgage must be a positive number' })).toBeVisible();
+    });
+  });
+
+  test.describe('"Your expenses" routing paths', () => {
+    test('should route expenses to check answers when no partner', async ({ page }) => {
+      await reachExpensesNoPartner(page);
+      await expect(page.getByRole('heading', { name: 'Your expenses' })).toBeVisible();
+
+      await completeExpensesValues(page);
+
       await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/check-answers`);
-      await expect(page.getByRole('heading', { name: 'Property 1' })).toBeVisible();;
-      await expect(page.getByRole('heading', { name: 'Property 2' })).toBeVisible();;
+      await expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
+    });
+
+    test('should route expenses to partner expenses when partner is yes', async ({ page }) => {
+      await reachIncomeWithPartner(page);
+      await completeIncomeValues(page);
+      await completePartnerIncomeValues(page);
+      await completeDependantsValues(page);
+
+      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/your-expenses`);
+      await completeExpensesValues(page);
+
+      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/partner-expenses`);
+      await expect(page.getByRole('heading', { name: 'Your partner\'s expenses' })).toBeVisible();
+    });
+  });
+
+  test.describe('"Your partner\'s expenses" routing paths', () => {
+    test('should route partner expenses to check answers', async ({ page }) => {
+      await reachIncomeWithPartner(page);
+      await completeIncomeValues(page);
+      await completePartnerIncomeValues(page);
+      await completeDependantsValues(page);
+      await completeExpensesValues(page);
+
+      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/partner-expenses`);
+      await completePartnerExpensesValues(page);
+
+      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/check-answers`);
+      await expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
+    });
+  });
+
+  test.describe('"Your partner\'s expenses" validation', () => {
+    test('should show required field error when mortgage is unanswered', async ({ page }) => {
+      await reachIncomeWithPartner(page);
+      await completeIncomeValues(page);
+      await completePartnerIncomeValues(page);
+      await completeDependantsValues(page);
+      await completeExpensesValues(page);
+
+      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/partner-expenses`);
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      await expect(page.getByRole('link', { name: 'Enter how much your partner pays for their mortgage' })).toBeVisible();
+    });
+  });
+
+  test.describe('Check answers and submission', () => {
+    test('should submit finances answers from check answers and return to financial eligibility tab', async ({ page }) => {
+      await reachExpensesNoPartner(page);
+      await completeExpensesValues(page);
+
+      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/check-answers`);
+      await expect(page.getByRole('heading', { name: 'Property 1' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Property 2' })).toBeVisible();
       await expect(page.getByRole('heading', { name: 'Your savings' })).toBeVisible();
       await expect(page.getByRole('heading', { name: 'Disregards' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Income' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Dependants' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Expenses' })).toBeVisible();
 
       await page.getByRole('button', { name: 'Submit' }).click();
 
@@ -407,12 +634,8 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
     });
 
     test('should allow changing a finance answer from check answers', async ({ page }) => {
-      await reachSavingsNoPartner(page);
-      await completeSavingsValues(page);
-
-      // Disregards: None
-      await page.getByRole('checkbox', { name: 'None' }).check();
-      await page.getByRole('button', { name: 'Continue' }).click();
+      await reachExpensesNoPartner(page);
+      await completeExpensesValues(page);
 
       await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/check-answers`);
 
