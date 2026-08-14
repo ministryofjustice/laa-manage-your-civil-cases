@@ -119,6 +119,8 @@ export function extractErrorMessage(error: unknown): string {
   if (isAxiosError(error)) {
     const { response } = error;
     devError(`API HTTP Error ${response.status}: ${response.statusText ?? 'Unknown'}`);
+    // Log the raw response body so validation-rejection details from the backend aren't lost behind the generic message below
+    devError(`API HTTP Error response body: ${JSON.stringify(response.data)}`);
 
     // Try to extract error message from response data
     const responseMessage = extractResponseMessage(response.data);
