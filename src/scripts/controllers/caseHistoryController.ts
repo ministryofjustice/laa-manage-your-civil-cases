@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from '#node_modules/@types/express/index.js';
 import type { ClientHistoryApiResponse } from '#types/api-types.js';
 import { apiService } from '#src/services/apiService.js';
-import { createPaginationForGivenDataSet, safeString } from '../helpers/dataTransformers.js';
+import { createPaginationForGivenDataSet } from '../helpers/dataTransformers.js';
 import { transformHistoryLogToTimelineItem } from '#src/services/api/transforms/transformClientHistoryLogs.js';
 import { devError } from '../helpers/devLogger.js';
 import { handleCaseTab } from '../helpers/caseTabHandler.js';

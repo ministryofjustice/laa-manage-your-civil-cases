@@ -3,6 +3,7 @@ import jsdocPlugin from 'eslint-plugin-jsdoc';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import love from 'eslint-config-love';
+import unusedImports from 'eslint-plugin-unused-imports';
 
 // Alter this config file to meet your project's needs and standards.
 
@@ -11,19 +12,19 @@ export default [
     ...love,
     files: ['**/*.js', '**/*.ts', '**/*.tsx'],
     rules: {
-      'unicorn/require-unicode-regexp': 'off',
-    },
+      'unicorn/require-unicode-regexp': 'off'
+    }
   },
   // JS/Default config (no parser override)
   {
     languageOptions: {
       globals: {
         ...globals.browser,
-        ...globals.node,
+        ...globals.node
       },
       ecmaVersion: 'latest',
-      sourceType: 'module',
-    },
+      sourceType: 'module'
+    }
   },
   // TypeScript config (only for TS files)
   {
@@ -37,20 +38,22 @@ export default [
       },
       globals: {
         ...globals.browser,
-        ...globals.node,
-      },
+        ...globals.node
+      }
     },
     plugins: {
-      jsdoc: jsdocPlugin
+      jsdoc: jsdocPlugin,
+      'unused-imports': unusedImports
     },
     rules: {
-      'indent': 'off', // Prettier is handling this
+      indent: 'off', // Prettier is handling this
       'linebreak-style': 'off', // Prettier is handling this
-      'quotes': 'off', // Prettier is handling this
-      'semi': 'off', // Prettier is handling this
+      quotes: 'off', // Prettier is handling this
+      semi: 'off', // Prettier is handling this
       'no-console': 'off', // Stops complaining about putting messages in the console
       'no-param-reassign': ['error', { props: false }], // Allow modifying properties of function parameters (common in Express middleware and reducers)
       'no-negated-condition': 'off', // Allow negated conditions as they can improve readability in certain contexts
+      'unused-imports/no-unused-imports': 'error',
       'jsdoc/check-alignment': 'error',
       'jsdoc/check-param-names': 'error',
       'jsdoc/check-tag-names': 'error',
@@ -67,9 +70,9 @@ export default [
             MethodDefinition: true,
             ClassDeclaration: true,
             ArrowFunctionExpression: true,
-            FunctionExpression: true,
-          },
-        },
+            FunctionExpression: true
+          }
+        }
       ],
       'jsdoc/require-param': 'error',
       'jsdoc/require-param-description': 'error',
@@ -84,13 +87,10 @@ export default [
       '@typescript-eslint/consistent-type-imports': 'error',
       '@typescript-eslint/no-extraneous-class': ['error', { allowStaticOnly: true }],
       '@typescript-eslint/no-namespace': 'off', // Allow namespaces for declaration files
-      '@typescript-eslint/triple-slash-reference': [
-        'error',
-        { path: 'never', types: 'prefer-import', lib: 'never' }
-      ],
+      '@typescript-eslint/triple-slash-reference': ['error', { path: 'never', types: 'prefer-import', lib: 'never' }],
       '@typescript-eslint/no-var-requires': 'error',
-      '@typescript-eslint/no-explicit-any': 'warn',
-    },
+      '@typescript-eslint/no-explicit-any': 'warn'
+    }
   },
   // Add a separate config for declaration files
   {
@@ -98,8 +98,8 @@ export default [
     rules: {
       '@typescript-eslint/no-explicit-any': 'off', // Sometimes needed in d.ts
       '@typescript-eslint/no-empty-interface': 'off', // Sometimes needed in d.ts
-      '@typescript-eslint/no-namespace': 'off', // Namespaces are allowed in d.ts
-    },
+      '@typescript-eslint/no-namespace': 'off' // Namespaces are allowed in d.ts
+    }
   },
   // Ignore patterns
   {
@@ -120,5 +120,5 @@ export default [
       'coverage', // Ignore the code coverage output from linter
       'scripts/e2e_coverage/*' // Route coverage analysis scripts
     ]
-  },
+  }
 ];

@@ -2549,7 +2549,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"concurrently@npm:^10.0.4":
+"concurrently@npm:^10.0.3":
   version: 10.0.4
   resolution: "concurrently@npm:10.0.4"
   dependencies:
@@ -2573,13 +2573,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"connect-redis@npm:^10.0.0":
-  version: 10.0.0
-  resolution: "connect-redis@npm:10.0.0"
+"connect-redis@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "connect-redis@npm:9.0.0"
   peerDependencies:
     express-session: ">=1"
     redis: ">=5"
-  checksum: 10c0/effe2806fb6a2f0a1b8902728203dd2214fa1510e42cad7652927524582be162a95d4353adde8c7dbe4a015cc88766cd94fa2b43548b8fdca4e1e7b01baf48c5
+  checksum: 10c0/85616db0760f7974ed14f0676488dab168c111ae2068fae645a8b1acd0acf72d3c57d2252deb50eff662c22db72a6028e1635d9ff8450f3cac853278aa64051a
   languageName: node
   linkType: hard
 
@@ -4793,7 +4793,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:>=5.2.2":
+"js-yaml@npm:>=3.15.0":
   version: 5.2.2
   resolution: "js-yaml@npm:5.2.2"
   dependencies:
@@ -4985,9 +4985,9 @@ __metadata:
     chalk: "npm:^6.0.0"
     chokidar: "npm:5.0.0"
     compression: "npm:^1.8.1"
-    concurrently: "npm:^10.0.4"
+    concurrently: "npm:^10.0.3"
     connect-livereload: "npm:^0.6.1"
-    connect-redis: "npm:^10.0.0"
+    connect-redis: "npm:^9.0.0"
     cookie-parser: "npm:~1.4.6"
     cross-env: "npm:^10.1.0"
     csrf-sync: "npm:^4.2.1"
@@ -5027,9 +5027,9 @@ __metadata:
     prettier: "npm:^3.9.6"
     redis: "npm:^5.12.1"
     rimraf: "npm:^6.1.3"
-    sass: "npm:^1.102.0"
+    sass: "npm:^1.101.0"
     sass-embedded: "npm:^1.100.0"
-    sinon: "npm:^22.1.0"
+    sinon: "npm:^22.0.0"
     socket.io: "npm:^4.8.3"
     supertest: "npm:^7.2.2"
     ts-node: "npm:^10.9.2"
@@ -6513,7 +6513,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.102.0, sass@npm:^1.97.3":
+"sass@npm:^1.101.0, sass@npm:^1.97.3":
   version: 1.102.0
   resolution: "sass@npm:1.102.0"
   dependencies:
@@ -6752,7 +6752,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sinon@npm:^22.1.0":
+"sinon@npm:^22.0.0":
   version: 22.1.0
   resolution: "sinon@npm:22.1.0"
   dependencies:
