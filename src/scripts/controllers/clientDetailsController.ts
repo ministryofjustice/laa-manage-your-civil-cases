@@ -2,7 +2,10 @@ import type { Request, Response, NextFunction } from 'express';
 import type { NoChangeWarningCache } from '#src/scripts/helpers/sessionHelpers.js';
 import { storeSessionData, clearSessionData, getSessionValue } from '#src/scripts/helpers/sessionHelpers.js';
 import { handleCaseTab } from '#src/scripts/helpers/caseTabHandler.js';
-import type { ClientSupportNeeds } from '#types/api-types.js';
+import type { ClientSupportNeeds, ClientDiversityApiResponse } from '#types/api-types.js';
+import { apiService } from '#src/services/apiService.js';
+import { devError } from '../helpers/devLogger.js';
+import { HTTP } from '#src/services/api/base/constants.js';
 
 /**
  * Handle client details view with API data
@@ -12,8 +15,8 @@ import type { ClientSupportNeeds } from '#types/api-types.js';
  * @param {string} activeTab The active tab of the primary navigation
  * @returns {void} Page to be returned
  */
-export function handleClientDetailsTab(req: Request, res: Response, next: NextFunction, activeTab: string): void {
-  void handleCaseTab(req, res, next, activeTab, 'client details', ({ req, res, caseReference, activeTab }) => {
+export async function handleClientDetailsTab(req: Request, res: Response, next: NextFunction, activeTab: string): Promise<void> {
+  await handleCaseTab(req, res, next, activeTab, 'client details', async ({ req, res, caseReference, activeTab }) => {
     // Client details already fetched by middleware, available at req.clientData
     const { clientData } = req;
 
@@ -39,10 +42,24 @@ export function handleClientDetailsTab(req: Request, res: Response, next: NextFu
     const { clientSupportNeeds } = clientData as { clientSupportNeeds?: ClientSupportNeeds; };
     const showClientSupportNeeds = clientSupportNeeds?.bslWebcam === 'Yes' || clientSupportNeeds?.textRelay === 'Yes' || clientSupportNeeds?.callbackPreference === 'Yes' || clientSupportNeeds?.languageSupportNeeds !== '' || clientSupportNeeds?.notes !== '';
 
+    const diversityDataResponse: ClientDiversityApiResponse = await apiService.getClientDiversityData(req.axiosMiddleware, caseReference);
+    
+    if (diversityDataResponse.status !== 'success') {
+      devError(`Diversity data not found for case: ${caseReference}. API response: ${diversityDataResponse.message ?? 'Unknown error'}`);
+      res.status(HTTP.NOT_FOUND).render('main/error.njk', {
+        status: HTTP.NOT_FOUND,
+        error: diversityDataResponse.message ?? 'Diversity data not found'
+      });
+      return;
+    }
+
+    const diversityData = diversityDataResponse.data?.[0];
+
     res.render('case_details/index.njk', {
       activeTab,
       client: clientData,
       showClientSupportNeeds,
+      diversityData,
       caseReference,
       sessionID: req.sessionID,
       noChangeWarningBanner

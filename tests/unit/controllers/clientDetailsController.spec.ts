@@ -16,22 +16,14 @@
 import { describe, it, beforeEach, afterEach } from 'mocha';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import type { Request, Response, NextFunction } from 'express';
+import type { Request, Response } from 'express';
 import { handleClientDetailsTab } from '#src/scripts/controllers/clientDetailsController.js';
 import { acceptCase, completeCase, getPendingCaseForm, getCloseCaseForm, closeCase, pendingCase, getReopenCaseForm, reopenCompletedCase } from '#src/scripts/controllers/caseStateController.js';
 import { apiService } from '#src/services/apiService.js';
 import { changeCaseStateService } from '#src/services/changeCaseStateService.js';
 // Import to get global type declarations for axiosMiddleware
 import '#utils/server/axiosSetup.js';
-import { ValidationChain } from 'express-validator';
 
-// Run an express-validator schema against a fake request
-const runSchema = async (req: any, schema: ValidationChain[] | ValidationChain): Promise<void> => {
-  const chains = Array.isArray(schema) ? schema : [schema];
-  for (const chain of chains) {
-    await chain.run(req);
-  }
-};
 
 describe('Client Details Controller', () => {
   let req: Partial<Request>;
@@ -39,7 +31,8 @@ describe('Client Details Controller', () => {
   let next: any;
   let renderStub: sinon.SinonStub;
   let statusStub: sinon.SinonStub;
-  let apiServiceStub: sinon.SinonStub;
+  let getClientDetailsStub: sinon.SinonStub;
+  let getClientDiversityDataStub: sinon.SinonStub;
 
   beforeEach(() => {
     req = {
@@ -57,9 +50,20 @@ describe('Client Details Controller', () => {
     };
     
     next = sinon.stub();
-    
+
     // Stub the API service
-    apiServiceStub = sinon.stub(apiService, 'getClientDetails');
+    getClientDetailsStub = sinon.stub(apiService, 'getClientDetails');
+    getClientDiversityDataStub = sinon.stub(apiService, 'getClientDiversityData').resolves({
+      status: 'success',
+      data: [
+        {
+          gender: 'John Doe',
+          disability: 'John Doe',
+          ethnicity: 'John Doe',
+        }
+      ]
+    });
+
   });
 
   afterEach(() => {
@@ -86,8 +90,11 @@ describe('Client Details Controller', () => {
         'opened'
       );
 
+      // Give async line in the controller time to complete
+      await new Promise(resolve => setImmediate(resolve));
+
       // Assert - API service should not be called (middleware handles it)
-      expect(apiServiceStub.called).to.be.false;
+      expect(getClientDetailsStub.called).to.be.false;
       expect(renderStub.calledWith('case_details/index.njk')).to.be.true;
     });
 
@@ -104,7 +111,7 @@ describe('Client Details Controller', () => {
       );
 
       // Assert
-      expect(apiServiceStub.called).to.be.false;
+      expect(getClientDetailsStub.called).to.be.false;
       expect(statusStub.calledWith(400)).to.be.true;
     });
 
@@ -123,6 +130,9 @@ describe('Client Details Controller', () => {
         next,
         'badParam'
       );
+
+      // Give async line in the controller time to complete
+      await new Promise(resolve => setImmediate(resolve));
 
       // Assert - the controller should call next with a processed error
       expect(next.calledOnce).to.be.true;

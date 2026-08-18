@@ -253,6 +253,24 @@ export interface CaseLogsApiResponse {
 }
 
 /**
+ * Client Diversity Data API response interface
+ */
+export interface ClientDiversityDataItem {
+  gender?: string;
+  disability?: string;
+  ethnicity?: string;
+}
+
+/**
+ * API response interface for client diversity data
+ */
+export interface ClientDiversityApiResponse {
+  data: ClientDiversityDataItem[] | null;
+  status: 'success' | 'error';
+  message?: string;
+}
+
+/**
  * Feedback choice interface from API OPTIONS response
  */
 export interface FeedbackChoice {

@@ -63,17 +63,17 @@
 {% set addressWithPostcodeThirdParty = renderAddress(data.thirdParty.address, data.thirdParty.postcode) %}
 
 {% set passphraseContent %}
-{% if data.thirdParty.passphrase %}
-  {{ data.thirdParty.passphrase }}
-{% else %}
-  {{ t('common.thirdPartyReason.text.' + data.thirdParty.noContactReason) }}
-{% endif %}
+  {% if data.thirdParty.passphrase %}
+    {{ data.thirdParty.passphrase }}
+  {% else %}
+    {{ t('common.thirdPartyReason.text.' + data.thirdParty.noContactReason) }}
+  {% endif %}
 {% endset %}
 
 {% set relationshipToClient %}
-{% if data.thirdParty.relationshipToClient %}
-  {{ t('common.thirdPartyRelationship.text.' + data.thirdParty.relationshipToClient) }}
-{% else %}
+  {% if data.thirdParty.relationshipToClient %}
+    {{ t('common.thirdPartyRelationship.text.' + data.thirdParty.relationshipToClient) }}
+  {% else %}
     ""
   {% endif %}
 {% endset %}
@@ -109,7 +109,10 @@
   computedPhoneNumberThirdParty: phoneNumberContentThirdParty,
   emailAddressThirdParty: data.thirdParty.emailAddress,
   relationshipToClientThirdParty: relationshipToClient,
-  passphraseContent: passphraseContent
+  passphraseContent: passphraseContent,
+  gender: diversityData.gender,
+  disability: diversityData.disability,
+  ethnicity: diversityData.ethnicity
 } %}
 
 <h2 class="govuk-heading-m">{{ t('pages.caseDetails.tabs.clientDetails') }}</h2>
@@ -331,11 +334,36 @@
     title: {
       text: t('pages.caseDetails.clientDetails.thirdPartyContact')
     },
-    
-actions: {
-  items: thirdPartyAction
-}
-
+    actions: {
+      items: thirdPartyAction
+    }
   },
   rows: thirdPartyRows
+}) }}
+
+<h2 class="govuk-heading-m">{{ t('pages.caseDetails.clientDetails.clientDiversityData') }}</h2>
+
+{# Client diversity data card #}
+{{ summaryCardComponent({
+  data: constructedData,
+  card: {
+    id: "client-diversity-data",
+    title: {
+      text: t('pages.caseDetails.clientDetails.diversityData')
+    }
+  },
+  rows: [
+    {
+      label: t('forms.clientDetails.diversityData.gender'),
+      key: "gender"
+    },
+    {
+      label: t('forms.clientDetails.diversityData.ethnicOrigin'),
+      key: "ethnicity"
+    },
+    {
+      label: t('forms.clientDetails.diversityData.disabilities'),
+      key: "disability"
+    }
+  ]
 }) }}

@@ -4,6 +4,7 @@
     "backToAllCases": "Back to all cases",
     "notProvided": "Not provided",
     "change": "Change",
+    "add": "Add",
     "remove": "Remove",
     "save": "Save",
     "cancel": "Cancel",
@@ -129,7 +130,8 @@
         "FAMILY_FRIEND": "Family member or friend",
         "PROFESSIONAL": "Professional",
         "LEGAL_ADVISOR": "Legal adviser",
-        "OTHER": "Other"
+        "OTHER": "Other",
+        "undefined": ""
       },
       "value": {
         "PARENT_GUARDIAN": "PARENT_GUARDIAN",
@@ -145,7 +147,8 @@
         "POWER_ATTORNEY": "No, client is subject to power of attorney",
         "NO_TELEPHONE_DISABILITY": "No, client cannot communicate on the phone due to disability",
         "NO_TELEPHONE_LANGUAGE": "No, client cannot communicate on the phone due to a language requirement",
-        "OTHER": "No, for another reason"
+        "OTHER": "No, for another reason",
+        "undefined": ""
       },
       "value": {
         "CHILD_PATIENT": "CHILD_PATIENT",
@@ -364,6 +367,8 @@
         "thirdPartyContact": "Third party contact",
         "thirdPartyDetails": "Third party details",
         "clientSupportNeeds": "Client support needs",
+        "clientDiversityData": "Client diversity data",
+        "diversityData": "Diversity data",
         "clientAbuseRisk": "Risk of abuse"
       },
       "buttons": {
@@ -797,6 +802,11 @@
           "notEmptyPassphrase": "Enter the passphrase ",
           "isLength": "Postcode must be 12 characters or fewer"
         }
+      },
+      "diversityData": {
+        "gender": "Gender",
+        "ethnicOrigin": "Ethnic origin",
+        "disabilities": "Disabilities"
       }
     },
     "search": {
@@ -822,6 +832,7 @@
       "changeLanguage": "Change Language",
       "changeReasonableAdjustments": "Change Reasonable adjustments",
       "changeThirdPartyContact": "Change Third party contact details",
+      "addThirdPartyContact": "Add Third party contact details",
       "removeThirdPartyContact": "Remove Third party contact details",
       "changeSupportNeeds": "Change Client support needs",
       "removeSupportNeeds": "Remove Client support needs",
