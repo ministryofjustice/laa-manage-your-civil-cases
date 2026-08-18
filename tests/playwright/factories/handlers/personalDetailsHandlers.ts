@@ -5,12 +5,7 @@
 import { http, HttpResponse } from 'msw';
 import type { MockCase } from './types.js';
 import { transformToApiFormat, findMockCase, updateCaseState, buildPersonalDetailsUpdates } from './utils.js';
-import {
-  validateStringField,
-  validateNullableBooleanField,
-  validateChoiceField,
-  validatePersonalDetails
-} from './validationHelpers.js';
+import { validatePersonalDetails } from './validationHelpers.js';
 import { HTTP } from '#src/services/api/base/constants.js';
 
 export function createPersonalDetailsHandlers(
@@ -19,6 +14,31 @@ export function createPersonalDetailsHandlers(
   cases: MockCase[]
 ) {
   return [
+    // GET /case/:caseReference/personal_details/get_diversity
+    http.get(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/personal_details/get_diversity`, ({ params }) => {
+
+      const { caseReference } = params;
+      const caseItem = findMockCase(caseReference as string, cases);
+
+      if (!caseItem) {
+        return HttpResponse.json({ error: 'Case not found' }, { status: HTTP.NOT_FOUND });
+      }
+
+      if (caseReference === 'PC-2211-4466') {
+        return HttpResponse.json({
+          gender: 'Male',
+          ethnicity: 'Mixed Other',
+          disability: 'OTH - Other'
+        });
+      } else {
+        return HttpResponse.json({
+          gender: null,
+          ethnicity: null,
+          disability: null
+        });
+      }
+    }),
+
     // PATCH /case/:caseReference/personal_details/
     http.patch(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/personal_details/`, async ({ params, request }) => {
 

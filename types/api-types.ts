@@ -257,8 +257,8 @@ export interface CaseLogsApiResponse {
  */
 export interface ClientDiversityDataItem {
   gender?: string;
-  disability?: string;
   ethnicity?: string;
+  disability?: string;
 }
 
 /**

@@ -12,12 +12,12 @@ export function transformClientDiversityDataItem(item: unknown): ClientDiversity
   }
 
   const gender = item.gender == null ? '' : String(item.gender);
-  const disability = item.disability == null ? '' : String(item.disability);
   const ethnicity = item.ethnicity == null ? '' : String(item.ethnicity);
+  const disability = item.disability == null ? '' : String(item.disability);
 
   return {
     gender,
-    disability,
-    ethnicity
+    ethnicity,
+    disability
   };
 }

@@ -58,8 +58,8 @@ describe('Client Details Controller', () => {
       data: [
         {
           gender: 'John Doe',
-          disability: 'John Doe',
           ethnicity: 'John Doe',
+          disability: 'John Doe',
         }
       ]
     });
