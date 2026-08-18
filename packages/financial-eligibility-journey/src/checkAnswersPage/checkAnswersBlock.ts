@@ -322,7 +322,7 @@ export const disregardsSummaryList = GovUKSummaryList({
 /**
  * Formats a frequency answer for display, matching the frequency dropdown's own label text exactly
  * @param {string} frequencyCode The Forge answer code for the frequency select
- * @returns {ChainableExpr} The formatted frequency text
+ * @returns {unknown} The formatted frequency text
  */
 function frequencyText(frequencyCode: string) {
   return Answer(frequencyCode).pipe(
