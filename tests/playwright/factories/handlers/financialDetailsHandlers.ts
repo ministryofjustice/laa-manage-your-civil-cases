@@ -24,6 +24,19 @@ export function createFinancialEligibilityHandlers(
 
       return HttpResponse.json(caseItem.financialEligibility);
   
+    }),
+
+    // PATCH /case/:caseReference/eligibility_check/
+    http.patch(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/eligibility_check/`, ({ params }) => {
+      const { caseReference } = params;
+
+      const caseItem = findMockCase(caseReference as string, cases);
+
+      if (!caseItem) {
+        return HttpResponse.json({ error: 'Case not found' }, { status: HTTP.NOT_FOUND });
+      }
+
+      return HttpResponse.json(caseItem.financialEligibility);
     })
   ];
 }
