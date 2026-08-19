@@ -187,6 +187,12 @@ export const propertiesSummaryList = CollectionBlock({
           {
             key: { text: 'What percentage of the property do you own?' },
             value: { text: Format('%1%', Item().path('share')) },
+            visibleWhen: Answer('has-partner').match(Condition.Equals('no')),
+          },
+          {
+            key: { text: 'What percentage of the property do you and/or your partner own?' },
+            value: { text: Format('%1%', Item().path('share')) },
+            visibleWhen: Answer('has-partner').match(Condition.Equals('yes')),
           },
         ] as GovUKSummaryList['rows'],
       }),
@@ -230,6 +236,41 @@ export const savingsSummaryList = GovUKSummaryList({
   ] as GovUKSummaryList['rows'],
 })
 
+export const undisputedSavingsSummaryList = GovUKSummaryList({
+  visibleWhen: and(not(under18Passported), categoryIsDebtOrFamily),
+  card: {
+    title: {
+      text: "Your undisputed savings"
+    },
+    actions: {
+      items: [
+        { href: 'your-undisputed-savings', text: 'Change', visuallyHiddenText: 'Change, Your undisputed savings' },
+      ],
+    },
+  },
+  rows: [
+    {
+      key: {
+        text: 'How much was in your bank account/building society before your last payment went in?',
+        classes: GovUKUtilityClasses.Width.TwoThirds,
+      },
+      value: { text: Format('£%1', Answer('bank-balance')) },
+    },
+    {
+      key: { text: 'Do you have any investments, shares or ISAs?' },
+      value: { text: Format('£%1', Answer('investment-balance')) },
+    },
+    {
+      key: { text: 'Do you have any valuable items worth over £500 each?' },
+      value: { text: Format('£%1', Answer('asset-balance')) },
+    },
+    {
+      key: { text: 'Do you have any money owed to you?' },
+      value: { text: Format('£%1', Answer('credit-balance')) },
+    },
+  ] as GovUKSummaryList['rows'],
+})
+
 export const partnerSavingsSummaryList = GovUKSummaryList({
   visibleWhen: and(
     Answer('has-partner').match(Condition.Equals('yes')),
@@ -243,6 +284,45 @@ export const partnerSavingsSummaryList = GovUKSummaryList({
     actions: {
       items: [
         { href: 'partner-savings', text: 'Change', visuallyHiddenText: 'Change, Your partner\'s savings' },
+      ],
+    },
+  },
+  rows: [
+    {
+      key: {
+        text: 'How much was in your partner\'s bank account/building society before your last payment went in?',
+        classes: GovUKUtilityClasses.Width.TwoThirds,
+      },
+      value: { text: Format('£%1', Answer('bank-balance-partner')) },
+    },
+    {
+      key: { text: 'Does your partner have any investments, shares or ISAs?' },
+      value: { text: Format('£%1', Answer('investment-balance-partner')) },
+    },
+    {
+      key: { text: 'Does your partner have any valuable items worth over £500 each?' },
+      value: { text: Format('£%1', Answer('asset-balance-partner')) },
+    },
+    {
+      key: { text: 'Does your partner have any money owed to them?' },
+      value: { text: Format('£%1', Answer('credit-balance-partner')) },
+    },
+  ] as GovUKSummaryList['rows'],
+})
+
+export const partnerUndisputedSavingsSummaryList = GovUKSummaryList({
+  visibleWhen: and(
+    Answer('has-partner').match(Condition.Equals('yes')),
+    not(under18Passported),
+    categoryIsDebtOrFamily
+  ),
+  card: {
+    title: {
+      text: "Your partner\'s undisputed savings"
+    },
+    actions: {
+      items: [
+        { href: 'partner-undisputed-savings', text: 'Change', visuallyHiddenText: 'Change, Your partner\'s undisputed savings' },
       ],
     },
   },
@@ -471,7 +551,10 @@ export const partnerIncomeSummaryList = GovUKSummaryList({
 })
 
 export const dependantsSummaryList = GovUKSummaryList({
-  visibleWhen: not(incomeOrExpensesSkipped),
+  visibleWhen: and(
+    Answer(partnerField.code).match(Condition.Equals('no')),
+    not(incomeOrExpensesSkipped)
+  ),
   card: {
     title: {
       text: "Dependants",
@@ -493,6 +576,36 @@ export const dependantsSummaryList = GovUKSummaryList({
     },
     {
       key: { text: 'Do you have any dependants aged 15 and under?' },
+      value: { text: Answer('dependants-15-under') },
+    },
+  ] as GovUKSummaryList['rows'],
+})
+
+export const partnerDependantsSummaryList = GovUKSummaryList({
+  visibleWhen: and(
+    Answer(partnerField.code).match(Condition.Equals('yes')),
+    not(incomeOrExpensesSkipped)
+  ),
+  card: {
+    title: {
+      text: "Dependants"
+    },
+    actions: {
+      items: [
+        { href: 'dependants', text: 'Change', visuallyHiddenText: 'Change, Dependants' },
+      ],
+    },
+  },
+  rows: [
+    {
+      key: {
+        text: 'Do you and your partner have any dependants aged 16 and over?',
+        classes: GovUKUtilityClasses.Width.TwoThirds,
+      },
+      value: { text: Answer('dependants-16-over') },
+    },
+    {
+      key: { text: 'Do you and your partner have any dependants aged 15 and under?' },
       value: { text: Answer('dependants-15-under') },
     },
   ] as GovUKSummaryList['rows'],

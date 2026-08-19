@@ -139,6 +139,12 @@ async function completeDependantsValues(page: Page) {
   await page.getByRole('button', { name: 'Continue' }).click();
 }
 
+async function completePartnerDependantsValues(page: Page) {
+  await page.getByRole('spinbutton', { name: 'Do you and your partner have any dependants aged 16 and over?' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'Do you and your partner have any dependants aged 15 and under?' }).fill('0');
+  await page.getByRole('button', { name: 'Continue' }).click();
+}
+
 async function completeExpensesValues(page: Page) {
   await page.getByRole('spinbutton', { name: 'How much do you pay for your mortgage?' }).fill('0');
   await page.getByRole('spinbutton', { name: 'How much do you pay for rent?' }).fill('0');
@@ -525,14 +531,14 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
   });
 
   test.describe('"Your partner\'s income" routing paths', () => {
-    test('should route partner income to dependants', async ({ page }) => {
+    test('should route partner income to partner dependants', async ({ page }) => {
       await reachIncomeWithPartner(page);
       await completeIncomeValues(page);
 
       await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/partner-income`);
       await completePartnerIncomeValues(page);
 
-      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/dependants`);
+      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/partner-dependants`);
       await expect(page.getByRole('heading', { name: 'Dependants' })).toBeVisible();
     });
   });
@@ -591,7 +597,7 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
       await reachIncomeWithPartner(page);
       await completeIncomeValues(page);
       await completePartnerIncomeValues(page);
-      await completeDependantsValues(page);
+      await completePartnerDependantsValues(page);
 
       await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/your-expenses`);
       await completeExpensesValues(page);
@@ -606,7 +612,7 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
       await reachIncomeWithPartner(page);
       await completeIncomeValues(page);
       await completePartnerIncomeValues(page);
-      await completeDependantsValues(page);
+      await completePartnerDependantsValues(page);
       await completeExpensesValues(page);
 
       await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/partner-expenses`);
@@ -623,7 +629,7 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
       await reachIncomeWithPartner(page);
       await completeIncomeValues(page);
       await completePartnerIncomeValues(page);
-      await completeDependantsValues(page);
+      await completePartnerDependantsValues(page);
       await completeExpensesValues(page);
 
       await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/partner-expenses`);
