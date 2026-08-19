@@ -44,10 +44,10 @@ async function completeIntroToBenefitsWithPartner(page: Page) {
 }
 
 async function completeBenefits(page: Page) {
-  // Benefits
-  await page.getByRole('group', { name: 'Universal Credit' }).getByLabel('Yes').check();
-  await page.getByRole('group', { name: 'Income Support' }).getByLabel('Yes').check();
-  await page.getByRole('group', { name: 'Income-based Job Seekers' }).getByLabel('Yes').check();
+  // Benefits: no passporting benefits, so the journey continues through income/expenses
+  await page.getByRole('group', { name: 'Universal Credit' }).getByLabel('No').check();
+  await page.getByRole('group', { name: 'Income Support' }).getByLabel('No').check();
+  await page.getByRole('group', { name: 'Income-based Job Seekers' }).getByLabel('No').check();
   await page.getByRole('group', { name: 'Guarantee State Pension Credit' }).getByLabel('No').check();
   await page.getByRole('group', { name: 'Income-related Employment and' }).getByLabel('No').check();
   await page.getByRole('button', { name: 'Continue' }).click();

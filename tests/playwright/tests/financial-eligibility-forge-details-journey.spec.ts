@@ -68,36 +68,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('checkbox', { name: 'None' }).check();
       await page.getByRole('button', { name: 'Continue' }).click();
 
-      // Income: Enter '0' for all fields and continue
-      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/your-income');
-      await page.getByRole('group', { name: 'Are you self employed?' }).getByLabel('No').check();
-      await page.getByRole('spinbutton', { name: 'What did you earn before tax?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'How much tax do you pay?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'How much National Insurance do you pay?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Self employed drawings' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Benefits' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Tax credits' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Maintenance received' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Pension income' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Other income' }).fill('0');
-      await page.getByRole('button', { name: 'Continue' }).click();
-
-      // Dependants: Enter '0' and continue
-      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/dependants');
-      await page.getByRole('spinbutton', { name: 'Do you have any dependants aged 16 and over?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Do you have any dependants aged 15 and under?' }).fill('0');
-      await page.getByRole('button', { name: 'Continue' }).click();
-
-      // Expenses: Enter '0' and continue
-      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/your-expenses');
-      await page.getByRole('spinbutton', { name: 'How much do you pay for your mortgage?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'How much do you pay for rent?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'How much maintenance have you paid during the last calendar month' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Do you have any childcare costs because of work or study?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Are you currently paying towards legal aid for criminal defence?' }).fill('0');
-      await page.getByRole('button', { name: 'Continue' }).click();
-
-      // Check answers
+      // Passported via benefits, so income/expenses are skipped straight to check answers
       await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/check-answers');
       await expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
       
@@ -228,36 +199,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('checkbox', { name: 'None' }).check();
       await page.getByRole('button', { name: 'Continue' }).click();
 
-      // Income: Enter '0' for all fields and continue
-      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/your-income');
-      await page.getByRole('group', { name: 'Are you self employed?' }).getByLabel('No').check();
-      await page.getByRole('spinbutton', { name: 'What did you earn before tax?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'How much tax do you pay?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'How much National Insurance do you pay?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Self employed drawings' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Benefits' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Tax credits' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Maintenance received' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Pension income' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Other income' }).fill('0');
-      await page.getByRole('button', { name: 'Continue' }).click();
-
-      // Dependants: Enter '0' and continue
-      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/dependants');
-      await page.getByRole('spinbutton', { name: 'Do you have any dependants aged 16 and over?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Do you have any dependants aged 15 and under?' }).fill('0');
-      await page.getByRole('button', { name: 'Continue' }).click();
-
-      // Expenses: Enter '0' and continue
-      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/your-expenses');
-      await page.getByRole('spinbutton', { name: 'How much do you pay for your mortgage?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'How much do you pay for rent?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'How much maintenance have you paid during the last calendar month' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Do you have any childcare costs because of work or study?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Are you currently paying towards legal aid for criminal defence?' }).fill('0');
-      await page.getByRole('button', { name: 'Continue' }).click();
-
-      // Verify we reach check answers
+      // Passported via benefits, so income/expenses are skipped straight to check answers
       await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/check-answers');
     });
   });
@@ -303,36 +245,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('checkbox', { name: 'None' }).check();
       await page.getByRole('button', { name: 'Continue' }).click();
 
-      // Income: Enter '0' for all fields and continue
-      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/your-income');
-      await page.getByRole('group', { name: 'Are you self employed?' }).getByLabel('No').check();
-      await page.getByRole('spinbutton', { name: 'What did you earn before tax?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'How much tax do you pay?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'How much National Insurance do you pay?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Self employed drawings' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Benefits' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Tax credits' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Maintenance received' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Pension income' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Other income' }).fill('0');
-      await page.getByRole('button', { name: 'Continue' }).click();
-
-      // Dependants: Enter '0' and continue
-      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/dependants');
-      await page.getByRole('spinbutton', { name: 'Do you have any dependants aged 16 and over?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Do you have any dependants aged 15 and under?' }).fill('0');
-      await page.getByRole('button', { name: 'Continue' }).click();
-
-      // Expenses: Enter '0' and continue
-      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/your-expenses');
-      await page.getByRole('spinbutton', { name: 'How much do you pay for your mortgage?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'How much do you pay for rent?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'How much maintenance have you paid during the last calendar month' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Do you have any childcare costs because of work or study?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Are you currently paying towards legal aid for criminal defence?' }).fill('0');
-      await page.getByRole('button', { name: 'Continue' }).click();
-
-      // Check answers page
+      // Passported via benefits, so income/expenses are skipped straight to check answers
       await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/check-answers');
       
       // Verify summary sections are present
@@ -388,36 +301,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('checkbox', { name: 'None' }).check();
       await page.getByRole('button', { name: 'Continue' }).click();
 
-      // Income: Enter '0' for all fields and continue
-      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/your-income');
-      await page.getByRole('group', { name: 'Are you self employed?' }).getByLabel('No').check();
-      await page.getByRole('spinbutton', { name: 'What did you earn before tax?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'How much tax do you pay?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'How much National Insurance do you pay?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Self employed drawings' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Benefits' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Tax credits' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Maintenance received' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Pension income' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Other income' }).fill('0');
-      await page.getByRole('button', { name: 'Continue' }).click();
-
-      // Dependants: Enter '0' and continue
-      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/dependants');
-      await page.getByRole('spinbutton', { name: 'Do you have any dependants aged 16 and over?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Do you have any dependants aged 15 and under?' }).fill('0');
-      await page.getByRole('button', { name: 'Continue' }).click();
-
-      // Expenses: Enter '0' and continue
-      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/your-expenses');
-      await page.getByRole('spinbutton', { name: 'How much do you pay for your mortgage?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'How much do you pay for rent?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'How much maintenance have you paid during the last calendar month' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Do you have any childcare costs because of work or study?' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Are you currently paying towards legal aid for criminal defence?' }).fill('0');
-      await page.getByRole('button', { name: 'Continue' }).click();
-
-      // At check answers page
+      // Passported via benefits, so income/expenses are skipped straight to check answers
       await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/check-answers');
 
       // Click a change link
