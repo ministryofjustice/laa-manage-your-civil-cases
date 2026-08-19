@@ -10,6 +10,17 @@ const under18Passported = and(
   Answer('under-18-has-valuables').match(Condition.Equals('no')),
 )
 
+// Receiving any of these passporting benefits means income/expenses questions are skipped in the journey (see disregardsStep).
+const benefitsPassported = or(
+  Answer('universal-credit').match(Condition.Equals('yes')),
+  Answer('income-support').match(Condition.Equals('yes')),
+  Answer('income-based-jsa').match(Condition.Equals('yes')),
+  Answer('pension-credit').match(Condition.Equals('yes')),
+  Answer('employment-support').match(Condition.Equals('yes')),
+)
+
+const incomeOrExpensesSkipped = or(under18Passported, benefitsPassported)
+
 const categoryIsDebtOrFamily = or(
   Answer('category').match(Condition.Equals('debt')),
   Answer('category').match(Condition.Equals('family'))
@@ -331,7 +342,7 @@ function frequencyText(frequencyCode: string) {
 }
 
 export const incomeSummaryList = GovUKSummaryList({
-  visibleWhen: not(under18Passported),
+  visibleWhen: not(incomeOrExpensesSkipped),
   card: {
     title: {
       text: "Income"
@@ -392,7 +403,7 @@ export const incomeSummaryList = GovUKSummaryList({
 export const partnerIncomeSummaryList = GovUKSummaryList({
   visibleWhen: and(
     Answer('has-partner').match(Condition.Equals('yes')),
-    not(under18Passported)
+    not(incomeOrExpensesSkipped)
   ),
   card: {
     title: {
@@ -452,7 +463,7 @@ export const partnerIncomeSummaryList = GovUKSummaryList({
 })
 
 export const dependantsSummaryList = GovUKSummaryList({
-  visibleWhen: not(under18Passported),
+  visibleWhen: not(incomeOrExpensesSkipped),
   card: {
     title: {
       text: "Dependants"
@@ -476,7 +487,7 @@ export const dependantsSummaryList = GovUKSummaryList({
 })
 
 export const expensesSummaryList = GovUKSummaryList({
-  visibleWhen: not(under18Passported),
+  visibleWhen: not(incomeOrExpensesSkipped),
   card: {
     title: {
       text: "Expenses"
@@ -514,7 +525,7 @@ export const expensesSummaryList = GovUKSummaryList({
 export const partnerExpensesSummaryList = GovUKSummaryList({
   visibleWhen: and(
     Answer('has-partner').match(Condition.Equals('yes')),
-    not(under18Passported)
+    not(incomeOrExpensesSkipped)
   ),
   card: {
     title: {

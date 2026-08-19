@@ -155,8 +155,9 @@ describe('Financial eligibility Forge routing', () => {
       .map((outcome) => ('goto' in outcome ? outcome.goto : null))
       .filter((goto): goto is string => goto !== null);
 
-    expect(redirectGoesTo).to.have.length(1);
-    expect(redirectGoesTo[0]).to.equal(incomeStep.code);
+    expect(redirectGoesTo).to.have.length(2);
+    expect(redirectGoesTo[0]).to.equal(checkAnswersStep.code);
+    expect(redirectGoesTo[1]).to.equal(incomeStep.code);
   });
 
   it('routes your-income answers to the correct next steps', () => {
