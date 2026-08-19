@@ -885,20 +885,31 @@ export function formatFinancialData(value: unknown): string {
 
   // Plain number
   if (typeof value === 'number') {
-    return `£${value}`;
+    return formatCurrency(value);
   }
   return 'Not provided';
 }
 
 /**
  * Function to format number values and add £ sign
- * @param {number} value The numeric value to format as GBP currency.
+ * @param {number | string} value The numeric or string value to format as GBP currency.
  * @returns {string} A formatted currency string with a £ sign.
  */
-const formatCurrency = (value: number): string => {
-  return new Intl.NumberFormat('en-GB', {
-  style: 'currency',
-  currency: 'GBP',
-  trailingZeroDisplay: 'stripIfInteger',
-}).format(value);
+export const formatCurrency = (value: number | string): string => {
+  const numericValue = typeof value === 'string' ? parseFloat(value) : value;
+
+  if (Number.isInteger(numericValue)) {
+    return new Intl.NumberFormat('en-GB', {
+      style: 'currency',
+      currency: 'GBP',
+      trailingZeroDisplay: 'stripIfInteger',
+    }).format(numericValue);
+  } else {
+    return new Intl.NumberFormat('en-GB', {
+      style: 'currency',
+      currency: 'GBP',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(numericValue);
+  }
 }

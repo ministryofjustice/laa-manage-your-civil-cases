@@ -12,6 +12,10 @@ export const propertiesHeading = GovUKHeading({
   size: 'm',
 })
 
+export const propertyMarketValueFieldPrefix = 'value_'
+export const propertyMortgageLeftFieldPrefix = 'mortgage-left_'
+export const propertyDisputedFieldPrefix = 'disputed_'
+
 export const propertySet = CollectionBlock({
   collection: Data('propertySet').each(
     Iterator.Map([
@@ -40,12 +44,13 @@ export const propertySet = CollectionBlock({
         ],
       }),
       GovUKTextInput({
-        code: Format('value_%1', Loop.Index0()),
+        code: Format(propertyMarketValueFieldPrefix + '%1', Loop.Index0()),
         label: 'What is the current market value of the property?',
         defaultValue: Item().path('value'),
         formatters: [Transformer.String.ToFloat()],
         prefix: { text: '£' },
         inputType: 'number',
+        attributes: { 'step': 0.01 },
         classes: GovUKUtilityClasses.Input.Width10,
         validWhen: [
           validation({
@@ -59,12 +64,13 @@ export const propertySet = CollectionBlock({
         ],
       }),
       GovUKTextInput({
-        code: Format('mortgage-left_%1', Loop.Index0()),
+        code: Format(propertyMortgageLeftFieldPrefix + '%1', Loop.Index0()),
         label: 'How much is left to pay on the mortgage?',
         defaultValue: Item().path('mortgage-left'),
         formatters: [Transformer.String.ToFloat()],
         prefix: { text: '£' },
         inputType: 'number',
+        attributes: { 'step': 0.01 },
         classes: GovUKUtilityClasses.Input.Width10,
         validWhen: [
           validation({
@@ -78,7 +84,7 @@ export const propertySet = CollectionBlock({
         ],
       }),
       GovUKRadioInput({
-        code: Format('disputed_%1', Loop.Index0()),
+        code: Format(propertyDisputedFieldPrefix + '%1', Loop.Index0()),
         defaultValue: Item().path('disputed'),
         fieldset: {
           legend: {
@@ -127,6 +133,7 @@ export const propertySet = CollectionBlock({
         formatters: [Transformer.String.ToFloat()],
         suffix: { text: '%' },
         inputType: 'number',
+        attributes: { 'step': 0.01 },
         classes: GovUKUtilityClasses.Input.Width3,
         validWhen: [
           validation({

@@ -1402,5 +1402,26 @@ describe('FinancialEligibilityEffectsWithDepsImpl', () => {
       expect(session.financialEligibilityDrafts.CASE456).to.deep.equal({ 'has-partner': 'no' });
       expect(context.getAnswer('has-partner')).to.equal('no');
     });
+
+    it('saves answered fields that relate to monetary fields with decimals', async () => {
+      const context = createTestEffectContext({
+        post: {
+          'bank-balance': '100',
+          'mortgage-left_0': '20000',
+        },
+        params: { caseReference: 'CASE456' },
+        session: { financialEligibilityDrafts: {} }
+      });
+
+      await effects.SaveNewAnswerIfAnswered(deps, context);
+
+      const session = context.getSession() as FinancialEligibilitySession;
+      expect(session.financialEligibilityDrafts.CASE456).to.deep.equal({
+        'bank-balance': '100.00',
+        'mortgage-left_0': '20000.00',
+      });
+      expect(context.getAnswer('bank-balance')).to.equal('100.00');
+      expect(context.getAnswer('mortgage-left_0')).to.equal('20000.00');
+    })
   });
 });

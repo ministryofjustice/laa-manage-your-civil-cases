@@ -1,9 +1,11 @@
-import { Answer, Condition, Conditional, Data, Format, Item, Iterator, Literal, Loop, Transformer, and, not, or } from '@ministryofjustice/hmpps-forge/core/authoring'
+import { z } from 'zod'
+import { Answer, Condition, Conditional, Data, Format, Item, Iterator, Literal, Loop, Transformer, TransformerRegistry, and, not, or } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { CollectionBlock } from '@ministryofjustice/hmpps-forge/core/components'
 import { GovUKHeading, GovUKSummaryList, GovUKUtilityClasses } from '@ministryofjustice/hmpps-forge/govuk-components'
 import { disregardsLookupItems } from '../disregardsPage/disregardsBlock.js'
 import { frequencyText, lastCalendarMonthDate } from '../moneyFieldHelpers.js'
 import { partnerField } from '../partnerPage/partnerBlock.js'
+import { Transformers } from '../formatters.js'
 
 const under18Passported = and(
   Answer('under-18').match(Condition.Equals('yes')),
@@ -161,11 +163,11 @@ export const propertiesSummaryList = CollectionBlock({
               text: 'What is the current market value of the property?',
               classes: GovUKUtilityClasses.Width.TwoThirds,
             },
-            value: { text: Format('£%1', Item().path('value')) },
+            value: { text: Item().path('value').pipe(Transformers.Currency()) },
           },
           {
             key: { text: 'How much is left to pay on the mortgage?' },
-            value: { text: Format('£%1', Item().path('mortgage-left')) },
+            value: { text: Item().path('mortgage-left').pipe(Transformers.Currency()) },
           },
           {
             key: { text: 'Is the property disputed?' },
@@ -204,19 +206,19 @@ export const savingsSummaryList = GovUKSummaryList({
         text: 'How much was in your bank account/building society before your last payment went in?',
         classes: GovUKUtilityClasses.Width.TwoThirds,
       },
-      value: { text: Format('£%1', Answer('bank-balance')) },
+      value: { text: Answer('bank-balance').pipe(Transformers.Currency()) },
     },
     {
       key: { text: 'Do you have any investments, shares or ISAs?' },
-      value: { text: Format('£%1', Answer('investment-balance')) },
+      value: { text: Answer('investment-balance').pipe(Transformers.Currency()) },
     },
     {
       key: { text: 'Do you have any valuable items worth over £500 each?' },
-      value: { text: Format('£%1', Answer('asset-balance')) },
+      value: { text: Answer('asset-balance').pipe(Transformers.Currency()) },
     },
     {
       key: { text: 'Do you have any money owed to you?' },
-      value: { text: Format('£%1', Answer('credit-balance')) },
+      value: { text: Answer('credit-balance').pipe(Transformers.Currency()) },
     },
   ] as GovUKSummaryList['rows'],
 })
@@ -242,19 +244,19 @@ export const partnerSavingsSummaryList = GovUKSummaryList({
         text: 'How much was in your partner\'s bank account/building society before your last payment went in?',
         classes: GovUKUtilityClasses.Width.TwoThirds,
       },
-      value: { text: Format('£%1', Answer('bank-balance-partner')) },
+      value: { text: Answer('bank-balance-partner').pipe(Transformers.Currency()) },
     },
     {
       key: { text: 'Does your partner have any investments, shares or ISAs?' },
-      value: { text: Format('£%1', Answer('investment-balance-partner')) },
+      value: { text: Answer('investment-balance-partner').pipe(Transformers.Currency()) },
     },
     {
       key: { text: 'Does your partner have any valuable items worth over £500 each?' },
-      value: { text: Format('£%1', Answer('asset-balance-partner')) },
+      value: { text: Answer('asset-balance-partner').pipe(Transformers.Currency()) },
     },
     {
       key: { text: 'Does your partner have any money owed to them?' },
-      value: { text: Format('£%1', Answer('credit-balance-partner')) },
+      value: { text: Answer('credit-balance-partner').pipe(Transformers.Currency()) },
     },
   ] as GovUKSummaryList['rows'],
 })
@@ -280,19 +282,19 @@ export const disputedSavingsSummaryList = GovUKSummaryList({
         text: 'How much was in your bank account/building society before your last payment went in?',
         classes: GovUKUtilityClasses.Width.TwoThirds,
       },
-      value: { text: Format('£%1', Answer('bank-balance-disputed')) },
+      value: { text: Answer('bank-balance-disputed').pipe(Transformers.Currency()) },
     },
     {
       key: { text: 'Do you have any investments, shares or ISAs?' },
-      value: { text: Format('£%1', Answer('investment-balance-disputed')) },
+      value: { text: Answer('investment-balance-disputed').pipe(Transformers.Currency()) },
     },
     {
       key: { text: 'Do you have any valuable items worth over £500 each?' },
-      value: { text: Format('£%1', Answer('asset-balance-disputed')) },
+      value: { text: Answer('asset-balance-disputed').pipe(Transformers.Currency()) },
     },
     {
       key: { text: 'Do you have any money owed to you?' },
-      value: { text: Format('£%1', Answer('credit-balance-disputed')) },
+      value: { text: Answer('credit-balance-disputed').pipe(Transformers.Currency()) },
     },
   ] as GovUKSummaryList['rows'],
 })
