@@ -285,8 +285,9 @@
   },
   "components": {
     "phaseBanner": {
-      "feedbackText": "This is a new service. Help us improve it and ",
-      "feedbackLinkTextHTML": "give your feedback by email"
+      "feedbackTextBeginning": "This is a new service - your ",
+      "feedbackLinkTextHTML": "feedback",
+      "feedbackTextEnd": " will help us improve it."
     },
     "table": {
       "noData": "No data",
@@ -809,6 +810,15 @@
         "usernameEmpty": "Username is required",
         "passwordEmpty": "Password is required"
       }
+    },
+    "feedback": {
+      "satisfiedQuestion": "Were you satisfied with this service?",
+      "messageYesTitle": "What did you like about using this service? (optional)",
+      "messageYesHint": "Tell us what worked well today and let us have any suggestions for how we could improve the service. Don't include personal information.",
+      "messageNoTitle": "What could we do to improve your experience using this service? (optional)",
+      "messageNoHint": "Tell us what you were not happy with today. Also let us have any suggestions for how we could improve the service. Don't include personal information.",
+      "sendFeedbackButton": "Send feedback",
+      "thankYouMessage": "Thank you for your feedback"
     }
   },
   "accessibility": {

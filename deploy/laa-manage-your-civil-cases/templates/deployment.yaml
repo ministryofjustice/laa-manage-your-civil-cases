@@ -59,8 +59,6 @@ spec:
               value: "{{ .Values.env.DEPARTMENT_NAME }}"
             - name: DEPARTMENT_URL
               value: "{{ .Values.env.DEPARTMENT_URL }}"
-            - name: CONTACT_EMAIL
-              value: "{{ .Values.env.CONTACT_EMAIL }}"
             - name: SERVICE_URL
               value: "{{ .Values.env.SERVICE_URL }}"
             - name: SESSION_SECRET

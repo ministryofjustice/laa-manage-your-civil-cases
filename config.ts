@@ -23,7 +23,6 @@ if (process.env.SESSION_SECRET == null || process.env.SESSION_SECRET === '' ||
 
 // Get environment variables
 const config: Config = {
-  CONTACT_EMAIL: process.env.CONTACT_EMAIL,
   DEPARTMENT_NAME: process.env.DEPARTMENT_NAME,
   DEPARTMENT_URL: process.env.DEPARTMENT_URL,
   RATELIMIT_HEADERS_ENABLED: process.env.RATELIMIT_HEADERS_ENABLED,
