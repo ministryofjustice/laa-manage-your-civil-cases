@@ -1,4 +1,4 @@
-<div id="feedback" tabindex="-1">
+<div id="feedback" class="js-required" tabindex="-1">
   <div class="gem-c-feedback__prompt" data-feedback-section="initial">
     <div class="govuk-width-container">
       <div class="govuk-grid-row">
@@ -37,8 +37,8 @@
           <form data-feedback-role="comment-form">
             <input type="hidden" name="_csrf" value="{{ csrfToken }}">
             {{ govukTextarea({
-              name: "comment",
-              id: "comment",
+              name: "satisfactionComment",
+              id: "satisfactionComment",
               label: { 
                 text: t('forms.feedback.messageYesTitle'),
                 classes: "govuk-label--s",
@@ -78,8 +78,8 @@
           <form data-feedback-role="comment-form">
             <input type="hidden" name="_csrf" value="{{ csrfToken }}">
             {{ govukTextarea({
-              name: "comment",
-              id: "comment",
+              name: "satisfactionComment",
+              id: "satisfactionComment",
               label: { 
                 text: t('forms.feedback.messageNoTitle'),
                 classes: "govuk-label--s",

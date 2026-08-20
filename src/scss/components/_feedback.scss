@@ -159,3 +159,13 @@
     outline: 3px solid #FFDD00;
   }
 }
+
+// Hide content when JS is disabled (hide always)
+.js-required {
+display: none !important;
+}
+
+// If page has JS show content (show always)
+.js-enabled .js-required {
+display: block !important;
+}

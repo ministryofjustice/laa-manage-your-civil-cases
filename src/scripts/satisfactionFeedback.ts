@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
   cancelButtons.forEach((button) => {
     button.addEventListener('click', () => {
       const form = button.closest('form');
-      const commentInput = form?.querySelector<HTMLTextAreaElement>('textarea[name="comment"]');
+      const commentInput = form?.querySelector<HTMLTextAreaElement>('textarea[name="satisfactionComment"]');
 
       if (commentInput) {
         commentInput.value = '';
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
   submitButtons.forEach((button) => {
     button.addEventListener('click', async () => {
       const form = button.closest('form');
-      const commentInput = form?.querySelector<HTMLTextAreaElement>('textarea[name="comment"]');
+      const commentInput = form?.querySelector<HTMLTextAreaElement>('textarea[name="satisfactionComment"]');
       const comment = commentInput?.value.trim() ?? '';
       const csrfToken = form?.querySelector<HTMLInputElement>('input[name="_csrf"]')?.value ?? '';
 

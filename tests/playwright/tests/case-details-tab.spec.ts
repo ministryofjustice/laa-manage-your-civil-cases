@@ -297,8 +297,10 @@ test.describe('Case details tab', () => {
     const caseDetails = CaseDetailsTabPage.forCase(page, 'PC-1922-1879');
     await caseDetails.navigate();
 
-    // Check for CSRF token in form
-    const csrfInput = page.locator('input[name="_csrf"]');
+    // Check for the CSRF token belonging to the provider-note form
+    const providerNoteForm = page.locator('form').filter({ has: page.locator('#providerNote')});
+    const csrfInput = providerNoteForm.locator('input[name="_csrf"]');
+
     await expect(csrfInput).toHaveAttribute('type', 'hidden');
 
     // CSRF token should have a value
