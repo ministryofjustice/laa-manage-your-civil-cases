@@ -244,36 +244,33 @@ describe('lastCalendarMonthDate', () => {
 });
 
 describe('Check your answers expenses summary', () => {
-  function summaryRowKeyText(summaryList: unknown, rowIndex: number): unknown {
+  // Looks up by Format template rather than a row index, so this doesn't break if rows are reordered.
+  function summaryRowKeyTextByTemplate(summaryList: unknown, expectedTemplate: string): unknown {
     const rows = (summaryList as { rows: { key: { text: unknown } }[] }).rows;
-    return rows[rowIndex].key.text;
+    const row = rows.find((r) => (r.key.text as Partial<FormatGeneratorExpr>).arguments?.[0] === expectedTemplate);
+    if (!row) {
+      throw new Error(`No summary row found with Format template: ${expectedTemplate}`);
+    }
+    return row.key.text;
   }
 
   it('shows the rolling last-calendar-month date for maintenance paid, not a hardcoded date', () => {
-    expectUsesLastCalendarMonthDate(
-      summaryRowKeyText(expensesSummaryList, 2),
-      'How much maintenance have you paid during the last calendar month (today back to %1)?',
-    );
+    const template = 'How much maintenance have you paid during the last calendar month (today back to %1)?';
+    expectUsesLastCalendarMonthDate(summaryRowKeyTextByTemplate(expensesSummaryList, template), template);
   });
 
   it('shows the rolling last-calendar-month date for legal aid contributions, not a hardcoded date', () => {
-    expectUsesLastCalendarMonthDate(
-      summaryRowKeyText(expensesSummaryList, 4),
-      'Are you currently paying towards legal aid for criminal defence? If so, how much have you paid during the last calendar month (today back to %1)?',
-    );
+    const template = 'Are you currently paying towards legal aid for criminal defence? If so, how much have you paid during the last calendar month (today back to %1)?';
+    expectUsesLastCalendarMonthDate(summaryRowKeyTextByTemplate(expensesSummaryList, template), template);
   });
 
   it('shows the rolling last-calendar-month date for the partner\'s maintenance paid, not a hardcoded date', () => {
-    expectUsesLastCalendarMonthDate(
-      summaryRowKeyText(partnerExpensesSummaryList, 2),
-      'How much maintenance has your partner paid during the last calendar month (today back to %1)?',
-    );
+    const template = 'How much maintenance has your partner paid during the last calendar month (today back to %1)?';
+    expectUsesLastCalendarMonthDate(summaryRowKeyTextByTemplate(partnerExpensesSummaryList, template), template);
   });
 
   it('shows the rolling last-calendar-month date for the partner\'s legal aid contributions, not a hardcoded date', () => {
-    expectUsesLastCalendarMonthDate(
-      summaryRowKeyText(partnerExpensesSummaryList, 4),
-      'Is your partner currently paying towards legal aid for criminal defence? If so, how much has your partner paid in the last calendar month (today back to %1)?',
-    );
+    const template = 'Is your partner currently paying towards legal aid for criminal defence? If so, how much has your partner paid in the last calendar month (today back to %1)?';
+    expectUsesLastCalendarMonthDate(summaryRowKeyTextByTemplate(partnerExpensesSummaryList, template), template);
   });
 });
