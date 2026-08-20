@@ -32,7 +32,8 @@ deploy_branch() {
                 --set env.SILAS_EXPECTED_AUDIENCE="$SILAS_EXPECTED_AUDIENCE" \
                 --set env.SENTRY_DSN="$SENTRY_DSN" \
                 --set env.SENTRY_CSP_REPORT_URI="$SENTRY_CSP_REPORT_URI" \
-                --set env.SENTRY_RELEASE="$(git rev-parse HEAD)"
+                --set env.SENTRY_RELEASE="$(git rev-parse HEAD)" \
+                --set env.POWER_AUTOMATE_URL="$POWER_AUTOMATE_URL"
 }
 
 deploy_main() {  
@@ -54,7 +55,8 @@ deploy_main() {
                           --set env.SILAS_EXPECTED_AUDIENCE="$SILAS_EXPECTED_AUDIENCE" \
                           --set env.SENTRY_DSN="$SENTRY_DSN" \
                           --set env.SENTRY_CSP_REPORT_URI="$SENTRY_CSP_REPORT_URI" \
-                          --set env.SENTRY_RELEASE="$(git rev-parse HEAD)"
+                          --set env.SENTRY_RELEASE="$(git rev-parse HEAD)" \
+                          --set env.POWER_AUTOMATE_URL="$POWER_AUTOMATE_URL"
 }
 
 if [[ "$GITHUB_REF_NAME" == "main" ]]; then

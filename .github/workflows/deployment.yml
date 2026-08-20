@@ -151,6 +151,7 @@ jobs:
           silas_expected_audience: ${{ secrets.SILAS_EXPECTED_AUDIENCE }}
           sentry_dsn: ${{ secrets.SENTRY_DSN }}
           sentry_csp_report_uri: ${{ secrets.SENTRY_CSP_REPORT_URI }}
+          power_automate_url: ${{ secrets.POWER_AUTOMATE_URL }}
   
   deploy-staging:
     environment: staging
@@ -185,6 +186,7 @@ jobs:
           silas_expected_audience: ${{ secrets.SILAS_EXPECTED_AUDIENCE }}
           sentry_dsn: ${{ secrets.SENTRY_DSN }}
           sentry_csp_report_uri: ${{ secrets.SENTRY_CSP_REPORT_URI }}
+          power_automate_url: ${{ secrets.POWER_AUTOMATE_URL }}
 
   deploy-production:
     environment: production
@@ -219,3 +221,4 @@ jobs:
           silas_expected_audience: ${{ secrets.SILAS_EXPECTED_AUDIENCE }}
           sentry_dsn: ${{ secrets.SENTRY_DSN }}
           sentry_csp_report_uri: ${{ secrets.SENTRY_CSP_REPORT_URI }}
+          power_automate_url: ${{ secrets.POWER_AUTOMATE_URL }}

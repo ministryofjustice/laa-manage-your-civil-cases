@@ -119,6 +119,8 @@ spec:
               value: "{{ .Values.env.SENTRY_CSP_REPORT_URI }}"
             - name: SENTRY_RELEASE
               value: "{{ .Values.env.SENTRY_RELEASE }}"
+            - name: POWER_AUTOMATE_URL
+              value: "{{ .Values.env.POWER_AUTOMATE_URL }}"
       {{- with .Values.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
