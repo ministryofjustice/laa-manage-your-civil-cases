@@ -623,9 +623,9 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
       await expect(page.getByRole('heading', { name: 'Property 2' })).toBeVisible();
       await expect(page.getByRole('heading', { name: 'Your savings' })).toBeVisible();
       await expect(page.getByRole('heading', { name: 'Disregards' })).toBeVisible();
-      await expect(page.getByRole('heading', { name: 'Income' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Your income' })).toBeVisible();
       await expect(page.getByRole('heading', { name: 'Dependants' })).toBeVisible();
-      await expect(page.getByRole('heading', { name: 'Expenses' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Your expenses' })).toBeVisible();
 
       await page.getByRole('button', { name: 'Submit' }).click();
 

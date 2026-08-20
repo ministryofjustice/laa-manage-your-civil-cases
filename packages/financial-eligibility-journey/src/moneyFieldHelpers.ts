@@ -24,6 +24,20 @@ export interface MoneyFieldConfig {
   fixedFrequencySuffix?: string;
 }
 
+// Matches cla_backend's MoneyField/MoneyFieldDRF max_value of 9999999999 pence (see apps/legalaid/fields.py)
+export const MAX_MONEY_VALUE = 99999999.99;
+const MAX_MONEY_VALUE_FORMATTED = '99,999,999.99';
+
+/**
+ * Builds the max-value validation message from a field's invalidMessage, keeping the same subject
+ * (e.g. "How much you pay for your mortgage") but swapping the ending for the max-value wording.
+ * @param {string} invalidMessage The field's existing empty/negative-number validation message
+ * @returns {string} The equivalent message for the max-value validation
+ */
+function maxValueMessage(invalidMessage: string): string {
+  return invalidMessage.replace(/ must be a (positive )?number, like .+$/, ` must be ${MAX_MONEY_VALUE_FORMATTED} or less`)
+}
+
 /**
  * Computes 'one calendar month before today' as a Forge expression that is resolved fresh on every
  * render, matching the legacy cla_frontend calculation: today plus one day, then minus one month
@@ -60,6 +74,10 @@ export function createAmountField(config: MoneyFieldConfig) {
       validation({
         condition: Self().match(Condition.Number.GreaterThanOrEqual(0)),
         message: config.invalidMessage,
+      }),
+      validation({
+        condition: Self().match(Condition.Number.LessThanOrEqual(MAX_MONEY_VALUE)),
+        message: maxValueMessage(config.invalidMessage),
       }),
     ],
   })

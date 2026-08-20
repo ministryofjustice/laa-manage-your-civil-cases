@@ -69,6 +69,7 @@ interface MoneyFieldCase {
   frequency: FrequencyField;
   emptyMessage: string;
   invalidMessage: string;
+  maxMessage: string;
   frequencyMessage: string;
 }
 
@@ -77,54 +78,63 @@ const clientMoneyFields: MoneyFieldCase[] = [
     name: 'earnings', code: 'earnings', amount: earningsField, frequency: earningsFrequencyField,
     emptyMessage: 'Enter what you earned before tax, or enter \'0\' if none',
     invalidMessage: 'What you earned before tax must be a positive number, like 1000 or 2400.50',
+    maxMessage: 'What you earned before tax must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for what you earned before tax',
   },
   {
     name: 'income tax', code: 'income-tax', amount: incomeTaxField, frequency: incomeTaxFrequencyField,
     emptyMessage: 'Enter how much tax you pay, or enter \'0\' if none',
     invalidMessage: 'How much tax you pay must be a positive number, like 1000 or 2400.50',
+    maxMessage: 'How much tax you pay must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for how much tax you pay',
   },
   {
     name: 'national insurance', code: 'national-insurance', amount: nationalInsuranceField, frequency: nationalInsuranceFrequencyField,
     emptyMessage: 'Enter how much National Insurance you pay, or enter \'0\' if none',
     invalidMessage: 'How much National Insurance you pay must be a positive number, like 1000 or 2400.50',
+    maxMessage: 'How much National Insurance you pay must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for how much National Insurance you pay',
   },
   {
     name: 'self employment drawings', code: 'self-employment-drawings', amount: selfEmploymentDrawingsField, frequency: selfEmploymentDrawingsFrequencyField,
     emptyMessage: 'Enter your self employed drawings (before tax), or enter \'0\' if none',
     invalidMessage: 'Your self employed drawings (before tax) must be a positive number, like 1000 or 2400.50',
+    maxMessage: 'Your self employed drawings (before tax) must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for your self employed drawings (before tax)',
   },
   {
     name: 'benefits', code: 'income-benefits', amount: incomeBenefitsField, frequency: incomeBenefitsFrequencyField,
     emptyMessage: 'Enter the total of any benefits you get, or enter \'0\' if none',
     invalidMessage: 'The total of any benefits you get must be a positive number, like 1000 or 2400.50',
+    maxMessage: 'The total of any benefits you get must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for the total of any benefits you get',
   },
   {
     name: 'tax credits', code: 'tax-credits', amount: taxCreditsField, frequency: taxCreditsFrequencyField,
     emptyMessage: 'Enter the total of any tax credits you get, or enter \'0\' if none',
     invalidMessage: 'The total of any tax credits you get must be a positive number, like 1000 or 2400.50',
+    maxMessage: 'The total of any tax credits you get must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for the total of any tax credits you get',
   },
   {
     name: 'maintenance received', code: 'maintenance-received', amount: maintenanceReceivedField, frequency: maintenanceReceivedFrequencyField,
     emptyMessage: 'Enter the total of any maintenance you get, or enter \'0\' if none',
     invalidMessage: 'The total of any maintenance you get must be a positive number, like 1000 or 2400.50',
+    maxMessage: 'The total of any maintenance you get must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for the total of any maintenance you get',
   },
   {
     name: 'pension income', code: 'pension-income', amount: pensionIncomeField, frequency: pensionIncomeFrequencyField,
     emptyMessage: 'Enter the total of any pension income you get, or enter \'0\' if none',
     invalidMessage: 'The total of any pension income you get must be a positive number, like 1000 or 2400.50',
+    maxMessage: 'The total of any pension income you get must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for the total of any pension income you get',
   },
   {
     name: 'other income', code: 'other-income', amount: otherIncomeField, frequency: otherIncomeFrequencyField,
     emptyMessage: 'Enter the total of any other income you get, or enter \'0\' if none',
     invalidMessage: 'The total of any other income you get must be a positive number, like 1000 or 2400.50',
+    maxMessage: 'The total of any other income you get must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for the total of any other income you get',
   },
 ];
@@ -134,54 +144,63 @@ const partnerMoneyFields: MoneyFieldCase[] = [
     name: 'earnings', code: 'earnings-partner', amount: earningsPartnerField, frequency: earningsPartnerFrequencyField,
     emptyMessage: 'Enter what your partner earned before tax, or enter \'0\' if none',
     invalidMessage: 'What your partner earned before tax must be a positive number, like 1000 or 2400.50',
+    maxMessage: 'What your partner earned before tax must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for what your partner earned before tax',
   },
   {
     name: 'income tax', code: 'income-tax-partner', amount: incomeTaxPartnerField, frequency: incomeTaxPartnerFrequencyField,
     emptyMessage: 'Enter how much tax your partner pays, or enter \'0\' if none',
     invalidMessage: 'How much tax your partner pays must be a positive number, like 1000 or 2400.50',
+    maxMessage: 'How much tax your partner pays must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for how much tax your partner pays',
   },
   {
     name: 'national insurance', code: 'national-insurance-partner', amount: nationalInsurancePartnerField, frequency: nationalInsurancePartnerFrequencyField,
     emptyMessage: 'Enter how much National Insurance your partner pays, or enter \'0\' if none',
     invalidMessage: 'How much National Insurance your partner pays must be a positive number, like 1000 or 2400.50',
+    maxMessage: 'How much National Insurance your partner pays must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for how much National Insurance your partner pays',
   },
   {
     name: 'self employment drawings', code: 'self-employment-drawings-partner', amount: selfEmploymentDrawingsPartnerField, frequency: selfEmploymentDrawingsPartnerFrequencyField,
     emptyMessage: 'Enter your partner\'s self employed drawings (before tax), or enter \'0\' if none',
     invalidMessage: 'Your partner\'s self employed drawings (before tax) must be a positive number, like 1000 or 2400.50',
+    maxMessage: 'Your partner\'s self employed drawings (before tax) must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for your partner\'s self employed drawings (before tax)',
   },
   {
     name: 'benefits', code: 'income-benefits-partner', amount: incomeBenefitsPartnerField, frequency: incomeBenefitsPartnerFrequencyField,
     emptyMessage: 'Enter the total of any benefits your partner gets, or enter \'0\' if none',
     invalidMessage: 'The total of any benefits your partner gets must be a positive number, like 1000 or 2400.50',
+    maxMessage: 'The total of any benefits your partner gets must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for the total of any benefits your partner gets',
   },
   {
     name: 'tax credits', code: 'tax-credits-partner', amount: taxCreditsPartnerField, frequency: taxCreditsPartnerFrequencyField,
     emptyMessage: 'Enter the total of any tax credits your partner gets, or enter \'0\' if none',
     invalidMessage: 'The total of any tax credits your partner gets must be a positive number, like 1000 or 2400.50',
+    maxMessage: 'The total of any tax credits your partner gets must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for the total of any tax credits your partner gets',
   },
   {
     name: 'maintenance received', code: 'maintenance-received-partner', amount: maintenanceReceivedPartnerField, frequency: maintenanceReceivedPartnerFrequencyField,
     emptyMessage: 'Enter the total of any maintenance your partner gets, or enter \'0\' if none',
     invalidMessage: 'The total of any maintenance your partner gets must be a positive number, like 1000 or 2400.50',
+    maxMessage: 'The total of any maintenance your partner gets must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for the total of any maintenance your partner gets',
   },
   {
     name: 'pension income', code: 'pension-income-partner', amount: pensionIncomePartnerField, frequency: pensionIncomePartnerFrequencyField,
     emptyMessage: 'Enter the total of any pension income your partner gets, or enter \'0\' if none',
     invalidMessage: 'The total of any pension income your partner gets must be a positive number, like 1000 or 2400.50',
+    maxMessage: 'The total of any pension income your partner gets must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for the total of any pension income your partner gets',
   },
   {
     name: 'other income', code: 'other-income-partner', amount: otherIncomePartnerField, frequency: otherIncomePartnerFrequencyField,
     emptyMessage: 'Enter the total of any other income your partner gets, or enter \'0\' if none',
     invalidMessage: 'The total of any other income your partner gets must be a positive number, like 1000 or 2400.50',
+    maxMessage: 'The total of any other income your partner gets must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for the total of any other income your partner gets',
   },
 ];
@@ -206,8 +225,12 @@ function testMoneyFieldPair(testCase: MoneyFieldCase): void {
       expect(validationMessages(testCase.amount)[1]).to.equal(testCase.invalidMessage);
     });
 
-    it('has exactly two validation rules on the amount field', () => {
-      expect(validationMessages(testCase.amount)).to.have.length(2);
+    it('rejects amounts over the maximum allowed value', () => {
+      expect(validationMessages(testCase.amount)[2]).to.equal(testCase.maxMessage);
+    });
+
+    it('has exactly three validation rules on the amount field', () => {
+      expect(validationMessages(testCase.amount)).to.have.length(3);
     });
 
     it('pairs with a frequency select defaulting to per_month with the standard options', () => {
