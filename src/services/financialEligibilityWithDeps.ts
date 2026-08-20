@@ -369,7 +369,8 @@ export function mapAnswersToApiPayload(answers: Record<string, unknown>): Record
             } else if (dependantsFields.includes(apiField)) {
                 payload[apiField] = Math.round(toNumber(value));
             } else if (stepCode === disregardsStep.code) {
-                normaliseSelectedCheckbox(value).forEach(disregard => {
+                // 'none' is a UI-only option meaning no disregards apply; the API doesn't recognise it as a field
+                normaliseSelectedCheckbox(value).filter(disregard => disregard !== 'none').forEach(disregard => {
                     disregards[disregard] = true;
                 });
                 payload[apiField] = disregards;

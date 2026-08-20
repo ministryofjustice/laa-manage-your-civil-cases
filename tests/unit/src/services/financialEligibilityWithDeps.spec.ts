@@ -675,11 +675,11 @@ describe('mapAnswersToApiPayload', () => {
       expect(result.disregards).to.deep.equal({ grenfell_tower: true, love_manchester: true });
     });
 
-    it('should map none disregard selection to a boolean object', () => {
+    it('should map none disregard selection to an empty object, since the API does not recognise "none" as a field', () => {
       const answers = { disregards: ['none'] };
       const result = mapAnswersToApiPayload(answers);
 
-      expect(result.disregards).to.deep.equal({ none: true });
+      expect(result.disregards).to.deep.equal({});
     });
   });
 

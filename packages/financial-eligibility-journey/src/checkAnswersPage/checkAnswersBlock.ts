@@ -341,11 +341,17 @@ function frequencyText(frequencyCode: string) {
   )
 }
 
+export const incomeHeading = GovUKHeading({
+  visibleWhen: not(incomeOrExpensesSkipped),
+  text: 'Income',
+  size: 'm',
+})
+
 export const incomeSummaryList = GovUKSummaryList({
   visibleWhen: not(incomeOrExpensesSkipped),
   card: {
     title: {
-      text: "Income"
+      text: "Your income"
     },
     actions: {
       items: [
@@ -476,7 +482,10 @@ export const dependantsSummaryList = GovUKSummaryList({
   },
   rows: [
     {
-      key: { text: 'Do you have any dependants aged 16 and over?' },
+      key: {
+        text: 'Do you have any dependants aged 16 and over?',
+        classes: GovUKUtilityClasses.Width.TwoThirds,
+      },
       value: { text: Answer('dependants-16-over') },
     },
     {
@@ -486,11 +495,17 @@ export const dependantsSummaryList = GovUKSummaryList({
   ] as GovUKSummaryList['rows'],
 })
 
+export const expensesHeading = GovUKHeading({
+  visibleWhen: not(incomeOrExpensesSkipped),
+  text: 'Expenses',
+  size: 'm',
+})
+
 export const expensesSummaryList = GovUKSummaryList({
   visibleWhen: not(incomeOrExpensesSkipped),
   card: {
     title: {
-      text: "Expenses"
+      text: "Your expenses"
     },
     actions: {
       items: [
@@ -500,7 +515,10 @@ export const expensesSummaryList = GovUKSummaryList({
   },
   rows: [
     {
-      key: { text: 'How much do you pay for your mortgage?' },
+      key: {
+        text: 'How much do you pay for your mortgage?',
+        classes: GovUKUtilityClasses.Width.TwoThirds,
+      },
       value: { text: Format('£%1 (%2)', Answer('mortgage'), frequencyText('mortgage-frequency')) },
     },
     {
@@ -517,7 +535,7 @@ export const expensesSummaryList = GovUKSummaryList({
     },
     {
       key: { text: Format('Are you currently paying towards legal aid for criminal defence? If so, how much have you paid during the last calendar month (today back to %1)?', lastCalendarMonthDate()) },
-      value: { text: Format('£%1', Answer('legal-aid-contributions')) },
+      value: { text: Format('£%1 (Per month)', Answer('legal-aid-contributions')) },
     },
   ] as GovUKSummaryList['rows'],
 })
@@ -539,7 +557,10 @@ export const partnerExpensesSummaryList = GovUKSummaryList({
   },
   rows: [
     {
-      key: { text: 'How much does your partner pay for their mortgage?' },
+      key: {
+        text: 'How much does your partner pay for their mortgage?',
+        classes: GovUKUtilityClasses.Width.TwoThirds,
+      },
       value: { text: Format('£%1 (%2)', Answer('mortgage-partner'), frequencyText('mortgage-partner-frequency')) },
     },
     {
@@ -556,7 +577,7 @@ export const partnerExpensesSummaryList = GovUKSummaryList({
     },
     {
       key: { text: Format('Is your partner currently paying towards legal aid for criminal defence? If so, how much has your partner paid in the last calendar month (today back to %1)?', lastCalendarMonthDate()) },
-      value: { text: Format('£%1', Answer('legal-aid-contributions-partner')) },
+      value: { text: Format('£%1 (Per month)', Answer('legal-aid-contributions-partner')) },
     },
   ] as GovUKSummaryList['rows'],
 })
