@@ -4,16 +4,17 @@ import {
   rentField, rentFrequencyField,
   maintenancePaidField, maintenancePaidFrequencyField,
   childcareCostsField, childcareCostsFrequencyField,
-  legalAidContributionsField,
+  legalAidContributionsField, maintenancePaidRow, legalAidContributionsHeading,
 } from '#packages/financial-eligibility-journey/src/expensesPage/expensesBlock.js';
 import {
   mortgagePartnerField, mortgagePartnerFrequencyField,
   rentPartnerField, rentPartnerFrequencyField,
   maintenancePaidPartnerField, maintenancePaidPartnerFrequencyField,
   childcareCostsPartnerField, childcareCostsPartnerFrequencyField,
-  legalAidContributionsPartnerField,
+  legalAidContributionsPartnerField, maintenancePaidPartnerRow, legalAidContributionsPartnerHeading,
 } from '#packages/financial-eligibility-journey/src/partnerExpensesPage/partnerExpensesBlock.js';
-import { frequencyItems as FREQUENCY_ITEMS } from '#packages/financial-eligibility-journey/src/moneyFieldHelpers.js';
+import { expensesSummaryList, partnerExpensesSummaryList } from '#packages/financial-eligibility-journey/src/checkAnswersPage/checkAnswersBlock.js';
+import { frequencyItems as FREQUENCY_ITEMS, lastCalendarMonthDate } from '#packages/financial-eligibility-journey/src/moneyFieldHelpers.js';
 
 interface FieldLike {
   code?: unknown;
@@ -47,6 +48,41 @@ function selectItems(field: FieldLike): { value: string; text: string }[] {
     return [];
   }
   return field.items as { value: string; text: string }[];
+}
+
+interface BuiltExpression {
+  build(): unknown;
+}
+
+interface FormatGeneratorExpr {
+  name: string;
+  arguments: [string, ...unknown[]];
+}
+
+/**
+ * Resolves a value that may be an unfinalised builder (exposing `.build()`) or an already-plain
+ * expression object, down to its plain expression shape.
+ * @param {unknown} expr The builder or plain expression to normalise
+ * @returns {unknown} The plain expression
+ */
+function toPlainExpr(expr: unknown): unknown {
+  const maybeBuilder = expr as Partial<BuiltExpression>;
+  return typeof maybeBuilder.build === 'function' ? maybeBuilder.build() : expr;
+}
+
+/**
+ * Asserts that a label/key.text expression is built from `Format(expectedTemplate, lastCalendarMonthDate())`,
+ * comparing against a freshly-built `lastCalendarMonthDate()` rather than a hardcoded expression shape, so this
+ * doesn't duplicate (and drift from) the pipeline assertions in the 'lastCalendarMonthDate' describe block below.
+ * @param {unknown} labelExpr The label/key.text expression to check
+ * @param {string} expectedTemplate The exact `Format` template string expected
+ * @returns {void}
+ */
+function expectUsesLastCalendarMonthDate(labelExpr: unknown, expectedTemplate: string): void {
+  const format = labelExpr as FormatGeneratorExpr;
+  expect(format.name).to.equal('FormatString');
+  expect(format.arguments[0]).to.equal(expectedTemplate);
+  expect(toPlainExpr(format.arguments[1])).to.deep.equal(toPlainExpr(lastCalendarMonthDate()));
 }
 
 interface MoneyFieldCase {
@@ -159,6 +195,15 @@ describe('Your expenses fields', () => {
     expect(validationMessages(legalAidContributionsField)[0]).to.equal('Enter how much you paid towards legal aid for criminal defence in the last calendar month, or enter \'0\' if none');
     expect(validationMessages(legalAidContributionsField)[1]).to.equal('How much you paid towards legal aid for criminal defence in the last calendar month must be a number, like 100 or 240.50');
   });
+
+  it('shows the rolling last-calendar-month date in the maintenance paid question, not a hardcoded date', () => {
+    const heading = maintenancePaidRow[0] as { content: unknown };
+    expectUsesLastCalendarMonthDate(heading.content, 'How much maintenance have you paid during the last calendar month (today back to %1)?');
+  });
+
+  it('shows the rolling last-calendar-month date in the legal aid contributions question, not a hardcoded date', () => {
+    expectUsesLastCalendarMonthDate((legalAidContributionsHeading as { content: unknown }).content, 'Are you currently paying towards legal aid for criminal defence? If so, how much have you paid during the last calendar month (today back to %1)?');
+  });
 });
 
 describe('Your partner\'s expenses fields', () => {
@@ -170,5 +215,65 @@ describe('Your partner\'s expenses fields', () => {
     expect(validationMessages(legalAidContributionsPartnerField)).to.have.length(2);
     expect(validationMessages(legalAidContributionsPartnerField)[0]).to.equal('Enter how much your partner paid towards legal aid for criminal defence in the last calendar month, or enter \'0\' if none');
     expect(validationMessages(legalAidContributionsPartnerField)[1]).to.equal('How much your partner paid towards legal aid for criminal defence in the last calendar month must be a number, like 100 or 240.50');
+  });
+
+  it('shows the rolling last-calendar-month date in the partner\'s maintenance paid question, not a hardcoded date', () => {
+    const heading = maintenancePaidPartnerRow[0] as { content: unknown };
+    expectUsesLastCalendarMonthDate(heading.content, 'How much maintenance has your partner paid during the last calendar month (today back to %1)?');
+  });
+
+  it('shows the rolling last-calendar-month date in the partner\'s legal aid contributions question, not a hardcoded date', () => {
+    expectUsesLastCalendarMonthDate((legalAidContributionsPartnerHeading as { content: unknown }).content, 'Is your partner currently paying towards legal aid for criminal defence? If so, how much has your partner paid in the last calendar month (today back to %1)?');
+  });
+});
+
+describe('lastCalendarMonthDate', () => {
+  it('resolves as today plus one day, minus one calendar month, formatted as an ordinal date (matches legacy cla_frontend calculation)', () => {
+    const pipeline = (lastCalendarMonthDate() as unknown as BuiltExpression).build() as {
+      input: unknown;
+      steps: unknown[];
+    };
+
+    expect(pipeline.input).to.deep.equal({ type: 'FunctionType.Generator', name: 'Date.Now', arguments: [] });
+    expect(pipeline.steps).to.deep.equal([
+      { type: 'FunctionType.Transformer', name: 'Date.AddDays', arguments: [1] },
+      { type: 'FunctionType.Transformer', name: 'Date.AddMonths', arguments: [-1] },
+      { type: 'FunctionType.Transformer', name: 'Date.Format', arguments: ['Do MMMM, YYYY'] },
+    ]);
+  });
+});
+
+describe('Check your answers expenses summary', () => {
+  function summaryRowKeyText(summaryList: unknown, rowIndex: number): unknown {
+    const rows = (summaryList as { rows: { key: { text: unknown } }[] }).rows;
+    return rows[rowIndex].key.text;
+  }
+
+  it('shows the rolling last-calendar-month date for maintenance paid, not a hardcoded date', () => {
+    expectUsesLastCalendarMonthDate(
+      summaryRowKeyText(expensesSummaryList, 2),
+      'How much maintenance have you paid during the last calendar month (today back to %1)?',
+    );
+  });
+
+  it('shows the rolling last-calendar-month date for legal aid contributions, not a hardcoded date', () => {
+    expectUsesLastCalendarMonthDate(
+      summaryRowKeyText(expensesSummaryList, 4),
+      'Are you currently paying towards legal aid for criminal defence? If so, how much have you paid during the last calendar month (today back to %1)?',
+    );
+  });
+
+  it('shows the rolling last-calendar-month date for the partner\'s maintenance paid, not a hardcoded date', () => {
+    expectUsesLastCalendarMonthDate(
+      summaryRowKeyText(partnerExpensesSummaryList, 2),
+      'How much maintenance has your partner paid during the last calendar month (today back to %1)?',
+    );
+  });
+
+  it('shows the rolling last-calendar-month date for the partner\'s legal aid contributions, not a hardcoded date', () => {
+    expectUsesLastCalendarMonthDate(
+      summaryRowKeyText(partnerExpensesSummaryList, 4),
+      'Is your partner currently paying towards legal aid for criminal defence? If so, how much has your partner paid in the last calendar month (today back to %1)?',
+    );
   });
 });

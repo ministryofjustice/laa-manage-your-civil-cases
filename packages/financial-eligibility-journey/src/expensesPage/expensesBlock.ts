@@ -1,5 +1,6 @@
+import { Format } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { GovUKHeading } from '@ministryofjustice/hmpps-forge/govuk-components'
-import { type MoneyFieldConfig, createAmountField, createFrequencyField, createMoneyFieldRow } from '../moneyFieldHelpers.js'
+import { type MoneyFieldConfig, createAmountField, createFrequencyField, createMoneyFieldRow, lastCalendarMonthDate } from '../moneyFieldHelpers.js'
 
 export const expensesHeading = GovUKHeading({
   text: 'Your expenses',
@@ -32,7 +33,7 @@ export const rentRow = createMoneyFieldRow(rentConfig, rentField, rentFrequencyF
 
 const maintenancePaidConfig: MoneyFieldConfig = {
   code: 'maintenance-paid',
-  label: 'How much maintenance have you paid during the last calendar month (today back to 17th March, 2026)?',
+  label: Format('How much maintenance have you paid during the last calendar month (today back to %1)?', lastCalendarMonthDate()),
   emptyMessage: 'Enter how much maintenance you paid during the last calendar month, or enter \'0\' if none',
   invalidMessage: 'How much maintenance you paid during the last calendar month must be a positive number, like 100 or 240.50',
   frequencyLabel: 'Frequency for how much maintenance you paid during the last calendar month',
@@ -58,7 +59,7 @@ export const childcareCostsRow = createMoneyFieldRow(childcareCostsConfig, child
 // transformFinancialEligibility.ts), and the ticket's spec omits a "frequency is empty" validation message for it.
 const legalAidContributionsConfig: MoneyFieldConfig = {
   code: 'legal-aid-contributions',
-  label: 'Are you currently paying towards legal aid for criminal defence? If so, how much have you paid during the last calendar month (today back to 17th March, 2026)?',
+  label: Format('Are you currently paying towards legal aid for criminal defence? If so, how much have you paid during the last calendar month (today back to %1)?', lastCalendarMonthDate()),
   emptyMessage: 'Enter how much you paid towards legal aid for criminal defence in the last calendar month, or enter \'0\' if none',
   invalidMessage: 'How much you paid towards legal aid for criminal defence in the last calendar month must be a number, like 100 or 240.50',
   frequencyLabel: '',

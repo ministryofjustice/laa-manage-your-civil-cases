@@ -1,4 +1,5 @@
-import { Self, Condition, validation, Transformer } from '@ministryofjustice/hmpps-forge/core/authoring'
+import { Self, Condition, validation, Transformer, Format, Generator } from '@ministryofjustice/hmpps-forge/core/authoring'
+import type { ResolvableString } from '@ministryofjustice/hmpps-forge/core/components'
 import { GovUKHeading, GovUKTextInput, GovUKSelectInput, GovUKUtilityClasses, GovUKGridRow } from '@ministryofjustice/hmpps-forge/govuk-components'
 
 // The frequency a money field applies to. Defaults to 'per_month' when nothing has been entered yet.
@@ -14,13 +15,27 @@ export const frequencyItems = [
 
 export interface MoneyFieldConfig {
   code: string;
-  label: string;
+  label: ResolvableString;
   emptyMessage: string;
   invalidMessage: string;
   frequencyLabel: string;
   frequencyMessage: string;
   // Shown as a suffix on the amount field itself, for fields with no frequency dropdown (fixed at 'per_month')
   fixedFrequencySuffix?: string;
+}
+
+/**
+ * Computes 'one calendar month before today' as a Forge expression that is resolved fresh on every
+ * render, matching the legacy cla_frontend calculation: today plus one day, then minus one month
+ * (see PR #873). Used by the 'last calendar month' maintenance/legal aid contribution questions.
+ * @returns {ResolvableString} A Forge expression resolving to a date like '20th July, 2026'
+ */
+export function lastCalendarMonthDate(): ResolvableString {
+  return Generator.Date.Now().pipe(
+    Transformer.Date.AddDays(1),
+    Transformer.Date.AddMonths(-1),
+    Transformer.Date.Format('Do MMMM, YYYY'),
+  )
 }
 
 /**
@@ -31,7 +46,7 @@ export interface MoneyFieldConfig {
 export function createAmountField(config: MoneyFieldConfig) {
   return GovUKTextInput({
     code: config.code,
-    label: { html: `Amount <span class="govuk-visually-hidden">for ${config.label}</span>` },
+    label: { html: Format('Amount <span class="govuk-visually-hidden">for %1</span>', config.label) },
     formatters: [Transformer.String.ToFloat()],
     prefix: { text: '£' },
     ...(config.fixedFrequencySuffix ? { suffix: { text: config.fixedFrequencySuffix } } : {}),
@@ -58,7 +73,7 @@ export function createAmountField(config: MoneyFieldConfig) {
 export function createFrequencyField(config: MoneyFieldConfig) {
   return GovUKSelectInput({
     code: `${config.code}-frequency`,
-    label: { html: `Frequency <span class="govuk-visually-hidden">for ${config.label}</span>` },
+    label: { html: Format('Frequency <span class="govuk-visually-hidden">for %1</span>', config.label) },
     defaultValue: 'per_month',
     items: frequencyItems,
     validWhen: [

@@ -2,7 +2,7 @@ import { Answer, Condition, Conditional, Data, Format, Item, Iterator, Literal, 
 import { CollectionBlock } from '@ministryofjustice/hmpps-forge/core/components'
 import { GovUKHeading, GovUKSummaryList, GovUKUtilityClasses } from '@ministryofjustice/hmpps-forge/govuk-components'
 import { disregardsLookupItems } from '../disregardsPage/disregardsBlock.js'
-import { frequencyItems } from '../moneyFieldHelpers.js'
+import { frequencyItems, lastCalendarMonthDate } from '../moneyFieldHelpers.js'
 
 const under18Passported = and(
   Answer('under-18').match(Condition.Equals('yes')),
@@ -508,7 +508,7 @@ export const expensesSummaryList = GovUKSummaryList({
       value: { text: Format('£%1 (%2)', Answer('rent'), frequencyText('rent-frequency')) },
     },
     {
-      key: { text: 'How much maintenance have you paid during the last calendar month (today back to 17th March, 2026)?' },
+      key: { text: Format('How much maintenance have you paid during the last calendar month (today back to %1)?', lastCalendarMonthDate()) },
       value: { text: Format('£%1 (%2)', Answer('maintenance-paid'), frequencyText('maintenance-paid-frequency')) },
     },
     {
@@ -516,7 +516,7 @@ export const expensesSummaryList = GovUKSummaryList({
       value: { text: Format('£%1 (%2)', Answer('childcare-costs'), frequencyText('childcare-costs-frequency')) },
     },
     {
-      key: { text: 'Are you currently paying towards legal aid for criminal defence? If so, how much have you paid during the last calendar month (today back to 17th March, 2026)?' },
+      key: { text: Format('Are you currently paying towards legal aid for criminal defence? If so, how much have you paid during the last calendar month (today back to %1)?', lastCalendarMonthDate()) },
       value: { text: Format('£%1', Answer('legal-aid-contributions')) },
     },
   ] as GovUKSummaryList['rows'],
@@ -547,7 +547,7 @@ export const partnerExpensesSummaryList = GovUKSummaryList({
       value: { text: Format('£%1 (%2)', Answer('rent-partner'), frequencyText('rent-partner-frequency')) },
     },
     {
-      key: { text: 'How much maintenance has your partner paid during the last calendar month?' },
+      key: { text: Format('How much maintenance has your partner paid during the last calendar month (today back to %1)?', lastCalendarMonthDate()) },
       value: { text: Format('£%1 (%2)', Answer('maintenance-paid-partner'), frequencyText('maintenance-paid-partner-frequency')) },
     },
     {
@@ -555,7 +555,7 @@ export const partnerExpensesSummaryList = GovUKSummaryList({
       value: { text: Format('£%1 (%2)', Answer('childcare-costs-partner'), frequencyText('childcare-costs-partner-frequency')) },
     },
     {
-      key: { text: 'Is your partner currently paying towards legal aid for criminal defence? If so, how much has your partner paid in the last calendar month?' },
+      key: { text: Format('Is your partner currently paying towards legal aid for criminal defence? If so, how much has your partner paid in the last calendar month (today back to %1)?', lastCalendarMonthDate()) },
       value: { text: Format('£%1', Answer('legal-aid-contributions-partner')) },
     },
   ] as GovUKSummaryList['rows'],
