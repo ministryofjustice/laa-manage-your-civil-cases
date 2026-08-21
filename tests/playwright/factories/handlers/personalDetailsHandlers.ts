@@ -14,7 +14,6 @@ export function createPersonalDetailsHandlers(
   cases: MockCase[]
 ) {
   return [
-    // GET /case/:caseReference/personal_details/get_diversity
     http.get(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/personal_details/get_diversity`, ({ params }) => {
 
       const { caseReference } = params;
@@ -48,7 +47,6 @@ export function createPersonalDetailsHandlers(
 
     }),
 
-    // PATCH /case/:caseReference/personal_details/
     http.patch(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/personal_details/`, async ({ params, request }) => {
 
       const { caseReference } = params;

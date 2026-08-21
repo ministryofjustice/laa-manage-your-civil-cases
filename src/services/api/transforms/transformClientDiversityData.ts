@@ -1,5 +1,5 @@
 import type { ClientDiversityDataItem } from '#types/api-types.js';
-import { isRecord } from '#src/scripts/helpers/index.js';
+import { isRecord, safeString } from '#src/scripts/helpers/index.js';
 
 /**
  * Transforms client diversity API data to display format
@@ -11,9 +11,9 @@ export function transformClientDiversityDataItem(item: unknown): ClientDiversity
     throw new Error('Invalid client diversity data item: expected object');
   }
 
-  const gender = item.gender == null ? '' : String(item.gender);
-  const ethnicity = item.ethnicity == null ? '' : String(item.ethnicity);
-  const disability = item.disability == null ? '' : String(item.disability);
+  const gender = safeString(item.gender);
+  const ethnicity = safeString(item.ethnicity);
+  const disability = safeString(item.disability);
 
   return {
     gender,
