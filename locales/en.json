@@ -130,8 +130,7 @@
         "FAMILY_FRIEND": "Family member or friend",
         "PROFESSIONAL": "Professional",
         "LEGAL_ADVISOR": "Legal adviser",
-        "OTHER": "Other",
-        "undefined": ""
+        "OTHER": "Other"
       },
       "value": {
         "PARENT_GUARDIAN": "PARENT_GUARDIAN",

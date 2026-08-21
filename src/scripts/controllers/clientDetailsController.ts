@@ -15,8 +15,8 @@ import { HTTP } from '#src/services/api/base/constants.js';
  * @param {string} activeTab The active tab of the primary navigation
  * @returns {void} Page to be returned
  */
-export async function handleClientDetailsTab(req: Request, res: Response, next: NextFunction, activeTab: string): Promise<void> {
-  await handleCaseTab(req, res, next, activeTab, 'client details', async ({ req, res, caseReference, activeTab }) => {
+export function handleClientDetailsTab(req: Request, res: Response, next: NextFunction, activeTab: string): void {
+  handleCaseTab(req, res, next, activeTab, 'client details', async ({ req, res, caseReference, activeTab }) => {
     // Client details already fetched by middleware, available at req.clientData
     const { clientData } = req;
 

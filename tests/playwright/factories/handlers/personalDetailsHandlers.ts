@@ -30,13 +30,22 @@ export function createPersonalDetailsHandlers(
           ethnicity: 'Mixed Other',
           disability: 'OTH - Other'
         });
-      } else {
+      } 
+
+      if (caseReference === 'PC-7755-4557') {
         return HttpResponse.json({
-          gender: null,
-          ethnicity: null,
-          disability: null
+          gender: 'Prefer not to say',
+          ethnicity: 'Prefer not to say',
+          disability: 'NCD - Not Considered Disabled'
         });
-      }
+      } 
+
+      return HttpResponse.json({
+        gender: null,
+        ethnicity: null,
+        disability: null
+      });
+
     }),
 
     // PATCH /case/:caseReference/personal_details/
