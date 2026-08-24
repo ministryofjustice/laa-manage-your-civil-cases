@@ -6,7 +6,8 @@ import {
   rentPartnerRow,
   maintenancePaidPartnerRow,
   childcareCostsPartnerRow,
-  legalAidContributionsPartnerHeading, legalAidContributionsPartnerField,
+  legalAidContributionsPartnerHeading,
+  legalAidContributionsPartnerField,
 } from './partnerExpensesBlock.js'
 import { FinancialEligibilityEffects } from '../effects.js'
 import { step, type StepDefinition } from '../authoring.js'
@@ -25,7 +26,8 @@ export const partnerExpensesStep: StepDefinition = step({
     ...rentPartnerRow,
     ...maintenancePaidPartnerRow,
     ...childcareCostsPartnerRow,
-    legalAidContributionsPartnerHeading, legalAidContributionsPartnerField,
+    legalAidContributionsPartnerHeading,
+    legalAidContributionsPartnerField,
     continueButton,
     discardChangesButton,
   ],

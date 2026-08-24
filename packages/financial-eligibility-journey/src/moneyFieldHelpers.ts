@@ -1,10 +1,10 @@
-import { Self, Condition, validation, Transformer, Format, Generator } from '@ministryofjustice/hmpps-forge/core/authoring'
+import { Self, Answer, Condition, validation, Transformer, Format, Generator } from '@ministryofjustice/hmpps-forge/core/authoring'
 import type { ResolvableString } from '@ministryofjustice/hmpps-forge/core/components'
 import { GovUKHeading, GovUKTextInput, GovUKSelectInput, GovUKUtilityClasses, GovUKGridRow } from '@ministryofjustice/hmpps-forge/govuk-components'
 
 // The frequency a money field applies to. Defaults to 'per_month' when nothing has been entered yet.
-// Single source of truth: also drives `frequencyText()` in checkAnswersBlock.ts, so a new frequency
-// value only needs to be added here.
+// Single source of truth: also drives `frequencyText()` below, so a new frequency value only needs
+// to be added here.
 export const frequencyItems = [
   { value: 'per_week', text: 'Per week' },
   { value: 'per_2week', text: '2 weekly' },
@@ -12,6 +12,17 @@ export const frequencyItems = [
   { value: 'per_month', text: 'Per month' },
   { value: 'per_year', text: 'Per year' },
 ]
+
+/**
+ * Formats a frequency answer for display, matching the frequency dropdown's own label text exactly
+ * @param {string} frequencyCode The Forge answer code for the frequency select
+ * @returns {unknown} The formatted frequency text
+ */
+export function frequencyText(frequencyCode: string) {
+  return Answer(frequencyCode).pipe(
+    ...frequencyItems.map((item) => Transformer.String.Replace(item.value, item.text)),
+  )
+}
 
 export interface MoneyFieldConfig {
   code: string;

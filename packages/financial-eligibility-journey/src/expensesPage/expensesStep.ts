@@ -6,10 +6,12 @@ import {
   rentRow,
   maintenancePaidRow,
   childcareCostsRow,
-  legalAidContributionsHeading, legalAidContributionsField,
+  legalAidContributionsHeading,
+  legalAidContributionsField,
 } from './expensesBlock.js'
 import { FinancialEligibilityEffects } from '../effects.js'
 import { step, type StepDefinition } from '../authoring.js'
+import { partnerField } from '../partnerPage/partnerBlock.js'
 import { partnerExpensesStep } from '../partnerExpensesPage/partnerExpensesStep.js'
 import { checkAnswersStep } from '../checkAnswersPage/checkAnswersStep.js'
 
@@ -26,7 +28,8 @@ export const expensesStep: StepDefinition = step({
     ...rentRow,
     ...maintenancePaidRow,
     ...childcareCostsRow,
-    legalAidContributionsHeading, legalAidContributionsField,
+    legalAidContributionsHeading,
+    legalAidContributionsField,
     continueButton,
     discardChangesButton,
   ],
@@ -38,7 +41,7 @@ export const expensesStep: StepDefinition = step({
         effects: [FinancialEligibilityEffects.SaveNewAnswerIfAnswered()],
         next: [
           redirect({
-            when: Answer('has-partner').match(Condition.Equals('yes')),
+            when: Answer(partnerField.code).match(Condition.Equals('yes')),
             goto: partnerExpensesStep.code,
           }),
           redirect({

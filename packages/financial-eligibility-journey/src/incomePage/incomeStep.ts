@@ -14,6 +14,7 @@ import {
 } from './incomeBlock.js'
 import { FinancialEligibilityEffects } from '../effects.js'
 import { step, type StepDefinition } from '../authoring.js'
+import { partnerField } from '../partnerPage/partnerBlock.js'
 import { partnerIncomeStep } from '../partnerIncomePage/partnerIncomeStep.js'
 import { dependantsStep } from '../dependantsPage/dependantsStep.js'
 
@@ -47,7 +48,7 @@ export const incomeStep: StepDefinition = step({
         effects: [FinancialEligibilityEffects.SaveNewAnswerIfAnswered()],
         next: [
           redirect({
-            when: Answer('has-partner').match(Condition.Equals('yes')),
+            when: Answer(partnerField.code).match(Condition.Equals('yes')),
             goto: partnerIncomeStep.code,
           }),
           redirect({

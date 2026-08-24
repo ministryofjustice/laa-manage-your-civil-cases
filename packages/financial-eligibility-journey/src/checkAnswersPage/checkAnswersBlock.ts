@@ -2,7 +2,8 @@ import { Answer, Condition, Conditional, Data, Format, Item, Iterator, Literal, 
 import { CollectionBlock } from '@ministryofjustice/hmpps-forge/core/components'
 import { GovUKHeading, GovUKSummaryList, GovUKUtilityClasses } from '@ministryofjustice/hmpps-forge/govuk-components'
 import { disregardsLookupItems } from '../disregardsPage/disregardsBlock.js'
-import { frequencyItems, lastCalendarMonthDate } from '../moneyFieldHelpers.js'
+import { frequencyText, lastCalendarMonthDate } from '../moneyFieldHelpers.js'
+import { partnerField } from '../partnerPage/partnerBlock.js'
 
 const under18Passported = and(
   Answer('under-18').match(Condition.Equals('yes')),
@@ -185,8 +186,6 @@ export const propertiesSummaryList = CollectionBlock({
   )
 })
 
-export const propertySummaryList = propertiesSummaryList
-
 export const savingsSummaryList = GovUKSummaryList({
   visibleWhen: not(under18Passported),
   card: {
@@ -330,17 +329,6 @@ export const disregardsSummaryList = GovUKSummaryList({
   ] as GovUKSummaryList['rows'],
 })
 
-/**
- * Formats a frequency answer for display, matching the frequency dropdown's own label text exactly
- * @param {string} frequencyCode The Forge answer code for the frequency select
- * @returns {unknown} The formatted frequency text
- */
-function frequencyText(frequencyCode: string) {
-  return Answer(frequencyCode).pipe(
-    ...frequencyItems.map((item) => Transformer.String.Replace(item.value, item.text)),
-  )
-}
-
 export const incomeHeading = GovUKHeading({
   visibleWhen: not(incomeOrExpensesSkipped),
   text: 'Income',
@@ -408,7 +396,7 @@ export const incomeSummaryList = GovUKSummaryList({
 
 export const partnerIncomeSummaryList = GovUKSummaryList({
   visibleWhen: and(
-    Answer('has-partner').match(Condition.Equals('yes')),
+    Answer(partnerField.code).match(Condition.Equals('yes')),
     not(incomeOrExpensesSkipped)
   ),
   card: {
@@ -542,7 +530,7 @@ export const expensesSummaryList = GovUKSummaryList({
 
 export const partnerExpensesSummaryList = GovUKSummaryList({
   visibleWhen: and(
-    Answer('has-partner').match(Condition.Equals('yes')),
+    Answer(partnerField.code).match(Condition.Equals('yes')),
     not(incomeOrExpensesSkipped)
   ),
   card: {
