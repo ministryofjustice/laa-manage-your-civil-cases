@@ -299,8 +299,8 @@ test.describe('Income tab', () => {
     await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 August 2025", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'] });
     // Assert the your income heading is visible. 
     await expect(page.locator('caption').filter({ hasText: 'Your income' })).toBeVisible();
-    // Assert the Partner's income heading is visible. 
-    await expect(page.locator('caption').filter({ hasText: "Partner's income" })).toBeVisible();
+    // Assert the Your partner's income heading is visible. 
+    await expect(page.locator('caption').filter({ hasText: "Your partner's income" })).toBeVisible();
     // Assert the dependants heading is visible.
     await expect(page.locator('caption').filter({ hasText: 'Dependants' })).toBeVisible();
 
@@ -320,7 +320,7 @@ test.describe('Income tab', () => {
     });
 
     // Assert the correct data is displayed in the partner's income table.
-    await expectCaptionTableRows(page, "Partner's income", {
+    await expectCaptionTableRows(page, "Your partner's income", {
       'Is your partner self employed?': 'No',
       'What did your partner earn before tax? (Check your most recent payslips)': '£130 per month',
       'How much tax does your partner pay?': '£0 every 4 weeks',
@@ -732,7 +732,7 @@ test.describe('Conditional logic views', () => {
 
     // Income tab
     await page.getByRole('tab', { name: 'Income' }).click();
-    await expect(page.getByText("Partner's income")).toHaveCount(0);
+    await expect(page.getByText("Your partner's income")).toHaveCount(0);
 
     // Expenses tab
     await page.getByRole('tab', { name: 'Expenses' }).click();

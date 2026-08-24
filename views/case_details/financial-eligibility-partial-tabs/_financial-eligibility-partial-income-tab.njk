@@ -1,19 +1,19 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
 
 {% set changeIncomeLinkHtml %}
-  <p class="govuk-!-margin-bottom-8"> 
-    <a class="govuk-link" href="/cases/{{ caseReference }}/financial-eligibility/change/??">{{ t('common.change') }}</a>
+  <p class="govuk-!-margin-bottom-8">
+    <a class="govuk-link" href="/cases/{{ caseReference }}/financial-eligibility/change/your-income">{{ t('common.change') }}</a>
   </p>
 {% endset %}
 
 {% set changePartnerIncomeLinkHtml %}
-  <p class="govuk-!-margin-bottom-8"> 
-    <a class="govuk-link" href="/cases/{{ caseReference }}/financial-eligibility/change/??">{{ t('common.change') }}</a>
+  <p class="govuk-!-margin-bottom-8">
+    <a class="govuk-link" href="/cases/{{ caseReference }}/financial-eligibility/change/partner-income">{{ t('common.change') }}</a>
   </p>
 {% endset %}
 
 {% set changeDependantsLinkHtml %}
-  <a class="govuk-link" href="/cases/{{ caseReference }}/financial-eligibility/change/??">{{ t('common.change') }}</a>
+  <a class="govuk-link" href="/cases/{{ caseReference }}/financial-eligibility/change/dependants">{{ t('common.change') }}</a>
 {% endset %}
 
 {% set income = financialEligibility.clientData.income %}
@@ -79,7 +79,7 @@
 
 {% if financialEligibility.hasPartner %}
   {{ govukTable({
-    caption: "Partner's income",
+    caption: "Your partner's income",
     captionClasses: "govuk-table__caption--m",
     classes: "eligibility-table",
     firstCellIsHeader: true,

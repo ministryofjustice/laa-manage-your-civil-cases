@@ -3,8 +3,45 @@ import { type FinancialEligibilityEffectsWithDeps, type Deps } from '#packages/f
 import { getOrMigrateCasePatternDrafts } from '#packages/financial-eligibility-journey/src/casePatternDrafts.js';
 import { type FinancialEligibilitySession } from '#packages/financial-eligibility-journey/src/context.type.js';
 import { under18Step, under18HasValuablesStep, under18RegularPaymentStep, partnerStep, over60Step, over60StepWithPartnerStep, disregardsStep } from "#packages/financial-eligibility-journey/src/index.js";
-import { type FinancialEligibilityData } from "#types/api-types.js";
+import { type FinancialEligibilityData, type IncomeData, type DeductionData } from "#types/api-types.js";
 import { devLog, devError, devWarn, normaliseSelectedCheckbox, normaliseSelectedKeys, toYesNo, toBoolean, toNumber } from '#src/scripts/helpers/index.js';
+
+/**
+ * A money field's Forge step code, paired with the raw API field name (used when writing the update
+ * payload) and the transformed data field name (used when reading from FinancialEligibilityData).
+ */
+interface MoneyFieldMapping {
+    code: string;
+    apiField: string;
+    dataField: string;
+}
+
+// Income fields collected on the "Your income" / "Your partner's income" pages, keyed by API field name under `income`
+const incomeMoneyFields: MoneyFieldMapping[] = [
+    { code: 'earnings', apiField: 'earnings', dataField: 'earnings' },
+    { code: 'self-employment-drawings', apiField: 'self_employment_drawings', dataField: 'selfEmploymentDrawings' },
+    { code: 'income-benefits', apiField: 'benefits', dataField: 'benefits' },
+    { code: 'tax-credits', apiField: 'tax_credits', dataField: 'taxCredits' },
+    { code: 'maintenance-received', apiField: 'maintenance_received', dataField: 'maintenanceReceived' },
+    { code: 'pension-income', apiField: 'pension', dataField: 'pension' },
+    { code: 'other-income', apiField: 'other_income', dataField: 'otherIncome' },
+];
+
+// Deduction fields collected on the "Your income" / "Your partner's income" pages, keyed by API field name under `deductions`
+const deductionsMoneyFields: MoneyFieldMapping[] = [
+    { code: 'income-tax', apiField: 'income_tax', dataField: 'incomeTax' },
+    { code: 'national-insurance', apiField: 'national_insurance', dataField: 'nationalInsurance' },
+    // Collected on the "Your expenses" / "Your partner's expenses" pages, but share the same `you.deductions` /
+    // `partner.deductions` API section as the two fields above, so they reuse the same mapping helpers.
+    { code: 'mortgage', apiField: 'mortgage', dataField: 'mortgage' },
+    { code: 'rent', apiField: 'rent', dataField: 'rent' },
+    { code: 'maintenance-paid', apiField: 'maintenance', dataField: 'maintenance' },
+    { code: 'childcare-costs', apiField: 'childcare', dataField: 'childcare' },
+];
+
+// Unlike the other deduction fields above, the API stores this as a flat pence number rather than a
+// { per_interval_value, interval_period } object, so it needs its own mapping outside deductionsMoneyFields.
+const legalAidContributionsField: MoneyFieldMapping = { code: 'legal-aid-contributions', apiField: 'criminal_legalaid_contributions', dataField: 'criminalContributions' };
 
 /**
  * Utility function to map step codes to API field names for financial eligibility data
@@ -37,6 +74,8 @@ function mapStepCodeToApiField(stepCode: string): string | null {
         'investment-balance-disputed': 'investment_balance',
         'asset-balance-disputed': 'asset_balance',
         'credit-balance-disputed': 'credit_balance',
+        'dependants-16-over': 'dependants_old',
+        'dependants-15-under': 'dependants_young',
         [disregardsStep.code]: 'disregards',
     };
 
@@ -76,7 +115,35 @@ function mapFinancialEligibilityApiDataToStepCodes(financialEligibilityData: Fin
         'asset-balance-disputed': financialEligibilityData.disputedSavings?.assetBalance,
         'credit-balance-disputed': financialEligibilityData.disputedSavings?.creditBalance,
         'disregards': financialEligibilityData.disregards,
+        'dependants-16-over': financialEligibilityData.dependantsOld,
+        'dependants-15-under': financialEligibilityData.dependantsYoung,
+        'self-employed': financialEligibilityData.clientData.income?.selfEmployed,
+        'self-employed-partner': financialEligibilityData.partnerData.partnerIncome?.selfEmployed,
+        ...mapMoneyFieldsToStepCodes(incomeMoneyFields, financialEligibilityData.clientData.income, ''),
+        ...mapMoneyFieldsToStepCodes([...deductionsMoneyFields, legalAidContributionsField], financialEligibilityData.clientData.deductions, ''),
+        ...mapMoneyFieldsToStepCodes(incomeMoneyFields, financialEligibilityData.partnerData.partnerIncome, '-partner'),
+        ...mapMoneyFieldsToStepCodes([...deductionsMoneyFields, legalAidContributionsField], financialEligibilityData.partnerData.partnerDeductions, '-partner'),
     }
+}
+
+/**
+ * Builds the flat step-code-keyed entries for a set of money fields (amount + paired frequency), reading
+ * from the given IncomeData/DeductionData-shaped source. Frequency defaults to 'per_month' when not yet set.
+ * @param {MoneyFieldMapping[]} fields - The money fields to map
+ * @param {IncomeData | DeductionData | undefined} source - The IncomeData/DeductionData object to read amounts/frequencies from
+ * @param {string} suffix - Suffix to append to each step code, e.g. '-partner'
+ * @returns {Record<string, unknown>} A record mapping step codes (and their `-frequency` counterparts) to their values
+ */
+function mapMoneyFieldsToStepCodes(fields: MoneyFieldMapping[], source: IncomeData | DeductionData | undefined, suffix: string): Record<string, unknown> {
+    const result: Record<string, unknown> = {};
+    const sourceRecord = source as unknown as Record<string, { amount: number | null, time: string | null } | undefined> | undefined;
+    for (const { code, dataField } of fields) {
+        const stepCode = `${code}${suffix}`;
+        const moneyPerInterval = sourceRecord?.[dataField];
+        result[stepCode] = moneyPerInterval?.amount ?? null;
+        result[`${stepCode}-frequency`] = moneyPerInterval?.time ?? 'per_month';
+    }
+    return result;
 }
 
 /**
@@ -161,6 +228,12 @@ function getPropertyCollectionFromAnswers(answers: Record<string, unknown>): Rec
  * @returns {unknown} The corresponding Forge answer value
  */
 function mapApiValueToForgeValue(apiValue: unknown, stepCode: string): unknown {
+    // Amount and frequency fields are simple passthroughs, for both the client and partner variants of each field
+    const moneyFieldStepCodes = [...incomeMoneyFields, ...deductionsMoneyFields, legalAidContributionsField].flatMap(({ code }) => [
+        code, `${code}-frequency`, `${code}-partner`, `${code}-partner-frequency`,
+    ]);
+    const moneyFieldPassthrough = Object.fromEntries(moneyFieldStepCodes.map(code => [code, apiValue]));
+
     return {
         category: String(apiValue ?? '').toLowerCase(),
         [under18Step.code]: apiValue ? 'yes' : 'no',
@@ -187,6 +260,11 @@ function mapApiValueToForgeValue(apiValue: unknown, stepCode: string): unknown {
         'investment-balance-disputed': apiValue,
         'asset-balance-disputed': apiValue,
         'credit-balance-disputed': apiValue,
+        'dependants-16-over': apiValue,
+        'dependants-15-under': apiValue,
+        'self-employed': apiValue ? 'yes' : 'no',
+        'self-employed-partner': apiValue ? 'yes' : 'no',
+        ...moneyFieldPassthrough,
         [disregardsStep.code]: normaliseSelectedKeys(apiValue).length > 0 ? normaliseSelectedKeys(apiValue) : ['none'],
     }[stepCode];
 }
@@ -207,6 +285,48 @@ function mapForgePropertyCollectionToApiPropertySet(collection: Record<string, u
 }
 
 /**
+ * Builds an `income` or `deductions` API section from a set of amount + frequency Forge answer pairs.
+ * Fields are only included when the amount has been answered.
+ * @param {Record<string, unknown>} answers - The user's answers keyed by step code
+ * @param {MoneyFieldMapping[]} fields - The money fields to build (e.g. incomeMoneyFields, deductionsMoneyFields)
+ * @param {string} suffix - Suffix to append to each step code, e.g. '-partner'
+ * @returns {Record<string, unknown>} The API section, with each field as `{ per_interval_value, interval_period }`
+ */
+function mapMoneyFieldsToApiPayload(answers: Record<string, unknown>, fields: MoneyFieldMapping[], suffix: string): Record<string, unknown> {
+    const section: Record<string, unknown> = {};
+
+    for (const { code, apiField } of fields) {
+        const stepCode = `${code}${suffix}`;
+        if (!(stepCode in answers)) {
+            continue;
+        }
+
+        section[apiField] = {
+            per_interval_value: Math.round(toNumber(answers[stepCode]) * 100),
+            interval_period: answers[`${stepCode}-frequency`] ?? 'per_month',
+        };
+    }
+
+    return section;
+}
+
+/**
+ * Builds the `criminal_legalaid_contributions` deduction entry, which (unlike the other deduction fields) the
+ * API stores as a flat pence number rather than a { per_interval_value, interval_period } object.
+ * @param {Record<string, unknown>} answers - The user's answers keyed by step code
+ * @param {string} suffix - Suffix to append to the step code, e.g. '-partner'
+ * @returns {Record<string, unknown>} The deduction section entry, or an empty object when unanswered
+ */
+function mapLegalAidContributionsToApiPayload(answers: Record<string, unknown>, suffix: string): Record<string, unknown> {
+    const stepCode = `${legalAidContributionsField.code}${suffix}`;
+    if (!(stepCode in answers)) {
+        return {};
+    }
+
+    return { [legalAidContributionsField.apiField]: Math.round(toNumber(answers[stepCode]) * 100) };
+}
+
+/**
  * Utility function to map user answers from the Forge journey to the API payload format
  * @param {Record<string, unknown>} answers - The user's answers keyed by step code
  * @returns {Record<string, unknown>} The API payload with mapped field names and values
@@ -223,6 +343,7 @@ export function mapAnswersToApiPayload(answers: Record<string, unknown>): Record
     const savingsFields = ['bank_balance', 'investment_balance', 'asset_balance', 'credit_balance'];
     const partnerSavingsFields = ['bank-balance-partner', 'investment-balance-partner', 'asset-balance-partner', 'credit-balance-partner'];
     const disputedSavingsFields = ['bank-balance-disputed', 'investment-balance-disputed', 'asset-balance-disputed', 'credit-balance-disputed'];
+    const dependantsFields = ['dependants_old', 'dependants_young'];
 
     for (const [stepCode, answer] of Object.entries(answers)) {
         const apiField = mapStepCodeToApiField(stepCode);
@@ -245,8 +366,11 @@ export function mapAnswersToApiPayload(answers: Record<string, unknown>): Record
                 disputedSavings[apiField] = Math.round(toNumber(value) * 100);
             } else if (savingsFields.includes(apiField)) {
                 savings[apiField] = Math.round(toNumber(value) * 100);
+            } else if (dependantsFields.includes(apiField)) {
+                payload[apiField] = Math.round(toNumber(value));
             } else if (stepCode === disregardsStep.code) {
-                normaliseSelectedCheckbox(value).forEach(disregard => {
+                // 'none' is a UI-only option meaning no disregards apply; the API doesn't recognise it as a field
+                normaliseSelectedCheckbox(value).filter(disregard => disregard !== 'none').forEach(disregard => {
                     disregards[disregard] = true;
                 });
                 payload[apiField] = disregards;
@@ -262,12 +386,44 @@ export function mapAnswersToApiPayload(answers: Record<string, unknown>): Record
         payload.on_passported_benefits = benefitFields.some( (field) => specificBenefits[field] === true );
     }
 
+    const income = mapMoneyFieldsToApiPayload(answers, incomeMoneyFields, '');
+    if ('self-employed' in answers) {
+        income.self_employed = toBoolean(answers['self-employed']);
+    }
+    const deductions = { ...mapMoneyFieldsToApiPayload(answers, deductionsMoneyFields, ''), ...mapLegalAidContributionsToApiPayload(answers, '') };
+
+    const youPayload: Record<string, unknown> = {};
     if (Object.keys(savings).length > 0) {
-        payload.you = { savings };
+        youPayload.savings = savings;
+    }
+    if (Object.keys(income).length > 0) {
+        youPayload.income = income;
+    }
+    if (Object.keys(deductions).length > 0) {
+        youPayload.deductions = deductions;
+    }
+    if (Object.keys(youPayload).length > 0) {
+        payload.you = youPayload;
     }
 
+    const partnerIncome = mapMoneyFieldsToApiPayload(answers, incomeMoneyFields, '-partner');
+    if ('self-employed-partner' in answers) {
+        partnerIncome.self_employed = toBoolean(answers['self-employed-partner']);
+    }
+    const partnerDeductions = { ...mapMoneyFieldsToApiPayload(answers, deductionsMoneyFields, '-partner'), ...mapLegalAidContributionsToApiPayload(answers, '-partner') };
+
+    const partnerPayload: Record<string, unknown> = {};
     if (Object.keys(partnerSavings).length > 0) {
-        payload.partner = { savings: partnerSavings };
+        partnerPayload.savings = partnerSavings;
+    }
+    if (Object.keys(partnerIncome).length > 0) {
+        partnerPayload.income = partnerIncome;
+    }
+    if (Object.keys(partnerDeductions).length > 0) {
+        partnerPayload.deductions = partnerDeductions;
+    }
+    if (Object.keys(partnerPayload).length > 0) {
+        payload.partner = partnerPayload;
     }
 
     if (Object.keys(disputedSavings).length > 0) {
@@ -440,17 +596,24 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
         }
 
         const submissionPayload = mapAnswersToApiPayload(submissionAnswers);
+        devLog(`Submitting FE payload to cla_backend for case ${caseReference}: ${JSON.stringify(submissionPayload, null, 2)}`);
     
         // Make API call to CLA backend with the apiService.
         const axiosMiddleware = context.getState('authenticatedAxios')
         if (!axiosMiddleware) {
             devWarn("Authenticated Axios middleware not found in state; API call may fail if it is required by the service implementation.");
         }
-        await this.apiService.updateFinancialEligibility(
+        const updateResult = await this.apiService.updateFinancialEligibility(
             axiosMiddleware,
             context.getRequestParam('caseReference'),
             submissionPayload
         );
+
+        // Surface a failed save instead of silently clearing the draft below, which would otherwise
+        // discard the user's edits and leave the case showing stale data from the last successful save
+        if (updateResult.status === 'error') {
+            throw new Error(`Failed to update financial eligibility for case ${caseReference}: ${updateResult.message ?? 'unknown error'}`);
+        }
     
         devLog(`Submitted FE answers in session, to cla_backend: ${JSON.stringify(session.financialEligibilityDrafts[caseReference])}`);
     }
