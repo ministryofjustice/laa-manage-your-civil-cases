@@ -33,7 +33,6 @@ export const checkYourAnswersHeading = GovUKHeading({
 })
 
 export const detailsHeading = GovUKHeading({
-  // visibleWhen: not(under18Passported),
   text: 'Details',
   size: 's',
 })
