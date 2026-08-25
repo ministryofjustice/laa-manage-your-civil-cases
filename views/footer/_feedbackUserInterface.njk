@@ -4,25 +4,26 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <div class="gem-c-feedback__prompt-question-answer" role="form">
-            <h2 class="govuk-heading-s govuk-!-margin-bottom-0 govuk-!-margin-right-6">
+            <h2 class="govuk-heading-s govuk-!-margin-bottom-2 govuk-!-margin-right-6">
               {{ t('forms.feedback.satisfiedQuestion') }}
             </h2>
-
             <form data-feedback-role="satisfaction-form">
               <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-              {{ govukButton({
-                text: t('common.yes'),
-                type: "button",
-                attributes: {"data-feedback-role": "initial-trigger-yes"},
-                classes: "govuk-button gem-c-feedback__prompt-link-small-button"
-              }) }}
+              <div class="govuk-button-group">
+                {{ govukButton({
+                  text: t('common.yes'),
+                  type: "button",
+                  attributes: {"data-feedback-role": "initial-trigger-yes"},
+                  classes: "govuk-button gem-c-feedback__prompt-link-small-button"
+                }) }}
 
-              {{ govukButton({
-                text:  t('common.no'),
-                type: "button",
-                attributes: {"data-feedback-role": "initial-trigger-no"},
-                classes: "govuk-button gem-c-feedback__prompt-link-small-button"
-              }) }}
+                {{ govukButton({
+                  text:  t('common.no'),
+                  type: "button",
+                  attributes: {"data-feedback-role": "initial-trigger-no"},
+                  classes: "govuk-button gem-c-feedback__prompt-link-small-button"
+                }) }}
+              </div>
             </form>
           </div>
         </div>
@@ -49,8 +50,8 @@
               },
               attributes: { "data-feedback-role": "text-input"},
               rows: 4
-            }) }}       
-            
+            }) }}
+
             <div class="govuk-button-group">
               {{ govukButton({
                 text: t('forms.feedback.sendFeedbackButton'),
@@ -90,8 +91,8 @@
               },
               attributes: { "data-feedback-role": "text-input"},
               rows: 4
-            }) }}       
-            
+            }) }}
+
             <div class="govuk-button-group">
               {{ govukButton({
                 text: t('forms.feedback.sendFeedbackButton'),
@@ -117,7 +118,7 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <span class="gem-c-feedback__prompt-question-answer">
-            <h2 class="govuk-heading-s govuk-!-margin-bottom-0 govuk-!-margin-right-2" data-feedback-role="final-message">
+            <h2 class="govuk-heading-s govuk-!-margin-bottom-3 govuk-!-margin-right-2" data-feedback-role="final-message">
               {{ t('forms.feedback.thankYouMessage') }}
             </h2>
           </span>

@@ -11,18 +11,15 @@
   outline: 0;
   // Added in
   padding-top: 20px;
-  padding-bottom: 20px;
 }
 
 .gem-c-feedback__prompt-question-answer {
   display: flex;
-  align-items: center;
-  // Added in
-  column-gap: 10px;
-  
+  align-items: baseline;
+
   @include govuk.govuk-media-query($until: mobile) {
-    justify-content: center;
-    flex-wrap: wrap;
+    align-items: center;
+    flex-direction: column;
   }
 }
 
