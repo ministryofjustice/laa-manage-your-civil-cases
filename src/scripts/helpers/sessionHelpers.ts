@@ -26,6 +26,7 @@ declare module 'express-session' {
     silasAuth?: SilasSessionAuth;
     user?: SilasUserInfo;
     splitCaseCache?: SplitCaseCache;
+    sessionExpiredNotice?: boolean;
   }
 }
 

@@ -1,6 +1,7 @@
 import { ConfidentialClientApplication } from '@azure/msal-node';
 import config from '#config.js';
-import type { SilasTokenExchangeResult, AccessTokenClaims } from '#types/auth-types.js';
+import { devError } from '#src/scripts/helpers/index.js';
+import type { SilasTokenExchangeResult, SilasTokenRefreshResult, AccessTokenClaims } from '#types/auth-types.js';
 
 const LOGIN_RESPONSE_MODE = 'query';
 const OIDC_SCOPES = new Set(['openid', 'profile', 'offline_access']);
@@ -144,7 +145,8 @@ function validateAccessTokenClaims(claims: AccessTokenClaims): void {
  * @returns {Promise<SilasTokenExchangeResult>} Token exchange result.
  */
 export async function exchangeSilasCodeForToken(code: string): Promise<SilasTokenExchangeResult> {
-  const tokenResult = await getMsalAppClient().acquireTokenByCode(
+  const client = getMsalAppClient();
+  const tokenResult = await client.acquireTokenByCode(
     {
       code,
       scopes: config.silas.scopes,
@@ -177,5 +179,40 @@ export async function exchangeSilasCodeForToken(code: string): Promise<SilasToke
     email,
     name: tokenResult.account?.name,
     oid: typeof claims.oid === 'string' ? claims.oid : tokenResult.account?.localAccountId,
+    // Cache holds the refresh token opaquely; needed to silently renew the access token later
+    tokenCache: client.getTokenCache().serialize(),
   };
+}
+
+/**
+ * Silently renews the SiLAS access token using the refresh token held in the cached MSAL token cache.
+ * @param {string} serializedTokenCache Previously serialized MSAL token cache for the session.
+ * @returns {Promise<SilasTokenRefreshResult | null>} New token/cache pair, or null if silent refresh is not possible.
+ */
+export async function refreshSilasToken(serializedTokenCache: string): Promise<SilasTokenRefreshResult | null> {
+  const client = getMsalAppClient();
+
+  try {
+    await client.getTokenCache().deserialize(serializedTokenCache);
+    const [account] = await client.getTokenCache().getAllAccounts();
+
+    if (account === undefined) {
+      return null;
+    }
+
+    const result = await client.acquireTokenSilent({ account, scopes: config.silas.scopes });
+
+    if (result?.accessToken === undefined || result.accessToken === '') {
+      return null;
+    }
+
+    return {
+      accessToken: result.accessToken,
+      expiresAt: result.expiresOn?.getTime() ?? Date.now() + (30 * 60 * 1000),
+      tokenCache: client.getTokenCache().serialize(),
+    };
+  } catch (error) {
+    devError(`Silent SILAS token refresh failed: ${error instanceof Error ? error.message : String(error)}`);
+    return null;
+  }
 }
