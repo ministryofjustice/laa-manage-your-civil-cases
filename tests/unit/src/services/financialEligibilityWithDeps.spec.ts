@@ -10,6 +10,33 @@ import type { Deps } from '#packages/financial-eligibility-journey/src/api.js';
 import type { FinancialEligibilitySession } from '#packages/financial-eligibility-journey/src/context.type.js';
 import { mapAnswersToApiPayload, FinancialEligibilityEffectsWithDepsImpl } from '#src/services/financialEligibilityWithDeps.js';
 
+// Shape produced by applyNonRequiredSectionDefaults when zeroing a `you`/`partner` income, deductions or savings section
+const zeroedSavings = {
+  bank_balance: 0,
+  investment_balance: 0,
+  asset_balance: 0,
+  credit_balance: 0,
+};
+const zeroedIncome = {
+  earnings: { per_interval_value: 0, interval_period: 'per_month' },
+  self_employment_drawings: { per_interval_value: 0, interval_period: 'per_month' },
+  benefits: { per_interval_value: 0, interval_period: 'per_month' },
+  tax_credits: { per_interval_value: 0, interval_period: 'per_month' },
+  maintenance_received: { per_interval_value: 0, interval_period: 'per_month' },
+  pension: { per_interval_value: 0, interval_period: 'per_month' },
+  other_income: { per_interval_value: 0, interval_period: 'per_month' },
+  self_employed: false,
+};
+const zeroedDeductions = {
+  income_tax: { per_interval_value: 0, interval_period: 'per_month' },
+  national_insurance: { per_interval_value: 0, interval_period: 'per_month' },
+  mortgage: { per_interval_value: 0, interval_period: 'per_month' },
+  rent: { per_interval_value: 0, interval_period: 'per_month' },
+  maintenance: { per_interval_value: 0, interval_period: 'per_month' },
+  childcare: { per_interval_value: 0, interval_period: 'per_month' },
+  criminal_legalaid_contributions: 0,
+};
+
 describe('mapAnswersToApiPayload', () => {
   describe('Basic mapping', () => {
     it('should map under-18 step code to `is_you_under_18 field`', () => {
@@ -279,15 +306,15 @@ describe('mapAnswersToApiPayload', () => {
       expect(benefits.pension_credit).to.equal(false);
       expect(benefits.employment_support).to.equal(true);
 
+      // under_18_passported and on_passported_benefits are both true here, so `you`'s income/deductions/savings
+      // are zeroed by the non-required-section defaults, overriding the drafted bank-balance answers above
       expect(result.you).to.deep.equal({
-        savings: {
-          bank_balance: 5600,
-          investment_balance: 6600,
-          asset_balance: 4400,
-          credit_balance: 5600,
-        },
+        savings: zeroedSavings,
+        income: zeroedIncome,
+        deductions: zeroedDeductions,
       });
 
+      // has_partner is true here, so the partner section is untouched by the non-required-section defaults
       expect(result.partner).to.deep.equal({
         savings: {
           bank_balance: 1000,
@@ -302,15 +329,129 @@ describe('mapAnswersToApiPayload', () => {
         love_manchester: true,
       });
 
-      expect(result.property_set).to.deep.equal([
-        {
-          value: 4500,
-          mortgage_left: 500,
-          share: 6,
-          disputed: false,
-          main: true,
-        },
-      ]);
+      // property_set is reset to [] because under_18_passported is true, overriding the drafted property answer
+      expect(result.property_set).to.deep.equal([]);
+
+      // dependants are zeroed because on_passported_benefits is true
+      expect(result.dependants_old).to.equal(0);
+      expect(result.dependants_young).to.equal(0);
+    });
+  });
+
+  describe('Non-required section defaults', () => {
+    describe('AC1: under-18 passported', () => {
+      const under18PassportedAnswers = {
+        'under-18': 'yes',
+        'under-18-receives-regular-payment': 'no',
+        'under-18-has-valuables': 'no',
+      };
+
+      it('should zero all of `you.income`, `you.deductions` and `you.savings`', () => {
+        const answers = {
+          ...under18PassportedAnswers,
+          'bank-balance': '100',
+          'earnings': '200',
+          'self-employed': 'yes',
+          'income-tax': '10',
+        };
+        const result = mapAnswersToApiPayload(answers);
+        const you = result.you as Record<string, Record<string, unknown>>;
+
+        expect(result.under_18_passported).to.equal(true);
+        expect(you.savings).to.deep.equal(zeroedSavings);
+        expect(you.income).to.deep.equal(zeroedIncome);
+        expect(you.deductions).to.deep.equal(zeroedDeductions);
+      });
+
+      it('should reset `property_set` to an empty array and `disputed_savings` to null', () => {
+        const answers = {
+          ...under18PassportedAnswers,
+          propertySet: [{ 'value': 45, 'mortgage-left': 5, 'share': 6, 'disputed': 'no', 'main': 'yes' }],
+          'bank-balance-disputed': '20',
+        };
+        const result = mapAnswersToApiPayload(answers);
+
+        expect(result.property_set).to.deep.equal([]);
+        expect(result.disputed_savings).to.equal(null);
+      });
+
+      it('should build a fully-zeroed `you` even when no money questions were answered', () => {
+        const result = mapAnswersToApiPayload(under18PassportedAnswers);
+        const you = result.you as Record<string, Record<string, unknown>>;
+
+        expect(result.under_18_passported).to.equal(true);
+        expect(you.savings).to.deep.equal(zeroedSavings);
+        expect(you.income).to.deep.equal(zeroedIncome);
+        expect(you.deductions).to.deep.equal(zeroedDeductions);
+      });
+
+      it('should not zero `you` when under_18_passported is false', () => {
+        const answers = { 'bank-balance': '100' };
+        const result = mapAnswersToApiPayload(answers);
+        const you = result.you as Record<string, Record<string, unknown>>;
+
+        expect(result.under_18_passported).to.equal(false);
+        expect(you.savings.bank_balance).to.equal(10000);
+      });
+    });
+
+    describe('AC2: on passported benefits', () => {
+      it('should zero `you.income` and `you.deductions`, and zero both dependants fields', () => {
+        const answers = {
+          'universal-credit': 'yes',
+          'earnings': '200',
+          'self-employed': 'yes',
+          'income-tax': '10',
+          'dependants-16-over': '2',
+          'dependants-15-under': '3',
+        };
+        const result = mapAnswersToApiPayload(answers);
+        const you = result.you as Record<string, Record<string, unknown>>;
+
+        expect(result.on_passported_benefits).to.equal(true);
+        expect(you.income).to.deep.equal(zeroedIncome);
+        expect(you.deductions).to.deep.equal(zeroedDeductions);
+        expect(result.dependants_old).to.equal(0);
+        expect(result.dependants_young).to.equal(0);
+      });
+
+      it('should not zero `you` or dependants when on_passported_benefits is false', () => {
+        const answers = { 'universal-credit': 'no', 'earnings': '200', 'dependants-16-over': '2' };
+        const result = mapAnswersToApiPayload(answers);
+        const you = result.you as Record<string, Record<string, unknown>>;
+
+        expect(result.on_passported_benefits).to.equal(false);
+        expect((you.income.earnings as Record<string, unknown>).per_interval_value).to.equal(20000);
+        expect(result.dependants_old).to.equal(2);
+      });
+    });
+
+    describe('AC3: no partner', () => {
+      it('should zero `partner.income`, `partner.deductions` and `partner.savings`', () => {
+        const answers = {
+          'has-partner': 'no',
+          'earnings-partner': '200',
+          'self-employed-partner': 'yes',
+          'income-tax-partner': '10',
+          'bank-balance-partner': '100',
+        };
+        const result = mapAnswersToApiPayload(answers);
+        const partner = result.partner as Record<string, Record<string, unknown>>;
+
+        expect(result.has_partner).to.equal(false);
+        expect(partner.savings).to.deep.equal(zeroedSavings);
+        expect(partner.income).to.deep.equal(zeroedIncome);
+        expect(partner.deductions).to.deep.equal(zeroedDeductions);
+      });
+
+      it('should not zero `partner` when has_partner is true', () => {
+        const answers = { 'has-partner': 'yes', 'earnings-partner': '200' };
+        const result = mapAnswersToApiPayload(answers);
+        const partner = result.partner as Record<string, Record<string, unknown>>;
+
+        expect(result.has_partner).to.equal(true);
+        expect((partner.income.earnings as Record<string, unknown>).per_interval_value).to.equal(20000);
+      });
     });
   });
 
