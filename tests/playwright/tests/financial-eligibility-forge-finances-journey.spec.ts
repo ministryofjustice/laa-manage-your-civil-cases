@@ -566,6 +566,7 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
 
       await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/check-answers`);
       await expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
+      await expect(page.getByRole('heading', { level: 3, name: 'Details' })).toBeVisible();
     });
 
     test('should route expenses to partner expenses when partner is yes', async ({ page }) => {
@@ -595,6 +596,7 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
 
       await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/check-answers`);
       await expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
+      await expect(page.getByRole('heading', { level: 3, name: 'Details' })).toBeVisible();
     });
   });
 

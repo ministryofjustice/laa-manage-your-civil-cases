@@ -32,10 +32,16 @@ export const checkYourAnswersHeading = GovUKHeading({
   size: 'm',
 })
 
+export const detailsHeading = GovUKHeading({
+  text: 'Details',
+  size: 's',
+})
+
 export const aboutYouSummaryList = GovUKSummaryList({
   card: {
     title: {
-      text: "About you"
+      text: "About you",
+      headingLevel: 4
     },
     actions: {
       items: [
@@ -99,7 +105,8 @@ export const benefitsSummaryList = GovUKSummaryList({
   visibleWhen: not(under18Passported),
   card: {
     title: {
-      text: "Benefits"
+      text: "Benefits",
+      headingLevel: 4
     },
     actions: {
       items: [
@@ -137,7 +144,7 @@ export const benefitsSummaryList = GovUKSummaryList({
 export const financesHeading = GovUKHeading({
   visibleWhen: not(under18Passported),
   text: 'Finances',
-  size: 'm',
+  size: 's',
 })
 
 export const propertiesSummaryList = CollectionBlock({
@@ -147,7 +154,8 @@ export const propertiesSummaryList = CollectionBlock({
         visibleWhen: not(under18Passported),
         card: {
           title: {
-            text: Format('Property %1', Loop.Index())
+            text: Format('Property %1', Loop.Index()),
+            headingLevel: 4
           },
           actions: {
             items: [
@@ -190,7 +198,8 @@ export const savingsSummaryList = GovUKSummaryList({
   visibleWhen: not(under18Passported),
   card: {
     title: {
-      text: "Your savings"
+      text: "Your savings",
+      headingLevel: 4
     },
     actions: {
       items: [
@@ -228,7 +237,8 @@ export const partnerSavingsSummaryList = GovUKSummaryList({
   ),
   card: {
     title: {
-      text: "Your partner\'s savings"
+      text: "Your partner\'s savings",
+      headingLevel: 4
     },
     actions: {
       items: [
@@ -266,7 +276,8 @@ export const disputedSavingsSummaryList = GovUKSummaryList({
   ),
   card: {
     title: {
-      text: "Your disputed savings"
+      text: "Your disputed savings",
+      headingLevel: 4
     },
     actions: {
       items: [
@@ -301,7 +312,8 @@ export const disregardsSummaryList = GovUKSummaryList({
   visibleWhen: not(under18Passported),
   card: {
     title: {
-      text: "Disregards"
+      text: "Disregards",
+      headingLevel: 4
     },
     actions: {
       items: [
@@ -332,14 +344,15 @@ export const disregardsSummaryList = GovUKSummaryList({
 export const incomeHeading = GovUKHeading({
   visibleWhen: not(incomeOrExpensesSkipped),
   text: 'Income',
-  size: 'm',
+  size: 's',
 })
 
 export const incomeSummaryList = GovUKSummaryList({
   visibleWhen: not(incomeOrExpensesSkipped),
   card: {
     title: {
-      text: "Your income"
+      text: "Your income",
+      headingLevel: 4
     },
     actions: {
       items: [
@@ -401,7 +414,8 @@ export const partnerIncomeSummaryList = GovUKSummaryList({
   ),
   card: {
     title: {
-      text: "Your partner\'s income"
+      text: "Your partner\'s income",
+      headingLevel: 4
     },
     actions: {
       items: [
@@ -460,7 +474,8 @@ export const dependantsSummaryList = GovUKSummaryList({
   visibleWhen: not(incomeOrExpensesSkipped),
   card: {
     title: {
-      text: "Dependants"
+      text: "Dependants",
+      headingLevel: 4
     },
     actions: {
       items: [
@@ -486,14 +501,15 @@ export const dependantsSummaryList = GovUKSummaryList({
 export const expensesHeading = GovUKHeading({
   visibleWhen: not(incomeOrExpensesSkipped),
   text: 'Expenses',
-  size: 'm',
+  size: 's',
 })
 
 export const expensesSummaryList = GovUKSummaryList({
   visibleWhen: not(incomeOrExpensesSkipped),
   card: {
     title: {
-      text: "Your expenses"
+      text: "Your expenses",
+      headingLevel: 4
     },
     actions: {
       items: [
@@ -535,7 +551,8 @@ export const partnerExpensesSummaryList = GovUKSummaryList({
   ),
   card: {
     title: {
-      text: "Your partner\'s expenses"
+      text: "Your partner\'s expenses",
+      headingLevel: 4
     },
     actions: {
       items: [
