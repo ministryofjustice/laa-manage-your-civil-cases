@@ -312,6 +312,12 @@
     },
     "errorSummary": {
       "title": "There is a problem"
+    },
+    "sessionTimeout": {
+      "title": "You’re about to be signed out",
+      "body": "For your security, you’ll be signed out in <span id=\"session-timeout-countdown\">2:00</span> minutes because of inactivity.",
+      "staySignedIn": "Stay signed in",
+      "signOut": "Sign out"
     }
   },
   "pages": {

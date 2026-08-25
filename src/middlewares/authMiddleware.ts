@@ -31,8 +31,11 @@ export function requireAuth(req: Request, res: Response, next: NextFunction): vo
  */
 export const setAuthStatus = (req: Request, res: Response, next: NextFunction): void => {
   const silasAuth = req.session.silasAuth;
-  res.locals.isAuthenticated = silasAuth !== undefined && silasAuth.expiresAt > Date.now();
+  const hasValidToken = silasAuth !== undefined && silasAuth.expiresAt > Date.now();
+  res.locals.isAuthenticated = hasValidToken;
   res.locals.userEmail = req.session.user?.email ?? null;
   res.locals.userName = req.session.user?.name ?? null;
+  // Exposed so the client can warn the user before the SiLAS token expires, instead of a silent re-auth redirect
+  res.locals.sessionExpiresAt = hasValidToken ? silasAuth.expiresAt : null;
   next();
 };

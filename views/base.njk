@@ -15,6 +15,9 @@
   {% if userEmail %}
     <meta name="user-email" content="{{ userEmail }}">
   {% endif %}
+  {% if isAuthenticated and sessionExpiresAt %}
+    <meta name="session-expires-at" content="{{ sessionExpiresAt }}">
+  {% endif %}
   <script type="module" nonce="{{ cspNonce }}" src="/js/{{getAsset('custom','min.js')}}"></script>
    {# Socket.IO client for real-time case viewer notifications #}
   <script nonce="{{ cspNonce }}" src="/socket.io/socket.io.js"></script>
@@ -153,6 +156,20 @@
 {% endblock %}
 
 {% block bodyEnd %}
+  {% if isAuthenticated and sessionExpiresAt %}
+    <dialog id="session-timeout-dialog" class="mcc-session-timeout-dialog govuk-!-padding-6" aria-labelledby="session-timeout-title" aria-describedby="session-timeout-body">
+      <h1 id="session-timeout-title" class="govuk-heading-m">{{ t('components.sessionTimeout.title') }}</h1>
+      <p id="session-timeout-body" class="govuk-body">{{ t('components.sessionTimeout.body') | safe }}</p>
+      <div class="govuk-button-group">
+        <button type="button" id="session-timeout-stay-signed-in" class="govuk-button" data-module="govuk-button">
+          {{ t('components.sessionTimeout.staySignedIn') }}
+        </button>
+        <a href="/auth/logout" id="session-timeout-sign-out" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+          {{ t('components.sessionTimeout.signOut') }}
+        </a>
+      </div>
+    </dialog>
+  {% endif %}
   {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
   <script type="module" nonce="{{ cspNonce }}" src="/js/{{getAsset('frontend-packages','min.js')}}"></script>
 {% endblock %}

@@ -1,0 +1,10 @@
+// Session timeout warning dialog (native <dialog> element)
+.mcc-session-timeout-dialog {
+  max-width: 500px;
+  border: 0;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+  }
+}
