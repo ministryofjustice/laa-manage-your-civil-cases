@@ -71,6 +71,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       // Passported via benefits, so income/expenses are skipped straight to check answers
       await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/check-answers');
       await expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
+      await expect(page.getByRole('heading', { level: 3, name: 'Details' })).toBeVisible();
       
       // Verify summary displays correct answers
       await expect(page.getByText('Are you aged 17 or under?')).toBeVisible();
@@ -104,6 +105,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       // Should skip to check answers as passported (bypassing partner and over60)
       await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/check-answers');
       await expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
+      await expect(page.getByRole('heading', { level: 3, name: 'Details' })).toBeVisible();
     });
 
     test('should navigate from under-18 NO directly to partner step', async ({ page }) => {
@@ -249,6 +251,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/check-answers');
       
       // Verify summary sections are present
+      await expect(page.getByRole('heading', { level: 3, name: 'Details' })).toBeVisible();
       await expect(page.getByRole('heading', { name: 'About you' })).toBeVisible();
       await expect(page.getByRole('heading', { name: 'Benefits' })).toBeVisible();
 
