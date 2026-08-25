@@ -201,7 +201,7 @@ export const propertiesSummaryList = CollectionBlock({
 })
 
 export const savingsSummaryList = GovUKSummaryList({
-  visibleWhen: not(under18Passported),
+  visibleWhen: and(not(under18Passported), not(categoryIsDebtOrFamily)),
   card: {
     title: {
       text: "Your savings",
@@ -274,7 +274,8 @@ export const undisputedSavingsSummaryList = GovUKSummaryList({
 export const partnerSavingsSummaryList = GovUKSummaryList({
   visibleWhen: and(
     Answer('has-partner').match(Condition.Equals('yes')),
-    not(under18Passported)
+    not(under18Passported),
+    not(categoryIsDebtOrFamily)
   ),
   card: {
     title: {

@@ -8,7 +8,7 @@ export const savingsHeading = GovUKHeading({
 })
 
 export const bankBalanceField = GovUKTextInput({
-  code: 'bank-balance',
+  code: 'bank-balance-partner',
   label: "How much was in your partner's bank account/building society before your last payment went in?",
   formatters: [Transformer.String.ToFloat()],
   prefix: { text: '£' },
@@ -27,7 +27,7 @@ export const bankBalanceField = GovUKTextInput({
 })
 
 export const investmentBalanceField = GovUKTextInput({
-  code: 'investment-balance',
+  code: 'investment-balance-partner',
   label: "Does your partner have any investments, shares or ISAs?",
   formatters: [Transformer.String.ToFloat()],
   prefix: { text: '£' },
@@ -46,7 +46,7 @@ export const investmentBalanceField = GovUKTextInput({
 })
 
 export const assetBalanceField = GovUKTextInput({
-  code: 'asset-balance',
+  code: 'asset-balance-partner',
   label: "Does your partner have any valuable items worth over £500 each?",
   formatters: [Transformer.String.ToFloat()],
   prefix: { text: '£' },
@@ -65,7 +65,7 @@ export const assetBalanceField = GovUKTextInput({
 })
 
 export const creditBalanceField = GovUKTextInput({
-  code: 'credit-balance',
+  code: 'credit-balance-partner',
   label: "Does your partner have any money owed to them?",
   formatters: [Transformer.String.ToFloat()],
   prefix: { text: '£' },
