@@ -6,7 +6,7 @@ export const dependantsHeading = GovUKHeading({
   size: 'm',
 })
 
-export const dependants16OverField = GovUKTextInput({
+export const partnerDependants16OverField = GovUKTextInput({
   code: 'dependants-16-over',
   label: 'Do you and your partner have any dependants aged 16 and over?',
   formatters: [Transformer.String.ToFloat()],
@@ -24,7 +24,7 @@ export const dependants16OverField = GovUKTextInput({
   ],
 })
 
-export const dependants15UnderField = GovUKTextInput({
+export const partnerDependants15UnderField = GovUKTextInput({
   code: 'dependants-15-under',
   label: 'Do you and your partner have any dependants aged 15 and under?',
   formatters: [Transformer.String.ToFloat()],

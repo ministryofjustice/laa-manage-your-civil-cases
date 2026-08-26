@@ -1,6 +1,6 @@
 import { submit, redirect } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { continueButton, discardChangesButton, ifPressedDiscardChanges } from '../commonBlocks.js'
-import { dependantsHeading, dependants16OverField, dependants15UnderField } from './partnerDependantsBlock.js'
+import { dependantsHeading, partnerDependants16OverField, partnerDependants15UnderField } from './partnerDependantsBlock.js'
 import { FinancialEligibilityEffects } from '../effects.js'
 import { step, type StepDefinition } from '../authoring.js'
 import { expensesStep } from '../expensesPage/expensesStep.js'
@@ -14,8 +14,8 @@ export const partnerDependantsStep: StepDefinition = step({
   reachability: { entryWhen: true },
   blocks: [
     dependantsHeading,
-    dependants16OverField,
-    dependants15UnderField,
+    partnerDependants16OverField,
+    partnerDependants15UnderField,
     continueButton,
     discardChangesButton,
   ],
