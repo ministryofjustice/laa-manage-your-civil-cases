@@ -54,7 +54,6 @@ const MONETARY_FIELDS = new Set([
 const MONETARY_FIELDS_PREFIXES = new Set([
     propertyMarketValueFieldPrefix,
     propertyMortgageLeftFieldPrefix,
-    propertyDisputedFieldPrefix
 ]);
 
 /**

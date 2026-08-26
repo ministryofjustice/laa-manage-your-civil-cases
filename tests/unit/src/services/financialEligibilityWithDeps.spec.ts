@@ -1408,6 +1408,7 @@ describe('FinancialEligibilityEffectsWithDepsImpl', () => {
         post: {
           'bank-balance': '100',
           'mortgage-left_0': '20000',
+          'value_0': '145000'
         },
         params: { caseReference: 'CASE456' },
         session: { financialEligibilityDrafts: {} }
@@ -1419,9 +1420,11 @@ describe('FinancialEligibilityEffectsWithDepsImpl', () => {
       expect(session.financialEligibilityDrafts.CASE456).to.deep.equal({
         'bank-balance': '100.00',
         'mortgage-left_0': '20000.00',
+        'value_0': '145000.00'
       });
       expect(context.getAnswer('bank-balance')).to.equal('100.00');
       expect(context.getAnswer('mortgage-left_0')).to.equal('20000.00');
+      expect(context.getAnswer('value_0')).to.equal('145000.00');
     })
   });
 });
