@@ -393,6 +393,18 @@ describe('mapAnswersToApiPayload', () => {
         expect(result.under_18_passported).to.equal(false);
         expect(you.savings.bank_balance).to.equal(10000);
       });
+
+      it('should zero both dependants fields, since the dependants step is hidden but still directly reachable', () => {
+        const answers = {
+          ...under18PassportedAnswers,
+          'dependants-16-over': '2',
+          'dependants-15-under': '3',
+        };
+        const result = mapAnswersToApiPayload(answers);
+
+        expect(result.dependants_old).to.equal(0);
+        expect(result.dependants_young).to.equal(0);
+      });
     });
 
     describe('AC2: on passported benefits', () => {

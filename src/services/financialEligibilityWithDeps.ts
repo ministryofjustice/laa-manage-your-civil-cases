@@ -447,6 +447,8 @@ function applyNonRequiredSectionDefaults(payload: Record<string, unknown>, { und
         zeroPersonMoneySections(payload, 'you', { includeSavings: true });
         payload.property_set = [];
         payload.disputed_savings = null;
+        payload.dependants_old = 0;
+        payload.dependants_young = 0;
     }
 
     // AC2: on a passported benefit - income and expenses are hidden, and dependants no longer affect eligibility
