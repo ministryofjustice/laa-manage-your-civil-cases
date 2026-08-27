@@ -442,18 +442,27 @@ function zeroPersonMoneySections(payload: Record<string, unknown>, personKey: 'y
  * @param {{ under18Passported: unknown, onPassportedBenefits: unknown, hasPartner: unknown }} gates - The already-computed values that decide which sections to zero
  */
 function applyNonRequiredSectionDefaults(payload: Record<string, unknown>, { under18Passported, onPassportedBenefits, hasPartner }: { under18Passported: unknown, onPassportedBenefits: unknown, hasPartner: unknown }): void {
-    // AC1: under-18 passported - finances, income and expenses are all hidden from the user
+    // AC1: under-18 passported - finances, income, expenses, benefits, disregards and the over-60 question
+    // are all hidden from the user, so any remaining fields not otherwise zeroed above are sent as null
     if (under18Passported === true) {
         zeroPersonMoneySections(payload, 'you', { includeSavings: true });
+        // partner's finances are hidden on check-answers whenever under18Passported, regardless of has_partner
+        zeroPersonMoneySections(payload, 'partner', { includeSavings: true });
         payload.property_set = [];
-        payload.disputed_savings = null;
+        // cla_backend ignores an explicit null for disputed_savings on PATCH, so zero it like savings instead
+        payload.disputed_savings = zeroSavingsSection();
         payload.dependants_old = 0;
         payload.dependants_young = 0;
+        payload.specific_benefits = null;
+        payload.disregards = null;
+        payload.is_you_or_your_partner_over_60 = null;
     }
 
     // AC2: on a passported benefit - income and expenses are hidden, and dependants no longer affect eligibility
     if (onPassportedBenefits === true) {
         zeroPersonMoneySections(payload, 'you', { includeSavings: false });
+        // partner's income/expenses are hidden on check-answers whenever on_passported_benefits, regardless of has_partner
+        zeroPersonMoneySections(payload, 'partner', { includeSavings: false });
         payload.dependants_old = 0;
         payload.dependants_young = 0;
     }

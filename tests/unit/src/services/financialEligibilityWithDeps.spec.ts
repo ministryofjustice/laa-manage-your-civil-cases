@@ -294,17 +294,14 @@ describe('mapAnswersToApiPayload', () => {
       expect(result.under_18_receive_regular_payment).to.equal(false);
       expect(result.under_18_has_valuables).to.equal(false);
       expect(result.has_partner).to.equal(true);
-      expect(result.is_you_or_your_partner_over_60).to.equal(false);
       expect(result.under_18_passported).to.equal(true);
       expect(result.on_passported_benefits).to.equal(true);
-      
-      expect(result.specific_benefits).to.exist;
-      const benefits = result.specific_benefits as Record<string, unknown>;
-      expect(benefits.universal_credit).to.equal(true);
-      expect(benefits.income_support).to.equal(false);
-      expect(benefits.job_seekers_allowance).to.equal(false);
-      expect(benefits.pension_credit).to.equal(false);
-      expect(benefits.employment_support).to.equal(true);
+
+      // is_you_or_your_partner_over_60, specific_benefits and disregards are nulled because
+      // under_18_passported is true, overriding the drafted answers above
+      expect(result.is_you_or_your_partner_over_60).to.equal(null);
+      expect(result.specific_benefits).to.equal(null);
+      expect(result.disregards).to.equal(null);
 
       // under_18_passported and on_passported_benefits are both true here, so `you`'s income/deductions/savings
       // are zeroed by the non-required-section defaults, overriding the drafted bank-balance answers above
@@ -314,19 +311,12 @@ describe('mapAnswersToApiPayload', () => {
         deductions: zeroedDeductions,
       });
 
-      // has_partner is true here, so the partner section is untouched by the non-required-section defaults
+      // under_18_passported is true, so `partner`'s finances are zeroed regardless of has_partner,
+      // overriding the drafted partner bank-balance answers above
       expect(result.partner).to.deep.equal({
-        savings: {
-          bank_balance: 1000,
-          investment_balance: 2000,
-          asset_balance: 3000,
-          credit_balance: 4000,
-        },
-      });
-
-      expect(result.disregards).to.deep.equal({
-        grenfell_tower: true,
-        love_manchester: true,
+        savings: zeroedSavings,
+        income: zeroedIncome,
+        deductions: zeroedDeductions,
       });
 
       // property_set is reset to [] because under_18_passported is true, overriding the drafted property answer
@@ -363,7 +353,7 @@ describe('mapAnswersToApiPayload', () => {
         expect(you.deductions).to.deep.equal(zeroedDeductions);
       });
 
-      it('should reset `property_set` to an empty array and `disputed_savings` to null', () => {
+      it('should reset `property_set` to an empty array and zero `disputed_savings`', () => {
         const answers = {
           ...under18PassportedAnswers,
           propertySet: [{ 'value': 45, 'mortgage-left': 5, 'share': 6, 'disputed': 'no', 'main': 'yes' }],
@@ -372,7 +362,7 @@ describe('mapAnswersToApiPayload', () => {
         const result = mapAnswersToApiPayload(answers);
 
         expect(result.property_set).to.deep.equal([]);
-        expect(result.disputed_savings).to.equal(null);
+        expect(result.disputed_savings).to.deep.equal(zeroedSavings);
       });
 
       it('should build a fully-zeroed `you` even when no money questions were answered', () => {
@@ -394,6 +384,23 @@ describe('mapAnswersToApiPayload', () => {
         expect(you.savings.bank_balance).to.equal(10000);
       });
 
+      it('should zero `partner.income`, `partner.deductions` and `partner.savings` regardless of has_partner', () => {
+        const answers = {
+          ...under18PassportedAnswers,
+          'has-partner': 'yes',
+          'bank-balance-partner': '100',
+          'earnings-partner': '200',
+          'self-employed-partner': 'yes',
+        };
+        const result = mapAnswersToApiPayload(answers);
+        const partner = result.partner as Record<string, Record<string, unknown>>;
+
+        expect(result.has_partner).to.equal(true);
+        expect(partner.savings).to.deep.equal(zeroedSavings);
+        expect(partner.income).to.deep.equal(zeroedIncome);
+        expect(partner.deductions).to.deep.equal(zeroedDeductions);
+      });
+
       it('should zero both dependants fields, since the dependants step is hidden but still directly reachable', () => {
         const answers = {
           ...under18PassportedAnswers,
@@ -402,6 +409,56 @@ describe('mapAnswersToApiPayload', () => {
         };
         const result = mapAnswersToApiPayload(answers);
 
+        expect(result.dependants_old).to.equal(0);
+        expect(result.dependants_young).to.equal(0);
+      });
+
+      it('should null `specific_benefits`, `disregards` and `is_you_or_your_partner_over_60`, since those questions are hidden but still directly reachable', () => {
+        const answers = {
+          ...under18PassportedAnswers,
+          'universal-credit': 'yes',
+          'disregards': ['grenfell_tower'],
+          '60-or-over': 'no',
+        };
+        const result = mapAnswersToApiPayload(answers);
+
+        expect(result.specific_benefits).to.equal(null);
+        expect(result.disregards).to.equal(null);
+        expect(result.is_you_or_your_partner_over_60).to.equal(null);
+      });
+
+      it('should not null `specific_benefits`, `disregards` or `is_you_or_your_partner_over_60` when under_18_passported is false', () => {
+        const answers = { 'universal-credit': 'yes', 'disregards': ['grenfell_tower'], '60-or-over': 'no' };
+        const result = mapAnswersToApiPayload(answers);
+
+        expect(result.under_18_passported).to.equal(false);
+        expect(result.specific_benefits).to.not.equal(null);
+        expect(result.disregards).to.not.equal(null);
+        expect(result.is_you_or_your_partner_over_60).to.equal(false);
+      });
+
+      // Forge steps are all `reachability: { entryWhen: true }`, so answers from an earlier path (e.g. partner/benefit
+      // questions answered before the user changed an under-18 answer to trigger passporting) aren't cleared - they
+      // just stop being shown. AC1 must ignore them and wipe everything regardless.
+      it('should still fully wipe everything when stale `has-partner` and benefit answers are left over from an earlier path', () => {
+        const answers = {
+          ...under18PassportedAnswers,
+          'has-partner': 'yes',
+          'universal-credit': 'yes',
+          'bank-balance-partner': '100',
+          'earnings-partner': '200',
+        };
+        const result = mapAnswersToApiPayload(answers);
+        const partner = result.partner as Record<string, Record<string, unknown>>;
+
+        expect(result.under_18_passported).to.equal(true);
+        expect(result.on_passported_benefits).to.equal(true);
+        expect(partner.savings).to.deep.equal(zeroedSavings);
+        expect(partner.income).to.deep.equal(zeroedIncome);
+        expect(partner.deductions).to.deep.equal(zeroedDeductions);
+        expect(result.specific_benefits).to.equal(null);
+        expect(result.disregards).to.equal(null);
+        expect(result.is_you_or_your_partner_over_60).to.equal(null);
         expect(result.dependants_old).to.equal(0);
         expect(result.dependants_young).to.equal(0);
       });
@@ -425,6 +482,23 @@ describe('mapAnswersToApiPayload', () => {
         expect(you.deductions).to.deep.equal(zeroedDeductions);
         expect(result.dependants_old).to.equal(0);
         expect(result.dependants_young).to.equal(0);
+      });
+
+      it('should zero `partner.income` and `partner.deductions` (not `partner.savings`) regardless of has_partner', () => {
+        const answers = {
+          'universal-credit': 'yes',
+          'has-partner': 'yes',
+          'earnings-partner': '200',
+          'self-employed-partner': 'yes',
+          'bank-balance-partner': '100',
+        };
+        const result = mapAnswersToApiPayload(answers);
+        const partner = result.partner as Record<string, Record<string, unknown>>;
+
+        expect(result.has_partner).to.equal(true);
+        expect(partner.income).to.deep.equal(zeroedIncome);
+        expect(partner.deductions).to.deep.equal(zeroedDeductions);
+        expect(partner.savings.bank_balance).to.equal(10000);
       });
 
       it('should not zero `you` or dependants when on_passported_benefits is false', () => {
