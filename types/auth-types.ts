@@ -26,7 +26,7 @@ export interface SilasSessionAuth {
   expiresAt: number;
   oboAccessToken?: string;
   oboExpiresAt?: number;
-  refreshToken?: string;
+  tokenCache?: string;
   scopes: string[];
 }
 
@@ -40,6 +40,16 @@ export interface SilasTokenExchangeResult {
   email: string;
   name?: string;
   oid?: string;
+  tokenCache: string;
+}
+
+/**
+ * Result of a silent token refresh using the cached MSAL refresh token
+ */
+export interface SilasTokenRefreshResult {
+  accessToken: string;
+  expiresAt: number;
+  tokenCache: string;
 }
 
 /**

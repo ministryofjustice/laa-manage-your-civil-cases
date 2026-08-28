@@ -59,4 +59,32 @@ if (process.env.NODE_ENV === 'test') {
   });
 }
 
+/* GET development-only. Sets expiration of token to see message signout message */
+if (process.env.NODE_ENV === 'development') {
+  const ONE_DAY_MS = 1000 * 60 * 60 * 24;
+  router.get('/test-expired-session', (req: Request, res: Response) => {
+    req.session.silasAuth = {
+      accessToken: 'test-access-token',
+      idToken: 'test-id-token',
+      expiresAt: Date.now() + ONE_DAY_MS, // must be valid, otherwise requireAuth redirects to a real login
+      tokenCache: 'invalid-test-token-cache',
+      scopes: ['openid', 'profile', 'offline_access'],
+    };
+    req.session.user = {
+      email: 'not-signed-in@example.com',
+      name: 'Not Signed In',
+      oid: 'test-oid-123',
+    };
+    req.session.sessionExpiredNotice = true; // read once by setAuthStatus, then cleared
+    req.session.save((err) => {
+      if (err !== null && err !== undefined) {
+        res.status(HTTP.INTERNAL_SERVER_ERROR).send('Failed to save expired test session');
+        return;
+      }
+      res.redirect('/cases/new');
+    });
+  });
+}
+
+
 export default router

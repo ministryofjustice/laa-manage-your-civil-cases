@@ -16,6 +16,7 @@
     "error": "Error",
     "warning": "Warning",
     "errorSummaryTitle": "There is a problem",
+    "sessionExpiredNotice": "You were signed out due to inactivity. Please sign in again to continue.",
     "status": {
       "new": "New",
       "pending": "Pending",

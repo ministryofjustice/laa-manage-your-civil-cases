@@ -1,5 +1,6 @@
 {% extends "govuk/template.njk" %}
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 {% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
 
 {% block pageTitle %}{{config.SERVICE_NAME}} – GOV.UK{% endblock %}
@@ -107,6 +108,11 @@
 {% endblock %}
 
 {% block beforeContent %}
+  {% if sessionExpiredNotice %}
+    {{ govukNotificationBanner({
+      text: t('common.sessionExpiredNotice')
+    }) }}
+  {% endif %}
   {{ govukPhaseBanner({
     tag: {
       text: config.SERVICE_PHASE

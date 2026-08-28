@@ -82,6 +82,7 @@ export async function handleSilasCallback(req: Request, res: Response): Promise<
 
   try {
     const silasToken = await exchangeSilasCodeForToken(code);
+    const sessionExpiredNotice = req.session.sessionExpiredNotice === true;
 
     req.session.regenerate((regenErr) => {
       if (regenErr !== null && regenErr !== undefined) {
@@ -94,6 +95,7 @@ export async function handleSilasCallback(req: Request, res: Response): Promise<
         accessToken: silasToken.accessToken,
         idToken: silasToken.idToken,
         expiresAt: silasToken.expiresAt,
+        tokenCache: silasToken.tokenCache,
         scopes: config.silas.scopes,
       };
 
@@ -102,6 +104,10 @@ export async function handleSilasCallback(req: Request, res: Response): Promise<
         name: silasToken.name,
         oid: silasToken.oid,
       };
+
+      if (sessionExpiredNotice) {
+        req.session.sessionExpiredNotice = true;
+      }
 
       req.session.save((saveErr) => {
         if (saveErr !== null && saveErr !== undefined) {

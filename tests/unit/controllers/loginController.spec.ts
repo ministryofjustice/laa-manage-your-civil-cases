@@ -118,8 +118,10 @@ describe('Login Controller', () => {
 				accessToken,
 				idToken: 'id-token',
 				expiresAt: 123456789,
+				tokenCache: (req.session.silasAuth as { tokenCache: string }).tokenCache,
 				scopes: config.silas.scopes,
 			});
+			expect((req.session.silasAuth as { tokenCache: string }).tokenCache).to.be.a('string');
 			expect(req.session.user).to.deep.equal({
 				email: 'user@example.test',
 				name: 'Test User',
