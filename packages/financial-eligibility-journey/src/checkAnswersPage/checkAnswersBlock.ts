@@ -359,39 +359,39 @@ export const incomeSummaryList = GovUKSummaryList({
     },
     {
       key: { text: 'What did you earn before tax?' },
-      value: { text: Format('£%1 (%2)', Answer('earnings'), frequencyText('earnings-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('earnings').pipe(Transformers.Currency()), frequencyText('earnings-frequency')) },
     },
     {
       key: { text: 'How much tax do you pay?' },
-      value: { text: Format('£%1 (%2)', Answer('income-tax'), frequencyText('income-tax-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('income-tax').pipe(Transformers.Currency()), frequencyText('income-tax-frequency')) },
     },
     {
       key: { text: 'How much National Insurance do you pay?' },
-      value: { text: Format('£%1 (%2)', Answer('national-insurance'), frequencyText('national-insurance-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('national-insurance').pipe(Transformers.Currency()), frequencyText('national-insurance-frequency')) },
     },
     {
       key: { text: 'Self employed drawings (Before Tax)' },
-      value: { text: Format('£%1 (%2)', Answer('self-employment-drawings'), frequencyText('self-employment-drawings-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('self-employment-drawings').pipe(Transformers.Currency()), frequencyText('self-employment-drawings-frequency')) },
     },
     {
       key: { text: 'Benefits' },
-      value: { text: Format('£%1 (%2)', Answer('income-benefits'), frequencyText('income-benefits-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('income-benefits').pipe(Transformers.Currency()), frequencyText('income-benefits-frequency')) },
     },
     {
       key: { text: 'Tax credits' },
-      value: { text: Format('£%1 (%2)', Answer('tax-credits'), frequencyText('tax-credits-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('tax-credits').pipe(Transformers.Currency()), frequencyText('tax-credits-frequency')) },
     },
     {
       key: { text: 'Maintenance received' },
-      value: { text: Format('£%1 (%2)', Answer('maintenance-received'), frequencyText('maintenance-received-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('maintenance-received').pipe(Transformers.Currency()), frequencyText('maintenance-received-frequency')) },
     },
     {
       key: { text: 'Pension income' },
-      value: { text: Format('£%1 (%2)', Answer('pension-income'), frequencyText('pension-income-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('pension-income').pipe(Transformers.Currency()), frequencyText('pension-income-frequency')) },
     },
     {
       key: { text: 'Other income' },
-      value: { text: Format('£%1 (%2)', Answer('other-income'), frequencyText('other-income-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('other-income').pipe(Transformers.Currency()), frequencyText('other-income-frequency')) },
     },
   ] as GovUKSummaryList['rows'],
 })
@@ -421,39 +421,39 @@ export const partnerIncomeSummaryList = GovUKSummaryList({
     },
     {
       key: { text: 'What did your partner earn before tax?' },
-      value: { text: Format('£%1 (%2)', Answer('earnings-partner'), frequencyText('earnings-partner-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('earnings-partner').pipe(Transformers.Currency()), frequencyText('earnings-partner-frequency')) },
     },
     {
       key: { text: 'How much tax does your partner pay?' },
-      value: { text: Format('£%1 (%2)', Answer('income-tax-partner'), frequencyText('income-tax-partner-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('income-tax-partner').pipe(Transformers.Currency()), frequencyText('income-tax-partner-frequency')) },
     },
     {
       key: { text: 'How much National Insurance does your partner pay?' },
-      value: { text: Format('£%1 (%2)', Answer('national-insurance-partner'), frequencyText('national-insurance-partner-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('national-insurance-partner').pipe(Transformers.Currency()), frequencyText('national-insurance-partner-frequency')) },
     },
     {
       key: { text: 'Self employed drawings (Before Tax)' },
-      value: { text: Format('£%1 (%2)', Answer('self-employment-drawings-partner'), frequencyText('self-employment-drawings-partner-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('self-employment-drawings-partner').pipe(Transformers.Currency()), frequencyText('self-employment-drawings-partner-frequency')) },
     },
     {
       key: { text: 'Benefits' },
-      value: { text: Format('£%1 (%2)', Answer('income-benefits-partner'), frequencyText('income-benefits-partner-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('income-benefits-partner').pipe(Transformers.Currency()), frequencyText('income-benefits-partner-frequency')) },
     },
     {
       key: { text: 'Tax credits' },
-      value: { text: Format('£%1 (%2)', Answer('tax-credits-partner'), frequencyText('tax-credits-partner-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('tax-credits-partner').pipe(Transformers.Currency()), frequencyText('tax-credits-partner-frequency')) },
     },
     {
       key: { text: 'Maintenance received' },
-      value: { text: Format('£%1 (%2)', Answer('maintenance-received-partner'), frequencyText('maintenance-received-partner-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('maintenance-received-partner').pipe(Transformers.Currency()), frequencyText('maintenance-received-partner-frequency')) },
     },
     {
       key: { text: 'Pension income' },
-      value: { text: Format('£%1 (%2)', Answer('pension-income-partner'), frequencyText('pension-income-partner-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('pension-income-partner').pipe(Transformers.Currency()), frequencyText('pension-income-partner-frequency')) },
     },
     {
       key: { text: 'Other income' },
-      value: { text: Format('£%1 (%2)', Answer('other-income-partner'), frequencyText('other-income-partner-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('other-income-partner').pipe(Transformers.Currency()), frequencyText('other-income-partner-frequency')) },
     },
   ] as GovUKSummaryList['rows'],
 })
@@ -509,23 +509,23 @@ export const expensesSummaryList = GovUKSummaryList({
         text: 'How much do you pay for your mortgage?',
         classes: GovUKUtilityClasses.Width.TwoThirds,
       },
-      value: { text: Format('£%1 (%2)', Answer('mortgage'), frequencyText('mortgage-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('mortgage').pipe(Transformers.Currency()), frequencyText('mortgage-frequency')) },
     },
     {
       key: { text: 'How much do you pay for rent? The amount entered should not include any housing benefit or payments for bills.' },
-      value: { text: Format('£%1 (%2)', Answer('rent'), frequencyText('rent-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('rent').pipe(Transformers.Currency()), frequencyText('rent-frequency')) },
     },
     {
       key: { text: Format('How much maintenance have you paid during the last calendar month (today back to %1)?', lastCalendarMonthDate()) },
-      value: { text: Format('£%1 (%2)', Answer('maintenance-paid'), frequencyText('maintenance-paid-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('maintenance-paid').pipe(Transformers.Currency()), frequencyText('maintenance-paid-frequency')) },
     },
     {
       key: { text: 'Do you have any childcare costs because of work or study? If so, how much?' },
-      value: { text: Format('£%1 (%2)', Answer('childcare-costs'), frequencyText('childcare-costs-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('childcare-costs').pipe(Transformers.Currency()), frequencyText('childcare-costs-frequency')) },
     },
     {
       key: { text: Format('Are you currently paying towards legal aid for criminal defence? If so, how much have you paid during the last calendar month (today back to %1)?', lastCalendarMonthDate()) },
-      value: { text: Format('£%1 (Per month)', Answer('legal-aid-contributions')) },
+      value: { text: Format('%1 (Per month)', Answer('legal-aid-contributions').pipe(Transformers.Currency())) },
     },
   ] as GovUKSummaryList['rows'],
 })
@@ -551,23 +551,23 @@ export const partnerExpensesSummaryList = GovUKSummaryList({
         text: 'How much does your partner pay for their mortgage?',
         classes: GovUKUtilityClasses.Width.TwoThirds,
       },
-      value: { text: Format('£%1 (%2)', Answer('mortgage-partner'), frequencyText('mortgage-partner-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('mortgage-partner').pipe(Transformers.Currency()), frequencyText('mortgage-partner-frequency')) },
     },
     {
       key: { text: 'How much does your partner pay for their rent? The amount entered should not include any housing benefit or payment for bills' },
-      value: { text: Format('£%1 (%2)', Answer('rent-partner'), frequencyText('rent-partner-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('rent-partner').pipe(Transformers.Currency()), frequencyText('rent-partner-frequency')) },
     },
     {
       key: { text: Format('How much maintenance has your partner paid during the last calendar month (today back to %1)?', lastCalendarMonthDate()) },
-      value: { text: Format('£%1 (%2)', Answer('maintenance-paid-partner'), frequencyText('maintenance-paid-partner-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('maintenance-paid-partner').pipe(Transformers.Currency()), frequencyText('maintenance-paid-partner-frequency')) },
     },
     {
       key: { text: 'Does your partner have any childcare costs because of work or study? If so, how much?' },
-      value: { text: Format('£%1 (%2)', Answer('childcare-costs-partner'), frequencyText('childcare-costs-partner-frequency')) },
+      value: { text: Format('%1 (%2)', Answer('childcare-costs-partner').pipe(Transformers.Currency()), frequencyText('childcare-costs-partner-frequency')) },
     },
     {
       key: { text: Format('Is your partner currently paying towards legal aid for criminal defence? If so, how much has your partner paid in the last calendar month (today back to %1)?', lastCalendarMonthDate()) },
-      value: { text: Format('£%1 (Per month)', Answer('legal-aid-contributions-partner')) },
+      value: { text: Format('%1 (Per month)', Answer('legal-aid-contributions-partner').pipe(Transformers.Currency())) },
     },
   ] as GovUKSummaryList['rows'],
 })
