@@ -1,18 +1,24 @@
 import { submit, redirect } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { continueButton, discardChangesButton, ifPressedDiscardChanges } from '../commonBlocks.js'
-import { partnerSavingsHeading, bankBalanceField, investmentBalanceField, assetBalanceField, creditBalanceField } from './partnerSavingsBlock.js'
+import { dependantsHeading, partnerDependants16OverField, partnerDependants15UnderField } from './partnerDependantsBlock.js'
 import { FinancialEligibilityEffects } from '../effects.js'
 import { step, type StepDefinition } from '../authoring.js'
-import { disregardsStep } from '../disregardsPage/disregardsStep.js'
+import { expensesStep } from '../expensesPage/expensesStep.js'
 
-const STEP_CODE = 'partner-savings'
+const STEP_CODE = 'partner-dependants'
 
-export const partnerSavingsStep: StepDefinition = step({
+export const partnerDependantsStep: StepDefinition = step({
   code: STEP_CODE,
-  path: '/partner-savings',
-  title: 'Your partner\'s savings',
+  path: '/partner-dependants',
+  title: 'Dependants',
   reachability: { entryWhen: true },
-  blocks: [partnerSavingsHeading, bankBalanceField, investmentBalanceField, assetBalanceField, creditBalanceField, continueButton, discardChangesButton],
+  blocks: [
+    dependantsHeading,
+    partnerDependants16OverField,
+    partnerDependants15UnderField,
+    continueButton,
+    discardChangesButton,
+  ],
   onSubmission: [
     ifPressedDiscardChanges(),
     submit({
@@ -20,7 +26,9 @@ export const partnerSavingsStep: StepDefinition = step({
       onValid: {
         effects: [FinancialEligibilityEffects.SaveNewAnswerIfAnswered()],
         next: [
-          redirect({ goto: disregardsStep.code })
+          redirect({
+            goto: expensesStep.code,
+          }),
         ],
       },
     }),

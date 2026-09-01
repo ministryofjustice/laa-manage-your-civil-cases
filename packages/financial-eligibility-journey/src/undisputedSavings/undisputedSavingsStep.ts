@@ -1,18 +1,17 @@
 import { submit, redirect, Answer, Condition, or } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { continueButton, discardChangesButton, ifPressedDiscardChanges } from '../commonBlocks.js'
-import { savingsHeading, bankBalanceField, investmentBalanceField, assetBalanceField, creditBalanceField } from './savingsBlock.js'
+import { savingsHeading, bankBalanceField, investmentBalanceField, assetBalanceField, creditBalanceField } from './undisputedSavingsBlock.js'
 import { FinancialEligibilityEffects } from '../effects.js'
 import { step, type StepDefinition } from '../authoring.js'
-import { partnerSavingsStep } from '../partnerSavingsPage/partnerSavingsStep.js'
 import { disputedSavingsStep } from '../disputedSavingsPage/disputedSavingsStep.js'
-import { disregardsStep } from '../disregardsPage/disregardsStep.js'
+import { partnerUndisputedSavingsStep } from '../partnerUndisputedSavings/partnerUndisputedSavingsStep.js'
 
-const STEP_CODE = 'your-savings'
+const STEP_CODE = 'your-undisputed-savings'
 
-export const savingsStep: StepDefinition = step({
+export const undisputedSavingsStep: StepDefinition = step({
   code: STEP_CODE,
-  path: '/your-savings',
-  title: 'Your savings',
+  path: '/your-undisputed-savings',
+  title: 'Your undisputed savings',
   reachability: { entryWhen: true },
   blocks: [savingsHeading, bankBalanceField, investmentBalanceField, assetBalanceField, creditBalanceField, continueButton, discardChangesButton],
   onSubmission: [
@@ -24,11 +23,9 @@ export const savingsStep: StepDefinition = step({
         next: [
           redirect({
             when: Answer('has-partner').match(Condition.Equals('yes')),
-            goto: partnerSavingsStep.code
+            goto: partnerUndisputedSavingsStep.code
           }),
-          redirect({
-            goto: disregardsStep.code
-          })
+          redirect({ goto: disputedSavingsStep.code }),
         ],
       },
     }),

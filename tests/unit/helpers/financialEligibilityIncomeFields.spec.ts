@@ -24,6 +24,7 @@ import {
   otherIncomePartnerField, otherIncomePartnerFrequencyField,
 } from '#packages/financial-eligibility-journey/src/partnerIncomePage/partnerIncomeBlock.js';
 import { dependants16OverField, dependants15UnderField } from '#packages/financial-eligibility-journey/src/dependantsPage/dependantsBlock.js';
+import { partnerDependants16OverField, partnerDependants15UnderField } from '#packages/financial-eligibility-journey/src/partnerDependantsPage/partnerDependantsBlock.js';
 import { frequencyItems as FREQUENCY_ITEMS } from '#packages/financial-eligibility-journey/src/moneyFieldHelpers.js';
 
 interface FieldLike {
@@ -288,5 +289,35 @@ describe('Dependants fields', () => {
     expect(messages).to.have.length(2);
     expect(messages[0]).to.equal('Enter the number of dependants you have aged 15 and under, or enter \'0\' if none');
     expect(messages[1]).to.equal('The number of dependants you have aged 15 and under must be a whole positive number, like 1 or 2');
+  });
+
+  describe('Partner dependants fields', () => {
+    it('requires dependants aged 16 and over to be answered with a whole positive number (AC6/AC9)', () => {
+      const messages = validationMessages(partnerDependants16OverField);
+
+      expect(partnerDependants16OverField.code).to.equal('dependants-16-over');
+      expect(partnerDependants16OverField.inputType).to.equal('number');
+      expect(messages).to.have.length(2);
+      expect(messages[0]).to.equal(
+        'Enter the number of dependants you and your partner have aged 16 and over, or enter \'0\' if none',
+      );
+      expect(messages[1]).to.equal(
+        'The number of dependants you and your partner have aged 16 and over must be a whole positive number, like 1 or 2',
+      );
+    });
+
+    it('requires dependants aged 15 and under to be answered with a whole positive number (AC6/AC9)', () => {
+      const messages = validationMessages(partnerDependants15UnderField);
+
+      expect(partnerDependants15UnderField.code).to.equal('dependants-15-under');
+      expect(partnerDependants15UnderField.inputType).to.equal('number');
+      expect(messages).to.have.length(2);
+      expect(messages[0]).to.equal(
+        'Enter the number of dependants you and your partner have aged 15 and under, or enter \'0\' if none',
+      );
+      expect(messages[1]).to.equal(
+        'The number of dependants you and your partner have aged 15 and under must be a whole positive number, like 1 or 2',
+      );
+    });
   });
 });

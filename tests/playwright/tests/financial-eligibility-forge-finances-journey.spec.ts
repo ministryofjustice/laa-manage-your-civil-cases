@@ -4,7 +4,7 @@ import { setupAuth, assertCaseDetailsHeaderPresent } from '../utils/index.js';
 
 async function completeIntroToBenefitsNoPartner(page: Page) {
   await page.goto(`/cases/PC-1922-1879/financial-eligibility/change`);
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Jack Youngs', expectedCaseRef: 'PC-1922-1879', dateReceived: '7 July 2025', badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party']});
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Jack Youngs', expectedCaseRef: 'PC-1922-1879', dateReceived: '7 July 2025', badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
 
   // Under 18: No
   await page.getByRole('radio', { name: 'No' }).check();
@@ -35,7 +35,7 @@ async function completeIntroToBenefitsWithPartner(page: Page) {
   await page.getByRole('radio', { name: 'Yes' }).check();
   await page.getByRole('button', { name: 'Continue' }).click();
 
-   // Over 60: No
+  // Over 60: No
   await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/60-or-over-with-partner`);
   await page.getByRole('radio', { name: 'No' }).check();
   await page.getByRole('button', { name: 'Continue' }).click();
@@ -94,7 +94,7 @@ async function reachSavingsWithPartner(page: Page) {
   await completeIntroToBenefitsWithPartner(page);
   await completeBenefits(page);
 
-  await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/properties`);
+  await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/client-partner-properties`);
   await page.getByRole('button', { name: 'Continue' }).click();
 
   await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/your-savings`);
@@ -136,6 +136,12 @@ async function completePartnerIncomeValues(page: Page) {
 async function completeDependantsValues(page: Page) {
   await page.getByRole('spinbutton', { name: 'Do you have any dependants aged 16 and over?' }).fill('0');
   await page.getByRole('spinbutton', { name: 'Do you have any dependants aged 15 and under?' }).fill('0');
+  await page.getByRole('button', { name: 'Continue' }).click();
+}
+
+async function completePartnerDependantsValues(page: Page) {
+  await page.getByRole('spinbutton', { name: 'Do you and your partner have any dependants aged 16 and over?' }).fill('0');
+  await page.getByRole('spinbutton', { name: 'Do you and your partner have any dependants aged 15 and under?' }).fill('0');
   await page.getByRole('button', { name: 'Continue' }).click();
 }
 
@@ -190,6 +196,19 @@ async function reachExpensesNoPartner(page: Page) {
   await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/your-expenses`);
 }
 
+async function reachExpensesWithPartner(page: Page) {
+  await reachIncomeWithPartner(page);
+  await completeIncomeValues(page);
+
+  await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/partner-income`);
+  await completePartnerIncomeValues(page);
+
+  await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/partner-dependants`);
+  await completePartnerDependantsValues(page);
+
+  await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/your-expenses`);
+}
+
 test.describe('Financial Eligibility Forge Finances Journey', () => {
   test.beforeEach(async ({ page }) => {
     await setupAuth(page);
@@ -220,6 +239,24 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
       await expect(page.getByRole('link', { name: 'Enter how much is left to pay' })).toBeVisible();
       await expect(page.getByRole('link', { name: 'Select yes if property 1 is' })).toBeVisible();
       await expect(page.getByRole('link', { name: 'Enter the percentage you own' })).toBeVisible();
+    });
+
+    test('should show partner property question when applicant has a partner', async ({ page }) => {
+      await page.goto('/cases/PC-1869-9154/financial-eligibility/change/client-partner-properties'); // Grace Baker has a partner and property data
+      await expect(page.getByRole('heading', { name: 'Properties' })).toBeVisible();
+      await expect(page.getByLabel('What is the current market value of the property?')).toBeVisible();
+      await expect(page.getByLabel('How much is left to pay on the mortgage?')).toBeVisible();
+      await expect(page.getByText('Is this your main property?')).toBeVisible();
+      await expect(page.getByLabel('What percentage of the property do you and/or your partner own?')).toBeVisible();
+    });
+
+    test('should not show partner property question when applicant does not have a partner', async ({ page }) => {
+      await page.goto('/cases/PC-1924-9560/financial-eligibility/change/properties'); // Lisa NO NOTES Chen has no partner and property data
+      await expect(page.getByRole('heading', { name: 'Properties' })).toBeVisible();
+      await expect(page.getByLabel('What is the current market value of the property?')).toBeVisible();
+      await expect(page.getByLabel('How much is left to pay on the mortgage?')).toBeVisible();
+      await expect(page.getByText('Is this your main property?')).toBeVisible();
+      await expect(page.getByLabel('What percentage of the property do you own?')).toBeVisible();
     });
 
     test('should show validation error when property value is negative', async ({ page }) => {
@@ -363,15 +400,15 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
       await completeBenefits(page);
 
       // Properties: None
-      await expect(page).toHaveURL('/cases/PC-1357-1212/financial-eligibility/change/properties');
+      await expect(page).toHaveURL('/cases/PC-1357-1212/financial-eligibility/change/client-partner-properties');
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Savings: None
-      await expect(page).toHaveURL('/cases/PC-1357-1212/financial-eligibility/change/your-savings');
+      await expect(page).toHaveURL('/cases/PC-1357-1212/financial-eligibility/change/your-undisputed-savings');
       await completeSavingsValues(page);
 
       // Partner Savings: None
-      await expect(page).toHaveURL('/cases/PC-1357-1212/financial-eligibility/change/partner-savings');
+      await expect(page).toHaveURL('/cases/PC-1357-1212/financial-eligibility/change/partner-undisputed-savings');
       await completePartnerSavingsValues(page);
 
       await expect(page).toHaveURL('/cases/PC-1357-1212/financial-eligibility/change/disputed-savings');
@@ -507,14 +544,14 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
   });
 
   test.describe('"Your partner\'s income" routing paths', () => {
-    test('should route partner income to dependants', async ({ page }) => {
+    test('should route partner income to partner dependants', async ({ page }) => {
       await reachIncomeWithPartner(page);
       await completeIncomeValues(page);
 
       await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/partner-income`);
       await completePartnerIncomeValues(page);
 
-      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/dependants`);
+      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/partner-dependants`);
       await expect(page.getByRole('heading', { name: 'Dependants' })).toBeVisible();
     });
   });
@@ -526,6 +563,22 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
 
       await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/dependants`);
       await completeDependantsValues(page);
+
+      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/your-expenses`);
+      await expect(page.getByRole('heading', { name: 'Your expenses' })).toBeVisible();
+    });
+  });
+
+  test.describe('Partner dependants routing paths', () => {
+    test('should route dependants to your expenses', async ({ page }) => {
+      await reachIncomeWithPartner(page);
+      await completeIncomeValues(page);
+
+      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/partner-income`);
+      await completePartnerIncomeValues(page);
+
+      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/partner-dependants`);
+      await completePartnerDependantsValues(page);
 
       await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/your-expenses`);
       await expect(page.getByRole('heading', { name: 'Your expenses' })).toBeVisible();
@@ -573,7 +626,7 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
       await reachIncomeWithPartner(page);
       await completeIncomeValues(page);
       await completePartnerIncomeValues(page);
-      await completeDependantsValues(page);
+      await completePartnerDependantsValues(page);
 
       await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/your-expenses`);
       await completeExpensesValues(page);
@@ -588,7 +641,7 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
       await reachIncomeWithPartner(page);
       await completeIncomeValues(page);
       await completePartnerIncomeValues(page);
-      await completeDependantsValues(page);
+      await completePartnerDependantsValues(page);
       await completeExpensesValues(page);
 
       await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/partner-expenses`);
@@ -605,7 +658,7 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
       await reachIncomeWithPartner(page);
       await completeIncomeValues(page);
       await completePartnerIncomeValues(page);
-      await completeDependantsValues(page);
+      await completePartnerDependantsValues(page);
       await completeExpensesValues(page);
 
       await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/partner-expenses`);
@@ -633,6 +686,181 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
 
       await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/`);
       await expect(page).not.toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change`);
+    });
+
+    test('check your answers should display correct information when there is a partner', async ({ page }) => {
+      await reachExpensesWithPartner(page);
+      await completeExpensesValues(page);
+      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/partner-expenses`);
+      await completePartnerExpensesValues(page);
+
+      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/check-answers`);
+      const dependantsCard = page.locator('.govuk-summary-card').filter({ has: page.getByRole('heading', { name: 'Dependants' }) });
+      await expect(dependantsCard).toContainText('Do you and your partner have any dependants aged 16 and over?');
+      await expect(dependantsCard).toContainText('Do you and your partner have any dependants aged 15 and under?');
+
+      await expect(page.getByRole('heading', { name: 'Property 1' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Property 2' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Your savings' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Disregards' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Your income' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Dependants' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Your expenses' })).toBeVisible();
+
+      await page.getByRole('button', { name: 'Submit' }).click();
+
+      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/`);
+      await expect(page).not.toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change`);
+    });
+
+    test('check your answers should display correct information when category is debt', async ({ page }) => {
+      const baseUrl = '/cases/PC-1357-1212/financial-eligibility/change';
+
+      await page.goto(baseUrl);
+
+      // Under 18
+      await page.getByRole('radio', { name: 'No' }).check();
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      // Partner
+      await expect(page).toHaveURL(`${baseUrl}/has-partner`);
+      await page.getByRole('radio', { name: 'Yes' }).check();
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      // Over 60
+      await expect(page).toHaveURL(`${baseUrl}/60-or-over-with-partner`);
+      await page.getByRole('radio', { name: 'No' }).check();
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      // Benefits
+      await expect(page).toHaveURL(`${baseUrl}/benefits`);
+      await completeBenefits(page);
+
+      // Properties
+      await expect(page).toHaveURL(`${baseUrl}/client-partner-properties`);
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      // Undisputed savings
+      await expect(page).toHaveURL(`${baseUrl}/your-undisputed-savings`);
+      await completeSavingsValues(page);
+
+      // Partner undisputed savings
+      await expect(page).toHaveURL(`${baseUrl}/partner-undisputed-savings`);
+      await completePartnerSavingsValues(page);
+
+      // Disputed savings
+      await expect(page).toHaveURL(`${baseUrl}/disputed-savings`);
+      await completeDisputedSavingsValues(page);
+
+      // Remaining journey
+      await expect(page).toHaveURL(`${baseUrl}/disregards`);
+      await completeDisregardsNone(page);
+
+      await expect(page).toHaveURL(`${baseUrl}/your-income`);
+      await completeIncomeValues(page);
+
+      await expect(page).toHaveURL(`${baseUrl}/partner-income`);
+      await completePartnerIncomeValues(page);
+
+      await expect(page).toHaveURL(`${baseUrl}/partner-dependants`);
+      await completePartnerDependantsValues(page);
+
+      await expect(page).toHaveURL(`${baseUrl}/your-expenses`);
+      await completeExpensesValues(page);
+
+      await expect(page).toHaveURL(`${baseUrl}/partner-expenses`);
+      await completePartnerExpensesValues(page);
+
+      // Check answers
+      await expect(page).toHaveURL(`${baseUrl}/check-answers`);
+      await expect(page.getByRole('heading', { name: 'About you' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Benefits' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Property 1' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Your undisputed savings' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Your partner\'s undisputed savings' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Your disputed savings', exact: true })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Disregards' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Your income' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Your partner\'s income' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Dependants' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Your expenses' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Your partner\'s expenses' })).toBeVisible();
+
+      const dependantsCard = page.locator('.govuk-summary-card').filter({has: page.getByRole('heading', { name: 'Dependants', exact: true })});
+
+      await expect(dependantsCard).toContainText('Do you and your partner have any dependants aged 16 and over?');
+      await expect(dependantsCard).toContainText('Do you and your partner have any dependants aged 15 and under?');
+      await expect(dependantsCard).toContainText('0');
+    });
+
+     test('check your answers should display correct information when category is family', async ({ page }) => {
+      const baseUrl = '/cases/PC-1924-9560/financial-eligibility/change';
+
+      await page.goto(baseUrl);
+
+      // Under 18
+      await page.getByRole('radio', { name: 'No' }).check();
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      // Partner
+      await expect(page).toHaveURL(`${baseUrl}/has-partner`);
+      await page.getByRole('radio', { name: 'Yes' }).check();
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      // Over 60
+      await expect(page).toHaveURL(`${baseUrl}/60-or-over-with-partner`);
+      await page.getByRole('radio', { name: 'No' }).check();
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      // Benefits
+      await expect(page).toHaveURL(`${baseUrl}/benefits`);
+      await completeBenefits(page);
+
+      // Properties
+      await expect(page).toHaveURL(`${baseUrl}/client-partner-properties`);
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      // Undisputed savings
+      await expect(page).toHaveURL(`${baseUrl}/your-undisputed-savings`);
+      await completeSavingsValues(page);
+
+      // Partner undisputed savings
+      await expect(page).toHaveURL(`${baseUrl}/partner-undisputed-savings`);
+      await completePartnerSavingsValues(page);
+
+      // Disputed savings
+      await expect(page).toHaveURL(`${baseUrl}/disputed-savings`);
+      await completeDisputedSavingsValues(page);
+
+      // Remaining journey
+      await expect(page).toHaveURL(`${baseUrl}/disregards`);
+      await completeDisregardsNone(page);
+
+      await expect(page).toHaveURL(`${baseUrl}/your-income`);
+      await completeIncomeValues(page);
+
+      await expect(page).toHaveURL(`${baseUrl}/partner-income`);
+      await completePartnerIncomeValues(page);
+
+      await expect(page).toHaveURL(`${baseUrl}/partner-dependants`);
+      await completePartnerDependantsValues(page);
+
+      await expect(page).toHaveURL(`${baseUrl}/your-expenses`);
+      await completeExpensesValues(page);
+
+      await expect(page).toHaveURL(`${baseUrl}/partner-expenses`);
+      await completePartnerExpensesValues(page);
+
+      // Check answers
+      await expect(page).toHaveURL(`${baseUrl}/check-answers`);
+
+      const dependantsCard = page.locator('.govuk-summary-card').filter({has: page.getByRole('heading', { name: 'Dependants', exact: true })});
+
+      await expect(dependantsCard).toContainText('Do you and your partner have any dependants aged 16 and over?');
+      await expect(dependantsCard).toContainText('Do you and your partner have any dependants aged 15 and under?');
+      await expect(dependantsCard).toContainText('0');
+
+      await expect(page.getByRole('heading', { name: 'Your disputed savings', exact: true })).toBeVisible();
     });
 
     test('should allow changing a finance answer from check answers', async ({ page }) => {

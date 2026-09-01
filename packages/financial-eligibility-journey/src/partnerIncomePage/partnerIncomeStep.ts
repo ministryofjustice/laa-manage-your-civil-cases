@@ -14,7 +14,7 @@ import {
 } from './partnerIncomeBlock.js'
 import { FinancialEligibilityEffects } from '../effects.js'
 import { step, type StepDefinition } from '../authoring.js'
-import { dependantsStep } from '../dependantsPage/dependantsStep.js'
+import { partnerDependantsStep } from '../partnerDependantsPage/partnerDependantsStep.js'
 
 const STEP_CODE = 'partner-income'
 
@@ -46,7 +46,7 @@ export const partnerIncomeStep: StepDefinition = step({
         effects: [FinancialEligibilityEffects.SaveNewAnswerIfAnswered()],
         next: [
           redirect({
-            goto: dependantsStep.code,
+            goto: partnerDependantsStep.code,
           }),
         ],
       },

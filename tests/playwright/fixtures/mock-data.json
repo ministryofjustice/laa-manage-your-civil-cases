@@ -105,6 +105,7 @@
     "lastModified": "2025-07-06T19:00:00-05:00",
     "financialEligibility": {
        "category": "family",
+       "has_partner": false,
        "savings": {
           "bank_balance": 20000,
           "investment_balance": 10000,
