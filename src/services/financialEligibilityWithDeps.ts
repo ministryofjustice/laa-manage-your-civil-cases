@@ -456,6 +456,11 @@ function applyNonRequiredSectionDefaults(payload: Record<string, unknown>, { und
         payload.specific_benefits = null;
         payload.disregards = null;
         payload.is_you_or_your_partner_over_60 = null;
+        // the partner question is skipped entirely when under18Passported, so default has_partner to null
+        // when it was never answered (a genuine stale yes/no from an earlier path is left untouched)
+        if (hasPartner === undefined) {
+            payload.has_partner = null;
+        }
     }
 
     // AC2: on a passported benefit - income and expenses are hidden, and dependants no longer affect eligibility
