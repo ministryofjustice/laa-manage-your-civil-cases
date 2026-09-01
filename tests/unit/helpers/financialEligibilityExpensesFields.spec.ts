@@ -15,6 +15,7 @@ import {
 } from '#packages/financial-eligibility-journey/src/partnerExpensesPage/partnerExpensesBlock.js';
 import { expensesSummaryList, partnerExpensesSummaryList } from '#packages/financial-eligibility-journey/src/checkAnswersPage/checkAnswersBlock.js';
 import { frequencyItems as FREQUENCY_ITEMS, lastCalendarMonthDate } from '#packages/financial-eligibility-journey/src/moneyFieldHelpers.js';
+import { GovUKHeading } from '#node_modules/@ministryofjustice/hmpps-forge/dist/govuk-components/index.js';
 
 interface FieldLike {
   code?: unknown;
@@ -211,12 +212,12 @@ describe('Your expenses fields', () => {
   });
 
   it('shows the rolling last-calendar-month date in the maintenance paid question, not a hardcoded date', () => {
-    const heading = maintenancePaidRow[0] as { content: unknown };
-    expectUsesLastCalendarMonthDate(heading.content, 'How much maintenance have you paid during the last calendar month (today back to %1)?');
+    const heading = maintenancePaidRow[0] as GovUKHeading;
+    expectUsesLastCalendarMonthDate(heading.text, 'How much maintenance have you paid during the last calendar month (today back to %1)?');
   });
 
   it('shows the rolling last-calendar-month date in the legal aid contributions question, not a hardcoded date', () => {
-    expectUsesLastCalendarMonthDate((legalAidContributionsHeading as { content: unknown }).content, 'Are you currently paying towards legal aid for criminal defence? If so, how much have you paid during the last calendar month (today back to %1)?');
+    expectUsesLastCalendarMonthDate(legalAidContributionsHeading.text, 'Are you currently paying towards legal aid for criminal defence? If so, how much have you paid during the last calendar month (today back to %1)?');
   });
 });
 
@@ -233,12 +234,12 @@ describe('Your partner\'s expenses fields', () => {
   });
 
   it('shows the rolling last-calendar-month date in the partner\'s maintenance paid question, not a hardcoded date', () => {
-    const heading = maintenancePaidPartnerRow[0] as { content: unknown };
-    expectUsesLastCalendarMonthDate(heading.content, 'How much maintenance has your partner paid during the last calendar month (today back to %1)?');
+    const heading = maintenancePaidPartnerRow[0] as GovUKHeading;
+    expectUsesLastCalendarMonthDate(heading.text, 'How much maintenance has your partner paid during the last calendar month (today back to %1)?');
   });
 
   it('shows the rolling last-calendar-month date in the partner\'s legal aid contributions question, not a hardcoded date', () => {
-    expectUsesLastCalendarMonthDate((legalAidContributionsPartnerHeading as { content: unknown }).content, 'Is your partner currently paying towards legal aid for criminal defence? If so, how much has your partner paid in the last calendar month (today back to %1)?');
+    expectUsesLastCalendarMonthDate(legalAidContributionsPartnerHeading.text, 'Is your partner currently paying towards legal aid for criminal defence? If so, how much has your partner paid in the last calendar month (today back to %1)?');
   });
 });
 
