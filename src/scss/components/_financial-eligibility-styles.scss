@@ -1,0 +1,42 @@
+.eligibility-table td {
+  width: 25%;
+}
+
+.eligibility-table th {
+  width: 75%;
+}
+
+.financial-eligibility-alert .moj-alert {
+  margin-bottom: 30px;
+}
+
+.property-remove-button {
+  float: right;
+}
+
+// This applies to the Discard button in forge journey, so that it looks like a link 
+.govuk-button.financial-eligibility-discard-link {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  color: #1d70b8;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.1em;
+}
+
+.govuk-button.financial-eligibility-discard-link:hover {
+  color: #003078;
+  text-decoration-thickness: max(3px, 0.1875rem);
+}
+
+.govuk-button.financial-eligibility-discard-link:focus {
+  background-color: #ffdd00;
+  box-shadow: 0 -2px #ffdd00, 0 4px #0b0c0c;
+  color: #0b0c0c;
+  outline: 3px solid transparent;
+  text-decoration: none;
+}

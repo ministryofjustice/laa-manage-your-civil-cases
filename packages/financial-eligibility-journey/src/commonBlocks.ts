@@ -7,7 +7,7 @@ export const continueButton = GovUKButton({ text: 'Continue' })
 export const submitButton = GovUKButton({ text: 'Submit' })
 
 // Component and function to trigger the component
-export const discardChangesButton = GovUKButton({ text: 'Discard changes', classes: 'govuk-button--warning govuk-!-margin-left-3', name: 'action', value: 'discard-changes' })
+export const discardChangesButton = GovUKButton({ text: 'Discard changes', classes: 'govuk-link financial-eligibility-discard-link govuk-!-margin-left-3 govuk-!-margin-top-2', name: 'action', value: 'discard-changes' })
 
 /**
  * Clears the financial eligibility draft answers and redirects the user back to the financial eligibility page
