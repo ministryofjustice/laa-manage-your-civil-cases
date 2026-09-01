@@ -19,11 +19,11 @@
   // Added in
   flex-wrap: nowrap;
 
-  @include govuk.govuk-media-query($until: mobile) {
-    align-items: center;
-    flex-direction: column;
+  @include govuk.govuk-media-query($until: tablet) {
     // Added in
-    flex-wrap: wrap;
+    align-items: flex-start;
+    flex-direction: column;
+    flex-wrap: nowrap;
   }
 }
 
