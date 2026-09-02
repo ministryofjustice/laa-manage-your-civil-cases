@@ -5,41 +5,53 @@ test.beforeEach(async ({ page }) => {
   await setupAuth(page);
 });
 
-test('feedback component switches sections and resets on cancel', async ({ page }) => {
-  // Navigate to the new cases page
-  await page.goto('/cases/new');
+const pagesToCheck = [
+  'cases/new',
+  'cases/completed',
+  'cases,PC-1922-1879/client-details',
+  'cases,PC-1922-1879/give-operator-feedback',
+  'cases,PC-1922-1879/cookies',
+  'cases,PC-1922-1879/help',
+  'cases/VT-3349-1236/financial-eligibility/change/under-18',
+  'search',
+];
 
-  const initial = page.locator('[data-feedback-section="initial"]');
-  const messageYes = page.locator('[data-feedback-section="messageYes"]');
-  const messageNo = page.locator('[data-feedback-section="messageNo"]');
-  const final = page.locator('[data-feedback-section="final"]');
+for (const url of pagesToCheck) {
+  test(`feedback component switches sections and resets on cancel for ${url}`, async ({ page }) => {
+    await page.goto(`/$url)`);
 
-  // Assert the different section of feedback component in are in correct hidden/shown state
-  await expect(initial).toBeVisible();
-  await expect(messageYes).toBeHidden();
-  await expect(messageNo).toBeHidden();
-  await expect(final).toBeHidden();
+    const initial = page.locator('[data-feedback-section="initial"]');
+    const messageYes = page.locator('[data-feedback-section="messageYes"]');
+    const messageNo = page.locator('[data-feedback-section="messageNo"]');
+    const final = page.locator('[data-feedback-section="final"]');
 
-  // Trigger `Yes` comment input  and cancel
-  await initial.locator('[data-feedback-role="initial-trigger-yes"]').click();
-  await expect(messageYes).toBeVisible();
-  const commentYes = messageYes.locator('textarea[name="satisfactionComment"]');
-  await commentYes.fill('A positive comment');
-  await messageYes.locator('[data-feedback-role="cancel"]').click();
+    // Assert the different section of feedback component in are in correct hidden/shown state
+    await expect(initial).toBeVisible();
+    await expect(messageYes).toBeHidden();
+    await expect(messageNo).toBeHidden();
+    await expect(final).toBeHidden();
 
-  // Trigger `No` comment input and cancel
-  await initial.locator('[data-feedback-role="initial-trigger-no"]').click();
-  await expect(messageNo).toBeVisible();
-  const commentNo = messageNo.locator('textarea[name="satisfactionComment"]');
-  await commentNo.fill('A negative comment');
-  await messageNo.locator('[data-feedback-role="cancel"]').click();
+    // Trigger `Yes` comment input  and cancel
+    await initial.locator('[data-feedback-role="initial-trigger-yes"]').click();
+    await expect(messageYes).toBeVisible();
+    const commentYes = messageYes.locator('textarea[name="satisfactionComment"]');
+    await commentYes.fill('A positive comment');
+    await messageYes.locator('[data-feedback-role="cancel"]').click();
 
-  // Assert back to initial state and comment boxes are cleared
-  await expect(initial).toBeVisible();
-  await expect(commentYes).toHaveValue('');
-  await expect(commentNo).toHaveValue('');
-  await expect(messageYes).toBeHidden();
-});
+    // Trigger `No` comment input and cancel
+    await initial.locator('[data-feedback-role="initial-trigger-no"]').click();
+    await expect(messageNo).toBeVisible();
+    const commentNo = messageNo.locator('textarea[name="satisfactionComment"]');
+    await commentNo.fill('A negative comment');
+    await messageNo.locator('[data-feedback-role="cancel"]').click();
+
+    // Assert back to initial state and comment boxes are cleared
+    await expect(initial).toBeVisible();
+    await expect(commentYes).toHaveValue('');
+    await expect(commentNo).toHaveValue('');
+    await expect(messageYes).toBeHidden();
+  });
+}
 
 test('feedback component submits satisfaction and comment', async ({ page }) => {
   // Navigate to the new cases page

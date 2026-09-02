@@ -92,19 +92,6 @@ const createApp = async (): Promise<express.Application> => {
 	app.use('/cases/:caseReference/financial-eligibility/change', requireAuth, fetchClientDetails);
 	app.use('/', createExpressRouter(forge, { nunjucksEnv }));
 
-	// POST satisfaction feedback from custom feedback UI
-	app.post('/feedback', async (req, res) => {
-		await fetch(process.env.POWER_AUTOMATE_URL!, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(req.body),
-		});
-
-		res.sendStatus(200);
-	});
-
 	// Register the main router
 	app.use('/', indexRouter);
 

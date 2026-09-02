@@ -35,6 +35,19 @@ router.use('/cases', requireAuth, editClientDetailsRouter);
 // Mount the search routes (auth required)
 router.use('/search', requireAuth, searchRouter);
 
+// Mount the custom feedback UI route to POST satisfaction feedback
+router.post('/feedback', requireAuth, async (req, res) => {
+  await fetch(process.env.POWER_AUTOMATE_URL!, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(req.body),
+  });
+
+  res.sendStatus(HTTP.SUCCESSFUL_REQUEST);
+});
+
 // Mount the footer page information routes
 router.use('/', footerPagesRouter);
 
