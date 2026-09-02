@@ -1,5 +1,5 @@
 import { submit, redirect } from '@ministryofjustice/hmpps-forge/core/authoring'
-import { continueButton, discardChangesButton, ifPressedDiscardChanges } from '../commonBlocks.js'
+import { mainForgeJourneyActions } from '../commonBlocks.js'
 import { partnerSavingsHeading, bankBalanceField, investmentBalanceField, assetBalanceField, creditBalanceField } from './partnerSavingsBlock.js'
 import { FinancialEligibilityEffects } from '../effects.js'
 import { step, type StepDefinition } from '../authoring.js'
@@ -12,9 +12,8 @@ export const partnerSavingsStep: StepDefinition = step({
   path: '/partner-savings',
   title: 'Your partner\'s savings',
   reachability: { entryWhen: true },
-  blocks: [partnerSavingsHeading, bankBalanceField, investmentBalanceField, assetBalanceField, creditBalanceField, continueButton, discardChangesButton],
+  blocks: [partnerSavingsHeading, bankBalanceField, investmentBalanceField, assetBalanceField, creditBalanceField, mainForgeJourneyActions],
   onSubmission: [
-    ifPressedDiscardChanges(),
     submit({
       validate: true,
       onValid: {

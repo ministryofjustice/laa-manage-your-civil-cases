@@ -1,5 +1,5 @@
 import { submit, redirect, Answer, Condition } from '@ministryofjustice/hmpps-forge/core/authoring'
-import { continueButton, discardChangesButton, ifPressedDiscardChanges } from '../commonBlocks.js'
+import { mainForgeJourneyActions } from '../commonBlocks.js'
 import {
   expensesHeading,
   mortgageRow,
@@ -30,11 +30,9 @@ export const expensesStep: StepDefinition = step({
     ...childcareCostsRow,
     legalAidContributionsHeading,
     legalAidContributionsField,
-    continueButton,
-    discardChangesButton,
+    mainForgeJourneyActions,
   ],
   onSubmission: [
-    ifPressedDiscardChanges(),
     submit({
       validate: true,
       onValid: {

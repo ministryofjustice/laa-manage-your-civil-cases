@@ -1,5 +1,5 @@
-import { submit, redirect, Answer, Condition, or } from '@ministryofjustice/hmpps-forge/core/authoring'
-import { continueButton, discardChangesButton, ifPressedDiscardChanges } from '../commonBlocks.js'
+import { submit, redirect, Answer, Condition } from '@ministryofjustice/hmpps-forge/core/authoring'
+import { mainForgeJourneyActions } from '../commonBlocks.js'
 import { savingsHeading, bankBalanceField, investmentBalanceField, assetBalanceField, creditBalanceField } from './undisputedSavingsBlock.js'
 import { FinancialEligibilityEffects } from '../effects.js'
 import { step, type StepDefinition } from '../authoring.js'
@@ -13,9 +13,8 @@ export const undisputedSavingsStep: StepDefinition = step({
   path: '/your-undisputed-savings',
   title: 'Your undisputed savings',
   reachability: { entryWhen: true },
-  blocks: [savingsHeading, bankBalanceField, investmentBalanceField, assetBalanceField, creditBalanceField, continueButton, discardChangesButton],
+  blocks: [savingsHeading, bankBalanceField, investmentBalanceField, assetBalanceField, creditBalanceField, mainForgeJourneyActions],
   onSubmission: [
-    ifPressedDiscardChanges(),
     submit({
       validate: true,
       onValid: {

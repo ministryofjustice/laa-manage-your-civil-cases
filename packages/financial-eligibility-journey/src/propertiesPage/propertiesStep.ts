@@ -1,5 +1,5 @@
 import { submit, redirect, Condition, or, Post, access, validation, Data, Iterator, Answer, Format, Loop, Transformer } from '@ministryofjustice/hmpps-forge/core/authoring'
-import { continueButton, discardChangesButton, ifPressedDiscardChanges } from '../commonBlocks.js'
+import { mainForgeJourneyActions } from '../commonBlocks.js'
 import { propertiesHeading, propertySet, addAnotherButton } from './propertiesBlock.js'
 import { FinancialEligibilityEffects, PatternEffects } from '../effects.js'
 import { step, type StepDefinition } from '../authoring.js'
@@ -26,14 +26,13 @@ export const propertiesStep: StepDefinition = step({
       message: 'Only one property can be your main property',
     }),
   ],
-  blocks: [propertiesHeading, propertySet, addAnotherButton, continueButton, discardChangesButton],
+  blocks: [propertiesHeading, propertySet, addAnotherButton, mainForgeJourneyActions],
   onAccess: [
     access({
       effects: [PatternEffects.InitialiseRepeatingFieldset(STEP_CODE, collectionCode, fieldCodes)],
     }),
   ],
   onSubmission: [
-    ifPressedDiscardChanges(),
     submit({
       when: Post('action').match(Condition.Equals('add-another-property')),
       validate: false,

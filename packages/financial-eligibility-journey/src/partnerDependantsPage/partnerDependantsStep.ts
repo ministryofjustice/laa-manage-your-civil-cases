@@ -1,5 +1,5 @@
 import { submit, redirect } from '@ministryofjustice/hmpps-forge/core/authoring'
-import { continueButton, discardChangesButton, ifPressedDiscardChanges } from '../commonBlocks.js'
+import { mainForgeJourneyActions } from '../commonBlocks.js'
 import { dependantsHeading, partnerDependants16OverField, partnerDependants15UnderField } from './partnerDependantsBlock.js'
 import { FinancialEligibilityEffects } from '../effects.js'
 import { step, type StepDefinition } from '../authoring.js'
@@ -16,11 +16,9 @@ export const partnerDependantsStep: StepDefinition = step({
     dependantsHeading,
     partnerDependants16OverField,
     partnerDependants15UnderField,
-    continueButton,
-    discardChangesButton,
+    mainForgeJourneyActions,
   ],
   onSubmission: [
-    ifPressedDiscardChanges(),
     submit({
       validate: true,
       onValid: {

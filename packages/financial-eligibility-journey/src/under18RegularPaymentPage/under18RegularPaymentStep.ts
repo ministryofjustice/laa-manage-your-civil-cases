@@ -1,6 +1,6 @@
 import { submit, redirect, Answer, Condition } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { step, type StepDefinition } from '../authoring.js'
-import { continueButton, discardChangesButton, ifPressedDiscardChanges } from '../commonBlocks.js'
+import { mainForgeJourneyActions } from '../commonBlocks.js'
 import { under18RegularPaymentHeading, under18RegularPaymentField } from './under18RegularPaymentBlock.js'
 import { FinancialEligibilityEffects } from '../effects.js'
 import { under18HasValuablesStep } from '../under18HasValuablesPage/under18HasValuablesStep.js'
@@ -13,9 +13,8 @@ export const under18RegularPaymentStep: StepDefinition = step({
   path: '/under-18-receives-regular-payment',
   title: 'Do you receive any money on a regular basis?',
   reachability: { entryWhen: true },
-  blocks: [under18RegularPaymentHeading, under18RegularPaymentField, continueButton, discardChangesButton],
+  blocks: [under18RegularPaymentHeading, under18RegularPaymentField, mainForgeJourneyActions],
   onSubmission: [
-    ifPressedDiscardChanges(),
     submit({
       validate: true,
       onValid: {

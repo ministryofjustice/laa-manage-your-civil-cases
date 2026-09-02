@@ -1,5 +1,5 @@
 import { submit, redirect, Answer, Condition, or } from '@ministryofjustice/hmpps-forge/core/authoring'
-import { continueButton, discardChangesButton, ifPressedDiscardChanges } from '../commonBlocks.js'
+import { mainForgeJourneyActions } from '../commonBlocks.js'
 import { disputedSavingsHeading, bankBalanceField, investmentBalanceField, assetBalanceField, creditBalanceField } from './disputedSavingsBlock.js'
 import { FinancialEligibilityEffects } from '../effects.js'
 import { step, type StepDefinition } from '../authoring.js'
@@ -12,9 +12,8 @@ export const disputedSavingsStep: StepDefinition = step({
   path: '/disputed-savings',
   title: 'Your disputed savings',
   reachability: { entryWhen: true },
-  blocks: [disputedSavingsHeading, bankBalanceField, investmentBalanceField, assetBalanceField, creditBalanceField, continueButton, discardChangesButton],
+  blocks: [disputedSavingsHeading, bankBalanceField, investmentBalanceField, assetBalanceField, creditBalanceField, mainForgeJourneyActions],
   onSubmission: [
-    ifPressedDiscardChanges(),
     submit({
       validate: true,
       onValid: {
