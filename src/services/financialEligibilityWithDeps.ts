@@ -454,7 +454,7 @@ function zeroPersonMoneySections(payload: Record<string, unknown>, personKey: 'y
  * @param {Record<string, unknown>} payload - The API payload built so far by mapAnswersToApiPayload, mutated in place
  * @param {{ under18Passported: unknown, onPassportedBenefits: unknown, hasPartner: unknown }} gates - The already-computed values that decide which sections to zero
  */
-function applyNonRequiredSectionDefaults(payload: Record<string, unknown>, { under18Passported, onPassportedBenefits, hasPartner }: { under18Passported: unknown, onPassportedBenefits: unknown, hasPartner: unknown }): void {
+export function applyNonRequiredSectionDefaults(payload: Record<string, unknown>, { under18Passported, onPassportedBenefits, hasPartner }: { under18Passported: unknown, onPassportedBenefits: unknown, hasPartner: unknown }): void {
     // AC1: under-18 passported - finances, income, expenses, benefits, disregards and the over-60 question
     // are all hidden from the user, so any remaining fields not otherwise zeroed above are sent as null
     if (under18Passported === true) {
