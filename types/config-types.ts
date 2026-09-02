@@ -74,7 +74,6 @@ export interface SentryConfig {
 }
 
 export interface Config {
-  CONTACT_EMAIL: string | undefined;
   DEPARTMENT_NAME: string | undefined;
   DEPARTMENT_URL: string | undefined;
   RATELIMIT_HEADERS_ENABLED: string | undefined;

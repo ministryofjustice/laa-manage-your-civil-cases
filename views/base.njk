@@ -1,6 +1,8 @@
 {% extends "govuk/template.njk" %}
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% block pageTitle %}{{config.SERVICE_NAME}} – GOV.UK{% endblock %}
 
@@ -111,7 +113,7 @@
     tag: {
       text: config.SERVICE_PHASE
     },
-    html: t('components.phaseBanner.feedbackText') + "<a class='govuk-link' href='mailto:" + config.CONTACT_EMAIL + "'>" + t('components.phaseBanner.feedbackLinkTextHTML') + "</a>."
+    html: t('components.phaseBanner.feedbackTextBeginning') + "<a class='govuk-link' href=#feedback>" + t('components.phaseBanner.feedbackLinkTextHTML') + "</a>" +  t('components.phaseBanner.feedbackTextEnd')
   }) }}
   {% block backLink %}{% endblock %}
 {% endblock %}
@@ -124,6 +126,10 @@
 {% endblock %}
 
 {% block footer %}
+  {% if isAuthenticated %}
+    {% include "footer/_feedbackUserInterface.njk" %}
+  {% endif %}
+
   {{ govukFooter({
     meta: {
       items: [

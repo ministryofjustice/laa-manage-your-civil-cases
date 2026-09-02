@@ -30,7 +30,7 @@ test('help page should display phase banner with hello content', async ({ page, 
   await expect(phaseBanner).toBeVisible();
 
   // Check if feedback link text is in the phase banner
-  await expect(phaseBanner).toContainText(t('components.phaseBanner.feedbackText'));
+  await expect(phaseBanner).toContainText(t('components.phaseBanner.feedbackTextBeginning'));
 });
 
 test('help page should not display nav bar with service name and nav links when user has not signed in', async ({ page }) => {
