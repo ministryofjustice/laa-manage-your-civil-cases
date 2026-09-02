@@ -57,47 +57,6 @@ const MONETARY_FIELDS_PREFIXES = new Set([
 ]);
 
 /**
- * A money field's Forge step code, paired with the raw API field name (used when writing the update
- * payload) and the transformed data field name (used when reading from FinancialEligibilityData).
- */
-interface MoneyFieldMapping {
-    code: string;
-    apiField: string;
-    dataField: string;
-}
-
-// Income fields collected on the "Your income" / "Your partner's income" pages, keyed by API field name under `income`
-const incomeMoneyFields: MoneyFieldMapping[] = [
-    { code: 'earnings', apiField: 'earnings', dataField: 'earnings' },
-    { code: 'self-employment-drawings', apiField: 'self_employment_drawings', dataField: 'selfEmploymentDrawings' },
-    { code: 'income-benefits', apiField: 'benefits', dataField: 'benefits' },
-    { code: 'tax-credits', apiField: 'tax_credits', dataField: 'taxCredits' },
-    { code: 'child-benefit', apiField: 'child_benefits', dataField: 'childBenefit' },
-    { code: 'maintenance-received', apiField: 'maintenance_received', dataField: 'maintenanceReceived' },
-    { code: 'pension-income', apiField: 'pension', dataField: 'pension' },
-    { code: 'other-income', apiField: 'other_income', dataField: 'otherIncome' },
-];
-
-// Deduction fields collected on the "Your income" / "Your partner's income" pages, keyed by API field name under `deductions`
-const deductionsMoneyFields: MoneyFieldMapping[] = [
-    { code: 'income-tax', apiField: 'income_tax', dataField: 'incomeTax' },
-    { code: 'national-insurance', apiField: 'national_insurance', dataField: 'nationalInsurance' },
-    // Collected on the "Your expenses" / "Your partner's expenses" pages, but share the same `you.deductions` /
-    // `partner.deductions` API section as the two fields above, so they reuse the same mapping helpers.
-    { code: 'mortgage', apiField: 'mortgage', dataField: 'mortgage' },
-    { code: 'rent', apiField: 'rent', dataField: 'rent' },
-    { code: 'maintenance-paid', apiField: 'maintenance', dataField: 'maintenance' },
-    { code: 'childcare-costs', apiField: 'childcare', dataField: 'childcare' },
-];
-
-// Unlike the other deduction fields above, the API stores this as a flat pence number rather than a
-// { per_interval_value, interval_period } object, so it needs its own mapping outside deductionsMoneyFields.
-const legalAidContributionsField: MoneyFieldMapping = { code: 'legal-aid-contributions', apiField: 'criminal_legalaid_contributions', dataField: 'criminalContributions' };
-
-// Savings API fields are stored as flat pence integers (not `{ per_interval_value, interval_period }`), unlike income/deductions
-const savingsApiFields = ['bank_balance', 'investment_balance', 'asset_balance', 'credit_balance'];
-
-/**
  * Utility function to map answer codes to API field names for financial eligibility data
  * @param {string} answerCode - The code of the answer to map
  * @returns {string | null} The corresponding API field name, or null if no mapping exists
@@ -399,6 +358,60 @@ function mapLegalAidContributionsToApiPayload(answers: Record<string, unknown>, 
     return { [legalAidContributionsField.apiField]: Math.round(toNumber(answers[stepCode]) * 100) };
 }
 
+// The shapes/field names of the cla_backend eligibility_check API below have nothing to do with Forge
+// answer codes (see `mapAnswerCodeToApiField` above) - kept separate to avoid confusing the two concerns.
+
+/**
+ * A money field's Forge step code, paired with the raw API field name (used when writing the update
+ * payload) and the transformed data field name (used when reading from FinancialEligibilityData).
+ */
+interface MoneyFieldMapping {
+    code: string;
+    apiField: string;
+    dataField: string;
+}
+
+// Income fields collected on the "Your income" / "Your partner's income" pages, keyed by API field name under `income`
+const incomeMoneyFields: MoneyFieldMapping[] = [
+    { code: 'earnings', apiField: 'earnings', dataField: 'earnings' },
+    { code: 'self-employment-drawings', apiField: 'self_employment_drawings', dataField: 'selfEmploymentDrawings' },
+    { code: 'income-benefits', apiField: 'benefits', dataField: 'benefits' },
+    { code: 'tax-credits', apiField: 'tax_credits', dataField: 'taxCredits' },
+    { code: 'child-benefit', apiField: 'child_benefits', dataField: 'childBenefit' },
+    { code: 'maintenance-received', apiField: 'maintenance_received', dataField: 'maintenanceReceived' },
+    { code: 'pension-income', apiField: 'pension', dataField: 'pension' },
+    { code: 'other-income', apiField: 'other_income', dataField: 'otherIncome' },
+];
+
+// Deduction fields collected on the "Your income" / "Your partner's income" pages, keyed by API field name under `deductions`
+const deductionsMoneyFields: MoneyFieldMapping[] = [
+    { code: 'income-tax', apiField: 'income_tax', dataField: 'incomeTax' },
+    { code: 'national-insurance', apiField: 'national_insurance', dataField: 'nationalInsurance' },
+    // Collected on the "Your expenses" / "Your partner's expenses" pages, but share the same `you.deductions` /
+    // `partner.deductions` API section as the two fields above, so they reuse the same mapping helpers.
+    { code: 'mortgage', apiField: 'mortgage', dataField: 'mortgage' },
+    { code: 'rent', apiField: 'rent', dataField: 'rent' },
+    { code: 'maintenance-paid', apiField: 'maintenance', dataField: 'maintenance' },
+    { code: 'childcare-costs', apiField: 'childcare', dataField: 'childcare' },
+];
+
+// Unlike the other deduction fields above, the API stores this as a flat pence number rather than a
+// { per_interval_value, interval_period } object, so it needs its own mapping outside deductionsMoneyFields.
+const legalAidContributionsField: MoneyFieldMapping = { code: 'legal-aid-contributions', apiField: 'criminal_legalaid_contributions', dataField: 'criminalContributions' };
+
+// Savings API fields are stored as flat pence integers (not `{ per_interval_value, interval_period }`), unlike income/deductions
+const savingsApiFields = ['bank_balance', 'investment_balance', 'asset_balance', 'credit_balance'];
+
+// `specific_benefits` API fields, grouped together when reading benefit-related Forge answers
+const benefitFields = ['universal_credit', 'income_support', 'job_seekers_allowance', 'pension_credit', 'employment_support'];
+
+// Forge step codes (not API field names) for the partner/disputed savings pages, which reuse `savingsApiFields`' API field names under different Forge step codes
+const partnerSavingsFields = ['bank-balance-partner', 'investment-balance-partner', 'asset-balance-partner', 'credit-balance-partner'];
+const disputedSavingsFields = ['bank-balance-disputed', 'investment-balance-disputed', 'asset-balance-disputed', 'credit-balance-disputed'];
+
+// `dependants_old`/`dependants_young` API fields, grouped together for the AC1/AC2 zeroing rules
+const dependantsFields = ['dependants_old', 'dependants_young'];
+
 /**
  * Builds a fully-zeroed `income` or `deductions` API section, e.g. `{ earnings: { per_interval_value: 0, interval_period: 'per_month' }, ... }`.
  * @param {MoneyFieldMapping[]} fields - The money fields to zero (incomeMoneyFields or deductionsMoneyFields)
@@ -490,11 +503,6 @@ export function mapAnswersToApiPayload(answers: Record<string, unknown>): Record
     const partnerSavings: Record<string, unknown> = {};
     const disputedSavings: Record<string, unknown> = {};
     const disregards: Record<string, boolean> = {};
-
-    const benefitFields = ['universal_credit', 'income_support', 'job_seekers_allowance', 'pension_credit', 'employment_support'];
-    const partnerSavingsFields = ['bank-balance-partner', 'investment-balance-partner', 'asset-balance-partner', 'credit-balance-partner'];
-    const disputedSavingsFields = ['bank-balance-disputed', 'investment-balance-disputed', 'asset-balance-disputed', 'credit-balance-disputed'];
-    const dependantsFields = ['dependants_old', 'dependants_young'];
 
     for (const [answerCode, answer] of Object.entries(answers)) {
         const apiField = mapAnswerCodeToApiField(answerCode);
