@@ -10,6 +10,8 @@ import {
   maintenanceReceivedField, maintenanceReceivedFrequencyField,
   pensionIncomeField, pensionIncomeFrequencyField,
   otherIncomeField, otherIncomeFrequencyField,
+  childBenefitFrequencyField,
+  childBenefitField,
 } from '#packages/financial-eligibility-journey/src/incomePage/incomeBlock.js';
 import {
   selfEmployedPartnerField,
@@ -116,6 +118,13 @@ const clientMoneyFields: MoneyFieldCase[] = [
     invalidMessage: 'The total of any tax credits you get must be a positive number, like 1000 or 2400.50',
     maxMessage: 'The total of any tax credits you get must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for the total of any tax credits you get',
+  },
+  {
+    name: 'child benefit (for household)', code: 'child-benefit', amount: childBenefitField, frequency: childBenefitFrequencyField,
+    emptyMessage: 'Enter the total of any child benefit you get, or enter \'0\' if none',
+    invalidMessage: 'The total of any child benefit you get must be a positive number, like 1000 or 2400.50',
+    maxMessage: 'The total of any child benefit you get must be 99,999,999.99 or less',
+    frequencyMessage: 'Select the frequency for the total of any child benefit you get',
   },
   {
     name: 'maintenance received', code: 'maintenance-received', amount: maintenanceReceivedField, frequency: maintenanceReceivedFrequencyField,

@@ -534,6 +534,12 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
       await expect(page.getByRole('heading', { name: 'Dependants' })).toBeVisible();
     });
 
+    test('should display child benefit question on your income', async ({ page }) => {
+      await reachIncomeNoPartner(page);
+      await expect(page.getByRole('heading', { name: 'Your income' })).toBeVisible();
+      await expect(page.getByRole('spinbutton', { name: 'Child benefit (for household)' })).toBeVisible();
+    });
+
     test('should route income to partner income when partner is yes', async ({ page }) => {
       await reachIncomeWithPartner(page);
 
@@ -541,6 +547,16 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
 
       await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/partner-income`);
       await expect(page.getByRole('heading', { name: 'Your partner\'s income' })).toBeVisible();
+    });
+
+    test('should display not display child benefit question on your partners income', async ({ page }) => {
+      await reachIncomeWithPartner(page);
+      await completeIncomeValues(page);
+
+      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/partner-income`);
+      
+      await expect(page.getByRole('heading', { name: 'Your partner\'s income' })).toBeVisible();
+      await expect(page.getByRole('spinbutton', { name: 'Child benefit (for household)' })).not.toBeVisible();
     });
   });
 
