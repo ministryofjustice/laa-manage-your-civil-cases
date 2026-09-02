@@ -35,6 +35,7 @@ export const eligibilityJourney = journey({
       effects: [
         FinancialEligibilityEffects.LoadCaseDetails(),
         FinancialEligibilityEffects.LoadCaseFinancialEligibility(),
+        FinancialEligibilityEffects.SaveDiscardReturnPath(),
       ],
     }),
   ],

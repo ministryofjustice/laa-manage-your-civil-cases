@@ -1,5 +1,5 @@
 import { step, submit, redirect, access } from '@ministryofjustice/hmpps-forge/core/authoring'
-import { mainForgeJourneyActions } from '../commonBlocks.js'
+import { checkYourAnswersForgeJourneyActions } from '../commonBlocks.js'
 import { checkYourAnswersHeading, detailsHeading, aboutYouSummaryList, benefitsSummaryList, financesHeading, propertiesSummaryList, savingsSummaryList, partnerSavingsSummaryList, disputedSavingsSummaryList, disregardsSummaryList, incomeHeading, incomeSummaryList, partnerIncomeSummaryList, dependantsSummaryList, expensesHeading, expensesSummaryList, partnerExpensesSummaryList, undisputedSavingsSummaryList, partnerUndisputedSavingsSummaryList, partnerDependantsSummaryList } from './checkAnswersBlock.js'
 import { FinancialEligibilityEffects, PatternEffects } from '../effects.js'
 import { type StepDefinition } from '../authoring.js'
@@ -14,7 +14,7 @@ export const checkAnswersStep: StepDefinition = step({
   path: '/check-answers',
   title: 'Check your answers',
   reachability: { entryWhen: true },
-  blocks: [checkYourAnswersHeading, detailsHeading, aboutYouSummaryList, benefitsSummaryList, financesHeading, propertiesSummaryList, savingsSummaryList, undisputedSavingsSummaryList, partnerSavingsSummaryList, partnerUndisputedSavingsSummaryList, disputedSavingsSummaryList, disregardsSummaryList, incomeHeading, incomeSummaryList, partnerIncomeSummaryList, partnerDependantsSummaryList, dependantsSummaryList, expensesHeading, expensesSummaryList, partnerExpensesSummaryList, mainForgeJourneyActions],
+  blocks: [checkYourAnswersHeading, detailsHeading, aboutYouSummaryList, benefitsSummaryList, financesHeading, propertiesSummaryList, savingsSummaryList, undisputedSavingsSummaryList, partnerSavingsSummaryList, partnerUndisputedSavingsSummaryList, disputedSavingsSummaryList, disregardsSummaryList, incomeHeading, incomeSummaryList, partnerIncomeSummaryList, partnerDependantsSummaryList, dependantsSummaryList, expensesHeading, expensesSummaryList, partnerExpensesSummaryList, checkYourAnswersForgeJourneyActions],
   onAccess: [
     access({
       effects: [PatternEffects.InitialiseRepeatingFieldset(propertiesStepCode, propertiesCollectionCode, propertiesFieldCodes)],

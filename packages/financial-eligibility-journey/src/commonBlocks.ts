@@ -5,10 +5,12 @@ import { Format, Params } from '@ministryofjustice/hmpps-forge/core/authoring'
 
 export const continueButton = GovUKButton({ text: 'Continue' })
 
+export const submitButton = GovUKButton({ text: 'Submit' })
+
 export const discardChangesLink = HtmlBlock({
   tag: 'a',
   classes: `govuk-link ${GovUKUtilityClasses.FontSize.Size19} ${GovUKUtilityClasses.Margin.Left1}`,
-  attributes: { href: [Format('/cases/%1/financial-eligibility/change/discard', Params('caseReference'),),], },
+  attributes: { href: [Format('/cases/%1/financial-eligibility/change/discard', Params('caseReference'))], },
   content: 'Discard changes',
 })
 
@@ -21,4 +23,11 @@ export const mainForgeJourneyActions = HtmlBlock({
   ],
 })
 
-export const submitButton = GovUKButton({ text: 'Submit' })
+export const checkYourAnswersForgeJourneyActions = HtmlBlock({
+  tag: 'div',
+  classes: "govuk-button-group",
+  content: [
+    submitButton,
+    discardChangesLink,
+  ],
+})

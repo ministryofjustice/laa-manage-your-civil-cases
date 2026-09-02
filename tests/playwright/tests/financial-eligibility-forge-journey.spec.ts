@@ -39,6 +39,25 @@ test.describe('Financial Eligibility Forge Journey', () => {
       await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/');
           
     });
+
+    test('should return to the step where discard changes was selected', async ({ page }) => {
+      await page.goto('/cases/PC-1922-1879/financial-eligibility/change');
+
+      await page.getByRole('radio', { name: 'No' }).check();
+      await page.getByRole('button', { name: 'Continue' }).click();
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/has-partner');
+
+      const discardChangesLink = page.getByRole('link', { name: 'Discard changes' });
+      await expect(discardChangesLink).toHaveAttribute(
+        'href',
+        '/cases/PC-1922-1879/financial-eligibility/change/discard',
+      );
+      await discardChangesLink.click();
+      await page.getByRole('link', { name: 'Return to means assessment' }).click();
+
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/has-partner');
+      await expect(page.getByRole('radio', { name: 'No' })).toBeChecked();
+    });
   });
 
   test.describe('Journey persistence and navigation', () => {

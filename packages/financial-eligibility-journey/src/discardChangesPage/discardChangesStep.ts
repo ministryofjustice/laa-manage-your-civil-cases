@@ -1,6 +1,7 @@
-import { submit } from '@ministryofjustice/hmpps-forge/core/authoring'
+import { access, submit } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { step, type StepDefinition } from '../authoring.js'
 import { discardPanel, ifPressedDiscardChanges } from './discardChangesBlock.js'
+import { FinancialEligibilityEffects } from '../effects.js'
 
 const STEP_CODE = 'discard'
 
@@ -11,6 +12,11 @@ export const discardStep: StepDefinition = step({
   title: 'Are you sure you want to discard these changes?',
   reachability: { entryWhen: true },
   blocks: [discardPanel],
+  onAccess: [
+    access({
+      effects: [FinancialEligibilityEffects.ResolveDiscardReturnPath()],
+    }),
+  ],
   onSubmission: [
     ifPressedDiscardChanges(),
     submit({

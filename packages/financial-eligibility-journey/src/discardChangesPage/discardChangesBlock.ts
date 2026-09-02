@@ -1,4 +1,4 @@
-import { submit, redirect, Post, Condition, Format, Params } from '@ministryofjustice/hmpps-forge/core/authoring'
+import { submit, redirect, Post, Condition, Format, Params, Data } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { GovUKHeading, GovUKButton, GovUKBody } from '@ministryofjustice/hmpps-forge/govuk-components'
 import { GovUKUtilityClasses } from '@ministryofjustice/hmpps-forge/govuk-components'
 import { HtmlBlock } from '@ministryofjustice/hmpps-forge/core/components'
@@ -23,7 +23,7 @@ export const ifPressedDiscardChanges = () => submit({
 export const returnLink = HtmlBlock({
   tag: 'a',
   classes: `govuk-link govuk-link--inverse ${GovUKUtilityClasses.FontSize.Size19} ${GovUKUtilityClasses.Margin.Left1}`,
-  attributes: { href: [Format('/cases/%1/financial-eligibility/', Params('caseReference'),),], },
+  attributes: { href: [Data('discardReturnPath')], },
   content: 'Return to means assessment',
 })
 
