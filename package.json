@@ -32,12 +32,12 @@
     "coverage": "c8 yarn test:unit --check-coverage"
   },
   "engines": {
-    "node": "26.7.0"
+    "node": "26.8.1"
   },
   "dependencies": {
-    "@azure/msal-node": "^5.6.0",
-    "@ministryofjustice/frontend": "^10.0.0",
-    "@ministryofjustice/hmpps-forge": "0.4.1",
+    "@azure/msal-node": "^5.5.0",
+    "@ministryofjustice/frontend": "^11.0.0",
+    "@ministryofjustice/hmpps-forge": "0.3.6",
     "@sentry/node": "^10.71.0",
     "@socket.io/redis-adapter": "^8.3.0",
     "@x-govuk/govuk-prototype-components": "^6.0.0",
