@@ -115,14 +115,14 @@ test.describe('Finances tab', () => {
 
     // Assert the correct data is displayed in the properties table for the 1st and 2nd properties.
     await expectPropertyTableRows(page, '1st property', {
-      'What is the current market value of the property?': '130000',
-      'How much is left to pay on the mortgage?': '50000',
+      'What is the current market value of the property?': '£130,000',
+      'How much is left to pay on the mortgage?': '£50,000',
       'Is this your main property?': 'No',
       'What percentage of the property do you own?': '100%'
     });
     await expectPropertyTableRows(page, '2nd property', {
-      'What is the current market value of the property?': '120000',
-      'How much is left to pay on the mortgage?': '60000',
+      'What is the current market value of the property?': '£120,000',
+      'How much is left to pay on the mortgage?': '£60,000',
       'Is this your main property?': 'Yes',
       'What percentage of the property do you own?': '100%'
     });
@@ -175,8 +175,8 @@ test.describe('Finances tab', () => {
 
     // Assert the correct data is displayed in the properties table for one property.
     await expectPropertyTableRows(page, '1st property', {
-      'What is the current market value of the property?': '150000',
-      'How much is left to pay on the mortgage?': '60000',
+      'What is the current market value of the property?': '£150,000',
+      'How much is left to pay on the mortgage?': '£60,000',
       'Is this your main property?': 'Yes',
       'What percentage of the property do you and/or your partner own?': '100%'
     });
@@ -864,8 +864,8 @@ test.describe('Conditional logic views', () => {
 
     // Assert the correct data is displayed in the properties table for one property.
     await expectPropertyTableRows(page, '1st property', {
-      'What is the current market value of the property?': '150000',
-      'How much is left to pay on the mortgage?': '60000',
+      'What is the current market value of the property?': '£150,000',
+      'How much is left to pay on the mortgage?': '£60,000',
       'Is this your main property?': 'Yes',
       'What percentage of the property do you and/or your partner own?': '100%'
     });

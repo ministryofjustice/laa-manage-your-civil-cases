@@ -76,6 +76,7 @@ export function createAmountField(config: MoneyFieldConfig) {
     prefix: { text: '£' },
     ...(config.fixedFrequencySuffix ? { suffix: { text: config.fixedFrequencySuffix } } : {}),
     inputType: 'number',
+    attributes: { 'step': 0.01 },
     classes: GovUKUtilityClasses.Input.Width10,
     validWhen: [
       validation({

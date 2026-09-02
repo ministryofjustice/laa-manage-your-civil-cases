@@ -13,6 +13,7 @@ export const bankBalanceField = GovUKTextInput({
   formatters: [Transformer.String.ToFloat()],
   prefix: { text: '£' },
   inputType: 'number',
+  attributes: { 'step': 0.01 },
   classes: GovUKUtilityClasses.Input.Width10,
   validWhen: [
     validation({
@@ -32,6 +33,7 @@ export const investmentBalanceField = GovUKTextInput({
   formatters: [Transformer.String.ToFloat()],
   prefix: { text: '£' },
   inputType: 'number',
+  attributes: { 'step': 0.01 },
   classes: GovUKUtilityClasses.Input.Width10,
   validWhen: [
     validation({
@@ -51,6 +53,7 @@ export const assetBalanceField = GovUKTextInput({
   formatters: [Transformer.String.ToFloat()],
   prefix: { text: '£' },
   inputType: 'number',
+  attributes: { 'step': 0.01 },
   classes: GovUKUtilityClasses.Input.Width10,
   validWhen: [
     validation({
@@ -70,6 +73,7 @@ export const creditBalanceField = GovUKTextInput({
   formatters: [Transformer.String.ToFloat()],
   prefix: { text: '£' },
   inputType: 'number',
+  attributes: { 'step': 0.01 },
   classes: GovUKUtilityClasses.Input.Width10,
   validWhen: [
     validation({

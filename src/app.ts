@@ -27,6 +27,8 @@ import createEligibilityPackage from '@ministryofjustice/financial-eligibility-j
 import { apiService } from '#src/services/api/index.js';
 import { type Deps } from '#packages/financial-eligibility-journey/src/api.js';
 import { FinancialEligibilityEffectsWithDepsImpl } from '#src/services/financialEligibilityWithDeps.js';
+import { type TransformerRegistryDeps, transformers } from '#packages/financial-eligibility-journey/src/formatters.js';
+import { formatCurrency } from './scripts/helpers/dataTransformers.js';
 
 const TRUST_FIRST_PROXY = 1;
 
@@ -79,12 +81,13 @@ const createApp = async (): Promise<express.Application> => {
 		.registerGlobalComponents(govukComponents)
 		.registerGlobalComponents(mojComponents)
 		.registerGlobalFunctions(nunjucksFunctions)
+		.registerGlobalFunctions<TransformerRegistryDeps>(transformers, {formatCurrency: formatCurrency})
 		.registerPackage<Deps>(
 			createEligibilityPackage,
 			{
 				effectsWithDeps: new FinancialEligibilityEffectsWithDepsImpl(apiService),
 			}
-		);
+		)
 
 	// Forge routes set-up
 	app.use(express.urlencoded({ extended: true }));

@@ -25,11 +25,11 @@ export const under18Step: StepDefinition = step({
         effects: [FinancialEligibilityEffects.SaveNewAnswerIfAnswered()],
         next: [
           redirect({
-            when: Answer(STEP_CODE).match(Condition.Equals('yes')),
+            when: Answer(under18Field.code).match(Condition.Equals('yes')),
             goto: under18RegularPaymentStep.code,
           }),
           redirect({
-            when: Answer(STEP_CODE).match(Condition.Equals('no')),
+            when: Answer(under18Field.code).match(Condition.Equals('no')),
             goto: partnerStep.code,
           }),
           redirect({

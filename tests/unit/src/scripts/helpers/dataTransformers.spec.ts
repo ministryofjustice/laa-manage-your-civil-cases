@@ -12,7 +12,8 @@ import {
   normaliseSelectedKeys,
   toBoolean,
   toNumber,
-  toYesNo
+  toYesNo,
+  formatCurrency
 } from '#src/scripts/helpers/dataTransformers.js';
 
 describe('Data Transformation Helpers', () => {
@@ -176,4 +177,18 @@ describe('Data Transformation Helpers', () => {
     });
   });
 
+  describe('formatCurrency()', () => {
+    it('formats integer values as currency without decimal places', () => {
+      expect(formatCurrency(100)).to.equal('£100');
+    });
+
+    it('formats decimal values as currency with two decimal places', () => {
+      expect(formatCurrency(1234.5)).to.equal('£1,234.50');
+      expect(formatCurrency(1234.567)).to.equal('£1,234.57');
+    });
+
+    it('formats large numbers with commas', () => {
+      expect(formatCurrency(1234567.89)).to.equal('£1,234,567.89');
+    });
+  });
 });
