@@ -99,6 +99,18 @@ export const taxCreditsField = createAmountField(taxCreditsConfig)
 export const taxCreditsFrequencyField = createFrequencyField(taxCreditsConfig)
 export const taxCreditsRow = createMoneyFieldRow(taxCreditsConfig, taxCreditsField, taxCreditsFrequencyField)
 
+const childBenefitConfig: MoneyFieldConfig = {
+  code: 'child-benefit',
+  label: 'Child benefit (for household)',
+  emptyMessage: 'Enter the total of any child benefit you get, or enter \'0\' if none',
+  invalidMessage: 'The total of any child benefit you get must be a positive number, like 1000 or 2400.50',
+  frequencyLabel: 'Frequency for the total of any child benefit you get',
+  frequencyMessage: 'Select the frequency for the total of any child benefit you get',
+}
+export const childBenefitField = createAmountField(childBenefitConfig)
+export const childBenefitFrequencyField = createFrequencyField(childBenefitConfig)
+export const childBenefitRow = createMoneyFieldRow(childBenefitConfig, childBenefitField, childBenefitFrequencyField)
+
 const maintenanceReceivedConfig: MoneyFieldConfig = {
   code: 'maintenance-received',
   label: 'Maintenance received',

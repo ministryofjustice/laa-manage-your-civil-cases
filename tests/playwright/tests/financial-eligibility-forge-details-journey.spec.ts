@@ -368,6 +368,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('spinbutton', { name: 'Self employed drawings' }).fill('0');
       await page.getByRole('spinbutton', { name: 'Benefits' }).fill('0');
       await page.getByRole('spinbutton', { name: 'Tax credits' }).fill('0');
+      await page.getByRole('spinbutton', { name: 'Child benefit (for household)' }).fill('0');
       await page.getByRole('spinbutton', { name: 'Maintenance received' }).fill('0');
       await page.getByRole('spinbutton', { name: 'Pension income' }).fill('0');
       await page.getByRole('spinbutton', { name: 'Other income' }).fill('0');
