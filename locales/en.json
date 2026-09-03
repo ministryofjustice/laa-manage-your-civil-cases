@@ -474,6 +474,10 @@
         "newCaseInfo": "New category of law",
         "legend": "Why have you changed the category of law?",
         "categoryPlaceholder": "Select a category of law"
+      },
+      "legalHelpForm": {
+        "pageTitle": "Legal Help Form – {caseReference} – {serviceName} – GOV.UK",
+        "h2": "Legal Help Form"
       }
     },
     "error": {
