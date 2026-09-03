@@ -1,18 +1,31 @@
 .laa-branding {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
 }
 
 .laa-branding__line {
+  flex: 0 0 1px;
+  height: 35px;
   width: 1px;
-  margin-right: 2px;
   background-color: #080606;
-  height: 35px; /* same height as crest */
+}
+
+.laa-branding__crest {
+  display: flex;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+}
+
+.laa-branding__crest svg {
+  display: block;
+  width: 40px;
+  height: 40px;
 }
 
 .laa-branding__text {
-  font-size: 1.1rem;
-  font-weight: 500;
-  line-height: 1;
+  white-space: nowrap;
+  line-height: 40px;
+  font-family: HelveticaNeue, "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
