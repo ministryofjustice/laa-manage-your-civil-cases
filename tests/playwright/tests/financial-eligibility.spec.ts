@@ -105,21 +105,23 @@ test.describe('Finances tab', () => {
     await page.getByRole('tab', { name: 'Finances' }).click();
     // Assert the case details header is present
     await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
-    // Assert the Properties heading is visible. 
-    await expect(page.getByRole('heading', { name: 'Properties' })).toBeVisible();
+    // Assert the 1st Property heading is visible.
+    await assertSummaryCardState(page, { cardId: '1st property', emptyText: 'No property data', hasData: true, changeHref: '/cases/PC-1922-1879/financial-eligibility/change/properties' });
+    // Assert the 1st Property heading is visible.
+    await assertSummaryCardState(page, { cardId: '2nd property', emptyText: 'No property data', hasData: true, changeHref: '/cases/PC-1922-1879/financial-eligibility/change/properties' });
     // Assert the Your savings heading is visible.
-    await expect(page.getByRole('heading', { name: 'Your savings' })).toBeVisible();
+    await assertSummaryCardState(page, { cardId: 'Your savings', emptyText: 'No savings data', hasData: true, changeHref: '/cases/PC-1922-1879/financial-eligibility/change/your-savings' });
     // Assert the Disregards heading is visible.
-    await expect(page.getByRole('heading', { name: 'Disregards' })).toBeVisible();
+    await assertSummaryCardState(page, { cardId: 'Disregards', emptyText: 'No disregards data', hasData: true, changeHref: '/cases/PC-1922-1879/financial-eligibility/change/disregards' });
 
     // Assert the correct data is displayed in the properties table for the 1st and 2nd properties.
-    await expectPropertyTableRows(page, '1st property', {
+    await assertSummaryCardData(page, '1st property', {
       'What is the current market value of the property?': '£130,000',
       'How much is left to pay on the mortgage?': '£50,000',
       'Is this your main property?': 'No',
       'What percentage of the property do you own?': '100%'
     });
-    await expectPropertyTableRows(page, '2nd property', {
+    await assertSummaryCardData(page, '2nd property', {
       'What is the current market value of the property?': '£120,000',
       'How much is left to pay on the mortgage?': '£60,000',
       'Is this your main property?': 'Yes',
@@ -127,7 +129,7 @@ test.describe('Finances tab', () => {
     });
 
     // Assert the correct data is displayed in the your savings table.
-    await expectPropertyTableRows(page, 'Your savings', {
+    await assertSummaryCardData(page, 'Your savings', {
       'How much was in your bank account/building society before your last payment went in?': '£200',
       'Do you have any investments, shares or ISAs?': '£100',
       'Do you have any valuable items worth over £500 each?': '£500',
@@ -135,28 +137,28 @@ test.describe('Finances tab', () => {
     });
 
     // Assert the correct data is displayed in the disregards table.
-    await expect(page.getByText('Vaccine damage payment')).toBeVisible();
-    await expect(page.getByText('Cost of living payments')).toBeVisible();
-    await expect(page.getByText('National emergencies trust')).toBeVisible();
-    await expect(page.getByText('vCJD Trust')).toBeVisible();
-    await expect(page.getByText('Infected Blood Support Scheme')).toBeVisible();
-    await expect(page.getByText('Backdated child maintenance payments')).toBeVisible();
-    await expect(page.getByText('Backdated benefit payments')).toBeVisible();
-    await expect(page.getByText('Scotland and Northern Ireland redress schemes for historical child abuse')).toBeVisible();
-    await expect(page.getByText('Grenfell Tower compensation')).toBeVisible();
-    await expect(page.getByText('London Emergencies Trust')).toBeVisible();
-    await expect(page.getByText('Miscarriage of justice compensation')).toBeVisible();
-    await expect(page.getByText('We Love Manchester Emergency Fund')).toBeVisible();
-    await expect(page.getByText('Victims of Overseas Terrorism Compensation Scheme (VOTCS)')).toBeVisible();
-    await expect(page.getByText('The Energy Support Scheme payments (2022 and 2023)')).toBeVisible();
-    await expect(page.getByText('Criminal Injuries Compensation Scheme')).toBeVisible();
-    await expect(page.getByText('Modern Slavery Victim Care Contract or National Referral Mechanism (NRM)')).toBeVisible();
+    await assertSummaryCardState(page, { cardId: 'Disregards', emptyText: 'None', hasData: true, changeHref: '/cases/PC-1922-1879/financial-eligibility/change/disregards' });
+    const disregardsCardAllText = (await page.locator('.govuk-summary-card', {
+      has: page.getByRole('heading', { name: 'Disregards' })
+    }).allTextContents()).join('');
 
-    // Assert the change links are visible.
-    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Change' }).nth(2)).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Change' }).nth(3)).toBeVisible();
+    // Assert the correct data is displayed in the disregards table.
+    expect(disregardsCardAllText).toContain('Vaccine damage payment');
+    expect(disregardsCardAllText).toContain('Cost of living payments');
+    expect(disregardsCardAllText).toContain('National emergencies trust');
+    expect(disregardsCardAllText).toContain('vCJD Trust');
+    expect(disregardsCardAllText).toContain('Infected Blood Support Scheme');
+    expect(disregardsCardAllText).toContain('Backdated child maintenance payments');
+    expect(disregardsCardAllText).toContain('Backdated benefit payments');
+    expect(disregardsCardAllText).toContain('Scotland and Northern Ireland redress schemes for historical child abuse');
+    expect(disregardsCardAllText).toContain('Grenfell Tower compensation');
+    expect(disregardsCardAllText).toContain('London Emergencies Trust');
+    expect(disregardsCardAllText).toContain('Miscarriage of justice compensation');
+    expect(disregardsCardAllText).toContain('We Love Manchester Emergency Fund');
+    expect(disregardsCardAllText).toContain('Victims of Overseas Terrorism Compensation Scheme (VOTCS)');
+    expect(disregardsCardAllText).toContain('The Energy Support Scheme payments (2022 and 2023)');
+    expect(disregardsCardAllText).toContain('Criminal Injuries Compensation Scheme');
+    expect(disregardsCardAllText).toContain('Modern Slavery Victim Care Contract or National Referral Mechanism (NRM)');
   });
 
   test('should display finances tab content with correct data when there is a partner', async ({ page }) => {
@@ -169,41 +171,43 @@ test.describe('Finances tab', () => {
     await page.getByRole('tab', { name: 'Finances' }).click();
     // Assert the case details header is present
     await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 August 2025", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'] });
-    // Assert the Properties heading is visible.
-    await expect(page.getByRole('heading', { name: 'Properties' })).toBeVisible();
+    // Assert the 1st Property heading is visible.
+    await assertSummaryCardState(page, { cardId: '1st property', emptyText: 'No property data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/client-partner-properties' });
 
     // Assert the correct data is displayed in the properties table for one property.
-    await expectPropertyTableRows(page, '1st property', {
+    await assertSummaryCardData(page, '1st property', {
       'What is the current market value of the property?': '£150,000',
       'How much is left to pay on the mortgage?': '£60,000',
       'Is this your main property?': 'Yes',
       'What percentage of the property do you and/or your partner own?': '100%'
     });
 
-    // Assert the savings heading is visible.
-    await expect(page.getByRole('heading', { name: 'Your savings' })).toBeVisible();
+    // Assert the Your savings heading is visible.
+    await assertSummaryCardState(page, { cardId: 'Your savings', emptyText: 'No savings data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/your-savings' });
 
     // Assert the correct data is displayed in the your savings table.
-    await expectPropertyTableRows(page, 'Your savings', {
+    await assertSummaryCardData(page, 'Your savings', {
       'How much was in your bank account/building society before your last payment went in?': '£100',
       'Do you have any investments, shares or ISAs?': '£300',
       'Do you have any valuable items worth over £500 each?': '£500',
       'Do you have any money owed to you?': '£100'
     });
+
     // Assert the correct data is displayed in the your partners savings table.
-    await expectPropertyTableRows(page, "Your partner's savings", {
+    await assertSummaryCardData(page, "Your partner's savings", {
       "How much was in your partner's bank account/building society before their last payment went in?": '£200',
       'Does your partner have any investments, shares or ISAs?': '£100',
       'Does your partner have any valuable items worth over £500 each?': '£500',
       'Does your partner have any money owed to them?': '£200'
     });
-    // Assert the correct disregards are displayed in the disregards table.
-    await expect(page.getByText('Cost of living payments')).toBeVisible();
-    // Assert the change links are visible.
-    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Change' }).nth(2)).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Change' }).nth(3)).toBeVisible();
+
+    // Assert the Disregards heading is visible.
+    await assertSummaryCardState(page, { cardId: 'Disregards', emptyText: 'No disregards data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/disregards' });
+    // Assert the correct data is displayed in the disregards table.
+    const disregardsCardAllText = (await page.locator('.govuk-summary-card', {
+      has: page.getByRole('heading', { name: 'Disregards' })
+    }).allTextContents()).join('');
+    expect(disregardsCardAllText).toContain('Cost of living payments');
   });
 
   test('should display not provided for finances data when assessment does not exist', async ({ page }) => {
@@ -220,24 +224,24 @@ test.describe('Finances tab', () => {
     // Verify header information
     await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party'] });
 
-    // Assert the Properties heading is visible.
-    await expect(page.getByRole('heading', { name: 'Properties' })).toBeVisible();
-    // Assert the correct data is displayed in the properties table for one property.
-    await expect(page.getByText('No property data')).toBeVisible();
+    // Assert the Properties summary card is visible
+    await assertSummaryCardState(page, { cardId: 'Properties', emptyText: 'No property data', hasData: true, changeHref: '/cases/PC-7755-4557/financial-eligibility/change/properties' });
 
-    // Assert the savings heading is visible.
-    await expect(page.getByRole('heading', { name: 'Your savings' })).toBeVisible();
+    // Assert the correct data is  displayed in the properties summary card for one property.
+    await assertSummaryCardData(page, 'Properties', {
+      'Properties added': 'None',
+    });
 
-    // Assert the correct data is displayed in the your savings table.
-    await expectPropertyTableRows(page, 'Your savings', {
+    // Assert the Your savings summary card is visible
+    await assertSummaryCardState(page, { cardId: 'Your savings', emptyText: 'No savings data', hasData: true, changeHref: '/cases/PC-7755-4557/financial-eligibility/change/your-savings' });
+
+    // Assert the correct data is  displayed in the your savings summary card.
+    await assertSummaryCardData(page, 'Your savings', {
       'How much was in your bank account/building society before your last payment went in?': 'Not provided',
       'Do you have any investments, shares or ISAs?': 'Not provided',
       'Do you have any valuable items worth over £500 each?': 'Not provided',
       'Do you have any money owed to you?': 'Not provided'
     });
-    // Assert the change links are visible.
-    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
   });
 });
 
@@ -710,7 +714,7 @@ test.describe('Conditional logic views', () => {
 
     // Open finances tab
     await page.getByRole('tab', { name: 'Finances' }).click();
-    await expect(page.getByText('Your undisputed savings')).toBeVisible();
+    await assertSummaryCardState(page, { cardId: 'Your undisputed savings', emptyText: 'No savings data', hasData: true, changeHref: '/cases/PC-9173-4826/financial-eligibility/change/your-savings' });
     await expect(page.getByText('Cost of living payment')).toBeVisible();
   });
 
@@ -764,10 +768,10 @@ test.describe('Conditional logic views', () => {
     await page.getByRole('tab', { name: 'Finances' }).click();
 
     // Disputed savings section should be rendered
-    await expect(page.getByRole('heading', { name: 'Your disputed savings' })).toHaveCount(1);
+    await assertSummaryCardState(page, { cardId: 'Your disputed savings', emptyText: 'No disputed savings data', hasData: true, changeHref: '/cases/PC-1357-1212/financial-eligibility/change/disputed-savings' });
 
     // Assert the correct data is displayed in the your disputed savings table.
-    await expectPropertyTableRows(page, 'Your disputed savings', {
+    await assertSummaryCardData(page, 'Your disputed savings', {
       'How much was in your bank account/building society before your last payment went in?': '£200',
       'Do you have any investments, shares or ISAs?': '£100',
       'Do you have any valuable items worth over £500 each?': '£500',
@@ -785,11 +789,11 @@ test.describe('Conditional logic views', () => {
 
     await page.getByRole('tab', { name: 'Finances' }).click();
 
-    // Disputed savings section should not be rendered
-    await expect(page.getByRole('heading', { name: 'Your disputed savings' })).toHaveCount(1);
+    // Disputed savings section should be rendered
+    await assertSummaryCardState(page, { cardId: 'Your disputed savings', emptyText: 'No disputed savings data', hasData: true, changeHref: '/cases/PC-9173-4826/financial-eligibility/change/disputed-savings' });
 
     // Assert the correct data is displayed in the your disputed savings table.
-    await expectPropertyTableRows(page, 'Your disputed savings', {
+    await assertSummaryCardData(page, 'Your disputed savings', {
       'How much was in your bank account/building society before your last payment went in?': '£100',
       'Do you have any investments, shares or ISAs?': '£300',
       'Do you have any valuable items worth over £500 each?': '£500',
@@ -850,10 +854,10 @@ test.describe('Conditional logic views', () => {
     // Assert the case details header is present
     await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 August 2025", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'] });
     // Assert the Properties heading is visible.
-    await expect(page.getByRole('heading', { name: 'Properties' })).toBeVisible();
+    await assertSummaryCardState(page, { cardId: '1st property', emptyText: 'No property data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/client-partner-properties' });
 
     // Assert the correct data is displayed in the properties table for one property.
-    await expectPropertyTableRows(page, '1st property', {
+    await assertSummaryCardData(page, '1st property', {
       'What is the current market value of the property?': '£150,000',
       'How much is left to pay on the mortgage?': '£60,000',
       'Is this your main property?': 'Yes',
@@ -872,10 +876,10 @@ test.describe('Conditional logic views', () => {
     await page.getByRole('tab', { name: 'Finances' }).click();
 
     // Disputed savings section should be rendered
-    await expect(page.getByRole('heading', { name: 'Your disputed savings' })).toHaveCount(1);
+    await assertSummaryCardState(page, { cardId: 'Your disputed savings', emptyText: 'No disputed savings data', hasData: true, changeHref: '/cases/PC-3667-1139/financial-eligibility/change/disputed-savings' });
 
     // Assert the correct data is displayed in the your disputed savings table.
-    await expectPropertyTableRows(page, 'Your disputed savings', {
+    await assertSummaryCardData(page, 'Your disputed savings', {
       'How much was in your bank account/building society before your last payment went in?': '£200',
       'Do you have any investments, shares or ISAs?': '£100',
       'Do you have any valuable items worth over £500 each?': '£500',
@@ -883,7 +887,7 @@ test.describe('Conditional logic views', () => {
     });
 
     // Assert the correct data is displayed in the your savings table.
-    await expectPropertyTableRows(page, 'Your undisputed savings', {
+    await assertSummaryCardData(page, 'Your undisputed savings', {
       'How much was in your bank account/building society before your last payment went in?': '£100',
       'Do you have any investments, shares or ISAs?': '£300',
       'Do you have any valuable items worth over £500 each?': '£500',
@@ -891,7 +895,7 @@ test.describe('Conditional logic views', () => {
     });
 
     // Assert the correct data is displayed in the your partners savings table.
-    await expectPropertyTableRows(page, "Your partner's undisputed savings", {
+    await assertSummaryCardData(page, "Your partner's undisputed savings", {
       "How much was in your partner's bank account/building society before their last payment went in?": '£200',
       'Does your partner have any investments, shares or ISAs?': '£100',
       'Does your partner have any valuable items worth over £500 each?': '£500',
@@ -910,10 +914,10 @@ test.describe('Conditional logic views', () => {
     await page.getByRole('tab', { name: 'Finances' }).click();
 
     // Disputed savings section should be rendered
-    await expect(page.getByRole('heading', { name: 'Your disputed savings' })).toHaveCount(1);
+    await assertSummaryCardState(page, { cardId: 'Your disputed savings', emptyText: 'No disputed savings data', hasData: true, changeHref: '/cases/PC-7753-8992/financial-eligibility/change/disputed-savings' });
 
     // Assert the correct data is displayed in the your disputed savings table.
-    await expectPropertyTableRows(page, 'Your disputed savings', {
+    await assertSummaryCardData(page, 'Your disputed savings', {
       'How much was in your bank account/building society before your last payment went in?': '£200',
       'Do you have any investments, shares or ISAs?': '£100',
       'Do you have any valuable items worth over £500 each?': '£500',
@@ -921,7 +925,7 @@ test.describe('Conditional logic views', () => {
     });
 
     // Assert the correct data is displayed in the your savings table.
-    await expectPropertyTableRows(page, 'Your undisputed savings', {
+    await assertSummaryCardData(page, 'Your undisputed savings', {
       'How much was in your bank account/building society before your last payment went in?': '£100',
       'Do you have any investments, shares or ISAs?': '£300',
       'Do you have any valuable items worth over £500 each?': '£500',
@@ -929,7 +933,7 @@ test.describe('Conditional logic views', () => {
     });
 
     // Assert the correct data is displayed in the your partners savings table.
-    await expectPropertyTableRows(page, "Your partner's undisputed savings", {
+    await assertSummaryCardData(page, "Your partner's undisputed savings", {
       "How much was in your partner's bank account/building society before their last payment went in?": '£200',
       'Does your partner have any investments, shares or ISAs?': '£100',
       'Does your partner have any valuable items worth over £500 each?': '£500',

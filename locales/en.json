@@ -206,6 +206,8 @@
       "finances": {
         "propertiesHeading": "Properties",
         "propertiesAdded": "Properties added",
+        "disregards": "Disregards",
+        "disregardsSelected": "Disregards selected",
         "propertyValue":"What is the current market value of the property?",
         "mortgageLeft":"How much is left to pay on the mortgage?",
         "mainProperty":"Is this your main property?",
@@ -213,6 +215,7 @@
         "partnerPropertyShare": "What percentage of the property do you and/or your partner own?",
         "disputedProperty": "Is the property disputed?",
         "yourSavings": "Your savings",
+        "disputedSavings": "Your disputed savings",
         "undisputedSavings": "Your undisputed savings",
         "savingsBalance": "How much was in your bank account/building society before your last payment went in?",
         "investmentBalance": "Do you have any investments, shares or ISAs?",
