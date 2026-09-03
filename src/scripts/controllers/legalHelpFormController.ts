@@ -129,12 +129,15 @@ export async function submitLegalHelpFormInterstitial(req: Request, res: Respons
           errorSummaryList
         }
       });
-    } else {
-      res.status(HTTP.NOT_FOUND).render('main/error.njk', {
-        status: HTTP.NOT_FOUND,
-        error: response.message ?? 'Case not found'
-      });
+      return;
     }
+
+    // Don't mask a genuine fetch failure as a 404, pass it to the error handler instead
+    const processedError = createProcessedError(
+      new Error(response.message || 'Failed to fetch client details for validation error rendering'),
+      `submitting get legal help form for case ${caseReference}`
+    );
+    next(processedError);
     return;
   }
 

@@ -195,7 +195,7 @@ describe('Legal Help Form Controller', () => {
       expect((req.session as any).legalHelpFormAnswers).to.be.undefined;
     });
 
-    it('should render a not found error page when the client details refetch fails on a validation error', async () => {
+    it('should delegate to Express error handling middleware when the client details refetch fails on a validation error', async () => {
       req.body = { evidence: 'a'.repeat(5001) };
 
       getClientDetailsStub.resolves({
@@ -208,10 +208,8 @@ describe('Legal Help Form Controller', () => {
 
       await submitLegalHelpFormInterstitial(req as RequestWithMiddleware, res as Response, next);
 
-      expect(statusStub.calledWith(404)).to.be.true;
-      expect(renderStub.calledWith('main/error.njk')).to.be.true;
-      const renderArgs = renderStub.firstCall.args[1];
-      expect(renderArgs.error).to.equal('Case not found');
+      expect(next.calledOnce).to.be.true;
+      expect(renderStub.called).to.be.false;
     });
 
     it('should render an error page when the case reference is invalid', async () => {
