@@ -78,7 +78,7 @@ export async function assertSummaryCardData(
       .locator('.govuk-summary-list__row')
       .filter({
         has: page.locator('.govuk-summary-list__key', {
-          hasText: new RegExp(`^\\s*${label}\\b`, 'i')
+          hasText: new RegExp(`^\\s*${label}`, 'i')
         })
       });
 

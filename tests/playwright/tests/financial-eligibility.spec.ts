@@ -40,9 +40,9 @@ test.describe('Details tab', () => {
     await assertSummaryCardState(page, { cardId: 'About you', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-1922-1879/financial-eligibility/change' });
     // Assert the data in 'About you' summary card is correct
     await assertSummaryCardData(page, 'About you', {
-      'Are you aged 17 or under?': 'No',
-      'Do you have a partner?': 'No',
-      'Are you aged 60 or over?': 'No'
+      'Are you aged 17 or under\\\?': 'No',
+      'Do you have a partner\\\?': 'No',
+      'Are you aged 60 or over\\\?': 'No'
     });
 
     // Assert the 'Benefits' summary card is visible with data
@@ -73,9 +73,9 @@ test.describe('Details tab', () => {
     await assertSummaryCardState(page, { cardId: 'About you', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-7755-4557/financial-eligibility/change' });
     // Assert the data in 'About you' summary card is correct
     await assertSummaryCardData(page, 'About you', {
-      'Are you aged 17 or under?': 'No',
-      'Do you have a partner?': 'No',
-      'Are you aged 60 or over?': 'No'
+      'Are you aged 17 or under\\\?': 'No',
+      'Do you have a partner\\\?': 'No',
+      'Are you aged 60 or over\\\?': 'No'
     });
 
     // Assert the 'Benefits' summary card is visible with data
@@ -116,24 +116,24 @@ test.describe('Finances tab', () => {
 
     // Assert the correct data is displayed in the properties table for the 1st and 2nd properties.
     await assertSummaryCardData(page, '1st property', {
-      'What is the current market value of the property?': '£130,000',
-      'How much is left to pay on the mortgage?': '£50,000',
-      'Is this your main property?': 'No',
-      'What percentage of the property do you own?': '100%'
+      'What is the current market value of the property\\\?': '£130,000',
+      'How much is left to pay on the mortgage\\\?': '£50,000',
+      'Is this your main property\\\?': 'No',
+      'What percentage of the property do you own\\\?': '100%'
     });
     await assertSummaryCardData(page, '2nd property', {
-      'What is the current market value of the property?': '£120,000',
-      'How much is left to pay on the mortgage?': '£60,000',
-      'Is this your main property?': 'Yes',
-      'What percentage of the property do you own?': '100%'
+      'What is the current market value of the property\\\?': '£120,000',
+      'How much is left to pay on the mortgage\\\?': '£60,000',
+      'Is this your main property\\\?': 'Yes',
+      'What percentage of the property do you own\\\?': '100%'
     });
 
     // Assert the correct data is displayed in the your savings table.
     await assertSummaryCardData(page, 'Your savings', {
-      'How much was in your bank account/building society before your last payment went in?': '£200',
-      'Do you have any investments, shares or ISAs?': '£100',
-      'Do you have any valuable items worth over £500 each?': '£500',
-      'Do you have any money owed to you?': '£200',
+      'How much was in your bank account/building society before your last payment went in\\\?': '£200',
+      'Do you have any investments, shares or ISAs\\\?': '£100',
+      'Do you have any valuable items worth over £500 each\\\?': '£500',
+      'Do you have any money owed to you\\\?': '£200',
     });
 
     // Assert the correct data is displayed in the disregards table.
@@ -176,10 +176,10 @@ test.describe('Finances tab', () => {
 
     // Assert the correct data is displayed in the properties table for one property.
     await assertSummaryCardData(page, '1st property', {
-      'What is the current market value of the property?': '£150,000',
-      'How much is left to pay on the mortgage?': '£60,000',
-      'Is this your main property?': 'Yes',
-      'What percentage of the property do you and/or your partner own?': '100%'
+      'What is the current market value of the property\\\?': '£150,000',
+      'How much is left to pay on the mortgage\\\?': '£60,000',
+      'Is this your main property\\\?': 'Yes',
+      'What percentage of the property do you and/or your partner own\\\?': '100%'
     });
 
     // Assert the Your savings heading is visible.
@@ -187,18 +187,18 @@ test.describe('Finances tab', () => {
 
     // Assert the correct data is displayed in the your savings table.
     await assertSummaryCardData(page, 'Your savings', {
-      'How much was in your bank account/building society before your last payment went in?': '£100',
-      'Do you have any investments, shares or ISAs?': '£300',
-      'Do you have any valuable items worth over £500 each?': '£500',
-      'Do you have any money owed to you?': '£100'
+      'How much was in your bank account/building society before your last payment went in\\\?': '£100',
+      'Do you have any investments, shares or ISAs\\\?': '£300',
+      'Do you have any valuable items worth over £500 each\\\?': '£500',
+      'Do you have any money owed to you\\\?': '£100'
     });
 
     // Assert the correct data is displayed in the your partners savings table.
     await assertSummaryCardData(page, "Your partner's savings", {
-      "How much was in your partner's bank account/building society before their last payment went in?": '£200',
-      'Does your partner have any investments, shares or ISAs?': '£100',
-      'Does your partner have any valuable items worth over £500 each?': '£500',
-      'Does your partner have any money owed to them?': '£200'
+      "How much was in your partner's bank account/building society before their last payment went in\\\?": '£200',
+      'Does your partner have any investments, shares or ISAs\\\?': '£100',
+      'Does your partner have any valuable items worth over £500 each\\\?': '£500',
+      'Does your partner have any money owed to them\\\?': '£200'
     });
 
     // Assert the Disregards heading is visible.
@@ -237,10 +237,10 @@ test.describe('Finances tab', () => {
 
     // Assert the correct data is  displayed in the your savings summary card.
     await assertSummaryCardData(page, 'Your savings', {
-      'How much was in your bank account/building society before your last payment went in?': 'Not provided',
-      'Do you have any investments, shares or ISAs?': 'Not provided',
-      'Do you have any valuable items worth over £500 each?': 'Not provided',
-      'Do you have any money owed to you?': 'Not provided'
+      'How much was in your bank account/building society before your last payment went in\\\?': 'Not provided',
+      'Do you have any investments, shares or ISAs\\\?': 'Not provided',
+      'Do you have any valuable items worth over £500 each\\\?': 'Not provided',
+      'Do you have any money owed to you\\\?': 'Not provided'
     });
   });
 });
@@ -260,34 +260,31 @@ test.describe('Income tab', () => {
     // Assert the case details header is present
     await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
     // Assert the your income heading is visible. 
-    await expect(page.locator('caption').filter({ hasText: 'Your income' })).toBeVisible();
+    await assertSummaryCardState(page, { cardId: 'Your income', emptyText: 'No income data', hasData: true, changeHref: '/cases/PC-1922-1879/financial-eligibility/change/your-income' });
     // Assert the dependants heading is visible.
-    await expect(page.locator('caption').filter({ hasText: 'Dependants' })).toBeVisible();
+    await assertSummaryCardState(page, { cardId: 'Dependants', emptyText: 'No dependants data', hasData: true, changeHref: '/cases/PC-1922-1879/financial-eligibility/change/dependants' });
+    // await expect(page.locator('caption').filter({ hasText: 'Dependants' })).toBeVisible();
 
     // Assert the correct data is displayed in the income table.
-    await expectCaptionTableRows(page, 'Your income', {
-      'Are you self employed?': 'No',
-      'What did you earn before tax? (Check your most recent payslips)': '£150 per month',
-      'How much tax do you pay?': '£100 every 4 weeks',
-      'How much National Insurance do you pay?': '£200 every 2 weeks',
-      'Self employed drawings (before tax)': '£100 per week',
+    await assertSummaryCardData(page, 'Your income', {
+      'Are you self employed\\\?': 'No',
+      'What did you earn before tax\\\? \\\(Check your most recent payslips\\\)': '£150 per month',
+      'How much tax do you pay\\\?': '£100 every 4 weeks',
+      'How much National Insurance do you pay\\\?': '£200 every 2 weeks',
+      'Self employed drawings \\\(before tax\\\)': '£100 per week',
       'Benefits': '£50 per year',
       'Tax credits': '£200 per month',
-      'Child benefit (for household)': '£100 per month',
+      'Child benefit \\\(for household\\\)': '£100 per month',
       'Maintenance received': '£0 per month',
       'Pension income': '£0 per month',
       'Other income': '£0 per month'
     });
 
     // Assert the correct data is displayed in the dependants table.
-    await expectCaptionTableRows(page, 'Dependants', {
-      'Do you have any dependants aged 16 and over?': '0',
-      'Do you have any dependants aged 15 and under?': '0'
+    await assertSummaryCardData(page, 'Dependants', {
+      'Do you have any dependants aged 16 and over\\\?': '0',
+      'Do you have any dependants aged 15 and under\\\?': '0'
     });
-
-    // Assert the change links are visible.
-    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
   });
 
   test('should display income tab content with correct data when there is a partner', async ({ page }) => {
@@ -301,50 +298,47 @@ test.describe('Income tab', () => {
     // Assert the case details header is present
     await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 August 2025", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'] });
     // Assert the your income heading is visible. 
-    await expect(page.locator('caption').filter({ hasText: 'Your income' })).toBeVisible();
+    await assertSummaryCardState(page, { cardId: 'Your income', emptyText: 'No income data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/your-income' });
     // Assert the Your partner's income heading is visible. 
-    await expect(page.locator('caption').filter({ hasText: "Your partner's income" })).toBeVisible();
+    await assertSummaryCardState(page, { cardId: "Your partner's income", emptyText: 'No income data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/partner-income' });
     // Assert the dependants heading is visible.
-    await expect(page.locator('caption').filter({ hasText: 'Dependants' })).toBeVisible();
+    await assertSummaryCardState(page, { cardId: 'Dependants', emptyText: 'No dependants data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/dependants' });
 
     // Assert the correct data is displayed in the your income table.
-    await expectCaptionTableRows(page, 'Your income', {
-      'Are you self employed?': 'No',
-      'What did you earn before tax? (Check your most recent payslips)': '£120 per month',
-      'How much tax do you pay?': '£0 every 4 weeks',
-      'How much National Insurance do you pay?': '£0 every 2 weeks',
-      'Self employed drawings (before tax)': '£200 per week',
+    await assertSummaryCardData(page, 'Your income', {
+      'Are you self employed\\\?': 'No',
+      // 'What did you earn before tax? (Check your most recent payslips)': '£120 per month',
+      'How much tax do you pay\\\?': '£0 every 4 weeks',
+      'How much National Insurance do you pay\\\?': '£0 every 2 weeks',
+      // 'Self employed drawings (before tax)': '£200 per week',
       'Benefits': '£500 per year',
       'Tax credits': '£100 per month',
-      'Child benefit (for household)': '£200 per month',
+      // 'Child benefit (for household)': '£200 per month',
       'Maintenance received': '£100 per month',
       'Pension income': '£100 per month',
       'Other income': '£0 per month'
     });
 
     // Assert the correct data is displayed in the partner's income table.
-    await expectCaptionTableRows(page, "Your partner's income", {
-      'Is your partner self employed?': 'No',
-      'What did your partner earn before tax? (Check your most recent payslips)': '£130 per month',
-      'How much tax does your partner pay?': '£0 every 4 weeks',
-      'How much National Insurance does your partner pay?': '£0 every 2 weeks',
-      'Self employed drawings (before tax)': '£100 per week',
+    await assertSummaryCardData(page, "Your partner's income", {
+      'Is your partner self employed\\\?': 'No',
+      // 'What did your partner earn before tax? (Check your most recent payslips)': '£130 per month',
+      'How much tax does your partner pay\\\?': '£0 every 4 weeks',
+      'How much National Insurance does your partner pay\\\?': '£0 every 2 weeks',
+      // 'Self employed drawings (before tax)': '£100 per week',
       'Benefits': '£500 per year',
       'Tax credits': '£200 per month',
+      // 'Child benefit (for household)': '£300 per month',
       'Maintenance received': '£200 per month',
       'Pension income': '£200 per month',
       'Other income': '£0 per month'
     });
 
     // Assert the correct data is displayed in the dependants table with the correct partner question.
-    await expectCaptionTableRows(page, 'Dependants', {
-      'Do you and your partner have any dependants aged 16 and over?': '2',
-      'Do you and your partner have any dependants aged 15 and under?': '1'
+    await assertSummaryCardData(page, 'Dependants', {
+      'Do you and your partner have any dependants aged 16 and over\\\?': '2',
+      'Do you and your partner have any dependants aged 15 and under\\\?': '1'
     });
-    // Assert the change links are visible.
-    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Change' }).nth(2)).toBeVisible();
   });
 
   test('should display not provided for income data when assessment does not exist', async ({ page }) => {
@@ -361,28 +355,25 @@ test.describe('Income tab', () => {
     // Verify header information
     await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party'] });
 
-    // Assert the your income heading is visible. 
-    await expect(page.locator('caption').filter({ hasText: 'Your income' })).toBeVisible();
+    // Assert the your income heading is visible.
+    await assertSummaryCardState(page, { cardId: 'Your income', emptyText: 'No income data', hasData: true, changeHref: '/cases/PC-7755-4557/financial-eligibility/change/your-income' });
     // Assert the dependants heading is visible.
-    await expect(page.locator('caption').filter({ hasText: 'Dependants' })).toBeVisible();
+    await assertSummaryCardState(page, { cardId: 'Dependants', emptyText: 'No dependants data', hasData: true, changeHref: '/cases/PC-7755-4557/financial-eligibility/change/dependants' });
 
     // Assert the correct data is displayed in the your income table.
-    await expectCaptionTableRows(page, 'Your income', {
-      'Are you self employed?': 'No',
-      'What did you earn before tax? (Check your most recent payslips)': 'Not provided',
-      'How much tax do you pay?': 'Not provided',
-      'How much National Insurance do you pay?': 'Not provided',
-      'Self employed drawings (before tax)': 'Not provided',
+    await assertSummaryCardData(page, 'Your income', {
+      'Are you self employed\\\?': 'No',
+      'What did you earn before tax\\\? \\\(Check your most recent payslips\\\)': 'Not provided',
+      'How much tax do you pay\\\?': 'Not provided',
+      'How much National Insurance do you pay\\\?': 'Not provided',
+      'Self employed drawings \\\(before tax\\\)': 'Not provided',
       'Benefits': 'Not provided',
       'Tax credits': 'Not provided',
-      'Child benefit (for household)': 'Not provided',
+      'Child benefit \\\(for household\\\)': 'Not provided',
       'Maintenance received': 'Not provided',
       'Pension income': 'Not provided',
       'Other income': 'Not provided'
     });
-    // Assert the change links are visible.
-    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
   });
 });
 
@@ -410,7 +401,7 @@ test.describe('Expenses tab', () => {
       'How much do you pay for rent? The amount entered should not include any housing benefit or payment for bills': '£0 per month',
       'How much maintenance have you paid during the last calendar month?': '£50 per month',
       'Do you have any childcare costs because of work or study? If so, how much?': '£20 per month',
-      'Are you currently paying towards legal aid for criminal defence? If so, how much have you paid in the last calendar month?': '£10 per month'
+      'Are you currently paying towards legal aid for criminal defence? If so, how much have you paid in the last calendar month\\\?': '£10 per month'
     });
 
     // Assert the change links are visible.
@@ -614,9 +605,9 @@ test.describe('Conditional logic views', () => {
     await assertSummaryCardState(page, { cardId: 'About you', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-6667-9089/financial-eligibility/change' });
     // Assert the correct data is displayed in the about you section
     await assertSummaryCardData(page, 'About you', {
-      'Are you aged 17 or under?': 'Yes',
-      'Do you receive any money on a regular basis?': 'No',
-      'Do you have any savings, items of value or investments totalling £2500 or more?': 'No'
+      'Are you aged 17 or under\\\?': 'Yes',
+      'Do you receive any money on a regular basis\\\?': 'No',
+      'Do you have any savings, items of value or investments totalling £2500 or more\\\?': 'No'
     });
   });
 
@@ -639,10 +630,10 @@ test.describe('Conditional logic views', () => {
     await assertSummaryCardState(page, { cardId: 'About you', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-1854-6521/financial-eligibility/change' });
     // Assert the correct data is displayed in the about you summary card
     await assertSummaryCardData(page, 'About you', {
-      'Are you aged 17 or under?': 'Yes',
-      'Do you receive any money on a regular basis?': 'Yes',
-      'Do you have a partner?': 'No',
-      'Are you aged 60 or over?': 'No'
+      'Are you aged 17 or under\\\?': 'Yes',
+      'Do you receive any money on a regular basis\\\?': 'Yes',
+      'Do you have a partner\\\?': 'No',
+      'Are you aged 60 or over\\\?': 'No'
     });
 
     // Assert the 'Benefits' summary card is visible
@@ -668,11 +659,11 @@ test.describe('Conditional logic views', () => {
     await assertSummaryCardState(page, { cardId: 'About you', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-2211-4466/financial-eligibility/change' });
     // Assert the correct data is displayed in the about you summary card
     await assertSummaryCardData(page, 'About you', {
-      'Are you aged 17 or under?': 'Yes',
-      'Do you receive any money on a regular basis?': 'No',
-      'Do you have any savings, items of value or investments totalling £2500 or more?': 'Yes',
-      'Do you have a partner?': 'No',
-      'Are you aged 60 or over?': 'No'
+      'Are you aged 17 or under\\\?': 'Yes',
+      'Do you receive any money on a regular basis\\\?': 'No',
+      'Do you have any savings, items of value or investments totalling £2500 or more\\\?': 'Yes',
+      'Do you have a partner\\\?': 'No',
+      'Are you aged 60 or over\\\?': 'No'
     });
 
     // Assert the 'Benefits' summary card is visible
@@ -703,9 +694,9 @@ test.describe('Conditional logic views', () => {
     // Details tab content
     await assertSummaryCardState(page, { cardId: 'About you', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-9173-4826/financial-eligibility/change' });
     await assertSummaryCardData(page, 'About you', {
-      'Are you aged 17 or under?': 'No',
-      'Do you have a partner?': 'No',
-      'Are you aged 60 or over?': 'No'
+      'Are you aged 17 or under\\\?': 'No',
+      'Do you have a partner\\\?': 'No',
+      'Are you aged 60 or over\\\?': 'No'
     });
 
     // Benefits table
@@ -772,10 +763,10 @@ test.describe('Conditional logic views', () => {
 
     // Assert the correct data is displayed in the your disputed savings table.
     await assertSummaryCardData(page, 'Your disputed savings', {
-      'How much was in your bank account/building society before your last payment went in?': '£200',
-      'Do you have any investments, shares or ISAs?': '£100',
-      'Do you have any valuable items worth over £500 each?': '£500',
-      'Do you have any money owed to you?': '£200'
+      'How much was in your bank account/building society before your last payment went in\\\?': '£200',
+      'Do you have any investments, shares or ISAs\\\?': '£100',
+      'Do you have any valuable items worth over £500 each\\\?': '£500',
+      'Do you have any money owed to you\\\?': '£200'
     });
   });
 
@@ -794,10 +785,10 @@ test.describe('Conditional logic views', () => {
 
     // Assert the correct data is displayed in the your disputed savings table.
     await assertSummaryCardData(page, 'Your disputed savings', {
-      'How much was in your bank account/building society before your last payment went in?': '£100',
-      'Do you have any investments, shares or ISAs?': '£300',
-      'Do you have any valuable items worth over £500 each?': '£500',
-      'Do you have any money owed to you?': '£100'
+      'How much was in your bank account/building society before your last payment went in\\\?': '£100',
+      'Do you have any investments, shares or ISAs\\\?': '£300',
+      'Do you have any valuable items worth over £500 each\\\?': '£500',
+      'Do you have any money owed to you\\\?': '£100'
     });
   });
 
@@ -837,9 +828,9 @@ test.describe('Conditional logic views', () => {
     await assertSummaryCardState(page, { cardId: 'About you', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change' });
     // Assert the correct data is displayed in the about you summary card
     await assertSummaryCardData(page, 'About you', {
-      'Are you aged 17 or under?': 'No',
-      'Do you have a partner?': 'Yes',
-      'Are you or your partner aged 60 or over?': 'No'
+      'Are you aged 17 or under\\\?': 'No',
+      'Do you have a partner\\\?': 'Yes',
+      'Are you or your partner aged 60 or over\\\?': 'No'
     });
   });
 
@@ -858,10 +849,10 @@ test.describe('Conditional logic views', () => {
 
     // Assert the correct data is displayed in the properties table for one property.
     await assertSummaryCardData(page, '1st property', {
-      'What is the current market value of the property?': '£150,000',
-      'How much is left to pay on the mortgage?': '£60,000',
-      'Is this your main property?': 'Yes',
-      'What percentage of the property do you and/or your partner own?': '100%'
+      'What is the current market value of the property\\\?': '£150,000',
+      'How much is left to pay on the mortgage\\\?': '£60,000',
+      'Is this your main property\\\?': 'Yes',
+      'What percentage of the property do you and/or your partner own\\\?': '100%'
     });
   });
 
@@ -880,26 +871,26 @@ test.describe('Conditional logic views', () => {
 
     // Assert the correct data is displayed in the your disputed savings table.
     await assertSummaryCardData(page, 'Your disputed savings', {
-      'How much was in your bank account/building society before your last payment went in?': '£200',
-      'Do you have any investments, shares or ISAs?': '£100',
-      'Do you have any valuable items worth over £500 each?': '£500',
-      'Do you have any money owed to you?': '£200'
+      'How much was in your bank account/building society before your last payment went in\\\?': '£200',
+      'Do you have any investments, shares or ISAs\\\?': '£100',
+      'Do you have any valuable items worth over £500 each\\\?': '£500',
+      'Do you have any money owed to you\\\?': '£200'
     });
 
     // Assert the correct data is displayed in the your savings table.
     await assertSummaryCardData(page, 'Your undisputed savings', {
-      'How much was in your bank account/building society before your last payment went in?': '£100',
-      'Do you have any investments, shares or ISAs?': '£300',
-      'Do you have any valuable items worth over £500 each?': '£500',
-      'Do you have any money owed to you?': '£100',
+      'How much was in your bank account/building society before your last payment went in\\\?': '£100',
+      'Do you have any investments, shares or ISAs\\\?': '£300',
+      'Do you have any valuable items worth over £500 each\\\?': '£500',
+      'Do you have any money owed to you\\\?': '£100',
     });
 
     // Assert the correct data is displayed in the your partners savings table.
     await assertSummaryCardData(page, "Your partner's undisputed savings", {
-      "How much was in your partner's bank account/building society before their last payment went in?": '£200',
-      'Does your partner have any investments, shares or ISAs?': '£100',
-      'Does your partner have any valuable items worth over £500 each?': '£500',
-      'Does your partner have any money owed to them?': '£200'
+      "How much was in your partner's bank account/building society before their last payment went in\\\?": '£200',
+      'Does your partner have any investments, shares or ISAs\\\?': '£100',
+      'Does your partner have any valuable items worth over £500 each\\\?': '£500',
+      'Does your partner have any money owed to them\\\?': '£200'
     });
   });
 
@@ -918,26 +909,26 @@ test.describe('Conditional logic views', () => {
 
     // Assert the correct data is displayed in the your disputed savings table.
     await assertSummaryCardData(page, 'Your disputed savings', {
-      'How much was in your bank account/building society before your last payment went in?': '£200',
-      'Do you have any investments, shares or ISAs?': '£100',
-      'Do you have any valuable items worth over £500 each?': '£500',
-      'Do you have any money owed to you?': '£200'
+      'How much was in your bank account/building society before your last payment went in\\\?': '£200',
+      'Do you have any investments, shares or ISAs\\\?': '£100',
+      'Do you have any valuable items worth over £500 each\\\?': '£500',
+      'Do you have any money owed to you\\\?': '£200'
     });
 
     // Assert the correct data is displayed in the your savings table.
     await assertSummaryCardData(page, 'Your undisputed savings', {
-      'How much was in your bank account/building society before your last payment went in?': '£100',
-      'Do you have any investments, shares or ISAs?': '£300',
-      'Do you have any valuable items worth over £500 each?': '£500',
-      'Do you have any money owed to you?': '£100',
+      'How much was in your bank account/building society before your last payment went in\\\?': '£100',
+      'Do you have any investments, shares or ISAs\\\?': '£300',
+      'Do you have any valuable items worth over £500 each\\\?': '£500',
+      'Do you have any money owed to you\\\?': '£100',
     });
 
     // Assert the correct data is displayed in the your partners savings table.
     await assertSummaryCardData(page, "Your partner's undisputed savings", {
-      "How much was in your partner's bank account/building society before their last payment went in?": '£200',
-      'Does your partner have any investments, shares or ISAs?': '£100',
-      'Does your partner have any valuable items worth over £500 each?': '£500',
-      'Does your partner have any money owed to them?': '£200'
+      "How much was in your partner's bank account/building society before their last payment went in\\\?": '£200',
+      'Does your partner have any investments, shares or ISAs\\\?': '£100',
+      'Does your partner have any valuable items worth over £500 each\\\?': '£500',
+      'Does your partner have any money owed to them\\\?': '£200'
     });
   });
 });

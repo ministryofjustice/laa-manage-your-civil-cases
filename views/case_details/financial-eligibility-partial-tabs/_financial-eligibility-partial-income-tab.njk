@@ -1,4 +1,5 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "components/summaryCardComponent.njk" import summaryCardComponent %}
 
 {% set changeIncomeLinkHtml %}
   <p class="govuk-!-margin-bottom-8">
@@ -18,136 +19,195 @@
 
 {% set income = financialEligibility.clientData.income %}
 {% set deductions = financialEligibility.clientData.deductions %}
+{% set incomeData = {
+  selfEmployed: "Yes" if income.selfEmployed else "No",
+  earnings: income.earnings | formatFinancialData,
+  incomeTax: deductions.incomeTax | formatFinancialData,
+  nationalInsurance: deductions.nationalInsurance | formatFinancialData,
+  selfEmploymentDrawings: income.selfEmploymentDrawings | formatFinancialData,
+  benefits: income.benefits | formatFinancialData,
+  taxCredits: income.taxCredits | formatFinancialData,
+  childBenefit: income.childBenefit | formatFinancialData,
+  maintenanceReceived: income.maintenanceReceived | formatFinancialData,
+  pension: income.pension | formatFinancialData,
+  otherIncome: income.otherIncome | formatFinancialData
+} %}
 
-{{ govukTable({
+{{ summaryCardComponent({
     caption: "Your income",
     captionClasses: "govuk-table__caption--m",
-    firstCellIsHeader: true,
     classes: "eligibility-table",
     rows: [
-      [
-        { text: t("common.financialEligibility.income.selfEmployed") },
-        { text: "Yes" if income.selfEmployed else "No" }
-      ],
-      [
-        { text: t("common.financialEligibility.income.earnings") },
-        { text: (income.earnings | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.income.tax") },
-        { text: (deductions.incomeTax | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.income.nationalInsurance") },
-        { text: (deductions.nationalInsurance | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.income.selfEmployedDrawings") },
-        { text: (income.selfEmploymentDrawings | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.income.benefits") },
-        { text: (income.benefits | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.income.taxCredits") },
-        { text: (income.taxCredits | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.income.childBenefit") },
-        { text: (income.childBenefit | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.income.maintenanceReceived") },
-        { text: (income.maintenanceReceived | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.income.pension") },
-        { text: (income.pension | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.income.otherIncome") },
-        { text: (income.otherIncome | formatFinancialData) }
-      ]
-    ]
+      {
+        label: t("common.financialEligibility.income.selfEmployed"),
+        key: "selfEmployed"
+      },
+      {
+        label: t("common.financialEligibility.income.earnings"),
+        key: "earnings"
+      },
+      {
+        label: t("common.financialEligibility.income.tax"),
+        key: "incomeTax"
+      },
+      {
+        label: t("common.financialEligibility.income.nationalInsurance"),
+        key: "nationalInsurance"
+      },
+      {
+        label: t("common.financialEligibility.income.selfEmployedDrawings"),
+        key: "selfEmploymentDrawings"
+      },
+      {
+        label: t("common.financialEligibility.income.benefits"),
+        key: "benefits"
+      },
+      {
+        label: t("common.financialEligibility.income.taxCredits"),
+        key: "taxCredits"
+      },
+      {
+        label: t("common.financialEligibility.income.childBenefit"),
+        key: "childBenefit"
+      },
+      {
+        label: t("common.financialEligibility.income.maintenanceReceived"),
+        key: "maintenanceReceived"
+      },
+      {
+        label: t("common.financialEligibility.income.pension"),
+        key: "pension"
+      },
+      {
+        label: t("common.financialEligibility.income.otherIncome"),
+        key: "otherIncome"
+      }
+    ],
+    data: incomeData,
+    card: {
+      title: {
+        text: t("common.financialEligibility.income.yourIncome")
+      },
+      actions: {
+        items: [
+          {
+            href: "/cases/" + caseReference + "/financial-eligibility/change/your-income",
+            text: t('common.change')
+          }
+        ]
+      }
+    }
 }) }}
-
-<div>{{ changeIncomeLinkHtml | safe }}</div>
 
 {% set partnerIncome = financialEligibility.partnerData.partnerIncome %}
 {% set partnerDeductions = financialEligibility.partnerData.partnerDeductions %}
+{% set partnerIncomeData = {
+  selfEmployed: "Yes" if partnerIncome.selfEmployed else "No",
+  earnings: partnerIncome.earnings | formatFinancialData,
+  incomeTax: partnerDeductions.incomeTax | formatFinancialData,
+  nationalInsurance: partnerDeductions.nationalInsurance | formatFinancialData,
+  selfEmploymentDrawings: partnerIncome.selfEmploymentDrawings | formatFinancialData,
+  benefits: partnerIncome.benefits | formatFinancialData,
+  taxCredits: partnerIncome.taxCredits | formatFinancialData,
+  maintenanceReceived: partnerIncome.maintenanceReceived | formatFinancialData,
+  pension: partnerIncome.pension | formatFinancialData,
+  otherIncome: partnerIncome.otherIncome | formatFinancialData
+} %}
 
 {% if financialEligibility.hasPartner %}
-  {{ govukTable({
+  {{ summaryCardComponent({
     caption: "Your partner's income",
     captionClasses: "govuk-table__caption--m",
     classes: "eligibility-table",
-    firstCellIsHeader: true,
+    data: partnerIncomeData,
+    card: {
+      title: {
+        text: t("common.financialEligibility.income.partnerIncome")
+      },
+      actions: {
+        items: [
+          {
+            href: "/cases/" + caseReference + "/financial-eligibility/change/partner-income",
+            text: t('common.change')
+          }
+        ]
+      }
+    },
     rows: [
-      [
-        { text: t("common.financialEligibility.income.partnerSelfEmployed") },
-        { text: "Yes" if partnerIncome.selfEmployed else "No" }
-      ],
-      [
-        { text: t("common.financialEligibility.income.partnerEarnings") },
-        { text: (partnerIncome.earnings | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.income.partnerTax") },
-        { text: (partnerDeductions.incomeTax | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.income.partnerNationalInsurance") },
-        { text: (partnerDeductions.nationalInsurance | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.income.selfEmployedDrawings") },
-        { text: (partnerIncome.selfEmploymentDrawings | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.income.benefits") },
-        { text: (partnerIncome.benefits | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.income.taxCredits") },
-        { text: (partnerIncome.taxCredits | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.income.maintenanceReceived") },
-        { text: (partnerIncome.maintenanceReceived | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.income.pension") },
-        { text: (partnerIncome.pension | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.income.otherIncome") },
-        { text: (partnerIncome.otherIncome | formatFinancialData) }
-      ]
+      {
+        label: t("common.financialEligibility.income.partnerSelfEmployed"),
+        key: "selfEmployed"
+      },
+      {
+        label: t("common.financialEligibility.income.partnerEarnings"),
+        key: "earnings"
+      },
+      {
+        label: t("common.financialEligibility.income.partnerTax"),
+        key: "incomeTax"
+      },
+      {
+        label: t("common.financialEligibility.income.partnerNationalInsurance"),
+        key: "nationalInsurance"
+      },
+      {
+        label: t("common.financialEligibility.income.selfEmployedDrawings"),
+        key: "selfEmploymentDrawings"
+      },
+      {
+        label: t("common.financialEligibility.income.benefits"),
+        key: "benefits"
+      },
+      {
+        label: t("common.financialEligibility.income.taxCredits"),
+        key: "taxCredits"
+      },
+      {
+        label: t("common.financialEligibility.income.maintenanceReceived"),
+        key: "maintenanceReceived"
+      },
+      {
+        label: t("common.financialEligibility.income.pension"),
+        key: "pension"
+      },
+      {
+        label: t("common.financialEligibility.income.otherIncome"),
+        key: "otherIncome"
+      }
     ]
   }) }}
-
-  <div>{{ changePartnerIncomeLinkHtml | safe }}</div>
 {% endif %}
 
-
-
-{{ govukTable({
+{% set dependantsData = {
+  dependantsOld: financialEligibility.dependantsOld | safe | string,
+  dependantsYoung: financialEligibility.dependantsYoung | safe | string
+} %}
+{{ summaryCardComponent({
   caption: "Dependants",
   classes: "eligibility-table",
   captionClasses: "govuk-table__caption--m",
-  firstCellIsHeader: true,
+  data: dependantsData,
+  card: {
+    title: {
+      text: t("common.financialEligibility.income.dependantsHeading")
+    },
+    actions: {
+      items: [
+        {
+          href: "/cases/" + caseReference + "/financial-eligibility/change/dependants",
+          text: t('common.change')
+        }
+      ]
+    }
+  },
   rows: [
-    [
-      { text: t("common.financialEligibility.income.partnerDependantsOld") if financialEligibility.hasPartner else t("common.financialEligibility.income.dependantsOld") },
-      { text: financialEligibility.dependantsOld }
-    ],
-    [
-      { text: t("common.financialEligibility.income.partnerDependantsYoung") if financialEligibility.hasPartner else t("common.financialEligibility.income.dependantsYoung") },
-      { text: financialEligibility.dependantsYoung }
-    ]
+    {
+      label: t("common.financialEligibility.income.partnerDependantsOld") if financialEligibility.hasPartner else t("common.financialEligibility.income.dependantsOld"),
+      key: "dependantsOld"
+    },
+    {
+      label: t("common.financialEligibility.income.partnerDependantsYoung") if financialEligibility.hasPartner else t("common.financialEligibility.income.dependantsYoung"),
+      key: "dependantsYoung"
+    }
   ]
 }) }}
-
-<div>{{ changeDependantsLinkHtml | safe }}</div>
-
