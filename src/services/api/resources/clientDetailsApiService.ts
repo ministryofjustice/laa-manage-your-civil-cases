@@ -4,7 +4,7 @@
  */
 
 import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
-import type { ClientDetailsResponse, ClientDetailsApiResponse, CaseLogsApiResponse, ClientHistoryApiResponse, FinancialEligibilityData, GetFinancialEligibilityApiResponse, ClientDiversityApiResponse } from '#types/api-types.js';
+import type { ClientDetailsResponse, ClientDetailsApiResponse, CaseLogsApiResponse, ClientHistoryApiResponse, FinancialEligibilityData, GetFinancialEligibilityApiResponse, ClientDiversityApiResponse, GetLegalHelpExtractApiResponse } from '#types/api-types.js';
 import { devLog, extractAndLogError } from '#src/scripts/helpers/index.js';
 import { transformClientDetailsItem } from '../transforms/transformClientDetails.js';
 import { transformClientHistoryLogs } from '../transforms/transformClientHistoryLogs.js';
@@ -330,6 +330,35 @@ export async function getFinancialEligibility(axiosMiddleware: AxiosInstanceWrap
   } catch (error) {
     const errorMessage = extractAndLogError(error, 'API error');
     devLog(`Error fetching financial eligibility data: ${errorMessage}`);
+    return {
+      data: null,
+      status: 'error',
+      message: errorMessage,
+    };
+  }
+}
+
+/**
+ * Get Legal help form extract data for a case
+ * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+ * @param {string} caseReference - Case reference number
+ * @returns {Promise<GetLegalHelpExtractApiResponse>} Legal help form extract data or null if error occurs
+ */
+export async function getLegalHelpExtract(axiosMiddleware: AxiosInstanceWrapper, caseReference: string): Promise<GetLegalHelpExtractApiResponse> {
+  try {
+    devLog(`API: GET ${API_PREFIX}/case/${caseReference}/legal_help_form_extract/`);
+    
+    const configuredAxios = configureAxiosInstance(axiosMiddleware);
+    const response = await configuredAxios.get(`${API_PREFIX}/case/${caseReference}/legal_help_form_extract/`);
+    
+    devLog(`API: Get legal help form extract response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+    return {
+      data: transformFinancialEligibilityItem(response.data),
+      status: 'success'
+    };
+  } catch (error) {
+    const errorMessage = extractAndLogError(error, 'API error');
+    devLog(`Error fetching legal help form extract data: ${errorMessage}`);
     return {
       data: null,
       status: 'error',

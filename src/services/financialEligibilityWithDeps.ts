@@ -57,44 +57,6 @@ const MONETARY_FIELDS_PREFIXES = new Set([
 ]);
 
 /**
- * A money field's Forge step code, paired with the raw API field name (used when writing the update
- * payload) and the transformed data field name (used when reading from FinancialEligibilityData).
- */
-interface MoneyFieldMapping {
-    code: string;
-    apiField: string;
-    dataField: string;
-}
-
-// Income fields collected on the "Your income" / "Your partner's income" pages, keyed by API field name under `income`
-const incomeMoneyFields: MoneyFieldMapping[] = [
-    { code: 'earnings', apiField: 'earnings', dataField: 'earnings' },
-    { code: 'self-employment-drawings', apiField: 'self_employment_drawings', dataField: 'selfEmploymentDrawings' },
-    { code: 'income-benefits', apiField: 'benefits', dataField: 'benefits' },
-    { code: 'tax-credits', apiField: 'tax_credits', dataField: 'taxCredits' },
-    { code: 'child-benefit', apiField: 'child_benefits', dataField: 'childBenefit' },
-    { code: 'maintenance-received', apiField: 'maintenance_received', dataField: 'maintenanceReceived' },
-    { code: 'pension-income', apiField: 'pension', dataField: 'pension' },
-    { code: 'other-income', apiField: 'other_income', dataField: 'otherIncome' },
-];
-
-// Deduction fields collected on the "Your income" / "Your partner's income" pages, keyed by API field name under `deductions`
-const deductionsMoneyFields: MoneyFieldMapping[] = [
-    { code: 'income-tax', apiField: 'income_tax', dataField: 'incomeTax' },
-    { code: 'national-insurance', apiField: 'national_insurance', dataField: 'nationalInsurance' },
-    // Collected on the "Your expenses" / "Your partner's expenses" pages, but share the same `you.deductions` /
-    // `partner.deductions` API section as the two fields above, so they reuse the same mapping helpers.
-    { code: 'mortgage', apiField: 'mortgage', dataField: 'mortgage' },
-    { code: 'rent', apiField: 'rent', dataField: 'rent' },
-    { code: 'maintenance-paid', apiField: 'maintenance', dataField: 'maintenance' },
-    { code: 'childcare-costs', apiField: 'childcare', dataField: 'childcare' },
-];
-
-// Unlike the other deduction fields above, the API stores this as a flat pence number rather than a
-// { per_interval_value, interval_period } object, so it needs its own mapping outside deductionsMoneyFields.
-const legalAidContributionsField: MoneyFieldMapping = { code: 'legal-aid-contributions', apiField: 'criminal_legalaid_contributions', dataField: 'criminalContributions' };
-
-/**
  * Utility function to map answer codes to API field names for financial eligibility data
  * @param {string} answerCode - The code of the answer to map
  * @returns {string | null} The corresponding API field name, or null if no mapping exists
@@ -396,6 +358,139 @@ function mapLegalAidContributionsToApiPayload(answers: Record<string, unknown>, 
     return { [legalAidContributionsField.apiField]: Math.round(toNumber(answers[stepCode]) * 100) };
 }
 
+// The shapes/field names of the cla_backend eligibility_check API below have nothing to do with Forge
+// answer codes (see `mapAnswerCodeToApiField` above) - kept separate to avoid confusing the two concerns.
+
+/**
+ * A money field's Forge step code, paired with the raw API field name (used when writing the update
+ * payload) and the transformed data field name (used when reading from FinancialEligibilityData).
+ */
+interface MoneyFieldMapping {
+    code: string;
+    apiField: string;
+    dataField: string;
+}
+
+// Income fields collected on the "Your income" / "Your partner's income" pages, keyed by API field name under `income`
+const incomeMoneyFields: MoneyFieldMapping[] = [
+    { code: 'earnings', apiField: 'earnings', dataField: 'earnings' },
+    { code: 'self-employment-drawings', apiField: 'self_employment_drawings', dataField: 'selfEmploymentDrawings' },
+    { code: 'income-benefits', apiField: 'benefits', dataField: 'benefits' },
+    { code: 'tax-credits', apiField: 'tax_credits', dataField: 'taxCredits' },
+    { code: 'child-benefit', apiField: 'child_benefits', dataField: 'childBenefit' },
+    { code: 'maintenance-received', apiField: 'maintenance_received', dataField: 'maintenanceReceived' },
+    { code: 'pension-income', apiField: 'pension', dataField: 'pension' },
+    { code: 'other-income', apiField: 'other_income', dataField: 'otherIncome' },
+];
+
+// Deduction fields collected on the "Your income" / "Your partner's income" pages, keyed by API field name under `deductions`
+const deductionsMoneyFields: MoneyFieldMapping[] = [
+    { code: 'income-tax', apiField: 'income_tax', dataField: 'incomeTax' },
+    { code: 'national-insurance', apiField: 'national_insurance', dataField: 'nationalInsurance' },
+    // Collected on the "Your expenses" / "Your partner's expenses" pages, but share the same `you.deductions` /
+    // `partner.deductions` API section as the two fields above, so they reuse the same mapping helpers.
+    { code: 'mortgage', apiField: 'mortgage', dataField: 'mortgage' },
+    { code: 'rent', apiField: 'rent', dataField: 'rent' },
+    { code: 'maintenance-paid', apiField: 'maintenance', dataField: 'maintenance' },
+    { code: 'childcare-costs', apiField: 'childcare', dataField: 'childcare' },
+];
+
+// Unlike the other deduction fields above, the API stores this as a flat pence number rather than a
+// { per_interval_value, interval_period } object, so it needs its own mapping outside deductionsMoneyFields.
+const legalAidContributionsField: MoneyFieldMapping = { code: 'legal-aid-contributions', apiField: 'criminal_legalaid_contributions', dataField: 'criminalContributions' };
+
+// Savings API fields are stored as flat pence integers (not `{ per_interval_value, interval_period }`), unlike income/deductions
+const savingsApiFields = ['bank_balance', 'investment_balance', 'asset_balance', 'credit_balance'];
+
+// `specific_benefits` API fields, grouped together when reading benefit-related Forge answers
+const benefitFields = ['universal_credit', 'income_support', 'job_seekers_allowance', 'pension_credit', 'employment_support'];
+
+// Forge step codes (not API field names) for the partner/disputed savings pages, which reuse `savingsApiFields`' API field names under different Forge step codes
+const partnerSavingsFields = ['bank-balance-partner', 'investment-balance-partner', 'asset-balance-partner', 'credit-balance-partner'];
+const disputedSavingsFields = ['bank-balance-disputed', 'investment-balance-disputed', 'asset-balance-disputed', 'credit-balance-disputed'];
+
+// `dependants_old`/`dependants_young` API fields, grouped together for the AC1/AC2 zeroing rules
+const dependantsFields = ['dependants_old', 'dependants_young'];
+
+/**
+ * Builds a fully-zeroed `income` or `deductions` API section, e.g. `{ earnings: { per_interval_value: 0, interval_period: 'per_month' }, ... }`.
+ * @param {MoneyFieldMapping[]} fields - The money fields to zero (incomeMoneyFields or deductionsMoneyFields)
+ * @returns {Record<string, unknown>} The zeroed section
+ */
+function zeroMoneySection(fields: MoneyFieldMapping[]): Record<string, unknown> {
+    return Object.fromEntries(fields.map(({ apiField }) => [apiField, { per_interval_value: 0, interval_period: 'per_month' }]));
+}
+
+/**
+ * Builds a fully-zeroed `savings` API section. Unlike income/deductions, savings fields are flat pence integers.
+ * @returns {Record<string, unknown>} The zeroed savings section
+ */
+function zeroSavingsSection(): Record<string, unknown> {
+    return Object.fromEntries(savingsApiFields.map(field => [field, 0]));
+}
+
+/**
+ * Zeroes a `you`/`partner` section's `income` and `deductions` (and optionally `savings`) in place on the
+ * payload, including the two non-interval fields `self_employed` and `criminal_legalaid_contributions`.
+ * @param {Record<string, unknown>} payload - The API payload to mutate
+ * @param {'you' | 'partner'} personKey - Which payload section to zero
+ * @param {{ includeSavings: boolean }} options - Whether to also zero the `savings` section
+ */
+function zeroPersonMoneySections(payload: Record<string, unknown>, personKey: 'you' | 'partner', { includeSavings }: { includeSavings: boolean }): void {
+    const person = { ...(payload[personKey] as Record<string, unknown> | undefined) };
+    person.income = { ...zeroMoneySection(incomeMoneyFields), self_employed: false };
+    person.deductions = { ...zeroMoneySection(deductionsMoneyFields), criminal_legalaid_contributions: 0 };
+    if (includeSavings) {
+        person.savings = zeroSavingsSection();
+    }
+    payload[personKey] = person;
+}
+
+/**
+ * Applies the "non-required section" defaults expected by cla_backend/CFE Civil: fields hidden from the
+ * user because they're not part of the means assessment (under-18 passported, on a passported benefit, or
+ * no partner) must be sent as zeroed values rather than left as stale/incidental drafts, so completeness
+ * checks and the eligibility calculation behave correctly.
+ * @param {Record<string, unknown>} payload - The API payload built so far by mapAnswersToApiPayload, mutated in place
+ * @param {{ under18Passported: unknown, onPassportedBenefits: unknown, hasPartner: unknown }} gates - The already-computed values that decide which sections to zero
+ */
+export function applyNonRequiredSectionDefaults(payload: Record<string, unknown>, { under18Passported, onPassportedBenefits, hasPartner }: { under18Passported: unknown, onPassportedBenefits: unknown, hasPartner: unknown }): void {
+    // AC1: under-18 passported - finances, income, expenses, benefits, disregards and the over-60 question
+    // are all hidden from the user, so any remaining fields not otherwise zeroed above are sent as null
+    if (under18Passported === true) {
+        zeroPersonMoneySections(payload, 'you', { includeSavings: true });
+        // partner's finances are hidden on check-answers whenever under18Passported, regardless of has_partner
+        zeroPersonMoneySections(payload, 'partner', { includeSavings: true });
+        payload.property_set = [];
+        // cla_backend ignores an explicit null for disputed_savings on PATCH, so zero it like savings instead
+        payload.disputed_savings = zeroSavingsSection();
+        payload.dependants_old = 0;
+        payload.dependants_young = 0;
+        payload.specific_benefits = null;
+        payload.disregards = null;
+        payload.is_you_or_your_partner_over_60 = null;
+        // the partner question is skipped entirely when under18Passported, so default has_partner to null
+        // when it was never answered (a genuine stale yes/no from an earlier path is left untouched)
+        if (hasPartner === undefined) {
+            payload.has_partner = null;
+        }
+    }
+
+    // AC2: on a passported benefit - income and expenses are hidden, and dependants no longer affect eligibility
+    if (onPassportedBenefits === true) {
+        zeroPersonMoneySections(payload, 'you', { includeSavings: false });
+        // partner's income/expenses are hidden on check-answers whenever on_passported_benefits, regardless of has_partner
+        zeroPersonMoneySections(payload, 'partner', { includeSavings: false });
+        payload.dependants_old = 0;
+        payload.dependants_young = 0;
+    }
+
+    // AC3: no partner - the partner's income, deductions and savings are all hidden
+    if (hasPartner === false) {
+        zeroPersonMoneySections(payload, 'partner', { includeSavings: true });
+    }
+}
+
 /**
  * Utility function to map user answers from the Forge journey to the API payload format
  * @param {Record<string, unknown>} answers - The user's answers keyed by step code
@@ -408,12 +503,6 @@ export function mapAnswersToApiPayload(answers: Record<string, unknown>): Record
     const partnerSavings: Record<string, unknown> = {};
     const disputedSavings: Record<string, unknown> = {};
     const disregards: Record<string, boolean> = {};
-
-    const benefitFields = ['universal_credit', 'income_support', 'job_seekers_allowance', 'pension_credit', 'employment_support'];
-    const savingsFields = ['bank_balance', 'investment_balance', 'asset_balance', 'credit_balance'];
-    const partnerSavingsFields = ['bank-balance-partner', 'investment-balance-partner', 'asset-balance-partner', 'credit-balance-partner'];
-    const disputedSavingsFields = ['bank-balance-disputed', 'investment-balance-disputed', 'asset-balance-disputed', 'credit-balance-disputed'];
-    const dependantsFields = ['dependants_old', 'dependants_young'];
 
     for (const [answerCode, answer] of Object.entries(answers)) {
         const apiField = mapAnswerCodeToApiField(answerCode);
@@ -434,7 +523,7 @@ export function mapAnswersToApiPayload(answers: Record<string, unknown>): Record
                 partnerSavings[apiField] = Math.round(toNumber(value) * 100);
             } else if (disputedSavingsFields.includes(answerCode)) {
                 disputedSavings[apiField] = Math.round(toNumber(value) * 100);
-            } else if (savingsFields.includes(apiField)) {
+            } else if (savingsApiFields.includes(apiField)) {
                 savings[apiField] = Math.round(toNumber(value) * 100);
             } else if (dependantsFields.includes(apiField)) {
                 payload[apiField] = Math.round(toNumber(value));
@@ -508,6 +597,12 @@ export function mapAnswersToApiPayload(answers: Record<string, unknown>): Record
 
     // Default `under_18_passported` to false unless conditions met
     payload.under_18_passported = payload.is_you_under_18 === true && payload.under_18_receive_regular_payment === false && payload.under_18_has_valuables === false;
+
+    applyNonRequiredSectionDefaults(payload, {
+        under18Passported: payload.under_18_passported,
+        onPassportedBenefits: payload.on_passported_benefits,
+        hasPartner: payload.has_partner,
+    });
 
     return payload;
 }
