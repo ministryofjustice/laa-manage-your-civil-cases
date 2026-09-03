@@ -25,7 +25,7 @@ export async function getLegalHelpForm(req: Request, res: Response, next: NextFu
   
 
   try {
-    res.render('case_details/legal-help-form.njk', {
+    res.render('case_details/legal_help_form/legal-help-form.njk', {
       caseReference,
       client: req.clientData,
       errorState: {
