@@ -1,6 +1,6 @@
 
 import { test, expect } from '../fixtures/index.js';
-import { setupAuth, logout, assertCaseDetailsHeaderPresent, expectPropertyTableRows, expectCaptionTableRows } from '../utils/index.js';
+import { setupAuth, logout, assertCaseDetailsHeaderPresent, expectPropertyTableRows, expectCaptionTableRows, assertSummaryCardData, assertSummaryCardState } from '../utils/index.js';
 import { ClientDetailsPage } from '../pages/index.js';
 
 test.describe('Details tab', () => {
@@ -36,28 +36,25 @@ test.describe('Details tab', () => {
     // Assert the URL has change to financial eligibility tab
     await expect(page).toHaveURL(/financial-eligibility/);
 
-    // Assert the 'About you' header is visible
-    await expect(page.getByText('About you')).toBeVisible();
-    // Assert the 'Benefits' header is visible
-    await expect(page.locator('caption').filter({ hasText: 'Benefits' })).toBeVisible();
-
-    // Assert the correct data is displayed in the about you section
-    await expectCaptionTableRows(page, 'About you', {
+    // Assert the 'About you' summary card is visible with data
+    await assertSummaryCardState(page, { cardId: 'About you', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-1922-1879/financial-eligibility/change' });
+    // Assert the data in 'About you' summary card is correct
+    await assertSummaryCardData(page, 'About you', {
       'Are you aged 17 or under?': 'No',
       'Do you have a partner?': 'No',
       'Are you aged 60 or over?': 'No'
     });
-    // Assert the correct data is displayed in the benefits section
-    await expectCaptionTableRows(page, 'Benefits', {
+
+    // Assert the 'Benefits' summary card is visible with data
+    await assertSummaryCardState(page, { cardId: 'Benefits', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-1922-1879/financial-eligibility/change/benefits' });
+    // Assert the data in 'Benefits' summary card is correct
+    await assertSummaryCardData(page, 'Benefits', {
       'Universal Credit': "Yes",
       'Income Support': 'No',
       'Income-based Job Seekers Allowance': 'Yes',
       'Guarantee State Pension Credit': 'No',
       'Income-related Employment and Support Allowance': 'No'
     });
-    // Assert the change links are visible.
-    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
   });
 
   test('should display no for About You data when assessment does not exist', async ({ page }) => {
@@ -72,23 +69,25 @@ test.describe('Details tab', () => {
     // Verify header information
     await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party'] });
 
-    // Assert the correct data is displayed in the about you section
-    await expectCaptionTableRows(page, 'About you', {
+    // Assert the 'About you' summary card is visible with data
+    await assertSummaryCardState(page, { cardId: 'About you', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-7755-4557/financial-eligibility/change' });
+    // Assert the data in 'About you' summary card is correct
+    await assertSummaryCardData(page, 'About you', {
       'Are you aged 17 or under?': 'No',
       'Do you have a partner?': 'No',
       'Are you aged 60 or over?': 'No'
     });
-    // Assert the correct data is displayed in the benefits section
-    await expectCaptionTableRows(page, 'Benefits', {
+
+    // Assert the 'Benefits' summary card is visible with data
+    await assertSummaryCardState(page, { cardId: 'Benefits', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-7755-4557/financial-eligibility/change/benefits' });
+    // Assert the data in 'Benefits' summary card is correct
+    await assertSummaryCardData(page, 'Benefits', {
       'Universal Credit': "No",
       'Income Support': 'No',
       'Income-based Job Seekers Allowance': 'No',
       'Guarantee State Pension Credit': 'No',
       'Income-related Employment and Support Allowance': 'No'
     });
-    // Assert the change links are visible.
-    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
   });
 });
 
@@ -607,16 +606,14 @@ test.describe('Conditional logic views', () => {
     await expect(page.getByRole('tab', { name: 'Income' })).toHaveCount(0);
     await expect(page.getByRole('tab', { name: 'Expenses' })).toHaveCount(0);
 
-    const aboutYouTable = page.getByRole('table').first();
-
-    await expect(aboutYouTable).toContainText('Are you aged 17 or under?');
-    await expect(aboutYouTable).toContainText('Yes');
-
-    await expect(aboutYouTable).toContainText('Do you receive any money on a regular basis?');
-    await expect(aboutYouTable).toContainText('No');
-
-    await expect(aboutYouTable).toContainText('Do you have any savings, items of value or investments totalling £2500 or more?');
-    await expect(aboutYouTable).toContainText('No');
+    // Assert the 'About you' header is visible
+    await assertSummaryCardState(page, { cardId: 'About you', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-6667-9089/financial-eligibility/change' });
+    // Assert the correct data is displayed in the about you section
+    await assertSummaryCardData(page, 'About you', {
+      'Are you aged 17 or under?': 'Yes',
+      'Do you receive any money on a regular basis?': 'No',
+      'Do you have any savings, items of value or investments totalling £2500 or more?': 'No'
+    });
   });
 
   test('when client is under 18 and gets regular payments has partner and over 60 questions are shown', async ({ page }) => {
@@ -628,26 +625,24 @@ test.describe('Conditional logic views', () => {
 
     await expect(page).toHaveURL(/financial-eligibility/);
 
-    // Assert the 'About you' header is visible
-    await expect(page.getByText('About you')).toBeVisible();
-    // Assert the 'Benefits' header is visible
-    await expect(page.locator('caption').filter({ hasText: 'Benefits' })).toBeVisible();
-
     // Assert the financial eligibility tabs are visible
     await expect(page.getByRole('tab', { name: 'Details' })).toBeVisible();
     await expect(page.getByRole('tab', { name: 'Finances' })).toBeVisible();
     await expect(page.getByRole('tab', { name: 'Income' })).toBeVisible();
     await expect(page.getByRole('tab', { name: 'Expenses' })).toBeVisible();
 
-    const aboutYouTable = page.getByRole('table').first();
-
-    // Assert the correct data is displayed in the about you section
-    await expectCaptionTableRows(page, 'About you', {
+    // Assert the 'About you' summary card is visible
+    await assertSummaryCardState(page, { cardId: 'About you', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-1854-6521/financial-eligibility/change' });
+    // Assert the correct data is displayed in the about you summary card
+    await assertSummaryCardData(page, 'About you', {
       'Are you aged 17 or under?': 'Yes',
       'Do you receive any money on a regular basis?': 'Yes',
       'Do you have a partner?': 'No',
       'Are you aged 60 or over?': 'No'
     });
+
+    // Assert the 'Benefits' summary card is visible
+    await assertSummaryCardState(page, { cardId: 'Benefits', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-1854-6521/financial-eligibility/change' });
   });
 
   test('when client is under 18 and doesnt get regular payments but has valuables is true has partner and over 60 questions are shown', async ({ page }) => {
@@ -659,27 +654,25 @@ test.describe('Conditional logic views', () => {
 
     await expect(page).toHaveURL(/financial-eligibility/);
 
-    // Assert the 'About you' header is visible
-    await expect(page.getByText('About you')).toBeVisible();
-    // Assert the 'Benefits' header is visible
-    await expect(page.locator('caption').filter({ hasText: 'Benefits' })).toBeVisible();
-
     // Assert the financial eligibility tabs are visible
     await expect(page.getByRole('tab', { name: 'Details' })).toBeVisible();
     await expect(page.getByRole('tab', { name: 'Finances' })).toBeVisible();
     await expect(page.getByRole('tab', { name: 'Income' })).toBeVisible();
     await expect(page.getByRole('tab', { name: 'Expenses' })).toBeVisible();
 
-    const aboutYouTable = page.getByRole('table').first();
-
-    // Assert the correct data is displayed in the about you section
-    await expectCaptionTableRows(page, 'About you', {
+    // Assert the 'About you' summary card is visible
+    await assertSummaryCardState(page, { cardId: 'About you', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-2211-4466/financial-eligibility/change' });
+    // Assert the correct data is displayed in the about you summary card
+    await assertSummaryCardData(page, 'About you', {
       'Are you aged 17 or under?': 'Yes',
       'Do you receive any money on a regular basis?': 'No',
       'Do you have any savings, items of value or investments totalling £2500 or more?': 'Yes',
       'Do you have a partner?': 'No',
       'Are you aged 60 or over?': 'No'
     });
+
+    // Assert the 'Benefits' summary card is visible
+    await assertSummaryCardState(page, { cardId: 'Benefits', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-2211-4466/financial-eligibility/change' });
   });
 
   test('when on_passported_benefits = true only details and finances tabs are shown', async ({ page }) => {
@@ -704,11 +697,12 @@ test.describe('Conditional logic views', () => {
     await expect(page.getByRole('tab', { name: 'Expenses' })).toHaveCount(0);
 
     // Details tab content
-    const aboutYouTable = page.getByRole('table').first();
-
-    await expect(aboutYouTable).toContainText('Are you aged 17 or under?');
-    await expect(aboutYouTable).toContainText('Do you have a partner?');
-    await expect(aboutYouTable).toContainText('Are you aged 60 or over?');
+    await assertSummaryCardState(page, { cardId: 'About you', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-9173-4826/financial-eligibility/change' });
+    await assertSummaryCardData(page, 'About you', {
+      'Are you aged 17 or under?': 'No',
+      'Do you have a partner?': 'No',
+      'Are you aged 60 or over?': 'No'
+    });
 
     // Benefits table
     await expect(page.getByText('Universal Credit')).toBeVisible();
@@ -835,18 +829,14 @@ test.describe('Conditional logic views', () => {
     // Assert the URL has change to financial eligibility tab
     await expect(page).toHaveURL(/financial-eligibility/);
 
-    // Assert the 'About you' header is visible
-    await expect(page.getByText('About you')).toBeVisible();
-
-    // Assert the correct data is displayed in the about you section
-    await expectCaptionTableRows(page, 'About you', {
+    // Assert the 'About you' summary card is visible
+    await assertSummaryCardState(page, { cardId: 'About you', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change' });
+    // Assert the correct data is displayed in the about you summary card
+    await assertSummaryCardData(page, 'About you', {
       'Are you aged 17 or under?': 'No',
       'Do you have a partner?': 'Yes',
       'Are you or your partner aged 60 or over?': 'No'
     });
-
-    // Assert the edit assessment button is visible.
-    await expect(page.getByRole('button', { name: 'Change' })).toBeVisible();
   });
 
   test('when there is a partner the property share question changes ', async ({ page }) => {
