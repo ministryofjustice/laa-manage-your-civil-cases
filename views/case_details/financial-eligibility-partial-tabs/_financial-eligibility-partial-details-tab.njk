@@ -17,42 +17,49 @@
 {% set incomeSupport = "Yes" if financialEligibility.specificBenefits.incomeSupport else "No"%}
 
 {% set constructedData = {
-  age17OrUnder: under17Text,
-  hasPartner: partnerText,
-  isOver60: over60Text
+  under17Text: "Yes" if financialEligibility.isUnder17 else "No",
+  under18RegularPayment: "Yes" if financialEligibility.under18RegularPayment else "No",
+  under18HasValuables: "Yes" if financialEligibility.under18HasValuables else "No",
+  partnerText: "Yes" if financialEligibility.hasPartner else "No",
+  over60Text: "Yes" if financialEligibility.isOver60 else "No",
+  universalCredit: "Yes" if financialEligibility.specificBenefits.universalCredit else "No",
+  pensionCredit: "Yes" if financialEligibility.specificBenefits.pensionCredit else "No",
+  jobSeekers: "Yes" if financialEligibility.specificBenefits.jobSeekers else "No",
+  employmentSupport: "Yes" if financialEligibility.specificBenefits.employmentSupport else "No",
+  incomeSupport: "Yes" if financialEligibility.specificBenefits.incomeSupport else "No"
 } %}
 
 {% set partnerAndAgeRows = [
-  [
-    { text: t("common.financialEligibility.details.hasPartner") },
-    { text: partnerText }
-  ],
-  [
-    { text: ( t("common.financialEligibility.details.partnerAge60OrOver") if financialEligibility.hasPartner else t("common.financialEligibility.details.age60OrOver")) },
-    { text: over60Text }
-  ]
+  {
+    label: t("common.financialEligibility.details.hasPartner"),
+    key: "partnerText"
+  },
+  {
+    label: ( t("common.financialEligibility.details.partnerAge60OrOver") if financialEligibility.hasPartner else t("common.financialEligibility.details.age60OrOver")),
+    key: "over60Text"
+  }
 ] %}
 
 {% set rows = [
-  [
-    { text: t("common.financialEligibility.details.age17OrUnder") }, 
-    { text: under17Text }
-  ]
+  {
+    label: t("common.financialEligibility.details.age17OrUnder"),
+    key: "under17Text"
+  }
 ] %}
 
 {% if financialEligibility.isUnder17 %}
   {% set rows = rows.concat([
-    [
-      { text: t("common.financialEligibility.details.under18RegularPayment") }, 
-      { text: under18RegularPayment }
-    ]
+    {
+      label: t("common.financialEligibility.details.under18RegularPayment"),
+      key: "under18RegularPayment"
+    }
   ]) %}
   {% if not financialEligibility.under18RegularPayment %}
     {% set rows = rows.concat([ 
-      [
-        { text: t("common.financialEligibility.details.under18HasValuables") }, 
-        { text: under18HasValuables }
-      ]
+      {
+        label: t("common.financialEligibility.details.under18HasValuables"),
+        key: "under18HasValuables"
+      }
     ]) %} 
   {% endif %}
   {% if financialEligibility.under18HasValuables or financialEligibility.under18RegularPayment %}
@@ -72,26 +79,13 @@
     actions: {
       items: [
         {
-          href: "/cases/{{ caseReference }}/financial-eligibility/change",
+          href: "/cases/" + caseReference + "/financial-eligibility/change",
           text: t('common.change')
         }
       ]
     }
   },
-  rows: [
-    {
-      label: t("common.financialEligibility.details.age17OrUnder"),
-      key: "age17OrUnder"
-    },
-    {
-      label: t("common.financialEligibility.details.hasPartner"),
-      key: "hasPartner"
-    },
-    {
-      label: ( t("common.financialEligibility.details.partnerAge60OrOver") if financialEligibility.hasPartner else t("common.financialEligibility.details.age60OrOver")),
-      key: "isOver60"
-    }
-  ]
+  rows: rows
 }) }}
 
 
