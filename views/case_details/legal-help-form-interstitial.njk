@@ -32,8 +32,8 @@
         {{ govukCharacterCount({
           id: "evidence",
           name: "evidence",
+          rows: 10,
           maxlength: maxEvidenceLength,
-          threshold: characterThreshold,
           label: {
             text: t('pages.caseDetails.getLegalHelpForm.evidenceLabel')
           },

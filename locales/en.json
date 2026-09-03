@@ -381,7 +381,7 @@
           "closed": "Closed",
           "completed": "Completed"
         },
-        "generateLegalHelpForm": "Generate legal help form",
+        "generateLegalHelpForm": "Get legal help form",
         "reopenCase": "Reopen case",
         "addThirdPartyContact": "Add third party contact",
         "addClientSupportNeed": "Add client support need"

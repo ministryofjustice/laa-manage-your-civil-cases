@@ -6,7 +6,7 @@ import type { LegalHelpFormAnswers } from '#src/scripts/helpers/sessionHelpers.j
 import { HTTP } from '#src/services/api/base/constants.js';
 import config from '#config.js';
 
-const { MAX_LEGAL_HELP_FORM_EVIDENCE_LENGTH, CHARACTER_THRESHOLD }: { MAX_LEGAL_HELP_FORM_EVIDENCE_LENGTH: number; CHARACTER_THRESHOLD: number } = config;
+const { MAX_LEGAL_HELP_FORM_EVIDENCE_LENGTH }: { MAX_LEGAL_HELP_FORM_EVIDENCE_LENGTH: number } = config;
 
 const LEGAL_HELP_FORM_SESSION_KEY = 'legalHelpFormAnswers';
 
@@ -63,7 +63,6 @@ export function getLegalHelpFormInterstitial(req: Request, res: Response, next: 
       currentEvidence: '',
       currentAdditionalCircumstances: [],
       maxEvidenceLength: MAX_LEGAL_HELP_FORM_EVIDENCE_LENGTH,
-      characterThreshold: CHARACTER_THRESHOLD,
       circumstanceItems: buildCircumstanceItems(),
       csrfToken: getCsrfToken(req)
     });
@@ -121,7 +120,6 @@ export async function submitLegalHelpFormInterstitial(req: Request, res: Respons
         currentEvidence,
         currentAdditionalCircumstances,
         maxEvidenceLength: MAX_LEGAL_HELP_FORM_EVIDENCE_LENGTH,
-        characterThreshold: CHARACTER_THRESHOLD,
         circumstanceItems: buildCircumstanceItems(),
         csrfToken: getCsrfToken(req),
         error: {
