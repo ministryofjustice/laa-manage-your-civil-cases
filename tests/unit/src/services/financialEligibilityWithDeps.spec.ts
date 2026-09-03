@@ -21,6 +21,7 @@ const zeroedIncome = {
   earnings: { per_interval_value: 0, interval_period: 'per_month' },
   self_employment_drawings: { per_interval_value: 0, interval_period: 'per_month' },
   benefits: { per_interval_value: 0, interval_period: 'per_month' },
+  child_benefits: { per_interval_value: 0, interval_period: 'per_month' },
   tax_credits: { per_interval_value: 0, interval_period: 'per_month' },
   maintenance_received: { per_interval_value: 0, interval_period: 'per_month' },
   pension: { per_interval_value: 0, interval_period: 'per_month' },
