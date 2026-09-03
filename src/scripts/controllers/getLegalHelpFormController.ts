@@ -9,7 +9,7 @@ import { buildCategoryItems } from '../helpers/dataTransformers.js';
 const { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH, CHARACTER_THRESHOLD }: { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH: number; CHARACTER_THRESHOLD: number } = config;
 
 /**
- * Render the "change category of law" form
+ * Render the legal help form preview
  * @param {Request} req Express request object
  * @param {Response} res Express response object
  * @param {NextFunction} next Express next function
@@ -22,35 +22,11 @@ export async function getLegalHelpForm(req: Request, res: Response, next: NextFu
     return;
   }
 
+  
+
   try {
-    devLog(`Rendering change category form for case: ${caseReference}`);
-
-    const provider = await fetchProviderNameAndDetail(req, caseReference);
-
-    let categoryItems: { value: string; text: string; selected: boolean }[] = [];
-
-    // Get the current category name and use this to get the code of the current category to remove from the list
-    const currentCategoryName = (req.clientData as { category?: string })?.category;
-    const currentCategoryCode = provider.law_category.find(
-      c => c.name === currentCategoryName
-    )?.code;
-
-    // Build the category items list
-    categoryItems = await buildCategoryItems({
-      choices: provider.law_category,
-      selectedCategory: undefined,
-      placeholderText: t('pages.caseDetails.changeCategoryOfLaw.categoryPlaceholder'),
-      excludeCode: currentCategoryCode
-    });
-
-    if (categoryItems.length <= 1) { 
-      return res.redirect(`/cases/${caseReference}/client-details`);
-    }
-
-    res.render('case_details/legal_help_form/legal-help-form.njk', {
+    res.render('case_details/legal-help-form.njk', {
       caseReference,
-      provider,
-      categoryItems,
       client: req.clientData,
       errorState: {
         hasErrors: false,
