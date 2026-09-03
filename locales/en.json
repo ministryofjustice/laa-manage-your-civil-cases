@@ -204,6 +204,8 @@
         "under18HasValuables": "Do you have any savings, items of value or investments totalling £2500 or more?"
       },
       "finances": {
+        "propertiesHeading": "Properties",
+        "propertiesAdded": "Properties added",
         "propertyValue":"What is the current market value of the property?",
         "mortgageLeft":"How much is left to pay on the mortgage?",
         "mainProperty":"Is this your main property?",

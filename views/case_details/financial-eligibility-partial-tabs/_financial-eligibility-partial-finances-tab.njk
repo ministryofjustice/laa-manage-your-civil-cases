@@ -1,4 +1,5 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "components/summaryCardComponent.njk" import summaryCardComponent %}
 
 {% set changePropertiesLink = "/cases/" + caseReference + "/financial-eligibility/change/client-partner-properties" if financialEligibility.hasPartner else "/cases/" + caseReference + "/financial-eligibility/change/properties" %}
 
@@ -35,59 +36,98 @@
 <h2 class="govuk-heading-m">Properties</h2>
 {% if financialEligibility.propertySet and financialEligibility.propertySet.length %}
   {% for property in financialEligibility.propertySet %}
+    {% set constructedData = {
+      value: property.value | formatFinancialData,
+      mortgageLeft: property.mortgageLeft | formatFinancialData,
+      mainProperty: "Yes" if property.main else "No",
+      partnerPropertyShare: property.share + "%",
+      disputed: "Yes" if property.disputed else "No"
+    } %}
+
     {# Loop function will only work up to 22nd property - it is assumed if a client has 22 properties they are likely ineligible for support #}
     <h3 class="govuk-heading-s">
       {% if loop.index == 1 %}
-        1st property
+        {% set title = "1st property" %}
       {% elseif loop.index == 2 %}
-        2nd property
+        {% set title = "2nd property" %}
       {% elseif loop.index == 3 %}
-        3rd property
+        {% set title = "3rd property" %}
       {% else %}
-        {{ loop.index }}th property
+        {% set title = loop.index ~ "th property" %}
       {% endif %}
     </h3>
 
     {% set propertyRows = [
-      [
-        { text: t("common.financialEligibility.finances.propertyValue") },
-        { text: (property.value | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.finances.mortgageLeft") },
-        { text: (property.mortgageLeft | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.finances.mainProperty") },
-        { text: "Yes" if property.main else "No" }
-      ],
-      [
-        { text: t("common.financialEligibility.finances.partnerPropertyShare") if financialEligibility.hasPartner else t("common.financialEligibility.finances.propertyShare") },
-        { text: property.share + "%" }
-      ]
+      {
+        label: t("common.financialEligibility.finances.propertyValue"),
+        key: 'value'
+      },
+      {
+        label: t("common.financialEligibility.finances.mortgageLeft"),
+        key: 'mortgageLeft'
+      },
+      {
+        label: t("common.financialEligibility.finances.mainProperty"),
+        key: 'mainProperty'
+      },
+      {
+        label: t("common.financialEligibility.finances.partnerPropertyShare") if financialEligibility.hasPartner else t("common.financialEligibility.finances.propertyShare"),
+        key: 'partnerPropertyShare'
+      }
     ] %}
     
     {% if isDisputedCategory %}
       {% set propertyRows = propertyRows.concat([
-        [
-          { text: t("common.financialEligibility.finances.disputedProperty") },
-          { text: "Yes" if property.disputed else "No" }
-        ]
+        {
+          label: t("common.financialEligibility.finances.disputedProperty"),
+          key: 'disputed'
+        }
       ]) %}
     {% endif %}
 
-    {{ govukTable({
-      firstCellIsHeader: true,
+    {{ summaryCardComponent({
       classes: "eligibility-table",
+      data: constructedData,
+      card: {
+        title: {
+          text: title
+        },
+        actions: {
+          items: [
+            {
+              href: changePropertiesLink,
+              text: t("common.change")
+            }
+          ]
+        }
+      },
       rows: propertyRows
     }) }}
-
-    <div>{{ changePropertiesLinkHtml | safe }}</div>
-
   {% endfor %}
 {% else %}
-  <p class="govuk-body">No property data</p>
-  <div>{{ changePropertiesLinkHtml | safe }}</div>
+  {{ summaryCardComponent({
+    classes: "eligibility-table",
+    data: {noPropertiesText: t("common.none")},
+    card: {
+      title: {
+        text: t("common.financialEligibility.finances.propertiesHeading")
+      },
+      actions: {
+        items: [
+          {
+            href: changePropertiesLink,
+            text: t("common.change")
+          }
+        ]
+      }
+    },
+    rows: [
+      {
+        label: t("common.financialEligibility.finances.propertiesAdded"),
+        key: "noPropertiesText"
+      }
+    ]
+  }) }}
 {% endif %}
 
 {% set savingsHeading = t("common.financialEligibility.finances.undisputedSavings") if isDisputedCategory else t("common.financialEligibility.finances.yourSavings") %}
