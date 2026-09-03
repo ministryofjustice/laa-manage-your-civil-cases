@@ -460,6 +460,7 @@ export interface FinancialEligibilityData {
   passportedBenefits: boolean;
   under18passportedBenefits: boolean;
   category: string;
+  asylumSupport?: boolean;
 }
 
 /**
@@ -469,47 +470,6 @@ export interface GetFinancialEligibilityApiResponse {
   data: FinancialEligibilityData | null;
   status: 'success' | 'error';
   message?: string;
-}
-
-/**
- * Interface for Legal help form extract data
- */
-export interface LegalHelpExtractData {
-  reference: string;
-  hasPartner: boolean;
-  isUnder17: boolean;
-  isOver60: boolean;
-  AsylumSupport: boolean;
-
-  specificBenefits: {
-    pensionCredit: boolean;
-    jobSeekers: boolean;
-    employmentSupport: boolean;
-    universalCredit: boolean;
-    incomeSupport: boolean;
-  }
-  propertySet: PropertySetData[]
-  clientData: {
-    income: IncomeData,
-    savings: SavingsData | null,
-    deductions: DeductionData
-  }
-  partnerData: {
-    partnerIncome: IncomeData,
-    partnerSavings: SavingsData | null,
-    partnerDeductions: DeductionData
-  }
-  disputedSavings: SavingsData | null ;
-  disregards: string[];
-  dependantsYoung: number;
-  dependantsOld: number;
-  under18RegularPayment?: boolean;
-  under18HasValuables?: boolean;
-  state: String;
-  hasPassportedProceedingsLetter: boolean;
-  passportedBenefits: boolean;
-  under18passportedBenefits: boolean;
-  category: string;
 }
 
 /**
