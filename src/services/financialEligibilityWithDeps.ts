@@ -72,6 +72,7 @@ const incomeMoneyFields: MoneyFieldMapping[] = [
     { code: 'self-employment-drawings', apiField: 'self_employment_drawings', dataField: 'selfEmploymentDrawings' },
     { code: 'income-benefits', apiField: 'benefits', dataField: 'benefits' },
     { code: 'tax-credits', apiField: 'tax_credits', dataField: 'taxCredits' },
+    { code: 'child-benefit', apiField: 'child_benefits', dataField: 'childBenefit' },
     { code: 'maintenance-received', apiField: 'maintenance_received', dataField: 'maintenanceReceived' },
     { code: 'pension-income', apiField: 'pension', dataField: 'pension' },
     { code: 'other-income', apiField: 'other_income', dataField: 'otherIncome' },

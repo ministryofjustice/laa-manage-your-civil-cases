@@ -476,6 +476,10 @@ export const incomeSummaryList = GovUKSummaryList({
       value: { text: Format('%1 (%2)', Answer('tax-credits').pipe(Transformers.Currency()), frequencyText('tax-credits-frequency')) },
     },
     {
+      key: { text: 'Child benefit (for household)' },
+      value: { text: Format('%1 (%2)', Answer('child-benefit').pipe(Transformers.Currency()), frequencyText('child-benefit-frequency')) },
+    },
+    {
       key: { text: 'Maintenance received' },
       value: { text: Format('%1 (%2)', Answer('maintenance-received').pipe(Transformers.Currency()), frequencyText('maintenance-received-frequency')) },
     },

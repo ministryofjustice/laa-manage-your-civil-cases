@@ -11,6 +11,7 @@ import {
   maintenanceReceivedRow,
   pensionIncomeRow,
   otherIncomeRow,
+  childBenefitRow,
 } from './incomeBlock.js'
 import { FinancialEligibilityEffects } from '../effects.js'
 import { step, type StepDefinition } from '../authoring.js'
@@ -34,6 +35,7 @@ export const incomeStep: StepDefinition = step({
     ...selfEmploymentDrawingsRow,
     ...incomeBenefitsRow,
     ...taxCreditsRow,
+    ...childBenefitRow,
     ...maintenanceReceivedRow,
     ...pensionIncomeRow,
     ...otherIncomeRow,
