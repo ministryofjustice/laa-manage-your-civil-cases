@@ -393,22 +393,19 @@ test.describe('Expenses tab', () => {
     // Assert the case details header is present
     await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
     // Assert the your income heading is visible. 
-    await expect(page.locator('caption').filter({ hasText: 'Your expenses' })).toBeVisible();
+    await assertSummaryCardState(page, { cardId: 'Your expenses', emptyText: 'No expenses data', hasData: true, changeHref: '/cases/PC-1922-1879/financial-eligibility/change/your-expenses' });
 
     // Assert the correct data is displayed in the expenses table.
-    await expectCaptionTableRows(page, 'Your expenses', {
-      'How much do you pay for your mortgage?': '£200 per month',
-      'How much do you pay for rent? The amount entered should not include any housing benefit or payment for bills': '£0 per month',
-      'How much maintenance have you paid during the last calendar month?': '£50 per month',
-      'Do you have any childcare costs because of work or study? If so, how much?': '£20 per month',
-      'Are you currently paying towards legal aid for criminal defence? If so, how much have you paid in the last calendar month\\\?': '£10 per month'
+    await assertSummaryCardData(page, 'Your expenses', {
+      'How much do you pay for your mortgage\\\?': '£200 per month',
+      'How much do you pay for rent\\\? The amount entered should not include any housing benefit or payment for bills': '£0 per month',
+      'How much maintenance have you paid during the last calendar month\\\?': '£50 per month',
+      'Do you have any childcare costs because of work or study\\\? If so, how much\\\?': '£20 per month',
+      'Are you currently paying towards legal aid for criminal defence\\\? If so, how much have you paid in the last calendar month\\\?': '£10 per month'
     });
-
-    // Assert the change links are visible.
-    await expect(page.getByRole('link', { name: 'Change' })).toBeVisible();
   });
 
-  test('should display income tab content with correct data when there is a partner', async ({ page }) => {
+  test('should display expenses tab content with correct data when there is a partner', async ({ page }) => {
     const clientDetails = ClientDetailsPage.forCase(page, 'PC-1869-9154');
     // Navigate to client details page
     await clientDetails.navigate();
@@ -420,29 +417,26 @@ test.describe('Expenses tab', () => {
     await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 August 2025", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'] });
 
     // Assert the your expenses heading is visible. 
-    await expect(page.locator('caption').filter({ hasText: 'Your expenses' })).toBeVisible();
+    await assertSummaryCardState(page, { cardId: 'Your expenses', emptyText: 'No expenses data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/your-expenses' });
     // Assert the your partners expenses heading is visible. 
-    await expect(page.locator('caption').filter({ hasText: "Your partner's expenses" })).toBeVisible();
+    await assertSummaryCardState(page, { cardId: "Your partner's expenses", emptyText: 'No expenses data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/partner-expenses' });
 
     // Assert the correct data is displayed in the expenses table.
-    await expectCaptionTableRows(page, 'Your expenses', {
-      'How much do you pay for your mortgage?': '£350 per month',
-      'How much do you pay for rent? The amount entered should not include any housing benefit or payment for bills': '£250 per month',
-      'How much maintenance have you paid during the last calendar month?': '£20 per month',
-      'Do you have any childcare costs because of work or study? If so, how much?': '£50 per month',
-      'Are you currently paying towards legal aid for criminal defence? If so, how much have you paid in the last calendar month?': '£20 per month'
+    await assertSummaryCardData(page, 'Your expenses', {
+      'How much do you pay for your mortgage\\\?': '£350 per month',
+      'How much do you pay for rent\\\? The amount entered should not include any housing benefit or payment for bills': '£250 per month',
+      'How much maintenance have you paid during the last calendar month\\\?': '£20 per month',
+      'Do you have any childcare costs because of work or study\\\? If so, how much\\\?': '£50 per month',
+      'Are you currently paying towards legal aid for criminal defence\\\? If so, how much have you paid in the last calendar month\\\?': '£20 per month'
     });
     // Assert the correct data is displayed in the expenses table.
-    await expectCaptionTableRows(page, "Your partner's expenses", {
-      'How much does your partner pay for their mortgage?': '£300 per month',
-      'How much does your partner pay for their rent? The amount entered should not include any housing benefit or payment for bills': '£200 per month',
-      'How much maintenance has your partner paid during the last calendar month?': '£40 per month',
-      'Does your partner have any childcare costs because of work or study? If so, how much?': '£30 per month',
-      'Is your partner currently paying towards legal aid for criminal defence? If so, how much has your partner paid in the last calendar month?': '£10 per month'
+    await assertSummaryCardData(page, "Your partner's expenses", {
+      'How much does your partner pay for their mortgage\\\?': '£300 per month',
+      'How much does your partner pay for their rent\\\? The amount entered should not include any housing benefit or payment for bills': '£200 per month',
+      'How much maintenance has your partner paid during the last calendar month\\\?': '£40 per month',
+      'Does your partner have any childcare costs because of work or study\\\? If so, how much\\\?': '£30 per month',
+      'Is your partner currently paying towards legal aid for criminal defence\\\? If so, how much has your partner paid in the last calendar month\\\?': '£10 per month'
     });
-    // Assert the change links are visible.
-    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
   });
 
   test('should display not provided for expenses data when assessment does not exist', async ({ page }) => {
@@ -459,18 +453,16 @@ test.describe('Expenses tab', () => {
     await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party'] });
 
     // Assert the your expenses heading is visible. 
-    await expect(page.locator('caption').filter({ hasText: 'Your expenses' })).toBeVisible();
+    await assertSummaryCardState(page, { cardId: 'Your expenses', emptyText: 'No expenses data', hasData: true, changeHref: '/cases/PC-7755-4557/financial-eligibility/change/your-expenses' });
 
     // Assert the correct data is displayed in the expenses table.
-    await expectCaptionTableRows(page, 'Your expenses', {
-      'How much do you pay for your mortgage?': 'Not provided',
-      'How much do you pay for rent? The amount entered should not include any housing benefit or payment for bills': 'Not provided',
-      'How much maintenance have you paid during the last calendar month?': 'Not provided',
-      'Do you have any childcare costs because of work or study? If so, how much?': 'Not provided',
-      'Are you currently paying towards legal aid for criminal defence? If so, how much have you paid in the last calendar month?': 'Not provided'
+    await assertSummaryCardData(page, 'Your expenses', {
+      'How much do you pay for your mortgage\\\?': 'Not provided',
+      'How much do you pay for rent\\\? The amount entered should not include any housing benefit or payment for bills': 'Not provided',
+      'How much maintenance have you paid during the last calendar month\\\?': 'Not provided',
+      'Do you have any childcare costs because of work or study\\\? If so, how much\\\?': 'Not provided',
+      'Are you currently paying towards legal aid for criminal defence\\\? If so, how much have you paid in the last calendar month\\\?': 'Not provided'
     });
-    // Assert the change links are visible.
-    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
   });
 });
 
