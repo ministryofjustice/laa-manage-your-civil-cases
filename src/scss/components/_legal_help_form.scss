@@ -1,0 +1,18 @@
+.laa-branding {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.laa-branding__line {
+  width: 1px;
+  margin-right: 2px;
+  background-color: #080606;
+  height: 35px; /* same height as crest */
+}
+
+.laa-branding__text {
+  font-size: 1.1rem;
+  font-weight: 500;
+  line-height: 1;
+}
