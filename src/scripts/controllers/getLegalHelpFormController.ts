@@ -31,14 +31,3 @@ export async function getLegalHelpForm(req: Request, res: Response, next: NextFu
       legalHelpExtract,
     });
 }
-
-/**
- * Handle "change category of law" form submission
- * @param {Request} req Express request object
- * @param {Response} res Express response object
- * @param {NextFunction} next Express next function
- * @returns {Promise<void>} Redirect to client details page
- */
-export async function submitLegalHelpForm(req: Request, res: Response, next: NextFunction): Promise<void> {
-  
-}
