@@ -1,0 +1,71 @@
+{% extends "case_details/_base-case-change.njk" %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "components/errorSummaryComponent.njk" import errorSummary %}
+{% from "components/alertBannerComponent.njk" import alertBannerComponent %}
+
+{% block pageTitle %}{{ t('pages.caseDetails.getLegalHelpForm.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}{% endblock %}
+
+{% block errorSummaryOrAlert %}
+  {% if error %}
+    {{ errorSummary(error.errorSummaryList) }}
+  {% else %}
+    {{ alertBannerComponent(client) }}
+  {% endif %}
+{% endblock %}
+
+{% block formContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% if error %}
+        {% set errorMessages = {
+          evidence: {text: error.inputErrors.evidence } if error.inputErrors.evidence
+        } %}
+      {% endif %}
+
+      <form method="post" action="/cases/{{ caseReference }}/get-legal-help-form">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+        <h2 class="govuk-heading-m">{{ t('pages.caseDetails.getLegalHelpForm.heading') }}</h2>
+
+        {{ govukCharacterCount({
+          id: "evidence",
+          name: "evidence",
+          maxlength: maxEvidenceLength,
+          threshold: characterThreshold,
+          label: {
+            text: t('pages.caseDetails.getLegalHelpForm.evidenceLabel')
+          },
+          value: currentEvidence,
+          errorMessage: errorMessages.evidence if error
+        }) }}
+
+        <h2 class="govuk-heading-m">{{ t('pages.caseDetails.getLegalHelpForm.aboutThisCaseHeading') }}</h2>
+
+        {{ govukCheckboxes({
+          name: "additionalCircumstances",
+          values: currentAdditionalCircumstances,
+          fieldset: {
+            legend: {
+              text: t('pages.caseDetails.getLegalHelpForm.additionalCircumstancesLegend'),
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--s"
+            }
+          },
+          hint: {
+            text: t('pages.caseDetails.getLegalHelpForm.additionalCircumstancesHint')
+          },
+          items: circumstanceItems
+        }) }}
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: t('pages.caseDetails.getLegalHelpForm.createButton')
+          }) }}
+          <a class="govuk-link" href="/cases/{{ caseReference }}/client-details">{{ t('common.cancel') }}</a>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
