@@ -381,7 +381,7 @@
           "closed": "Closed",
           "completed": "Completed"
         },
-        "generateLegalHelpForm": "Generate legal help form",
+        "generateLegalHelpForm": "Get legal help form",
         "reopenCase": "Reopen case",
         "addThirdPartyContact": "Add third party contact",
         "addClientSupportNeed": "Add client support need"
@@ -484,7 +484,30 @@
         "bullet1": "check the details we have filled in from the telephone assessment are correct and change them if they are not",
         "bullet2": "attach any evidence requested and return the form to us",
         "bullet3": "sign the declaration"
-      }
+      },
+      "getLegalHelpForm": {
+        "pageTitle": "Get legal help form – {caseReference} – {serviceName} – GOV.UK",
+        "heading": "Legal help form",
+        "evidenceLabel": "What evidence do you require from the client? (optional)",
+        "aboutThisCaseHeading": "About this case",
+        "additionalCircumstancesLegend": "Do any additional circumstances apply to this case?",
+        "additionalCircumstancesHint": "Select all that apply",
+        "circumstances": {
+          "ecf": {
+            "label": "This is an application for Exceptional Case Funding (ECF)",
+            "hint": "For ECF cases you must provide the completed ECF application form."
+          },
+          "acceptedChildOrPatient": {
+            "label": "Accepted an application from a child or patient or someone on their behalf",
+            "hint": "Provide the circumstances justifying this in accordance with the relevant rule in the specification."
+          },
+          "legalHelpSameMatter": {
+            "label": "Provided Legal Help to a client who has already received it on the same matter within the last 6 months",
+            "hint": "Provide the circumstances justifying this in accordance with the relevant rule in the specification."
+          }
+        },
+        "createButton": "Create legal help form"
+      },
     },
     "error": {
       "pageTitle": "Sorry, there is a problem with the service – {serviceName} – GOV.UK"
@@ -669,6 +692,16 @@
           "notes": {
             "notEmpty": "Explain why you changed the category of law",
             "tooLong": "Why you changed the category of law must be 2500 characters or less"
+          }
+        }
+      },
+      "getLegalHelpForm": {
+        "validationError": {
+          "evidence": {
+            "tooLong": "Evidence must be 5000 characters or less"
+          },
+          "additionalCircumstances": {
+            "invalid": "Select a valid option for additional circumstances"
           }
         }
       }
