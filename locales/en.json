@@ -501,8 +501,19 @@
       "legalHelpForm": {
         "printThisPage": "Print this page",
         "jumpToTop": "Jump to top",
+<<<<<<< Updated upstream
         "pageTitle": "Legal help form – {caseReference} – {serviceName} – GOV.UK",
         "h1": "Legal help form",
+=======
+        "pageTitle": "Legal Help Form – {caseReference} – {serviceName} – GOV.UK",
+        "h1": "Legal Help Form",
+        "detailsHeading": "Your details",
+        "name": "Full name",
+        "dateOfBirth": "Date of birth",
+        "address": "Current address",
+        "postcode": "Postcode",
+        "nationalInsurance": "National Insurance number",
+>>>>>>> Stashed changes
         "paragraph1": "To ensure we give out the best advice by the Legal Aid Agency fairly we need you to:",
         "bullet1": "check the details we have filled in from the telephone assessment are correct and change them if they are not",
         "bullet2": "attach any evidence requested and return the form to us",

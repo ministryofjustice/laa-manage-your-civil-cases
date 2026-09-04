@@ -1,0 +1,39 @@
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+<h1 class="govuk-heading-l">{{ t('pages.caseDetails.legalHelpForm.detailsHeading') }}</h1>
+
+{% block pageContent %}
+
+{% set rows = [
+  [
+    { text: t("pages.caseDetails.legalHelpForm.name") }, 
+    { text: client.fullName }
+  ],
+  [
+    { text: t("pages.caseDetails.legalHelpForm.dateOfBirth") }, 
+    { text: client.dateOfBirth }
+  ],
+  [
+    { text: t("pages.caseDetails.legalHelpForm.nationalInsurance") }, 
+    { text: legalHelpExtract.nationalInsurance }
+  ],
+  [
+    { text: t("pages.caseDetails.legalHelpForm.address") }, 
+    { text: client.addressclient }
+  ],
+  [
+    { text: t("pages.caseDetails.legalHelpForm.postcode") }, 
+    { text: client.postcode }
+  ]
+] %}
+
+{{ govukTable({
+  captionClasses: "govuk-table__caption--m",
+  firstCellIsHeader: true,
+  classes: "eligibility-table",
+  rows: rows
+}) }}
+<pre>
+{{ client | dump }}
+</pre>
+{% endblock %}

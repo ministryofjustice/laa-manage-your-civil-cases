@@ -461,6 +461,7 @@ export interface FinancialEligibilityData {
   under18passportedBenefits: boolean;
   category: string;
   asylumSupport?: boolean;
+  nationalInsurance?: String;
 }
 
 /**
