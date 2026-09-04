@@ -1,5 +1,6 @@
 @use "govuk-frontend/dist/govuk" as govuk;
 
+// intro
 .horizontal-line-top{
   height: 1px;
   color: #cecece; 
@@ -59,12 +60,45 @@
   font-family: HelveticaNeue, "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
+// evidence
+.page-break{
+  page-break-after: always
+}
+
 .govuk-textarea:disabled {
     opacity: inherit;
 }
 
-// Suppresses the URL from appearing when the page is printed
+// declaration
+.govuk-checkboxes__input:disabled + .govuk-checkboxes__label {
+    opacity: inherit;
+}
+
+.legal-help-declaration-checkboxes {
+  .govuk-checkboxes__input {
+    order: 2;
+  }
+
+  .govuk-checkboxes__label {
+    order: 1;
+    padding: 0px;
+    margin-bottom: 12px;
+  }
+
+  .govuk-checkboxes__label::before {
+    right: 2px;
+    left: auto;
+  }
+
+  .govuk-checkboxes__label::after {
+    right: 10px;
+    left: auto;
+  }
+}
+
+// print button
 @media print {
+  // Suppresses the URL from appearing when the page is printed
   a[href]:after {
     content: none !important;
   }
