@@ -23,7 +23,7 @@ import { partnerDependantsStep } from '#packages/financial-eligibility-journey/s
 
 describe('Financial eligibility Forge routing', () => {
   it('routes under-18 answers to the correct next steps', () => {
-    const submitConfig = under18Step.onSubmission?.[1];
+    const submitConfig = under18Step.onSubmission?.[0];
     const next = submitConfig?.onValid?.next;
     const redirectGoesTo = (next ?? [])
       .map((outcome) => ('goto' in outcome ? outcome.goto : null))
@@ -36,7 +36,7 @@ describe('Financial eligibility Forge routing', () => {
   });
 
   it('routes under-18-receives-regular-payment answers to the correct next steps', () => {
-    const submitConfig = under18RegularPaymentStep.onSubmission?.[1];
+    const submitConfig = under18RegularPaymentStep.onSubmission?.[0];
     const next = submitConfig?.onValid?.next;
     const redirectGoesTo = (next ?? [])
       .map((outcome) => ('goto' in outcome ? outcome.goto : null))
@@ -48,7 +48,7 @@ describe('Financial eligibility Forge routing', () => {
   });
 
   it('routes under-18-has-valuables answers to the correct next steps', () => {
-    const submitConfig = under18HasValuablesStep.onSubmission?.[1];
+    const submitConfig = under18HasValuablesStep.onSubmission?.[0];
     const next = submitConfig?.onValid?.next;
     const redirectGoesTo = (next ?? [])
       .map((outcome) => ('goto' in outcome ? outcome.goto : null))
@@ -60,7 +60,7 @@ describe('Financial eligibility Forge routing', () => {
   });
 
   it('routes has-partner answers to the correct next steps', () => {
-    const submitConfig = partnerStep.onSubmission?.[1];
+    const submitConfig = partnerStep.onSubmission?.[0];
     const next = submitConfig?.onValid?.next;
     const redirectGoesTo = (next ?? [])
       .map((outcome) => ('goto' in outcome ? outcome.goto : null))
@@ -72,7 +72,7 @@ describe('Financial eligibility Forge routing', () => {
   });
 
   it('routes 60-or-over answers to the correct next steps', () => {
-    const submitConfig = over60Step.onSubmission?.[1];
+    const submitConfig = over60Step.onSubmission?.[0];
     const next = submitConfig?.onValid?.next;
     const redirectGoesTo = (next ?? [])
       .map((outcome) => ('goto' in outcome ? outcome.goto : null))
@@ -83,7 +83,7 @@ describe('Financial eligibility Forge routing', () => {
   });
 
   it('routes 60-or-over-with-partner answers to the correct next steps', () => {
-    const submitConfig = over60StepWithPartnerStep.onSubmission?.[1];
+    const submitConfig = over60StepWithPartnerStep.onSubmission?.[0];
     const next = submitConfig?.onValid?.next;
     const redirectGoesTo = (next ?? [])
       .map((outcome) => ('goto' in outcome ? outcome.goto : null))
@@ -94,7 +94,7 @@ describe('Financial eligibility Forge routing', () => {
   });
 
   it('routes benefits answers to the correct next steps', () => {
-    const submitConfig = benefitsStep.onSubmission?.[1];
+    const submitConfig = benefitsStep.onSubmission?.[0];
     const next = submitConfig?.onValid?.next;
     const redirectGoesTo = (next ?? [])
       .map((outcome) => ('goto' in outcome ? outcome.goto : null))
@@ -106,7 +106,7 @@ describe('Financial eligibility Forge routing', () => {
   });
 
   it('routes properties answers to the correct next steps', () => {
-    const submitConfig = propertiesStep.onSubmission?.[3];
+    const submitConfig = propertiesStep.onSubmission?.[2];
     const next = submitConfig?.onValid?.next;
     const redirectGoesTo = (next ?? [])
       .map((outcome) => ('goto' in outcome ? outcome.goto : null))
@@ -118,7 +118,7 @@ describe('Financial eligibility Forge routing', () => {
   });
 
   it('routes savings answers to the correct next steps', () => {
-    const submitConfig = savingsStep.onSubmission?.[1];
+    const submitConfig = savingsStep.onSubmission?.[0];
     const next = submitConfig?.onValid?.next;
     const redirectGoesTo = (next ?? [])
       .map((outcome) => ('goto' in outcome ? outcome.goto : null))
@@ -130,7 +130,7 @@ describe('Financial eligibility Forge routing', () => {
   });
 
   it('routes partner-savings answers to the correct next steps', () => {
-    const submitConfig = partnerSavingsStep.onSubmission?.[1];
+    const submitConfig = partnerSavingsStep.onSubmission?.[0];
     const next = submitConfig?.onValid?.next;
     const redirectGoesTo = (next ?? [])
       .map((outcome) => ('goto' in outcome ? outcome.goto : null))
@@ -141,7 +141,7 @@ describe('Financial eligibility Forge routing', () => {
   });
 
   it('routes disputed-savings answers to the correct next steps', () => {
-    const submitConfig = disputedSavingsStep.onSubmission?.[1];
+    const submitConfig = disputedSavingsStep.onSubmission?.[0];
     const next = submitConfig?.onValid?.next;
     const redirectGoesTo = (next ?? [])
       .map((outcome) => ('goto' in outcome ? outcome.goto : null))
@@ -152,7 +152,7 @@ describe('Financial eligibility Forge routing', () => {
   });
 
   it('routes disregards answers to the correct next steps', () => {
-    const submitConfig = disregardsStep.onSubmission?.[1];
+    const submitConfig = disregardsStep.onSubmission?.[0];
     const next = submitConfig?.onValid?.next;
     const redirectGoesTo = (next ?? [])
       .map((outcome) => ('goto' in outcome ? outcome.goto : null))
@@ -164,7 +164,7 @@ describe('Financial eligibility Forge routing', () => {
   });
 
   it('routes your-income answers to the correct next steps', () => {
-    const submitConfig = incomeStep.onSubmission?.[1];
+    const submitConfig = incomeStep.onSubmission?.[0];
     const next = submitConfig?.onValid?.next;
     const redirectGoesTo = (next ?? [])
       .map((outcome) => ('goto' in outcome ? outcome.goto : null))
@@ -176,7 +176,7 @@ describe('Financial eligibility Forge routing', () => {
   });
 
   it('routes partner-income answers to the correct next steps', () => {
-    const submitConfig = partnerIncomeStep.onSubmission?.[1];
+    const submitConfig = partnerIncomeStep.onSubmission?.[0];
     const next = submitConfig?.onValid?.next;
     const redirectGoesTo = (next ?? [])
       .map((outcome) => ('goto' in outcome ? outcome.goto : null))
@@ -187,7 +187,7 @@ describe('Financial eligibility Forge routing', () => {
   });
 
   it('routes dependants answers to the correct next steps', () => {
-    const submitConfig = dependantsStep.onSubmission?.[1];
+    const submitConfig = dependantsStep.onSubmission?.[0];
     const next = submitConfig?.onValid?.next;
     const redirectGoesTo = (next ?? [])
       .map((outcome) => ('goto' in outcome ? outcome.goto : null))
@@ -198,7 +198,7 @@ describe('Financial eligibility Forge routing', () => {
   });
 
    it('routes partner dependants answers to the correct next steps', () => {
-    const submitConfig = partnerDependantsStep.onSubmission?.[1];
+    const submitConfig = partnerDependantsStep.onSubmission?.[0];
     const next = submitConfig?.onValid?.next;
     const redirectGoesTo = (next ?? [])
       .map((outcome) => ('goto' in outcome ? outcome.goto : null))
@@ -209,7 +209,7 @@ describe('Financial eligibility Forge routing', () => {
   });
 
   it('routes your-expenses answers to the correct next steps', () => {
-    const submitConfig = expensesStep.onSubmission?.[1];
+    const submitConfig = expensesStep.onSubmission?.[0];
     const next = submitConfig?.onValid?.next;
     const redirectGoesTo = (next ?? [])
       .map((outcome) => ('goto' in outcome ? outcome.goto : null))
@@ -221,7 +221,7 @@ describe('Financial eligibility Forge routing', () => {
   });
 
   it('routes partner-expenses answers to the correct next steps', () => {
-    const submitConfig = partnerExpensesStep.onSubmission?.[1];
+    const submitConfig = partnerExpensesStep.onSubmission?.[0];
     const next = submitConfig?.onValid?.next;
     const redirectGoesTo = (next ?? [])
       .map((outcome) => ('goto' in outcome ? outcome.goto : null))

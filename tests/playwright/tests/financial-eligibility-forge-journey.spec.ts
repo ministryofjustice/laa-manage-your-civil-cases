@@ -7,37 +7,56 @@ test.describe('Financial Eligibility Forge Journey', () => {
   });
 
   test.describe('Discard changes functionality', () => {
-    test('should allow discarding changes and return to financial eligibility overview', async ({ page }) => {
+    test('should show interstitial page, when pressing `Discard changes` link', async ({ page }) => {
       await page.goto('/cases/PC-1922-1879/financial-eligibility/change');
 
       // Start answering questions
       await page.getByRole('radio', { name: 'Yes' }).check();
-      
-      // Click discard changes button
-      const discardButton = page.getByRole('button', { name: 'Discard changes' });
-      await discardButton.click();
 
-      // Should return to financial eligibility overview (not the `/change` path)
-      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/');
-      await expect(page).not.toHaveURL(/\/change/);
+      // Click discard changes button
+      const discardLink = page.getByRole('link', { name: 'Discard changes' })
+      await discardLink.click();
+
+      // Should show interstitial page
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/discard');
     });
 
-    test('should allow discarding from any step in the journey', async ({ page }) => {
+    test('should return to previous step, when pressing `Return to means assessment` link', async ({ page }) => {
       await page.goto('/cases/PC-1922-1879/financial-eligibility/change');
 
       // Navigate to partner step
       await page.getByRole('radio', { name: 'No' }).check();
       await page.getByRole('button', { name: 'Continue' }).click();
-
       await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/has-partner');
-      
-      // Discard from this step
-      const discardButton = page.getByRole('button', { name: 'Discard changes'});
-      await discardButton.click();
 
-      // Should return to financial eligibility overview
+      const discardLink = page.getByRole('link', { name: 'Discard changes' });
+      await expect(discardLink).toHaveAttribute('href', '/cases/PC-1922-1879/financial-eligibility/change/discard');
+      await discardLink.click();
+
+      // On the Interstitial page
+      const returnToMeansAssessmentLink = page.getByRole('link', { name: 'Return to means assessment' })
+      await expect(returnToMeansAssessmentLink).toHaveAttribute('href', '/cases/PC-1922-1879/financial-eligibility/change/has-partner');
+      await returnToMeansAssessmentLink.click();
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/has-partner');
+      await expect(page.getByRole('radio', { name: 'No' })).toBeChecked();
+    });
+    
+    test('should discard changes and return to financial eligibility overview', async ({ page }) => {
+      await page.goto('/cases/PC-1922-1879/financial-eligibility/change');
+
+      // Navigate to partner step
+      await page.getByRole('radio', { name: 'No' }).check();
+      await page.getByRole('button', { name: 'Continue' }).click();
+      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/has-partner');
+
+      const discardLink = page.getByRole('link', { name: 'Discard changes' });
+      await expect(discardLink).toHaveAttribute('href', '/cases/PC-1922-1879/financial-eligibility/change/discard');
+      await discardLink.click();
+
+      // On the Interstitial page
+      const discardButton = page.getByRole('button', { name: 'Discard changes' });
+      await discardButton.click();
       await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/');
-          
     });
   });
 

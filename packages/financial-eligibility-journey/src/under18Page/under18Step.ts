@@ -1,6 +1,6 @@
 import { submit, redirect, Answer, Condition } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { step, type StepDefinition } from '../authoring.js'
-import { continueButton, discardChangesButton, ifPressedDiscardChanges } from '../commonBlocks.js'
+import { mainForgeJourneyActions } from '../commonBlocks.js'
 import { under18FieldHeading, under18Field } from './under18Block.js'
 import { FinancialEligibilityEffects } from '../effects.js'
 import { under18RegularPaymentStep }from '../under18RegularPaymentPage/under18RegularPaymentStep.js'
@@ -16,9 +16,8 @@ export const under18Step: StepDefinition = step({
   path: '/under-18',
   title: 'Are you aged 17 or under?',
   reachability: { entryWhen: true },
-  blocks: [under18FieldHeading, under18Field, continueButton, discardChangesButton],
+  blocks: [under18FieldHeading, under18Field, mainForgeJourneyActions],
   onSubmission: [
-    ifPressedDiscardChanges(),
     submit({
       validate: true,
       onValid: {
