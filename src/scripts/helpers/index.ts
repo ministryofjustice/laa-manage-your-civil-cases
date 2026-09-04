@@ -109,6 +109,13 @@ export {
   type ExpressLocaleLoader
 } from './i18nLoader.js';
 
+// Legal help form shared option definitions
+export {
+  LEGAL_HELP_FORM_CIRCUMSTANCE_OPTIONS,
+  LEGAL_HELP_FORM_CIRCUMSTANCE_VALUES,
+  type LegalHelpFormCircumstanceOption
+} from './legalHelpFormOptions.js';
+
 // Error handling utilities
 export {
   extractErrorMessage,

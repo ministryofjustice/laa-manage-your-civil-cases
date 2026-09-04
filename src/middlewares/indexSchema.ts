@@ -76,3 +76,7 @@ export {
 
 export { validateChangeCategoryOfLaw
 } from './changeCategoryOfLawSchema.js'
+
+export {
+  validateGetLegalHelpForm
+} from './getLegalHelpFormSchema.js'

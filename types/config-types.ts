@@ -88,6 +88,7 @@ export interface Config {
   MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH: number;
   MAX_PROVIDER_NOTE_LENGTH: number;
   MAX_POSTCODE_LENGTH: number;
+  MAX_LEGAL_HELP_FORM_EVIDENCE_LENGTH: number;
   app: AppConfig;
   csrf: CsrfConfig;
   session: SessionConfig;
