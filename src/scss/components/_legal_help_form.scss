@@ -63,13 +63,10 @@
     opacity: inherit;
 }
 
-// Tells the print function what elements to print on the screen 
+// Suppresses the URL from appearing when the page is printed
 @media print {
   a[href]:after {
     content: none !important;
-  }
-  html, body, div, h2, h3, p, ul, li, span {
-    font-size: 14px !important;
   }
 }
 

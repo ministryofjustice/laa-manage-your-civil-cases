@@ -1,6 +1,7 @@
 {% extends "base.njk" %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 
 {% block pageTitle %}
   {% if errorState.hasErrors %}{{ t('common.error') }}: {% endif %}{{ t('pages.caseDetails.legalHelpForm.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
@@ -32,37 +33,38 @@
 <<<<<<< Updated upstream
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-    {# Your details #}
+      {# Your details #}
 =======
   {# Your details #}
   {% include "case_details/legal_help_form/_legal-help-form-details.njk" %}
 >>>>>>> Stashed changes
 
-    {# Your finances #}
+      {# Your finances #}
 
-    {# Your property #}
+      {# Your property #}
 
-    {# Your capital #}
+      {# Your capital #}
 
-    {# Your income #}
+      {# Your income #}
 
-    {# Evidence we need from you #}
-    {% include "case_details/legal_help_form/_legal-help-form-evidence.njk" %}
+      {# Evidence we need from you #}
+      {% include "case_details/legal_help_form/_legal-help-form-evidence.njk" %}
 
-    {# Your declaration #}
+      {# Your declaration #}
+      {% include "case_details/legal_help_form/_legal-help-form-declaration.njk" %}
 
-    {# Privacy notice #}
+      {# Privacy notice #}
 
-    {# For use by advisor #}
+      {# For use by advisor #}
 
-    {% if additionalCircumstances.length %}
-      <h3 class="govuk-heading-s">{{ t('pages.caseDetails.getLegalHelpForm.additionalCircumstancesLegend') }}</h3>
-      <ul class="govuk-list govuk-list--bullet">
-        {% for label in additionalCircumstances %}
-          <li>{{ label }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
+      {% if additionalCircumstances.length %}
+        <h3 class="govuk-heading-s">{{ t('pages.caseDetails.getLegalHelpForm.additionalCircumstancesLegend') }}</h3>
+        <ul class="govuk-list govuk-list--bullet">
+          {% for label in additionalCircumstances %}
+            <li>{{ label }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
     </div>
   </div>
 

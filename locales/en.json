@@ -521,6 +521,12 @@
         "evidence": {
           "h2": "Evidence we need from you",
           "paragraph1": "To ensure that the details you have given us are correct, we will require the following evidence:"
+        },
+        "declaration": {
+          "h2": "Your declaration",
+          "paragraphTickBox": "Tick the box that applies to you:",
+          "tickBox1":"I have not been to an advisor or solicitor about this problem before to get advice on it paid for by the Legal Aid Agency",
+          "tickBox2":"I have already been to an advisor or solicitor about this problem and had advice paid for by the Legal Aid Agency"
         }
       }
     },
