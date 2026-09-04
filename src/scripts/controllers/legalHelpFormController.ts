@@ -57,7 +57,7 @@ export function getLegalHelpFormInterstitial(req: Request, res: Response, next: 
   }
 
   try {
-    res.render('case_details/legal-help-form-interstitial.njk', {
+    res.render('case_details/legal_help_form/legal-help-form-interstitial.njk', {
       caseReference,
       client: req.clientData,
       currentEvidence: '',
@@ -114,7 +114,7 @@ export async function submitLegalHelpFormInterstitial(req: Request, res: Respons
     const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
 
     if (response.status === 'success' && response.data !== null) {
-      res.status(HTTP.BAD_REQUEST).render('case_details/legal-help-form-interstitial.njk', {
+      res.status(HTTP.BAD_REQUEST).render('case_details/legal_help_form/legal-help-form-interstitial.njk', {
         caseReference,
         client: response.data,
         currentEvidence,
@@ -151,13 +151,12 @@ export async function submitLegalHelpFormInterstitial(req: Request, res: Respons
 
 /**
  * Show the legal help form, populated with the answers captured on the get legal help form interstitial page.
- * The full legal help form design/content is covered by a follow-up ticket; this renders a minimal read-only view.
  * @param {Request} req Express request object
  * @param {Response} res Express response object
  * @param {NextFunction} next Express next function
- * @returns {void} Renders the legal-help-form page
+ * @returns {Promise<void>} Renders the legal-help-form page
  */
-export function getLegalHelpForm(req: Request, res: Response, next: NextFunction): void {
+export async function getLegalHelpForm(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
   if (!validCaseReference(caseReference, res)) {
@@ -165,15 +164,19 @@ export function getLegalHelpForm(req: Request, res: Response, next: NextFunction
   }
 
   try {
+    const response = await apiService.getLegalHelpExtract(req.axiosMiddleware, caseReference);
+    let legalHelpExtract = response.data;
+    
     const stored = getSessionValue(req, LEGAL_HELP_FORM_SESSION_KEY) as LegalHelpFormAnswers | undefined;
     // Ignore session answers left over from viewing a different case
     const answers = stored?.caseReference === caseReference ? stored : undefined;
 
-    res.render('case_details/legal-help-form.njk', {
+    res.render('case_details/legal_help_form/legal-help-form.njk', {
       caseReference,
       client: req.clientData,
       evidence: answers?.evidence ?? '',
-      additionalCircumstances: resolveCircumstanceLabels(answers?.additionalCircumstances ?? [])
+      additionalCircumstances: resolveCircumstanceLabels(answers?.additionalCircumstances ?? []),
+      legalHelpExtract,
     });
   } catch (error) {
     const processedError = createProcessedError(error, `rendering legal help form for case ${caseReference}`);

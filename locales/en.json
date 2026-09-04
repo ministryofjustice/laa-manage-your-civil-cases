@@ -475,16 +475,6 @@
         "legend": "Why have you changed the category of law?",
         "categoryPlaceholder": "Select a category of law"
       },
-      "legalHelpForm": {
-        "printThisPage": "Print this page",
-        "jumpToTop": "Jump to top",
-        "pageTitle": "Legal Help Form – {caseReference} – {serviceName} – GOV.UK",
-        "h1": "Legal Help Form",
-        "paragraph1": "To ensure we give out the best advice by the Legal Aid Agency fairly we need you to:",
-        "bullet1": "check the details we have filled in from the telephone assessment are correct and change them if they are not",
-        "bullet2": "attach any evidence requested and return the form to us",
-        "bullet3": "sign the declaration"
-      },
       "getLegalHelpForm": {
         "pageTitle": "Get legal help form – {caseReference} – {serviceName} – GOV.UK",
         "heading": "Legal help form",
@@ -508,6 +498,16 @@
         },
         "createButton": "Create legal help form"
       },
+      "legalHelpForm": {
+        "printThisPage": "Print this page",
+        "jumpToTop": "Jump to top",
+        "pageTitle": "Legal Help Form – {caseReference} – {serviceName} – GOV.UK",
+        "h1": "Legal Help Form",
+        "paragraph1": "To ensure we give out the best advice by the Legal Aid Agency fairly we need you to:",
+        "bullet1": "check the details we have filled in from the telephone assessment are correct and change them if they are not",
+        "bullet2": "attach any evidence requested and return the form to us",
+        "bullet3": "sign the declaration"
+      }
     },
     "error": {
       "pageTitle": "Sorry, there is a problem with the service – {serviceName} – GOV.UK"

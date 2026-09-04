@@ -46,6 +46,21 @@
 
   {# For use by advisor #}
 
+  {% if evidence %}
+    <h3 class="govuk-heading-s">{{ t('pages.caseDetails.getLegalHelpForm.evidenceLabel') }}</h3>
+    <p class="govuk-body">{{ evidence | escape | replace('\n', '<br>') | safe }}</p>
+  {% endif %}
+
+  {% if additionalCircumstances.length %}
+    <h3 class="govuk-heading-s">{{ t('pages.caseDetails.getLegalHelpForm.additionalCircumstancesLegend') }}</h3>
+    <ul class="govuk-list govuk-list--bullet">
+      {% for label in additionalCircumstances %}
+        <li>{{ label }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+
   <hr class="horizontal-line-bottom"/>
 
   <div class="govuk-button-group bottom-button-group">
