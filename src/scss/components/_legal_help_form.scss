@@ -59,6 +59,10 @@
   font-family: HelveticaNeue, "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
+.govuk-textarea:disabled {
+    opacity: inherit;
+}
+
 // Tells the print function what elements to print on the screen 
 @media print {
   a[href]:after {

@@ -501,12 +501,16 @@
       "legalHelpForm": {
         "printThisPage": "Print this page",
         "jumpToTop": "Jump to top",
-        "pageTitle": "Legal Help Form – {caseReference} – {serviceName} – GOV.UK",
-        "h1": "Legal Help Form",
+        "pageTitle": "Legal help form – {caseReference} – {serviceName} – GOV.UK",
+        "h1": "Legal help form",
         "paragraph1": "To ensure we give out the best advice by the Legal Aid Agency fairly we need you to:",
         "bullet1": "check the details we have filled in from the telephone assessment are correct and change them if they are not",
         "bullet2": "attach any evidence requested and return the form to us",
-        "bullet3": "sign the declaration"
+        "bullet3": "sign the declaration",
+        "evidence": {
+          "h2": "Evidence we need from you",
+          "paragraph1": "To ensure that the details you have given us are correct, we will require the following evidence:"
+        }
       }
     },
     "error": {
