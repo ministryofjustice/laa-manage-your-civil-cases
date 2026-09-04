@@ -7,7 +7,7 @@ test.describe('Financial Eligibility Forge Journey', () => {
   });
 
   test.describe('Discard changes functionality', () => {
-    test('should allow discarding changes and return to financial eligibility overview', async ({ page }) => {
+    test('should show interstitial page, when pressing discard button', async ({ page }) => {
       await page.goto('/cases/PC-1922-1879/financial-eligibility/change');
 
       // Start answering questions
