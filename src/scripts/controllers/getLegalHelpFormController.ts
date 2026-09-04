@@ -1,12 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
-import { devLog, createProcessedError, safeString, validCaseReference, formatValidationError, safeBodyString, t, fetchProviderNameAndDetail, getSessionString } from '#src/scripts/helpers/index.js';
-import { validationResult } from 'express-validator';
-import { HTTP } from '#src/services/api/base/constants.js';
-import config from '#config.js';
-import { buildCategoryItems } from '../helpers/dataTransformers.js';
-
-const { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH, CHARACTER_THRESHOLD }: { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH: number; CHARACTER_THRESHOLD: number } = config;
+import { safeString, validCaseReference } from '#src/scripts/helpers/index.js';
 
 /**
  * Render the legal help form preview

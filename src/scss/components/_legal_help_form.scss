@@ -1,7 +1,36 @@
+@use "govuk-frontend/dist/govuk" as govuk;
+
+.horizontal-line-top{
+  height: 1px;
+  color: #cecece; 
+  background: #cecece; 
+  font-size: 0;
+  border: 0;
+  margin-top: -60px;
+  margin-bottom: 20px;
+
+  @include govuk.govuk-media-query($until: tablet) {
+    margin-top: -20px;
+  }
+} 
+
+.horizontal-line-bottom{
+  height: 1px;
+  color: #cecece; 
+  background: #cecece; 
+  font-size: 0;
+  border: 0;
+} 
+
+.bottom-button-group{
+   margin-bottom: -40px;
+}
+
 .laa-branding {
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  padding-bottom: 15px;
 }
 
 .laa-branding__line {
@@ -28,4 +57,42 @@
   white-space: nowrap;
   line-height: 40px;
   font-family: HelveticaNeue, "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+// Tells the print function what elements to print on the screen 
+@media print {
+  a[href]:after {
+    content: none !important;
+  }
+  html, body, div, h2, h3, p, ul, li, span {
+    font-size: 14px !important;
+  }
+}
+
+.printing-button {
+  display: none;
+  .js-enabled & {
+    display: block;
+  }
+}
+
+.print-link {
+  background: url("/assets/images/icon-print.png") no-repeat 10px 50%;
+  background-size: 16px 18px;
+  padding: 10px 10px 10px 36px;
+  text-decoration: none;
+  border: 1px solid #484949;
+  color: #1a65a6;
+  cursor: pointer;
+  margin: 0px;
+
+  &:hover {
+    background-color: #f3f3f3;
+  }
+  
+  &:focus {
+    box-shadow: 0 -2px #fd0, 0 4px #0b0c0c;
+    background-color: #fd0;
+    border-color: transparent;
+  }
 }
