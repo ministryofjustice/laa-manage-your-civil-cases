@@ -202,6 +202,38 @@ export const propertiesSummaryList = CollectionBlock({
   )
 })
 
+export const noPropertiesSummaryList = GovUKSummaryList({
+  visibleWhen: and(
+    not(under18Passported),
+    Data('propertySet').not.match(Condition.IsRequired())
+  ),
+  card: {
+    title: {
+      text: 'Properties',
+      headingLevel: 4,
+    },
+    actions: {
+      items: [
+        {
+          href: 'properties',
+          text: 'Change',
+          visuallyHiddenText: 'Change, Properties',
+        },
+      ],
+    },
+  },
+  rows: [
+    {
+      key: {
+        text: 'Properties added',
+      },
+      value: {
+        text: 'None',
+      },
+    },
+  ],
+})
+
 export const savingsSummaryList = GovUKSummaryList({
   visibleWhen: and(not(under18Passported), not(categoryIsDebtOrFamily)),
   card: {
