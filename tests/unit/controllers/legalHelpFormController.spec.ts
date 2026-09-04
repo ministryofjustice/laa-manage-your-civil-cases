@@ -51,6 +51,7 @@ describe('Legal Help Form Controller', () => {
   let redirectStub: sinon.SinonStub;
   let statusStub: sinon.SinonStub;
   let getClientDetailsStub: sinon.SinonStub;
+  let getLegalHelpExtractStub: sinon.SinonStub;
 
   before(() => {
     initializeI18nextSync();
@@ -82,6 +83,7 @@ describe('Legal Help Form Controller', () => {
     next = sinon.stub();
 
     getClientDetailsStub = sinon.stub(apiService, 'getClientDetails');
+    getLegalHelpExtractStub = sinon.stub(apiService, 'getLegalHelpExtract').resolves({ status: 'success', data: null });
   });
 
   afterEach(() => {
@@ -92,7 +94,7 @@ describe('Legal Help Form Controller', () => {
     it('should render the interstitial form with an empty starting state and CSRF protection', () => {
       getLegalHelpFormInterstitial(req as Request, res as Response, next as NextFunction);
 
-      expect(renderStub.calledWith('case_details/legal-help-form-interstitial.njk')).to.be.true;
+      expect(renderStub.calledWith('case_details/legal_help_form/legal-help-form-interstitial.njk')).to.be.true;
 
       const renderArgs = renderStub.firstCall.args[1];
       expect(renderArgs.caseReference).to.equal('TEST123');
@@ -169,7 +171,7 @@ describe('Legal Help Form Controller', () => {
       await submitLegalHelpFormInterstitial(req as RequestWithMiddleware, res as Response, next);
 
       expect(statusStub.calledWith(400)).to.be.true;
-      expect(renderStub.calledWith('case_details/legal-help-form-interstitial.njk')).to.be.true;
+      expect(renderStub.calledWith('case_details/legal_help_form/legal-help-form-interstitial.njk')).to.be.true;
       expect(redirectStub.called).to.be.false;
 
       const renderArgs = renderStub.firstCall.args[1];
@@ -225,7 +227,7 @@ describe('Legal Help Form Controller', () => {
   });
 
   describe('getLegalHelpForm', () => {
-    it('should render the legal help form populated from the session', () => {
+    it('should render the legal help form populated from the session', async () => {
       req.session = {
         legalHelpFormAnswers: {
           caseReference: 'TEST123',
@@ -234,9 +236,9 @@ describe('Legal Help Form Controller', () => {
         }
       } as any;
 
-      getLegalHelpForm(req as Request, res as Response, next as NextFunction);
+      await getLegalHelpForm(req as Request, res as Response, next as NextFunction);
 
-      expect(renderStub.calledWith('case_details/legal-help-form.njk')).to.be.true;
+      expect(renderStub.calledWith('case_details/legal_help_form/legal-help-form.njk')).to.be.true;
 
       const renderArgs = renderStub.firstCall.args[1];
       expect(renderArgs.evidence).to.equal('Bank statements');
@@ -245,15 +247,15 @@ describe('Legal Help Form Controller', () => {
       ]);
     });
 
-    it('should render with empty defaults when nothing was stored in session', () => {
-      getLegalHelpForm(req as Request, res as Response, next as NextFunction);
+    it('should render with empty defaults when nothing was stored in session', async () => {
+      await getLegalHelpForm(req as Request, res as Response, next as NextFunction);
 
       const renderArgs = renderStub.firstCall.args[1];
       expect(renderArgs.evidence).to.equal('');
       expect(renderArgs.additionalCircumstances).to.deep.equal([]);
     });
 
-    it('should ignore session answers left over from a different case', () => {
+    it('should ignore session answers left over from a different case', async () => {
       req.session = {
         legalHelpFormAnswers: {
           caseReference: 'OTHER-CASE',
@@ -262,7 +264,7 @@ describe('Legal Help Form Controller', () => {
         }
       } as any;
 
-      getLegalHelpForm(req as Request, res as Response, next as NextFunction);
+      await getLegalHelpForm(req as Request, res as Response, next as NextFunction);
 
       const renderArgs = renderStub.firstCall.args[1];
       expect(renderArgs.evidence).to.equal('');
@@ -278,10 +280,10 @@ describe('Legal Help Form Controller', () => {
       expect(renderStub.calledWith('main/error.njk')).to.be.true;
     });
 
-    it('should delegate render exceptions to Express error handling middleware', () => {
+    it('should delegate render exceptions to Express error handling middleware', async () => {
       renderStub.throws(new Error('Render error'));
 
-      getLegalHelpForm(req as Request, res as Response, next as NextFunction);
+      await getLegalHelpForm(req as Request, res as Response, next as NextFunction);
 
       expect(next.calledOnce).to.be.true;
     });
