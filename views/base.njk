@@ -34,7 +34,7 @@
 {% endblock %}
 
 {% block header %}
-  <header class="moj-header" role="banner">
+  <header class="moj-header govuk-!-display-none-print" role="banner">
     <div class="moj-header__container">
       <div class="moj-header__logo">
         <svg aria-hidden="true" focusable="false" class="moj-header__logotype-crest" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" height="40" width="40">
@@ -91,6 +91,7 @@
       {{ govukServiceNavigation({
       serviceName: config.SERVICE_NAME,
       serviceUrl: "/",
+      classes: "govuk-!-display-none-print",
       navigation: [
         {
           href: "/cases/new",
@@ -113,6 +114,7 @@
     tag: {
       text: config.SERVICE_PHASE
     },
+    classes: "govuk-!-display-none-print",
     html: t('components.phaseBanner.feedbackTextBeginning') + "<a class='govuk-link' href=#feedback>" + t('components.phaseBanner.feedbackLinkTextHTML') + "</a>" +  t('components.phaseBanner.feedbackTextEnd')
   }) }}
   {% block backLink %}{% endblock %}
@@ -131,6 +133,7 @@
   {% endif %}
 
   {{ govukFooter({
+    classes: "govuk-!-display-none-print",
     meta: {
       items: [
         {

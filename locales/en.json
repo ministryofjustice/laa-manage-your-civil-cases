@@ -499,8 +499,34 @@
         "createButton": "Create legal help form"
       },
       "legalHelpForm": {
+        "printThisPage": "Print this page",
+        "jumpToTop": "Jump to top",
         "pageTitle": "Legal help form – {caseReference} – {serviceName} – GOV.UK",
-        "heading": "Legal help form"
+        "intro": { 
+          "h1": "Legal help form",
+          "paragraph1": "To ensure we give out the best advice by the Legal Aid Agency fairly we need you to:",
+          "bullet1": "check the details we have filled in from the telephone assessment are correct and change them if they are not",
+          "bullet2": "attach any evidence requested and return the form to us",
+          "bullet3": "sign the declaration"
+        },
+        "details": {
+          "detailsHeading": "Your details",
+          "name": "Full name",
+          "dateOfBirth": "Date of birth",
+          "address": "Current address",
+          "postcode": "Postcode",
+          "nationalInsurance": "National Insurance number"
+        },
+        "evidence": {
+          "h2": "Evidence we need from you",
+          "paragraph1": "To ensure that the details you have given us are correct, we will require the following evidence:"
+        },
+        "declaration": {
+          "h2": "Your declaration",
+          "paragraphTickBox": "Tick the box that applies to you:",
+          "tickBox1":"I have not been to an advisor or solicitor about this problem before to get advice on it paid for by the Legal Aid Agency",
+          "tickBox2":"I have already been to an advisor or solicitor about this problem and had advice paid for by the Legal Aid Agency"
+        }
       }
     },
     "error": {

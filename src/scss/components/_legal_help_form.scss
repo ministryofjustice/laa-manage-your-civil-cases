@@ -1,0 +1,133 @@
+@use "govuk-frontend/dist/govuk" as govuk;
+
+// intro
+.horizontal-line-top{
+  height: 1px;
+  color: #cecece; 
+  background: #cecece; 
+  font-size: 0;
+  border: 0;
+  margin-top: -60px;
+  margin-bottom: 20px;
+
+  @include govuk.govuk-media-query($until: tablet) {
+    margin-top: -20px;
+  }
+} 
+
+.horizontal-line-bottom{
+  height: 1px;
+  color: #cecece; 
+  background: #cecece; 
+  font-size: 0;
+  border: 0;
+} 
+
+.bottom-button-group{
+   margin-bottom: -40px;
+}
+
+.laa-branding {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding-bottom: 15px;
+}
+
+.laa-branding__line {
+  flex: 0 0 1px;
+  height: 35px;
+  width: 1px;
+  background-color: #080606;
+}
+
+.laa-branding__crest {
+  display: flex;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+}
+
+.laa-branding__crest svg {
+  display: block;
+  width: 40px;
+  height: 40px;
+}
+
+.laa-branding__text {
+  white-space: nowrap;
+  line-height: 40px;
+  font-family: HelveticaNeue, "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+// evidence
+.page-break{
+  page-break-after: always
+}
+
+.govuk-textarea:disabled {
+    opacity: inherit;
+}
+
+// declaration
+.govuk-checkboxes__input:disabled + .govuk-checkboxes__label {
+    opacity: inherit;
+}
+
+.legal-help-declaration-checkboxes {
+  .govuk-checkboxes__input {
+    order: 2;
+  }
+
+  .govuk-checkboxes__label {
+    order: 1;
+    padding: 0px;
+    margin-bottom: 12px;
+  }
+
+  .govuk-checkboxes__label::before {
+    right: 2px;
+    left: auto;
+  }
+
+  .govuk-checkboxes__label::after {
+    right: 10px;
+    left: auto;
+  }
+}
+
+// print button
+@media print {
+  // Suppresses the URL from appearing when the page is printed
+  a[href]:after {
+    content: none !important;
+  }
+}
+
+.printing-button {
+  display: none;
+  .js-enabled & {
+    display: block;
+  }
+}
+
+.print-link {
+  background: url("/assets/images/icon-print.png") no-repeat 10px 50%;
+  background-size: 16px 18px;
+  padding: 10px 10px 10px 36px;
+  text-decoration: none;
+  border: 1px solid #484949;
+  color: #1a65a6;
+  cursor: pointer;
+  margin: 0px;
+
+  &:hover {
+    background-color: #f3f3f3;
+  }
+  
+  &:focus {
+    box-shadow: 0 -2px #fd0, 0 4px #0b0c0c;
+    background-color: #fd0;
+    border-color: transparent;
+  }
+}

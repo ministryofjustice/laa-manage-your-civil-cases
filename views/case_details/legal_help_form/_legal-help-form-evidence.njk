@@ -1,0 +1,13 @@
+<div class="page-break"></div>
+<h2 class="govuk-heading">{{ t('pages.caseDetails.legalHelpForm.evidence.h2') }}</h2>
+
+<p class="govuk-body">{{ t('pages.caseDetails.legalHelpForm.evidence.paragraph1') }}</p>
+
+{{ govukTextarea({
+  name: "moreDetail",
+  classes: "page-break",
+  id: "more-detail",
+  rows: "30",
+  disabled: true,
+  value: evidence
+}) }}

@@ -1,0 +1,80 @@
+{% extends "base.njk" %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% block pageTitle %}
+  {% if errorState.hasErrors %}{{ t('common.error') }}: {% endif %}{{ t('pages.caseDetails.legalHelpForm.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
+{% endblock %}
+
+{% block backLink %}
+  <div class="govuk-button-group">
+    {{ govukBackLink({
+        text: t('common.back'),
+        href: "/cases/" + caseReference + "/get-legal-help-form",
+        classes: "govuk-!-margin-bottom-0 govuk-!-margin-right-4 govuk-!-display-none-print"
+      }) }}
+
+    {# Print button top #}
+    <div class="printing-button">
+      <div class="govuk-!-display-none-print  govuk-!-margin-top-2 govuk-!-margin-bottom-0">
+        <button id="printButton" class="govuk-link govuk-body-s print-link">{{ t('pages.caseDetails.legalHelpForm.printThisPage') }}</button>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block pageContent %}
+  <hr class="horizontal-line-top"/>
+
+  {# Introduction #}
+  {% include "case_details/legal_help_form/_legal-help-form-intro.njk" %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {# Your details #}
+      {% include "case_details/legal_help_form/_legal-help-form-details.njk" %}
+
+      {# Your finances #}
+
+      {# Your property #}
+
+      {# Your capital #}
+
+      {# Your income #}
+
+      {# Evidence we need from you #}
+      {% include "case_details/legal_help_form/_legal-help-form-evidence.njk" %}
+
+      {# Your declaration #}
+      {% include "case_details/legal_help_form/_legal-help-form-declaration.njk" %}
+
+      {# Privacy notice #}
+
+      {# For use by advisor #}
+
+      {% if additionalCircumstances.length %}
+        <h3 class="govuk-heading-s">{{ t('pages.caseDetails.getLegalHelpForm.additionalCircumstancesLegend') }}</h3>
+        <ul class="govuk-list govuk-list--bullet">
+          {% for label in additionalCircumstances %}
+            <li>{{ label }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+
+  <hr class="horizontal-line-bottom"/>
+
+  <div class="govuk-button-group bottom-button-group">
+    <p><a class="govuk-link govuk-!-display-none-print" href="#">{{ t('pages.caseDetails.legalHelpForm.jumpToTop') }}</a></p>
+
+    {# Print button bottom #}
+    <div class="printing-button">
+      <div class="govuk-!-display-none-print govuk-!-margin-top-3 govuk-!-margin-bottom-0">
+        <button id="printButton" class="govuk-link govuk-body-s print-link">{{ t('pages.caseDetails.legalHelpForm.printThisPage') }}</button>
+      </div>
+    </div>
+  </div>
+{% endblock %}

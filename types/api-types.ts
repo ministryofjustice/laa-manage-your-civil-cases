@@ -460,12 +460,23 @@ export interface FinancialEligibilityData {
   passportedBenefits: boolean;
   under18passportedBenefits: boolean;
   category: string;
+  asylumSupport?: boolean;
+  nationalInsurance?: String;
 }
 
 /**
  * Response type for financial eligibility data
  */
 export interface GetFinancialEligibilityApiResponse {
+  data: FinancialEligibilityData | null;
+  status: 'success' | 'error';
+  message?: string;
+}
+
+/**
+ * Response type for legal help form extract data
+ */
+export interface GetLegalHelpExtractApiResponse {
   data: FinancialEligibilityData | null;
   status: 'success' | 'error';
   message?: string;

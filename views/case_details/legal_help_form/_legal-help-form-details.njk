@@ -1,0 +1,31 @@
+<h2 class="govuk-heading">{{ t('pages.caseDetails.legalHelpForm.details.detailsHeading') }}</h2>
+
+{% set rows = [
+  [
+    { text: t("pages.caseDetails.legalHelpForm.details.name") }, 
+    { text: client.fullName }
+  ],
+  [
+    { text: t("pages.caseDetails.legalHelpForm.details.dateOfBirth") }, 
+    { text: client.dateOfBirth }
+  ],
+  [
+    { text: t("pages.caseDetails.legalHelpForm.details.nationalInsurance") }, 
+    { text: legalHelpExtract.nationalInsurance }
+  ],
+  [
+    { text: t("pages.caseDetails.legalHelpForm.details.address") }, 
+    { text: client.addressclient }
+  ],
+  [
+    { text: t("pages.caseDetails.legalHelpForm.details.postcode") }, 
+    { text: client.postcode }
+  ]
+] %}
+
+{{ govukTable({
+  captionClasses: "govuk-table__caption--m",
+  firstCellIsHeader: true,
+  classes: "eligibility-table",
+  rows: rows
+}) }}

@@ -1,0 +1,22 @@
+<h2 class="govuk-heading">{{ t('pages.caseDetails.legalHelpForm.declaration.h2') }}</h2>
+
+{{ govukCheckboxes({
+  classes: "legal-help-declaration-checkboxes",
+  fieldset: {
+    legend: {
+      text: t('pages.caseDetails.legalHelpForm.declaration.paragraphTickBox')
+    }
+  },
+  items: [
+    {
+      value: "carcasses",
+      text: t('pages.caseDetails.legalHelpForm.declaration.tickBox1'),
+      disabled: "true"
+    },
+    {
+      value: "mines",
+      text: t('pages.caseDetails.legalHelpForm.declaration.tickBox2'),
+      disabled: "true"
+    }
+  ]
+}) }}
