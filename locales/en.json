@@ -515,7 +515,8 @@
           "dateOfBirth": "Date of birth",
           "address": "Current address",
           "postcode": "Postcode",
-          "nationalInsurance": "National Insurance number"
+          "nationalInsurance": "National Insurance number",
+          "laaReference": "LAA reference"
         },
         "evidence": {
           "h2": "Evidence we need from you",

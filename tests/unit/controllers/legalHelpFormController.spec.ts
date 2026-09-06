@@ -66,7 +66,11 @@ describe('Legal Help Form Controller', () => {
       csrfToken: () => 'test-csrf-token',
       clientData: {
         fullName: 'John Doe',
-        caseReference: 'TEST123'
+        caseReference: 'TEST123',
+        dateOfBirth: '1980-01-01',
+        address: '123 Main St',
+        postcode: 'AB12 3CD',
+        laaReference: 'LAA123456',
       }
     } as Partial<RequestWithMiddleware>;
 
@@ -287,5 +291,39 @@ describe('Legal Help Form Controller', () => {
 
       expect(next.calledOnce).to.be.true;
     });
+  });
+
+  it('should render the legal help form populated with client details', async () => {
+    getLegalHelpExtractStub.resolves({
+      status: 'success',
+      data: {
+        nationalInsurance: 'AB123456C',
+      },
+    });
+
+    await getLegalHelpForm(
+      req as Request,
+      res as Response,
+      next as NextFunction,
+    );
+
+    expect(
+      renderStub.calledWith(
+        'case_details/legal_help_form/legal-help-form.njk',
+      ),
+    ).to.be.true;
+
+    const renderArgs = renderStub.firstCall.args[1];
+
+    expect(renderArgs.client).to.deep.include({
+      fullName: 'John Doe',
+      caseReference: 'TEST123',
+      dateOfBirth: '1980-01-01',
+      address: '123 Main St',
+      postcode: 'AB12 3CD',
+      laaReference: 'LAA123456',
+    });
+
+    expect(renderArgs.legalHelpExtract.nationalInsurance).to.equal('AB123456C');
   });
 });
