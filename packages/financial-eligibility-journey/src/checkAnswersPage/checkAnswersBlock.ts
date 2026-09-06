@@ -226,6 +226,7 @@ export const noPropertiesSummaryList = GovUKSummaryList({
     {
       key: {
         text: 'Properties added',
+        classes: GovUKUtilityClasses.Width.TwoThirds,
       },
       value: {
         text: 'None',
@@ -423,6 +424,10 @@ export const disputedSavingsSummaryList = GovUKSummaryList({
   ] as GovUKSummaryList['rows'],
 })
 
+const noDisregardsSelected = Literal('none').match(
+  Condition.Array.IsIn(Answer('disregards')),
+)
+
 export const disregardsSummaryList = GovUKSummaryList({
   visibleWhen: not(under18Passported),
   card: {
@@ -437,23 +442,34 @@ export const disregardsSummaryList = GovUKSummaryList({
     },
   },
   rows: [
-    {
-      key: {
-        text: 'Disregards selected',
-        classes: GovUKUtilityClasses.Width.OneQuarter,
-      },
-      value: {
-        html: Conditional({
-          when: Answer('disregards').match(Condition.Equals('none')),
-          then: 'None',
-          else: Literal(disregardsLookupItems)
-            .each(Iterator.Filter(Item().path('value').match(Condition.Array.IsIn(Answer('disregards')))))
-            .each(Iterator.Map(Item().path('text')))
-            .pipe(Transformer.Array.Join('<br><br>')),
-        }),
-      },
+  {
+    key: {
+      text: 'Disregards selected',
+      classes: GovUKUtilityClasses.Width.TwoThirds,
     },
-  ] as GovUKSummaryList['rows'],
+    value: {
+      text: 'None',
+    },
+    visibleWhen: noDisregardsSelected,
+  },
+  {
+    key: {
+      text: 'Disregards selected',
+      classes: GovUKUtilityClasses.Width.OneQuarter,
+    },
+    value: {
+      html: Literal(disregardsLookupItems)
+        .each(
+          Iterator.Filter(
+            Item().path('value').match(Condition.Array.IsIn(Answer('disregards'))),
+          ),
+        )
+        .each(Iterator.Map(Item().path('text')))
+        .pipe(Transformer.Array.Join('<br><br>')),
+    },
+    visibleWhen: not(noDisregardsSelected),
+  },
+] as GovUKSummaryList['rows'],
 })
 
 export const incomeHeading = GovUKHeading({
