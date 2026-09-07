@@ -56,15 +56,7 @@
       {% include "case_details/legal_help_form/_legal-help-form-privacy.njk" %}
 
       {# For use by advisor #}
-
-      {% if additionalCircumstances.length %}
-        <h3 class="govuk-heading-s">{{ t('pages.caseDetails.getLegalHelpForm.additionalCircumstancesLegend') }}</h3>
-        <ul class="govuk-list govuk-list--bullet">
-          {% for label in additionalCircumstances %}
-            <li>{{ label }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
+      {% include "case_details/legal_help_form/_legal-help-form-advisor.njk" %}
     </div>
   </div>
 

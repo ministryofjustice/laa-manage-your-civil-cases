@@ -32,17 +32,6 @@ function buildCircumstanceItems(): Array<{ value: string; text: string; hint: { 
 }
 
 /**
- * Resolve selected additional circumstance values into their translated labels
- * @param {string[]} selectedValues - the raw additionalCircumstances values stored in session
- * @returns {string[]} Translated labels for the selected circumstances
- */
-function resolveCircumstanceLabels(selectedValues: string[]): string[] {
-  return LEGAL_HELP_FORM_CIRCUMSTANCE_OPTIONS
-    .filter(({ value }) => selectedValues.includes(value))
-    .map(({ labelKey }) => t(`pages.caseDetails.getLegalHelpForm.circumstances.${labelKey}.label`));
-}
-
-/**
  * Show the get legal help form interstitial page
  * @param {Request} req Express request object
  * @param {Response} res Express response object
@@ -175,7 +164,7 @@ export async function getLegalHelpForm(req: Request, res: Response, next: NextFu
       caseReference,
       client: req.clientData,
       evidence: answers?.evidence ?? '',
-      additionalCircumstances: resolveCircumstanceLabels(answers?.additionalCircumstances ?? []),
+      additionalCircumstances: answers?.additionalCircumstances ?? [],
       legalHelpExtract,
     });
   } catch (error) {

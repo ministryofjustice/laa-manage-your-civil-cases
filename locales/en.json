@@ -606,7 +606,25 @@
           "moreDetailsAddress3": "102 Petty France",
           "moreDetailsAddress4": "London",
           "moreDetailsAddress5": "SW1H 9AJ",
-          "moreDetailsEmail": "dataprotection@justice.gov.uk"
+          "moreDetailsEmail": "dataprotection@justice.gov.uk",
+          "complaintsH3": "Complaints",
+          "complaintsParagraph1": "When we ask you for information, we will comply with the law. If you consider that your information has been handled incorrectly, you can contact the Information Commissioner for independent advice about data protection. You can contact the Information Commissioner at:",
+          "complaintsAddress1": "Information Commissioner's Office",
+          "complaintsAddress2": "Wycliffe House",
+          "complaintsAddress3": "Water Lane",
+          "complaintsAddress4": "Wilmslow",
+          "complaintsAddress5": "Cheshire",
+          "complaintsAddress6": "SK9 5AF",
+          "complaintsTelephone": "SK9 5AF",
+          "complaintsWebsite": "www.ico.org.uk"
+        },
+        "advisor": {
+          "h2": "For use by advisor",
+          "ecfQuestion": "Is this an application for exceptional case funding (ECF)?",
+          "ecfHint": "If yes you must provide the completed ECF application form.",
+          "acceptedChildOrPatientQuestion": "Accepted an application from a child or patient or someone on their behalf",
+          "legalHelpSameMatterQuestion": "Provided legal help to a client who has already received it on the same matter within the last 6 months",
+          "legalHelpSameMatterHint": "If yes you must provide the circumstances justifying this in accordance with the relevant rule in the specification."
         }
       }
     },

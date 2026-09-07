@@ -1,0 +1,38 @@
+<h2 class="govuk-heading">{{ t('pages.caseDetails.legalHelpForm.advisor.h2') }}</h2>
+
+{% set ecfText = "Yes" if "ecf" in additionalCircumstances else "No" %}
+{% set acceptedChildOrPatientText = "Yes" if "accepted-child-or-patient" in additionalCircumstances else "No" %}
+{% set legalHelpSameMatterText = "Yes" if "legal-help-same-matter" in additionalCircumstances else "No" %}
+
+{% set row1 = [
+  [
+    { text: t("pages.caseDetails.legalHelpForm.advisor.ecfQuestion") }, 
+    { text: ecfText }
+  ]
+] %}
+
+{% set row2 = [
+  [
+    { text: t("pages.caseDetails.legalHelpForm.advisor.acceptedChildOrPatientQuestion") }, 
+    { text: acceptedChildOrPatientText }
+  ],
+  [
+    { text: t("pages.caseDetails.legalHelpForm.advisor.legalHelpSameMatterQuestion") }, 
+    { text: legalHelpSameMatterText }
+  ]
+] %}
+
+{{ govukTable({
+  firstCellIsHeader: true,
+  classes: "legal-help-eligibility-table govuk-!-margin-bottom-1",
+  rows: row1
+}) }}
+<p class="govuk-body govuk-!-margin-bottom-5">{{ t('pages.caseDetails.legalHelpForm.advisor.ecfHint') }}</p>
+
+
+{{ govukTable({
+  firstCellIsHeader: true,
+  classes: "legal-help-eligibility-table govuk-!-margin-bottom-1",
+  rows: row2
+}) }}
+<p class="govuk-body">{{ t('pages.caseDetails.legalHelpForm.advisor.legalHelpSameMatterHint') }}</p>
