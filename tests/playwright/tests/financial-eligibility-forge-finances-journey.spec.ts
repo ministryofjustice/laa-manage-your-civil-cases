@@ -769,22 +769,27 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
       await expect(page).toHaveURL(`${baseUrl}/disputed-savings`);
       await completeDisputedSavingsValues(page);
 
-      // Remaining journey
+      // Disregards
       await expect(page).toHaveURL(`${baseUrl}/disregards`);
       await completeDisregardsNone(page);
 
+      // Income
       await expect(page).toHaveURL(`${baseUrl}/your-income`);
       await completeIncomeValues(page);
 
+      // Partner income
       await expect(page).toHaveURL(`${baseUrl}/partner-income`);
       await completePartnerIncomeValues(page);
 
+      // Dependants
       await expect(page).toHaveURL(`${baseUrl}/partner-dependants`);
       await completePartnerDependantsValues(page);
 
+      // Expenses
       await expect(page).toHaveURL(`${baseUrl}/your-expenses`);
       await completeExpensesValues(page);
 
+      // Partner expenses
       await expect(page).toHaveURL(`${baseUrl}/partner-expenses`);
       await completePartnerExpensesValues(page);
 

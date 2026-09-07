@@ -29,6 +29,10 @@ const categoryIsDebtOrFamily = or(
   Answer('category').match(Condition.Equals('family'))
 )
 
+const noDisregardsSelected = Literal('none').match(
+  Condition.Array.IsIn(Answer('disregards')),
+)
+
 export const checkYourAnswersHeading = GovUKHeading({
   text: 'Check your answers',
   size: 'm',
@@ -423,10 +427,6 @@ export const disputedSavingsSummaryList = GovUKSummaryList({
     },
   ] as GovUKSummaryList['rows'],
 })
-
-const noDisregardsSelected = Literal('none').match(
-  Condition.Array.IsIn(Answer('disregards')),
-)
 
 export const disregardsSummaryList = GovUKSummaryList({
   visibleWhen: not(under18Passported),
