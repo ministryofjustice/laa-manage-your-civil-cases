@@ -524,7 +524,12 @@
           "benefitsPartner": "Do you or your partner receive any of the following benefits:"
         },
         "property": {
-          "initialQuestion": "Do you own any property?"
+          "initialQuestion": "Do you own any property?",
+           "initialQuestionPartner": "Do you or your partner own any property?",
+           "propertyValue": "Property value",
+           "mortgageLeft": "Outstanding mortgage",
+           "propertyShare": "Percentage share",
+           "disputedProperty": "Is this property disputed?"
         },
         "evidence": {
           "h2": "Evidence we need from you",

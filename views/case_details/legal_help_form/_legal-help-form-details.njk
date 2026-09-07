@@ -9,15 +9,15 @@
   ],
   [
     { text: t("pages.caseDetails.legalHelpForm.details.nationalInsurance") }, 
-    { text: legalHelpExtract.nationalInsurance }
+    { text: legalHelpExtract.nationalInsurance if legalHelpExtract.nationalInsurance else t("common.notProvided") }
   ],
   [
     { text: t("pages.caseDetails.legalHelpForm.details.address") }, 
-    { text: client.address }
+    { text: client.address if client.address else t("common.notProvided") }
   ],
   [
     { text: t("pages.caseDetails.legalHelpForm.details.postcode") }, 
-    { text: client.postcode }
+    { text: client.postcode if client.postcode else t("common.notProvided") }
   ],
   [
     { text: t("pages.caseDetails.legalHelpForm.details.laaReference") }, 

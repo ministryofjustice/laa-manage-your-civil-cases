@@ -19,26 +19,18 @@ test.describe('Legal help form journey', () => {
 
     await clientDetails.navigate();
 
-    await page
-      .getByRole('button', { name: 'Get legal help form' })
-      .click();
+    await page.getByRole('button', { name: 'Get legal help form' }).click();
 
     await expect(page).toHaveURL(
       `/cases/${caseReference}/get-legal-help-form`,
     );
 
-    await page
-      .getByRole('button', { name: 'Create legal help form' })
-      .click();
+    await page.getByRole('button', { name: 'Create legal help form' }).click();
 
-    await expect(page).toHaveURL(
-      `/cases/${caseReference}/legal-help-form`,
-    );
+    await expect(page).toHaveURL(`/cases/${caseReference}/legal-help-form`);
   }
 
-  test('should create a legal help form with your details and your finances sections', async ({
-    page,
-  }) => {
+  test('should create a legal help form with your details and your finances sections', async ({ page }) => {
     const caseReference = 'PC-9173-4826';
     const evidence = 'Bank statements for the last 3 months';
 
@@ -97,9 +89,7 @@ test.describe('Legal help form journey', () => {
       await setupAuth(page);
     });
 
-    test('should show only the under-18 questions when the client is under-18 passported', async ({
-      page,
-    }) => {
+    test('should show only the under-18 questions when the client is under-18 passported', async ({ page }) => {
       const caseReference = 'PC-6667-9089';
 
       await navigateToLegalHelpForm(page, caseReference);
@@ -123,9 +113,7 @@ test.describe('Legal help form journey', () => {
         financesTable.getByRole('row', { name: "Universal Credit" })).toHaveCount(0);
     });
 
-    test('should show partner and age questions when an under-18 client receives regular payments', async ({
-      page,
-    }) => {
+    test('should show partner and age questions when an under-18 client receives regular payments', async ({ page }) => {
       const caseReference = 'PC-1854-6521';
 
       await navigateToLegalHelpForm(page, caseReference);
@@ -142,9 +130,7 @@ test.describe('Legal help form journey', () => {
       await expect(financesTable.getByRole('row', { name: "Do you have any savings, items of value or investments totalling £2500 or more?" })).toHaveCount(0);
     });
 
-    test('should show valuables, partner and age questions when an under-18 client has valuables', async ({
-      page,
-    }) => {
+    test('should show valuables, partner and age questions when an under-18 client has valuables', async ({ page }) => {
       const caseReference = 'PC-2211-4466';
 
       await navigateToLegalHelpForm(page, caseReference);
@@ -159,9 +145,7 @@ test.describe('Legal help form journey', () => {
       });
     });
 
-    test('should use the single-client age and benefits wording when there is no partner', async ({
-      page,
-    }) => {
+    test('should use the single-client age and benefits wording when there is no partner', async ({ page }) => {
       const caseReference = 'PC-1922-1879';
 
       await navigateToLegalHelpForm(page, caseReference);
@@ -184,9 +168,7 @@ test.describe('Legal help form journey', () => {
       await expect(financesTable.getByText('Are you or your partner aged 60 or over?', { exact: true })).toHaveCount(0);
     });
 
-    test('should use the partner age and benefits wording when the client has a partner', async ({
-      page,
-    }) => {
+    test('should use the partner age and benefits wording when the client has a partner', async ({ page }) => {
       const caseReference = 'PC-1869-9154';
 
       await navigateToLegalHelpForm(page, caseReference);
@@ -205,46 +187,89 @@ test.describe('Legal help form journey', () => {
     });
   });
 
-  test('should only display your details when hasPassportedProceedingsLetter is true', async ({
-    page,
-  }) => {
+  test('should only display your details when hasPassportedProceedingsLetter is true', async ({ page }) => {
     const caseReference = 'PC-4575-7150';
 
     await navigateToLegalHelpForm(page, caseReference);
 
-    await expect(
-      page.getByRole('heading', {
-        level: 1,
-        name: 'Legal help form',
-      }),
-    ).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: 'Legal help form' })).toBeVisible();
 
     // Details section should exist
-    await expect(
-      page.locator('caption').filter({
-        hasText: 'Your details',
-      }),
-    ).toBeVisible();
+    await expect(page.locator('caption').filter({ hasText: 'Your details' })).toBeVisible();
 
     // Finances section should not exist
-    await expect(
-      page.locator('caption').filter({
-        hasText: 'Your finances',
-      }),
-    ).toHaveCount(0);
+    await expect(page.locator('caption').filter({ hasText: 'Your finances' })).toHaveCount(0);
 
     // No financial questions should be rendered
-    await expect(
-      page.getByText('Are you aged 17 or under?'),
-    ).toHaveCount(0);
+    await expect(page.getByText('Are you aged 17 or under?')).toHaveCount(0);
 
-    await expect(
-      page.getByText('Do you have a partner?'),
-    ).toHaveCount(0);
+    await expect(page.getByText('Do you have a partner?')).toHaveCount(0);
 
-    await expect(
-      page.getByText('Universal Credit'),
-    ).toHaveCount(0);
+    await expect(page.getByText('Universal Credit')).toHaveCount(0);
   });
 
+  test('should display not provided when NI number, address and postcode are missing', async ({ page, }) => {
+    const caseReference = 'PC-1735-6182';
+
+    await navigateToLegalHelpForm(page, caseReference);
+
+    await expectCaptionTableRows(page, 'Your details', {
+      'National Insurance number': 'Not provided',
+      'Current address': 'Not provided',
+      'Postcode': 'Not provided',
+    });
+  });
+
+  test.describe('Legal help form property details', () => {
+    test.beforeEach(async ({ page }) => {
+      await setupAuth(page);
+    });
+
+    test('should show no when the client does not own any property', async ({ page }) => {
+      const caseReference = 'PC-1854-6521';
+
+      await navigateToLegalHelpForm(page, caseReference);
+
+      await expectCaptionTableRows(page, 'Your property', { 'Do you own any property?': 'No' });
+
+      await expect(page.getByRole('heading', { name: 'Main property' })).toHaveCount(0);
+
+      await expect(page.getByRole('heading', { name: 'Additional property' })).toHaveCount(0);
+    });
+
+    test('should display the main property details', async ({ page }) => {
+      const caseReference = 'PC-9173-4826';
+
+      await navigateToLegalHelpForm(page, caseReference);
+
+      await expectCaptionTableRows(page, 'Your property', { 'Do you own any property?': 'Yes' });
+
+      await expect(page.getByRole('heading', { name: 'Main property' })).toBeVisible();
+
+      await expectPropertyTableRows(page, 'Main property', {
+        'Property value': '£150,000',
+        'Outstanding mortgage': '£60,000',
+        'Percentage share': '100%'
+      });
+    });
+
+    test('should display additional properties', async ({ page }) => {
+      const caseReference = 'PC-1922-1879';
+
+      await navigateToLegalHelpForm(page, caseReference);
+
+       await expectPropertyTableRows(page, 'Main property', {
+        'Property value': '£120,000',
+        'Outstanding mortgage': '£60,000',
+        'Percentage share': '100%'
+      });
+
+       await expectPropertyTableRows(page, 'Additional property 1', {
+        'Property value': '£130,000',
+        'Outstanding mortgage': '£50,000',
+        'Percentage share': '100%'
+      });
+
+    });
+  });
 });

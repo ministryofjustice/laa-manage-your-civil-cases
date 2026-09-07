@@ -2449,5 +2449,85 @@
         "cost_living": true
       }
     }
+  },
+  {
+    "fullName": "Lily Morgan",
+    "providerId": "14",
+    "caseReference": "PC-1735-6182",
+    "refCode": "",
+    "dateReceived": "2025-07-06T19:00:00-05:00",
+    "caseStatus": "New",
+    "category": "Housing, eviction and homelessness",
+    "isUrgent": true,
+    "dateOfBirth": "1981-08-18T00:00:00-05:00",
+    "vulnerableUser": true,
+    "phoneNumber": "0786442261",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "harry@potter.com",
+    "address": "",
+    "postcode": "",
+    "laaReference": "8196672",
+    "thirdParty": {
+      "fullName": "Sarah Johnson",
+      "emailAddress": "sarah@johnson.com",
+      "contactNumber": "0787123456",
+      "safeToCall": true,
+      "address": "45 Main Street, Sheffield",
+      "postcode": "S1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "FAMILY_FRIEND"
+        ]
+      },
+      "passphraseSetUp": {
+        "selected": [
+          "Yes"
+        ],
+        "passphrase": "TestPass123"
+      }
+    },
+    "clientSupportNeeds": {
+      "skype": true,
+      "minicom": false,
+      "bslWebcam": "No",
+      "textRelay": "No",
+      "callbackPreference": "No",
+      "languageSupportNeeds": "",
+      "notes": "",
+      "no_adaptations_required": false
+    },
+    "lastModified": "2025-07-06T19:00:00-05:00",
+    "financialEligibility": {
+      "disputed_savings": null,
+      "state": "unknown",
+      "category": "debt",
+      "property_set": [
+        {
+          "value": 13000000,
+          "mortgage_left": 5000000,
+          "share": 100,
+          "id": 1361,
+          "disputed": true,
+          "main": false
+        },
+        {
+          "value": 12000000,
+          "mortgage_left": 6000000,
+          "share": 100,
+          "id": 1360,
+          "disputed": false,
+          "main": true
+        }
+      ]
+    },
+    "legalHelpFormExtract": {
+      "eligibility_check": {
+        "has_passported_proceedings_letter": true
+      },
+      "personal_details": {
+        "ni_number": ""
+      }
+    }
   }
 ]

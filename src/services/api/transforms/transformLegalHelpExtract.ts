@@ -4,11 +4,10 @@ import { response } from '#node_modules/@types/express/index.js';
 import { transformFinancialEligibilityItem } from '../transforms/transformFinancialEligibility.js';
 
 /**
- * Transforms raw financial eligibility API data to display format
- * @param {unknown} item Raw financial eligibility item
- * @returns {FinancialEligibilityData} Transformed financial eligibility item
+ * Transforms raw legal help extract API data to display format
+ * @param {unknown} item Raw legal help extract item
+ * @returns {FinancialEligibilityData} Transformed legal help extract item
  */
-
 export function transformLegalHelpFormItem(item: unknown,): FinancialEligibilityData {
   if (!isRecord(item)) {
     throw new Error('Invalid legal help extract: expected object',);

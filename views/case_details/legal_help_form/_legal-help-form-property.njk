@@ -5,7 +5,8 @@
 {% set initialRows = [
   [
     {
-      text: t("pages.caseDetails.legalHelpForm.property.initialQuestion")
+      text: t("pages.caseDetails.legalHelpForm.property.initialQuestionPartner")if legalHelpExtract.hasPartner else 
+        t("pages.caseDetails.legalHelpForm.property.initialQuestion")
     }, {
       text: hasProperty
     }
@@ -20,48 +21,35 @@
       rows: initialRows
     }) }}
 
-{% if hasProperty == "Yes" %}
+{% if legalHelpExtract.propertySet %}
   {% for property in legalHelpExtract.propertySet %}
-    {# Loop function will only work up to 22nd property - it is assumed if a client has 22 properties they are likely ineligible for support #}
-    <h3 class="govuk-heading-s">
-      {% if loop.index == 1 %}
-        1st property
-      {% elseif loop.index == 2 %}
-        2nd property
-      {% elseif loop.index == 3 %}
-        3rd property
-      {% else %}
-        {{ loop.index }}th property
-      {% endif %}
-    </h3>
+
+    {% if property.main %}
+      <h3 class="govuk-heading-m">Main property</h3>
+    {% else %}
+      <h3 class="govuk-heading-m">
+        Additional property {{ loop.index }}
+      </h3>
+    {% endif %}
 
     {% set propertyRows = [
       [
         {
-          text: t("common.financialEligibility.finances.propertyValue")
+          text: t("pages.caseDetails.legalHelpForm.property.propertyValue")
         }, {
           text: (property.value | formatFinancialData)
         }
       ],
       [
         {
-          text: t("common.financialEligibility.finances.mortgageLeft")
+          text: t("pages.caseDetails.legalHelpForm.property.mortgageLeft")
         }, {
           text: (property.mortgageLeft | formatFinancialData)
         }
       ],
       [
         {
-          text: t("common.financialEligibility.finances.mainProperty")
-        }, {
-          text: "Yes" if property.main else 
-            "No"
-        }
-      ],
-      [
-        {
-          text: t("common.financialEligibility.finances.partnerPropertyShare")if legalHelpExtract.hasPartner else 
-            t("common.financialEligibility.finances.propertyShare")
+          text: t("pages.caseDetails.legalHelpForm.property.propertyShare")
         }, {
           text: property.share + "%"
         }
@@ -72,10 +60,9 @@
       {% set propertyRows = propertyRows.concat([
         [
           {
-            text: t("common.financialEligibility.finances.disputedProperty")
+            text: t("pages.caseDetails.legalHelpForm.property.disputedProperty")
           }, {
-            text: "Yes" if property.disputed else 
-              "No"
+            text: "Yes" if property.disputed else "No"
           }
         ]
       ]) %}

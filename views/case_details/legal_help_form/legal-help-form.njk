@@ -38,16 +38,18 @@
       {% include "case_details/legal_help_form/_legal-help-form-details.njk" %}
 
       {% if not legalHelpExtract.hasPassportedProceedingsLetter %}
-      {# Your finances #}
-      {% include "case_details/legal_help_form/_legal-help-form-finances.njk" %}
+        {# Your finances #}
+        {% include "case_details/legal_help_form/_legal-help-form-finances.njk" %}
 
-      {# Your property #}
-      {% include "case_details/legal_help_form/_legal-help-form-property.njk" %}
+        {% if not legalHelpExtract.under18passportedBenefits %}
+          {# Your property #}
+          {% include "case_details/legal_help_form/_legal-help-form-property.njk" %}
 
-      {# Your capital #}
+          {# Your capital #}
 
-      {# Your income #}
+          {# Your income #}
 
+        {% endif %}
       {% endif %}
 
       {# Evidence we need from you #}
@@ -67,7 +69,9 @@
   <hr class="horizontal-line-bottom"/>
 
   <div class="govuk-button-group bottom-button-group">
-    <p><a class="govuk-link govuk-!-display-none-print" href="#">{{ t('pages.caseDetails.legalHelpForm.jumpToTop') }}</a></p>
+    <p>
+      <a class="govuk-link govuk-!-display-none-print" href="#">{{ t('pages.caseDetails.legalHelpForm.jumpToTop') }}</a>
+    </p>
 
     {# Print button bottom #}
     <div class="printing-button">
