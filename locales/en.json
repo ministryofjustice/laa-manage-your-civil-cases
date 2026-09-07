@@ -516,7 +516,8 @@
           "address": "Current address",
           "postcode": "Postcode",
           "nationalInsurance": "National Insurance number",
-          "laaReference": "LAA reference"
+          "laaReference": "LAA reference",
+          "benefits": "Do you or your partner receive any of the following benefits:"
         },
         "evidence": {
           "h2": "Evidence we need from you",
