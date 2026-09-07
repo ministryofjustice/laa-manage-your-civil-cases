@@ -122,5 +122,60 @@ export interface MockCase {
     };
     dependantsYoung: number;
     dependantsOld: number;
+  },
+  legalHelpFormExtract?: {
+    hasPartner?: boolean;
+    isUnder17?: boolean;
+    isOver60?: boolean;
+
+    specificBenefits?: {
+      pensionCredit: boolean;
+      jobSeekers: boolean;
+      employmentSupport: boolean;
+      universalCredit: boolean;
+      incomeSupport: boolean;
+    }
+    propertySet: Array<{
+      value: number;
+      mortgageLeft: number;
+      id: number;
+      share: number;
+      disputed: boolean;
+      main: boolean;
+    }>
+    clientData?: {
+      income: IncomeData,
+      savings: SavingsData,
+      deductions: DeductionData
+    }
+    partnerData?: {
+      partnerIncome: IncomeData,
+      partnerSavings: SavingsData,
+      partnerDeductions: DeductionData
+    }
+    disregards?: {
+      vaccine_damage: boolean,
+      national_emergencies: boolean,
+      vcjd_trust: boolean,
+      infected_blood: boolean,
+      child_maintenance: boolean,
+      benefit_payments: boolean,
+      child_abuse: boolean,
+      grenfell_tower: boolean,
+      london_emergencies: boolean,
+      justice_compensation: boolean,
+      love_manchester: boolean,
+      overseas_terrorism: boolean,
+      energy_prices: boolean,
+      criminal_injuries: boolean,
+      modern_slavery: boolean,
+      cost_living: boolean
+    };
+    dependantsYoung: number;
+    dependantsOld: number;
+    on_nass_benefits: boolean;
+    personal_details: {
+      ni_number: string;
+    };
   }
 }

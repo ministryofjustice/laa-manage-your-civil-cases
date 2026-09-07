@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures/index.js';
-import { setupAuth } from '../utils/index.js';
+import { setupAuth, expectPropertyTableRows, expectCaptionTableRows } from '../utils/index.js';
 import { ClientDetailsPage } from '../pages/index.js';
 
 test.describe('Legal help form journey', () => {
@@ -10,7 +10,7 @@ test.describe('Legal help form journey', () => {
   test('should create a legal help form from the client details page', async ({
     page,
   }) => {
-    const caseReference = 'PC-1922-1879';
+    const caseReference = 'PC-9173-4826';
     const evidence = 'Bank statements for the last 3 months';
 
     const clientDetails = ClientDetailsPage.forCase(page, caseReference);
@@ -26,7 +26,7 @@ test.describe('Legal help form journey', () => {
     // Verify navigation to the interstitial page.
     await expect(page).toHaveURL(`/cases/${caseReference}/get-legal-help-form`);
 
-    await expect(page.getByRole('heading', { name: 'Legal help form'})).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Legal help form' })).toBeVisible();
 
     // Complete the evidence field.
     await page.getByLabel('What evidence do you require from the client? (optional)').fill(evidence);
@@ -35,17 +35,31 @@ test.describe('Legal help form journey', () => {
     await page.getByLabel('This is an application for Exceptional Case Funding (ECF)').check();
 
     // Create the legal help form.
-    await page.getByRole('button', { name: 'Create legal help form'}).click();
+    await page.getByRole('button', { name: 'Create legal help form' }).click();
 
     // Verify navigation to the generated legal help form.
     await expect(page).toHaveURL(`/cases/${caseReference}/legal-help-form`);
 
-    await expect(page.getByRole('heading', { level: 1, name: 'Legal help form'})).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: 'Legal help form' })).toBeVisible();
 
-    // Verify the Your details section is shown.
-    await expect(page.getByRole('heading', { name: 'Your details'})).toBeVisible();
+    await expectCaptionTableRows(page, 'Your details', {
+      'Full name': 'Ian Phillips',
+      'Date of birth': '19 Dec 1991',
+      'National Insurance number': 'AB123456C',
+      'Current address': '38 Oak Avenue, Sheffield',
+      'Postcode': 'NE1 8DR',
+      'LAA reference': '3767316',
+    });
 
-    // Verify the Finances section is shown.
-    await expect(page.getByRole('table', { name: 'Finances'})).toBeVisible();
+    await expectCaptionTableRows(page, 'Your finances', {
+      'Are you aged 17 or under?': 'No',
+      'Do you have a partner?': 'No',
+      'Are you aged 60 or over?': 'No',
+      'Universal Credit': 'No',
+      'Income Support': 'No',
+      'Income-based Job Seekers Allowance': 'No',
+      'Guarantee State Pension Credit': 'No',
+      'Income-related Employment and Support Allowance': 'No',
+    });
   });
 });

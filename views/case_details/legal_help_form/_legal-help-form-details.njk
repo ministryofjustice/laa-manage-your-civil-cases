@@ -1,5 +1,3 @@
-<h2 class="govuk-heading">{{ t('pages.caseDetails.legalHelpForm.details.detailsHeading') }}</h2>
-
 {% set rows = [
   [
     { text: t("pages.caseDetails.legalHelpForm.details.name") }, 
@@ -28,7 +26,8 @@
 ] %}
 
 {{ govukTable({
-  captionClasses: "govuk-table__caption--m",
+   caption: "Your details",
+  captionClasses: "govuk-table__caption--l",
   firstCellIsHeader: true,
   classes: "eligibility-table",
   rows: rows
