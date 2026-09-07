@@ -1,5 +1,5 @@
 import { submit, redirect, Answer, Condition } from '@ministryofjustice/hmpps-forge/core/authoring'
-import { continueButton, discardChangesButton, ifPressedDiscardChanges } from '../commonBlocks.js'
+import { mainForgeJourneyActions } from '../commonBlocks.js'
 import { benefitsHeading, universalCreditField, incomeSupportField, incomeBasedJSAField, pensionCreditField, employmentSupportField } from './benefitsBlock.js'
 import { FinancialEligibilityEffects } from '../effects.js'
 import { step, type StepDefinition } from '../authoring.js'
@@ -13,9 +13,8 @@ export const benefitsStep: StepDefinition = step({
   path: '/benefits',
   title: 'Benefits',
   reachability: { entryWhen: true },
-  blocks: [benefitsHeading, universalCreditField, incomeSupportField, incomeBasedJSAField, pensionCreditField, employmentSupportField, continueButton, discardChangesButton],
+  blocks: [benefitsHeading, universalCreditField, incomeSupportField, incomeBasedJSAField, pensionCreditField, employmentSupportField, mainForgeJourneyActions],
   onSubmission: [
-    ifPressedDiscardChanges(),
     submit({
       validate: true,
       onValid: {

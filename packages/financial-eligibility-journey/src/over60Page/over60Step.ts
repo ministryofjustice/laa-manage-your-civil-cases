@@ -1,5 +1,5 @@
 import { submit, redirect } from '@ministryofjustice/hmpps-forge/core/authoring'
-import { continueButton, discardChangesButton, ifPressedDiscardChanges } from '../commonBlocks.js'
+import { mainForgeJourneyActions } from '../commonBlocks.js'
 import { over60FieldHeading, over60Field  } from './over60Block.js'
 import { FinancialEligibilityEffects } from '../effects.js'
 import { step, type StepDefinition } from '../authoring.js'
@@ -12,9 +12,8 @@ export const over60Step: StepDefinition = step({
   path: '/60-or-over',
   title: 'Are you aged over 60?',
   reachability: { entryWhen: true },
-  blocks: [over60FieldHeading, over60Field, continueButton, discardChangesButton],
+  blocks: [over60FieldHeading, over60Field, mainForgeJourneyActions],
   onSubmission: [
-    ifPressedDiscardChanges(),
     submit({
       validate: true,
       onValid: {

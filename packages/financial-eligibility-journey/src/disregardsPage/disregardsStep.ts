@@ -1,5 +1,5 @@
 import { submit, redirect, Answer, Condition, or } from '@ministryofjustice/hmpps-forge/core/authoring'
-import { continueButton, discardChangesButton, ifPressedDiscardChanges } from '../commonBlocks.js'
+import { mainForgeJourneyActions } from '../commonBlocks.js'
 import { disregardsHeading, disregardsField } from './disregardsBlock.js'
 import { FinancialEligibilityEffects } from '../effects.js'
 import { step, type StepDefinition } from '../authoring.js'
@@ -23,9 +23,8 @@ export const disregardsStep: StepDefinition = step({
   path: '/disregards',
   title: 'Disregards',
   reachability: { entryWhen: true },
-  blocks: [disregardsHeading, disregardsField, continueButton, discardChangesButton],
+  blocks: [disregardsHeading, disregardsField, mainForgeJourneyActions],
   onSubmission: [
-    ifPressedDiscardChanges(),
     submit({
       validate: true,
       onValid: {

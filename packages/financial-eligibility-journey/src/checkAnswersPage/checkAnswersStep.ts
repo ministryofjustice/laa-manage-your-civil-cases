@@ -1,5 +1,5 @@
 import { step, submit, redirect, access } from '@ministryofjustice/hmpps-forge/core/authoring'
-import { submitButton, discardChangesButton, ifPressedDiscardChanges } from '../commonBlocks.js'
+import { checkYourAnswersForgeJourneyActions } from '../commonBlocks.js'
 import { checkYourAnswersHeading, detailsHeading, aboutYouSummaryList, benefitsSummaryList, financesHeading, propertiesSummaryList, savingsSummaryList, partnerSavingsSummaryList, disputedSavingsSummaryList, disregardsSummaryList, incomeHeading, incomeSummaryList, partnerIncomeSummaryList, dependantsSummaryList, expensesHeading, expensesSummaryList, partnerExpensesSummaryList, undisputedSavingsSummaryList, partnerUndisputedSavingsSummaryList, partnerDependantsSummaryList } from './checkAnswersBlock.js'
 import { FinancialEligibilityEffects, PatternEffects } from '../effects.js'
 import { type StepDefinition } from '../authoring.js'
@@ -14,14 +14,13 @@ export const checkAnswersStep: StepDefinition = step({
   path: '/check-answers',
   title: 'Check your answers',
   reachability: { entryWhen: true },
-  blocks: [checkYourAnswersHeading, detailsHeading, aboutYouSummaryList, benefitsSummaryList, financesHeading, propertiesSummaryList, savingsSummaryList, undisputedSavingsSummaryList, partnerSavingsSummaryList, partnerUndisputedSavingsSummaryList, disputedSavingsSummaryList, disregardsSummaryList, incomeHeading, incomeSummaryList, partnerIncomeSummaryList, partnerDependantsSummaryList, dependantsSummaryList, expensesHeading, expensesSummaryList, partnerExpensesSummaryList, submitButton, discardChangesButton],
+  blocks: [checkYourAnswersHeading, detailsHeading, aboutYouSummaryList, benefitsSummaryList, financesHeading, propertiesSummaryList, savingsSummaryList, undisputedSavingsSummaryList, partnerSavingsSummaryList, partnerUndisputedSavingsSummaryList, disputedSavingsSummaryList, disregardsSummaryList, incomeHeading, incomeSummaryList, partnerIncomeSummaryList, partnerDependantsSummaryList, dependantsSummaryList, expensesHeading, expensesSummaryList, partnerExpensesSummaryList, checkYourAnswersForgeJourneyActions],
   onAccess: [
     access({
       effects: [PatternEffects.InitialiseRepeatingFieldset(propertiesStepCode, propertiesCollectionCode, propertiesFieldCodes)],
     }),
   ],
   onSubmission: [
-    ifPressedDiscardChanges(),
     submit({
       validate: false,
       onAlways: {

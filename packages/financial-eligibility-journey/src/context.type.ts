@@ -9,6 +9,7 @@ import type { Session } from 'express-session'
 export type FinancialEligibilitySession = Session & {
   financialEligibilityDrafts: Record<string, Record<string, unknown>>; // session-stored draft answers for financial eligibility questions, keyed by case reference
   casePatternDrafts?: Record<string, Record<string, Record<string, unknown[]>>>;  // session-stored draft answers for repeating pattern data in the financial eligibility journey
+  discardReturnPaths?: Record<string, string>; // last forge journey page visited before the discard interruption page, keyed by case reference
 }
 
 export type FinancialEligibilityEffectContext = EffectFunctionContext<

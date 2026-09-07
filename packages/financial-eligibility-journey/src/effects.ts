@@ -5,6 +5,10 @@ import type { FinancialEligibilitySession } from './context.type.js';
 import { getOrMigrateCasePatternDrafts } from './casePatternDrafts.js';
 
 export interface FinancialEligibilityEffectShape {  
+  /** Stores the current journey page as the return target for discard confirmation */
+  SaveDiscardReturnPath: () => EffectFunctionExpr;
+  /** Resolves the validated journey page to return to from the discard confirmation */
+  ResolveDiscardReturnPath: () => EffectFunctionExpr;
   /** Clears draft answers for this pattern (used after committing drafts to the store) */
   ClearDraftAnswers: () => EffectFunctionExpr;
   /** Submit saved answers from session to cla_backend  */
@@ -25,6 +29,52 @@ export const FinancialEligibilityEffectsImplementations: Record<
   keyof FinancialEligibilityEffectShape,
   FinancialEligibilityEffectImplementation
 > = {
+  /**
+   * Stores the current journey page as the return target for discard interruption page
+   * @returns {(context: EffectFunctionContext) => Promise<void>} Async function save return path
+   */
+  SaveDiscardReturnPath: () => (context: EffectFunctionContext) => {
+    const caseReference = context.getRequestParam('caseReference');
+
+    if (!caseReference) {
+      return;
+    }
+
+    const currentPath = new URL(context.getRequestUrl()).pathname;
+    const discardPath = `/cases/${caseReference}/financial-eligibility/change/discard`;
+
+    if (currentPath !== discardPath) {
+      const session = context.getSession() as FinancialEligibilitySession | undefined;
+
+      if (session) {
+        // If `session.discardReturnPaths` is null or undefined, assign it an empty object. Otherwise, leave its existing value unchanged.
+        session.discardReturnPaths ??= {};
+        // This stores currentPath against the current case reference in the session
+        session.discardReturnPaths[caseReference] = currentPath;
+      }
+    }
+  },
+
+  /**
+   * Resolve and figure out where to return to, from the discard confirmation page
+   * @returns {(context: EffectFunctionContext) => Promise<void>} Async function to set url link
+   */
+  ResolveDiscardReturnPath: () => (context: EffectFunctionContext) => {
+    const caseReference = context.getRequestParam('caseReference');
+
+    if (!caseReference) {
+      context.setData('discardReturnPath', '/');
+      return;
+    }
+
+    const fallbackPath = `/cases/${caseReference}/financial-eligibility/`;
+    const returnTo = (context.getSession() as FinancialEligibilitySession | undefined)?.discardReturnPaths?.[caseReference];
+    const journeyPath = `/cases/${caseReference}/financial-eligibility/change/`;
+
+    // This resolved path populates `discardReturnPath`, and is picked up in the link
+    context.setData('discardReturnPath', typeof returnTo === 'string' && returnTo.startsWith(journeyPath) ? returnTo : fallbackPath);
+  },
+
   /**
    * Loads case details from middleware and stores them in the context, for use in the journey.
    * The data has already been fetched by fetchClientDetails middleware to avoid duplicate API calls.
@@ -75,6 +125,14 @@ export const FinancialEligibilityEffectsImplementations: Record<
 export const FinancialEligibilityEffectsRegistry = new EffectRegistry<Deps>();
 
 export const FinancialEligibilityEffects: FinancialEligibilityEffectShape = {
+  SaveDiscardReturnPath: FinancialEligibilityEffectsRegistry.register(
+    'SaveDiscardReturnPath',
+    FinancialEligibilityEffectsImplementations.SaveDiscardReturnPath,
+  ),
+  ResolveDiscardReturnPath: FinancialEligibilityEffectsRegistry.register(
+    'ResolveDiscardReturnPath',
+    FinancialEligibilityEffectsImplementations.ResolveDiscardReturnPath,
+  ),
   LoadCaseDetails: FinancialEligibilityEffectsRegistry.register(
     'LoadCaseDetails',
     FinancialEligibilityEffectsImplementations.LoadCaseDetails,

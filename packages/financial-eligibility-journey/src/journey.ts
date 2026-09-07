@@ -22,6 +22,7 @@ import { propertiesStepPartner } from './propertiesPageWithPartner/propertiesSte
 import { undisputedSavingsStep } from './undisputedSavings/undisputedSavingsStep.js'
 import { partnerUndisputedSavingsStep } from './partnerUndisputedSavings/partnerUndisputedSavingsStep.js'
 import { partnerDependantsStep } from './partnerDependantsPage/partnerDependantsStep.js'
+import { discardStep } from './discardChangesPage/discardChangesStep.js'
 
 // The loads any stored draft answers on every access, so switching between branches preserves earlier input.
 // The summary page filters rows to the  branch the user is currently on.
@@ -34,6 +35,7 @@ export const eligibilityJourney = journey({
       effects: [
         FinancialEligibilityEffects.LoadCaseDetails(),
         FinancialEligibilityEffects.LoadCaseFinancialEligibility(),
+        FinancialEligibilityEffects.SaveDiscardReturnPath(),
       ],
     }),
   ],
@@ -61,5 +63,6 @@ export const eligibilityJourney = journey({
     partnerExpensesStep,
     checkAnswersStep,
     partnerDependantsStep,
+    discardStep,
   ],
 })
