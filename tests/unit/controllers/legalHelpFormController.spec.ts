@@ -247,7 +247,7 @@ describe('Legal Help Form Controller', () => {
       const renderArgs = renderStub.firstCall.args[1];
       expect(renderArgs.evidence).to.equal('Bank statements');
       expect(renderArgs.additionalCircumstances).to.deep.equal([
-        'This is an application for Exceptional Case Funding (ECF)'
+        'ecf'
       ]);
     });
 
