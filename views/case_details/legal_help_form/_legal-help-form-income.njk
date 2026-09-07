@@ -1,0 +1,69 @@
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% set income = legalHelpExtract.clientData.income %}
+
+<h2 class="govuk-heading-l">{{ t('pages.caseDetails.legalHelpForm.income.h2') }}</h2>
+
+<p class="govuk-body">{{ t('pages.caseDetails.legalHelpForm.income.paragraph1') }}</p>
+
+{{ govukTable({
+    caption: "",
+    captionClasses: "govuk-table__caption--l",
+    firstCellIsHeader: true,
+    head: [
+      { text: "" },
+      { text: "You" },
+      { text: "Your partner" }
+    ],
+    rows: [
+      [
+        { text: "Wages (before tax)" },
+        { text: income.earnings.amount | formatFinancialData },
+        { text: "£100" }
+      ],
+      [
+        { text: "Self employed drawings (before tax)" },
+        { text: income.selfEmploymentDrawings.amount | formatFinancialData },
+        { text: "£100" }
+      ],
+      [
+        { text: "Benefits" },
+        { text: "£100" },
+        { text: "£100" }
+      ],
+      [
+        { text: "Tax credits" },
+        { text: "£100" },
+        { text: "£100" }
+      ],
+      [
+        { text: "Child Benefit (for household)" },
+        { text: "£100" },
+        { text: "" }
+      ],
+      [
+        { text: "Maintenance received" },
+        { text: "£100" },
+        { text: "£100" }
+      ],
+      [
+        { text: "Pension income" },
+        { text: "£100" },
+        { text: "£100" }
+      ],
+      [
+        { text: "Any other income" },
+        { text: "£100" },
+        { text: "£100" }
+      ],
+      [
+        { text: "Total income" },
+        { text: "£800",
+          classes: "income-table__total"
+        },
+        { text: "£700",
+          classes: "income-table__total"
+        }
+      ]
+    ]
+  }) }}

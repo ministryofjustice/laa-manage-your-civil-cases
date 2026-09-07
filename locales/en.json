@@ -531,6 +531,10 @@
            "propertyShare": "Percentage share",
            "disputedProperty": "Is this property disputed?"
         },
+        "income": {
+          "h2": "Your income",
+          "paragraph1": "When looking at your income we will consider how much income you have and then deduct any outgoings up to a certain limit. The remaining amount (disposable income) tells us whether you are eligible. We look at this from your monthly income (by calendar month)"
+        },
         "evidence": {
           "h2": "Evidence we need from you",
           "paragraph1": "To ensure that the details you have given us are correct, we will require the following evidence:"
