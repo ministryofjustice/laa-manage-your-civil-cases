@@ -519,9 +519,12 @@
           "laaReference": "LAA reference"
         },
         "finances": {
-          "assylmSupport": "Are you on National Asylum Support Service benefits?",
+          "asylumSupport": "Are you on National Asylum Support Service benefits?",
           "benefits": "Do you receive any of the following benefits:",
           "benefitsPartner": "Do you or your partner receive any of the following benefits:"
+        },
+        "property": {
+          "initialQuestion": "Do you own any property?"
         },
         "evidence": {
           "h2": "Evidence we need from you",

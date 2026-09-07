@@ -49,10 +49,6 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
   const passportedBenefits = Boolean(item.on_passported_benefits);
   const under18passportedBenefits = Boolean(item.under_18_passported);
   const category = String(item.category);
-  const asylumSupport = Boolean(item.on_nass_benefits);
-  const personalDetails = isRecord(item.personal_details) ? item.personal_details : {};
-  const nationalInsurance = String(personalDetails.ni_number ?? '');
-
 
   return {
     hasPartner,
@@ -72,9 +68,7 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
     hasPassportedProceedingsLetter,
     passportedBenefits,
     under18passportedBenefits,
-    category,
-    asylumSupport,
-    nationalInsurance
+    category
   };
 }
 

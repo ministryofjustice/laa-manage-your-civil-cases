@@ -1,0 +1,91 @@
+{% set isDisputedCategory = legalHelpExtract.category == 'debt' or legalHelpExtract.category == 'family' %}
+{% set hasProperty = "Yes" if legalHelpExtract.propertySet and legalHelpExtract.propertySet.length else 
+  "No" %}
+
+{% set initialRows = [
+  [
+    {
+      text: t("pages.caseDetails.legalHelpForm.property.initialQuestion")
+    }, {
+      text: hasProperty
+    }
+  ]
+] %}
+
+{{ govukTable({
+      caption: "Your property",
+      captionClasses: "govuk-table__caption--l",
+      firstCellIsHeader: true,
+      classes: "eligibility-table",
+      rows: initialRows
+    }) }}
+
+{% if hasProperty == "Yes" %}
+  {% for property in legalHelpExtract.propertySet %}
+    {# Loop function will only work up to 22nd property - it is assumed if a client has 22 properties they are likely ineligible for support #}
+    <h3 class="govuk-heading-s">
+      {% if loop.index == 1 %}
+        1st property
+      {% elseif loop.index == 2 %}
+        2nd property
+      {% elseif loop.index == 3 %}
+        3rd property
+      {% else %}
+        {{ loop.index }}th property
+      {% endif %}
+    </h3>
+
+    {% set propertyRows = [
+      [
+        {
+          text: t("common.financialEligibility.finances.propertyValue")
+        }, {
+          text: (property.value | formatFinancialData)
+        }
+      ],
+      [
+        {
+          text: t("common.financialEligibility.finances.mortgageLeft")
+        }, {
+          text: (property.mortgageLeft | formatFinancialData)
+        }
+      ],
+      [
+        {
+          text: t("common.financialEligibility.finances.mainProperty")
+        }, {
+          text: "Yes" if property.main else 
+            "No"
+        }
+      ],
+      [
+        {
+          text: t("common.financialEligibility.finances.partnerPropertyShare")if legalHelpExtract.hasPartner else 
+            t("common.financialEligibility.finances.propertyShare")
+        }, {
+          text: property.share + "%"
+        }
+      ]
+    ] %}
+
+    {% if isDisputedCategory %}
+      {% set propertyRows = propertyRows.concat([
+        [
+          {
+            text: t("common.financialEligibility.finances.disputedProperty")
+          }, {
+            text: "Yes" if property.disputed else 
+              "No"
+          }
+        ]
+      ]) %}
+    {% endif %}
+
+    {{ govukTable({
+      firstCellIsHeader: true,
+      classes: "eligibility-table",
+      rows: propertyRows
+    }) }}
+
+  {% endfor %}
+{% endif %}
