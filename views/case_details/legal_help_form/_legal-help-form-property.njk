@@ -22,29 +22,87 @@
     }) }}
 
 {% if legalHelpExtract.propertySet %}
-  {% for property in legalHelpExtract.propertySet %}
 
+  {# Main property first #}
+  {% for property in legalHelpExtract.propertySet %}
     {% if property.main %}
+
       <h3 class="govuk-heading-m">Main property</h3>
-    {% else %}
-      <h3 class="govuk-heading-m">
-        Additional property {{ loop.index }}
-      </h3>
+
+      {% set propertyRows = [
+        [
+          {
+            text: t("pages.caseDetails.legalHelpForm.property.propertyValue")
+          }, {
+            text: property.value | formatFinancialData
+          }
+        ],
+        [
+          {
+            text: t("pages.caseDetails.legalHelpForm.property.mortgageLeft")
+          }, {
+            text: property.mortgageLeft | formatFinancialData
+          }
+        ],
+        [
+          {
+            text: t("pages.caseDetails.legalHelpForm.property.propertyShare")
+          }, {
+            text: property.share + "%"
+          }
+        ]
+      ] %}
+
+      {% if isDisputedCategory %}
+        {% set propertyRows = propertyRows.concat([
+          [
+            {
+              text: t("pages.caseDetails.legalHelpForm.property.disputedProperty")
+            }, {
+              text: "Yes" if property.disputed else 
+                "No"
+            }
+          ]
+        ]) %}
+      {% endif %}
+
+      {{ govukTable({
+        firstCellIsHeader: true,
+        classes: "eligibility-table",
+        rows: propertyRows
+      }) }}
+
     {% endif %}
+  {% endfor %}
+
+  {# Additional properties #}
+  {% set additionalProperties = [] %}
+
+  {% for property in legalHelpExtract.propertySet %}
+    {% if not property.main %}
+      {% set additionalProperties = additionalProperties.concat([property]) %}
+    {% endif %}
+  {% endfor %}
+
+  {% for property in additionalProperties %}
+
+    <h3 class="govuk-heading-m">
+      Additional property {{ loop.index }}
+    </h3>
 
     {% set propertyRows = [
       [
         {
           text: t("pages.caseDetails.legalHelpForm.property.propertyValue")
         }, {
-          text: (property.value | formatFinancialData)
+          text: property.value | formatFinancialData
         }
       ],
       [
         {
           text: t("pages.caseDetails.legalHelpForm.property.mortgageLeft")
         }, {
-          text: (property.mortgageLeft | formatFinancialData)
+          text: property.mortgageLeft | formatFinancialData
         }
       ],
       [
@@ -62,7 +120,8 @@
           {
             text: t("pages.caseDetails.legalHelpForm.property.disputedProperty")
           }, {
-            text: "Yes" if property.disputed else "No"
+            text: "Yes" if property.disputed else 
+              "No"
           }
         ]
       ]) %}

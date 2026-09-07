@@ -258,18 +258,35 @@ test.describe('Legal help form journey', () => {
 
       await navigateToLegalHelpForm(page, caseReference);
 
-       await expectPropertyTableRows(page, 'Main property', {
+      await expectPropertyTableRows(page, 'Main property', {
         'Property value': '£120,000',
         'Outstanding mortgage': '£60,000',
         'Percentage share': '100%'
       });
 
-       await expectPropertyTableRows(page, 'Additional property 1', {
+      await expectPropertyTableRows(page, 'Additional property 1', {
         'Property value': '£130,000',
         'Outstanding mortgage': '£50,000',
         'Percentage share': '100%'
       });
+    });
 
+    test('should show disputed property question for debt cases', async ({ page }) => {
+      const caseReference = 'PC-1977-1241'; // debt case
+
+      await navigateToLegalHelpForm(page, caseReference);
+
+      await expectPropertyTableRows(page, 'Main property', {'Is this property disputed?': 'No'});
+
+      await expectPropertyTableRows(page, 'Additional property 1', {'Is this property disputed?': 'Yes'});
+    });
+
+    test('should show disputed property question for family cases', async ({ page }) => {
+      const caseReference = 'PC-1924-9560'; // family case
+
+      await navigateToLegalHelpForm(page, caseReference);
+
+      await expectPropertyTableRows(page, 'Main property', {'Is this property disputed?': 'Yes'});
     });
   });
 });

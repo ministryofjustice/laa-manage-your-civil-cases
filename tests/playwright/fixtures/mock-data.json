@@ -127,9 +127,39 @@
           "share": 100,
           "id": 1361,
           "disputed": true,
-          "main": false
+          "main": true
         }
       ]
+    },
+    "legalHelpFormExtract": {
+      "eligibility_check": {
+        "category": "family",
+        "has_partner": false,
+        "savings": {
+          "bank_balance": 20000,
+          "investment_balance": 10000,
+          "asset_balance": 50000,
+          "credit_balance": 20000,
+          "total": 100000
+        },
+        "disputed_savings": {
+          "bank_balance": 20000,
+          "investment_balance": 10000,
+          "asset_balance": 50000,
+          "credit_balance": 20000,
+          "total": 100000
+        },
+        "property_set": [
+          {
+            "value": 13000000,
+            "mortgage_left": 5000000,
+            "share": 100,
+            "id": 1361,
+            "disputed": true,
+            "main": true
+          }
+        ]
+      }
     }
   },
   {
@@ -523,6 +553,31 @@
           "main": true
         }
       ]
+    },
+    "legalHelpFormExtract": {
+      "eligibility_check": {
+        "disputed_savings": null,
+        "state": "unknown",
+        "category": "debt",
+        "property_set": [
+          {
+            "value": 13000000,
+            "mortgage_left": 5000000,
+            "share": 100,
+            "id": 1361,
+            "disputed": true,
+            "main": false
+          },
+          {
+            "value": 12000000,
+            "mortgage_left": 6000000,
+            "share": 100,
+            "id": 1360,
+            "disputed": false,
+            "main": true
+          }
+        ]
+      }
     }
   },
   {
