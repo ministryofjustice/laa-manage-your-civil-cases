@@ -1,13 +1,23 @@
-{% set under17Text = "Yes" if financialEligibility.isUnder17 else "No" %}
-{% set under18RegularPayment = "Yes" if financialEligibility.under18RegularPayment else "No" %}
-{% set under18HasValuables = "Yes" if financialEligibility.under18HasValuables else "No" %}
-{% set partnerText = "Yes" if financialEligibility.hasPartner else "No" %}
-{% set over60Text = "Yes" if financialEligibility.isOver60 else "No" %}
-{% set universalCredit = "Yes" if financialEligibility.specificBenefits.universalCredit else "No" %}
-{% set pensionCredit = "Yes" if financialEligibility.specificBenefits.pensionCredit else "No" %}
-{% set jobSeekers = "Yes" if financialEligibility.specificBenefits.jobSeekers else "No" %}
-{% set employmentSupport = "Yes" if financialEligibility.specificBenefits.employmentSupport else "No" %}
-{% set incomeSupport = "Yes" if financialEligibility.specificBenefits.incomeSupport else "No" %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% set under17Text = "Yes" if legalHelpExtract.isUnder17 else 
+  "No" %}
+{% set under18RegularPayment = "Yes" if legalHelpExtract.under18RegularPayment else 
+  "No" %}
+{% set under18HasValuables = "Yes" if legalHelpExtract.under18HasValuables else 
+  "No" %}
+{% set partnerText = "Yes" if legalHelpExtract.hasPartner else 
+  "No" %}
+{% set over60Text = "Yes" if legalHelpExtract.isOver60 else "No"%}
+{% set universalCredit = "Yes" if legalHelpExtract.specificBenefits.universalCredit else "No"%}
+{% set pensionCredit = "Yes" if legalHelpExtract.specificBenefits.pensionCredit else "No"%}
+{% set jobSeekers = "Yes" if legalHelpExtract.specificBenefits.jobSeekers else "No"%}
+{% set employmentSupport = "Yes" if legalHelpExtract.specificBenefits.employmentSupport else "No"%}
+{% set incomeSupport = "Yes" if legalHelpExtract.specificBenefits.incomeSupport else "No"%}
+{% set asylumSupport = "Yes" if legalHelpExtract.specificBenefits.asylumSupport else "No"%}
+
+{% set benefitsHeading = (
+  "pages.caseDetails.legalHelpForm.finances.benefitsPartner" if legalHelpExtract.hasPartner else "pages.caseDetails.legalHelpForm.finances.benefits") %}
 
 {% set partnerAndAgeRows = [
   [
@@ -15,8 +25,13 @@
     { text: partnerText }
   ],
   [
-    { text: (t("common.financialEligibility.details.partnerAge60OrOver") if financialEligibility.hasPartner else t("common.financialEligibility.details.age60OrOver")) }, 
-    { text: over60Text }
+    {
+      text: (t("common.financialEligibility.details.partnerAge60OrOver")if legalHelpExtract.hasPartner else 
+        t("common.financialEligibility.details.age60OrOver")
+      )
+    }, {
+      text: over60Text
+    }
   ]
 ] %}
 
@@ -27,14 +42,14 @@
   ]
 ] %}
 
-{% if financialEligibility.isUnder17 %}
+{% if legalHelpExtract.isUnder17 %}
   {% set rows = rows.concat([
     [
       { text: t("common.financialEligibility.details.under18RegularPayment") }, 
       { text: under18RegularPayment }
     ]
   ]) %}
-  {% if not financialEligibility.under18RegularPayment %}
+  {% if not legalHelpExtract.under18RegularPayment %}
     {% set rows = rows.concat([
       [
         { text: t("common.financialEligibility.details.under18HasValuables") }, 
@@ -42,18 +57,21 @@
       ]
     ]) %}
   {% endif %}
-  {% if financialEligibility.under18HasValuables or financialEligibility.under18RegularPayment %}
+  {% if legalHelpExtract.under18HasValuables or legalHelpExtract.under18RegularPayment %}
     {% set rows = rows.concat(partnerAndAgeRows) %}
   {% endif %}
 {% else %}
   {% set rows = rows.concat(partnerAndAgeRows) %}
 {% endif %}
 
-{% if not financialEligibility.under18passportedBenefits %}
+{% if not legalHelpExtract.under18passportedBenefits %}
   {% set rows = rows.concat([
     [
-      { text: t("pages.caseDetails.legalHelpForm.details.benefits") }, 
-      { text: "" }
+      {
+        text: t(benefitsHeading)
+      }, {
+        text: ""
+      }
     ],
     [
       { text: t("common.financialEligibility.details.universalCredit") }, 
@@ -72,12 +90,22 @@
       { text: pensionCredit }
     ],
     [
-      { text: t("common.financialEligibility.details.employmentSupport") }, 
-      { text: employmentSupport }
+      {
+        text: t("common.financialEligibility.details.employmentSupport")
+      }, {
+        text: employmentSupport
+      }
+    ],
+    [
+      {
+        text: t("pages.caseDetails.legalHelpForm.details.asylumSupport")
+      }, {
+        text: asylumSupport
+      }
     ]
   ])
  %}
-
+{% endif %}
   {{ govukTable({
   caption: "Your finances",
   captionClasses: "govuk-table__caption--l",
@@ -85,5 +113,3 @@
   classes: "legal-help-eligibility-table",
   rows: rows
 }) }}
-
-{% endif %}

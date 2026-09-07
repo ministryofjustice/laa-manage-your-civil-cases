@@ -127,6 +127,7 @@ export interface MockCase {
     hasPartner?: boolean;
     isUnder17?: boolean;
     isOver60?: boolean;
+    hasPassportedProceedingsLetter: boolean;
 
     specificBenefits?: {
       pensionCredit: boolean;

@@ -22,6 +22,9 @@ export function createLegalHelpFormHandlers(
         return HttpResponse.json({ error: 'Case not found' }, { status: HTTP.NOT_FOUND });
       }
 
+        console.log(
+  JSON.stringify(caseItem.legalHelpFormExtract, null, 2),
+);
       return HttpResponse.json(caseItem.legalHelpFormExtract);
     })
   ];

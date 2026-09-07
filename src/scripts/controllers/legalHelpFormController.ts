@@ -160,6 +160,10 @@ export async function getLegalHelpForm(req: Request, res: Response, next: NextFu
     // Ignore session answers left over from viewing a different case
     const answers = stored?.caseReference === caseReference ? stored : undefined;
 
+    console.log(
+  JSON.stringify(legalHelpExtract, null, 2),
+);
+
     res.render('case_details/legal_help_form/legal-help-form.njk', {
       caseReference,
       client: req.clientData,

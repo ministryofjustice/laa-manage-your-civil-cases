@@ -37,6 +37,7 @@
       {# Your details #}
       {% include "case_details/legal_help_form/_legal-help-form-details.njk" %}
 
+      {% if not legalHelpExtract.hasPassportedProceedingsLetter %}
       {# Your finances #}
       {% include "case_details/legal_help_form/_legal-help-form-finances.njk" %}
 
@@ -45,6 +46,8 @@
       {# Your capital #}
 
       {# Your income #}
+
+      {% endif %}
 
       {# Evidence we need from you #}
       {% include "case_details/legal_help_form/_legal-help-form-evidence.njk" %}
