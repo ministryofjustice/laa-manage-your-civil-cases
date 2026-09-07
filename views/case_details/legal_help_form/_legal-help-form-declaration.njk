@@ -9,14 +9,67 @@
   },
   items: [
     {
-      value: "carcasses",
       text: t('pages.caseDetails.legalHelpForm.declaration.tickBox1'),
       disabled: "true"
     },
     {
-      value: "mines",
       text: t('pages.caseDetails.legalHelpForm.declaration.tickBox2'),
       disabled: "true"
     }
   ]
+}) }}
+
+{{ govukInput({
+  label: {
+    html: t('pages.caseDetails.legalHelpForm.declaration.dateAdvised')
+  },
+  classes: "govuk-!-width-one-third",
+  formGroup: {
+    classes: "legal-help-declaration-date"
+  },
+  disabled: "true"
+}) }}
+
+<p class="govuk-body">{{ t('pages.caseDetails.legalHelpForm.declaration.paragraphAgreement1') }}</p>
+<p class="govuk-body">{{ t('pages.caseDetails.legalHelpForm.declaration.paragraphAgreement2') }}</p>
+<p class="govuk-body">{{ t('pages.caseDetails.legalHelpForm.declaration.paragraphAgreement3') }}</p>
+<p class="govuk-body">{{ t('pages.caseDetails.legalHelpForm.declaration.paragraphAgreement4') }}</p>
+<p class="govuk-body">{{ t('pages.caseDetails.legalHelpForm.declaration.paragraphAgreement5') }}</p>
+<p class="govuk-body">{{ t('pages.caseDetails.legalHelpForm.declaration.paragraphAgreement6') }}</p>
+
+{{ govukTextarea({
+  label: {
+    text: t('pages.caseDetails.legalHelpForm.declaration.signature')
+  },
+  classes: "govuk-!-width-two-thirds",
+  disabled: "true"
+}) }}
+
+{{ govukInput({
+  label: {
+    text: t('pages.caseDetails.legalHelpForm.declaration.date')
+  },
+  classes: "govuk-!-width-one-third",
+  disabled: "true"
+}) }}
+
+{# Partner section #}
+<p class="govuk-body govuk-!-font-weight-bold">{{ t('pages.caseDetails.legalHelpForm.declaration.partnerBoldStatement') }}</p>
+<h3 class="govuk-heading">{{ t('pages.caseDetails.legalHelpForm.declaration.partnerHeading3') }}</h3>
+<p class="govuk-body">{{ t('pages.caseDetails.legalHelpForm.declaration.partnerParagraph') }}</p>
+
+{{ govukTextarea({
+  label: {
+    text: t('pages.caseDetails.legalHelpForm.declaration.signature')
+  },
+  classes: "govuk-!-width-two-thirds",
+  disabled: "true"
+}) }}
+
+{{ govukInput({
+  label: {
+    text: t('pages.caseDetails.legalHelpForm.declaration.date')
+  },
+  classes: "govuk-!-width-one-third",
+  disabled: "true"
 }) }}

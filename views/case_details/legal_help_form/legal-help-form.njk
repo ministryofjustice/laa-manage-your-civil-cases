@@ -3,6 +3,7 @@
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
 
 {% block pageTitle %}
   {% if errorState.hasErrors %}{{ t('common.error') }}: {% endif %}{{ t('pages.caseDetails.legalHelpForm.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}
@@ -31,7 +32,7 @@
   {# Introduction #}
   {% include "case_details/legal_help_form/_legal-help-form-intro.njk" %}
 
-  <div class="govuk-grid-row">
+  <div class="govuk-grid-row legal-help-form-pdf-width">
     <div class="govuk-grid-column-two-thirds">
       {# Your details #}
       {% include "case_details/legal_help_form/_legal-help-form-details.njk" %}

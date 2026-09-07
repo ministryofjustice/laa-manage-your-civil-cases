@@ -527,7 +527,19 @@
           "h2": "Your declaration",
           "paragraphTickBox": "Tick the box that applies to you:",
           "tickBox1":"I have not been to an advisor or solicitor about this problem before to get advice on it paid for by the Legal Aid Agency",
-          "tickBox2":"I have already been to an advisor or solicitor about this problem and had advice paid for by the Legal Aid Agency"
+          "tickBox2":"I have already been to an advisor or solicitor about this problem and had advice paid for by the Legal Aid Agency",
+          "dateAdvised": "Date that advice was </br> received:",
+          "paragraphAgreement1": "I agree to my solicitor or contracted provider having a first charge on any money or property (including costs) which I recover or preserve in or in relation to the matter for which I am being advised. (family help (lower) cases which exceed the standard fee only).",
+          "paragraphAgreement2": "This is a true statement of all my and my partner's income and assets in the UK and abroad.",
+          "paragraphAgreement3": "I understand that I must tell you immediately if there are any changes in my or partner's financial circumstances.",
+          "paragraphAgreement4": "I agree that the Legal Aid Agency (LAA) can contact other parties to check these facts and I authorise those parties to provide the information they are asked for. I understand that the LAA may check my income and capital status with Her Majesty’s Revenue and Customs (HMRC) and authorise HMRC to carry out such checks as are necessary to verify my financial status and give that information to LAA.",
+          "paragraphAgreement5": "I understand that the LAA will confirm my receipt of and continuing benefit with the Department for Work and Pensions (DWP). The DWP may carry out such processing as is necessary to check this information remains correct and may inform the LAA of any relevant changes.",
+          "paragraphAgreement6": "I understand that if I give false information or withhold any relevant information the services provided to me may be cancelled at which point, I will become liable to pay all the costs that have been incurred and I may be prosecuted.",
+          "signature": "Signature",
+          "date": "Date",
+          "partnerBoldStatement": "If you have a partner whose details have been completed on this form then they must sign the authority below.",
+          "partnerHeading3": "Partner's declaration",
+          "partnerParagraph": "This is a true statement of all my income and assets in the UK and abroad. I agree to the LAA checking these facts with others such as the Department of Work and Pensions (DWP) and the HM Revenue and Customs (HMRC) and I authorise those parties (including HMRC and DWP) to provide the information they are asked for."
         }
       }
     },

@@ -66,12 +66,12 @@
 }
 
 .govuk-textarea:disabled {
-    opacity: inherit;
+  opacity: inherit;
 }
 
 // declaration
 .govuk-checkboxes__input:disabled + .govuk-checkboxes__label {
-    opacity: inherit;
+  opacity: inherit;
 }
 
 .legal-help-declaration-checkboxes {
@@ -96,11 +96,24 @@
   }
 }
 
+.govuk-input:disabled {
+  opacity: inherit;
+}
+
+.legal-help-declaration-date{
+  margin-top: -10px;
+}
+
 // print button
 @media print {
   // Suppresses the URL from appearing when the page is printed
   a[href]:after {
     content: none !important;
+  }
+  // Make the page full width when printing
+  .legal-help-form-pdf-width .govuk-grid-column-two-thirds {
+    width: 100%;
+    float: none;
   }
 }
 
