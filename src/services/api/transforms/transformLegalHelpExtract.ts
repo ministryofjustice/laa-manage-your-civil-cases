@@ -1,13 +1,13 @@
-import type { FinancialEligibilityData } from '#types/api-types.js';
-import { isRecord } from '#src/scripts/helpers/index.js';
+import type { LegalHelpFormData } from '#types/api-types.js';
+import { isRecord} from '#src/scripts/helpers/index.js';
 import { transformFinancialEligibilityItem, convertPenceToPounds } from '../transforms/transformFinancialEligibility.js';
 
 /**
  * Transforms raw legal help extract API data to display format
  * @param {unknown} item Raw legal help extract item
- * @returns {FinancialEligibilityData} Transformed legal help extract item
+ * @returns {LegalHelpFormData} Transformed legal help extract item
  */
-export function transformLegalHelpFormItem(item: unknown,): FinancialEligibilityData {
+export function transformLegalHelpFormItem(item: unknown,): LegalHelpFormData {
   if (!isRecord(item)) {
     throw new Error('Invalid legal help extract: expected object',);
   }
@@ -26,6 +26,12 @@ export function transformLegalHelpFormItem(item: unknown,): FinancialEligibility
   const nationalInsurance = String(personalDetails.ni_number ?? '');
   const asylumSupport = Boolean(item.on_nass_benefits);
   const calculations = isRecord(item.calculations) ? item.calculations : {};
+  const propertySetEquity = Array.isArray(calculations.property_equities)
+  ? calculations.property_equities.reduce(
+      (total, equity) => total + Number(equity ?? 0),
+      0,
+    )
+  : 0;
 
   const mappedCalculations = {
     partnerEmploymentAllowance: convertPenceToPounds(Number(calculations.partner_employment_allowance ?? 0)),
@@ -46,6 +52,7 @@ export function transformLegalHelpFormItem(item: unknown,): FinancialEligibility
     ...eligibilityData,
     nationalInsurance,
     asylumSupport,
+    propertySetEquity,
     calculations: mappedCalculations,
   };
 }

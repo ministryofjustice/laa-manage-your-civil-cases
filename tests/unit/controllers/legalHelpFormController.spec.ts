@@ -326,4 +326,44 @@ describe('Legal Help Form Controller', () => {
 
     expect(renderArgs.legalHelpExtract.nationalInsurance).to.equal('AB123456C');
   });
+
+  it('should render the legal help form populated with client details and total equity', async () => {
+    getLegalHelpExtractStub.resolves({
+      status: 'success',
+      data: {
+        nationalInsurance: 'AB123456C',
+        propertySetEquity: 12345,
+      },
+    });
+
+    await getLegalHelpForm(
+      req as Request,
+      res as Response,
+      next as NextFunction,
+    );
+
+    const renderArgs = renderStub.firstCall.args[1];
+
+    expect(renderArgs.legalHelpExtract.nationalInsurance).to.equal('AB123456C');
+    expect(renderArgs.legalHelpExtract.propertySetEquity).to.equal(12345);
+  });
+
+  it('should render total equity when the value is zero', async () => {
+    getLegalHelpExtractStub.resolves({
+      status: 'success',
+      data: {
+        propertySetEquity: 0,
+      },
+    });
+
+    await getLegalHelpForm(
+      req as Request,
+      res as Response,
+      next as NextFunction,
+    );
+
+    const renderArgs = renderStub.firstCall.args[1];
+
+    expect(renderArgs.legalHelpExtract.propertySetEquity).to.equal(0);
+  });
 });

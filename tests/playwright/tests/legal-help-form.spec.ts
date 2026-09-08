@@ -276,9 +276,9 @@ test.describe('Legal help form journey', () => {
 
       await navigateToLegalHelpForm(page, caseReference);
 
-      await expectPropertyTableRows(page, 'Main property', {'Is this property disputed?': 'No'});
+      await expectPropertyTableRows(page, 'Main property', { 'Is this property disputed?': 'No' });
 
-      await expectPropertyTableRows(page, 'Additional property 1', {'Is this property disputed?': 'Yes'});
+      await expectPropertyTableRows(page, 'Additional property 1', { 'Is this property disputed?': 'Yes' });
     });
 
     test('should show disputed property question for family cases', async ({ page }) => {
@@ -286,7 +286,57 @@ test.describe('Legal help form journey', () => {
 
       await navigateToLegalHelpForm(page, caseReference);
 
-      await expectPropertyTableRows(page, 'Main property', {'Is this property disputed?': 'Yes'});
+      await expectPropertyTableRows(page, 'Main property', { 'Is this property disputed?': 'Yes' });
+    });
+
+    test('should display the main property details and total equity', async ({ page }) => {
+      const caseReference = 'PC-9173-4826';
+
+      await navigateToLegalHelpForm(page, caseReference);
+
+      await expectCaptionTableRows(page, 'Your property', { 'Do you own any property?': 'Yes' });
+
+      await expect(page.getByRole('heading', { name: 'Main property' })).toBeVisible();
+
+      await expectPropertyTableRows(page, 'Main property', {
+        'Property value': '£150,000',
+        'Outstanding mortgage': '£60,000',
+        'Percentage share': '100%',
+      });
+
+      await expectCaptionTableRows(page, 'Total equity', { 'Total equity in homes for assessment purposes': '£0' });
+    });
+
+    test('should display additional properties and total equity', async ({ page }) => {
+      const caseReference = 'PC-1922-1879';
+
+      await navigateToLegalHelpForm(page, caseReference);
+
+      await expectPropertyTableRows(page, 'Main property', {
+        'Property value': '£120,000',
+        'Outstanding mortgage': '£60,000',
+        'Percentage share': '100%',
+      });
+
+      await expectPropertyTableRows(page, 'Additional property 1', {
+        'Property value': '£130,000',
+        'Outstanding mortgage': '£50,000',
+        'Percentage share': '100%',
+      });
+
+      await expectCaptionTableRows(page, 'Total equity', { 'Total equity in homes for assessment purposes': '£80,000' });
+    });
+
+    test('should show no property and zero total equity', async ({ page }) => {
+      const caseReference = 'PC-1854-6521';
+
+      await navigateToLegalHelpForm(page, caseReference);
+
+      await expectCaptionTableRows(page, 'Your property', {'Do you own any property?': 'No'});
+
+      await expect(page.getByRole('heading', { name: 'Main property' })).toHaveCount(0);
+      await expect(page.getByRole('heading', { name: 'Additional property' })).toHaveCount(0);
+      await expectCaptionTableRows(page, 'Total equity', {'Total equity in homes for assessment purposes': '£0'});
     });
   });
 });

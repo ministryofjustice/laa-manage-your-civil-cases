@@ -480,6 +480,12 @@
       },
       "personal_details": {
         "ni_number": "AB123456C"
+      },
+      "calculations": {
+        "property_equities": [
+          "80000000",
+          "0"
+        ]
       }
     }
   },

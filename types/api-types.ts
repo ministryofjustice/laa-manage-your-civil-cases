@@ -455,13 +455,22 @@ export interface FinancialEligibilityData {
   dependantsOld: number;
   under18RegularPayment?: boolean;
   under18HasValuables?: boolean;
-  state: String;
+  state: string;
   hasPassportedProceedingsLetter: boolean;
   passportedBenefits: boolean;
   under18passportedBenefits: boolean;
   category: string;
   asylumSupport?: boolean;
-  nationalInsurance?: String;
+  nationalInsurance?: string;
+}
+
+/**
+ * Interface for legal help form data, extending financial eligibility data
+ */
+export interface LegalHelpFormData extends FinancialEligibilityData {
+  nationalInsurance: string;
+  asylumSupport: boolean;
+  propertySetEquity: number;
   calculations?: {
     partnerEmploymentAllowance: number;
     propertyCapital: number;
@@ -490,7 +499,7 @@ export interface GetFinancialEligibilityApiResponse {
  * Response type for legal help form extract data
  */
 export interface GetLegalHelpExtractApiResponse {
-  data: FinancialEligibilityData | null;
+  data: LegalHelpFormData | null;
   status: 'success' | 'error';
   message?: string;
 }

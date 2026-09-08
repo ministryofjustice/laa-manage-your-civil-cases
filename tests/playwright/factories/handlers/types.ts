@@ -178,5 +178,8 @@ export interface MockCase {
     personal_details: {
       ni_number: string;
     };
+    calculations: {
+      property_equities: Array<number>;
+    }
   }
 }

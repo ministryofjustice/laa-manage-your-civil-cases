@@ -15,9 +15,9 @@
 
 {{ govukTable({
       caption: "Your property",
+      classes: "legal-help-eligibility-table",
       captionClasses: "govuk-table__caption--l",
       firstCellIsHeader: true,
-      classes: "eligibility-table",
       rows: initialRows
     }) }}
 
@@ -67,8 +67,8 @@
       {% endif %}
 
       {{ govukTable({
+        classes: "legal-help-eligibility-table",
         firstCellIsHeader: true,
-        classes: "eligibility-table",
         rows: propertyRows
       }) }}
 
@@ -129,9 +129,28 @@
 
     {{ govukTable({
       firstCellIsHeader: true,
-      classes: "eligibility-table",
+      classes: "legal-help-eligibility-table",
       rows: propertyRows
     }) }}
 
   {% endfor %}
 {% endif %}
+
+{{ govukTable({
+  caption: "Total equity",
+  classes: "total-equity-table",
+  captionClasses: "govuk-table__caption--l",
+  firstCellIsHeader: true,
+  rows: [
+    [
+      {
+        text: "Total equity in homes for assessment purposes",
+        classes: "total-equity-row"
+      },
+      {
+        text: legalHelpExtract.propertySetEquity | formatFinancialData,
+        classes: "total-equity-row"
+      }
+    ]
+  ]
+}) }}
