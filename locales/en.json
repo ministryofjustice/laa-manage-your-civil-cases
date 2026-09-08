@@ -531,6 +531,18 @@
            "propertyShare": "Percentage share",
            "disputedProperty": "Is this property disputed?"
         },
+         "capital": {
+          "h2": "Your capital",
+          "paragraph1": "Capital does not include household furniture and effects (unless of exceptional value), clothes or tools of the trade.",
+          "youHeader": "Your capital",
+          "disputeHeader": "Subject matter of dispute",
+          "yourPartnerHeader": "Your partner's capital",
+          "savings": "Savings </br>  <div class='govuk-body'>Savings/bank accounts, building society</div>",
+          "investments": "Investments </br>  <div class='govuk-body'>Including shares and insurance policies</div>",
+          "valuableItem": "Valuable Items </br>  <div class='govuk-body'>For example a boat, caravan or jewellery</div>",
+          "otherCapital": "Other capital </br>  <div class='govuk-body'>Including money due to you</div>"
+    
+        },
         "income": {
           "h2": "Your income",
           "paragraph1": "When looking at your income we will consider how much income you have and then deduct any outgoings up to a certain limit. The remaining amount (disposable income) tells us whether you are eligible. We look at this from your monthly income (by calendar month)",

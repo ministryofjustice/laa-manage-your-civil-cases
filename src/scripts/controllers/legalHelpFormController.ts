@@ -159,6 +159,7 @@ export async function getLegalHelpForm(req: Request, res: Response, next: NextFu
     const stored = getSessionValue(req, LEGAL_HELP_FORM_SESSION_KEY) as LegalHelpFormAnswers | undefined;
     // Ignore session answers left over from viewing a different case
     const answers = stored?.caseReference === caseReference ? stored : undefined;
+    console.log("transformed data: ", legalHelpExtract)
 
     res.render('case_details/legal_help_form/legal-help-form.njk', {
       caseReference,
