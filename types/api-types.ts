@@ -462,6 +462,19 @@ export interface FinancialEligibilityData {
   category: string;
   asylumSupport?: boolean;
   nationalInsurance?: String;
+  calculations?: {
+    partnerEmploymentAllowance: number;
+    propertyCapital: number;
+    pensionerDisregard: number;
+    grossIncome: number;
+    partnerAllowance: number;
+    disposableIncome: number;
+    nonPropertyCapital: number;
+    dependantsAllowance: number;
+    disposableCapitalAssets: number;
+    propertyEquities: number[];
+    employmentAllowance: number;
+  };
 }
 
 /**

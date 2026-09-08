@@ -140,39 +140,7 @@
         { text: t('pages.caseDetails.legalHelpForm.income.benefits') },
         { text: income.benefits.amount | formatFinancialData },
         { text: partnerIncome.benefits.amount | formatFinancialData }
-      ],
-      [
-        { text: t('pages.caseDetails.legalHelpForm.income.taxCredits') },
-        { text: income.taxCredits.amount | formatFinancialData },
-        { text: partnerIncome.taxCredits.amount | formatFinancialData }
-      ],
-      [
-        { text: t('pages.caseDetails.legalHelpForm.income.childBenefit') },
-        { text: income.childBenefit.amount | formatFinancialData },
-        { text: partnerIncome.childBenefit.amount | formatFinancialData }
-      ],
-      [
-        { text: t('pages.caseDetails.legalHelpForm.income.maintenanceReceived') },
-        { text: income.maintenanceReceived.amount | formatFinancialData },
-        { text: partnerIncome.maintenanceReceived.amount | formatFinancialData }
-      ],
-      [
-        { text: t('pages.caseDetails.legalHelpForm.income.pension') },
-        { text: income.pension.amount | formatFinancialData },
-        { text: partnerIncome.pension.amount | formatFinancialData }
-      ],
-      [
-        { text: t('pages.caseDetails.legalHelpForm.income.otherIncome') },
-        { text: income.otherIncome.amount | formatFinancialData },
-        { text: partnerIncome.otherIncome.amount | formatFinancialData }
-      ],
-      [
-        { text: t('pages.caseDetails.legalHelpForm.income.total'), classes: "income-table__total" },
-        { text: income.total | formatFinancialData, classes: "income-table__total" },
-        { text: partnerIncome.total | formatFinancialData, classes: "income-table__total" }
       ]
     ]
 }) }}
 
-<pre>{{ legalHelpExtract.clientData | dump }}</pre>
-<pre>{{ legalHelpExtract.partnerData | dump }}</pre>
