@@ -533,7 +533,27 @@
         },
         "income": {
           "h2": "Your income",
-          "paragraph1": "When looking at your income we will consider how much income you have and then deduct any outgoings up to a certain limit. The remaining amount (disposable income) tells us whether you are eligible. We look at this from your monthly income (by calendar month)"
+          "paragraph1": "When looking at your income we will consider how much income you have and then deduct any outgoings up to a certain limit. The remaining amount (disposable income) tells us whether you are eligible. We look at this from your monthly income (by calendar month)",
+          "youHeader": "You",
+          "yourPartnerHeader": "Your partner",
+          "wages": "Wages (before tax)",
+          "selfEmployed": "Self employed drawings (before tax)",
+          "benefits": "Benefits",
+          "taxCredits": "Tax credits",
+          "childBenefit": "Child benefit (for household)",
+          "maintenanceReceived": "Maintenance received",
+          "pension": "Pension income",
+          "otherIncome": "Other income",
+          "total": "Total income",
+          "lessMonthlyAllowancesH3": "Less monthly allowances",
+          "incomeTax": "Tax",
+          "nationalInsurance": "National Insurance",
+          "mortgage": "Mortgage",
+          "rent": "Rent",
+          "maintenance": "Maintenance payments being made </br>  <div class='govuk-body'>for example children and/or a former/separated spouse</div>",
+          "childcare": "Childcare costs due to work",
+          "criminalContributions": "Legal Aid payments for criminal defence",
+          "calculatedExpensesH3": "Calculated expenses"
         },
         "evidence": {
           "h2": "Evidence we need from you",

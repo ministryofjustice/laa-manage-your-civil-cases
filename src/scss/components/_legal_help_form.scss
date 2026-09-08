@@ -60,9 +60,24 @@
   font-family: HelveticaNeue, "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
+.legal-help-eligibility-table th {
+  width: 35%;
+}
+
+.legal-help-eligibility-table td {
+  width: 40%;
+  text-align: right;
+}
+
 // income
+.legal-help-eligibility-table th.income-table__header-align-right {
+  text-align: right;
+}
+
 .income-table__total {
   font-weight: bold;
+  border-top: 3px solid #000000;
+  border-bottom: 3px solid #000000;
 }
 
 // evidence
@@ -111,6 +126,13 @@
 
 // print button
 @media print {
+  // Set page margins and add page numbers
+  @page {
+    margin: 2cm;
+    @bottom-right {
+      content: "Page " counter(page) " of " counter(pages);
+    }
+  }
   // Suppresses the URL from appearing when the page is printed
   a[href]:after {
     content: none !important;
@@ -119,6 +141,11 @@
   .legal-help-form-pdf-width .govuk-grid-column-two-thirds {
     width: 100%;
     float: none;
+  }
+  // Hide the header and footer
+  header, .site-header,
+  footer, .site-footer {
+    display: none !important;
   }
 }
 

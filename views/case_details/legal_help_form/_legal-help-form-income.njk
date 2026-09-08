@@ -1,69 +1,178 @@
-{% from "govuk/components/table/macro.njk" import govukTable %}
-
 {% set income = legalHelpExtract.clientData.income %}
+{% set partnerIncome = legalHelpExtract.partnerData.partnerIncome %}
+{% set deductions = legalHelpExtract.clientData.deductions %}
+{% set partnerDeductions = legalHelpExtract.partnerData.partnerDeductions %}
 
 <h2 class="govuk-heading-l">{{ t('pages.caseDetails.legalHelpForm.income.h2') }}</h2>
-
 <p class="govuk-body">{{ t('pages.caseDetails.legalHelpForm.income.paragraph1') }}</p>
 
+{# Your income #}
 {{ govukTable({
-    caption: "",
-    captionClasses: "govuk-table__caption--l",
+    classes: "legal-help-eligibility-table",
+    captionClasses: "govuk-table__caption--m",
     firstCellIsHeader: true,
     head: [
       { text: "" },
-      { text: "You" },
-      { text: "Your partner" }
+      { text: t('pages.caseDetails.legalHelpForm.income.youHeader'), classes: "income-table__header-align-right" },
+      { text: t('pages.caseDetails.legalHelpForm.income.yourPartnerHeader'), classes: "income-table__header-align-right" }
     ],
     rows: [
       [
-        { text: "Wages (before tax)" },
+        { text: t('pages.caseDetails.legalHelpForm.income.wages') },
         { text: income.earnings.amount | formatFinancialData },
-        { text: "£100" }
+        { text: partnerIncome.earnings.amount | formatFinancialData  }
       ],
       [
-        { text: "Self employed drawings (before tax)" },
+        { text: t('pages.caseDetails.legalHelpForm.income.selfEmployed') },
         { text: income.selfEmploymentDrawings.amount | formatFinancialData },
-        { text: "£100" }
+        { text: partnerIncome.selfEmploymentDrawings.amount | formatFinancialData }
       ],
       [
-        { text: "Benefits" },
-        { text: "£100" },
-        { text: "£100" }
+        { text: t('pages.caseDetails.legalHelpForm.income.benefits') },
+        { text: income.benefits.amount | formatFinancialData },
+        { text: partnerIncome.benefits.amount | formatFinancialData }
       ],
       [
-        { text: "Tax credits" },
-        { text: "£100" },
-        { text: "£100" }
+        { text: t('pages.caseDetails.legalHelpForm.income.taxCredits') },
+        { text: income.taxCredits.amount | formatFinancialData },
+        { text: partnerIncome.taxCredits.amount | formatFinancialData }
       ],
       [
-        { text: "Child Benefit (for household)" },
-        { text: "£100" },
-        { text: "" }
+        { text: t('pages.caseDetails.legalHelpForm.income.childBenefit') },
+        { text: income.childBenefit.amount | formatFinancialData },
+        { text: partnerIncome.childBenefit.amount | formatFinancialData }
       ],
       [
-        { text: "Maintenance received" },
-        { text: "£100" },
-        { text: "£100" }
+        { text: t('pages.caseDetails.legalHelpForm.income.maintenanceReceived') },
+        { text: income.maintenanceReceived.amount | formatFinancialData },
+        { text: partnerIncome.maintenanceReceived.amount | formatFinancialData }
       ],
       [
-        { text: "Pension income" },
-        { text: "£100" },
-        { text: "£100" }
+        { text: t('pages.caseDetails.legalHelpForm.income.pension') },
+        { text: income.pension.amount | formatFinancialData },
+        { text: partnerIncome.pension.amount | formatFinancialData }
       ],
       [
-        { text: "Any other income" },
-        { text: "£100" },
-        { text: "£100" }
+        { text: t('pages.caseDetails.legalHelpForm.income.otherIncome') },
+        { text: income.otherIncome.amount | formatFinancialData },
+        { text: partnerIncome.otherIncome.amount | formatFinancialData }
       ],
       [
-        { text: "Total income" },
-        { text: "£800",
-          classes: "income-table__total"
-        },
-        { text: "£700",
-          classes: "income-table__total"
-        }
+        { text: t('pages.caseDetails.legalHelpForm.income.total'), classes: "income-table__total" },
+        { text: income.total | formatFinancialData, classes: "income-table__total" },
+        { text: partnerIncome.total | formatFinancialData, classes: "income-table__total" }
       ]
     ]
-  }) }}
+}) }}
+
+{# Less monthly allowances #}
+<h3 class="govuk-heading">{{ t('pages.caseDetails.legalHelpForm.income.lessMonthlyAllowancesH3') }}</h3>
+{{ govukTable({
+    classes: "legal-help-eligibility-table",
+    firstCellIsHeader: true,
+    head: [
+      { text: "" },
+      { text: t('pages.caseDetails.legalHelpForm.income.youHeader'), classes: "income-table__header-align-right" },
+      { text: t('pages.caseDetails.legalHelpForm.income.yourPartnerHeader'), classes: "income-table__header-align-right" }
+    ],
+    rows: [
+      [
+        { text: t('pages.caseDetails.legalHelpForm.income.incomeTax') },
+        { text: deductions.incomeTax | formatFinancialData },
+        { text: partnerDeductions.incomeTax | formatFinancialData  }
+      ],
+      [
+        { text: t('pages.caseDetails.legalHelpForm.income.nationalInsurance') },
+        { text: deductions.nationalInsurance | formatFinancialData },
+        { text: partnerDeductions.nationalInsurance | formatFinancialData }
+      ],
+      [
+        { text: t('pages.caseDetails.legalHelpForm.income.mortgage') },
+        { text: deductions.mortgage | formatFinancialData },
+        { text: partnerDeductions.mortgage | formatFinancialData }
+      ],
+      [
+        { text: t('pages.caseDetails.legalHelpForm.income.rent') },
+        { text: deductions.rent | formatFinancialData },
+        { text: partnerDeductions.rent | formatFinancialData }
+      ],
+      [
+        { html: t('pages.caseDetails.legalHelpForm.income.maintenance') },
+        { text: deductions.maintenance | formatFinancialData },
+        { text: partnerDeductions.maintenance | formatFinancialData }
+      ],
+      [
+        { text: t('pages.caseDetails.legalHelpForm.income.childcare') },
+        { text: deductions.childcare | formatFinancialData },
+        { text: partnerDeductions.childcare | formatFinancialData }
+      ],
+      [
+        { text: t('pages.caseDetails.legalHelpForm.income.criminalContributions') },
+        { text: deductions.criminalContributions | formatFinancialData },
+        { text: partnerDeductions.criminalContributions | formatFinancialData }
+      ]
+    ]
+}) }}
+
+
+{# Calculated expenses #}
+<h3 class="govuk-heading">{{ t('pages.caseDetails.legalHelpForm.income.calculatedExpensesH3') }}</h3>
+{{ govukTable({
+    classes: "legal-help-eligibility-table",
+    firstCellIsHeader: true,
+    head: [
+      { text: "" },
+      { text: t('pages.caseDetails.legalHelpForm.income.youHeader'), classes: "income-table__header-align-right" },
+      { text: t('pages.caseDetails.legalHelpForm.income.yourPartnerHeader'), classes: "income-table__header-align-right" }
+    ],
+    rows: [
+      [
+        { text: t('pages.caseDetails.legalHelpForm.income.wages') },
+        { text: income.earnings.amount | formatFinancialData },
+        { text: partnerIncome.earnings.amount | formatFinancialData  }
+      ],
+      [
+        { text: t('pages.caseDetails.legalHelpForm.income.selfEmployed') },
+        { text: income.selfEmploymentDrawings.amount | formatFinancialData },
+        { text: partnerIncome.selfEmploymentDrawings.amount | formatFinancialData }
+      ],
+      [
+        { text: t('pages.caseDetails.legalHelpForm.income.benefits') },
+        { text: income.benefits.amount | formatFinancialData },
+        { text: partnerIncome.benefits.amount | formatFinancialData }
+      ],
+      [
+        { text: t('pages.caseDetails.legalHelpForm.income.taxCredits') },
+        { text: income.taxCredits.amount | formatFinancialData },
+        { text: partnerIncome.taxCredits.amount | formatFinancialData }
+      ],
+      [
+        { text: t('pages.caseDetails.legalHelpForm.income.childBenefit') },
+        { text: income.childBenefit.amount | formatFinancialData },
+        { text: partnerIncome.childBenefit.amount | formatFinancialData }
+      ],
+      [
+        { text: t('pages.caseDetails.legalHelpForm.income.maintenanceReceived') },
+        { text: income.maintenanceReceived.amount | formatFinancialData },
+        { text: partnerIncome.maintenanceReceived.amount | formatFinancialData }
+      ],
+      [
+        { text: t('pages.caseDetails.legalHelpForm.income.pension') },
+        { text: income.pension.amount | formatFinancialData },
+        { text: partnerIncome.pension.amount | formatFinancialData }
+      ],
+      [
+        { text: t('pages.caseDetails.legalHelpForm.income.otherIncome') },
+        { text: income.otherIncome.amount | formatFinancialData },
+        { text: partnerIncome.otherIncome.amount | formatFinancialData }
+      ],
+      [
+        { text: t('pages.caseDetails.legalHelpForm.income.total'), classes: "income-table__total" },
+        { text: income.total | formatFinancialData, classes: "income-table__total" },
+        { text: partnerIncome.total | formatFinancialData, classes: "income-table__total" }
+      ]
+    ]
+}) }}
+
+<pre>{{ legalHelpExtract.clientData | dump }}</pre>
+<pre>{{ legalHelpExtract.partnerData | dump }}</pre>
