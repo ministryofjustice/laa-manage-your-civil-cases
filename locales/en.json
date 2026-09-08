@@ -553,7 +553,11 @@
           "maintenance": "Maintenance payments being made </br>  <div class='govuk-body'>for example children and/or a former/separated spouse</div>",
           "childcare": "Childcare costs due to work",
           "criminalContributions": "Legal Aid payments for criminal defence",
-          "calculatedExpensesH3": "Calculated expenses"
+          "calculatedExpensesH3": "Calculated expenses",
+          "employmentAllowance": "Employment expenses </br> <div class='govuk-body'>standard £45 if employed</div>",
+          "dependantsAllowance": "Dependants allowance </br> <div class='govuk-body'>Certain amount for each dependant</div>",
+          "partnerAllowance": "Partner allowance",
+          "disposableIncome": "Total monthly disposable income"
         },
         "evidence": {
           "h2": "Evidence we need from you",

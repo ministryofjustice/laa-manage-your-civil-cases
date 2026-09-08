@@ -41,6 +41,7 @@ export function transformLegalHelpFormItem(item: unknown,): FinancialEligibility
     employmentAllowance: convertPenceToPounds(Number(calculations.employment_allowance ?? 0)),
   };
 
+
   return {
     ...eligibilityData,
     nationalInsurance,

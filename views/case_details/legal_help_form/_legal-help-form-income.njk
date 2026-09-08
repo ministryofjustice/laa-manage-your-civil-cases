@@ -12,7 +12,7 @@
     captionClasses: "govuk-table__caption--m",
     firstCellIsHeader: true,
     head: [
-      { text: "" },
+      {},
       { text: t('pages.caseDetails.legalHelpForm.income.youHeader'), classes: "income-table__header-align-right" },
       { text: t('pages.caseDetails.legalHelpForm.income.yourPartnerHeader'), classes: "income-table__header-align-right" }
     ],
@@ -71,7 +71,7 @@
     classes: "legal-help-eligibility-table",
     firstCellIsHeader: true,
     head: [
-      { text: "" },
+      {},
       { text: t('pages.caseDetails.legalHelpForm.income.youHeader'), classes: "income-table__header-align-right" },
       { text: t('pages.caseDetails.legalHelpForm.income.yourPartnerHeader'), classes: "income-table__header-align-right" }
     ],
@@ -114,33 +114,36 @@
     ]
 }) }}
 
-
 {# Calculated expenses #}
 <h3 class="govuk-heading">{{ t('pages.caseDetails.legalHelpForm.income.calculatedExpensesH3') }}</h3>
 {{ govukTable({
     classes: "legal-help-eligibility-table",
     firstCellIsHeader: true,
     head: [
-      { text: "" },
+      {},
       { text: t('pages.caseDetails.legalHelpForm.income.youHeader'), classes: "income-table__header-align-right" },
       { text: t('pages.caseDetails.legalHelpForm.income.yourPartnerHeader'), classes: "income-table__header-align-right" }
     ],
     rows: [
       [
-        { text: t('pages.caseDetails.legalHelpForm.income.wages') },
-        { text: income.earnings.amount | formatFinancialData },
-        { text: partnerIncome.earnings.amount | formatFinancialData  }
+        { html: t('pages.caseDetails.legalHelpForm.income.employmentAllowance') },
+        { text: legalHelpExtract.calculations.employmentAllowance | formatFinancialData },
+        { text: legalHelpExtract.calculations.partnerEmploymentAllowance | formatFinancialData  }
       ],
       [
-        { text: t('pages.caseDetails.legalHelpForm.income.selfEmployed') },
-        { text: income.selfEmploymentDrawings.amount | formatFinancialData },
-        { text: partnerIncome.selfEmploymentDrawings.amount | formatFinancialData }
+        { html: t('pages.caseDetails.legalHelpForm.income.dependantsAllowance') },
+        {},
+        { text: legalHelpExtract.calculations.dependantsAllowance | formatFinancialData }
       ],
       [
-        { text: t('pages.caseDetails.legalHelpForm.income.benefits') },
-        { text: income.benefits.amount | formatFinancialData },
-        { text: partnerIncome.benefits.amount | formatFinancialData }
+        { text: t('pages.caseDetails.legalHelpForm.income.partnerAllowance') },
+        {},
+        { text: legalHelpExtract.calculations.partnerAllowance | formatFinancialData }
+      ],
+      [
+        { text: t('pages.caseDetails.legalHelpForm.income.disposableIncome'), classes: "income-table__total" },
+        { classes: "income-table__total" },
+        { text: legalHelpExtract.calculations.disposableIncome | formatFinancialData, classes: "income-table__total" }
       ]
     ]
 }) }}
-
