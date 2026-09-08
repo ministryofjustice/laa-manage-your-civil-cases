@@ -769,22 +769,27 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
       await expect(page).toHaveURL(`${baseUrl}/disputed-savings`);
       await completeDisputedSavingsValues(page);
 
-      // Remaining journey
+      // Disregards
       await expect(page).toHaveURL(`${baseUrl}/disregards`);
       await completeDisregardsNone(page);
 
+      // Income
       await expect(page).toHaveURL(`${baseUrl}/your-income`);
       await completeIncomeValues(page);
 
+      // Partner income
       await expect(page).toHaveURL(`${baseUrl}/partner-income`);
       await completePartnerIncomeValues(page);
 
+      // Dependants
       await expect(page).toHaveURL(`${baseUrl}/partner-dependants`);
       await completePartnerDependantsValues(page);
 
+      // Expenses
       await expect(page).toHaveURL(`${baseUrl}/your-expenses`);
       await completeExpensesValues(page);
 
+      // Partner expenses
       await expect(page).toHaveURL(`${baseUrl}/partner-expenses`);
       await completePartnerExpensesValues(page);
 
@@ -878,6 +883,59 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
       await expect(dependantsCard).toContainText('0');
 
       await expect(page.getByRole('heading', { name: 'Your disputed savings', exact: true })).toBeVisible();
+    });
+
+     test('check your answers should display none in property summary card when none have been added', async ({ page }) => {
+      const baseUrl = '/cases/PC-1854-6521/financial-eligibility/change';
+
+      await page.goto(baseUrl);
+
+      // Under 18
+      await page.getByRole('radio', { name: 'No' }).check();
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      // Partner
+      await expect(page).toHaveURL(`${baseUrl}/has-partner`);
+      await page.getByRole('radio', { name: 'No' }).check();
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      // Over 60
+      await expect(page).toHaveURL(`${baseUrl}/60-or-over`);
+      await page.getByRole('radio', { name: 'No' }).check();
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      // Benefits
+      await expect(page).toHaveURL(`${baseUrl}/benefits`);
+      await completeBenefits(page);
+
+      // Properties
+      await expect(page).toHaveURL(`${baseUrl}/properties`);
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      // Savings
+      await expect(page).toHaveURL(`${baseUrl}/your-savings`);
+      await completeSavingsValues(page);
+
+      // Remaining journey
+      await expect(page).toHaveURL(`${baseUrl}/disregards`);
+      await completeDisregardsNone(page);
+
+      await expect(page).toHaveURL(`${baseUrl}/your-income`);
+      await completeIncomeValues(page);
+
+      await expect(page).toHaveURL(`${baseUrl}/dependants`);
+      await completeDependantsValues(page);
+
+      await expect(page).toHaveURL(`${baseUrl}/your-expenses`);
+      await completeExpensesValues(page);
+
+      // Check answers
+      await expect(page).toHaveURL(`${baseUrl}/check-answers`);
+
+      const propertiesCard = page.locator('.govuk-summary-card').filter({has: page.getByRole('heading', { name: 'Properties', exact: true })});
+
+      await expect(propertiesCard).toContainText('Properties added');
+      await expect(propertiesCard).toContainText('None');
     });
 
     test('should allow changing a finance answer from check answers', async ({ page }) => {
