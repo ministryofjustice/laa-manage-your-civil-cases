@@ -105,10 +105,10 @@ test.describe('Legal help form journey', () => {
       'Legal Aid payments for criminal defence': '£20',
     });
 
-    await expectHeadingTableRows(page, 'Calculated expenses', {'Employment expenses': '£45'});
+    await expectHeadingTableRows(page, 'Calculated expenses', { 'Employment expenses': '£45' });
 
     const calculatedExpensesTable = page.getByRole('heading', { name: 'Calculated expenses' }).locator('xpath=following-sibling::table[1]');
-    const totalTable = calculatedExpensesTable.locator('xpath=following-sibling::table[1]' );
+    const totalTable = calculatedExpensesTable.locator('xpath=following-sibling::table[1]');
     await expectTableRows(totalTable, {
       'Dependants allowance': '£0',
       'Total monthly disposable income': '£0',
@@ -119,7 +119,7 @@ test.describe('Legal help form journey', () => {
     await expect(page.locator('#more-detail')).toHaveValue(evidence);
 
     // One additional circumstance, shown on Legal Help Form
-    await expectHeadingTableRows(page, 'For use by advisor', {'Is this an application for exceptional case funding (ECF)?': 'Yes' });
+    await expectHeadingTableRows(page, 'For use by advisor', { 'Is this an application for exceptional case funding (ECF)?': 'Yes' });
 
     // Other advisor circumstances remain unselected
     const advisorHeading = page.getByRole('heading', { name: 'For use by advisor' });
@@ -431,10 +431,10 @@ test.describe('Legal help form journey', () => {
       await expect(capitalTable).toContainText('£200');
 
       // Pensioner disregard
-      await expect(capitalTable.getByRole('row').filter({hasText: 'Pensioner capital disregard'})).toContainText('£0');
+      await expect(capitalTable.getByRole('row').filter({ hasText: 'Pensioner capital disregard' })).toContainText('£0');
 
       // total 
-      await expect(capitalTable.getByRole('row').filter({hasText: 'Total capital for assessment purposes'})).toContainText('£2,000');
+      await expect(capitalTable.getByRole('row').filter({ hasText: 'Total capital for assessment purposes' })).toContainText('£2,000');
     });
 
     test('should display disputed savings column for debt cases', async ({ page }) => {
@@ -460,10 +460,10 @@ test.describe('Legal help form journey', () => {
       await expect(capitalTable).toContainText('£200');
 
       // Pensioner disregard
-      await expect(capitalTable.getByRole('row').filter({hasText: 'Pensioner capital disregard'})).toContainText('£0');
+      await expect(capitalTable.getByRole('row').filter({ hasText: 'Pensioner capital disregard' })).toContainText('£0');
 
       // total 
-      await expect(capitalTable.getByRole('row').filter({hasText: 'Total capital for assessment purposes'})).toContainText('£1,000');
+      await expect(capitalTable.getByRole('row').filter({ hasText: 'Total capital for assessment purposes' })).toContainText('£1,000');
     });
 
     test('should display disputed savings column for family cases', async ({ page }) => {
@@ -489,11 +489,49 @@ test.describe('Legal help form journey', () => {
       await expect(capitalTable).toContainText('£200');
 
       // Pensioner disregard
-      await expect(capitalTable.getByRole('row').filter({hasText: 'Pensioner capital disregard'})).toContainText('£0');
+      await expect(capitalTable.getByRole('row').filter({ hasText: 'Pensioner capital disregard' })).toContainText('£0');
 
       // total 
-      await expect(capitalTable.getByRole('row').filter({hasText: 'Total capital for assessment purposes'})).toContainText('£1,000');
+      await expect(capitalTable.getByRole('row').filter({ hasText: 'Total capital for assessment purposes' })).toContainText('£1,000');
     });
+  });
+
+  test('should display the submitted evidence on the legal help form', async ({ page }) => {
+    const caseReference = 'PC-9173-4826';
+    const evidence = 'Bank statements for the last 3 months';
+
+    const clientDetails = ClientDetailsPage.forCase(page, caseReference);
+
+    // Start on the client details page.
+    await clientDetails.navigate();
+
+    await expect(page).toHaveURL(`/cases/${caseReference}/client-details`);
+
+    // Navigate to the intermediate legal help form page.
+    await page.getByRole('button', { name: 'Get legal help form' }).click();
+
+    await expect(page).toHaveURL(`/cases/${caseReference}/get-legal-help-form`);
+
+    // Enter the required evidence.
+    const evidenceInput = page.getByLabel('What evidence do you require from the client? (optional)');
+
+    await evidenceInput.fill(evidence);
+    await expect(evidenceInput).toHaveValue(evidence);
+
+    // Submit the intermediate form.
+    await page.getByRole('button', { name: 'Create legal help form' }).click();
+
+    await expect(page).toHaveURL(`/cases/${caseReference}/legal-help-form`);
+
+    // Check that the evidence section is displayed.
+    await expect(page.getByRole('heading', { name: 'Evidence we need from you'})).toBeVisible();
+
+    // Check that the submitted evidence appears on the generated form.
+    const submittedEvidence = page.locator('#more-detail');
+
+    await expect(submittedEvidence).toBeVisible();
+    await expect(submittedEvidence).toBeDisabled();
+    await expect(submittedEvidence).toHaveValue(evidence);
   });
 
   test('Legal help form income section, with partner', async ({ page }) => {
