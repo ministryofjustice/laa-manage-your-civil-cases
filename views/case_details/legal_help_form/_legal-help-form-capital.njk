@@ -10,17 +10,6 @@
   ]
 %}
 
-{% set totalCapital =
-  (savings.total or 0)
-%}
-
-{% if showPartnerColumn %}
-  {% set totalCapital =
-    totalCapital +
-    (partnerSavings.total or 0)
-  %}
-{% endif %}
-
 <h2 class="govuk-heading-l">{{ t('pages.caseDetails.legalHelpForm.capital.h2') }}</h2>
 <p class="govuk-body">{{ t('pages.caseDetails.legalHelpForm.capital.paragraph1') }}</p>
 
@@ -127,7 +116,7 @@
 {% endif %}
 
 {# Pensioner disregard row #}
-{% set pensionerDisregardRow = [{ text: "Pensioner capital disregard" }] %}
+{% set pensionerDisregardRow = [{ text: t('pages.caseDetails.legalHelpForm.capital.pensionerDisregard') }] %}
 
 {% if showDisputeColumn %}
   {% set pensionerDisregardRow = pensionerDisregardRow.concat([{}]) %}
@@ -147,7 +136,7 @@
 {# Total capital row #}
 {% set totalCapitalRow = [
   {
-    text: "Total capital for assessment purposes",
+    text: t('pages.caseDetails.legalHelpForm.capital.totalCapital'),
     classes: "income-table__total"
   }
 ] %}
@@ -162,14 +151,14 @@
   {% set totalCapitalRow = totalCapitalRow.concat([
     { classes: "income-table__total" },
     {
-      text: totalCapital | formatFinancialData,
+      text: legalHelpExtract.calculations.disposableCapitalAssets | formatFinancialData,
       classes: "income-table__total"
     }
   ]) %}
 {% else %}
   {% set totalCapitalRow = totalCapitalRow.concat([
     {
-      text: totalCapital | formatFinancialData,
+      text: legalHelpExtract.calculations.disposableCapitalAssets | formatFinancialData,
       classes: "income-table__total"
     }
   ]) %}

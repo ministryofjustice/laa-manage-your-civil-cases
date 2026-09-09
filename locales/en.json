@@ -519,17 +519,24 @@
           "laaReference": "LAA reference"
         },
         "finances": {
+          "financeHeading": "Your finances",
           "asylumSupport": "Are you on National Asylum Support Service benefits?",
           "benefits": "Do you receive any of the following benefits:",
           "benefitsPartner": "Do you or your partner receive any of the following benefits:"
         },
         "property": {
+          "propertyHeading": "Your property",
+          "propertyText": "We disregard up to £100,000 of the equity of your main home. We also apply a Subject Matter of Dispute disregard of up to £100,000 and a Pensioner Disregard of up to £100,000 based on disposable income.",
           "initialQuestion": "Do you own any property?",
-           "initialQuestionPartner": "Do you or your partner own any property?",
-           "propertyValue": "Property value",
-           "mortgageLeft": "Outstanding mortgage",
-           "propertyShare": "Percentage share",
-           "disputedProperty": "Is this property disputed?"
+          "initialQuestionPartner": "Do you or your partner own any property?",
+          "propertyValue": "Property value",
+          "mortgageLeft": "Outstanding mortgage",
+          "propertyShare": "Percentage share",
+          "disputedProperty": "Is this property disputed?",
+          "mainPropertyHeading": "Main property",
+          "additionalPropertyHeading": "Additional property",
+          "totalEquityHeading": "Total equity",
+          "equityQuestion": "Total equity in homes for assessment purposes"
         },
          "capital": {
           "h2": "Your capital",
@@ -540,7 +547,9 @@
           "savings": "Savings </br>  <div class='govuk-body'>Savings/bank accounts, building society</div>",
           "investments": "Investments </br>  <div class='govuk-body'>Including shares and insurance policies</div>",
           "valuableItem": "Valuable Items </br>  <div class='govuk-body'>For example a boat, caravan or jewellery</div>",
-          "otherCapital": "Other capital </br>  <div class='govuk-body'>Including money due to you</div>"
+          "otherCapital": "Other capital </br>  <div class='govuk-body'>Including money due to you</div>",
+          "pensionerDisregard": "Pensioner capital disregard",
+          "totalCapital": "Total capital for assessment purposes"
     
         },
         "income": {

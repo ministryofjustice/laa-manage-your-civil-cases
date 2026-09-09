@@ -54,8 +54,7 @@
 {% if not legalHelpExtract.under18passportedBenefits %}
   {% set rows = rows.concat([
     [
-      { text: t(benefitsHeading) },
-      { }
+      { text: t(benefitsHeading), colspan: 2, classes: "govuk-!-font-weight-bold" }
     ],
     [
       { text: t("common.financialEligibility.details.universalCredit") }, 
@@ -86,7 +85,7 @@
 {% endif %}
   
 {{ govukTable({
-  caption: "Your finances",
+  caption:  t("pages.caseDetails.legalHelpForm.finances.financeHeading"),
   classes: "legal-help-eligibility-table",
   captionClasses: "govuk-table__caption--l",
   firstCellIsHeader: true,

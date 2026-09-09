@@ -161,6 +161,9 @@
             "main": true
           }
         ]
+      },
+      "calculations": {
+        "disposable_capital_assets": "100000"
       }
     }
   },
@@ -352,7 +355,7 @@
         "reference": "PC-1922-1879",
         "state": "yes",
         "notes": "",
-        "category": "Housing, eviction and homelessness",
+        "category": "housing",
         "property_set": [
           {
             "value": 13000000,
@@ -484,10 +487,8 @@
         "ni_number": "AB123456C"
       },
       "calculations": {
-        "property_equities": [
-          "8000000",
-          "0"
-        ]
+        "property_capital": "8000000",
+        "disposable_capital_assets": "100000"
       }
     }
   },
@@ -663,6 +664,9 @@
             "main": false
           }
         ]
+      },
+      "calculations": {
+        "disposable_capital_assets": "100000"
       }
     }
   },
@@ -1473,7 +1477,7 @@
         "your_problem_notes": "",
         "reference": "PC-1869-9154",
         "notes": "",
-        "category": "Housing, eviction and homelessness",
+        "category": "housing",
         "property_set": [
           {
             "value": 15000000,
@@ -1645,6 +1649,9 @@
         "disregards": {
           "cost_living": true
         }
+      },
+      "calculations": {
+        "disposable_capital_assets": "200000"
       }
     }
   },
