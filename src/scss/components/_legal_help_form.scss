@@ -60,6 +60,16 @@
   font-family: HelveticaNeue, "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
+.legal-help-eligibility-table th {
+  width: 35%;
+}
+
+.legal-help-eligibility-table td {
+  width: 40%;
+  text-align: right;
+}
+
+// property
 .total-equity-table {
   table-layout: fixed;
 }
@@ -83,23 +93,9 @@
   font-weight: 700;
 }
 
-.legal-help-eligibility-table th {
-  width: 35%;
-}
-
-.legal-help-eligibility-table td {
-  width: 40%;
-  text-align: right;
-}
-
 // income
 .legal-help-eligibility-table th.income-table__header-align-right {
   text-align: right;
-}
-
-.income-table__expenses {
-  border-bottom: none;
-  padding-bottom: 0px;
 }
 
 .income-table__expenses-padding-top {

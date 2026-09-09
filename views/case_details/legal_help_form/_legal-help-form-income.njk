@@ -114,33 +114,26 @@
     ]
 }) }}
 
-{# Calculated expenses - dependants and partner allowances #}
+{# Calculated expenses - dependants, partner allowances and total disposable income#}
 {{ govukTable({
     classes: "legal-help-eligibility-table income-table__expenses-padding-top",
     firstCellIsHeader: true,
     rows: [
       [
-        { html: t('pages.caseDetails.legalHelpForm.income.dependantsAllowance'), classes: "income-table__expenses" if not showPartnerColumn else "" },
-        { text: legalHelpExtract.calculations.dependantsAllowance | formatFinancialData, classes: "income-table__expenses" if not showPartnerColumn else "" }
+        { html: t('pages.caseDetails.legalHelpForm.income.dependantsAllowance') },
+        { text: legalHelpExtract.calculations.dependantsAllowance | formatFinancialData }
       ]
     ].concat(
       [
         [
-          { text: t('pages.caseDetails.legalHelpForm.income.partnerAllowance'), classes: "income-table__expenses" },
-          { text: legalHelpExtract.calculations.partnerAllowance | formatFinancialData, classes: "income-table__expenses" }
+          { text: t('pages.caseDetails.legalHelpForm.income.partnerAllowance') },
+          { text: legalHelpExtract.calculations.partnerAllowance | formatFinancialData }
         ]
       ] if showPartnerColumn else []
-    )
-}) }}
-
-{# Calculated expenses - total disposable income #}
-{{ govukTable({
-    classes: "legal-help-eligibility-table",
-    firstCellIsHeader: true,
-    rows: [
+    ).concat([
       [
         { text: t('pages.caseDetails.legalHelpForm.income.disposableIncome'), classes: "income-table__total" },
         { text: legalHelpExtract.calculations.disposableIncome | formatFinancialData, classes: "income-table__total" }
       ]
-    ]
+    ])
 }) }}
