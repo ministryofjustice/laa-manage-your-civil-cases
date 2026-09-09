@@ -21,7 +21,6 @@ export function transformLegalHelpFormItem(item: unknown,): LegalHelpFormData {
   }
 
   const eligibilityData = transformFinancialEligibilityItem(eligibilityCheck);
-
   const personalDetails = isRecord(item.personal_details) ? item.personal_details : {};
   const nationalInsurance = String(personalDetails.ni_number ?? '');
   const asylumSupport = Boolean(item.on_nass_benefits);
@@ -40,7 +39,6 @@ export function transformLegalHelpFormItem(item: unknown,): LegalHelpFormData {
     propertySetEquities: Array.isArray(calculations.property_equities) ? convertPenceToPounds(calculations.property_equities.reduce((total, equity) => total + Number(equity ?? 0),0,),): 0,
     employmentAllowance: convertPenceToPounds(Number(calculations.employment_allowance ?? 0)),
   };
-
 
   return {
     ...eligibilityData,

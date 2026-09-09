@@ -102,3 +102,24 @@ export async function expectCaptionTableRows(
   }
 }
 
+export async function expectCapitalTableRows(
+  page: Page,
+  rows: Record<string, string>,
+) {
+  const heading = page.getByRole('heading', {
+    name: 'Your capital',
+  });
+
+  await expect(heading).toBeVisible();
+
+  const table = heading.locator('xpath=following-sibling::table[1]');
+
+  for (const [label, value] of Object.entries(rows)) {
+    const row = table.locator('tr').filter({
+      hasText: label,
+    });
+
+    await expect(row).toContainText(label);
+    await expect(row).toContainText(value);
+  }
+}

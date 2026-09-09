@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures/index.js';
 import { Page } from '@playwright/test';
-import { setupAuth, expectPropertyTableRows, expectHeadingTableRows, expectCaptionTableRows, expectTableRows } from '../utils/index.js';
+import { setupAuth, expectPropertyTableRows, expectHeadingTableRows, expectCaptionTableRows, expectCapitalTableRows, expectTableRows } from '../utils/index.js';
 import { ClientDetailsPage } from '../pages/index.js';
 
 test.describe('Legal help form journey', () => {
@@ -383,6 +383,116 @@ test.describe('Legal help form journey', () => {
       await expect(page.getByRole('heading', { name: 'Main property' })).toHaveCount(0);
       await expect(page.getByRole('heading', { name: 'Additional property' })).toHaveCount(0);
       await expect(page.getByRole('heading', { name: 'Total equity' })).toHaveCount(0);
+    });
+  });
+
+  test.describe('Legal help form capital details', () => {
+    test.beforeEach(async ({ page }) => {
+      await setupAuth(page);
+    });
+
+    test('should display capital values for a single client', async ({ page }) => {
+      const caseReference = 'PC-1922-1879';
+
+      await navigateToLegalHelpForm(page, caseReference);
+
+      await expectCapitalTableRows(page, {
+        'Savings': '£200',
+        'Investments': '£100',
+        'Valuable Items': '£500',
+        'Other capital': '£200',
+        'Pensioner capital disregard': '£0',
+        'Total capital for assessment purposes': '£1,000',
+      });
+    });
+
+    test('should display partner capital column when client has a partner', async ({ page }) => {
+      const caseReference = 'PC-1869-9154';
+
+      await navigateToLegalHelpForm(page, caseReference);
+
+      const capitalTable = page
+        .getByRole('heading', { name: 'Your capital' })
+        .locator('xpath=following-sibling::table[1]');
+
+      await expect(capitalTable.getByRole('columnheader', { name: "Your capital" })).toBeVisible();
+      await expect(capitalTable.getByRole('columnheader', { name: "Your partner's capital" })).toBeVisible();
+
+      // your savings data
+      await expect(capitalTable).toContainText('£100');
+      await expect(capitalTable).toContainText('£300');
+      await expect(capitalTable).toContainText('£500');
+      await expect(capitalTable).toContainText('£100');
+
+      // your partner's savings data
+      await expect(capitalTable).toContainText('£200');
+      await expect(capitalTable).toContainText('£100');
+      await expect(capitalTable).toContainText('£500');
+      await expect(capitalTable).toContainText('£200');
+
+      // Pensioner disregard
+      await expect(capitalTable.getByRole('row').filter({hasText: 'Pensioner capital disregard'})).toContainText('£0');
+
+      // total 
+      await expect(capitalTable.getByRole('row').filter({hasText: 'Total capital for assessment purposes'})).toContainText('£2,000');
+    });
+
+    test('should display disputed savings column for debt cases', async ({ page }) => {
+      const caseReference = 'PC-1357-1212';
+
+      await navigateToLegalHelpForm(page, caseReference);
+
+      const capitalTable = page.getByRole('heading', { name: 'Your capital' }).locator('xpath=following-sibling::table[1]');
+
+      await expect(capitalTable.getByRole('columnheader', { name: "Your capital" })).toBeVisible();
+      await expect(capitalTable.getByRole('columnheader', { name: 'Subject matter of dispute' })).toBeVisible();
+
+      // your savings data
+      await expect(capitalTable).toContainText('£200');
+      await expect(capitalTable).toContainText('£100');
+      await expect(capitalTable).toContainText('£500');
+      await expect(capitalTable).toContainText('£200');
+
+      // your disputed savings data
+      await expect(capitalTable).toContainText('£200');
+      await expect(capitalTable).toContainText('£100');
+      await expect(capitalTable).toContainText('£500');
+      await expect(capitalTable).toContainText('£200');
+
+      // Pensioner disregard
+      await expect(capitalTable.getByRole('row').filter({hasText: 'Pensioner capital disregard'})).toContainText('£0');
+
+      // total 
+      await expect(capitalTable.getByRole('row').filter({hasText: 'Total capital for assessment purposes'})).toContainText('£1,000');
+    });
+
+    test('should display disputed savings column for family cases', async ({ page }) => {
+      const caseReference = 'PC-1924-9560';
+
+      await navigateToLegalHelpForm(page, caseReference);
+
+      const capitalTable = page.getByRole('heading', { name: 'Your capital' }).locator('xpath=following-sibling::table[1]');
+
+      await expect(capitalTable.getByRole('columnheader', { name: "Your capital" })).toBeVisible();
+      await expect(capitalTable.getByRole('columnheader', { name: 'Subject matter of dispute' })).toBeVisible();
+
+      // your savings data
+      await expect(capitalTable).toContainText('£200');
+      await expect(capitalTable).toContainText('£100');
+      await expect(capitalTable).toContainText('£500');
+      await expect(capitalTable).toContainText('£200');
+
+      // your disputed savings data
+      await expect(capitalTable).toContainText('£200');
+      await expect(capitalTable).toContainText('£100');
+      await expect(capitalTable).toContainText('£500');
+      await expect(capitalTable).toContainText('£200');
+
+      // Pensioner disregard
+      await expect(capitalTable.getByRole('row').filter({hasText: 'Pensioner capital disregard'})).toContainText('£0');
+
+      // total 
+      await expect(capitalTable.getByRole('row').filter({hasText: 'Total capital for assessment purposes'})).toContainText('£1,000');
     });
   });
 

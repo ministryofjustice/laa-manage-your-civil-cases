@@ -11,19 +11,13 @@
 %}
 
 {% set totalCapital =
-  (savings.bankBalance or 0) +
-  (savings.investmentBalance or 0) +
-  (savings.assetBalance or 0) +
-  (savings.creditBalance or 0)
+  (savings.total or 0)
 %}
 
 {% if showPartnerColumn %}
   {% set totalCapital =
     totalCapital +
-    (partnerSavings.bankBalance or 0) +
-    (partnerSavings.investmentBalance or 0) +
-    (partnerSavings.assetBalance or 0) +
-    (partnerSavings.creditBalance or 0)
+    (partnerSavings.total or 0)
   %}
 {% endif %}
 
