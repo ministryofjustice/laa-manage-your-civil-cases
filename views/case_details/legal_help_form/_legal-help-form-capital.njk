@@ -133,30 +133,20 @@
 {% endif %}
 
 {# Pensioner disregard row #}
-{% set pensionerDisregardRow = [
-  {
-    text: "Pensioner capital disregard"
-  }
-] %}
+{% set pensionerDisregardRow = [{ text: "Pensioner capital disregard" }] %}
 
 {% if showDisputeColumn %}
-  {% set pensionerDisregardRow = pensionerDisregardRow.concat([
-    {}
-  ]) %}
+  {% set pensionerDisregardRow = pensionerDisregardRow.concat([{}]) %}
 {% endif %}
 
 {% if showPartnerColumn %}
   {% set pensionerDisregardRow = pensionerDisregardRow.concat([
     {},
-    {
-      text: legalHelpExtract.calculations.pensionerDisregard | formatFinancialData
-    }
+    { text: legalHelpExtract.calculations.pensionerDisregard | formatFinancialData }
   ]) %}
 {% else %}
   {% set pensionerDisregardRow = pensionerDisregardRow.concat([
-    {
-      text: legalHelpExtract.calculations.pensionerDisregard | formatFinancialData
-    }
+    { text: legalHelpExtract.calculations.pensionerDisregard | formatFinancialData }
   ]) %}
 {% endif %}
 

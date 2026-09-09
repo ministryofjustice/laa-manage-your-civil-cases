@@ -1,28 +1,22 @@
 {% set isDisputedCategory = legalHelpExtract.category == 'debt' or legalHelpExtract.category == 'family' %}
-{% set hasProperty = "Yes" if legalHelpExtract.propertySet and legalHelpExtract.propertySet.length else 
-  "No" %}
+{% set hasProperty = "Yes" if legalHelpExtract.propertySet and legalHelpExtract.propertySet.length else "No" %}
 
 {% set initialRows = [
   [
-    {
-      text: t("pages.caseDetails.legalHelpForm.property.initialQuestionPartner")if legalHelpExtract.hasPartner else 
-        t("pages.caseDetails.legalHelpForm.property.initialQuestion")
-    }, {
-      text: hasProperty
-    }
+    { text: t("pages.caseDetails.legalHelpForm.property.initialQuestionPartner")if legalHelpExtract.hasPartner else t("pages.caseDetails.legalHelpForm.property.initialQuestion") },
+    { text: hasProperty }
   ]
 ] %}
 
 {{ govukTable({
-      caption: "Your property",
-      classes: "legal-help-eligibility-table",
-      captionClasses: "govuk-table__caption--l",
-      firstCellIsHeader: true,
-      rows: initialRows
-    }) }}
+  caption: "Your property",
+  classes: "legal-help-eligibility-table",
+  captionClasses: "govuk-table__caption--l",
+  firstCellIsHeader: true,
+  rows: initialRows
+}) }}
 
 {% if legalHelpExtract.propertySet %}
-
   {# Main property first #}
   {% for property in legalHelpExtract.propertySet %}
     {% if property.main %}
@@ -31,37 +25,24 @@
 
       {% set propertyRows = [
         [
-          {
-            text: t("pages.caseDetails.legalHelpForm.property.propertyValue")
-          }, {
-            text: property.value | formatFinancialData
-          }
+          { text: t("pages.caseDetails.legalHelpForm.property.propertyValue") }, 
+          { text: property.value | formatFinancialData }
         ],
         [
-          {
-            text: t("pages.caseDetails.legalHelpForm.property.mortgageLeft")
-          }, {
-            text: property.mortgageLeft | formatFinancialData
-          }
+          { text: t("pages.caseDetails.legalHelpForm.property.mortgageLeft") },
+          { text: property.mortgageLeft | formatFinancialData }
         ],
         [
-          {
-            text: t("pages.caseDetails.legalHelpForm.property.propertyShare")
-          }, {
-            text: property.share + "%"
-          }
+          { text: t("pages.caseDetails.legalHelpForm.property.propertyShare") },
+          { text: property.share + "%" }
         ]
       ] %}
 
       {% if isDisputedCategory %}
         {% set propertyRows = propertyRows.concat([
           [
-            {
-              text: t("pages.caseDetails.legalHelpForm.property.disputedProperty")
-            }, {
-              text: "Yes" if property.disputed else 
-                "No"
-            }
+            { text: t("pages.caseDetails.legalHelpForm.property.disputedProperty") }, 
+            { text: "Yes" if property.disputed else "No" }
           ]
         ]) %}
       {% endif %}
@@ -86,43 +67,28 @@
 
   {% for property in additionalProperties %}
 
-    <h3 class="govuk-heading-m">
-      Additional property {{ loop.index }}
-    </h3>
+    <h3 class="govuk-heading-m">Additional property {{ loop.index }}</h3>
 
     {% set propertyRows = [
       [
-        {
-          text: t("pages.caseDetails.legalHelpForm.property.propertyValue")
-        }, {
-          text: property.value | formatFinancialData
-        }
+        { text: t("pages.caseDetails.legalHelpForm.property.propertyValue") }, 
+        { text: property.value | formatFinancialData }
       ],
       [
-        {
-          text: t("pages.caseDetails.legalHelpForm.property.mortgageLeft")
-        }, {
-          text: property.mortgageLeft | formatFinancialData
-        }
+        { text: t("pages.caseDetails.legalHelpForm.property.mortgageLeft") }, 
+        { text: property.mortgageLeft | formatFinancialData }
       ],
       [
-        {
-          text: t("pages.caseDetails.legalHelpForm.property.propertyShare")
-        }, {
-          text: property.share + "%"
-        }
+        { text: t("pages.caseDetails.legalHelpForm.property.propertyShare") },
+        { text: property.share + "%" }
       ]
     ] %}
 
     {% if isDisputedCategory %}
       {% set propertyRows = propertyRows.concat([
         [
-          {
-            text: t("pages.caseDetails.legalHelpForm.property.disputedProperty")
-          }, {
-            text: "Yes" if property.disputed else 
-              "No"
-          }
+          { text: t("pages.caseDetails.legalHelpForm.property.disputedProperty") },
+          { text: "Yes" if property.disputed else "No" }
         ]
       ]) %}
     {% endif %}
@@ -144,14 +110,8 @@
     firstCellIsHeader: true,
     rows: [
       [
-        {
-          text: "Total equity in homes for assessment purposes",
-          classes: "income-table__total"
-        },
-        {
-          text: legalHelpExtract.calculations.propertySetEquities | formatFinancialData,
-          classes: "income-table__total"
-        }
+        { text: "Total equity in homes for assessment purposes", classes: "income-table__total" },
+        { text: legalHelpExtract.calculations.propertySetEquities | formatFinancialData, classes: "income-table__total" }
       ]
     ]
   }) }}
