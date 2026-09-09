@@ -136,21 +136,23 @@
   {% endfor %}
 {% endif %}
 
-{{ govukTable({
-  caption: "Total equity",
-  classes: "total-equity-table legal-help-eligibility-table",
-  captionClasses: "govuk-table__caption--l",
-  firstCellIsHeader: true,
-  rows: [
-    [
-      {
-        text: "Total equity in homes for assessment purposes",
-        classes: "total-equity-row"
-      },
-      {
-        text: legalHelpExtract.propertySetEquity | formatFinancialData,
-        classes: "total-equity-row"
-      }
+{% if hasProperty === 'Yes' %}
+  {{ govukTable({
+    caption: "Total equity",
+    classes: "total-equity-table legal-help-eligibility-table",
+    captionClasses: "govuk-table__caption--l",
+    firstCellIsHeader: true,
+    rows: [
+      [
+        {
+          text: "Total equity in homes for assessment purposes",
+          classes: "income-table__total"
+        },
+        {
+          text: legalHelpExtract.calculations.propertySetEquities | formatFinancialData,
+          classes: "income-table__total"
+        }
+      ]
     ]
-  ]
-}) }}
+  }) }}
+{% endif %}

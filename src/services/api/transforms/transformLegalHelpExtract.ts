@@ -1,5 +1,5 @@
 import type { LegalHelpFormData } from '#types/api-types.js';
-import { isRecord} from '#src/scripts/helpers/index.js';
+import { isRecord } from '#src/scripts/helpers/index.js';
 import { transformFinancialEligibilityItem, convertPenceToPounds } from '../transforms/transformFinancialEligibility.js';
 
 /**
@@ -26,12 +26,6 @@ export function transformLegalHelpFormItem(item: unknown,): LegalHelpFormData {
   const nationalInsurance = String(personalDetails.ni_number ?? '');
   const asylumSupport = Boolean(item.on_nass_benefits);
   const calculations = isRecord(item.calculations) ? item.calculations : {};
-  const propertySetEquity = Array.isArray(calculations.property_equities)
-  ? calculations.property_equities.reduce(
-      (total, equity) => total + Number(equity ?? 0),
-      0,
-    )
-  : 0;
 
   const mappedCalculations = {
     partnerEmploymentAllowance: convertPenceToPounds(Number(calculations.partner_employment_allowance ?? 0)),
@@ -43,7 +37,7 @@ export function transformLegalHelpFormItem(item: unknown,): LegalHelpFormData {
     nonPropertyCapital: convertPenceToPounds(Number(calculations.non_property_capital ?? 0)),
     dependantsAllowance: convertPenceToPounds(Number(calculations.dependants_allowance ?? 0)),
     disposableCapitalAssets: convertPenceToPounds(Number(calculations.disposable_capital_assets ?? 0)),
-    propertyEquities: Array.isArray(calculations.property_equities) ? calculations.property_equities.map((value: unknown) => convertPenceToPounds(Number(value ?? 0))) : [],
+    propertySetEquities: Array.isArray(calculations.property_equities) ? convertPenceToPounds(calculations.property_equities.reduce((total, equity) => total + Number(equity ?? 0),0,),): 0,
     employmentAllowance: convertPenceToPounds(Number(calculations.employment_allowance ?? 0)),
   };
 
@@ -52,7 +46,6 @@ export function transformLegalHelpFormItem(item: unknown,): LegalHelpFormData {
     ...eligibilityData,
     nationalInsurance,
     asylumSupport,
-    propertySetEquity,
     calculations: mappedCalculations,
   };
 }

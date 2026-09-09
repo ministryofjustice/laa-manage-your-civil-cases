@@ -336,7 +336,7 @@ test.describe('Legal help form journey', () => {
 
       await expect(page.getByRole('heading', { name: 'Main property' })).toHaveCount(0);
       await expect(page.getByRole('heading', { name: 'Additional property' })).toHaveCount(0);
-      await expectCaptionTableRows(page, 'Total equity', {'Total equity in homes for assessment purposes': '£0'});
+      await expect(page.getByRole('heading', { name: 'Total equity' })).toHaveCount(0);
     });
   });
 });

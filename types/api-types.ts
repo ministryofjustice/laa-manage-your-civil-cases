@@ -470,7 +470,6 @@ export interface FinancialEligibilityData {
 export interface LegalHelpFormData extends FinancialEligibilityData {
   nationalInsurance: string;
   asylumSupport: boolean;
-  propertySetEquity: number;
   calculations?: {
     partnerEmploymentAllowance: number;
     propertyCapital: number;
@@ -481,7 +480,7 @@ export interface LegalHelpFormData extends FinancialEligibilityData {
     nonPropertyCapital: number;
     dependantsAllowance: number;
     disposableCapitalAssets: number;
-    propertyEquities: number[];
+    propertySetEquities: number;
     employmentAllowance: number;
   };
 }
