@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures/index.js';
 import { Page } from '@playwright/test';
-import { setupAuth, expectPropertyTableRows, expectCaptionTableRows } from '../utils/index.js';
+import { setupAuth, expectPropertyTableRows, expectHeadingTableRows, expectCaptionTableRows, expectTableRows } from '../utils/index.js';
 import { ClientDetailsPage } from '../pages/index.js';
 
 test.describe('Legal help form journey', () => {
@@ -31,7 +31,7 @@ test.describe('Legal help form journey', () => {
   }
 
   test('should create a legal help form with your details and your finances sections', async ({ page }) => {
-    const caseReference = 'PC-9173-4826';
+    const caseReference = 'PC-9173-4826'; // No Partner case
     const evidence = 'Bank statements for the last 3 months';
 
     const clientDetails = ClientDetailsPage.forCase(page, caseReference);
@@ -81,6 +81,52 @@ test.describe('Legal help form journey', () => {
       'Income-based Job Seekers Allowance': 'No',
       'Guarantee State Pension Credit': 'No',
       'Income-related Employment and Support Allowance': 'No',
+    });
+
+    await expectHeadingTableRows(page, 'Your income', {
+      'Wages (before tax)': '£120',
+      'Self employed drawings (before tax)': '£200',
+      'Benefits': '£500',
+      'Tax credits': '£100',
+      'Child benefit (for household)': '£200',
+      'Maintenance received': '£100',
+      'Pension income': '£100',
+      'Other income': '£0',
+      'Total income': '£887.49',
+    });
+
+    await expectHeadingTableRows(page, 'Less monthly allowances', {
+      'Tax': '£0',
+      'National Insurance': '£0',
+      'Mortgage': '£350',
+      'Rent': '£250',
+      'Maintenance payments being made': '£50',
+      'Childcare costs due to work': '£50',
+      'Legal Aid payments for criminal defence': '£20',
+    });
+
+    await expectHeadingTableRows(page, 'Calculated expenses', {'Employment expenses': '£45'});
+
+    const calculatedExpensesTable = page.getByRole('heading', { name: 'Calculated expenses' }).locator('xpath=following-sibling::table[1]');
+    const totalTable = calculatedExpensesTable.locator('xpath=following-sibling::table[1]' );
+    await expectTableRows(totalTable, {
+      'Dependants allowance': '£0',
+      'Total monthly disposable income': '£0',
+    });
+
+    // Evidence can be seen in evidence box
+    await expect(page.getByRole('heading', { name: 'Evidence we need from you' })).toBeVisible();
+    await expect(page.locator('#more-detail')).toHaveValue(evidence);
+
+    // One additional circumstance, shown on Legal Help Form
+    await expectHeadingTableRows(page, 'For use by advisor', {'Is this an application for exceptional case funding (ECF)?': 'Yes' });
+
+    // Other advisor circumstances remain unselected
+    const advisorHeading = page.getByRole('heading', { name: 'For use by advisor' });
+    const secondAdvisorTable = advisorHeading.locator('xpath=following-sibling::table[2]');
+    await expectTableRows(secondAdvisorTable, {
+      'Accepted an application from a child or patient or someone on their behalf': 'No',
+      'Provided legal help to a client who has already received it on the same matter within the last 6 months': 'No',
     });
   });
 
@@ -332,11 +378,49 @@ test.describe('Legal help form journey', () => {
 
       await navigateToLegalHelpForm(page, caseReference);
 
-      await expectCaptionTableRows(page, 'Your property', {'Do you own any property?': 'No'});
+      await expectCaptionTableRows(page, 'Your property', { 'Do you own any property?': 'No' });
 
       await expect(page.getByRole('heading', { name: 'Main property' })).toHaveCount(0);
       await expect(page.getByRole('heading', { name: 'Additional property' })).toHaveCount(0);
       await expect(page.getByRole('heading', { name: 'Total equity' })).toHaveCount(0);
+    });
+  });
+
+  test('Legal help form income section, with partner', async ({ page }) => {
+    await navigateToLegalHelpForm(page, 'PC-1869-9154');
+
+    const incomeHeading = page.getByRole('heading', { level: 2, name: 'Your income' });
+    const incomeTable = incomeHeading.locator('xpath=following-sibling::table[1]');
+
+    await expect(incomeHeading).toBeVisible();
+    await expect(incomeTable.getByRole('columnheader', { name: 'You', exact: true })).toBeVisible();
+    await expect(incomeTable.getByRole('columnheader', { name: 'Your partner', exact: true })).toBeVisible();
+
+    await expectTableRows(incomeTable, {
+      'Wages (before tax)': ['£120', '£130'],
+      'Self employed drawings (before tax)': ['£200', '£100'],
+      'Benefits': ['£500', '£500'],
+      'Total income': ['£887.49', '£887.49'],
+    });
+
+    await expectHeadingTableRows(page, 'Less monthly allowances', {
+      'Tax': '£0',
+      'National Insurance': '£0',
+      'Mortgage': ['£350', '£300'],
+      'Rent': ['£250', '£200'],
+      'Maintenance payments being made': ['£20', '£40'],
+      'Childcare costs due to work': ['£50', '£50'],
+      'Legal Aid payments for criminal defence': ['£20', '£10'],
+    });
+
+    await expectHeadingTableRows(page, 'Calculated expenses', { 'Employment expenses': '£0' });
+
+    const calculatedExpensesTable = page.getByRole('heading', { name: 'Calculated expenses' }).locator('xpath=following-sibling::table[1]');
+    const totalTable = calculatedExpensesTable.locator('xpath=following-sibling::table[1]');
+    await expectTableRows(totalTable, {
+      'Dependants allowance': '£0',
+      'Partner allowance': '£0',
+      'Total monthly disposable income': '£0',
     });
   });
 });

@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 import { apiService } from '#src/services/apiService.js';
-import { devLog, createProcessedError, safeString, validCaseReference, formatValidationError, safeBodyString, normaliseSelectedCheckbox, trimOrUndefined, setSessionValue, getSessionValue, t, LEGAL_HELP_FORM_CIRCUMSTANCE_OPTIONS } from '#src/scripts/helpers/index.js';
+import { devLog, createProcessedError, safeString, validCaseReference, formatValidationError, safeBodyString, normaliseSelectedCheckbox, trimOrUndefined, setSessionValue, getSessionValue, t, LEGAL_HELP_FORM_CIRCUMSTANCE_OPTIONS, getCsrfToken } from '#src/scripts/helpers/index.js';
 import type { LegalHelpFormAnswers } from '#src/scripts/helpers/sessionHelpers.js';
 import { HTTP } from '#src/services/api/base/constants.js';
 import config from '#config.js';
@@ -9,15 +9,6 @@ import config from '#config.js';
 const { MAX_LEGAL_HELP_FORM_EVIDENCE_LENGTH }: { MAX_LEGAL_HELP_FORM_EVIDENCE_LENGTH: number } = config;
 
 const LEGAL_HELP_FORM_SESSION_KEY = 'legalHelpFormAnswers';
-
-/**
- * Get the CSRF token for a request, if CSRF protection is enabled
- * @param {Request} req Express request object
- * @returns {string | undefined} The CSRF token, or undefined if unavailable
- */
-function getCsrfToken(req: Request): string | undefined {
-  return typeof req.csrfToken === 'function' ? req.csrfToken() : undefined;
-}
 
 /**
  * Build the govukCheckboxes items for the "about this case" additional circumstances field
