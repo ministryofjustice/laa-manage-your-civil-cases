@@ -133,7 +133,9 @@ test.describe('Legal help form journey', () => {
       'Provided legal help to a client who has already received it on the same matter within the last 6 months': 'No',
     });
 
-    // Add a test to say that we do npt see partner column in all the tables as this is a none partner case - Masum
+    // As this case has no partner we should not see any `Your partner' column
+    const partnerColumnHeaders = page.getByRole('table').getByRole('columnheader', { name: /Your partner/i });
+    await expect(partnerColumnHeaders).toHaveCount(0);
   });
 
   test.describe('Legal help form conditional financial details', () => {
@@ -579,6 +581,21 @@ test.describe('Legal help form journey', () => {
     });
   });
 
+  test('should open the print dialog when "Print this page" is clicked', async ({ page }) => {
+    await navigateToLegalHelpForm(page, 'PC-9173-4826');
 
- // Print page dialog box has cme up. - Masum
+    await page.evaluate(() => {
+      window.print = () => {
+        document.body.dataset.printDialogOpened = 'true';
+      };
+    });
+
+    // Click print button at top of the [age]
+    await page.getByRole('button', { name: 'Print this page' }).first().click();
+
+    await expect(page.locator('body')).toHaveAttribute(
+      'data-print-dialog-opened',
+      'true',
+    );
+  });
 });
