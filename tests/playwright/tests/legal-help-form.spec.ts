@@ -781,51 +781,31 @@ test.describe('Legal help form journey', () => {
     );
   });
 
-  test('should repopulate the interstitial when returning from the legal help form', async ({
-    page,
-  }) => {
+  test('should repopulate the interstitial when returning from the legal help form', async ({ page }) => {
     const caseReference = 'PC-9173-4826';
     const evidence = 'Bank statements for the last 3 months';
-
-    const clientDetails = ClientDetailsPage.forCase(
-      page,
-      caseReference,
-    );
+    const clientDetails = ClientDetailsPage.forCase(page, caseReference );
 
     await clientDetails.navigate();
 
-    await page
-      .getByRole('button', { name: 'Get legal help form' })
-      .click();
+    await page.getByRole('button', { name: 'Get legal help form' }).click();
 
-    await expect(page).toHaveURL(
-      `/cases/${caseReference}/get-legal-help-form`,
-    );
+    await expect(page).toHaveURL(`/cases/${caseReference}/get-legal-help-form`);
 
-    const evidenceInput = page.getByLabel(
-      'What evidence do you require from the client? (optional)',
-    );
+    const evidenceInput = page.getByLabel('What evidence do you require from the client? (optional)');
 
-    const circumstanceCheckbox = page.getByLabel(
-      'This is an application for Exceptional Case Funding (ECF)',
-    );
+    const circumstanceCheckbox = page.getByLabel('This is an application for Exceptional Case Funding (ECF)');
 
     await evidenceInput.fill(evidence);
     await circumstanceCheckbox.check();
 
-    await page
-      .getByRole('button', { name: 'Create legal help form' })
-      .click();
+    await page.getByRole('button', { name: 'Create legal help form' }).click();
 
-    await expect(page).toHaveURL(
-      `/cases/${caseReference}/legal-help-form`,
-    );
+    await expect(page).toHaveURL(`/cases/${caseReference}/legal-help-form`);
 
     await page.getByRole('link', { name: 'Back', exact: true}).click();
 
-    await expect(page).toHaveURL(
-      `/cases/${caseReference}/get-legal-help-form`,
-    );
+    await expect(page).toHaveURL(`/cases/${caseReference}/get-legal-help-form`);
 
     await expect(evidenceInput).toHaveValue(evidence);
     await expect(circumstanceCheckbox).toBeChecked();
