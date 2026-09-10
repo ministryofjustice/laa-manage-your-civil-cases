@@ -12,7 +12,11 @@
 
 {{ summaryCardComponent({
   caption: "Your expenses",
-  classes: "eligibility-table",
+  classes: {
+    row: {
+      key: "govuk-!-width-two-thirds"
+    }
+  },
   captionClasses: "govuk-table__caption--m",
   data: expensesData,
   card: {
@@ -64,7 +68,11 @@
 
   {{ summaryCardComponent({
     caption: "Your partner's expenses",
-    classes: "eligibility-table",
+    classes: {
+      row: {
+        key: "govuk-!-width-two-thirds"
+      }
+    },
     captionClasses: "govuk-table__caption--m",
     data: partnerExpensesData,
     card: {

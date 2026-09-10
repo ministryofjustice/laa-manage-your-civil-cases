@@ -9,7 +9,7 @@
       value: property.value | formatFinancialData,
       mortgageLeft: property.mortgageLeft | formatFinancialData,
       mainProperty: "Yes" if property.main else "No",
-      partnerPropertyShare: property.share + "%",
+      propertyShare: property.share + "%",
       disputed: "Yes" if property.disputed else "No"
     } %}
 
@@ -41,7 +41,7 @@
       },
       {
         label: t("common.financialEligibility.finances.partnerPropertyShare") if financialEligibility.hasPartner else t("common.financialEligibility.finances.propertyShare"),
-        key: 'partnerPropertyShare'
+        key: 'propertyShare'
       }
     ] %}
     
@@ -55,7 +55,11 @@
     {% endif %}
 
     {{ summaryCardComponent({
-      classes: "eligibility-table",
+      classes: {
+        row: {
+          key: "govuk-!-width-two-thirds"
+        }
+      },
       data: constructedData,
       card: {
         title: {
@@ -75,7 +79,11 @@
   {% endfor %}
 {% else %}
   {{ summaryCardComponent({
-    classes: "eligibility-table",
+    classes: {
+      row: {
+        key: "govuk-!-width-two-thirds"
+      }
+    },
     data: {noPropertiesText: t("common.none")},
     card: {
       title: {
@@ -110,7 +118,11 @@
 } %}
 
 {{ summaryCardComponent({
-    classes: "eligibility-table",
+    classes: {
+      row: {
+        key: "govuk-!-width-two-thirds"
+      }
+    },
     data: savingsData,
     card: {
       title: {
@@ -156,7 +168,11 @@
   } %}
 
   {{ summaryCardComponent({
-    classes: "eligibility-table",
+    classes: {
+      row: {
+        key: "govuk-!-width-two-thirds"
+      }
+    },
     data: partnerSavingsData,
     card: {
       title: {
@@ -202,7 +218,11 @@
   } %}
 
   {{ summaryCardComponent({
-    classes: "eligibility-table",
+    classes: {
+      row: {
+        key: "govuk-!-width-two-thirds"
+      }
+    },
     data: disputedSavingsData,
     card: {
       title: {
@@ -257,7 +277,6 @@
 {% endset %}
 
 {{ summaryCardComponent({
-  classes: "eligibility-table",
   data: {disregardsHtml: disregardsHtml | safe},
   card: {
     title: {

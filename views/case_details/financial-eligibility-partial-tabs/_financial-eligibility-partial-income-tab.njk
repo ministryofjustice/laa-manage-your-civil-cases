@@ -19,7 +19,11 @@
 {{ summaryCardComponent({
     caption: "Your income",
     captionClasses: "govuk-table__caption--m",
-    classes: "eligibility-table",
+    classes: {
+      row: {
+        key: "govuk-!-width-two-thirds"
+      }
+    },
     rows: [
       {
         label: t("common.financialEligibility.income.selfEmployed"),
@@ -101,7 +105,11 @@
   {{ summaryCardComponent({
     caption: "Your partner's income",
     captionClasses: "govuk-table__caption--m",
-    classes: "eligibility-table",
+    classes: {
+      row: {
+        key: "govuk-!-width-two-thirds"
+      }
+    },
     data: partnerIncomeData,
     card: {
       title: {
@@ -167,7 +175,11 @@
 } %}
 {{ summaryCardComponent({
   caption: "Dependants",
-  classes: "eligibility-table",
+  classes: {
+    row: {
+      key: "govuk-!-width-two-thirds"
+    }
+  },
   captionClasses: "govuk-table__caption--m",
   data: dependantsData,
   card: {

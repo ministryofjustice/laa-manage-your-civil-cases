@@ -57,7 +57,11 @@
 {{ summaryCardComponent({
   caption: "About you",
   captionClasses: "govuk-table__caption--m",
-  classes: "eligibility-table",
+  classes: {
+    row: {
+      key: "govuk-!-width-two-thirds"
+    }
+  },
   data: constructedData,
   card: {
     title: {
@@ -80,7 +84,11 @@
   {{ summaryCardComponent({
     caption: "Benefits",
     captionClasses: "govuk-table__caption--m",
-    classes: "eligibility-table",
+    classes: {
+      row: {
+        key: "govuk-!-width-two-thirds"
+      }
+    },
     data: constructedData,
     card: {
       title: {
