@@ -154,8 +154,12 @@
 
 // print button
 @media print {
-  // Set page margins and add page numbers
   @page {
+    // Hide title of web page, by overlaying empty text
+    @top-right {
+      content: "";
+    }
+    // Set page margins and add page numbers
     margin: 2cm;
     @bottom-right {
       content: "Page " counter(page) " of " counter(pages);
@@ -169,11 +173,6 @@
   .legal-help-form-pdf-width .govuk-grid-column-two-thirds {
     width: 100%;
     float: none;
-  }
-  // Hide the header and footer
-  header, .site-header,
-  footer, .site-footer {
-    display: none !important;
   }
 }
 

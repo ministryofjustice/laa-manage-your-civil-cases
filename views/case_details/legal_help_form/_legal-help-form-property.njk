@@ -1,15 +1,10 @@
 {% set isDisputedCategory = legalHelpExtract.category == 'debt' or legalHelpExtract.category == 'family' %}
-{% set hasProperty = "Yes" if legalHelpExtract.propertySet and legalHelpExtract.propertySet.length else 
-  "No" %}
+{% set hasProperty = "Yes" if legalHelpExtract.propertySet and legalHelpExtract.propertySet.length else "No" %}
 
 {% set initialRows = [
   [
-    {
-      text: t("pages.caseDetails.legalHelpForm.property.initialQuestionPartner")if legalHelpExtract.hasPartner else 
-        t("pages.caseDetails.legalHelpForm.property.initialQuestion")
-    }, {
-      text: hasProperty
-    }
+    { text: t("pages.caseDetails.legalHelpForm.property.initialQuestionPartner") if legalHelpExtract.hasPartner else t("pages.caseDetails.legalHelpForm.property.initialQuestion")},
+    { text: hasProperty }
   ]
 ] %}
 
@@ -32,37 +27,24 @@
 
       {% set propertyRows = [
         [
-          {
-            text: t("pages.caseDetails.legalHelpForm.property.propertyValue")
-          }, {
-            text: property.value | formatFinancialData
-          }
+          { text: t("pages.caseDetails.legalHelpForm.property.propertyValue") }, 
+          { text: property.value | formatFinancialData }
         ],
         [
-          {
-            text: t("pages.caseDetails.legalHelpForm.property.mortgageLeft")
-          }, {
-            text: property.mortgageLeft | formatFinancialData
-          }
+          { text: t("pages.caseDetails.legalHelpForm.property.mortgageLeft") }, 
+          { text: property.mortgageLeft | formatFinancialData }
         ],
         [
-          {
-            text: t("pages.caseDetails.legalHelpForm.property.propertyShare")
-          }, {
-            text: property.share + "%"
-          }
+          { text: t("pages.caseDetails.legalHelpForm.property.propertyShare") }, 
+          { text: property.share + "%" }
         ]
       ] %}
 
       {% if isDisputedCategory %}
         {% set propertyRows = propertyRows.concat([
           [
-            {
-              text: t("pages.caseDetails.legalHelpForm.property.disputedProperty")
-            }, {
-              text: "Yes" if property.disputed else 
-                "No"
-            }
+            { text: t("pages.caseDetails.legalHelpForm.property.disputedProperty") }, 
+            { text: "Yes" if property.disputed else  "No" }
           ]
         ]) %}
       {% endif %}
@@ -91,37 +73,24 @@
 
     {% set propertyRows = [
       [
-        {
-          text: t("pages.caseDetails.legalHelpForm.property.propertyValue")
-        }, {
-          text: property.value | formatFinancialData
-        }
+        { text: t("pages.caseDetails.legalHelpForm.property.propertyValue") }, 
+        { text: property.value | formatFinancialData }
       ],
       [
-        {
-          text: t("pages.caseDetails.legalHelpForm.property.mortgageLeft")
-        }, {
-          text: property.mortgageLeft | formatFinancialData
-        }
+        { text: t("pages.caseDetails.legalHelpForm.property.mortgageLeft") }, 
+        { text: property.mortgageLeft | formatFinancialData }
       ],
       [
-        {
-          text: t("pages.caseDetails.legalHelpForm.property.propertyShare")
-        }, {
-          text: property.share + "%"
-        }
+        { text: t("pages.caseDetails.legalHelpForm.property.propertyShare") }, 
+        { text: property.share + "%" }
       ]
     ] %}
 
     {% if isDisputedCategory %}
       {% set propertyRows = propertyRows.concat([
         [
-          {
-            text: t("pages.caseDetails.legalHelpForm.property.disputedProperty")
-          }, {
-            text: "Yes" if property.disputed else 
-              "No"
-          }
+          { text: t("pages.caseDetails.legalHelpForm.property.disputedProperty") }, 
+          { text: "Yes" if property.disputed else "No" }
         ]
       ]) %}
     {% endif %}
