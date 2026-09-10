@@ -82,6 +82,10 @@ test.describe('Legal help form journey', () => {
       'Guarantee State Pension Credit': 'No',
       'Income-related Employment and Support Allowance': 'No',
     });
+    
+    // Add property - Gemma
+
+    // Add capital -Gemma 
 
     await expectHeadingTableRows(page, 'Your income', {
       'Wages (before tax)': '£120',
@@ -128,6 +132,8 @@ test.describe('Legal help form journey', () => {
       'Accepted an application from a child or patient or someone on their behalf': 'No',
       'Provided legal help to a client who has already received it on the same matter within the last 6 months': 'No',
     });
+
+    // Add a test to say that we do npt see partner column in all the tables as this is a none partner case - Masum
   });
 
   test.describe('Legal help form conditional financial details', () => {
@@ -191,6 +197,7 @@ test.describe('Legal help form journey', () => {
       });
     });
 
+    // Rename test for clarity - Gemma 
     test('should use the single-client age and benefits wording when there is no partner', async ({ page }) => {
       const caseReference = 'PC-1922-1879';
 
@@ -271,7 +278,7 @@ test.describe('Legal help form journey', () => {
       await setupAuth(page);
     });
 
-    test('should show no when the client does not own any property', async ({ page }) => {
+    test('should show "No" in answer field, when the client does not own any property', async ({ page }) => {
       const caseReference = 'PC-1854-6521';
 
       await navigateToLegalHelpForm(page, caseReference);
@@ -571,4 +578,7 @@ test.describe('Legal help form journey', () => {
       'Total monthly disposable income': '£0',
     });
   });
+
+
+ // Print page dialog box has cme up. - Masum
 });
