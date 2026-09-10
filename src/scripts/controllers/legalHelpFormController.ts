@@ -29,7 +29,11 @@ function buildCircumstanceItems(): Array<{ value: string; text: string; hint: { 
  * @param {NextFunction} next Express next function
  * @returns {void} Renders the get-legal-help-form page
  */
-export function getLegalHelpFormInterstitial(req: Request, res: Response, next: NextFunction): void {
+export function getLegalHelpFormInterstitial(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): void {
   const caseReference = safeString(req.params.caseReference);
 
   if (!validCaseReference(caseReference, res)) {
@@ -37,17 +41,36 @@ export function getLegalHelpFormInterstitial(req: Request, res: Response, next: 
   }
 
   try {
-    res.render('case_details/legal_help_form/legal-help-form-interstitial.njk', {
-      caseReference,
-      client: req.clientData,
-      currentEvidence: '',
-      currentAdditionalCircumstances: [],
-      maxEvidenceLength: MAX_LEGAL_HELP_FORM_EVIDENCE_LENGTH,
-      circumstanceItems: buildCircumstanceItems(),
-      csrfToken: getCsrfToken(req)
-    });
+    const stored = getSessionValue(
+      req,
+      LEGAL_HELP_FORM_SESSION_KEY,
+    ) as LegalHelpFormAnswers | undefined;
+
+    // Do not populate this case using answers entered for another case.
+    const answers =
+      stored?.caseReference === caseReference
+        ? stored
+        : undefined;
+
+    res.render(
+      'case_details/legal_help_form/legal-help-form-interstitial.njk',
+      {
+        caseReference,
+        client: req.clientData,
+        currentEvidence: answers?.evidence ?? '',
+        currentAdditionalCircumstances:
+          answers?.additionalCircumstances ?? [],
+        maxEvidenceLength: MAX_LEGAL_HELP_FORM_EVIDENCE_LENGTH,
+        circumstanceItems: buildCircumstanceItems(),
+        csrfToken: getCsrfToken(req),
+      },
+    );
   } catch (error) {
-    const processedError = createProcessedError(error, `rendering get legal help form for case ${caseReference}`);
+    const processedError = createProcessedError(
+      error,
+      `rendering get legal help form for case ${caseReference}`,
+    );
+
     next(processedError);
   }
 }
@@ -146,7 +169,7 @@ export async function getLegalHelpForm(req: Request, res: Response, next: NextFu
   try {
     const response = await apiService.getLegalHelpExtract(req.axiosMiddleware, caseReference);
     let legalHelpExtract = response.data;
-    
+
     const stored = getSessionValue(req, LEGAL_HELP_FORM_SESSION_KEY) as LegalHelpFormAnswers | undefined;
     // Ignore session answers left over from viewing a different case
     const answers = stored?.caseReference === caseReference ? stored : undefined;
@@ -163,4 +186,3 @@ export async function getLegalHelpForm(req: Request, res: Response, next: NextFu
     next(processedError);
   }
 }
-

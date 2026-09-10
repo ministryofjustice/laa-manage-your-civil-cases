@@ -1247,6 +1247,9 @@
       },
       "personal_details": {
         "ni_number": "AB123456C"
+      },
+      "calculations": {
+        "disposable_capital_assets": "100000"
       }
     }
   },
@@ -1649,6 +1652,9 @@
         "disregards": {
           "cost_living": true
         }
+      },
+      "personal_details": {
+        "ni_number":"AB123456C"
       },
       "calculations": {
         "disposable_capital_assets": "200000"
