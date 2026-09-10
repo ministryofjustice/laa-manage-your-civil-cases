@@ -163,6 +163,7 @@
     margin: 2cm;
     @bottom-right {
       content: "Page " counter(page) " of " counter(pages);
+      font-family: HelveticaNeue, "Helvetica Neue", Arial, Helvetica, sans-serif;
     }
   }
   // Suppresses the URL from appearing when the page is printed
