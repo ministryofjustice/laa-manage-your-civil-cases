@@ -1,5 +1,5 @@
 import type { FinancialEligibilityData, PropertySetData, SavingsData, IncomeData, DeductionData, MoneyPerInterval } from '#types/api-types.js';
-import { isRecord, t } from '#src/scripts/helpers/index.js';
+import { isRecord, normaliseSelectedKeys } from '#src/scripts/helpers/index.js';
 
 /**
  * Transforms raw financial eligibility API data to display format
@@ -26,7 +26,7 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
   const disputedSavings = formatSavingsData(item.disputed_savings)
   const dependantsYoung = Number(item.dependants_young ?? 0);
   const dependantsOld = Number(item.dependants_old ?? 0);
-  const disregards = isRecord(item.disregards) ? Object.entries(item.disregards).filter(([, value]) => Boolean(value)).map(([key]) => t(`common.financialDisregards.${key}`)) : [];
+  const disregards = normaliseSelectedKeys(item.disregards);
   const specificBenefits = {
     pensionCredit: Boolean(benefitsData.pension_credit),
     jobSeekers: Boolean(benefitsData.job_seekers_allowance),
@@ -44,7 +44,11 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
     })) : [];
   const under18RegularPayment = Boolean(item.under_18_receive_regular_payment);
   const under18HasValuables = Boolean(item.under_18_has_valuables);
-  console.log("disregards", disregards);
+  const state = String(item.state);
+  const hasPassportedProceedingsLetter = Boolean(item.has_passported_proceedings_letter);
+  const passportedBenefits = Boolean(item.on_passported_benefits);
+  const under18passportedBenefits = Boolean(item.under_18_passported);
+  const category = String(item.category);
 
   return {
     hasPartner,
@@ -59,7 +63,12 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
     dependantsOld,
     under18RegularPayment,
     under18HasValuables,
-    disputedSavings
+    disputedSavings,
+    state,
+    hasPassportedProceedingsLetter,
+    passportedBenefits,
+    under18passportedBenefits,
+    category
   };
 }
 
@@ -68,9 +77,9 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
  * @param {unknown} savings savings data to be formatted
  * @returns {SavingsData} formatted savings data
  */
-function formatSavingsData(savings: unknown): SavingsData {
+function formatSavingsData(savings: unknown): SavingsData | null {
   if (!isRecord(savings)) {
-    return {} as SavingsData;
+    return null;
   }
   return {
     bankBalance: convertPenceToPounds(Number(savings.bank_balance ?? 0)),

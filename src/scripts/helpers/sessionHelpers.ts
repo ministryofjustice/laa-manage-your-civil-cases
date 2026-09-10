@@ -20,12 +20,21 @@ export interface NoChangeWarningCache {
   noChangeWarningBanner: boolean;
 }
 
+// Interface for get legal help form answers, captured on the interstitial page for display on the legal help form
+// caseReference is stored alongside the answers so they can be ignored if a different case is viewed
+export interface LegalHelpFormAnswers {
+  caseReference?: string;
+  evidence?: string;
+  additionalCircumstances?: string[];
+}
+
 // Extend the Express session interface to support dynamic namespaces
 declare module 'express-session' {
   interface SessionData extends Record<string, unknown> {
     silasAuth?: SilasSessionAuth;
     user?: SilasUserInfo;
     splitCaseCache?: SplitCaseCache;
+    legalHelpFormAnswers?: LegalHelpFormAnswers;
   }
 }
 

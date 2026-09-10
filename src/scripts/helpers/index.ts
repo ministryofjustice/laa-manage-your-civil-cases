@@ -22,6 +22,8 @@ export {
   safeString,
   safeOptionalString,
   booleanToString,
+  toBoolean,
+  toNumber,
   isRecord,
   safeStringFromRecord,
   hasProperty,
@@ -32,7 +34,9 @@ export {
   safeNestedField,
   extractCurrentFields,
   normaliseSelectedCheckbox,
+  normaliseSelectedKeys,
   isYes,
+  toYesNo,
   capitaliseFirstLetter,
   extractPhoneNumber,
   isSafeToCall,
@@ -104,6 +108,13 @@ export {
   nunjucksT,
   type ExpressLocaleLoader
 } from './i18nLoader.js';
+
+// Legal help form shared option definitions
+export {
+  LEGAL_HELP_FORM_CIRCUMSTANCE_OPTIONS,
+  LEGAL_HELP_FORM_CIRCUMSTANCE_VALUES,
+  type LegalHelpFormCircumstanceOption
+} from './legalHelpFormOptions.js';
 
 // Error handling utilities
 export {

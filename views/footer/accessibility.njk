@@ -1,0 +1,93 @@
+{% extends "footer/footer-page.njk" %}
+
+{% block pageContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 id="accessibility-heading" class="govuk-heading-xl">{{ t('pages.accessibility.heading') }}</h1>
+      <p id="accessibility-intro" class="govuk-body">
+        {{ t('pages.accessibility.intro') }}
+      </p>
+
+      <p id="service-statement" class="govuk-body">
+        {{ t('pages.accessibility.service.statementIntro') }}
+      </p>
+      <ul id="examples" class="govuk-list govuk-list--bullet">
+        <li>{{ t('pages.accessibility.service.examples.changeColours') }}</li>
+        <li>{{ t('pages.accessibility.service.examples.zoom') }}</li>
+        <li>{{ t('pages.accessibility.service.examples.navigate') }}</li>
+        <li>{{ t('pages.accessibility.service.examples.listen') }}</li>
+      </ul>
+
+      <p id="statement-end" class="govuk-body">
+        {{ t('pages.accessibility.service.statementEnd') }}
+      </p>
+
+      <p id="ability-net-info" class="govuk-body">
+        <a 
+          class="govuk-link" 
+          href="https://mcmw.abilitynet.org.uk/"
+        >
+          {{ t('pages.accessibility.service.abilityNetLink') }}
+        </a>
+        {{ t('pages.accessibility.service.abilityNetInfo') }}
+      </p>
+
+      <h2 id="how-accessible-subheading" class="govuk-heading-m">{{ t('pages.accessibility.service.howAccessibleSubheading') }}</h2>
+      <p id="how-accessible-info" class="govuk-body">
+        {{ t('pages.accessibility.service.howAccessibleStart') }}
+        <a 
+          id="how-accessible-link" 
+          class="govuk-link" 
+          href="https://www.w3.org/TR/WCAG22/"
+        >
+          {{ t('pages.accessibility.service.howAccessibleLink') }}</a>{{ t('pages.accessibility.service.howAccessibleEnd') }}
+        </p>
+
+      <h2 id="feedback-subheading" class="govuk-heading-m">{{ t('pages.accessibility.feedback.subheading') }}</h2>
+      <p id="feedback-info" class="govuk-body">
+        {{ t('pages.accessibility.feedback.start') }}
+        <a class="govuk-link" href="mailto:MCC.LAADigital@justice.gov.uk">
+        {{ t('pages.accessibility.feedback.link') }}</a>{{ t('pages.accessibility.feedback.end') }}
+      </p>
+
+      <h2 id="enforcement-subheading" class="govuk-heading-m">{{ t('pages.accessibility.enforcement.subheading') }}</h2>
+      <p id="enforcement-info" class="govuk-body">
+        {{ t('pages.accessibility.enforcement.info') }}
+      </p>
+
+      <p id="enforcement-complaint" class="govuk-body">
+        {{ t('pages.accessibility.enforcement.start') }}
+        <a 
+          class="govuk-link" 
+          href="https://www.equalityadvisoryservice.com/"
+        >
+          {{ t('pages.accessibility.enforcement.link') }}</a>{{ t('pages.accessibility.enforcement.end') }}
+      </p>
+
+      <h2 id="technical-info-subheading" class="govuk-heading-m">{{ t('pages.accessibility.technicalInfo.subheading') }}</h2>
+      <p id="technical-info" class="govuk-body">
+        {{ t('pages.accessibility.technicalInfo.statement') }}
+      </p>
+
+      <h2 id="compliance-info-subheading" class="govuk-heading-s">{{ t('pages.accessibility.compliance.subheading') }}</h2>
+      <p id="compliance-info" class="govuk-body">
+        {{ t('pages.accessibility.compliance.start') }}
+        <a
+          id="compliance-link" 
+          class="govuk-link"
+          href="https://www.w3.org/TR/WCAG22/"
+        >
+          {{ t('pages.accessibility.compliance.link') }}</a>{{ t('pages.accessibility.compliance.end') }}
+      </p>
+
+      <h2 id="preparation-info-subheading" class="govuk-heading-m">{{ t('pages.accessibility.preparation.subheading') }}</h2>
+      <p id="preparation-info" class="govuk-body">
+        {{ t('pages.accessibility.preparation.statement') }}
+      </p>
+
+      <p id="service-preparation-info" class="govuk-body">
+      {{ t('pages.accessibility.preparation.service') }}
+      </p>
+    </div>
+  </div>
+{% endblock %}

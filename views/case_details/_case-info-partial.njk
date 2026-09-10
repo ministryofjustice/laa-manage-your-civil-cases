@@ -163,6 +163,12 @@
           href: "/cases/" + client.caseReference + "/give-operator-feedback",
           classes: "govuk-button--secondary govuk-!-margin-right-3"
         }) }}
+
+        {{ govukButton({
+          text: t('pages.caseDetails.buttons.generateLegalHelpForm'),
+          href: "/cases/" + client.caseReference + "/get-legal-help-form",
+          classes: "govuk-button--secondary govuk-!-margin-right-3"
+        }) }}
       {% endif %}
     </div>
   </div>

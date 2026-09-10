@@ -8,8 +8,9 @@ test.describe('CSRF Protection', () => {
     await setupAuth(page);
     await page.goto(`/cases/${CASE_REFERENCE}/do-you-want-to-give-feedback`);
 
-    // Check for CSRF token hidden input
-    const csrfInput = page.locator('input[name="_csrf"]');
+    // Check for the CSRF token belonging to the doYouWantToGiveFeedback form
+    const doYouWantToGiveFeedbackForm = page.locator('form').filter({ has: page.locator('#doYouWantToGiveFeedback')});
+    const csrfInput = doYouWantToGiveFeedbackForm.locator('input[name="_csrf"]');
     await expect(csrfInput).toBeAttached();
     await expect(csrfInput).toHaveAttribute('type', 'hidden');
 
@@ -37,7 +38,9 @@ test.describe('CSRF Protection', () => {
     await setupAuth(page);
     await page.goto(`/cases/${CASE_REFERENCE}/do-you-want-to-give-feedback`);
 
-    const csrfInput = page.locator('input[name="_csrf"]');
+    // Check for the CSRF token belonging to the doYouWantToGiveFeedback form
+    const doYouWantToGiveFeedbackForm = page.locator('form').filter({ has: page.locator('#doYouWantToGiveFeedback')});
+    const csrfInput = doYouWantToGiveFeedbackForm.locator('input[name="_csrf"]');
     await expect(csrfInput).toBeAttached();
     await expect(csrfInput).toHaveAttribute('type', 'hidden');
 
@@ -79,8 +82,9 @@ test.describe('CSRF Protection', () => {
     await setupAuth(page);
     await page.goto(`/cases/${CASE_REFERENCE}/do-you-want-to-give-feedback`);
 
-    // Verify CSRF token exists before manipulation
-    const csrfInput = page.locator('input[name="_csrf"]');
+    // Check for the CSRF token belonging to the doYouWantToGiveFeedback form
+    const doYouWantToGiveFeedbackForm = page.locator('form').filter({ has: page.locator('#doYouWantToGiveFeedback')});
+    const csrfInput = doYouWantToGiveFeedbackForm.locator('input[name="_csrf"]');
     await expect(csrfInput).toBeAttached();
 
     // Select a radio option
@@ -105,13 +109,16 @@ test.describe('CSRF Protection', () => {
   test('CSRF token should remain consistent within same session', async ({ page, i18nSetup }) => {
     await setupAuth(page);
 
+    const doYouWantToGiveFeedbackForm = page.locator('form').filter({ has: page.locator('#doYouWantToGiveFeedback')});
+    const csrfInput = doYouWantToGiveFeedbackForm.locator('input[name="_csrf"]');
+
     // First visit
     await page.goto(`/cases/${CASE_REFERENCE}/do-you-want-to-give-feedback`);
-    const firstToken = await page.locator('input[name="_csrf"]').getAttribute('value');
+    const firstToken = await csrfInput.getAttribute('value');
 
     // Second visit (same session)
     await page.goto(`/cases/${CASE_REFERENCE}/do-you-want-to-give-feedback`);
-    const secondToken = await page.locator('input[name="_csrf"]').getAttribute('value');
+    const secondToken = await csrfInput.getAttribute('value');
 
     // Token should be the same within the same session
     expect(firstToken).toBe(secondToken);

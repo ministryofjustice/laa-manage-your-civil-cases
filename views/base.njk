@@ -1,6 +1,8 @@
 {% extends "govuk/template.njk" %}
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% block pageTitle %}{{config.SERVICE_NAME}} – GOV.UK{% endblock %}
 
@@ -120,7 +122,7 @@
     {% if isAuthenticated %}
       {{ govukServiceNavigation({
       serviceName: config.SERVICE_NAME,
-      serviceUrl: "/cases/new",
+      serviceUrl: "/",
       navigation: [
         {
           href: "/cases/new",
@@ -143,47 +145,45 @@
     tag: {
       text: config.SERVICE_PHASE
     },
-    html: t('components.phaseBanner.feedbackText') + "<a class='govuk-link' href='mailto:" + config.CONTACT_EMAIL + "'>" + t('components.phaseBanner.feedbackLinkTextHTML') + "</a>."
+    html: t('components.phaseBanner.feedbackTextBeginning') + "<a class='govuk-link' href=#feedback>" + t('components.phaseBanner.feedbackLinkTextHTML') + "</a>" +  t('components.phaseBanner.feedbackTextEnd')
   }) }}
   {% block backLink %}{% endblock %}
 {% endblock %}
 
 {% block content %}
-  <div class="govuk-width-container">
-    <div class="govuk-body">
-      {% block errorSummaryOrAlert %}{% endblock %}
-      {% block pageContent %}{% endblock %}
-    </div>
+  <div class="govuk-body">
+    {% block errorSummaryOrAlert %}{% endblock %}
+    {% block pageContent %}{% endblock %}
   </div>
 {% endblock %}
 
 {% block footer %}
+  {% if isAuthenticated %}
+    {% include "footer/_feedbackUserInterface.njk" %}
+  {% endif %}
+
   {{ govukFooter({
     meta: {
       items: [
         {
-          href: "#",
+          href: "/help",
           text: t('navigation.footer.help')
         },
         {
-          href: "#",
-          text: t('navigation.footer.feedback')
-        },
-        {
-          href: "#",
-          text: t('navigation.footer.updates')
-        },
-        {
-          href: "#",
-          text: t('navigation.footer.privacyPolicy')
+          href: "https://www.gov.uk/guidance/laa-silas-help-and-information#laa-user-privacy-notice",
+          text: t('navigation.footer.privacy')
         },
         {
           href: "/cookies",
           text: t('navigation.footer.cookies')
         },
         {
-          href: "#",
+          href: "/accessibility",
           text: t('navigation.footer.accessibility')
+        },
+        {
+          href: "https://www.gov.uk/guidance/laa-silas-help-and-information#silas-terms-and-conditions",
+          text: t('navigation.footer.termsAndConditions')
         }
       ]
     }

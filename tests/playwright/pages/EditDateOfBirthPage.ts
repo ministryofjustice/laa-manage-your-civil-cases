@@ -28,7 +28,7 @@ export class EditDateOfBirthPage extends BaseEditFormPage {
     this.dayInput = page.locator('#dateOfBirth-day');
     this.monthInput = page.locator('#dateOfBirth-month');
     this.yearInput = page.locator('#dateOfBirth-year');
-    this.hintText = page.locator('.govuk-hint');
+    this.hintText = page.locator('#dateOfBirth-hint');
   }
 
   /**

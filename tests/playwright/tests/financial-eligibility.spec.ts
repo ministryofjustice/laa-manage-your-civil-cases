@@ -10,14 +10,14 @@ test.describe('Details tab', () => {
 
   test('should navigate to financial eligibility tab', async ({ page }) => {
     const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1879');
-    // Navingate to client details page
+    // Navigate to client details page
     await clientDetails.navigate();
-    // Click the financial eligiblity tab
+    // Click the financial eligibility tab
     await page.getByRole('link', { name: 'Financial eligibility' }).click();
     // Assert the URL has change to financial eligibility tab
     await expect(page).toHaveURL(/financial-eligibility/);
 
-    // Assert the financial eligiblity tabs are visible
+    // Assert the financial eligibility tabs are visible
     await expect(page.getByRole('tab', { name: 'Details' })).toBeVisible();
     await expect(page.getByRole('tab', { name: 'Finances' })).toBeVisible();
     await expect(page.getByRole('tab', { name: 'Income' })).toBeVisible();
@@ -26,9 +26,9 @@ test.describe('Details tab', () => {
 
   test('should display assessment details', async ({ page }) => {
     const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1879');
-    // Navingate to client details page
+    // Navigate to client details page
     await clientDetails.navigate();
-    // Click the financial eligiblity tab
+    // Click the financial eligibility tab
     await page.getByRole('link', { name: 'Financial eligibility' }).click();
 
     // Assert the case details header is present
@@ -55,8 +55,9 @@ test.describe('Details tab', () => {
       'Guarantee State Pension Credit': 'No',
       'Income-related Employment and Support Allowance': 'No'
     });
-    // Assert the edit assessment button is visible.
-    await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+    // Assert the change links are visible.
+    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
   });
 
   test('should display no for About You data when assessment does not exist', async ({ page }) => {
@@ -69,9 +70,9 @@ test.describe('Details tab', () => {
     await page.getByRole('link', { name: 'Financial eligibility' }).click();
 
     // Verify header information
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party']});
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party'] });
 
-     // Assert the correct data is displayed in the about you section
+    // Assert the correct data is displayed in the about you section
     await expectCaptionTableRows(page, 'About you', {
       'Are you aged 17 or under?': 'No',
       'Do you have a partner?': 'No',
@@ -85,8 +86,9 @@ test.describe('Details tab', () => {
       'Guarantee State Pension Credit': 'No',
       'Income-related Employment and Support Allowance': 'No'
     });
-    // Assert the edit assessment button is visible.
-    await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+    // Assert the change links are visible.
+    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
   });
 });
 
@@ -96,7 +98,7 @@ test.describe('Finances tab', () => {
   });
   test('should display finances tab content with correct data when there is no partner', async ({ page }) => {
     const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1879');
-    // Navingate to client details page
+    // Navigate to client details page
     await clientDetails.navigate();
     // click to financial eligibility tab
     await page.getByRole('link', { name: 'Financial eligibility' }).click();
@@ -113,16 +115,16 @@ test.describe('Finances tab', () => {
 
     // Assert the correct data is displayed in the properties table for the 1st and 2nd properties.
     await expectPropertyTableRows(page, '1st property', {
-      'What is the current market value of the property?': '130000',
-      'How much is left to pay on the mortgage?': '50000',
+      'What is the current market value of the property?': '£130,000',
+      'How much is left to pay on the mortgage?': '£50,000',
       'Is this your main property?': 'No',
-      'What percentage of the property do you and/or your partner own?': '100%'
+      'What percentage of the property do you own?': '100%'
     });
     await expectPropertyTableRows(page, '2nd property', {
-      'What is the current market value of the property?': '120000',
-      'How much is left to pay on the mortgage?': '60000',
+      'What is the current market value of the property?': '£120,000',
+      'How much is left to pay on the mortgage?': '£60,000',
       'Is this your main property?': 'Yes',
-      'What percentage of the property do you and/or your partner own?': '100%'
+      'What percentage of the property do you own?': '100%'
     });
 
     // Assert the correct data is displayed in the your savings table.
@@ -151,13 +153,16 @@ test.describe('Finances tab', () => {
     await expect(page.getByText('Criminal Injuries Compensation Scheme')).toBeVisible();
     await expect(page.getByText('Modern Slavery Victim Care Contract or National Referral Mechanism (NRM)')).toBeVisible();
 
-    // Assert the edit assessment button is visible.
-    await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+    // Assert the change links are visible.
+    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(2)).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(3)).toBeVisible();
   });
 
   test('should display finances tab content with correct data when there is a partner', async ({ page }) => {
     const clientDetails = ClientDetailsPage.forCase(page, 'PC-1869-9154');
-    // Navingate to client details page
+    // Navigate to client details page
     await clientDetails.navigate();
     // click to financial eligibility tab
     await page.getByRole('link', { name: 'Financial eligibility' }).click();
@@ -170,8 +175,8 @@ test.describe('Finances tab', () => {
 
     // Assert the correct data is displayed in the properties table for one property.
     await expectPropertyTableRows(page, '1st property', {
-      'What is the current market value of the property?': '150000',
-      'How much is left to pay on the mortgage?': '60000',
+      'What is the current market value of the property?': '£150,000',
+      'How much is left to pay on the mortgage?': '£60,000',
       'Is this your main property?': 'Yes',
       'What percentage of the property do you and/or your partner own?': '100%'
     });
@@ -187,15 +192,19 @@ test.describe('Finances tab', () => {
       'Do you have any money owed to you?': '£100'
     });
     // Assert the correct data is displayed in the your partners savings table.
-    await expectPropertyTableRows(page, 'Your partners savings', {
-      'How much was in your partners bank account/building society before their last payment went in?': '£200',
+    await expectPropertyTableRows(page, "Your partner's savings", {
+      "How much was in your partner's bank account/building society before their last payment went in?": '£200',
       'Does your partner have any investments, shares or ISAs?': '£100',
       'Does your partner have any valuable items worth over £500 each?': '£500',
       'Does your partner have any money owed to them?': '£200'
     });
     // Assert the correct disregards are displayed in the disregards table.
     await expect(page.getByText('Cost of living payments')).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+    // Assert the change links are visible.
+    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(2)).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(3)).toBeVisible();
   });
 
   test('should display not provided for finances data when assessment does not exist', async ({ page }) => {
@@ -210,7 +219,7 @@ test.describe('Finances tab', () => {
     await page.getByRole('tab', { name: 'Finances' }).click();
 
     // Verify header information
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party']});
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party'] });
 
     // Assert the Properties heading is visible.
     await expect(page.getByRole('heading', { name: 'Properties' })).toBeVisible();
@@ -227,7 +236,9 @@ test.describe('Finances tab', () => {
       'Do you have any valuable items worth over £500 each?': 'Not provided',
       'Do you have any money owed to you?': 'Not provided'
     });
-    await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+    // Assert the change links are visible.
+    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
   });
 });
 
@@ -237,7 +248,7 @@ test.describe('Income tab', () => {
   });
   test('should display income tab content with correct data when there is no partner', async ({ page }) => {
     const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1879');
-    // Navingate to client details page
+    // Navigate to client details page
     await clientDetails.navigate();
     // click to financial eligibility tab
     await page.getByRole('link', { name: 'Financial eligibility' }).click();
@@ -271,13 +282,14 @@ test.describe('Income tab', () => {
       'Do you have any dependants aged 15 and under?': '0'
     });
 
-    // Assert the edit assessment button is visible.
-    await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+    // Assert the change links are visible.
+    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
   });
 
   test('should display income tab content with correct data when there is a partner', async ({ page }) => {
     const clientDetails = ClientDetailsPage.forCase(page, 'PC-1869-9154');
-    // Navingate to client details page
+    // Navigate to client details page
     await clientDetails.navigate();
     // navigated to financial eligibility tab
     await page.getByRole('link', { name: 'Financial eligibility' }).click();
@@ -287,8 +299,8 @@ test.describe('Income tab', () => {
     await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 August 2025", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'] });
     // Assert the your income heading is visible. 
     await expect(page.locator('caption').filter({ hasText: 'Your income' })).toBeVisible();
-    // Assert the Partner's income heading is visible. 
-    await expect(page.locator('caption').filter({ hasText: "Partner's income" })).toBeVisible();
+    // Assert the Your partner's income heading is visible. 
+    await expect(page.locator('caption').filter({ hasText: "Your partner's income" })).toBeVisible();
     // Assert the dependants heading is visible.
     await expect(page.locator('caption').filter({ hasText: 'Dependants' })).toBeVisible();
 
@@ -308,7 +320,7 @@ test.describe('Income tab', () => {
     });
 
     // Assert the correct data is displayed in the partner's income table.
-    await expectCaptionTableRows(page, "Partner's income", {
+    await expectCaptionTableRows(page, "Your partner's income", {
       'Is your partner self employed?': 'No',
       'What did your partner earn before tax? (Check your most recent payslips)': '£130 per month',
       'How much tax does your partner pay?': '£0 every 4 weeks',
@@ -321,12 +333,15 @@ test.describe('Income tab', () => {
       'Other income': '£0 per month'
     });
 
-    // Assert the correct data is displayed in the dependants table.
+    // Assert the correct data is displayed in the dependants table with the correct partner question.
     await expectCaptionTableRows(page, 'Dependants', {
-      'Do you have any dependants aged 16 and over?': '2',
-      'Do you have any dependants aged 15 and under?': '1'
+      'Do you and your partner have any dependants aged 16 and over?': '2',
+      'Do you and your partner have any dependants aged 15 and under?': '1'
     });
-    await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+    // Assert the change links are visible.
+    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(2)).toBeVisible();
   });
 
   test('should display not provided for income data when assessment does not exist', async ({ page }) => {
@@ -341,9 +356,9 @@ test.describe('Income tab', () => {
     await page.getByRole('tab', { name: 'Income' }).click();
 
     // Verify header information
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party']});
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party'] });
 
-     // Assert the your income heading is visible. 
+    // Assert the your income heading is visible. 
     await expect(page.locator('caption').filter({ hasText: 'Your income' })).toBeVisible();
     // Assert the dependants heading is visible.
     await expect(page.locator('caption').filter({ hasText: 'Dependants' })).toBeVisible();
@@ -362,7 +377,9 @@ test.describe('Income tab', () => {
       'Pension income': 'Not provided',
       'Other income': 'Not provided'
     });
-    await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+    // Assert the change links are visible.
+    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
   });
 });
 
@@ -373,7 +390,7 @@ test.describe('Expenses tab', () => {
 
   test('should display expenses tab content with correct data when there is no partner', async ({ page }) => {
     const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1879');
-    // Navingate to client details page
+    // Navigate to client details page
     await clientDetails.navigate();
     // click to financial eligibility tab
     await page.getByRole('link', { name: 'Financial eligibility' }).click();
@@ -393,13 +410,13 @@ test.describe('Expenses tab', () => {
       'Are you currently paying towards legal aid for criminal defence? If so, how much have you paid in the last calendar month?': '£10 per month'
     });
 
-    // Assert the edit assessment button is visible.
-    await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+    // Assert the change links are visible.
+    await expect(page.getByRole('link', { name: 'Change' })).toBeVisible();
   });
 
   test('should display income tab content with correct data when there is a partner', async ({ page }) => {
     const clientDetails = ClientDetailsPage.forCase(page, 'PC-1869-9154');
-    // Navingate to client details page
+    // Navigate to client details page
     await clientDetails.navigate();
     // navigated to financial eligibility tab
     await page.getByRole('link', { name: 'Financial eligibility' }).click();
@@ -429,7 +446,9 @@ test.describe('Expenses tab', () => {
       'Does your partner have any childcare costs because of work or study? If so, how much?': '£30 per month',
       'Is your partner currently paying towards legal aid for criminal defence? If so, how much has your partner paid in the last calendar month?': '£10 per month'
     });
-    await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+    // Assert the change links are visible.
+    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change' }).nth(1)).toBeVisible();
   });
 
   test('should display not provided for expenses data when assessment does not exist', async ({ page }) => {
@@ -443,9 +462,9 @@ test.describe('Expenses tab', () => {
     await page.getByRole('tab', { name: 'Expenses' }).click();
 
     // Verify header information
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party']});
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse', 'Third Party'] });
 
-     // Assert the your expenses heading is visible. 
+    // Assert the your expenses heading is visible. 
     await expect(page.locator('caption').filter({ hasText: 'Your expenses' })).toBeVisible();
 
     // Assert the correct data is displayed in the expenses table.
@@ -456,6 +475,475 @@ test.describe('Expenses tab', () => {
       'Do you have any childcare costs because of work or study? If so, how much?': 'Not provided',
       'Are you currently paying towards legal aid for criminal defence? If so, how much have you paid in the last calendar month?': 'Not provided'
     });
-    await expect(page.getByRole('button', { name: 'Edit assessment' })).toBeVisible();
+    // Assert the change links are visible.
+    await expect(page.getByRole('link', { name: 'Change' }).first()).toBeVisible();
+  });
+});
+
+test.describe('Financial Eligibility result', () => {
+  test.beforeEach(async ({ page }) => {
+    await setupAuth(page);
+  });
+  test('should show success banner on every tab of financial eligibility when state is yes', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1879');
+    // Navigate to client details page
+    await clientDetails.navigate();
+    const alert = page.locator('.moj-alert--success');
+
+    // Click the financial eligibility tab
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    // Assert the success warning is displayed when state is yes
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText('Client qualifies for civil legal aid');
+    // click the finances section
+    await page.getByRole('tab', { name: 'Finances' }).click();
+    // Assert the success warning is displayed when state is yes
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText('Client qualifies for civil legal aid');
+    // click the income section
+    await page.getByRole('tab', { name: 'Income' }).click();
+    // Assert the success warning is displayed when state is yes
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText('Client qualifies for civil legal aid');
+    // click the expenses section
+    await page.getByRole('tab', { name: 'Expenses' }).click();
+    // Assert the success warning is displayed when state is yes
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText('Client qualifies for civil legal aid');
+  });
+  test('should show warning banner on every tab of financial eligibility when state is no', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1122-1349');
+    // Navigate to client details page
+    await clientDetails.navigate();
+
+    // Click the financial eligibility tab
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    // Assert the warning is displayed when state is no
+    await expect(page.getByText('Client does not qualify for legal aid')).toBeVisible();
+    // click the finances section
+    await page.getByRole('tab', { name: 'Finances' }).click();
+    // Assert the warning is displayed when state is no
+    await expect(page.getByText('Client does not qualify for legal aid')).toBeVisible();
+    // click the income section
+    await page.getByRole('tab', { name: 'Income' }).click();
+    // Assert the warning is displayed when state is no
+    await expect(page.getByText('Client does not qualify for legal aid')).toBeVisible();
+    // click the expenses section
+    await page.getByRole('tab', { name: 'Expenses' }).click();
+    // Assert the warning is displayed when state is no
+    await expect(page.getByText('Client does not qualify for legal aid')).toBeVisible();
+  });
+  test('should show information banner on every tab of financial eligibility when state is unknown', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1977-1241');
+    // Navigate to client details page
+    await clientDetails.navigate();
+    const alert = page.locator('.moj-alert--information');
+
+    // Click the financial eligibility tab
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    // Assert the information warning is displayed when state is unknown
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText("Review the financial eligibility information and check if you can update any marked 'not provided'");
+    // click the finances section
+    await page.getByRole('tab', { name: 'Finances' }).click();
+    // Assert the information warning is displayed when state is unknown
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText("Review the financial eligibility information and check if you can update any marked 'not provided'");
+    // click the income section
+    await page.getByRole('tab', { name: 'Income' }).click();
+    // Assert the information warning is displayed when state is unknown
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText("Review the financial eligibility information and check if you can update any marked 'not provided'");
+    // click the expenses section
+    await page.getByRole('tab', { name: 'Expenses' }).click();
+    // Assert the information warning is displayed when state is unknown
+    await expect(alert).toBeVisible();
+    await expect(alert).toContainText("Review the financial eligibility information and check if you can update any marked 'not provided'");
+  });
+});
+test.describe('Conditional logic views', () => {
+  test.beforeEach(async ({ page }) => {
+    await setupAuth(page);
+  });
+
+  test('when has_passported_proceedings_letter = true no financial information is shown', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-4575-7150');
+    // Navigate to client details page
+    await clientDetails.navigate();
+    // Click the financial eligibility tab
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    // Assert the URL has change to financial eligibility tab
+    await expect(page).toHaveURL(/financial-eligibility/);
+
+    // Tabs should not be displayed
+    await expect(page.getByRole('tab', { name: 'Details' })).toHaveCount(0);
+    await expect(page.getByRole('tab', { name: 'Finances' })).toHaveCount(0);
+    await expect(page.getByRole('tab', { name: 'Income' })).toHaveCount(0);
+    await expect(page.getByRole('tab', { name: 'Expenses' })).toHaveCount(0);
+
+    // Message should be displayed
+    await expect(page.getByText('No means test required')).toBeVisible();
+
+    await expect(page.getByText('The means of the foster parents or approved prospective adoptive parents are exempt from the determination of financial eligibility.')).toBeVisible();
+  });
+
+  test('when under_18_passported = true only the details tab is shown', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-6667-9089');
+
+    await clientDetails.navigate();
+
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+
+    await expect(page).toHaveURL(/financial-eligibility/);
+
+    // Message displayed
+    await expect(page.getByText('Full means test not required')).toBeVisible();
+
+    await expect(page.getByText("Client is under 18, they don't have assets worth £2,500 or more, and they don't get regular income.")).toBeVisible();
+
+    // Only Details tab displayed
+    await expect(page.getByRole('tab', { name: 'Details' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Finances' })).toHaveCount(0);
+    await expect(page.getByRole('tab', { name: 'Income' })).toHaveCount(0);
+    await expect(page.getByRole('tab', { name: 'Expenses' })).toHaveCount(0);
+
+    const aboutYouTable = page.getByRole('table').first();
+
+    await expect(aboutYouTable).toContainText('Are you aged 17 or under?');
+    await expect(aboutYouTable).toContainText('Yes');
+
+    await expect(aboutYouTable).toContainText('Do you receive any money on a regular basis?');
+    await expect(aboutYouTable).toContainText('No');
+
+    await expect(aboutYouTable).toContainText('Do you have any savings, items of value or investments totalling £2500 or more?');
+    await expect(aboutYouTable).toContainText('No');
+  });
+
+  test('when client is under 18 and gets regular payments has partner and over 60 questions are shown', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1854-6521');
+
+    await clientDetails.navigate();
+
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+
+    await expect(page).toHaveURL(/financial-eligibility/);
+
+    // Assert the 'About you' header is visible
+    await expect(page.getByText('About you')).toBeVisible();
+    // Assert the 'Benefits' header is visible
+    await expect(page.locator('caption').filter({ hasText: 'Benefits' })).toBeVisible();
+
+    // Assert the financial eligibility tabs are visible
+    await expect(page.getByRole('tab', { name: 'Details' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Finances' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Income' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Expenses' })).toBeVisible();
+
+    const aboutYouTable = page.getByRole('table').first();
+
+    // Assert the correct data is displayed in the about you section
+    await expectCaptionTableRows(page, 'About you', {
+      'Are you aged 17 or under?': 'Yes',
+      'Do you receive any money on a regular basis?': 'Yes',
+      'Do you have a partner?': 'No',
+      'Are you aged 60 or over?': 'No'
+    });
+  });
+
+  test('when client is under 18 and doesnt get regular payments but has valuables is true has partner and over 60 questions are shown', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-2211-4466');
+
+    await clientDetails.navigate();
+
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+
+    await expect(page).toHaveURL(/financial-eligibility/);
+
+    // Assert the 'About you' header is visible
+    await expect(page.getByText('About you')).toBeVisible();
+    // Assert the 'Benefits' header is visible
+    await expect(page.locator('caption').filter({ hasText: 'Benefits' })).toBeVisible();
+
+    // Assert the financial eligibility tabs are visible
+    await expect(page.getByRole('tab', { name: 'Details' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Finances' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Income' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Expenses' })).toBeVisible();
+
+    const aboutYouTable = page.getByRole('table').first();
+
+    // Assert the correct data is displayed in the about you section
+    await expectCaptionTableRows(page, 'About you', {
+      'Are you aged 17 or under?': 'Yes',
+      'Do you receive any money on a regular basis?': 'No',
+      'Do you have any savings, items of value or investments totalling £2500 or more?': 'Yes',
+      'Do you have a partner?': 'No',
+      'Are you aged 60 or over?': 'No'
+    });
+  });
+
+  test('when on_passported_benefits = true only details and finances tabs are shown', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-9173-4826');
+
+    await clientDetails.navigate();
+
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+
+    await expect(page).toHaveURL(/financial-eligibility/);
+
+    // Message displayed
+    await expect(page.getByText('Income assessment not required')).toBeVisible();
+    await expect(page.getByText('Client receives a passporting benefit so they will not need an income assessment.')).toBeVisible();
+
+    // Correct tabs displayed
+    await expect(page.getByRole('tab', { name: 'Details' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Finances' })).toBeVisible();
+
+    // Tabs not displayed
+    await expect(page.getByRole('tab', { name: 'Income' })).toHaveCount(0);
+    await expect(page.getByRole('tab', { name: 'Expenses' })).toHaveCount(0);
+
+    // Details tab content
+    const aboutYouTable = page.getByRole('table').first();
+
+    await expect(aboutYouTable).toContainText('Are you aged 17 or under?');
+    await expect(aboutYouTable).toContainText('Do you have a partner?');
+    await expect(aboutYouTable).toContainText('Are you aged 60 or over?');
+
+    // Benefits table
+    await expect(page.getByText('Universal Credit')).toBeVisible();
+    await expect(page.getByText('Income Support')).toBeVisible();
+
+    // Open finances tab
+    await page.getByRole('tab', { name: 'Finances' }).click();
+    await expect(page.getByText('Your undisputed savings')).toBeVisible();
+    await expect(page.getByText('Cost of living payment')).toBeVisible();
+  });
+
+  test('when hasPartner is false partner savings, income and expenses are not shown', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1879');
+
+    await clientDetails.navigate();
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+
+    // Finances tab
+    await page.getByRole('tab', { name: 'Finances' }).click();
+    await expect(page.getByText('Your partners savings')).toHaveCount(0);
+
+    // Income tab
+    await page.getByRole('tab', { name: 'Income' }).click();
+    await expect(page.getByText("Your partner's income")).toHaveCount(0);
+
+    // Expenses tab
+    await page.getByRole('tab', { name: 'Expenses' }).click();
+    await expect(page.getByText("Your partner's expenses")).toHaveCount(0);
+  });
+
+  test('when category is debt and disputed_savings is null disputed savings information is not shown', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1977-1241');
+
+    await clientDetails.navigate();
+
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    await expect(page).toHaveURL(/financial-eligibility/);
+
+    await page.getByRole('tab', { name: 'Finances' }).click();
+
+    // Disputed savings section should be rendered
+    await expect(page.getByRole('heading', { name: 'Your disputed savings' })).toHaveCount(1);
+
+    // Disputed savings should have none
+    await expect(page.getByText('None')).toHaveCount(1);
+
+    // Disputed property row should be rendered and display value (mock data has 2 properties)
+    await expect(page.getByText('Is the property disputed?')).toHaveCount(2);
+  });
+
+  test('when category is debt and disputed_savings is not null disputed savings information is shown', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1357-1212');
+
+    await clientDetails.navigate();
+
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    await expect(page).toHaveURL(/financial-eligibility/);
+
+    await page.getByRole('tab', { name: 'Finances' }).click();
+
+    // Disputed savings section should be rendered
+    await expect(page.getByRole('heading', { name: 'Your disputed savings' })).toHaveCount(1);
+
+    // Assert the correct data is displayed in the your disputed savings table.
+    await expectPropertyTableRows(page, 'Your disputed savings', {
+      'How much was in your bank account/building society before your last payment went in?': '£200',
+      'Do you have any investments, shares or ISAs?': '£100',
+      'Do you have any valuable items worth over £500 each?': '£500',
+      'Do you have any money owed to you?': '£200'
+    });
+  });
+
+  test('when category is family and disputed_savings is not null disputed savings information is shown', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-9173-4826');
+
+    await clientDetails.navigate();
+
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    await expect(page).toHaveURL(/financial-eligibility/);
+
+    await page.getByRole('tab', { name: 'Finances' }).click();
+
+    // Disputed savings section should not be rendered
+    await expect(page.getByRole('heading', { name: 'Your disputed savings' })).toHaveCount(1);
+
+    // Assert the correct data is displayed in the your disputed savings table.
+    await expectPropertyTableRows(page, 'Your disputed savings', {
+      'How much was in your bank account/building society before your last payment went in?': '£100',
+      'Do you have any investments, shares or ISAs?': '£300',
+      'Do you have any valuable items worth over £500 each?': '£500',
+      'Do you have any money owed to you?': '£100'
+    });
+  });
+
+  test('when category is family and disputed_savings is null disputed savings information is not shown', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1122-3344');
+
+    await clientDetails.navigate();
+
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    await expect(page).toHaveURL(/financial-eligibility/);
+
+    await page.getByRole('tab', { name: 'Finances' }).click();
+
+    // Disputed savings section should not be rendered
+    await expect(page.getByRole('heading', { name: 'Your disputed savings' })).toHaveCount(1);
+
+    // Disputed savings should have none
+    await expect(page.getByText('None')).toHaveCount(1);
+
+    // Disputed property row should be rendered
+    await expect(page.getByText('Is the property disputed?')).toHaveCount(2);
+  });
+
+  test('when a customer has a partner the age over 60 text is different', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1869-9154');
+    // Navigate to client details page
+    await clientDetails.navigate();
+    // Click the financial eligibility tab
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+
+    // Assert the case details header is present
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 August 2025", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'] });
+    // Assert the URL has change to financial eligibility tab
+    await expect(page).toHaveURL(/financial-eligibility/);
+
+    // Assert the 'About you' header is visible
+    await expect(page.getByText('About you')).toBeVisible();
+
+    // Assert the correct data is displayed in the about you section
+    await expectCaptionTableRows(page, 'About you', {
+      'Are you aged 17 or under?': 'No',
+      'Do you have a partner?': 'Yes',
+      'Are you or your partner aged 60 or over?': 'No'
+    });
+
+    // Assert the edit assessment button is visible.
+    await expect(page.getByRole('button', { name: 'Change' })).toBeVisible();
+  });
+
+  test('when there is a partner the property share question changes ', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1869-9154');
+    // Navigate to client details page
+    await clientDetails.navigate();
+    // click to financial eligibility tab
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    // click the finances section
+    await page.getByRole('tab', { name: 'Finances' }).click();
+    // Assert the case details header is present
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 August 2025", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'] });
+    // Assert the Properties heading is visible.
+    await expect(page.getByRole('heading', { name: 'Properties' })).toBeVisible();
+
+    // Assert the correct data is displayed in the properties table for one property.
+    await expectPropertyTableRows(page, '1st property', {
+      'What is the current market value of the property?': '£150,000',
+      'How much is left to pay on the mortgage?': '£60,000',
+      'Is this your main property?': 'Yes',
+      'What percentage of the property do you and/or your partner own?': '100%'
+    });
+  });
+
+  test('when category is debt and the client has a partner savings titles are updated', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-3667-1139');
+
+    await clientDetails.navigate();
+
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    await expect(page).toHaveURL(/financial-eligibility/);
+
+    await page.getByRole('tab', { name: 'Finances' }).click();
+
+    // Disputed savings section should be rendered
+    await expect(page.getByRole('heading', { name: 'Your disputed savings' })).toHaveCount(1);
+
+    // Assert the correct data is displayed in the your disputed savings table.
+    await expectPropertyTableRows(page, 'Your disputed savings', {
+      'How much was in your bank account/building society before your last payment went in?': '£200',
+      'Do you have any investments, shares or ISAs?': '£100',
+      'Do you have any valuable items worth over £500 each?': '£500',
+      'Do you have any money owed to you?': '£200'
+    });
+
+    // Assert the correct data is displayed in the your savings table.
+    await expectPropertyTableRows(page, 'Your undisputed savings', {
+      'How much was in your bank account/building society before your last payment went in?': '£100',
+      'Do you have any investments, shares or ISAs?': '£300',
+      'Do you have any valuable items worth over £500 each?': '£500',
+      'Do you have any money owed to you?': '£100',
+    });
+
+    // Assert the correct data is displayed in the your partners savings table.
+    await expectPropertyTableRows(page, "Your partner's undisputed savings", {
+      "How much was in your partner's bank account/building society before their last payment went in?": '£200',
+      'Does your partner have any investments, shares or ISAs?': '£100',
+      'Does your partner have any valuable items worth over £500 each?': '£500',
+      'Does your partner have any money owed to them?': '£200'
+    });
+  });
+
+  test('when category is family and the client has a partner savings titles are updated', async ({ page }) => {
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-7753-8992');
+
+    await clientDetails.navigate();
+
+    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    await expect(page).toHaveURL(/financial-eligibility/);
+
+    await page.getByRole('tab', { name: 'Finances' }).click();
+
+    // Disputed savings section should be rendered
+    await expect(page.getByRole('heading', { name: 'Your disputed savings' })).toHaveCount(1);
+
+    // Assert the correct data is displayed in the your disputed savings table.
+    await expectPropertyTableRows(page, 'Your disputed savings', {
+      'How much was in your bank account/building society before your last payment went in?': '£200',
+      'Do you have any investments, shares or ISAs?': '£100',
+      'Do you have any valuable items worth over £500 each?': '£500',
+      'Do you have any money owed to you?': '£200'
+    });
+
+    // Assert the correct data is displayed in the your savings table.
+    await expectPropertyTableRows(page, 'Your undisputed savings', {
+      'How much was in your bank account/building society before your last payment went in?': '£100',
+      'Do you have any investments, shares or ISAs?': '£300',
+      'Do you have any valuable items worth over £500 each?': '£500',
+      'Do you have any money owed to you?': '£100',
+    });
+
+    // Assert the correct data is displayed in the your partners savings table.
+    await expectPropertyTableRows(page, "Your partner's undisputed savings", {
+      "How much was in your partner's bank account/building society before their last payment went in?": '£200',
+      'Does your partner have any investments, shares or ISAs?': '£100',
+      'Does your partner have any valuable items worth over £500 each?': '£500',
+      'Does your partner have any money owed to them?': '£200'
+    });
   });
 });

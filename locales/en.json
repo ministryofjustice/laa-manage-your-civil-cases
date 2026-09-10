@@ -4,12 +4,14 @@
     "backToAllCases": "Back to all cases",
     "notProvided": "Not provided",
     "change": "Change",
+    "add": "Add",
     "remove": "Remove",
     "save": "Save",
     "cancel": "Cancel",
     "signOut": "Sign out",
     "yes": "Yes",
     "no": "No",
+    "none": "None",
     "continue": "Continue",
     "error": "Error",
     "warning": "Warning",
@@ -144,7 +146,8 @@
         "POWER_ATTORNEY": "No, client is subject to power of attorney",
         "NO_TELEPHONE_DISABILITY": "No, client cannot communicate on the phone due to disability",
         "NO_TELEPHONE_LANGUAGE": "No, client cannot communicate on the phone due to a language requirement",
-        "OTHER": "No, for another reason"
+        "OTHER": "No, for another reason",
+        "undefined": ""
       },
       "value": {
         "CHILD_PATIENT": "CHILD_PATIENT",
@@ -182,13 +185,15 @@
       "energy_prices": "The Energy Support Scheme payments (2022 and 2023)",
       "criminal_injuries": "Criminal Injuries Compensation Scheme",
       "modern_slavery": "Modern Slavery Victim Care Contract or National Referral Mechanism (NRM)",
-      "cost_living": "Cost of living payments"
+      "cost_living": "Cost of living payments",
+      "none": "None"
     },
     "financialEligibility": {
       "details":  {
         "age17OrUnder": "Are you aged 17 or under?",
         "hasPartner": "Do you have a partner?",
         "age60OrOver": "Are you aged 60 or over?",
+        "partnerAge60OrOver": "Are you or your partner aged 60 or over?",
         "universalCredit": "Universal Credit",
         "pensionCredit": "Guarantee State Pension Credit",
         "jobSeekers": "Job Seekers Allowance",
@@ -202,13 +207,18 @@
         "propertyValue":"What is the current market value of the property?",
         "mortgageLeft":"How much is left to pay on the mortgage?",
         "mainProperty":"Is this your main property?",
-        "propertyShare":"What percentage of the property do you and/or your partner own?",
+        "propertyShare":"What percentage of the property do you own?",
+        "partnerPropertyShare": "What percentage of the property do you and/or your partner own?",
         "disputedProperty": "Is the property disputed?",
+        "yourSavings": "Your savings",
+        "undisputedSavings": "Your undisputed savings",
         "savingsBalance": "How much was in your bank account/building society before your last payment went in?",
         "investmentBalance": "Do you have any investments, shares or ISAs?",
         "assetBalance": "Do you have any valuable items worth over £500 each?",
         "creditBalance": "Do you have any money owed to you?",
-        "partnerSavingsBalance": "How much was in your partners bank account/building society before their last payment went in?",
+        "partnerSavings": "Your partner's savings",
+        "undisputedPartnerSavings": "Your partner's undisputed savings",
+        "partnerSavingsBalance": "How much was in your partner's bank account/building society before their last payment went in?",
         "partnerInvestmentBalance": "Does your partner have any investments, shares or ISAs?",
         "partnerAssetBalance": "Does your partner have any valuable items worth over £500 each?",
         "partnerCreditBalance":  "Does your partner have any money owed to them?"
@@ -230,7 +240,9 @@
         "partnerTax": "How much tax does your partner pay?",
         "partnerNationalInsurance": "How much National Insurance does your partner pay?",
         "dependantsYoung": "Do you have any dependants aged 15 and under?",
-        "dependantsOld": "Do you have any dependants aged 16 and over?"
+        "partnerDependantsYoung": "Do you and your partner have any dependants aged 15 and under?",
+        "dependantsOld": "Do you have any dependants aged 16 and over?",
+        "partnerDependantsOld": "Do you and your partner have any dependants aged 16 and over?"
       },
       "expenses": {
         "mortgageCost": "How much do you pay for your mortgage?",
@@ -243,6 +255,20 @@
         "partnerMaintenanceCost": "How much maintenance has your partner paid during the last calendar month?",
         "partnerChildCareCost": "Does your partner have any childcare costs because of work or study? If so, how much?",
         "partnerLegalAidCost": "Is your partner currently paying towards legal aid for criminal defence? If so, how much has your partner paid in the last calendar month?"
+      },
+      "alert": {
+        "success": "Client qualifies for civil legal aid",
+        "warning": "Client does not qualify for legal aid",
+        "information": "Review the financial eligibility information and check if you can update any marked 'not provided'",
+        "informationTitle": "Means test incomplete"
+      },
+      "message": {
+        "noMeansTestTitle": "No means test required",
+        "noMeansTestBody": "The means of the foster parents or approved prospective adoptive parents are exempt from the determination of financial eligibility. See regulation 5 of the Civil Legal Aid (Financial Resources and Payment for Services) Regulations 2013, as amended by the Criminal and Civil Legal Aid (Amendment) Regulations 2023 for more information.",
+        "fullTestNotRequiredTitle": "Full means test not required",
+        "fullTestNotRequiredBody": "Client is under 18, they don't have assets worth £2,500 or more, and they don't get regular income. This makes them eligible without a full means test.",
+        "incomeAssessmentNotRequiredTitle": "Income assessment not required",
+        "incomeAssessmentNotRequiredBody": "Client receives a passporting benefit so they will not need an income assessment."
       }
     }
   },
@@ -253,17 +279,17 @@
     },
     "footer": {
       "help": "Help",
-      "feedback": "Feedback",
-      "updates": "Updates",
-      "privacyPolicy": "Privacy Policy",
+      "privacy": "Privacy",
       "cookies": "Cookies",
-      "accessibility": "Accessibility"
+      "accessibility": "Accessibility",
+      "termsAndConditions": "Terms and conditions"
     }
   },
   "components": {
     "phaseBanner": {
-      "feedbackText": "This is a new service. Help us improve it and ",
-      "feedbackLinkTextHTML": "give your feedback by email"
+      "feedbackTextBeginning": "This is a new service - your ",
+      "feedbackLinkTextHTML": "feedback",
+      "feedbackTextEnd": " will help us improve it."
     },
     "table": {
       "noData": "No data",
@@ -341,6 +367,8 @@
         "thirdPartyContact": "Third party contact",
         "thirdPartyDetails": "Third party details",
         "clientSupportNeeds": "Client support needs",
+        "clientDiversityData": "Client diversity data",
+        "diversityData": "Diversity data",
         "clientAbuseRisk": "Risk of abuse"
       },
       "buttons": {
@@ -353,7 +381,7 @@
           "closed": "Closed",
           "completed": "Completed"
         },
-        "generateLegalHelpForm": "Generate legal help form",
+        "generateLegalHelpForm": "Get legal help form",
         "reopenCase": "Reopen case",
         "addThirdPartyContact": "Add third party contact",
         "addClientSupportNeed": "Add client support need"
@@ -446,6 +474,33 @@
         "newCaseInfo": "New category of law",
         "legend": "Why have you changed the category of law?",
         "categoryPlaceholder": "Select a category of law"
+      },
+      "getLegalHelpForm": {
+        "pageTitle": "Get legal help form – {caseReference} – {serviceName} – GOV.UK",
+        "heading": "Legal help form",
+        "evidenceLabel": "What evidence do you require from the client? (optional)",
+        "aboutThisCaseHeading": "About this case",
+        "additionalCircumstancesLegend": "Do any additional circumstances apply to this case?",
+        "additionalCircumstancesHint": "Select all that apply",
+        "circumstances": {
+          "ecf": {
+            "label": "This is an application for Exceptional Case Funding (ECF)",
+            "hint": "For ECF cases you must provide the completed ECF application form."
+          },
+          "acceptedChildOrPatient": {
+            "label": "Accepted an application from a child or patient or someone on their behalf",
+            "hint": "Provide the circumstances justifying this in accordance with the relevant rule in the specification."
+          },
+          "legalHelpSameMatter": {
+            "label": "Provided Legal Help to a client who has already received it on the same matter within the last 6 months",
+            "hint": "Provide the circumstances justifying this in accordance with the relevant rule in the specification."
+          }
+        },
+        "createButton": "Create legal help form"
+      },
+      "legalHelpForm": {
+        "pageTitle": "Legal help form – {caseReference} – {serviceName} – GOV.UK",
+        "heading": "Legal help form"
       }
     },
     "error": {
@@ -476,6 +531,63 @@
       "noResults": {
         "heading": "No results found",
         "body": "There are no results that match the search criteria"
+      }
+    },
+    "help": {
+      "heading": "Help",
+      "techSupportSubheading": "Technical support",
+      "supportStart": "Contact",
+      "supportEmail": "MCC.Queries@justice.gov.uk",
+      "supportEnd": "for technical support.",
+      "caseEnquiriesSubheading": "Case enquiries",
+      "caseEnquiriesInfo": "Contact your contract manager for any non-technical support questions."
+    },
+    "accessibility": {
+      "heading": "Accessibility statement",
+      "intro": "This accessibility statement applies to the 'Manage your civil cases' service.",
+      "service": {
+        "statementIntro": "This service is run by the Legal Aid Agency. We want as many people as possible to be able to use this service. For example, that means you should be able to:",
+        "examples": {
+          "changeColours": "change colours, contrast levels and fonts using browser or device settings",
+          "zoom": "zoom in up to 400% without the text spilling off the screen",
+          "navigate": "navigate most of the service using a keyboard or speech recognition software",
+          "listen": "listen to most of the service using a screen reader (including the most recent versions of JAWS, NVDA and VoiceOver)"
+        },
+        "statementEnd": "We've also made the service text as simple as possible to understand.",
+        "abilityNetLink": "AbilityNet",
+        "abilityNetInfo": "has advice on making your device easier to use if you have a disability.",
+        "howAccessibleSubheading": "How accessible this service is",
+        "howAccessibleStart": "This service is fully compliant with ",
+        "howAccessibleLink": "Web Content Accessibility Guidelines (WCAG) V2.2 Level A and Level AA",
+        "howAccessibleEnd": "."
+      },
+      "feedback": {
+        "subheading": "Feedback and contact information",
+        "start": "If you find any problems not listed on this page, or think we’re not meeting accessibility requirements, contact us at ",
+        "link": "MCC.LAADigital@justice.gov.uk",
+        "end": "."
+      },
+      "enforcement": {
+        "subheading": "Enforcement procedure",
+        "info": "The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No.2) Accessibility Regulations 2018 (the ‘accessibility regulations’).",
+        "start": "If you’re not happy with how we respond to your complaint,",
+        "link": "contact the Equality Advisory and Support Service (EASS)",
+        "end": "."
+      },
+      "technicalInfo": {
+        "subheading": "Technical information about this service’s accessibility",
+        "statement": "The Legal Aid Agency is committed to making its services accessible, in accordance with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018."
+      },
+      "compliance": {
+        "subheading": "Compliance status",
+        "start": "This service is fully compliant with the ",
+        "link": "Web Content Accessibility Guidelines version 2.2 Level A and AA standard",
+        "end": "."
+      },
+      "preparation": {
+        "subheading": "Preparation of this accessibility statement",
+        "statement": "This statement was prepared on 10 August 2026.",
+        "service": "This service was last tested on 1 August 2026 against the WCAG 2.2 AA standard. The test was carried out by our internal testing team."
       }
     },
     "cookies": {
@@ -576,6 +688,16 @@
             "tooLong": "Why you changed the category of law must be 2500 characters or less"
           }
         }
+      },
+      "getLegalHelpForm": {
+        "validationError": {
+          "evidence": {
+            "tooLong": "Evidence must be 5000 characters or less"
+          },
+          "additionalCircumstances": {
+            "invalid": "Select a valid option for additional circumstances"
+          }
+        }
       }
     },
     "clientDetails": {
@@ -584,7 +706,8 @@
         "title": "Client name",
         "pageTitle": "Client name – {caseReference} – {serviceName} – GOV.UK",
         "validationError": {
-          "notEmpty": "Enter the client name"
+          "notEmpty": "Enter the client name",
+          "isLength": "Client name must be 400 characters or less"
         }
       },
       "dateOfBirth": {
@@ -716,6 +839,11 @@
           "notEmptyPassphrase": "Enter the passphrase ",
           "isLength": "Postcode must be 12 characters or fewer"
         }
+      },
+      "diversityData": {
+        "gender": "Gender",
+        "ethnicOrigin": "Ethnic origin",
+        "disabilities": "Disabilities"
       }
     },
     "search": {
@@ -728,6 +856,15 @@
         "usernameEmpty": "Username is required",
         "passwordEmpty": "Password is required"
       }
+    },
+    "feedback": {
+      "satisfiedQuestion": "Were you satisfied with this service?",
+      "messageYesTitle": "What did you like about using this service? (optional)",
+      "messageYesHint": "Tell us what worked well today and let us have any suggestions for how we could improve the service. Don't include personal information.",
+      "messageNoTitle": "What could we do to improve your experience using this service? (optional)",
+      "messageNoHint": "Tell us what you were not happy with today. Also let us have any suggestions for how we could improve the service. Don't include personal information.",
+      "sendFeedbackButton": "Send feedback",
+      "thankYouMessage": "Thank you for your feedback"
     }
   },
   "accessibility": {
@@ -741,6 +878,7 @@
       "changeLanguage": "Change Language",
       "changeReasonableAdjustments": "Change Reasonable adjustments",
       "changeThirdPartyContact": "Change Third party contact details",
+      "addThirdPartyContact": "Add Third party contact details",
       "removeThirdPartyContact": "Remove Third party contact details",
       "changeSupportNeeds": "Change Client support needs",
       "removeSupportNeeds": "Remove Client support needs",

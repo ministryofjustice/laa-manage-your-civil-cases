@@ -4,14 +4,15 @@
  */
 
 import type { AxiosInstanceWrapper } from '#types/axios-instance-wrapper.js';
-import type { ClientDetailsResponse, ClientDetailsApiResponse, CaseLogsApiResponse, ClientHistoryApiResponse, GetFinancialEligibilityApiResponse } from '#types/api-types.js';
+import type { ClientDetailsResponse, ClientDetailsApiResponse, CaseLogsApiResponse, ClientHistoryApiResponse, FinancialEligibilityData, GetFinancialEligibilityApiResponse, ClientDiversityApiResponse } from '#types/api-types.js';
 import { devLog, extractAndLogError } from '#src/scripts/helpers/index.js';
 import { transformClientDetailsItem } from '../transforms/transformClientDetails.js';
 import { transformClientHistoryLogs } from '../transforms/transformClientHistoryLogs.js';
 import { transformClientCaseLogs } from '../transforms/transformClientCaseLogs.js';
+import { transformFinancialEligibilityItem } from '../transforms/transformFinancialEligibility.js';
+import { transformClientDiversityDataItem } from '../transforms/transformClientDiversityData.js';
 import { configureAxiosInstance } from '../base/BaseApiService.js';
 import { API_PREFIX, JSON_INDENT } from '../base/constants.js';
-import { transformFinancialEligibilityItem } from '../transforms/transformFinancialEligibility.js';
 
 /**
  * Get client details by case reference
@@ -244,6 +245,71 @@ export async function changeCaseCategory(
 }
 
 /**
+ * Get client diversity data by case reference
+ * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+ * @param {string} caseReference - Case reference number
+ * @returns {Promise<ClientDiversityApiResponse>} API response with client details
+ */
+export async function getClientDiversityData(axiosMiddleware: AxiosInstanceWrapper, caseReference: string): Promise<ClientDiversityApiResponse> {
+  try {
+    devLog(`API: GET ${API_PREFIX}/case/${caseReference}/personal_details/get_diversity`);
+
+    const configuredAxios = configureAxiosInstance(axiosMiddleware);
+
+    // Call API endpoint
+    const response = await configuredAxios.get(`${API_PREFIX}/case/${caseReference}/personal_details/get_diversity`);
+
+    devLog(`API: Client diversity data response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+
+    return {
+      data: [transformClientDiversityDataItem(response.data)],
+      status: 'success'
+    };
+
+  } catch (error) {
+    const errorMessage = extractAndLogError(error, 'API error');
+
+    return {
+      data: null,
+      status: 'error',
+      message: errorMessage
+    };
+  }
+}
+
+/**
+ * Update financial eligibility data for a case
+ * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
+ * @param {string} caseReference - Case reference number
+ * @param {Partial<FinancialEligibilityData>} financialEligibilityData - Financial eligibility data to update
+ * @returns {Promise<GetFinancialEligibilityApiResponse>} API response with updated financial eligibility data
+ */
+export async function updateFinancialEligibility(
+  axiosMiddleware: AxiosInstanceWrapper,
+  caseReference: string,
+  financialEligibilityData: Partial<FinancialEligibilityData>
+): Promise<GetFinancialEligibilityApiResponse> {
+  try {
+    devLog(`API: PATCH ${API_PREFIX}/case/${caseReference}/eligibility_check/`);
+    const configuredAxios = configureAxiosInstance(axiosMiddleware);
+
+    const response = await configuredAxios.patch(`${API_PREFIX}/case/${caseReference}/eligibility_check/`, financialEligibilityData);
+    devLog(`API: Update financial eligibility response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
+    return {
+      data: transformFinancialEligibilityItem(response.data),
+      status: 'success'
+    };
+  } catch (error) {
+    const errorMessage = extractAndLogError(error, 'API error');
+    return {
+      data: null,
+      status: 'error',
+      message: errorMessage
+    };
+  }
+}
+
+/**
  * Get financial eligibility data for a case
  * @param {AxiosInstanceWrapper} axiosMiddleware - Axios middleware from request
  * @param {string} caseReference - Case reference number
@@ -255,7 +321,7 @@ export async function getFinancialEligibility(axiosMiddleware: AxiosInstanceWrap
     
     const configuredAxios = configureAxiosInstance(axiosMiddleware);
     const response = await configuredAxios.get(`${API_PREFIX}/case/${caseReference}/eligibility_check/`);
-    console.log("financial data: ", response.data)
+    
     devLog(`API: Get financial eligibility response: ${JSON.stringify(response.data, null, JSON_INDENT)}`);
     return {
       data: transformFinancialEligibilityItem(response.data),

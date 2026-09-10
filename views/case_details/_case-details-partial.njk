@@ -97,6 +97,20 @@
       ]
     ]) %}
 
+    {# Sub Category value #}
+    {% if data.scopeTraversal.subCategory %}
+
+    {% set rows = rows.concat([
+      [
+        {
+          text: t('pages.caseDetails.caseDetailsSection.subCategory') | replace(':', '') | capitalize
+          }, {
+          text: data.scopeTraversal.subCategory | string
+        }
+      ]
+    ]) %}
+    {% endif %}
+
     {# Onward Q&A rows #}
     {% set qas = data.scopeTraversal.onwardQuestion %}
 
@@ -112,6 +126,34 @@
           ]
         ]) %}
       {% endfor %}
+    {% endif %}
+
+    {# Client notes #}
+    {% if data.client_notes %}
+
+    {% set rows = rows.concat([
+      [
+        {
+          text: t('pages.caseDetails.caseDetailsSection.tellUsMore') | replace(':', '') | capitalize
+          }, {
+          text: data.client_notes | string
+        }
+      ]
+    ]) %}
+    {% endif %}
+
+    {# Financial status #}
+    {% if data.scopeTraversal and data.scopeTraversal.financialAssessmentStatus %}
+
+    {% set rows = rows.concat([
+      [
+        {
+          text: t('pages.caseDetails.caseDetailsSection.financialAssessmentStatus') | replace(':', '') | capitalize
+          }, {
+          text: data.scopeTraversal.financialAssessmentStatus | string
+        }
+      ]
+    ]) %}
     {% endif %}
 
     {{ govukTable({

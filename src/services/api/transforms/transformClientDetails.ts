@@ -8,7 +8,6 @@ import {
   safeString,
   safeOptionalString,
   isRecord,
-  formatDate,
   formatLongFormDate,
   transformContactDetails,
   transformStateNote,

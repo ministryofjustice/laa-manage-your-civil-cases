@@ -27,7 +27,7 @@ test('Logged in view should display phase banner', async ({ page, i18nSetup }) =
   await expect(phaseBanner).toBeVisible();
 
   // Check if feedback link text is in the phase banner
-  await expect(phaseBanner).toContainText(t('components.phaseBanner.feedbackText'));
+  await expect(phaseBanner).toContainText(t('components.phaseBanner.feedbackTextBeginning'));
 });
 
 test('Logged in view should be accessible', {

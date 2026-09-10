@@ -253,6 +253,24 @@ export interface CaseLogsApiResponse {
 }
 
 /**
+ * Client Diversity Data API response interface
+ */
+export interface ClientDiversityDataItem {
+  gender?: string;
+  ethnicity?: string;
+  disability?: string;
+}
+
+/**
+ * API response interface for client diversity data
+ */
+export interface ClientDiversityApiResponse {
+  data: ClientDiversityDataItem[] | null;
+  status: 'success' | 'error';
+  message?: string;
+}
+
+/**
  * Feedback choice interface from API OPTIONS response
  */
 export interface FeedbackChoice {
@@ -366,17 +384,6 @@ export interface SavingsData {
 }
 
 /**
- * Interface for disputed savings data
- */
-export interface DisputedSavingsData {
-  bankBalance: number,
-  investmentBalance: number,
-  assetBalance: number,
-  creditBalance: number,
-  total: number
-}
-
-/**
  * Interface for deduction data
  */
 export interface DeductionData {
@@ -417,7 +424,7 @@ export interface PropertySetData {
 }
 
 /**
- * Interface for financial eligiblity data
+ * Interface for financial eligibility data
  */
 export interface FinancialEligibilityData {
   hasPartner: boolean;
@@ -434,20 +441,25 @@ export interface FinancialEligibilityData {
   propertySet: PropertySetData[]
   clientData: {
     income: IncomeData,
-    savings: SavingsData,
+    savings: SavingsData | null,
     deductions: DeductionData
   }
   partnerData: {
     partnerIncome: IncomeData,
-    partnerSavings: SavingsData,
+    partnerSavings: SavingsData | null,
     partnerDeductions: DeductionData
   }
-  disputedSavings: DisputedSavingsData;
+  disputedSavings: SavingsData | null ;
   disregards: string[];
   dependantsYoung: number;
   dependantsOld: number;
   under18RegularPayment?: boolean;
-  under18HasValuables?: boolean
+  under18HasValuables?: boolean;
+  state: String;
+  hasPassportedProceedingsLetter: boolean;
+  passportedBenefits: boolean;
+  under18passportedBenefits: boolean;
+  category: string;
 }
 
 /**

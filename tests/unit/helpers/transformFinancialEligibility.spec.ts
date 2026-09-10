@@ -2,7 +2,6 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { transformFinancialEligibilityItem} from '#src/services/api/transforms/transformFinancialEligibility.js';
 import en from '../../../locales/en.json' with { type: 'json' };
-import { t } from '#src/scripts/helpers/index.js';
 import { i18next } from '#src/scripts/helpers/i18nLoader.js';
 
 describe('transformFinancialEligilibilityItem', () => {
@@ -126,8 +125,8 @@ describe('transformFinancialEligilibilityItem', () => {
     });
 
     expect(result.disregards).to.deep.equal([
-      t('common.financialDisregards.cost_living'),
-      t('common.financialDisregards.criminal_injuries')
+      'cost_living',
+      'criminal_injuries'
     ]);
   });
 
@@ -254,7 +253,7 @@ describe('transformFinancialEligilibilityItem', () => {
     const result = transformFinancialEligibilityItem({});
 
     expect(result.clientData.income).to.deep.equal({});
-    expect(result.clientData.savings).to.deep.equal({});
+    expect(result.clientData.savings).to.deep.equal(null);
     expect(result.clientData.deductions).to.deep.equal({});
   });
 
@@ -265,7 +264,7 @@ describe('transformFinancialEligilibilityItem', () => {
     });
 
     expect(result.partnerData.partnerIncome).to.deep.equal({});
-    expect(result.partnerData.partnerSavings).to.deep.equal({});
+    expect(result.partnerData.partnerSavings).to.deep.equal(null);
     expect(result.partnerData.partnerDeductions).to.deep.equal({});
   });
 

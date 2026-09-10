@@ -74,7 +74,6 @@ export interface SentryConfig {
 }
 
 export interface Config {
-  CONTACT_EMAIL: string | undefined;
   DEPARTMENT_NAME: string | undefined;
   DEPARTMENT_URL: string | undefined;
   RATELIMIT_HEADERS_ENABLED: string | undefined;
@@ -85,9 +84,11 @@ export interface Config {
   SERVICE_URL: string | undefined;
   CHARACTER_THRESHOLD: number;
   MAX_NOTE_LENGTH: number;
+  MAX_NAME_LENGTH: number;
   MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH: number;
   MAX_PROVIDER_NOTE_LENGTH: number;
   MAX_POSTCODE_LENGTH: number;
+  MAX_LEGAL_HELP_FORM_EVIDENCE_LENGTH: number;
   app: AppConfig;
   csrf: CsrfConfig;
   session: SessionConfig;
