@@ -160,10 +160,10 @@
             "disputed": true,
             "main": true
           }
-        ]
-      },
-      "calculations": {
-        "disposable_capital_assets": "100000"
+        ],
+        "calculations": {
+          "disposable_capital_assets": "100000"
+        }
       }
     }
   },
@@ -481,14 +481,14 @@
           "criminal_injuries": true,
           "modern_slavery": true,
           "cost_living": true
+        },
+        "calculations": {
+          "property_capital": "8000000",
+          "disposable_capital_assets": "100000"
         }
       },
       "personal_details": {
         "ni_number": "AB123456C"
-      },
-      "calculations": {
-        "property_capital": "8000000",
-        "disposable_capital_assets": "100000"
       }
     }
   },
@@ -663,10 +663,10 @@
             "disputed": true,
             "main": false
           }
-        ]
-      },
-      "calculations": {
-        "disposable_capital_assets": "100000"
+        ],
+        "calculations": {
+          "disposable_capital_assets": "100000"
+        }
       }
     }
   },
@@ -1243,13 +1243,13 @@
         },
         "disregards": {
           "cost_living": true
+        },
+        "calculations": {
+          "disposable_capital_assets": "100000"
         }
       },
       "personal_details": {
         "ni_number": "AB123456C"
-      },
-      "calculations": {
-        "disposable_capital_assets": "100000"
       }
     }
   },
@@ -1651,13 +1651,13 @@
         },
         "disregards": {
           "cost_living": true
+        },
+        "calculations": {
+          "disposable_capital_assets": "200000"
         }
       },
       "personal_details": {
         "ni_number":"AB123456C"
-      },
-      "calculations": {
-        "disposable_capital_assets": "200000"
       }
     }
   },

@@ -24,7 +24,7 @@ export function transformLegalHelpFormItem(item: unknown,): LegalHelpFormData {
   const personalDetails = isRecord(item.personal_details) ? item.personal_details : {};
   const nationalInsurance = String(personalDetails.ni_number ?? '');
   const asylumSupport = Boolean(item.on_nass_benefits);
-  const calculations = isRecord(item.calculations) ? item.calculations : {};
+  const calculations = isRecord(eligibilityCheck.calculations) ? eligibilityCheck.calculations : {};
 
   const mappedCalculations = {
     partnerEmploymentAllowance: convertPenceToPounds(Number(calculations.partner_employment_allowance ?? 0)),
