@@ -69,6 +69,10 @@
   text-align: right;
 }
 
+.header-section-padding-top {
+  padding-top: 20px;
+}
+
 // property
 .total-equity-table {
   table-layout: fixed;
@@ -106,14 +110,6 @@
   font-weight: bold;
   border-top: 3px solid #000000;
   border-bottom: 3px solid #000000;
-}
-
-.capital-section {
-  padding-top: 1px;
-}
-
-.header-section {
-  padding-top: 20px;
 }
 
 // evidence
