@@ -1,203 +1,300 @@
-{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "components/summaryCardComponent.njk" import summaryCardComponent %}
 
 {% set changePropertiesLink = "/cases/" + caseReference + "/financial-eligibility/change/client-partner-properties" if financialEligibility.hasPartner else "/cases/" + caseReference + "/financial-eligibility/change/properties" %}
-
-{% set changePropertiesLinkHtml %}
-  <p class="govuk-!-margin-bottom-8">
-    <a class="govuk-link" href= "{{ changePropertiesLink }}" >{{ t('common.change') }}</a>
-  </p>
-{% endset %}
-
-{% set changeSavingsLinkHtml %}
-  <p class="govuk-!-margin-bottom-8">
-    <a class="govuk-link" href="/cases/{{ caseReference }}/financial-eligibility/change/your-savings">{{ t('common.change') }}</a>
-  </p>
-{% endset %}
-
-{% set changePartnerSavingsLinkHtml %}
-  <p class="govuk-!-margin-bottom-8">
-    <a class="govuk-link" href="/cases/{{ caseReference }}/financial-eligibility/change/partner-savings">{{ t('common.change') }}</a>
-  </p>
-{% endset %}
-
-{% set changeDisputedSavingsLinkHtml %}
-  <p class="govuk-!-margin-bottom-8">
-    <a class="govuk-link" href="/cases/{{ caseReference }}/financial-eligibility/change/disputed-savings">{{ t('common.change') }}</a>
-  </p>
-{% endset %}
-
-{% set changeDisregardsLinkHtml %}
-  <a class="govuk-link" href="/cases/{{ caseReference }}/financial-eligibility/change/disregards">{{ t('common.change') }}</a>
-{% endset %}
-
 {% set isDisputedCategory = financialEligibility.category == 'debt' or financialEligibility.category == 'family' %}
 
-<h2 class="govuk-heading-m">Properties</h2>
 {% if financialEligibility.propertySet and financialEligibility.propertySet.length %}
   {% for property in financialEligibility.propertySet %}
+    {% set constructedData = {
+      value: property.value | formatFinancialData,
+      mortgageLeft: property.mortgageLeft | formatFinancialData,
+      mainProperty: "Yes" if property.main else "No",
+      propertyShare: property.share + "%",
+      disputed: "Yes" if property.disputed else "No"
+    } %}
+
     {# Loop function will only work up to 22nd property - it is assumed if a client has 22 properties they are likely ineligible for support #}
     <h3 class="govuk-heading-s">
       {% if loop.index == 1 %}
-        1st property
+        {% set title = "1st property" %}
       {% elseif loop.index == 2 %}
-        2nd property
+        {% set title = "2nd property" %}
       {% elseif loop.index == 3 %}
-        3rd property
+        {% set title = "3rd property" %}
       {% else %}
-        {{ loop.index }}th property
+        {% set title = loop.index ~ "th property" %}
       {% endif %}
     </h3>
 
     {% set propertyRows = [
-      [
-        { text: t("common.financialEligibility.finances.propertyValue") },
-        { text: (property.value | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.finances.mortgageLeft") },
-        { text: (property.mortgageLeft | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.finances.mainProperty") },
-        { text: "Yes" if property.main else "No" }
-      ],
-      [
-        { text: t("common.financialEligibility.finances.partnerPropertyShare") if financialEligibility.hasPartner else t("common.financialEligibility.finances.propertyShare") },
-        { text: property.share + "%" }
-      ]
+      {
+        label: t("common.financialEligibility.finances.propertyValue"),
+        key: 'value'
+      },
+      {
+        label: t("common.financialEligibility.finances.mortgageLeft"),
+        key: 'mortgageLeft'
+      },
+      {
+        label: t("common.financialEligibility.finances.mainProperty"),
+        key: 'mainProperty'
+      },
+      {
+        label: t("common.financialEligibility.finances.partnerPropertyShare") if financialEligibility.hasPartner else t("common.financialEligibility.finances.propertyShare"),
+        key: 'propertyShare'
+      }
     ] %}
     
     {% if isDisputedCategory %}
       {% set propertyRows = propertyRows.concat([
-        [
-          { text: t("common.financialEligibility.finances.disputedProperty") },
-          { text: "Yes" if property.disputed else "No" }
-        ]
+        {
+          label: t("common.financialEligibility.finances.disputedProperty"),
+          key: 'disputed'
+        }
       ]) %}
     {% endif %}
 
-    {{ govukTable({
-      firstCellIsHeader: true,
-      classes: "eligibility-table",
+    {{ summaryCardComponent({
+      classes: {
+        row: {
+          key: "govuk-!-width-two-thirds"
+        }
+      },
+      data: constructedData,
+      card: {
+        title: {
+          text: title
+        },
+        actions: {
+          items: [
+            {
+              href: changePropertiesLink,
+              text: t("common.change")
+            }
+          ]
+        }
+      },
       rows: propertyRows
     }) }}
-
-    <div>{{ changePropertiesLinkHtml | safe }}</div>
-
   {% endfor %}
 {% else %}
-  <p class="govuk-body">No property data</p>
-  <div>{{ changePropertiesLinkHtml | safe }}</div>
+  {{ summaryCardComponent({
+    classes: {
+      row: {
+        key: "govuk-!-width-two-thirds"
+      }
+    },
+    data: {noPropertiesText: t("common.none")},
+    card: {
+      title: {
+        text: t("common.financialEligibility.finances.propertiesHeading")
+      },
+      actions: {
+        items: [
+          {
+            href: changePropertiesLink,
+            text: t("common.change")
+          }
+        ]
+      }
+    },
+    rows: [
+      {
+        label: t("common.financialEligibility.finances.propertiesAdded"),
+        key: "noPropertiesText"
+      }
+    ]
+  }) }}
 {% endif %}
 
 {% set savingsHeading = t("common.financialEligibility.finances.undisputedSavings") if isDisputedCategory else t("common.financialEligibility.finances.yourSavings") %}
 
-<h2 class="govuk-heading-m">{{ savingsHeading }}</h2>
 {% set savings = financialEligibility.clientData.savings %}
+{% set savingsData = {
+  bankBalance: savings.bankBalance | formatFinancialData,
+  investmentBalance: savings.investmentBalance | formatFinancialData,
+  assetBalance: savings.assetBalance | formatFinancialData,
+  creditBalance: savings.creditBalance | formatFinancialData
+} %}
 
-{{ govukTable({
-    firstCellIsHeader: true,
-    classes: "eligibility-table",
+{{ summaryCardComponent({
+    classes: {
+      row: {
+        key: "govuk-!-width-two-thirds"
+      }
+    },
+    data: savingsData,
+    card: {
+      title: {
+        text: savingsHeading
+      },
+      actions: {
+        items: [
+          {
+            href: "/cases/" + caseReference + "/financial-eligibility/change/your-savings",
+            text: t('common.change')
+          }
+        ]
+      }
+    },
     rows: [
-      [
-        { text: t("common.financialEligibility.finances.savingsBalance") },
-        { text: (savings.bankBalance | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.finances.investmentBalance") },
-        { text: (savings.investmentBalance | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.finances.assetBalance")},
-        { text: (savings.assetBalance | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.finances.creditBalance") },
-        { text: (savings.creditBalance | formatFinancialData) }
-      ]
+      {
+        label: t("common.financialEligibility.finances.savingsBalance"),
+        key: 'bankBalance'
+      },
+      {
+        label: t("common.financialEligibility.finances.investmentBalance"),
+        key: 'investmentBalance'
+      },
+      {
+        label: t("common.financialEligibility.finances.assetBalance"),
+        key: 'assetBalance'
+      },
+      {
+        label: t("common.financialEligibility.finances.creditBalance"),
+        key: 'creditBalance'
+      }
     ]
   }) }}
-
-  <div>{{ changeSavingsLinkHtml | safe }}</div>
 
 {% if financialEligibility.hasPartner %}
   {% set partnerSavingsHeading = t("common.financialEligibility.finances.undisputedPartnerSavings") if isDisputedCategory else t("common.financialEligibility.finances.partnerSavings") %}
-  <h2 class="govuk-heading-m">{{ partnerSavingsHeading }}</h2>
-
   {% set partnerSavings = financialEligibility.partnerData.partnerSavings %}
+  {% set partnerSavingsData = {
+    bankBalance: partnerSavings.bankBalance | formatFinancialData,
+    investmentBalance: partnerSavings.investmentBalance | formatFinancialData,
+    assetBalance: partnerSavings.assetBalance | formatFinancialData,
+    creditBalance: partnerSavings.creditBalance | formatFinancialData
+  } %}
 
-  {{ govukTable({
-    firstCellIsHeader: true,
-    classes: "eligibility-table",
+  {{ summaryCardComponent({
+    classes: {
+      row: {
+        key: "govuk-!-width-two-thirds"
+      }
+    },
+    data: partnerSavingsData,
+    card: {
+      title: {
+        text: partnerSavingsHeading
+      },
+      actions: {
+        items: [
+          {
+            href: "/cases/" + caseReference + "/financial-eligibility/change/partner-savings",
+            text: t('common.change')
+          }
+        ]
+      }
+    },
     rows: [
-      [
-        { text: t("common.financialEligibility.finances.partnerSavingsBalance") },
-        { text: (partnerSavings.bankBalance | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.finances.partnerInvestmentBalance") },
-        { text: (partnerSavings.investmentBalance | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.finances.partnerAssetBalance") },
-        { text:(partnerSavings.assetBalance | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.finances.partnerCreditBalance") },
-        { text: (partnerSavings.creditBalance | formatFinancialData) }
-      ]
+      {
+        label: t("common.financialEligibility.finances.partnerSavingsBalance"),
+        key: 'bankBalance'
+      },
+      {
+        label: t("common.financialEligibility.finances.partnerInvestmentBalance"),
+        key: 'investmentBalance'
+      },
+      {
+        label: t("common.financialEligibility.finances.partnerAssetBalance"),
+        key: 'assetBalance'
+      },
+      {
+        label: t("common.financialEligibility.finances.partnerCreditBalance"),
+        key: 'creditBalance'
+      }
     ]
   }) }}
-
-  <div>{{ changePartnerSavingsLinkHtml | safe }}</div>
 {% endif %}
 
 {% if isDisputedCategory %}
-  <h2 class="govuk-heading-m">Your disputed savings</h2>
-
   {% set disputedSavings = financialEligibility.disputedSavings %}
+  {% set disputedSavingsData = {
+    bankBalance: disputedSavings.bankBalance | formatFinancialData,
+    investmentBalance: disputedSavings.investmentBalance | formatFinancialData,
+    assetBalance: disputedSavings.assetBalance | formatFinancialData,
+    creditBalance: disputedSavings.creditBalance | formatFinancialData
+  } %}
 
-  {{ govukTable({
-    firstCellIsHeader: true,
-    classes: "eligibility-table",
+  {{ summaryCardComponent({
+    classes: {
+      row: {
+        key: "govuk-!-width-two-thirds"
+      }
+    },
+    data: disputedSavingsData,
+    card: {
+      title: {
+        text: t("common.financialEligibility.finances.disputedSavings")
+      },
+      actions: {
+        items: [
+          {
+            href: "/cases/" + caseReference + "/financial-eligibility/change/disputed-savings",
+            text: t('common.change')
+          }
+        ]
+      }
+    },
     rows: [
-      [
-        { text: t("common.financialEligibility.finances.savingsBalance") },
-        { text: (disputedSavings.bankBalance | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.finances.investmentBalance") },
-        { text: (disputedSavings.investmentBalance | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.finances.assetBalance") },
-        { text: (disputedSavings.assetBalance | formatFinancialData) }
-      ],
-      [
-        { text: t("common.financialEligibility.finances.creditBalance") },
-        { text: (disputedSavings.creditBalance | formatFinancialData) }
-      ]
+      {
+        label: t("common.financialEligibility.finances.savingsBalance"),
+        key: 'bankBalance'
+      },
+      {
+        label: t("common.financialEligibility.finances.investmentBalance"),
+        key: 'investmentBalance'
+      },
+      {
+        label: t("common.financialEligibility.finances.assetBalance"),
+        key: 'assetBalance'
+      },
+      {
+        label: t("common.financialEligibility.finances.creditBalance"),
+        key: 'creditBalance'
+      }
     ]
   }) }}
-
-  <div>{{ changeDisputedSavingsLinkHtml | safe }}</div>
 {% endif %}
 
-<h2 class="govuk-heading-m">Disregards</h2>
-{% if financialEligibility.disregards and financialEligibility.disregards.length > 0 %}
-  <table class="govuk-table">
-    <tbody class="govuk-table__body">
-      {% for disregard in financialEligibility.disregards %}
-        <tr class="govuk-table__row">
-          <td class="govuk-table__cell">
-            {{ t("common.financialDisregards." + disregard) }}
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-{% else %}
-  <p> {{t("common.none")}} </p>
-{% endif %}
+{% set disregardsHtml %}
+  {% if financialEligibility.disregards and financialEligibility.disregards.length > 0 %}
+    <table class="govuk-table">
+      <tbody class="govuk-table__body">
+        {% for disregard in financialEligibility.disregards %}
+          <tr class="govuk-table__row">
+            <td class="govuk-table__cell">
+              {{ t("common.financialDisregards." + disregard) }}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p> {{t("common.none")}} </p>
+  {% endif %}
+{% endset %}
 
-<div>{{ changeDisregardsLinkHtml | safe }}</div>
+{{ summaryCardComponent({
+  data: {disregardsHtml: disregardsHtml | safe},
+  card: {
+    title: {
+      text: t("common.financialEligibility.finances.disregards")
+    },
+    actions: {
+      items: [
+        {
+          href: "/cases/" + caseReference + "/financial-eligibility/change/disregards",
+          text: t('common.change')
+        }
+      ]
+    }
+  },
+  rows: [
+    {
+      label: t("common.financialEligibility.finances.disregardsSelected"),
+      key: "disregardsHtml"
+    }
+  ]
+}) }}

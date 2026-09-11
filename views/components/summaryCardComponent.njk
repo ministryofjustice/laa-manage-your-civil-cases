@@ -133,7 +133,8 @@
       {% if row.actions and row.actions.items %}
         {% set summaryRow = {
           key: {
-            text: row.label
+            text: row.label,
+            classes: options.classes.row.key if options.classes.row.key
           },
           value: {
             text: finalValue if not isHtml,
@@ -144,7 +145,8 @@
       {% else %}
         {% set summaryRow = {
           key: {
-            text: row.label
+            text: row.label,
+            classes: options.classes.row.key if options.classes.row.key
           },
           value: {
             text: finalValue if not isHtml,
