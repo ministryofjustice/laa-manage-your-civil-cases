@@ -454,6 +454,7 @@ test.describe('Legal help form journey', () => {
       'National Insurance number': 'Not provided',
       'Current address': 'Not provided',
       'Postcode': 'Not provided',
+      'Date of birth': 'Not provided',
     });
   });
 

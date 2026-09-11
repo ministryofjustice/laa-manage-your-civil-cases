@@ -5,7 +5,7 @@
   ],
   [
     { text: t("pages.caseDetails.legalHelpForm.details.dateOfBirth") }, 
-    { text: client.dateOfBirth }
+    { text: client.dateOfBirth if client.dateOfBirth else t("common.notProvided") }
   ],
   [
     { text: t("pages.caseDetails.legalHelpForm.details.nationalInsurance") }, 

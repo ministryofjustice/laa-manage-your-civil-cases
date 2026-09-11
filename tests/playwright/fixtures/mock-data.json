@@ -2566,7 +2566,7 @@
     "caseStatus": "New",
     "category": "Housing, eviction and homelessness",
     "isUrgent": true,
-    "dateOfBirth": "1981-08-18T00:00:00-05:00",
+    "dateOfBirth": "",
     "vulnerableUser": true,
     "phoneNumber": "0786442261",
     "safeToCall": true,
