@@ -544,13 +544,12 @@
           "youHeader": "Your capital",
           "disputeHeader": "Subject matter of dispute",
           "yourPartnerHeader": "Your partner's capital",
-          "savings": "Savings </br>  <div class='govuk-body'>Savings/bank accounts, building society</div>",
-          "investments": "Investments </br>  <div class='govuk-body'>Including shares and insurance policies</div>",
-          "valuableItem": "Valuable Items </br>  <div class='govuk-body'>For example a boat, caravan or jewellery</div>",
-          "otherCapital": "Other capital </br>  <div class='govuk-body'>Including money due to you</div>",
+          "savings": "Savings </br>  <div class='govuk-body govuk-!-margin-bottom-0'>Savings/bank accounts, building society</div>",
+          "investments": "Investments </br>  <div class='govuk-body govuk-!-margin-bottom-0'>Including shares and insurance policies</div>",
+          "valuableItem": "Valuable Items </br>  <div class='govuk-body govuk-!-margin-bottom-0'>For example a boat, caravan or jewellery</div>",
+          "otherCapital": "Other capital </br>  <div class='govuk-body govuk-!-margin-bottom-0'>Including money due to you</div>",
           "pensionerDisregard": "Pensioner capital disregard",
           "totalCapital": "Total capital for assessment purposes"
-    
         },
         "income": {
           "h2": "Your income",
@@ -571,12 +570,12 @@
           "nationalInsurance": "National Insurance",
           "mortgage": "Mortgage",
           "rent": "Rent",
-          "maintenance": "Maintenance payments being made </br>  <div class='govuk-body'>for example children and/or a former/separated spouse</div>",
+          "maintenance": "Maintenance payments being made </br>  <div class='govuk-body govuk-!-margin-bottom-0'>for example children and/or a former/separated spouse</div>",
           "childcare": "Childcare costs due to work",
           "criminalContributions": "Legal Aid payments for criminal defence",
           "calculatedExpensesH3": "Calculated expenses",
-          "employmentAllowance": "Employment expenses </br> <div class='govuk-body'>standard £45 if employed</div>",
-          "dependantsAllowance": "Dependants allowance </br> <div class='govuk-body'>Certain amount for each dependant</div>",
+          "employmentAllowance": "Employment expenses </br> <div class='govuk-body govuk-!-margin-bottom-0'>standard £45 if employed</div>",
+          "dependantsAllowance": "Dependants allowance </br> <div class='govuk-body govuk-!-margin-bottom-0'>Certain amount for each dependant</div>",
           "partnerAllowance": "Partner allowance",
           "disposableIncome": "Total monthly disposable income"
         },
