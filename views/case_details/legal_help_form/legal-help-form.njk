@@ -28,12 +28,11 @@
 
 {% block pageContent %}
   <hr class="horizontal-line-top"/>
-
-  {# Introduction #}
-  {% include "case_details/legal_help_form/_legal-help-form-intro.njk" %}
-
   <div class="govuk-grid-row legal-help-form-pdf-width">
     <div class="govuk-grid-column-two-thirds">
+      {# Introduction #}
+      {% include "case_details/legal_help_form/_legal-help-form-intro.njk" %}
+
       {# Your details #}
       {% include "case_details/legal_help_form/_legal-help-form-details.njk" %}
 
