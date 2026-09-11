@@ -1127,7 +1127,7 @@
       }
     },
     "legalHelpFormExtract": {
-      "on_nass_benefits": false,
+      "on_nass_benefits": true,
       "eligibility_check": {
         "your_problem_notes": "",
         "reference": "PC-9173-4826",

@@ -12,7 +12,7 @@
 {% set jobSeekers = "Yes" if legalHelpExtract.specificBenefits.jobSeekers else "No"%}
 {% set employmentSupport = "Yes" if legalHelpExtract.specificBenefits.employmentSupport else "No"%}
 {% set incomeSupport = "Yes" if legalHelpExtract.specificBenefits.incomeSupport else "No"%}
-{% set asylumSupport = "Yes" if legalHelpExtract.specificBenefits.asylumSupport else "No"%}
+{% set asylumSupport = "Yes" if legalHelpExtract.asylumSupport else "No"%}
 {% set benefitsHeading = ("pages.caseDetails.legalHelpForm.finances.benefitsPartner" if legalHelpExtract.hasPartner else 
   "pages.caseDetails.legalHelpForm.finances.benefits"
 ) %}
