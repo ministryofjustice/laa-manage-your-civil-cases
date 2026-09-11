@@ -95,34 +95,37 @@
   ] %}
 {% endif %}
 
-<div class="govuk-grid-row negative-margin">
+<div class="govuk-grid-row negative-margin mcc-case-details-container">
   <div class="govuk-grid-column-full">
+    {# Case flags #}
+    <div class="govuk-!-margin-top-2 govuk-!-margin-bottom-2">
+      {% set supportNeeds = client.clientSupportNeeds %}
+      {% set isUrgent = client.is_urgent == "true" %}
+      {% set vulnerableUser = client.vulnerableUser %}
+      {% set outcomeCode = client.outcome_code %}
+      {% set caseStatus = client.caseStatus | lower %}
+      {% set thirdParty = client.thirdParty and not client.thirdParty.isSoftDeleted and client.thirdParty %}
+      {% set language = supportNeeds and supportNeeds.languageSupportNeeds %}
+      {% set textRelay = supportNeeds and supportNeeds.textRelay == "Yes" %}
+      {% set bslWebcam = supportNeeds and supportNeeds.bslWebcam == "Yes" %}
+
+      {{ caseFlagComponent(
+        vulnerableUser,
+        outcomeCode,
+        caseStatus,
+        thirdParty,
+        language,
+        textRelay,
+        bslWebcam,
+        true
+      ) }}
+    </div>
+
     {# Name and case reference #}
     <p class="govuk-caption-l mcc-case-details-header govuk-!-margin-top-0">{{ client.caseReference }}</p>
     <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">{{ client.fullName }}</h1>
 
-    {# Case flags #}
-    {% set supportNeeds = client.clientSupportNeeds %}
-    {% set isUrgent = client.is_urgent == "true" %}
-    {% set vulnerableUser = client.vulnerableUser %}
-    {% set outcomeCode = client.outcome_code %}
-    {% set caseStatus = client.caseStatus | lower %}
-    {% set thirdParty = client.thirdParty and not client.thirdParty.isSoftDeleted and client.thirdParty %}
-    {% set language = supportNeeds and supportNeeds.languageSupportNeeds %}
-    {% set textRelay = supportNeeds and supportNeeds.textRelay == "Yes" %}
-    {% set bslWebcam = supportNeeds and supportNeeds.bslWebcam == "Yes" %}
 
-    {{ caseFlagComponent(
-      isUrgent,
-      vulnerableUser,
-      outcomeCode,
-      caseStatus,
-      thirdParty,
-      language,
-      textRelay,
-      bslWebcam,
-      true
-    ) }}
 
     {# Date received #}
     <h2 class="govuk-heading-s govuk-!-margin-bottom-1">{{ t('pages.caseDetails.dateReceived') }}: <span class="govuk-body">{{ client.provider_assigned_at | formatDateLongMonth }}</span></h2>
