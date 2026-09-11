@@ -35,3 +35,18 @@
   padding-top: 6px;
   padding-bottom: 8px;
 }
+
+.mcc-case-details-container {
+  background-color: #f4f8fb;
+  width: 100vw;
+  // re-add the padding that govuk-width-container normally provides, so content lines back up
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding-left: calc(50vw - 50%);
+  padding-right: calc(50vw - 50%);
+  
+  .govuk-grid-column-full {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
