@@ -12,5 +12,6 @@
 @use "components/case_details_header";
 @use "components/case_details_tab";
 @use "components/financial-eligibility-table";
+@use "components/legal_help_form";
 
 @include govuk-fonts.gds-transport();

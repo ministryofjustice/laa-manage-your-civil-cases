@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 import { apiService } from '#src/services/apiService.js';
-import { devLog, createProcessedError, safeString, validCaseReference, formatValidationError, safeBodyString, normaliseSelectedCheckbox, trimOrUndefined, setSessionValue, getSessionValue, t, LEGAL_HELP_FORM_CIRCUMSTANCE_OPTIONS } from '#src/scripts/helpers/index.js';
+import { devLog, createProcessedError, safeString, validCaseReference, formatValidationError, safeBodyString, normaliseSelectedCheckbox, trimOrUndefined, setSessionValue, getSessionValue, t, LEGAL_HELP_FORM_CIRCUMSTANCE_OPTIONS, getCsrfToken } from '#src/scripts/helpers/index.js';
 import type { LegalHelpFormAnswers } from '#src/scripts/helpers/sessionHelpers.js';
 import { HTTP } from '#src/services/api/base/constants.js';
 import config from '#config.js';
@@ -9,15 +9,6 @@ import config from '#config.js';
 const { MAX_LEGAL_HELP_FORM_EVIDENCE_LENGTH }: { MAX_LEGAL_HELP_FORM_EVIDENCE_LENGTH: number } = config;
 
 const LEGAL_HELP_FORM_SESSION_KEY = 'legalHelpFormAnswers';
-
-/**
- * Get the CSRF token for a request, if CSRF protection is enabled
- * @param {Request} req Express request object
- * @returns {string | undefined} The CSRF token, or undefined if unavailable
- */
-function getCsrfToken(req: Request): string | undefined {
-  return typeof req.csrfToken === 'function' ? req.csrfToken() : undefined;
-}
 
 /**
  * Build the govukCheckboxes items for the "about this case" additional circumstances field
@@ -29,17 +20,6 @@ function buildCircumstanceItems(): Array<{ value: string; text: string; hint: { 
     text: t(`pages.caseDetails.getLegalHelpForm.circumstances.${labelKey}.label`),
     hint: { text: t(`pages.caseDetails.getLegalHelpForm.circumstances.${labelKey}.hint`) }
   }));
-}
-
-/**
- * Resolve selected additional circumstance values into their translated labels
- * @param {string[]} selectedValues - the raw additionalCircumstances values stored in session
- * @returns {string[]} Translated labels for the selected circumstances
- */
-function resolveCircumstanceLabels(selectedValues: string[]): string[] {
-  return LEGAL_HELP_FORM_CIRCUMSTANCE_OPTIONS
-    .filter(({ value }) => selectedValues.includes(value))
-    .map(({ labelKey }) => t(`pages.caseDetails.getLegalHelpForm.circumstances.${labelKey}.label`));
 }
 
 /**
@@ -57,17 +37,25 @@ export function getLegalHelpFormInterstitial(req: Request, res: Response, next: 
   }
 
   try {
-    res.render('case_details/legal-help-form-interstitial.njk', {
-      caseReference,
-      client: req.clientData,
-      currentEvidence: '',
-      currentAdditionalCircumstances: [],
-      maxEvidenceLength: MAX_LEGAL_HELP_FORM_EVIDENCE_LENGTH,
-      circumstanceItems: buildCircumstanceItems(),
-      csrfToken: getCsrfToken(req)
-    });
+    // Do not populate this case using answers entered for another case
+    const stored = getSessionValue(req, LEGAL_HELP_FORM_SESSION_KEY ) as LegalHelpFormAnswers | undefined;
+    const answers = stored?.caseReference === caseReference ? stored : undefined;
+
+    res.render(
+      'case_details/legal_help_form/legal-help-form-interstitial.njk',
+      {
+        caseReference,
+        client: req.clientData,
+        currentEvidence: answers?.evidence ?? '',
+        currentAdditionalCircumstances: answers?.additionalCircumstances ?? [],
+        maxEvidenceLength: MAX_LEGAL_HELP_FORM_EVIDENCE_LENGTH,
+        circumstanceItems: buildCircumstanceItems(),
+        csrfToken: getCsrfToken(req),
+      },
+    );
   } catch (error) {
     const processedError = createProcessedError(error, `rendering get legal help form for case ${caseReference}`);
+
     next(processedError);
   }
 }
@@ -114,7 +102,7 @@ export async function submitLegalHelpFormInterstitial(req: Request, res: Respons
     const response = await apiService.getClientDetails(req.axiosMiddleware, caseReference);
 
     if (response.status === 'success' && response.data !== null) {
-      res.status(HTTP.BAD_REQUEST).render('case_details/legal-help-form-interstitial.njk', {
+      res.status(HTTP.BAD_REQUEST).render('case_details/legal_help_form/legal-help-form-interstitial.njk', {
         caseReference,
         client: response.data,
         currentEvidence,
@@ -151,13 +139,12 @@ export async function submitLegalHelpFormInterstitial(req: Request, res: Respons
 
 /**
  * Show the legal help form, populated with the answers captured on the get legal help form interstitial page.
- * The full legal help form design/content is covered by a follow-up ticket; this renders a minimal read-only view.
  * @param {Request} req Express request object
  * @param {Response} res Express response object
  * @param {NextFunction} next Express next function
- * @returns {void} Renders the legal-help-form page
+ * @returns {Promise<void>} Renders the legal-help-form page
  */
-export function getLegalHelpForm(req: Request, res: Response, next: NextFunction): void {
+export async function getLegalHelpForm(req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
   if (!validCaseReference(caseReference, res)) {
@@ -165,19 +152,22 @@ export function getLegalHelpForm(req: Request, res: Response, next: NextFunction
   }
 
   try {
-    const stored = getSessionValue(req, LEGAL_HELP_FORM_SESSION_KEY) as LegalHelpFormAnswers | undefined;
+    const response = await apiService.getLegalHelpExtract(req.axiosMiddleware, caseReference);
+    let legalHelpExtract = response.data;
+
     // Ignore session answers left over from viewing a different case
+    const stored = getSessionValue(req, LEGAL_HELP_FORM_SESSION_KEY) as LegalHelpFormAnswers | undefined;
     const answers = stored?.caseReference === caseReference ? stored : undefined;
 
-    res.render('case_details/legal-help-form.njk', {
+    res.render('case_details/legal_help_form/legal-help-form.njk', {
       caseReference,
       client: req.clientData,
       evidence: answers?.evidence ?? '',
-      additionalCircumstances: resolveCircumstanceLabels(answers?.additionalCircumstances ?? [])
+      additionalCircumstances: answers?.additionalCircumstances ?? [],
+      legalHelpExtract,
     });
   } catch (error) {
     const processedError = createProcessedError(error, `rendering legal help form for case ${caseReference}`);
     next(processedError);
   }
 }
-

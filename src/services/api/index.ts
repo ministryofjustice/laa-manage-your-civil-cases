@@ -6,7 +6,7 @@
 // Export individual services
 // Import all services for creating the combined apiService object
 import { getCases, searchCases } from './resources/casesApiService.js';
-import { getClientDetails, updateClientDetails, getClientCaseLogs, getClientHistoryDetails, updateProviderNotes, changeCaseCategory, getFinancialEligibility, updateFinancialEligibility, getClientDiversityData } from './resources/clientDetailsApiService.js';
+import { getClientDetails, updateClientDetails, getClientCaseLogs, getClientHistoryDetails, updateProviderNotes, changeCaseCategory, getFinancialEligibility, updateFinancialEligibility, getClientDiversityData, getLegalHelpExtract } from './resources/clientDetailsApiService.js';
 import {
   addThirdPartyContact,
   updateThirdPartyContact,
@@ -51,5 +51,6 @@ export const apiService = {
   changeCaseCategory,
   getFinancialEligibility,
   updateFinancialEligibility,
-  getClientDiversityData
+  getClientDiversityData,
+  getLegalHelpExtract
 };

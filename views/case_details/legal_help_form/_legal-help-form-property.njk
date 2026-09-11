@@ -1,0 +1,121 @@
+{% set isDisputedCategory = legalHelpExtract.category == 'debt' or legalHelpExtract.category == 'family' %}
+{% set hasProperty = "Yes" if legalHelpExtract.propertySet and legalHelpExtract.propertySet.length else "No" %}
+
+{% set initialRows = [
+  [
+    { text: t("pages.caseDetails.legalHelpForm.property.initialQuestionPartner") if legalHelpExtract.hasPartner else t("pages.caseDetails.legalHelpForm.property.initialQuestion")},
+    { text: hasProperty }
+  ]
+] %}
+
+<div class="page-break"></div>
+{{ govukTable({
+  caption: t("pages.caseDetails.legalHelpForm.property.propertyHeading"),
+  classes: "legal-help-eligibility-table",
+  captionClasses: "govuk-table__caption--l govuk-!-margin-top-3",
+  firstCellIsHeader: true,
+  rows: initialRows
+}) }}
+
+<p class="govuk-body">{{ t("pages.caseDetails.legalHelpForm.property.propertyText") }}</p>
+
+{% if legalHelpExtract.propertySet %}
+  {# Main property first #}
+  {% for property in legalHelpExtract.propertySet %}
+    {% if property.main %}
+
+      <h3 class="govuk-heading-m">{{ t("pages.caseDetails.legalHelpForm.property.mainPropertyHeading") }}</h3>
+
+      {% set propertyRows = [
+        [
+          { text: t("pages.caseDetails.legalHelpForm.property.propertyValue") }, 
+          { text: property.value | formatFinancialData }
+        ],
+        [
+          { text: t("pages.caseDetails.legalHelpForm.property.mortgageLeft") }, 
+          { text: property.mortgageLeft | formatFinancialData }
+        ],
+        [
+          { text: t("pages.caseDetails.legalHelpForm.property.propertyShare") }, 
+          { text: property.share + "%" }
+        ]
+      ] %}
+
+      {% if isDisputedCategory %}
+        {% set propertyRows = propertyRows.concat([
+          [
+            { text: t("pages.caseDetails.legalHelpForm.property.disputedProperty") }, 
+            { text: "Yes" if property.disputed else  "No" }
+          ]
+        ]) %}
+      {% endif %}
+
+      {{ govukTable({
+        classes: "legal-help-eligibility-table",
+        firstCellIsHeader: true,
+        rows: propertyRows
+      }) }}
+
+    {% endif %}
+  {% endfor %}
+
+  {# Additional properties #}
+  {% set additionalProperties = [] %}
+
+  {% for property in legalHelpExtract.propertySet %}
+    {% if not property.main %}
+      {% set additionalProperties = additionalProperties.concat([property]) %}
+    {% endif %}
+  {% endfor %}
+
+  {% for property in additionalProperties %}
+
+    <h3 class="govuk-heading-m">{{ t("pages.caseDetails.legalHelpForm.property.additionalPropertyHeading") }} {{ loop.index }}</h3>
+
+    {% set propertyRows = [
+      [
+        { text: t("pages.caseDetails.legalHelpForm.property.propertyValue") }, 
+        { text: property.value | formatFinancialData }
+      ],
+      [
+        { text: t("pages.caseDetails.legalHelpForm.property.mortgageLeft") }, 
+        { text: property.mortgageLeft | formatFinancialData }
+      ],
+      [
+        { text: t("pages.caseDetails.legalHelpForm.property.propertyShare") }, 
+        { text: property.share + "%" }
+      ]
+    ] %}
+
+    {% if isDisputedCategory %}
+      {% set propertyRows = propertyRows.concat([
+        [
+          { text: t("pages.caseDetails.legalHelpForm.property.disputedProperty") }, 
+          { text: "Yes" if property.disputed else "No" }
+        ]
+      ]) %}
+    {% endif %}
+
+    {{ govukTable({
+      firstCellIsHeader: true,
+      classes: "legal-help-eligibility-table",
+      rows: propertyRows
+    }) }}
+
+  {% endfor %}
+{% endif %}
+
+{% if hasProperty === 'Yes' %}
+  {{ govukTable({
+    caption: t("pages.caseDetails.legalHelpForm.property.totalEquityHeading"),
+    classes: "total-equity-table legal-help-eligibility-table",
+    captionClasses: "govuk-table__caption--m",
+    firstCellIsHeader: true,
+    rows: [
+      [
+        { text:t("pages.caseDetails.legalHelpForm.property.equityQuestion"), classes: "income-table__total" },
+        { text: legalHelpExtract.calculations.propertyCapital | formatFinancialData, classes: "income-table__total" }
+      ]
+    ]
+  }) }}
+{% endif %}

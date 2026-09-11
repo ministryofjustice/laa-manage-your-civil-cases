@@ -1,0 +1,35 @@
+{% set rows = [
+  [
+    { text: t("pages.caseDetails.legalHelpForm.details.name") }, 
+    { text: client.fullName }
+  ],
+  [
+    { text: t("pages.caseDetails.legalHelpForm.details.dateOfBirth") }, 
+    { text: client.dateOfBirth if client.dateOfBirth else t("common.notProvided") }
+  ],
+  [
+    { text: t("pages.caseDetails.legalHelpForm.details.nationalInsurance") }, 
+    { text: legalHelpExtract.nationalInsurance if legalHelpExtract.nationalInsurance else t("common.notProvided") }
+  ],
+  [
+    { text: t("pages.caseDetails.legalHelpForm.details.address") }, 
+    { text: client.address if client.address else t("common.notProvided") }
+  ],
+  [
+    { text: t("pages.caseDetails.legalHelpForm.details.postcode") }, 
+    { text: client.postcode if client.postcode else t("common.notProvided") }
+  ],
+  [
+    { text: t("pages.caseDetails.legalHelpForm.details.laaReference") }, 
+    { text: client.laaReference }
+  ]
+] %}
+
+{{ govukTable({
+  caption: t("pages.caseDetails.legalHelpForm.details.detailsHeading"),
+  classes: "legal-help-eligibility-table",
+  captionClasses: "govuk-table__caption--l govuk-!-margin-top-3",
+  firstCellIsHeader: true,
+  classes: "legal-help-eligibility-table",
+  rows: rows
+}) }}

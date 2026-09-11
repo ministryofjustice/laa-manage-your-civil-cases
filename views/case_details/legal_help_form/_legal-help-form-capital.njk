@@ -1,0 +1,181 @@
+{% set savings = legalHelpExtract.clientData.savings %}
+{% set partnerSavings = legalHelpExtract.partnerData.partnerSavings %}
+{% set disputedSavings = legalHelpExtract.disputedSavings %}
+{% set showPartnerColumn = legalHelpExtract.hasPartner %}
+
+{% set showDisputeColumn =
+  legalHelpExtract.category in [
+    'debt',
+    'family'
+  ]
+%}
+
+<div class="page-break"></div>
+<h2 class="govuk-heading-l header-section-padding-top">{{ t('pages.caseDetails.legalHelpForm.capital.h2') }}</h2>
+<p class="govuk-body">{{ t('pages.caseDetails.legalHelpForm.capital.paragraph1') }}</p>
+
+{# Build table headers #}
+{% set head = [ {} ] %}
+
+{% if showDisputeColumn %}
+  {% set head = head.concat([{
+    text: t('pages.caseDetails.legalHelpForm.capital.disputeHeader'),
+    classes: 'income-table__header-align-right'
+  }]) %}
+{% endif %}
+
+{% set head = head.concat([{
+  text: t('pages.caseDetails.legalHelpForm.capital.youHeader'),
+  classes: 'income-table__header-align-right'
+}]) %}
+
+{% if showPartnerColumn %}
+  {% set head = head.concat([{
+    text: t('pages.caseDetails.legalHelpForm.capital.yourPartnerHeader'),
+    classes: 'income-table__header-align-right'
+  }]) %}
+{% endif %}
+
+{# Savings row #}
+{% set savingsRow = [
+  { html: t('pages.caseDetails.legalHelpForm.capital.savings') }
+] %}
+
+{% if showDisputeColumn %}
+  {% set savingsRow = savingsRow.concat([
+    { text: disputedSavings.bankBalance | formatFinancialData }]) %}
+{% endif %}
+
+{% set savingsRow = savingsRow.concat([
+  { text: savings.bankBalance | formatFinancialData }
+]) %}
+
+{% if showPartnerColumn %}
+  {% set savingsRow = savingsRow.concat([
+    { text: partnerSavings.bankBalance | formatFinancialData }
+  ]) %}
+{% endif %}
+
+{# Investments row #}
+{% set investmentsRow = [
+  { html: t('pages.caseDetails.legalHelpForm.capital.investments') }
+] %}
+
+{% if showDisputeColumn %}
+  {% set investmentsRow = investmentsRow.concat([
+    { text: disputedSavings.investmentBalance | formatFinancialData }]) %}
+{% endif %}
+
+{% set investmentsRow = investmentsRow.concat([
+  { text: savings.investmentBalance | formatFinancialData }
+]) %}
+
+{% if showPartnerColumn %}
+  {% set investmentsRow = investmentsRow.concat([
+    { text: partnerSavings.investmentBalance | formatFinancialData }
+  ]) %}
+{% endif %}
+
+{# Valuable items row #}
+{% set valuableItemsRow = [
+  { html: t('pages.caseDetails.legalHelpForm.capital.valuableItem') }
+] %}
+
+{% if showDisputeColumn %}
+  {% set valuableItemsRow = valuableItemsRow.concat([
+    { text: disputedSavings.assetBalance | formatFinancialData }]) %}
+{% endif %}
+
+{% set valuableItemsRow = valuableItemsRow.concat([
+  { text: savings.assetBalance | formatFinancialData }
+]) %}
+
+{% if showPartnerColumn %}
+  {% set valuableItemsRow = valuableItemsRow.concat([
+    { text: partnerSavings.assetBalance | formatFinancialData }
+  ]) %}
+{% endif %}
+
+{# Other capital row #}
+{% set otherCapitalRow = [
+  { html: t('pages.caseDetails.legalHelpForm.capital.otherCapital') }
+] %}
+
+{% if showDisputeColumn %}
+  {% set otherCapitalRow = otherCapitalRow.concat([
+    { text: disputedSavings.creditBalance | formatFinancialData }]) %}
+{% endif %}
+
+{% set otherCapitalRow = otherCapitalRow.concat([
+  { text: savings.creditBalance | formatFinancialData }
+]) %}
+
+{% if showPartnerColumn %}
+  {% set otherCapitalRow = otherCapitalRow.concat([
+    { text: partnerSavings.creditBalance | formatFinancialData }
+  ]) %}
+{% endif %}
+
+{# Pensioner disregard row #}
+{% set pensionerDisregardRow = [{ text: t('pages.caseDetails.legalHelpForm.capital.pensionerDisregard') }] %}
+
+{% if showDisputeColumn %}
+  {% set pensionerDisregardRow = pensionerDisregardRow.concat([{}]) %}
+{% endif %}
+
+{% if showPartnerColumn %}
+  {% set pensionerDisregardRow = pensionerDisregardRow.concat([
+    {},
+    { text: legalHelpExtract.calculations.pensionerDisregard | formatFinancialData }
+  ]) %}
+{% else %}
+  {% set pensionerDisregardRow = pensionerDisregardRow.concat([
+    { text: legalHelpExtract.calculations.pensionerDisregard | formatFinancialData }
+  ]) %}
+{% endif %}
+
+{# Total capital row #}
+{% set totalCapitalRow = [
+  {
+    text: t('pages.caseDetails.legalHelpForm.capital.totalCapital'),
+    classes: "income-table__total"
+  }
+] %}
+
+{% if showDisputeColumn %}
+  {% set totalCapitalRow = totalCapitalRow.concat([
+    { classes: "income-table__total" }
+  ]) %}
+{% endif %}
+
+{% if showPartnerColumn %}
+  {% set totalCapitalRow = totalCapitalRow.concat([
+    { classes: "income-table__total" },
+    {
+      text: legalHelpExtract.calculations.disposableCapitalAssets | formatFinancialData,
+      classes: "income-table__total"
+    }
+  ]) %}
+{% else %}
+  {% set totalCapitalRow = totalCapitalRow.concat([
+    {
+      text: legalHelpExtract.calculations.disposableCapitalAssets | formatFinancialData,
+      classes: "income-table__total"
+    }
+  ]) %}
+{% endif %}
+
+{{ govukTable({
+  classes: "legal-help-eligibility-table",
+  captionClasses: "govuk-table__caption--m",
+  firstCellIsHeader: true,
+  head: head,
+  rows: [
+    savingsRow,
+    investmentsRow,
+    valuableItemsRow,
+    otherCapitalRow,
+    pensionerDisregardRow,
+    totalCapitalRow
+  ]
+}) }}

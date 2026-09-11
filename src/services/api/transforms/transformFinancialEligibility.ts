@@ -158,6 +158,6 @@ function formatMoneyPerInterval(value: unknown): MoneyPerInterval {
  * @param {number} pence amount in pence to be converted to pounds
  * @returns {number} pounds amount as a number
  */
-function convertPenceToPounds(pence: number): number {
+export function convertPenceToPounds(pence: number): number {
   return pence / 100;
 }

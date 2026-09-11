@@ -587,3 +587,12 @@ export function handleNoChangeRedirect(
 
   return false;
 }
+
+/**
+ * Get the CSRF token for a request, if CSRF protection is enabled
+ * @param {Request} req Express request object
+ * @returns {string | undefined} The CSRF token, or undefined if unavailable
+ */
+export function getCsrfToken(req: Request): string | undefined {
+  return typeof req.csrfToken === 'function' ? req.csrfToken() : undefined;
+}
