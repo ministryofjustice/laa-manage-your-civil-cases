@@ -78,6 +78,10 @@ test.describe('Legal help form journey', () => {
       'Are you aged 17 or under?': 'No',
       'Do you have a partner?': 'No',
       'Are you aged 60 or over?': 'No',
+    });
+
+    // Benefits table
+    await expectCaptionTableRows(page, 'Do you receive any of the following benefits:', {
       'Universal Credit': 'No',
       'Income Support': 'No',
       'Income-based Job Seekers Allowance': 'No',
@@ -208,11 +212,15 @@ test.describe('Legal help form journey', () => {
       'LAA reference': '2850581',
     });
 
-    // Your finances table
+     // Your finances table
     await expectCaptionTableRows(page, 'Your finances', {
       'Are you aged 17 or under?': 'No',
       'Do you have a partner?': 'Yes',
       'Are you or your partner aged 60 or over?': 'No',
+    });
+
+    // Benefits table
+    await expectCaptionTableRows(page, 'Do you or your partner receive any of the following benefits:', {
       'Universal Credit': 'No',
       'Income Support': 'No',
       'Income-based Job Seekers Allowance': 'No',
@@ -387,10 +395,15 @@ test.describe('Legal help form journey', () => {
 
       await navigateToLegalHelpForm(page, caseReference);
 
+      // Your finances table
       await expectCaptionTableRows(page, 'Your finances', {
         'Are you aged 17 or under?': 'No',
         'Do you have a partner?': 'No',
         'Are you aged 60 or over?': 'No',
+      });
+
+      // Benefits table
+      await expectCaptionTableRows(page, 'Do you receive any of the following benefits:', {
         'Universal Credit': 'Yes',
         'Income Support': 'No',
         'Income-based Job Seekers Allowance': 'Yes',
@@ -417,9 +430,9 @@ test.describe('Legal help form journey', () => {
       });
 
       const financesTable = page.getByRole('table', { name: 'Your finances' });
+      const benefitsTable = page.getByRole('table', { name: 'Do you or your partner receive any of the following benefits:' });
 
-      await expect(financesTable.getByText('Do you or your partner receive any of the following benefits:', { exact: true })).toBeVisible();
-
+      await expect(benefitsTable).toBeVisible();
       await expect(financesTable.getByText('Are you aged 60 or over?', { exact: true })).toHaveCount(0);
     });
   });
@@ -785,7 +798,7 @@ test.describe('Legal help form journey', () => {
   test('should repopulate the interstitial when returning from the legal help form', async ({ page }) => {
     const caseReference = 'PC-9173-4826';
     const evidence = 'Bank statements for the last 3 months';
-    const clientDetails = ClientDetailsPage.forCase(page, caseReference );
+    const clientDetails = ClientDetailsPage.forCase(page, caseReference);
 
     await clientDetails.navigate();
 
@@ -804,7 +817,7 @@ test.describe('Legal help form journey', () => {
 
     await expect(page).toHaveURL(`/cases/${caseReference}/legal-help-form`);
 
-    await page.getByRole('link', { name: 'Back', exact: true}).click();
+    await page.getByRole('link', { name: 'Back', exact: true }).click();
 
     await expect(page).toHaveURL(`/cases/${caseReference}/get-legal-help-form`);
 
