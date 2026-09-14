@@ -1542,7 +1542,7 @@
           },
           "deductions": {
             "income_tax": {
-              "per_interval_value": 0,
+              "per_interval_value": 10000,
               "interval_period": "per_4week"
             },
             "national_insurance": {
@@ -1664,7 +1664,8 @@
           "partner_employment_allowance": "1000000",
           "dependants_allowance": "100000",
           "disposable_income": "100000",
-          "partner_allowance": "100000"
+          "partner_allowance": "100000",
+          "employment_allowance": "500000"
         }
       },
       "personal_details": {

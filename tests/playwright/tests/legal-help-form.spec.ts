@@ -158,7 +158,7 @@ test.describe('Legal help form journey', () => {
 
     await expect(employmentExpensesTable.getByRole('columnheader', { name: 'Your partner', exact: true })).toHaveCount(0);
 
-    await expectTableRows(employmentExpensesTable, { 'Employment expenses': '£45' });
+    await expectTableRows(employmentExpensesTable, { 'Employment expenses': '£0' });
 
     await expectTableRows(calculatedTotalsTable, {
       'Dependants allowance': '£1,000',
@@ -332,12 +332,12 @@ test.describe('Legal help form journey', () => {
     await expect(employmentExpensesTable).toBeVisible();
     await expect(calculatedTotalsTable).toBeVisible();
 
-    await expect( employmentExpensesTable.getByRole('columnheader', {name: 'You', exact: true })).toBeVisible();
+    await expect(employmentExpensesTable.getByRole('columnheader', { name: 'You', exact: true })).toBeVisible();
 
-    await expect(employmentExpensesTable.getByRole('columnheader', {name: 'Your partner', exact: true })).toBeVisible();
+    await expect(employmentExpensesTable.getByRole('columnheader', { name: 'Your partner', exact: true })).toBeVisible();
 
     await expectTableRows(employmentExpensesTable, {
-      'Employment expenses': ['£45', '£0'],
+      'Employment expenses': ['£5,000', '£10,000'],
     });
 
     await expectTableRows(calculatedTotalsTable, {
@@ -804,7 +804,20 @@ test.describe('Legal help form journey', () => {
       'Legal Aid payments for criminal defence': ['£20', '£10'],
     });
 
-    await expectHeadingTableRows(page, 'Calculated expenses', { 'Employment expenses': '£0' });
+    // Calculated expenses
+    const calculatedExpensesHeading = page.getByRole('heading', {
+      level: 3,
+      name: 'Calculated expenses',
+      exact: true,
+    });
+
+    await expect(calculatedExpensesHeading).toBeVisible();
+
+    const employmentExpensesTable = calculatedExpensesHeading.locator('xpath=following-sibling::table[1]');
+
+    await expectTableRows(employmentExpensesTable, {
+      'Employment expenses': ['£5,000', '£10,000'],
+    });
 
     const calculatedExpensesTable = page.getByRole('heading', { name: 'Calculated expenses' }).locator('xpath=following-sibling::table[1]');
     const totalTable = calculatedExpensesTable.locator('xpath=following-sibling::table[1]');
