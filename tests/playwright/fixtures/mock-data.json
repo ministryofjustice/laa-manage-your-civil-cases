@@ -405,6 +405,25 @@
     "postcode": "LL53 2AD",
     "laaReference": "8196672",
     "lastModified": "2025-07-06T19:00:00-05:00",
+    "thirdParty": {
+      "fullName": "Sarah Johnson",
+      "emailAddress": "sarah@johnson.com",
+      "contactNumber": "07787123456",
+      "safeToCall": true,
+      "address": "45 Main Street, Sheffield",
+      "postcode": "S1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "FAMILY_FRIEND"
+        ]
+      },
+      "passphraseSetUp": {
+        "selected": [
+          "Yes"
+        ],
+        "passphrase": "TestPass123"
+      }
+    },
     "financialEligibility": {
        "category": "debt",
        "savings": {
