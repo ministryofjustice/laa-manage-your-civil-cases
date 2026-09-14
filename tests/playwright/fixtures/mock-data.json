@@ -1245,7 +1245,12 @@
           "cost_living": true
         },
         "calculations": {
-          "disposable_capital_assets": "100000"
+          "disposable_capital_assets": "100000",
+          "pensioner_disregard": "200000",
+          "property_capital": "1000000",
+          "partner_employment_allowance": "1000000",
+          "dependants_allowance": "100000",
+          "disposable_income": "100000"
         }
       },
       "personal_details": {
@@ -1653,7 +1658,13 @@
           "cost_living": true
         },
         "calculations": {
-          "disposable_capital_assets": "200000"
+          "disposable_capital_assets": "100000",
+          "pensioner_disregard": "200000",
+          "property_capital": "1000000",
+          "partner_employment_allowance": "1000000",
+          "dependants_allowance": "100000",
+          "disposable_income": "100000",
+          "partner_allowance": "100000"
         }
       },
       "personal_details": {

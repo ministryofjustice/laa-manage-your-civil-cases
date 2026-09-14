@@ -103,7 +103,7 @@ test.describe('Legal help form journey', () => {
     });
 
     // Total equity table
-    await expectCaptionTableRows(page, 'Total equity', { 'Total equity in homes for assessment purposes': '£0' });
+    await expectCaptionTableRows(page, 'Total equity', { 'Total equity in homes for assessment purposes': '£10,000' });
 
     // Capital table 
     await expectCapitalTableRows(page, {
@@ -111,7 +111,7 @@ test.describe('Legal help form journey', () => {
       "Investments": '£300',
       'Valuable Items': '£500',
       'Other capital': '£100',
-      'Pensioner capital disregard': '£0',
+      'Pensioner capital disregard': '£2,000',
       'Total capital for assessment purposes': '£1,000',
     });
 
@@ -140,14 +140,32 @@ test.describe('Legal help form journey', () => {
     });
 
     // Calculated expenses
-    await expectHeadingTableRows(page, 'Calculated expenses', { 'Employment expenses': '£45' });
-
-    const calculatedExpensesTable = page.getByRole('heading', { name: 'Calculated expenses' }).locator('xpath=following-sibling::table[1]');
-    const totalTable = calculatedExpensesTable.locator('xpath=following-sibling::table[1]');
-    await expectTableRows(totalTable, {
-      'Dependants allowance': '£0',
-      'Total monthly disposable income': '£0',
+    const calculatedExpensesHeading = page.getByRole('heading', {
+      level: 3,
+      name: 'Calculated expenses',
+      exact: true,
     });
+
+    await expect(calculatedExpensesHeading).toBeVisible();
+
+    const employmentExpensesTable = calculatedExpensesHeading.locator('xpath=following-sibling::table[1]');
+    const calculatedTotalsTable = calculatedExpensesHeading.locator('xpath=following-sibling::table[2]');
+
+    await expect(employmentExpensesTable).toBeVisible();
+    await expect(calculatedTotalsTable).toBeVisible();
+
+    await expect(employmentExpensesTable.getByRole('columnheader', { name: 'You', exact: true })).toBeVisible();
+
+    await expect(employmentExpensesTable.getByRole('columnheader', { name: 'Your partner', exact: true })).toHaveCount(0);
+
+    await expectTableRows(employmentExpensesTable, { 'Employment expenses': '£45' });
+
+    await expectTableRows(calculatedTotalsTable, {
+      'Dependants allowance': '£1,000',
+      'Total monthly disposable income': '£1,000',
+    });
+
+    await expect(calculatedTotalsTable.getByRole('row').filter({ has: calculatedTotalsTable.getByRole('rowheader', { name: 'Partner allowance', exact: true }) })).toHaveCount(0);
 
     // Evidence can be seen in evidence box
     await expect(page.getByRole('heading', { name: 'Evidence we need from you' })).toBeVisible();
@@ -212,7 +230,7 @@ test.describe('Legal help form journey', () => {
       'LAA reference': '2850581',
     });
 
-     // Your finances table
+    // Your finances table
     await expectCaptionTableRows(page, 'Your finances', {
       'Are you aged 17 or under?': 'No',
       'Do you have a partner?': 'Yes',
@@ -242,7 +260,7 @@ test.describe('Legal help form journey', () => {
     });
 
     // Total equity table
-    await expectCaptionTableRows(page, 'Total equity', { 'Total equity in homes for assessment purposes': '£0' });
+    await expectCaptionTableRows(page, 'Total equity', { 'Total equity in homes for assessment purposes': '£10,000' });
 
     // Capital table 
     await expectCapitalTableRows(page, {
@@ -250,8 +268,8 @@ test.describe('Legal help form journey', () => {
       "Investments": '£300',
       'Valuable Items': '£500',
       'Other capital': '£100',
-      'Pensioner capital disregard': '£0',
-      'Total capital for assessment purposes': '£2,000',
+      'Pensioner capital disregard': '£2,000',
+      'Total capital for assessment purposes': '£1,000',
     });
 
     // Income table 
@@ -299,13 +317,33 @@ test.describe('Legal help form journey', () => {
     });
 
     // Calculated expenses
-    await expectHeadingTableRows(page, 'Calculated expenses', { 'Employment expenses': '£45' });
+    const calculatedExpensesHeading = page.getByRole('heading', {
+      level: 3,
+      name: 'Calculated expenses',
+      exact: true,
+    });
 
-    const calculatedExpensesTable = page.getByRole('heading', { name: 'Calculated expenses' }).locator('xpath=following-sibling::table[1]');
-    const totalTable = calculatedExpensesTable.locator('xpath=following-sibling::table[1]');
-    await expectTableRows(totalTable, {
-      'Dependants allowance': '£0',
-      'Total monthly disposable income': '£0',
+    await expect(calculatedExpensesHeading).toBeVisible();
+
+    const employmentExpensesTable = calculatedExpensesHeading.locator('xpath=following-sibling::table[1]');
+
+    const calculatedTotalsTable = calculatedExpensesHeading.locator('xpath=following-sibling::table[2]');
+
+    await expect(employmentExpensesTable).toBeVisible();
+    await expect(calculatedTotalsTable).toBeVisible();
+
+    await expect( employmentExpensesTable.getByRole('columnheader', {name: 'You', exact: true })).toBeVisible();
+
+    await expect(employmentExpensesTable.getByRole('columnheader', {name: 'Your partner', exact: true })).toBeVisible();
+
+    await expectTableRows(employmentExpensesTable, {
+      'Employment expenses': ['£45', '£0'],
+    });
+
+    await expectTableRows(calculatedTotalsTable, {
+      'Dependants allowance': '£1,000',
+      'Partner allowance': '£1,000',
+      'Total monthly disposable income': '£1,000',
     });
 
     // Evidence can be seen in evidence box
@@ -324,7 +362,7 @@ test.describe('Legal help form journey', () => {
     });
 
 
-    // As this case has a partner we should not see any `Your partner' column
+    // As this case has a partner we should see all `Your partner' column
     const partnerColumnHeaders = page.getByRole('table').getByRole('columnheader', { name: /Your partner/i });
     await expect(partnerColumnHeaders).toHaveCount(4); // your capital, your income, less monthly allowances, calculated expenses. 
   });
@@ -555,7 +593,7 @@ test.describe('Legal help form journey', () => {
         'Percentage share': '100%',
       });
 
-      await expectCaptionTableRows(page, 'Total equity', { 'Total equity in homes for assessment purposes': '£0' });
+      await expectCaptionTableRows(page, 'Total equity', { 'Total equity in homes for assessment purposes': '£10,000' });
     });
 
     test('should display additional properties and total equity', async ({ page }) => {
@@ -636,10 +674,10 @@ test.describe('Legal help form journey', () => {
       await expect(capitalTable).toContainText('£200');
 
       // Pensioner disregard
-      await expect(capitalTable.getByRole('row').filter({ hasText: 'Pensioner capital disregard' })).toContainText('£0');
+      await expect(capitalTable.getByRole('row').filter({ hasText: 'Pensioner capital disregard' })).toContainText('£2,000');
 
       // total 
-      await expect(capitalTable.getByRole('row').filter({ hasText: 'Total capital for assessment purposes' })).toContainText('£2,000');
+      await expect(capitalTable.getByRole('row').filter({ hasText: 'Total capital for assessment purposes' })).toContainText('£1,000');
     });
 
     test('should display disputed savings column for debt cases', async ({ page }) => {
@@ -771,9 +809,9 @@ test.describe('Legal help form journey', () => {
     const calculatedExpensesTable = page.getByRole('heading', { name: 'Calculated expenses' }).locator('xpath=following-sibling::table[1]');
     const totalTable = calculatedExpensesTable.locator('xpath=following-sibling::table[1]');
     await expectTableRows(totalTable, {
-      'Dependants allowance': '£0',
-      'Partner allowance': '£0',
-      'Total monthly disposable income': '£0',
+      'Dependants allowance': '£1,000',
+      'Partner allowance': '£1,000',
+      'Total monthly disposable income': '£1,000',
     });
   });
 
@@ -825,8 +863,8 @@ test.describe('Legal help form journey', () => {
     await expect(circumstanceCheckbox).toBeChecked();
   });
 
-   test('should show yes for asylum support when on_nass_benefits is true', async ({ page }) => {
-    const caseReference = 'PC-9173-4826'; 
+  test('should show yes for asylum support when on_nass_benefits is true', async ({ page }) => {
+    const caseReference = 'PC-9173-4826';
     const evidence = 'Bank statements for the last 3 months';
 
     const clientDetails = ClientDetailsPage.forCase(page, caseReference);
