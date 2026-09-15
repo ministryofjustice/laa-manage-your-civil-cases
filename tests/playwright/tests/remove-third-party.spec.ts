@@ -40,7 +40,8 @@ test('cancel link should navigate back to client details', async ({ page, i18nSe
   // Assert third party details summary card is visible with data
   await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: true, changeHref: '/client-details/change/third-party', removeHref: '/confirm/remove-third-party' });
   // Assert the correct data is displayed in the third party data summary card
-  await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Jane Smith', 'Phone number': '07700900456', 'Email address': 'jane.smith@example.com', 'Relationship to client': 'Parent or guardian' });
+  await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Sarah Johnson', 'Phone number': 'Warning Not safe to call', 'Email address': 'sarah@johnson.com', 'Address': '45 Main Street, Sheffield S1 2AB', 'Relationship to client': 'Family member or friend', 'Passphrase': 'TestPass123' });
+
 });
 
 test('confirm button should delete third party contact and redirect to client details', async ({ page, i18nSetup }) => {

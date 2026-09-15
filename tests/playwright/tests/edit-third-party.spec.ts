@@ -16,6 +16,7 @@ test('viewing edit third party form should display expected elements', async ({ 
 
   // Assert the case details header is present
   await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  
   // Expect to see the main elements
   await thirdPartyPage.expectPageLoaded(thirdPartyPage.getExpectedHeading());
   await thirdPartyPage.expectFormElementsVisible();
@@ -35,7 +36,8 @@ test('cancel link should navigate back to client details', async ({ page, i18nSe
 });
 
 test('save button should redirect to client details when valid data submitted', async ({ page, i18nSetup }) => {
-  const thirdPartyPage = ThirdPartyFormPage.forEdit(page, clientDetailsUrl);
+  const clientUrl = `/cases/PC-1357-1212/client-details`;
+  const thirdPartyPage = ThirdPartyFormPage.forEdit(page, clientUrl);
 
   // Navigate to the edit third party form
   await thirdPartyPage.navigate();
@@ -58,7 +60,6 @@ test('save button should redirect to client details when valid data submitted', 
 
   // Check error summary is not present
   await expect(page.locator('.govuk-error-summary')).not.toBeVisible();
-  //TODO
 });
 
 test('edit third party form displays validation errors correctly', async ({ page, i18nSetup }) => {
@@ -134,7 +135,7 @@ test('unchanged fields show "no changes" banner and redirect', async ({ page }) 
   // Assert third party details summary card is visible with data
   await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: true, changeHref: '/client-details/change/third-party', removeHref: '/confirm/remove-third-party' });
   // Assert the correct data is displayed in the third party data summary card
-  await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Jane Smith', 'Phone number': '07700900456', 'Email address': 'jane.smith@example.com', 'Relationship to client': 'Parent or guardian' });
+  await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Sarah Johnson', 'Phone number': 'Warning Not safe to call', 'Email address': 'sarah@johnson.com', 'Address': '45 Main Street, Sheffield S1 2AB', 'Relationship to client': 'Family member or friend', 'Passphrase': 'TestPass123' });
 
   // Check error summary is not present
   await expect(page.locator('.govuk-error-summary')).not.toBeVisible();
