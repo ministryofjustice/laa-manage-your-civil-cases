@@ -307,6 +307,8 @@
       "notSafeToCall": "Not safe to call",
       "columns": {
         "name": "Name",
+        "personalDetails": "Personal details",
+        "references": "References",
         "laaReference": "LAA reference",
         "caseId": "Case ID",
         "dateOfBirth": "Date of birth",
@@ -319,6 +321,13 @@
         "phoneNumber": "Phone number",
         "status": "Status",
         "lastModified": "Last modified"
+      },
+      "labels": {
+        "dateOfBirth": "Date of birth",
+        "postcode": "Postcode",
+        "phoneNumber": "Phone",
+        "laaReference": "LAA ref",
+        "caseId": "Case ID"
       }
     },
     "errorSummary": {
