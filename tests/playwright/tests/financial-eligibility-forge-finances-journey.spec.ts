@@ -4,7 +4,7 @@ import { setupAuth, assertCaseDetailsHeaderPresent } from '../utils/index.js';
 
 async function completeIntroToBenefitsNoPartner(page: Page) {
   await page.goto(`/cases/PC-1922-1879/financial-eligibility/change`);
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Jack Youngs', expectedCaseRef: 'PC-1922-1879', dateReceived: '7 July 2025', badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Jack Youngs', expectedCaseRef: 'PC-1922-1879', dateReceived: '7 Jul 2025 at', badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
 
   // Under 18: No
   await page.getByRole('radio', { name: 'No' }).check();
