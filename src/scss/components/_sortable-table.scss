@@ -1,7 +1,7 @@
-// Header for secondary/identifying columns (for example LAA reference, case
-// ID, date of birth, postcode, phone number), styled to be less prominent
-// than primary columns so tables with many columns wrap less on narrow screens
-.app-table__header--secondary {
+// Secondary/identifying label:value lines within a stacked cell (for example
+// LAA reference, case ID, date of birth, postcode, phone number), styled to be
+// less prominent than the primary line so cells with many lines read clearly
+.app-table__cell-label--secondary {
   color: var(--govuk-secondary-text-colour, #484949);
 
   // Overrides govuk-body-s's default margin-bottom so stacked label:value
@@ -20,7 +20,7 @@
 // Small gap between stacked lines that aren't grouped under a primary value
 // (for example References: LAA ref / Case ID), unlike Personal details'
 // tightly stacked Date of birth/Postcode lines
-.app-table__header--secondary.app-table__stacked-line--gap {
+.app-table__cell-label--secondary.app-table__stacked-line--gap {
   margin-bottom: 8px;
 }
 
