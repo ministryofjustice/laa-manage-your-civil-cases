@@ -1,3 +1,45 @@
+// Secondary/identifying label:value lines within a stacked cell (for example
+// LAA reference, case ID, date of birth, postcode, phone number), styled to be
+// less prominent than the primary line so cells with many lines read clearly
+.app-table__cell-label--secondary {
+  color: var(--govuk-secondary-text-colour, #484949);
+
+  // Overrides govuk-body-s's default margin-bottom so stacked label:value
+  // lines sit tightly together instead of leaving a visible gap
+  &.govuk-body-s {
+    margin-bottom: 0;
+  }
+}
+
+// Prevents atomic values (dates, postcodes, reference numbers) from breaking
+// mid-value onto a second line when their column is narrow
+.app-table__stacked-value {
+  white-space: nowrap;
+}
+
+// Small gap between stacked lines that aren't grouped under a primary value
+// (for example References: LAA ref / Case ID), unlike Personal details'
+// tightly stacked Date of birth/Postcode lines
+.app-table__cell-label--secondary.app-table__stacked-line--gap {
+  margin-bottom: 8px;
+}
+
+// Gives the merged "Personal details" and "References" columns enough room
+// for their label:value lines to sit on a single line rather than wrapping
+.app-cases-table {
+  table-layout: fixed;
+
+  th:first-child,
+  td:first-child {
+    width: 28%;
+  }
+
+  th:nth-child(2),
+  td:nth-child(2) {
+    width: 20%;
+  }
+}
+
 [aria-sort="ascending"] a,
 [aria-sort="descending"] a {
   align-items: center;

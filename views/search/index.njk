@@ -110,14 +110,30 @@
 
         {{ sortableTableComponent({
           id: "search-results-table",
+          classes: "app-cases-table",
           data: searchResults,
           columns: [
-            { key: "fullName", text: t('components.table.columns.name'), link: "/cases/{{caseReference}}/client-details" },
-            { key: "laaReference", text: t('components.table.columns.laaReference') },
-            { key: "caseReference", text: t('components.table.columns.caseId') },
-            { key: "dateOfBirth", text: t('components.table.columns.dateOfBirth') },
-            { key: "postcode", text: t('components.table.columns.postcode') },
-            { key: "phoneNumber", text: t('components.table.columns.phoneNumber') },
+            {
+              key: "personalDetails",
+              text: t('components.table.columns.personalDetails'),
+              type: "stacked",
+              primary: { key: "fullName", link: "/cases/{{caseReference}}/client-details" },
+              fields: [
+                { key: "dateOfBirth", label: t('components.table.labels.dateOfBirth') },
+                { key: "postcode", label: t('components.table.labels.postcode') },
+                { key: "phoneNumber", label: t('components.table.labels.phoneNumber') }
+              ]
+            },
+            {
+              key: "references",
+              text: t('components.table.columns.references'),
+              type: "stacked",
+              stackedLineGap: true,
+              fields: [
+                { key: "laaReference", label: t('components.table.labels.laaReference') },
+                { key: "caseReference", label: t('components.table.labels.caseId') }
+              ]
+            },
             { key: "category", text: t('components.table.columns.category') },
             { key: "caseStatus", text: t('components.table.columns.status') },
             { key: "modified", text: t('components.table.columns.lastModified'), sortable: true }
