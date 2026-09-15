@@ -14,7 +14,7 @@ test('edit client support needs form should save valid data and redirect to clie
   await page.goto(editSupportNeedsUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 August 2025", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'] });
 
   // Expect to see the form heading
   await expect(page.locator('legend.govuk-fieldset__legend')).toContainText('Change client support needs');
@@ -55,7 +55,7 @@ test('edit client support needs form should show validation error if no option s
   await page.goto(editSupportNeedsUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 August 2025", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'] });
 
   // Check the box for "Other support" but do not fill in the text to trigger validation error
   const otherSupportCheckbox = page.locator('input[name="clientSupportNeeds"][value="otherSupport"]');
@@ -135,7 +135,7 @@ test('edit client support needs should remove all support needs when none select
   await page.goto(supportNeedsURL);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Red Haired Shanks", expectedCaseRef: "PC-1122-3344", dateReceived: "8 August 2025", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Red Haired Shanks", expectedCaseRef: "PC-1122-3344", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'] });
 
   // Ensure page loaded
   await expect(page.locator('legend.govuk-fieldset__legend')).toContainText('Change client support needs');

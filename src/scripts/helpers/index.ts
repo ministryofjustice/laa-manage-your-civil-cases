@@ -59,7 +59,8 @@ export {
   formatDateLongMonth,
   formatLongFormDate,
   formatLongFormDateWithShortMonth,
-  dateStringFromThreeFields
+  dateStringFromThreeFields,
+  calculateAge
 } from './dateFormatter.js';
 
 // Date validation utilities

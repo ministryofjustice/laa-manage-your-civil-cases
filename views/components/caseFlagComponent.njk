@@ -1,7 +1,7 @@
 {%- from "moj/components/badge/macro.njk" import mojBadge -%}
 
 {% macro caseFlagComponent(isUrgent, vulnerableUser, outcomeCode, caseStatus, thirdParty, language, textRelay, bslWebcam, addSpacing = false) %}
-  {% set spacingClass = " govuk-!-margin-bottom-3" if addSpacing else "" %}
+  {% set spacingClass = " govuk-!-margin-bottom-1" if addSpacing else "" %}
 
   {% if isUrgent and caseStatus in["new", "pending"] %}
     {{ mojBadge({
