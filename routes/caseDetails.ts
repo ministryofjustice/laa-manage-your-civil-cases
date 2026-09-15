@@ -4,10 +4,9 @@ import { handleClientDetailsTab } from '#src/scripts/controllers/clientDetailsCo
 import { acceptCase, completeCase, closeCase, getCloseCaseForm, getPendingCaseForm, pendingCase, getReopenCaseForm, reopenCompletedCase, reopenClosedCase } from '#src/scripts/controllers/caseStateController.js';
 import { handleCaseHistoryTab } from '#src/scripts/controllers/caseHistoryController.js';
 import { handleCaseDetailsTab, saveProviderNote } from '#src/scripts/controllers/caseDetailsController.js';
-import { getRemoveThirdPartyConfirmation, deleteThirdParty, getChangeCategoryOfLaw, submitChangeCategoryOfLawForm, handleFinancialEligibilityTab } from '#src/scripts/controllers/index.js';
+import { getRemoveThirdPartyConfirmation, deleteThirdParty, getChangeCategoryOfLaw, submitChangeCategoryOfLawForm, handleFinancialEligibilityTab, getLegalHelpFormInterstitial, submitLegalHelpFormInterstitial, getLegalHelpForm } from '#src/scripts/controllers/index.js';
 import { getOperatorFeedbackForm, submitOperatorFeedback, getDoYouWantToGiveFeedbackForm, submitDoYouWantToGiveFeedbackForm } from '#src/scripts/controllers/operatorFeedbackController.js';
 import { getSplitThisCaseForm, submitSplitThisCaseForm, getAboutNewCaseForm, submitAboutNewCaseForm, getCheckSplitCaseAnswersForm, submitCheckSplitCaseAnswersForm, setSplitCaseCacheSettings } from '#src/scripts/controllers/splitCaseController.js';
-import { getLegalHelpFormInterstitial, submitLegalHelpFormInterstitial, getLegalHelpForm } from '#src/scripts/controllers/legalHelpFormController.js';
 import { validateReopenCase, validateCloseCase, validatePendingCase, validateOperatorFeedback, validateProviderNote, fetchClientDetails, validateGiveFeedback, validateSplitThisCase, validateAboutNewCase, validateChangeCategoryOfLaw, validateGetLegalHelpForm } from '#src/middlewares/indexSchema.js';
 
 
@@ -175,8 +174,8 @@ router.post('/:caseReference/get-legal-help-form', validateGetLegalHelpForm(), a
 });
 
 /* GET legal-help-form page. */
-router.get('/:caseReference/legal-help-form', fetchClientDetails, (req: Request, res: Response, next: NextFunction): void => {
-  getLegalHelpForm(req, res, next);
+router.get('/:caseReference/legal-help-form/', fetchClientDetails, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  await getLegalHelpForm(req, res, next);
 });
 
 export default router;
