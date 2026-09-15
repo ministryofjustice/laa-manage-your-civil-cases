@@ -85,7 +85,8 @@ export {
   validCaseReference,
   hasCaseStatus, 
   hasAllowedCaseStatus, 
-  handleNoChangeRedirect
+  handleNoChangeRedirect,
+  getCsrfToken
 } from './formControllerHelpers.js';
 
 // Session helpers

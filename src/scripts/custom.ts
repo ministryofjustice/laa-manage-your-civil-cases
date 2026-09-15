@@ -1,6 +1,7 @@
 // Custom TypeScript goes in here.
 import "#src/scripts/asciiArt.js";
 import "#src/scripts/satisfactionFeedback.js" 
+import "#src/scripts/printLegalHelpForm.js" 
 import { initializeFormMethodLinks } from '#utils/client/formMethodHelper.js';
 
 // Initialize form method links for data-method="post" handling

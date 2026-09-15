@@ -51,6 +51,7 @@ describe('Legal Help Form Controller', () => {
   let redirectStub: sinon.SinonStub;
   let statusStub: sinon.SinonStub;
   let getClientDetailsStub: sinon.SinonStub;
+  let getLegalHelpExtractStub: sinon.SinonStub;
 
   before(() => {
     initializeI18nextSync();
@@ -65,7 +66,11 @@ describe('Legal Help Form Controller', () => {
       csrfToken: () => 'test-csrf-token',
       clientData: {
         fullName: 'John Doe',
-        caseReference: 'TEST123'
+        caseReference: 'TEST123',
+        dateOfBirth: '1980-01-01',
+        address: '123 Main St',
+        postcode: 'AB12 3CD',
+        laaReference: 'LAA123456',
       }
     } as Partial<RequestWithMiddleware>;
 
@@ -82,6 +87,7 @@ describe('Legal Help Form Controller', () => {
     next = sinon.stub();
 
     getClientDetailsStub = sinon.stub(apiService, 'getClientDetails');
+    getLegalHelpExtractStub = sinon.stub(apiService, 'getLegalHelpExtract').resolves({ status: 'success', data: null });
   });
 
   afterEach(() => {
@@ -92,7 +98,7 @@ describe('Legal Help Form Controller', () => {
     it('should render the interstitial form with an empty starting state and CSRF protection', () => {
       getLegalHelpFormInterstitial(req as Request, res as Response, next as NextFunction);
 
-      expect(renderStub.calledWith('case_details/legal-help-form-interstitial.njk')).to.be.true;
+      expect(renderStub.calledWith('case_details/legal_help_form/legal-help-form-interstitial.njk')).to.be.true;
 
       const renderArgs = renderStub.firstCall.args[1];
       expect(renderArgs.caseReference).to.equal('TEST123');
@@ -169,7 +175,7 @@ describe('Legal Help Form Controller', () => {
       await submitLegalHelpFormInterstitial(req as RequestWithMiddleware, res as Response, next);
 
       expect(statusStub.calledWith(400)).to.be.true;
-      expect(renderStub.calledWith('case_details/legal-help-form-interstitial.njk')).to.be.true;
+      expect(renderStub.calledWith('case_details/legal_help_form/legal-help-form-interstitial.njk')).to.be.true;
       expect(redirectStub.called).to.be.false;
 
       const renderArgs = renderStub.firstCall.args[1];
@@ -225,7 +231,7 @@ describe('Legal Help Form Controller', () => {
   });
 
   describe('getLegalHelpForm', () => {
-    it('should render the legal help form populated from the session', () => {
+    it('should render the legal help form populated from the session', async () => {
       req.session = {
         legalHelpFormAnswers: {
           caseReference: 'TEST123',
@@ -234,26 +240,26 @@ describe('Legal Help Form Controller', () => {
         }
       } as any;
 
-      getLegalHelpForm(req as Request, res as Response, next as NextFunction);
+      await getLegalHelpForm(req as Request, res as Response, next as NextFunction);
 
-      expect(renderStub.calledWith('case_details/legal-help-form.njk')).to.be.true;
+      expect(renderStub.calledWith('case_details/legal_help_form/legal-help-form.njk')).to.be.true;
 
       const renderArgs = renderStub.firstCall.args[1];
       expect(renderArgs.evidence).to.equal('Bank statements');
       expect(renderArgs.additionalCircumstances).to.deep.equal([
-        'This is an application for Exceptional Case Funding (ECF)'
+        'ecf'
       ]);
     });
 
-    it('should render with empty defaults when nothing was stored in session', () => {
-      getLegalHelpForm(req as Request, res as Response, next as NextFunction);
+    it('should render with empty defaults when nothing was stored in session', async () => {
+      await getLegalHelpForm(req as Request, res as Response, next as NextFunction);
 
       const renderArgs = renderStub.firstCall.args[1];
       expect(renderArgs.evidence).to.equal('');
       expect(renderArgs.additionalCircumstances).to.deep.equal([]);
     });
 
-    it('should ignore session answers left over from a different case', () => {
+    it('should ignore session answers left over from a different case', async () => {
       req.session = {
         legalHelpFormAnswers: {
           caseReference: 'OTHER-CASE',
@@ -262,7 +268,7 @@ describe('Legal Help Form Controller', () => {
         }
       } as any;
 
-      getLegalHelpForm(req as Request, res as Response, next as NextFunction);
+      await getLegalHelpForm(req as Request, res as Response, next as NextFunction);
 
       const renderArgs = renderStub.firstCall.args[1];
       expect(renderArgs.evidence).to.equal('');
@@ -278,12 +284,86 @@ describe('Legal Help Form Controller', () => {
       expect(renderStub.calledWith('main/error.njk')).to.be.true;
     });
 
-    it('should delegate render exceptions to Express error handling middleware', () => {
+    it('should delegate render exceptions to Express error handling middleware', async () => {
       renderStub.throws(new Error('Render error'));
 
-      getLegalHelpForm(req as Request, res as Response, next as NextFunction);
+      await getLegalHelpForm(req as Request, res as Response, next as NextFunction);
 
       expect(next.calledOnce).to.be.true;
     });
+  });
+
+  it('should render the legal help form populated with client details', async () => {
+    getLegalHelpExtractStub.resolves({
+      status: 'success',
+      data: {
+        nationalInsurance: 'AB123456C',
+      },
+    });
+
+    await getLegalHelpForm(
+      req as Request,
+      res as Response,
+      next as NextFunction,
+    );
+
+    expect(
+      renderStub.calledWith(
+        'case_details/legal_help_form/legal-help-form.njk',
+      ),
+    ).to.be.true;
+
+    const renderArgs = renderStub.firstCall.args[1];
+
+    expect(renderArgs.client).to.deep.include({
+      fullName: 'John Doe',
+      caseReference: 'TEST123',
+      dateOfBirth: '1980-01-01',
+      address: '123 Main St',
+      postcode: 'AB12 3CD',
+      laaReference: 'LAA123456',
+    });
+
+    expect(renderArgs.legalHelpExtract.nationalInsurance).to.equal('AB123456C');
+  });
+
+  it('should render the legal help form populated with client details and total equity', async () => {
+    getLegalHelpExtractStub.resolves({
+      status: 'success',
+      data: {
+        nationalInsurance: 'AB123456C',
+        propertySetEquity: 12345,
+      },
+    });
+
+    await getLegalHelpForm(
+      req as Request,
+      res as Response,
+      next as NextFunction,
+    );
+
+    const renderArgs = renderStub.firstCall.args[1];
+
+    expect(renderArgs.legalHelpExtract.nationalInsurance).to.equal('AB123456C');
+    expect(renderArgs.legalHelpExtract.propertySetEquity).to.equal(12345);
+  });
+
+  it('should render total equity when the value is zero', async () => {
+    getLegalHelpExtractStub.resolves({
+      status: 'success',
+      data: {
+        propertySetEquity: 0,
+      },
+    });
+
+    await getLegalHelpForm(
+      req as Request,
+      res as Response,
+      next as NextFunction,
+    );
+
+    const renderArgs = renderStub.firstCall.args[1];
+
+    expect(renderArgs.legalHelpExtract.propertySetEquity).to.equal(0);
   });
 });

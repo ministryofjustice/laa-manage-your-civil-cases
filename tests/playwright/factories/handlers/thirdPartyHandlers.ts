@@ -61,7 +61,7 @@ export function createThirdPartyHandlers(
       }
 
       // Restrict it to the required test case, Jack Youngs
-      if (caseReference === 'PC-1922-1879') {
+      if (caseReference === 'PC-1357-1212') {
         caseItem.thirdParty = { 
           fullName: updateData.personal_details?.full_name ?? '',
           emailAddress:updateData.personal_details?.email ?? '',
