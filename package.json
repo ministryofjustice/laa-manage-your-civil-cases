@@ -150,6 +150,7 @@
     "follow-redirects": "^1.16.0",
     "ws": "^8.21.1",
     "js-yaml": ">=5.2.2",
-    "ip-address": "^10.2.0"
+    "ip-address": "^10.2.0",
+    "proxy-addr": "2.0.8"
   }
 }
