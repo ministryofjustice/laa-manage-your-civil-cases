@@ -21,7 +21,7 @@ export async function assertCaseDetailsHeaderPresent(
   const caseHeader = page.locator('#mcc-case-details-header');
   await expect(caseHeader).toBeVisible();
 
-  await assertCaptionItem(caseHeader, expectedCaseRef);
+  await assertH2Item(caseHeader, 'Case reference', expectedCaseRef);
   await assertH1Item(caseHeader, expectedName);
   await assertH2Item(caseHeader, 'Date received', dateReceived);
 
@@ -44,11 +44,6 @@ async function assertCaseFlagsBadgesToBeVisible(container: Locator,badgeTexts: s
 async function assertMenuButtonVisible(container: Locator) {
   const toggle = container.getByRole('button', { name: 'Change status' });
   await expect(toggle).toBeVisible();
-}
-
-async function assertCaptionItem(container: Locator, expectedValue: string) {
-  const caption = container.locator('p.govuk-caption-l');
-  await expect(caption).toHaveText(expectedValue);
 }
 
 async function assertH1Item(container: Locator, expectedValue: string) {

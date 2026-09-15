@@ -19,6 +19,7 @@ test.describe('Legal help form journey', () => {
 
     await clientDetails.navigate();
 
+    await page.getByRole('button', { name: 'Actions' }).click();
     await page.getByRole('button', { name: 'Get legal help form' }).click();
 
     await expect(page).toHaveURL(
@@ -42,6 +43,7 @@ test.describe('Legal help form journey', () => {
     await expect(page).toHaveURL(`/cases/${caseReference}/client-details`);
 
     // Click the Get legal help form button.
+    await page.getByRole('button', { name: 'Actions' }).click();
     await page.getByRole('button', { name: 'Get legal help form' }).click();
 
     // Verify navigation to the interstitial page.
@@ -199,6 +201,7 @@ test.describe('Legal help form journey', () => {
     await expect(page).toHaveURL(`/cases/${caseReference}/client-details`);
 
     // Click the Get legal help form button.
+    await page.getByRole('button', { name: 'Actions' }).click();
     await page.getByRole('button', { name: 'Get legal help form' }).click();
 
     // Verify navigation to the interstitial page.
@@ -751,6 +754,7 @@ test.describe('Legal help form journey', () => {
     await expect(page).toHaveURL(`/cases/${caseReference}/client-details`);
 
     // Navigate to the intermediate legal help form page.
+    await page.getByRole('button', { name: 'Actions' }).click();
     await page.getByRole('button', { name: 'Get legal help form' }).click();
 
     await expect(page).toHaveURL(`/cases/${caseReference}/get-legal-help-form`);
@@ -853,6 +857,7 @@ test.describe('Legal help form journey', () => {
 
     await clientDetails.navigate();
 
+    await page.getByRole('button', { name: 'Actions' }).click();
     await page.getByRole('button', { name: 'Get legal help form' }).click();
 
     await expect(page).toHaveURL(`/cases/${caseReference}/get-legal-help-form`);
@@ -888,6 +893,7 @@ test.describe('Legal help form journey', () => {
     await expect(page).toHaveURL(`/cases/${caseReference}/client-details`);
 
     // Click the Get legal help form button.
+    await page.getByRole('button', { name: 'Actions' }).click();
     await page.getByRole('button', { name: 'Get legal help form' }).click();
 
     // Verify navigation to the interstitial page.

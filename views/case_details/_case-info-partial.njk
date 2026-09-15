@@ -95,7 +95,7 @@
   }
 ] %}
 
-<div class="govuk-grid-row negative-margin mcc-case-details-light-blue-container">
+<div class="govuk-grid-row negative-margin mcc-case-details-light-blue-container" id="mcc-case-details-header">
   <div class="govuk-grid-column-full">
     {# Case flags #}
     <div class="case-flags">
@@ -122,7 +122,7 @@
       ) }}
     </div>
 
-    <div class="mcc-case-details-dark-blue-container mcc-case-details-header">
+    <div class="mcc-case-details-dark-blue-container">
       {# Name #}
       <h1 class="govuk-heading-xl">{{ client.fullName }}</h1>
       {# LAA reference #}
@@ -132,7 +132,8 @@
       {# Date received #}
       <h2 class="govuk-heading-s govuk-!-font-size-16">{{ t('pages.caseDetails.dateReceived') }}<br><p class="govuk-body">{{ client.provider_assigned_at }}</p></h2>
       {# Date of birth #}
-      <h2 class="govuk-heading-s govuk-!-font-size-16">{{ t('pages.caseDetails.dateOfBirth') }}<br><p class="govuk-body">{{ client.dateOfBirth }} (55)</p></h2>
+      {% set dateOfBirthText = client.dateOfBirth + " (" + client.age + ")" if client.dateOfBirth else t('common.notProvided') %}
+      <h2 class="govuk-heading-s govuk-!-font-size-16">{{ t('pages.caseDetails.dateOfBirth') }}<br><p class="govuk-body">{{ dateOfBirthText }}</p></h2>
     </div>
     
     <div class="case-status-label-and-button-container">

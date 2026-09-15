@@ -6,7 +6,7 @@
 
 import type { FieldConfig, BuildCategoryItemsOptions } from '#types/form-controller-types.js';
 import type { PaginationResult } from '#types/pagination-types.js';
-import { formatDate, formatLongFormDate } from './dateFormatter.js';
+import { calculateAge, formatDate, formatLongFormDate } from './dateFormatter.js';
 import { t } from './index.js';
 /**
  * Safely extract nested field value using custom path resolution
@@ -398,6 +398,7 @@ export const transformContactDetails = (personalDetails: unknown): {
   fullName: string;
   vulnerableUser: boolean;
   dateOfBirth: string;
+  age: number | undefined;
   phoneNumber: string;
   safeToCall: boolean;
   announceCall: boolean;
@@ -412,6 +413,7 @@ export const transformContactDetails = (personalDetails: unknown): {
   const fullName = safeString(personalDetails.full_name);
   const vulnerableUser = Boolean(personalDetails.vulnerable_user);
   const dateOfBirth = formatDate(safeString(personalDetails.date_of_birth));
+  const age = calculateAge(safeString(personalDetails.date_of_birth))
   const phoneNumber = extractPhoneNumber(personalDetails);
   const safeToCall = isSafeToCall(personalDetails);
   const announceCall = Boolean(personalDetails.announce_call);
@@ -424,6 +426,7 @@ export const transformContactDetails = (personalDetails: unknown): {
     fullName,
     vulnerableUser,
     dateOfBirth,
+    age,
     phoneNumber,
     safeToCall,
     announceCall,
