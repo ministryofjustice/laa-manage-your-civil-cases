@@ -121,6 +121,25 @@ test('search with valid keyword should display results', async ({ page, i18nSetu
   await expect(mainContent).toBeVisible();
 });
 
+test('search results table should show merged personal details and references columns', async ({ page, i18nSetup }) => {
+  // Navigate to search results for a known case (Jack Youngs, see mock-data.json)
+  await page.goto('/search?searchKeyword=Youngs&statusSelect=new');
+
+  const resultsTable = page.locator('#search-results-table');
+  await expect(resultsTable).toBeVisible();
+
+  // Check for the merged column headers
+  await expect(resultsTable.getByRole('columnheader', { name: 'Personal details' })).toBeVisible();
+  await expect(resultsTable.getByRole('columnheader', { name: 'References' })).toBeVisible();
+
+  // Check the stacked label:value lines are rendered for the matched row
+  const jackRow = resultsTable.getByRole('row').filter({ hasText: 'Jack Youngs' });
+  await expect(jackRow.getByText('Date of birth: 18 Aug 1981')).toBeVisible();
+  await expect(jackRow.getByText('Postcode: G1 2LQ')).toBeVisible();
+  await expect(jackRow.getByText('LAA ref: 8196672')).toBeVisible();
+  await expect(jackRow.getByText('Case ID: PC-1922-1879')).toBeVisible();
+});
+
 test('search hint should display correct list', async ({ page, i18nSetup }) => {
   
   // Navigate to search page

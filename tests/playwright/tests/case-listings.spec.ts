@@ -26,7 +26,7 @@ test.describe('new cases listing page', () => {
     const referencesHeader = page.getByRole('columnheader', { name: 'References' })
     const categoryHeader = page.getByRole('columnheader', { name: 'Category of law' })
     const dateHeader = page.getByRole('link', { name: 'Date received▼' })
-    const detailsHeader = page.getByRole('columnheader', { name: 'Details' })
+    const detailsHeader = page.getByRole('columnheader', { name: 'Details', exact: true })
     await expect(personalDetailsHeader).toBeVisible();
     await expect(referencesHeader).toBeVisible();
     await expect(categoryHeader).toBeVisible();
@@ -47,6 +47,7 @@ test.describe('new cases listing page', () => {
     // Check case Katie Young with ID: 8196672, where there is no postcode or category
     const katieRow = page.getByRole('row').filter({ hasText: 'Katie Young' });
     await expect(katieRow.getByText('Postcode: Not provided')).toBeVisible();
+    await expect(katieRow.getByRole('cell', { name: 'Not provided  No data', exact: true })).toBeVisible();
   });
 
   test('should display correct case flags [Urgent, At risk of abuse, Third party] for Jack Youngs', async ({ page }) => {
