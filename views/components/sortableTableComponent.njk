@@ -154,13 +154,16 @@
           {% set labelClasses = "app-table__cell-label--secondary" %}
           {% set valueClasses = "app-table__stacked-value" %}
           {% for field in column.fields %}
-            {% if field.key == "phoneNumber" and not row.safeToCall %}
-              <div class="govuk-body-s app-table__stacked-line"><span class="{{ labelClasses }}">{{ field.label }}:</span> <span class="{{ valueClasses }}">{{ t('components.table.notSafeToCall') }}</span></div>
-            {% elif row[field.key] %}
-              <div class="govuk-body-s app-table__stacked-line"><span class="{{ labelClasses }}">{{ field.label }}:</span> <span class="{{ valueClasses }}">{{ row[field.key] }}</span></div>
-            {% else %}
-              <div class="govuk-body-s app-table__stacked-line"><span class="{{ labelClasses }}">{{ field.label }}:</span> <span class="{{ valueClasses }}">{{ t('components.table.notProvided') }}</span> <span class="govuk-visually-hidden">{{ t('components.table.noData') }}</span></div>
-            {% endif %}
+            {% set fieldValueHtml %}
+              {% if field.key == "phoneNumber" and not row.safeToCall %}
+                <span class="{{ valueClasses }}">{{ t('components.table.notSafeToCall') }}</span>
+              {% elif row[field.key] %}
+                <span class="{{ valueClasses }}">{{ row[field.key] }}</span>
+              {% else %}
+                <span class="{{ valueClasses }}">{{ t('components.table.notProvided') }}</span> <span class="govuk-visually-hidden">{{ t('components.table.noData') }}</span>
+              {% endif %}
+            {% endset %}
+            <div class="govuk-body-s app-table__stacked-line"><span class="{{ labelClasses }}">{{ field.label }}:</span> {{ fieldValueHtml | trim | safe }}</div>
           {% endfor %}
         {% elif column.key == "phoneNumber" %}
           {% if row.safeToCall %}

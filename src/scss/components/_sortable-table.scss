@@ -5,12 +5,9 @@
   color: var(--govuk-secondary-text-colour, #484949);
 }
 
-// Small gap below the primary (linked) line, before the stacked label:value lines
-.app-table__stacked-primary {
-  margin-bottom: 2px;
-}
-
-// Small gap between stacked label:value lines so they don't look crammed together
+// Small gap below the primary (linked) line and between the stacked label:value
+// lines beneath it, so they don't look crammed together
+.app-table__stacked-primary,
 .app-table__stacked-line.govuk-body-s {
   margin-bottom: 2px;
 }
