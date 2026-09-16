@@ -67,7 +67,7 @@ test.describe('Details tab', () => {
     await page.getByRole('link', { name: 'Financial eligibility' }).click();
 
     // Verify header information
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 Jan 2025 at', badgeTexts: ['At risk of abuse', 'Third Party'], dateOfBirth: "" });
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 Jan 2025 at', badgeTexts: ['At risk of abuse', 'Third Party'], dateOfBirth: "10 Jun 1977 (49)" });
 
     // Assert the 'About you' summary card is visible with data
     await assertSummaryCardState(page, { cardId: 'About you', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-7755-4557/financial-eligibility/change' });
@@ -170,7 +170,7 @@ test.describe('Finances tab', () => {
     // click the finances section
     await page.getByRole('tab', { name: 'Finances' }).click();
     // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'], dateOfBirth: "" });
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'], dateOfBirth: "12 Nov 1979 (46)" });
     // Assert the 1st Property heading is visible.
     await assertSummaryCardState(page, { cardId: '1st property', emptyText: 'No property data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/client-partner-properties' });
 
@@ -222,7 +222,7 @@ test.describe('Finances tab', () => {
     await page.getByRole('tab', { name: 'Finances' }).click();
 
     // Verify header information
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 Jan 2025 at', badgeTexts: ['At risk of abuse', 'Third Party'], dateOfBirth: "" });
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 Jan 2025 at', badgeTexts: ['At risk of abuse', 'Third Party'], dateOfBirth: "10 Jun 1977 (49)" });
 
     // Assert the Properties summary card is visible
     await assertSummaryCardState(page, { cardId: 'Properties', emptyText: 'No property data', hasData: true, changeHref: '/cases/PC-7755-4557/financial-eligibility/change/properties' });

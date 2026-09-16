@@ -135,7 +135,7 @@ test('edit client support needs should remove all support needs when none select
   await page.goto(supportNeedsURL);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Red Haired Shanks", expectedCaseRef: "PC-1122-3344", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'], dateOfBirth: "" });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Red Haired Shanks", expectedCaseRef: "PC-1122-3344", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'], dateOfBirth: "12 Nov 1979 (46)" });
 
   // Ensure page loaded
   await expect(page.locator('legend.govuk-fieldset__legend')).toContainText('Change client support needs');

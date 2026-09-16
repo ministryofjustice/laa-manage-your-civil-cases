@@ -1,6 +1,6 @@
 import { type Page, type Locator, expect } from '@playwright/test';
 import { BaseEditFormPage } from './BaseEditFormPage.js';
-import { t, getClientDetailsUrlByStatus } from '../utils/index.js';
+import { t } from '../utils/index.js';
 
 // Constants for default values and timeouts
 const DEFAULT_WAIT_TIMEOUT = 1000;
@@ -22,8 +22,8 @@ export class EditDateOfBirthPage extends BaseEditFormPage {
    * @param {Page} page - The Playwright page instance
    */
   constructor(page: Page) {
-    const formUrl = getClientDetailsUrlByStatus('default') + '/change/date-of-birth';
-    const clientDetailsUrl = getClientDetailsUrlByStatus('default');
+    const formUrl = `/cases/PC-1922-2066/client-details` + '/change/date-of-birth';
+    const clientDetailsUrl = `/cases/PC-1922-2066/client-details`;
     super(page, formUrl, clientDetailsUrl);
     this.dayInput = page.locator('#dateOfBirth-day');
     this.monthInput = page.locator('#dateOfBirth-month');

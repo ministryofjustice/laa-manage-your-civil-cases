@@ -68,7 +68,7 @@ test.describe('Legal help form journey', () => {
     // Your details table
     await expectCaptionTableRows(page, 'Your details', {
       'Full name': 'Ian Phillips',
-      'Date of birth': '19 Dec 1991',
+      'Date of birth': 'Not provided',
       'National Insurance number': 'AB123456C',
       'Current address': '38 Oak Avenue, Sheffield',
       'Postcode': 'NE1 8DR',
@@ -918,7 +918,7 @@ test.describe('Legal help form journey', () => {
     // Your details table
     await expectCaptionTableRows(page, 'Your details', {
       'Full name': 'Ian Phillips',
-      'Date of birth': '19 Dec 1991',
+      'Date of birth': 'Not provided',
       'National Insurance number': 'AB123456C',
       'Current address': '38 Oak Avenue, Sheffield',
       'Postcode': 'NE1 8DR',
