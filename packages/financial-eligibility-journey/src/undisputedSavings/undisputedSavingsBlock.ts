@@ -1,5 +1,6 @@
-import { Self, Condition, validation, Transformer } from '@ministryofjustice/hmpps-forge/core/authoring'
+import { Transformer } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { GovUKHeading, GovUKTextInput, GovUKUtilityClasses } from '@ministryofjustice/hmpps-forge/govuk-components'
+import { standardMoneyValidWhen } from '../moneyFieldHelpers.js'
 
 
 export const savingsHeading = GovUKHeading({
@@ -14,16 +15,10 @@ export const bankBalanceField = GovUKTextInput({
   prefix: { text: '£' },
   inputType: 'number',
   classes: GovUKUtilityClasses.Input.Width10,
-  validWhen: [
-    validation({
-      condition: Self().match(Condition.IsRequired()),
-      message: 'Enter how much was in your bank account/building society before your last payment went in, or enter \'0\' if none',
-    }),
-    validation({
-      condition: Self().match(Condition.Number.GreaterThanOrEqual(0)),
-      message: 'How much was in your bank account/building society before your last payment went in must only include positive numbers, with or without a decimal point',
-    }),
-  ],
+  validWhen: standardMoneyValidWhen(
+    'Enter how much was in your bank account/building society before your last payment went in, or enter \'0\' if none',
+    'How much was in your bank account/building society before your last payment went in must only include positive numbers, with or without a decimal point',
+  ),
 })
 
 export const investmentBalanceField = GovUKTextInput({
@@ -33,16 +28,10 @@ export const investmentBalanceField = GovUKTextInput({
   prefix: { text: '£' },
   inputType: 'number',
   classes: GovUKUtilityClasses.Input.Width10,
-  validWhen: [
-    validation({
-      condition: Self().match(Condition.IsRequired()),
-      message: 'Enter the value of any investments, shares or ISAs you have, or enter \'0\' if none',
-    }),
-    validation({
-      condition: Self().match(Condition.Number.GreaterThanOrEqual(0)),
-      message: 'The value of any investments, shares or ISAs you have must only include positive numbers, with or without a decimal point',
-    }),
-  ],
+  validWhen: standardMoneyValidWhen(
+    'Enter the value of any investments, shares or ISAs you have, or enter \'0\' if none',
+    'The value of any investments, shares or ISAs you have must only include positive numbers, with or without a decimal point',
+  ),
 })
 
 export const assetBalanceField = GovUKTextInput({
@@ -52,16 +41,10 @@ export const assetBalanceField = GovUKTextInput({
   prefix: { text: '£' },
   inputType: 'number',
   classes: GovUKUtilityClasses.Input.Width10,
-  validWhen: [
-    validation({
-      condition: Self().match(Condition.IsRequired()),
-      message: 'Enter the value of any valuable items you have worth over £500 each, or enter \'0\' if none',
-    }),
-    validation({
-      condition: Self().match(Condition.Number.GreaterThanOrEqual(0)),
-      message: 'The value of valuable items worth over £500 each must only include positive numbers, with or without a decimal point',
-    }),
-  ],
+  validWhen: standardMoneyValidWhen(
+    'Enter the value of any valuable items you have worth over £500 each, or enter \'0\' if none',
+    'The value of valuable items worth over £500 each must only include positive numbers, with or without a decimal point',
+  ),
 })
 
 export const creditBalanceField = GovUKTextInput({
@@ -71,14 +54,8 @@ export const creditBalanceField = GovUKTextInput({
   prefix: { text: '£' },
   inputType: 'number',
   classes: GovUKUtilityClasses.Input.Width10,
-  validWhen: [
-    validation({
-      condition: Self().match(Condition.IsRequired()),
-      message: 'Enter the amount of any money owed to you, or enter \'0\' if none',
-    }),
-    validation({
-      condition: Self().match(Condition.Number.GreaterThanOrEqual(0)),
-      message: 'The amount of any money owed to you must only include positive numbers, with or without a decimal point',
-    }),
-  ],
+  validWhen: standardMoneyValidWhen(
+    'Enter the amount of any money owed to you, or enter \'0\' if none',
+    'The amount of any money owed to you must only include positive numbers, with or without a decimal point',
+  ),
 })

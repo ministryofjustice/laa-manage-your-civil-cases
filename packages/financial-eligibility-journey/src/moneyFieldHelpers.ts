@@ -35,18 +35,44 @@ export interface MoneyFieldConfig {
   fixedFrequencySuffix?: string;
 }
 
-// Matches cla_backend's MoneyField/MoneyFieldDRF max_value of 9999999999 pence (see apps/legalaid/fields.py)
-export const MAX_MONEY_VALUE = 99999999.99;
-const MAX_MONEY_VALUE_FORMATTED = '99,999,999.99';
+// Just under cla_backend's MoneyField/MoneyFieldDRF max_value of 9999999999 pence (see apps/legalaid/fields.py),
+// which cla_backend itself rejects when submitting financial information
+export const MAX_MONEY_VALUE = 99999999.98;
+export const MAX_MONEY_VALUE_MESSAGE = 'Enter an amount of £99,999,999.98 or less';
 
 /**
- * Builds the max-value validation message from a field's invalidMessage, keeping the same subject
- * (e.g. "How much you pay for your mortgage") but swapping the ending for the max-value wording.
- * @param {string} invalidMessage The field's existing empty/negative-number validation message
- * @returns {string} The equivalent message for the max-value validation
+ * Shared max-value validation for any currency field in the journey (income, expenses, savings,
+ * properties), so amounts cla_backend would reject are caught before submission.
+ * @returns {unknown} The max-value validation rule
  */
-function maxValueMessage(invalidMessage: string): string {
-  return invalidMessage.replace(/ must be a (positive )?number, like .+$/, ` must be ${MAX_MONEY_VALUE_FORMATTED} or less`)
+export function moneyMaxValueValidation() {
+  return validation({
+    condition: Self().match(Condition.Number.LessThanOrEqual(MAX_MONEY_VALUE)),
+    message: MAX_MONEY_VALUE_MESSAGE,
+  });
+}
+
+/**
+ * The full set of validation rules any currency field in the journey should have: required,
+ * non-negative, and no higher than cla_backend will accept. Single call site for that 3rd rule,
+ * so a new money field can't be added without it (unlike spreading `moneyMaxValueValidation()` in
+ * by hand at each field definition).
+ * @param {ResolvableString} emptyMessage Shown when the field is left blank
+ * @param {ResolvableString} invalidMessage Shown when the field is negative or non-numeric
+ * @returns {unknown[]} The three validation rules, in order
+ */
+export function standardMoneyValidWhen(emptyMessage: ResolvableString, invalidMessage: ResolvableString) {
+  return [
+    validation({
+      condition: Self().match(Condition.IsRequired()),
+      message: emptyMessage,
+    }),
+    validation({
+      condition: Self().match(Condition.Number.GreaterThanOrEqual(0)),
+      message: invalidMessage,
+    }),
+    moneyMaxValueValidation(),
+  ];
 }
 
 /**
@@ -78,20 +104,7 @@ export function createAmountField(config: MoneyFieldConfig) {
     inputType: 'number',
     attributes: { 'step': 0.01 },
     classes: GovUKUtilityClasses.Input.Width10,
-    validWhen: [
-      validation({
-        condition: Self().match(Condition.IsRequired()),
-        message: config.emptyMessage,
-      }),
-      validation({
-        condition: Self().match(Condition.Number.GreaterThanOrEqual(0)),
-        message: config.invalidMessage,
-      }),
-      validation({
-        condition: Self().match(Condition.Number.LessThanOrEqual(MAX_MONEY_VALUE)),
-        message: maxValueMessage(config.invalidMessage),
-      }),
-    ],
+    validWhen: standardMoneyValidWhen(config.emptyMessage, config.invalidMessage),
   })
 }
 

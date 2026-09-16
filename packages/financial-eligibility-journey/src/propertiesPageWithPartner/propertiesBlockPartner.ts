@@ -1,6 +1,7 @@
 import { Self, Answer, Condition, validation, Iterator, Data, Format, Loop, Item, Transformer, or, not } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { GovUKHeading, GovUKTextInput, GovUKBody, GovUKButton, GovUKUtilityClasses, GovUKRadioInput, GovUKSectionBreak, GovUKGridRow } from '@ministryofjustice/hmpps-forge/govuk-components'
 import { CollectionBlock } from '@ministryofjustice/hmpps-forge/core/components'
+import { standardMoneyValidWhen } from '../moneyFieldHelpers.js'
 
 const categoryIsDebtOrFamily = or(
   Answer('category').match(Condition.Equals('debt')),
@@ -11,6 +12,46 @@ export const propertiesHeading = GovUKHeading({
   text: 'Properties',
   size: 'm',
 })
+
+/**
+ * Builds the market value money field for a property in the properties collection.
+ * @returns {ReturnType<typeof GovUKTextInput>} The market value field
+ */
+export function propertyMarketValueField() {
+  return GovUKTextInput({
+    code: Format('value_%1', Loop.Index0()),
+    label: 'What is the current market value of the property?',
+    defaultValue: Item().path('value'),
+    formatters: [Transformer.String.ToFloat()],
+    prefix: { text: '£' },
+    inputType: 'number',
+    classes: GovUKUtilityClasses.Input.Width10,
+    validWhen: standardMoneyValidWhen(
+      Format('Enter the current market value of property %1', Loop.Index()),
+      Format('The current market value of property %1 must only include positive numbers, with or without a decimal point', Loop.Index()),
+    ),
+  })
+}
+
+/**
+ * Builds the mortgage-left-to-pay money field for a property in the properties collection.
+ * @returns {ReturnType<typeof GovUKTextInput>} The mortgage-left-to-pay field
+ */
+export function propertyMortgageLeftField() {
+  return GovUKTextInput({
+    code: Format('mortgage-left_%1', Loop.Index0()),
+    label: 'How much is left to pay on the mortgage?',
+    defaultValue: Item().path('mortgage-left'),
+    formatters: [Transformer.String.ToFloat()],
+    prefix: { text: '£' },
+    inputType: 'number',
+    classes: GovUKUtilityClasses.Input.Width10,
+    validWhen: standardMoneyValidWhen(
+      Format('Enter how much is left to pay on the mortgage for property %1, or enter \'0\' if there is nothing left to pay', Loop.Index()),
+      Format('How much is left to pay on the mortgage for property %1 must only include positive numbers, with or without a decimal point', Loop.Index()),
+    ),
+  })
+}
 
 export const propertySet = CollectionBlock({
   collection: Data('propertySet').each(
@@ -39,44 +80,8 @@ export const propertySet = CollectionBlock({
           },
         ],
       }),
-      GovUKTextInput({
-        code: Format('value_%1', Loop.Index0()),
-        label: 'What is the current market value of the property?',
-        defaultValue: Item().path('value'),
-        formatters: [Transformer.String.ToFloat()],
-        prefix: { text: '£' },
-        inputType: 'number',
-        classes: GovUKUtilityClasses.Input.Width10,
-        validWhen: [
-          validation({
-            condition: Self().match(Condition.IsRequired()),
-            message: Format('Enter the current market value of property %1', Loop.Index()),
-          }),
-          validation({
-            condition: Self().match(Condition.Number.GreaterThanOrEqual(0)),
-            message: Format('The current market value of property %1 must only include positive numbers, with or without a decimal point', Loop.Index()),
-          }),
-        ],
-      }),
-      GovUKTextInput({
-        code: Format('mortgage-left_%1', Loop.Index0()),
-        label: 'How much is left to pay on the mortgage?',
-        defaultValue: Item().path('mortgage-left'),
-        formatters: [Transformer.String.ToFloat()],
-        prefix: { text: '£' },
-        inputType: 'number',
-        classes: GovUKUtilityClasses.Input.Width10,
-        validWhen: [
-          validation({
-            condition: Self().match(Condition.IsRequired()),
-            message: Format('Enter how much is left to pay on the mortgage for property %1, or enter \'0\' if there is nothing left to pay', Loop.Index()),
-          }),
-          validation({
-            condition: Self().match(Condition.Number.GreaterThanOrEqual(0)),
-            message: Format('How much is left to pay on the mortgage for property %1 must only include positive numbers, with or without a decimal point', Loop.Index()),
-          }),
-        ],
-      }),
+      propertyMarketValueField(),
+      propertyMortgageLeftField(),
       GovUKRadioInput({
         code: Format('disputed_%1', Loop.Index0()),
         defaultValue: Item().path('disputed'),
