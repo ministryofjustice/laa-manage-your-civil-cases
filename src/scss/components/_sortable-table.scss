@@ -3,12 +3,16 @@
 // less prominent than the primary line so cells with many lines read clearly
 .app-table__cell-label--secondary {
   color: var(--govuk-secondary-text-colour, #484949);
+}
 
-  // Overrides govuk-body-s's default margin-bottom so stacked label:value
-  // lines sit tightly together instead of leaving a visible gap
-  &.govuk-body-s {
-    margin-bottom: 0;
-  }
+// Small gap below the primary (linked) line, before the stacked label:value lines
+.app-table__stacked-primary {
+  margin-bottom: 2px;
+}
+
+// Small gap between stacked label:value lines so they don't look crammed together
+.app-table__stacked-line.govuk-body-s {
+  margin-bottom: 2px;
 }
 
 // Prevents atomic values (dates, postcodes, reference numbers) from breaking
@@ -17,25 +21,16 @@
   white-space: nowrap;
 }
 
-// Small gap between stacked lines that aren't grouped under a primary value
-// (for example References: LAA ref / Case ID), unlike Personal details'
-// tightly stacked Date of birth/Postcode lines
-.app-table__cell-label--secondary.app-table__stacked-line--gap {
-  margin-bottom: 8px;
-}
-
 // Gives the merged "Personal details" and "References" columns enough room
 // for their label:value lines to sit on a single line rather than wrapping
 .app-cases-table {
   table-layout: fixed;
 
-  th:first-child,
-  td:first-child {
+  .app-table__col--personal-details {
     width: 28%;
   }
 
-  th:nth-child(2),
-  td:nth-child(2) {
+  .app-table__col--references {
     width: 20%;
   }
 }
@@ -64,4 +59,10 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 4px;
+
+  // Sizes each badge to its own wrapped content instead of stretching to
+  // the flex container's available width when its text wraps onto two lines
+  .moj-badge {
+    display: table;
+  }
 }
