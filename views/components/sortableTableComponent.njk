@@ -222,13 +222,15 @@
   {% endfor %}
 
   {# Render the GOV.UK table with our data #}
-  {{ govukTable({
-    caption: options.caption,
-    classes: options.classes,
-    attributes: {
-      id: options.id
-    },
-    head: tableHead,
-    rows: tableRows
-  }) }}
+  <div class="app-table-container">
+    {{ govukTable({
+      caption: options.caption,
+      classes: options.classes,
+      attributes: {
+        id: options.id
+      },
+      head: tableHead,
+      rows: tableRows
+    }) }}
+  </div>
 {% endmacro %}
