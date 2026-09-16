@@ -6,11 +6,11 @@ import { GovUKHeading, GovUKTextInput, GovUKSelectInput, GovUKUtilityClasses, Go
 // Single source of truth: also drives `frequencyText()` below, so a new frequency value only needs
 // to be added here.
 export const frequencyItems = [
-  { value: 'per_week', text: 'Per week' },
-  { value: 'per_2week', text: '2 weekly' },
-  { value: 'per_4week', text: '4 weekly' },
-  { value: 'per_month', text: 'Per month' },
-  { value: 'per_year', text: 'Per year' },
+  { value: 'per_week', text: 'per week' },
+  { value: 'per_2week', text: 'every 2 weeks' },
+  { value: 'per_4week', text: 'every 4 weeks' },
+  { value: 'per_month', text: 'per month' },
+  { value: 'per_year', text: 'per year' },
 ]
 
 /**
