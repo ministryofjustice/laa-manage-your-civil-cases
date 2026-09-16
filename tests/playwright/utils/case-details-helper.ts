@@ -6,6 +6,7 @@ type CaseDetailsHeaderOptions = {
   expectedCaseRef: string;
   dateReceived: string;
   badgeTexts?: string[];
+  dateOfBirth: string;
 };
 
 export async function assertCaseDetailsHeaderPresent(
@@ -16,6 +17,7 @@ export async function assertCaseDetailsHeaderPresent(
     expectedCaseRef,
     dateReceived,
     badgeTexts,
+    dateOfBirth
   }: CaseDetailsHeaderOptions
 ) {
   const caseHeader = page.locator('#mcc-case-details-header');
@@ -24,6 +26,7 @@ export async function assertCaseDetailsHeaderPresent(
   await assertH2Item(caseHeader, 'Case reference', expectedCaseRef);
   await assertH1Item(caseHeader, expectedName);
   await assertH2Item(caseHeader, 'Date received', dateReceived);
+  await assertH2ItemStrict(caseHeader, 'Date of birth', dateOfBirth);
 
   if (badgeTexts && badgeTexts.length > 0) {
     await assertCaseFlagsBadgesToBeVisible(caseHeader, badgeTexts);
@@ -56,4 +59,10 @@ async function assertH2Item(container: Locator, headingText: string, expectedVal
   const value = heading.locator('.govuk-body');
   // Using a looser evaluation, as time zones are different locally and in our CI  
   await expect(value).toContainText(expectedValue); 
+}
+
+async function assertH2ItemStrict(container: Locator, headingText: string, expectedValue: string) {
+  const heading = container.locator('h2', { hasText: headingText });
+  const value = heading.locator('.govuk-body');
+  await expect(value).toHaveText(expectedValue); 
 }

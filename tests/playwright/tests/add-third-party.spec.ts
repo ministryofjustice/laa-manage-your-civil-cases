@@ -16,7 +16,7 @@ test('viewing add third party form should display expected elements', async ({ p
   await thirdPartyPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
 
   // Expect to see the main elements
   await thirdPartyPage.expectPageLoaded(thirdPartyPage.getExpectedHeading());
@@ -30,7 +30,7 @@ test('cancel link should navigate back to client details', async ({ page, i18nSe
   await thirdPartyPage.expectCancelNavigatesBack();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
   // Assert support needs summary card is visible with no data 
   await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
   // Assert third party details summary card is visible with data
@@ -47,7 +47,7 @@ test('save button should redirect to client details when valid data submitted', 
   await thirdPartyPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, expectedName: 'James Potter', expectedCaseRef: 'PC-1357-1212', dateReceived: '7 Jul 2025 at', badgeTexts: ['Urgent', 'At risk of abuse'], });
+  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, expectedName: 'James Potter', expectedCaseRef: 'PC-1357-1212', dateReceived: '7 Jul 2025 at', badgeTexts: ['Urgent', 'At risk of abuse'], dateOfBirth: "18 Aug 1981 (45)" });
   // Fill in valid third party details
   await thirdPartyPage.fillValidThirdPartyData({
     name: 'John Smith',
@@ -81,7 +81,7 @@ test('add third party form displays validation errors correctly', async ({ page,
   await thirdPartyPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
 
   // Submit form with missing required fields
   await thirdPartyPage.clearNameField();

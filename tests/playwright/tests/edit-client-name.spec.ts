@@ -10,14 +10,14 @@ test.describe('Edit Client Name', () => {
     const editNamePage = pages.editName;
     await editNamePage.navigate();
     // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(editNamePage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+    await assertCaseDetailsHeaderPresent(editNamePage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
     await expect(editNamePage.labelWrapper).toHaveText(editNamePage.getExpectedHeading());
   });
 
   test('cancel link should navigate back to client details', async ({ pages }) => {
     await pages.editName.expectCancelNavigatesBack();
     // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(pages.editName.getPage, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+    await assertCaseDetailsHeaderPresent(pages.editName.getPage, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
     // Assert support needs summary card is visible with no data 
     await assertSummaryCardState(pages.editName.getPage, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
     // Assert third party details summary card is visible with data
@@ -34,7 +34,7 @@ test.describe('Edit Client Name', () => {
     // First, get the original name from the client details page
     await page.goto('/cases/PC-1922-1879/client-details');
     // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(editNamePage.getPage, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+    await assertCaseDetailsHeaderPresent(editNamePage.getPage, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
     const originalName = await page.locator('.govuk-summary-list__value').first().textContent();
 
     // Assert support needs summary card is visible with no data 
@@ -74,12 +74,12 @@ test.describe('Edit Client Name', () => {
       const editNamePage = pages.editName;
       await editNamePage.navigate();
       // Assert the case details header is present
-      await assertCaseDetailsHeaderPresent(editNamePage.getPage, { withMenuButtons: false, expectedName: "Walter White", expectedCaseRef: "PC-1854-6521", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse'] });
+      await assertCaseDetailsHeaderPresent(editNamePage.getPage, { withMenuButtons: false, expectedName: "Walter White", expectedCaseRef: "PC-1854-6521", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse'], dateOfBirth: "12 Nov 1979 (46)" });
 
       await editNamePage.submitWithValidName('John Updated Smith');
       await editNamePage.expectSuccessfulSubmission();
       // Assert the case details header is present
-      await assertCaseDetailsHeaderPresent(editNamePage.getPage, { withMenuButtons: false, expectedName: "John Updated Smith", expectedCaseRef: "PC-1854-6521", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse'] });
+      await assertCaseDetailsHeaderPresent(editNamePage.getPage, { withMenuButtons: false, expectedName: "John Updated Smith", expectedCaseRef: "PC-1854-6521", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse'], dateOfBirth: "12 Nov 1979 (46)" });
       expect(editNamePage.expectNoWarningBanner())
       // Assert support needs summary card is visible with no data 
       await assertSummaryCardState(editNamePage.getPage, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: true, changeHref: '/client-details/change/support-need' });

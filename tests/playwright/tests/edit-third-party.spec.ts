@@ -15,7 +15,7 @@ test('viewing edit third party form should display expected elements', async ({ 
   await thirdPartyPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
   
   // Expect to see the main elements
   await thirdPartyPage.expectPageLoaded(thirdPartyPage.getExpectedHeading());
@@ -32,7 +32,7 @@ test('cancel link should navigate back to client details', async ({ page, i18nSe
   await thirdPartyPage.expectCancelNavigatesBack();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
 });
 
 test('save button should redirect to client details when valid data submitted', async ({ page, i18nSetup }) => {
@@ -69,7 +69,7 @@ test('edit third party form displays validation errors correctly', async ({ page
   await thirdPartyPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
 
   // Submit form with invalid data
   await thirdPartyPage.clearNameField();
@@ -92,7 +92,7 @@ test('edit third party form displays postcode validation errors correctly', asyn
   await thirdPartyPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
 
   // Update third party details
   await thirdPartyPage.fillValidThirdPartyData({ name: 'Jane Smith', phone: '07700900456', email: 'jane.smith@example.com', relationshipValue: 'PARENT_GUARDIAN', safeToCall: true, hasPassphrase: false, postcode: "TEST567890123" }); // Invalid postcode 
@@ -117,7 +117,7 @@ test('unchanged fields show "no changes" banner and redirect', async ({ page }) 
   await thirdPartyPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(thirdPartyPage.getPage, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
 
   // Click save without making any changes
   await thirdPartyPage.clickSave();

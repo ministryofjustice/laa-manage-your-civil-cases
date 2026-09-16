@@ -22,7 +22,7 @@ test('viewing "check split case answers" form should display expected elements',
   await checkSplitCaseAnswersPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(checkSplitCaseAnswersPage.getPage, { withMenuButtons: false, expectedName: 'Jack Youngs', expectedCaseRef: 'PC-1922-1879', dateReceived: '7 Jul 2025 at', badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(checkSplitCaseAnswersPage.getPage, { withMenuButtons: false, expectedName: 'Jack Youngs', expectedCaseRef: 'PC-1922-1879', dateReceived: '7 Jul 2025 at', badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
 
   // Assert the page heading is correct
   const heading = checkSplitCaseAnswersPage.getHeadingLocator();
@@ -234,7 +234,7 @@ test('confirm correct `operatorReassignment` text shown when selecting `operator
   await expect(page.getByText('The operator service')).toBeVisible();
 });
 
-test('check split case answers page should display change, confirm and cancel controls', async ({ page }) => {
+test('check split case answers page should display change, confirm and cancel controls', async ({ page, i18nSetup }) => {
   // Navigate
   const checkSplitCaseAnswersPage = CheckSplitCaseAnswersPage.forCase(page, caseReference);
   await checkSplitCaseAnswersPage.navigate();

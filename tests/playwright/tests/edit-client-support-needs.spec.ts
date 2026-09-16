@@ -14,7 +14,7 @@ test('edit client support needs form should save valid data and redirect to clie
   await page.goto(editSupportNeedsUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'], dateOfBirth: "12 Nov 1979 (46)" });
 
   // Expect to see the form heading
   await expect(page.locator('legend.govuk-fieldset__legend')).toContainText('Change client support needs');
@@ -55,7 +55,7 @@ test('edit client support needs form should show validation error if no option s
   await page.goto(editSupportNeedsUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'], dateOfBirth: "12 Nov 1979 (46)" });
 
   // Check the box for "Other support" but do not fill in the text to trigger validation error
   const otherSupportCheckbox = page.locator('input[name="clientSupportNeeds"][value="otherSupport"]');
@@ -78,7 +78,7 @@ test('edit client support needs form should show validation error if no option s
 });
 
 
-test('edit client support needs form should redirect with warning if no changes made', async ({ page }) => {
+test('edit client support needs form should redirect with warning if no changes made', async ({ page, i18nSetup }) => {
   await page.goto(editSupportNeedsUrl);
   const saveButton = page.getByRole('button', { name: t('common.save') });
 
@@ -129,13 +129,13 @@ test('edit client support needs form should redirect with warning if no changes 
 });
 
 
-test('edit client support needs should remove all support needs when none selected', async ({ page }) => {
+test('edit client support needs should remove all support needs when none selected', async ({ page, i18nSetup }) => {
   const supportNeedsURL = `/cases/PC-1122-3344/client-details/change/support-need`;
   const clientDetailsURL = '/cases/PC-1122-3344/client-details';
   await page.goto(supportNeedsURL);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Red Haired Shanks", expectedCaseRef: "PC-1122-3344", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Red Haired Shanks", expectedCaseRef: "PC-1122-3344", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'], dateOfBirth: "" });
 
   // Ensure page loaded
   await expect(page.locator('legend.govuk-fieldset__legend')).toContainText('Change client support needs');

@@ -13,7 +13,7 @@ test.describe('Edit Client Risk of Abuse', () => {
     const riskOfAbusePage = EditRiskOfAbusePage.forCase(page, 'PC-1977-1241');
     await riskOfAbusePage.expectCancelNavigatesBack();
     // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(riskOfAbusePage.getPage, { withMenuButtons: false, expectedName: 'Harry Potter', expectedCaseRef: 'PC-1977-1241', dateReceived: '7 Jul 2025 at', badgeTexts: ['Urgent', 'At risk of abuse'], });
+    await assertCaseDetailsHeaderPresent(riskOfAbusePage.getPage, { withMenuButtons: false, expectedName: 'Harry Potter', expectedCaseRef: 'PC-1977-1241', dateReceived: '7 Jul 2025 at', badgeTexts: ['Urgent', 'At risk of abuse'], dateOfBirth: "18 Aug 1981 (45)" });
     // Assert support needs summary card is visible with data 
     await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: true, changeHref: '/client-details/change/support-need' });
     // Assert the data in the support needs summary card is correct
@@ -29,7 +29,7 @@ test.describe('Edit Client Risk of Abuse', () => {
     await riskOfAbusePage.navigate();
 
     // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(riskOfAbusePage.getPage, { withMenuButtons: false, expectedName: 'Harry Potter', expectedCaseRef: 'PC-1977-1241', dateReceived: '7 Jul 2025 at', badgeTexts: ['Urgent', 'At risk of abuse'], });
+    await assertCaseDetailsHeaderPresent(riskOfAbusePage.getPage, { withMenuButtons: false, expectedName: 'Harry Potter', expectedCaseRef: 'PC-1977-1241', dateReceived: '7 Jul 2025 at', badgeTexts: ['Urgent', 'At risk of abuse'], dateOfBirth: "18 Aug 1981 (45)" });
     // Heading
     await expect(riskOfAbusePage.heading).toHaveText(riskOfAbusePage.getExpectedHeading());
     // Informational text
@@ -64,7 +64,7 @@ test.describe('Edit Client Risk of Abuse', () => {
    
     await riskOfAbusePage.expectNoChangeWarningBanner('No changes were made');
     // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Llywelyn AP Parry', expectedCaseRef: 'PC-7445-2319', dateReceived: '9 Jan 2025 at', badgeTexts: ['At risk of abuse'], });
+    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Llywelyn AP Parry', expectedCaseRef: 'PC-7445-2319', dateReceived: '9 Jan 2025 at', badgeTexts: ['At risk of abuse'], dateOfBirth: "10 Jun 1977 (49)" });
     // Assert support needs summary card is visible with no data 
     await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
     // Assert third party details summary card is visible with no data
@@ -91,7 +91,7 @@ test.describe('Edit Client Risk of Abuse', () => {
     await expect(page).toHaveURL(clientDetailsPage.url);
 
     // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(riskOfAbusePage.getPage, { withMenuButtons: false, expectedName: 'Harry Potter', expectedCaseRef: 'PC-1977-1241', dateReceived: '7 Jul 2025 at', badgeTexts: ['Urgent'], });
+    await assertCaseDetailsHeaderPresent(riskOfAbusePage.getPage, { withMenuButtons: false, expectedName: 'Harry Potter', expectedCaseRef: 'PC-1977-1241', dateReceived: '7 Jul 2025 at', badgeTexts: ['Urgent'], dateOfBirth: "18 Aug 1981 (45)" });
     // Assert support needs summary card is visible with no data 
     await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: true, changeHref: '/client-details/change/support-need' });
     // Assert the data in the support needs summary card is correct
@@ -104,7 +104,7 @@ test.describe('Edit Client Risk of Abuse', () => {
     await clientDetailsPage.expectRiskOfAbuse('No');
   });
 
-  test('saving updates vulnerable_user to Yes', async ({ page }) => {
+  test('saving updates vulnerable_user to Yes', async ({ page, i18nSetup }) => {
     const caseRef = 'PC-9173-4826';
 
     const riskOfAbusePage = EditRiskOfAbusePage.forCase(page, caseRef);
@@ -122,7 +122,7 @@ test.describe('Edit Client Risk of Abuse', () => {
     await expect(page).toHaveURL(clientDetailsPage.url);
 
     // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(riskOfAbusePage.getPage, { withMenuButtons: false, expectedName: 'Ian Phillips', expectedCaseRef: 'PC-9173-4826', dateReceived: '15 Jan 2025 at', badgeTexts: [] });
+    await assertCaseDetailsHeaderPresent(riskOfAbusePage.getPage, { withMenuButtons: false, expectedName: 'Ian Phillips', expectedCaseRef: 'PC-9173-4826', dateReceived: '15 Jan 2025 at', badgeTexts: [], dateOfBirth: "" });
     // Assert support needs summary card is visible with no data 
     await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
     // Assert third party details summary card is visible with data

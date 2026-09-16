@@ -14,7 +14,7 @@ test('add client support needs form should save valid data and redirect to clien
   await page.goto('/cases/PC-1977-1241/client-details/add/support-need');
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Harry Potter', expectedCaseRef: 'PC-1977-1241', dateReceived: '7 Jul 2025 at', badgeTexts: ['Urgent', 'At risk of abuse']});
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Harry Potter', expectedCaseRef: 'PC-1977-1241', dateReceived: '7 Jul 2025 at', badgeTexts: ['Urgent', 'At risk of abuse'], dateOfBirth: "18 Aug 1981 (45)" });
 
   // Expect to see the form heading
   await expect(page.locator('legend.govuk-fieldset__legend')).toContainText('Add a client support need');
@@ -51,7 +51,7 @@ test('add client support needs form should show validation error if no option se
   await page.goto(addSupportNeedsUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
 
   // Check the box for "Other support" but do not fill in the text to trigger validation error
   const otherSupportCheckbox = page.locator('input[name="clientSupportNeeds"][value="otherSupport"]');
@@ -78,7 +78,7 @@ test('when a client has no support needs a support needs summary card with an Ad
   await page.goto(clientDetailsUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Lisa NO NOTES Chen", expectedCaseRef: "PC-1924-9560", dateReceived: "15 Jan 2025 at", badgeTexts: ['Third Party'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Lisa NO NOTES Chen", expectedCaseRef: "PC-1924-9560", dateReceived: "15 Jan 2025 at", badgeTexts: ['Third Party'], dateOfBirth: "15 Nov 1993 (32)" });
 
   // Assert support needs summary card is visible with no data 
   await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });

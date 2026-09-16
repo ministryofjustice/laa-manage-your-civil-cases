@@ -11,7 +11,7 @@ test('client details selected from advising cases tab has correct page elements'
   await page.goto(getClientDetailsUrlByStatus('accepted'));
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Ember Hamilton", expectedCaseRef: "PC-3184-5962", dateReceived: "9 Jan 2025 at", badgeTexts: ['At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Ember Hamilton", expectedCaseRef: "PC-3184-5962", dateReceived: "9 Jan 2025 at", badgeTexts: ['At risk of abuse', 'Third Party'], dateOfBirth: "19 Feb 1987 (39)" });
 
   // Assert support needs summary card is visible with no data 
   await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
