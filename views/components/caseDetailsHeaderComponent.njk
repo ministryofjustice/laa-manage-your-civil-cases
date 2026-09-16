@@ -1,5 +1,3 @@
-{% macro caseDetailsHeaderComponent(client, hideStatusButton = false) %}
-  <div id="mcc-case-details-header">
-    {% include "case_details/_case-info-partial.njk" %}
-  </div>
+{% macro caseDetailsHeaderComponent(client, hideStatusButton = false, addPaddingOnBottom = false) %}
+  {% include "case_details/_case-info-partial.njk" %}
 {% endmacro %}

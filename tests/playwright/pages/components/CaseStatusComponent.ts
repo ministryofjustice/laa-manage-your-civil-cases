@@ -8,17 +8,6 @@ export class CaseStatusComponent {
   private readonly page: Page;
   
   /**
-   * Mapping of status names to GOV.UK Design System tag modifier classes
-   */
-  private readonly tagClasses = {
-    'New': '.govuk-tag--green.govuk-\\!-margin-bottom-2',
-    'Advising': '.govuk-tag--blue.govuk-\\!-margin-bottom-2',
-    'Closed': '.govuk-tag--grey.govuk-\\!-margin-bottom-2',
-    'Pending': '.govuk-tag--orange.govuk-\\!-margin-bottom-2',
-    'Completed': '.govuk-tag--pink.govuk-\\!-margin-bottom-2'
-  } as const;
-
-  /**
    * Creates a new case status component
    * @param {Page} page - The Playwright page instance
    */
@@ -27,12 +16,11 @@ export class CaseStatusComponent {
   }
 
   /**
-   * Gets the tag locator for a specific status
-   * @param {string} status - The case status
-   * @returns {Locator} The status tag locator
+   * Gets the locator for the status value displayed in the header
+   * @returns {Locator} The status text locator
    */
-  private getTagLocator(status: 'New' | 'Advising' | 'Closed' | 'Pending'| 'Completed'): Locator {
-    return this.page.locator(this.tagClasses[status]);
+  private getStatusLocator(): Locator {
+    return this.page.locator('.case-status-heading .govuk-body');
   }
 
   /**
@@ -40,7 +28,7 @@ export class CaseStatusComponent {
    * @param {string} status - The expected status
    */
   async expectStatus(status: 'New' | 'Advising' | 'Closed' | 'Pending' | 'Completed'): Promise<void> {
-    const tagLocator = this.getTagLocator(status);
+    const tagLocator = this.getStatusLocator();
     await expect(tagLocator).toBeVisible();
     await expect(tagLocator).toContainText(status);
   }
