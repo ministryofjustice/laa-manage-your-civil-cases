@@ -14,7 +14,7 @@ import {
   legalAidContributionsPartnerField, maintenancePaidPartnerRow, legalAidContributionsPartnerHeading,
 } from '#packages/financial-eligibility-journey/src/partnerExpensesPage/partnerExpensesBlock.js';
 import { expensesSummaryList, partnerExpensesSummaryList } from '#packages/financial-eligibility-journey/src/checkAnswersPage/checkAnswersBlock.js';
-import { frequencyItems as FREQUENCY_ITEMS, lastCalendarMonthDate } from '#packages/financial-eligibility-journey/src/moneyFieldHelpers.js';
+import { frequencyItems as FREQUENCY_ITEMS, lastCalendarMonthDate, MAX_MONEY_VALUE_MESSAGE } from '#packages/financial-eligibility-journey/src/moneyFieldHelpers.js';
 
 interface FieldLike {
   code?: unknown;
@@ -92,7 +92,6 @@ interface MoneyFieldCase {
   frequency: FieldLike;
   emptyMessage: string;
   invalidMessage: string;
-  maxMessage: string;
   frequencyMessage: string;
 }
 
@@ -101,28 +100,24 @@ const clientExpenseFields: MoneyFieldCase[] = [
     name: 'mortgage', code: 'mortgage', amount: mortgageField, frequency: mortgageFrequencyField,
     emptyMessage: 'Enter how much you pay for your mortgage, or enter \'0\' if none',
     invalidMessage: 'How much you pay for your mortgage must be a positive number, like 1000 or 2400.50',
-    maxMessage: 'How much you pay for your mortgage must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for when you pay your mortgage',
   },
   {
     name: 'rent', code: 'rent', amount: rentField, frequency: rentFrequencyField,
     emptyMessage: 'Enter how much you pay for rent, or enter \'0\' if none',
     invalidMessage: 'How much you pay for rent must be a positive number, like 1000 or 2400.50',
-    maxMessage: 'How much you pay for rent must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for when you pay rent',
   },
   {
     name: 'maintenance paid', code: 'maintenance-paid', amount: maintenancePaidField, frequency: maintenancePaidFrequencyField,
     emptyMessage: 'Enter how much maintenance you paid during the last calendar month, or enter \'0\' if none',
     invalidMessage: 'How much maintenance you paid during the last calendar month must be a positive number, like 100 or 240.50',
-    maxMessage: 'How much maintenance you paid during the last calendar month must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for when you pay maintenance',
   },
   {
     name: 'childcare costs', code: 'childcare-costs', amount: childcareCostsField, frequency: childcareCostsFrequencyField,
     emptyMessage: 'Enter any childcare costs you have because of work or study, or enter \'0\' if none',
     invalidMessage: 'Any childcare costs you have because of work or study must be a positive number, like 100 or 240.50',
-    maxMessage: 'Any childcare costs you have because of work or study must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for when you pay any childcare costs you have because of work or study',
   },
 ];
@@ -132,28 +127,24 @@ const partnerExpenseFields: MoneyFieldCase[] = [
     name: 'mortgage', code: 'mortgage-partner', amount: mortgagePartnerField, frequency: mortgagePartnerFrequencyField,
     emptyMessage: 'Enter how much your partner pays for their mortgage, or enter \'0\' if none',
     invalidMessage: 'How much your partner pays for their mortgage must be a positive number, like 1000 or 2400.50',
-    maxMessage: 'How much your partner pays for their mortgage must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for when your partner pays their mortgage',
   },
   {
     name: 'rent', code: 'rent-partner', amount: rentPartnerField, frequency: rentPartnerFrequencyField,
     emptyMessage: 'Enter how much your partner pays for their rent, or enter \'0\' if none',
     invalidMessage: 'How much your partner pays for their rent must be a positive number, like 1000 or 2400.50',
-    maxMessage: 'How much your partner pays for their rent must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for when your partner pays rent',
   },
   {
     name: 'maintenance paid', code: 'maintenance-paid-partner', amount: maintenancePaidPartnerField, frequency: maintenancePaidPartnerFrequencyField,
     emptyMessage: 'Enter how much maintenance your partner paid during the last calendar month, or enter \'0\' if none',
     invalidMessage: 'How much maintenance your partner paid during the last calendar month must be a positive number, like 100 or 240.50',
-    maxMessage: 'How much maintenance your partner paid during the last calendar month must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for when your partner pays maintenance',
   },
   {
     name: 'childcare costs', code: 'childcare-costs-partner', amount: childcareCostsPartnerField, frequency: childcareCostsPartnerFrequencyField,
     emptyMessage: 'Enter any childcare costs your partner has because of work or study, or enter \'0\' if none',
     invalidMessage: 'Any childcare costs your partner has because of work or study must be a positive number, like 100 or 240.50',
-    maxMessage: 'Any childcare costs your partner has because of work or study must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for when your partner pays any childcare costs they have because of work or study',
   },
 ];
@@ -179,7 +170,7 @@ function testMoneyFieldPair(testCase: MoneyFieldCase): void {
     });
 
     it('rejects amounts over the maximum allowed value', () => {
-      expect(validationMessages(testCase.amount)[2]).to.equal(testCase.maxMessage);
+      expect(validationMessages(testCase.amount)[2]).to.equal(MAX_MONEY_VALUE_MESSAGE);
     });
 
     it('has exactly three validation rules on the amount field', () => {
@@ -207,7 +198,7 @@ describe('Your expenses fields', () => {
     expect(validationMessages(legalAidContributionsField)).to.have.length(3);
     expect(validationMessages(legalAidContributionsField)[0]).to.equal('Enter how much you paid towards legal aid for criminal defence in the last calendar month, or enter \'0\' if none');
     expect(validationMessages(legalAidContributionsField)[1]).to.equal('How much you paid towards legal aid for criminal defence in the last calendar month must be a number, like 100 or 240.50');
-    expect(validationMessages(legalAidContributionsField)[2]).to.equal('How much you paid towards legal aid for criminal defence in the last calendar month must be 99,999,999.99 or less');
+    expect(validationMessages(legalAidContributionsField)[2]).to.equal(MAX_MONEY_VALUE_MESSAGE);
   });
 
   it('shows the rolling last-calendar-month date in the maintenance paid question, not a hardcoded date', () => {
@@ -229,7 +220,7 @@ describe('Your partner\'s expenses fields', () => {
     expect(validationMessages(legalAidContributionsPartnerField)).to.have.length(3);
     expect(validationMessages(legalAidContributionsPartnerField)[0]).to.equal('Enter how much your partner paid towards legal aid for criminal defence in the last calendar month, or enter \'0\' if none');
     expect(validationMessages(legalAidContributionsPartnerField)[1]).to.equal('How much your partner paid towards legal aid for criminal defence in the last calendar month must be a number, like 100 or 240.50');
-    expect(validationMessages(legalAidContributionsPartnerField)[2]).to.equal('How much your partner paid towards legal aid for criminal defence in the last calendar month must be 99,999,999.99 or less');
+    expect(validationMessages(legalAidContributionsPartnerField)[2]).to.equal(MAX_MONEY_VALUE_MESSAGE);
   });
 
   it('shows the rolling last-calendar-month date in the partner\'s maintenance paid question, not a hardcoded date', () => {
