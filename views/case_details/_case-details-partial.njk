@@ -8,57 +8,57 @@
 {% set eventTagConfig = {
   "CASE_VIEWED": {
     text: t('common.eventCode.casePending'),
-    classes: "govuk-tag--orange event-tag-spacing tag-padding"
+    classes: "govuk-tag--orange tag-padding"
   },
   "MIS": {
     text: t('common.eventCode.caseClosed'),
-    classes: "govuk-tag--grey event-tag-spacing tag-padding",
+    classes: "govuk-tag--grey tag-padding",
     isClosed: true
   },
   "MIS-OOS": {
     text: t('common.eventCode.caseClosed'),
-    classes: "govuk-tag--grey event-tag-spacing tag-padding",
+    classes: "govuk-tag--grey tag-padding",
     isClosed: true
   },
   "MIS-MEANS": {
     text: t('common.eventCode.caseClosed'),
-    classes: "govuk-tag--grey event-tag-spacing tag-padding",
+    classes: "govuk-tag--grey tag-padding",
     isClosed: true
   },
   "COI": {
     text: t('common.eventCode.caseClosed'),
-    classes: "govuk-tag--grey event-tag-spacing tag-padding",
+    classes: "govuk-tag--grey tag-padding",
     isClosed: true
   },
   "SPOP": {
     text: t('common.eventCode.caseReOpened'),
-    classes: "govuk-tag--blue event-tag-spacing tag-padding"
+    classes: "govuk-tag--blue tag-padding"
   },
   "REOPEN": {
     text: t('common.eventCode.caseReOpened'),
-    classes: "govuk-tag--blue event-tag-spacing tag-padding"
+    classes: "govuk-tag--blue tag-padding"
   },
   "REF-INT": {
     text: t('common.eventCode.caseSplit'),
-    classes: "govuk-tag--yellow event-tag-spacing tag-padding"
+    classes: "govuk-tag--yellow tag-padding"
   },
   "CLSP": {
     text: t('common.eventCode.caseCompleted'),
-    classes: "govuk-tag--pink event-tag-spacing tag-padding"
+    classes: "govuk-tag--pink tag-padding"
   },
   "MERI": {
     text: t('common.eventCode.caseClosed'),
-    classes: "govuk-tag--grey event-tag-spacing tag-padding",
+    classes: "govuk-tag--grey tag-padding",
     isClosed: true
   },
   "DUPL": {
     text: t('common.eventCode.caseClosed'),
-    classes: "govuk-tag--grey event-tag-spacing tag-padding",
+    classes: "govuk-tag--grey tag-padding",
     isClosed: true
   },
   "CLOT": {
     text: t('common.eventCode.caseClosed'),
-    classes: "govuk-tag--grey event-tag-spacing tag-padding",
+    classes: "govuk-tag--grey tag-padding",
     isClosed: true
   }
 } %}
@@ -288,51 +288,68 @@
   {% endif %}
 
   {# Providers notes section #}
-  <h3 class="govuk-heading-s case-details-tab-provider-notes-section">{{ t('pages.caseDetails.caseDetailsSection.providerNotesTitle') }}</h3>
-  {% if combinedHistoryAndCaseLogNotes and combinedHistoryAndCaseLogNotes.length > 0 %}
-    {% for item in combinedHistoryAndCaseLogNotes %}
-      {# Remove category changed notes here, required above and in history tab display #}
-      {% if item.code != "CATEGORY_CHANGED" %}
-        {% if item.type == 'caseLog' %}
+  {% set providerNoteRows = [] %}
+
+  {% for item in combinedHistoryAndCaseLogNotes %}
+    {% if item.code != "CATEGORY_CHANGED" %}
+      {% set noteKey %}
+        {% if item.type == 'caseLog' and eventTagConfig[item.code] %}
           {{ govukTag({
-          text: eventTagConfig[item.code].text,
-          classes: eventTagConfig[item.code].classes
-        }) }}
+            text: eventTagConfig[item.code].text,
+            classes: eventTagConfig[item.code].classes
+          }) }}
         {% endif %}
 
-        {# only show translated outcome code if a closed event tag #}
-        {% if item.type == 'caseLog' and eventTagConfig[item.code].isClosed %}
-          <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-margin-top-1">{{ t('common.outcomeCode.' + item.code) }}</p>
-        {% endif %}
-        <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-margin-top-3">{{ item.notes }}</p>
-        <p class="govuk-hint govuk-!-margin-bottom-3 govuk-!-margin-top-1 govuk-!-font-size-16">{{ item.createdBy }} on {{ item.created }}</p>
-        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-top-1 govuk-!-margin-bottom-0"/>
-      {% endif %}
-    {% endfor %}
+        <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ item.createdBy }}</p> 
+
+        <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ item.created }}</p>  
+      {% endset %}
+
+      {% set providerNoteRows = (
+        providerNoteRows.push({
+          key: { html: noteKey},
+          value: { text: item.notes }
+        }),
+        providerNoteRows
+      ) %}
+    {% endif %}
+  {% endfor %}
+
+  {% if providerNoteRows.length > 0 %}
+    {{ govukSummaryList({
+      card: {
+        title: { text: t('pages.caseDetails.caseDetailsSection.providerNotesTitle') }
+      },
+      rows: providerNoteRows
+    }) }}
   {% else %}
     <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-3">{{ t('pages.caseDetails.caseDetailsSection.noNotes') }}</p>
   {% endif %}
 
   {% block formContent %}
-    <form method="post" action="">
-      <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-      {{ govukCharacterCount({
-      id: "providerNote",
-      name: "providerNote",
-      label: {
-          text: t('pages.caseDetails.caseDetailsSection.noteLabel'),
-          classes: "govuk-label--s govuk-!-margin-top-6 govuk-!-margin-bottom-3",
-          isPageHeading: false
-      },
-      value: currentProviderNote,
-      errorMessage: errorMessages.providerNote if error,
-      maxlength: maxProviderNoteLength,
-      threshold: characterThreshold,
-      formGroup: { classes: "govuk-!-margin-bottom-0" }
-    }) }}
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <form method="post" action="">
+          <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+          {{ govukCharacterCount({
+            id: "providerNote",
+            name: "providerNote",
+            label: {
+                text: t('pages.caseDetails.caseDetailsSection.noteLabel'),
+                classes: "govuk-label--s govuk-!-margin-top-6 govuk-!-margin-bottom-3",
+                isPageHeading: false
+            },
+            value: currentProviderNote,
+            errorMessage: errorMessages.providerNote if error,
+            maxlength: maxProviderNoteLength,
+            threshold: characterThreshold,
+            formGroup: { classes: "govuk-!-margin-bottom-0" }
+          }) }}
 
-      {{ govukButton({
-      text: t('common.save')
-    }) }}
-    </form>
+          {{ govukButton({
+            text: t('common.save')
+          }) }}
+        </form>
+      </div>
+    </div>
   {% endblock %}
