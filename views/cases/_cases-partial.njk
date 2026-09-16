@@ -47,6 +47,8 @@
           key: "personalDetails",
           text: t('components.table.columns.personalDetails'),
           type: "stacked",
+          classes: "app-table__col--personal-details",
+          cellClasses: "app-table__col--personal-details",
           primary: { key: "fullName", link: "/cases/{{caseReference}}/client-details" },
           fields: [
             { key: "dateOfBirth", label: t('components.table.labels.dateOfBirth') },
@@ -57,7 +59,8 @@
           key: "references",
           text: t('components.table.columns.references'),
           type: "stacked",
-          stackedLineGap: true,
+          classes: "app-table__col--references",
+          cellClasses: "app-table__col--references",
           fields: [
             { key: "laaReference", label: t('components.table.labels.laaReference') },
             { key: "caseReference", label: t('components.table.labels.caseId') }
