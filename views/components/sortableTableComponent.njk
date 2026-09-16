@@ -60,10 +60,10 @@
     * linkClasses: CSS classes for links
     * linkKey: Custom property for {{id}} placeholder (defaults to 'id')
     * type: "stacked" combines several row properties into one cell, rendered as
-      a primary linked line followed by grey/small "label: value" lines. Use with:
+      a primary linked line followed by small "label: value" lines, where the
+      label is grey and the value is black. Use with:
       - primary: { key, link, linkClasses } for the top line (optional)
       - fields: [{ key, label }] for the label:value lines underneath
-      - stackedLineGap: Boolean, adds a small gap between the label:value lines
   - sortBy: Current sort column
   - sortOrder: Current sort order ('asc' or 'desc')
   - basePath: Base URL for sort links
@@ -146,23 +146,20 @@
                 .link
                 .replace('{{caseReference}}', row.caseReference)
                 .replace('{{fullName}}', row.fullName) %}
-              <div><a href="{{ primaryUrl }}" class="govuk-link{% if column.primary.linkClasses %} {{ column.primary.linkClasses }}{% endif %}">{{ primaryValue }}</a></div>
+              <div class="app-table__stacked-primary"><a href="{{ primaryUrl }}" class="govuk-link{% if column.primary.linkClasses %} {{ column.primary.linkClasses }}{% endif %}">{{ primaryValue }}</a></div>
             {% else %}
-              <div>{{ primaryValue }}</div>
+              <div class="app-table__stacked-primary">{{ primaryValue }}</div>
             {% endif %}
           {% endif %}
-          {% if column.stackedLineGap %}
-            {% set fieldClasses = "govuk-body-s app-table__cell-label--secondary app-table__stacked-line--gap" %}
-          {% else %}
-            {% set fieldClasses = "govuk-body-s app-table__cell-label--secondary" %}
-          {% endif %}
+          {% set labelClasses = "app-table__cell-label--secondary" %}
+          {% set valueClasses = "app-table__stacked-value" %}
           {% for field in column.fields %}
             {% if field.key == "phoneNumber" and not row.safeToCall %}
-              <div class="{{ fieldClasses }}">{{ field.label }}: <span class="govuk-!-font-weight-bold app-table__stacked-value">{{ t('components.table.notSafeToCall') }}</span></div>
+              <div class="govuk-body-s app-table__stacked-line"><span class="{{ labelClasses }}">{{ field.label }}:</span> <span class="{{ valueClasses }}">{{ t('components.table.notSafeToCall') }}</span></div>
             {% elif row[field.key] %}
-              <div class="{{ fieldClasses }}">{{ field.label }}: <span class="govuk-!-font-weight-bold app-table__stacked-value">{{ row[field.key] }}</span></div>
+              <div class="govuk-body-s app-table__stacked-line"><span class="{{ labelClasses }}">{{ field.label }}:</span> <span class="{{ valueClasses }}">{{ row[field.key] }}</span></div>
             {% else %}
-              <div class="{{ fieldClasses }}">{{ field.label }}: <span class="govuk-!-font-weight-bold app-table__stacked-value">{{ t('components.table.notProvided') }}</span> <span class="govuk-visually-hidden">{{ t('components.table.noData') }}</span></div>
+              <div class="govuk-body-s app-table__stacked-line"><span class="{{ labelClasses }}">{{ field.label }}:</span> <span class="{{ valueClasses }}">{{ t('components.table.notProvided') }}</span> <span class="govuk-visually-hidden">{{ t('components.table.noData') }}</span></div>
             {% endif %}
           {% endfor %}
         {% elif column.key == "phoneNumber" %}
