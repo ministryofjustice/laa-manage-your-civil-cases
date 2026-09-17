@@ -363,14 +363,20 @@
       "caseDetailsSection": {
         "clientProblemTitle": "Client problem from check if you can get legal aid",
         "operatorDiagnosisTitle": "Operator scope diagnosis",
+        "diagnosis": "Diagnosis",
         "operatorNotesTitle": "Notes from operator",
+        "operatorNote": "Notes",
         "providerNotesTitle": "Notes from provider",
         "noteLabel": "Add a note",
+        "categoryCapitalised": "Category",
         "category": "category:",
+        "categoryNote": "Note",
         "subCategory": "sub category:",
         "tellUsMore": "tell us more about your problem:",
         "financialAssessmentStatus": "financial assessment:",
-        "noNotes": "No notes to display"
+        "noNotes": "No notes to display",
+        "noOperatorScope": "No operator scope diagnosis",
+        "noProviderNotes": "No provider notes to display"
       },
       "clientDetails": {
         "heading": "Client details",
