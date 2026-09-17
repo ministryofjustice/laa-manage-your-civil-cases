@@ -699,11 +699,11 @@ test.describe('Financial Eligibility Forge Finances Journey', () => {
       await expect(page.getByRole('heading', { name: 'Dependants' })).toBeVisible();
       await expect(page.getByRole('heading', { name: 'Your expenses' })).toBeVisible();
 
-      // "Monthly" shown instead of "(Monthly)"
+      // "Monthly" shown instead of "(Per month)"
       await expect(page.getByText('£0 Monthly').first()).toBeVisible();
-      // "Every 2 weeks" shown instead of "2 weekly"
+      // "Every 2 weeks" shown instead of "(2 weekly)"
       await expect(page.getByText('£0 Every 2 weeks')).toBeVisible();
-      // "Every 4 weeks" shown instead of "4 weekly"
+      // "Every 4 weeks" shown instead of "(4 weekly)"
       await expect(page.getByText('£0 Every 4 weeks')).toBeVisible();
 
       await page.getByRole('button', { name: 'Submit' }).click();
