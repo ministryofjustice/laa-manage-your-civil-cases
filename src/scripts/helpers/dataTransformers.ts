@@ -870,7 +870,7 @@ export async function buildCategoryItems({
 }
 
 /**
- * format financial data to include £ and interval period (per month, per week etc)
+ * format financial data to include £ and interval period (Monthly, Weekly etc)
  * @param {unknown} value - value to be formatted
  * @returns { string } returns a string with the formatted value 
  */

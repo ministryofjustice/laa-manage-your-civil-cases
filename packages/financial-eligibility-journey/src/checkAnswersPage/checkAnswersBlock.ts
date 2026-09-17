@@ -707,7 +707,7 @@ export const expensesSummaryList = GovUKSummaryList({
     },
     {
       key: { text: Format('Are you currently paying towards legal aid for criminal defence? If so, how much have you paid during the last calendar month (today back to %1)?', lastCalendarMonthDate()) },
-      value: { text: Format('%1 per month', Answer('legal-aid-contributions').pipe(Transformers.Currency())) },
+      value: { text: Format('%1 Monthly', Answer('legal-aid-contributions').pipe(Transformers.Currency())) },
     },
   ] as GovUKSummaryList['rows'],
 })
@@ -750,7 +750,7 @@ export const partnerExpensesSummaryList = GovUKSummaryList({
     },
     {
       key: { text: Format('Is your partner currently paying towards legal aid for criminal defence? If so, how much has your partner paid in the last calendar month (today back to %1)?', lastCalendarMonthDate()) },
-      value: { text: Format('%1 per month', Answer('legal-aid-contributions-partner').pipe(Transformers.Currency())) },
+      value: { text: Format('%1 Monthly', Answer('legal-aid-contributions-partner').pipe(Transformers.Currency())) },
     },
   ] as GovUKSummaryList['rows'],
 })
