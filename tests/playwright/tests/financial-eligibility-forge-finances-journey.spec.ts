@@ -987,6 +987,10 @@ test.describe('Financial Eligibility Forge Finances Journey',() => {
 
       // "Monthly" shown instead of "(Per month)"
       await expect(page.getByText('£0 Monthly').first()).toBeVisible();
+      // "Weekly" shown instead of "(Per week)"
+      await expect(page.getByText('£0 Weekly')).toBeVisible();
+      // "Yearly" shown instead of "(Per year)"
+      await expect(page.getByText('£0 Yearly')).toBeVisible();
       // "Every 2 weeks" shown instead of "(2 weekly)"
       await expect(page.getByText('£0 Every 2 weeks')).toBeVisible();
       // "Every 4 weeks" shown instead of "(4 weekly)"
