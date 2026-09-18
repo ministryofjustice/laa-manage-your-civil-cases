@@ -33,7 +33,7 @@ test.describe('Case details tab', () => {
     // Check for `event` tags - which are populated via MSW API call
     const caseViewedTag = page.getByText('Case pending');
     const misTag = page.getByText('Case closed').nth(3);
-    const misOosTag = page.locator('strong:nth-child(49)');
+    const misOosTag = page.locator('div:nth-child(11) > .govuk-summary-list__key > .govuk-tag');
     const misMeansTag = page.getByText('Case closed').nth(4);
     const coiTag = page.getByText('Case closed').nth(5);
     const spopTag = page.getByText('Case re-opened').nth(1);
@@ -104,7 +104,7 @@ test.describe('Case details tab', () => {
     await caseDetails.expectStatus('Pending');
 
     // `Client problem from check if you can get legal aid` title
-    await expect(caseDetails.headingH3ByText(t('pages.caseDetails.caseDetailsSection.clientProblemTitle'))).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Client problem from check if' })).toBeVisible();
 
     // Hint text with date & time, NOT to be shown 
     const hintText = page.getByText('18 August 2025') // 

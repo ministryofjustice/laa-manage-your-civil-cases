@@ -250,10 +250,18 @@
       ]
     }) }}
   {% else %}
-    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-top-0 govuk-!-margin-bottom-4"/>
-    <p class="govuk-body govuk-!-margin-bottom-3">{{ operatorScopeValue }}</p>
-    <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-top-0 govuk-!-margin-bottom-4"/>
-  {% endif %}
+    {{ govukSummaryList({
+      card: {
+        title: { text: t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle') }
+      },
+      rows: [
+        {
+          classes: "empty-summary-row",
+          key: { html: "" },
+          value: { text: operatorScopeValue }
+        }
+      ]
+    }) }}
 {% endif %}
 
 
@@ -306,9 +314,18 @@
     rows: providerNoteRows
   }) }}
 {% else %}
-  <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-top-0 govuk-!-margin-bottom-4"/>
-  <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-margin-top-3">{{ t('pages.caseDetails.caseDetailsSection.noProviderNotes') }}</p>
-  <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-0"/>
+  {{ govukSummaryList({
+    card: {
+      title: { text: t('pages.caseDetails.caseDetailsSection.providerNotesTitle') }
+    },
+    rows: [
+      {
+        classes: "empty-summary-row",
+        key: { html: "" },
+        value: { text: t('pages.caseDetails.caseDetailsSection.noProviderNotes') }
+      }
+    ]
+  }) }}
 {% endif %}
 
 
