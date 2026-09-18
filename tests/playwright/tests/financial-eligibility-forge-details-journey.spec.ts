@@ -12,7 +12,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.goto('/cases/PC-1922-1879/financial-eligibility/change');
 
       // Assert case details header
-      await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+      await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
 
       // Under 18: Yes
       await expect(page.getByRole('heading', { name: 'Are you aged 17 or under?' })).toBeVisible();

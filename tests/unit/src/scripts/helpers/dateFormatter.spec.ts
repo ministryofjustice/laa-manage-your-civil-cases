@@ -3,7 +3,7 @@
  */
 
 import { expect } from 'chai';
-import { formatDate, formatDateLongMonth, formatLongFormDate, formatLongFormDateWithShortMonth, dateStringFromThreeFields } from '#src/scripts/helpers/dateFormatter.js';
+import { formatDate, formatDateLongMonth, formatLongFormDate, formatLongFormDateWithShortMonth, dateStringFromThreeFields, calculateAge } from '#src/scripts/helpers/dateFormatter.js';
 
 describe('formatDate()', () => {
   it('formats a valid ISO date string correctly', () => {
@@ -108,5 +108,17 @@ describe('dateStringFromThreeFields()', () => {
 
   it('handles empty values by returning a partially constructed date string', () => {
     expect(dateStringFromThreeFields('', '', '2024')).to.equal('2024-00-00');
+  });
+});
+
+describe('calculateAge()', () => {
+  it('calculates age in complete years', () => {
+    expect(calculateAge('1986-01-06', new Date('2026-09-15T00:00:00Z'))).to.equal(40);
+    expect(calculateAge('1986-01-06', new Date('2026-01-05T00:00:00Z'))).to.equal(39);
+    expect(calculateAge('1986-01-06', new Date('2026-01-06T00:00:00Z'))).to.equal(40);
+  });
+
+  it('returns undefined for an invalid date of birth', () => {
+    expect(calculateAge('invalid-date', new Date('2026-09-15T00:00:00Z'))).to.equal(undefined);
   });
 });

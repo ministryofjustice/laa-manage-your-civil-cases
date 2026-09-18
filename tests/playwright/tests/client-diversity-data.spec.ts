@@ -14,7 +14,7 @@ test('can see EMPTY client diversity data when viewing the client details tab', 
   await page.goto(emptyClientDiversityDataUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
   
   // Expect to see the main elements of client diversity data summary card
   await assertSummaryCardState(page, { cardId: 'Diversity data', emptyText: 'Not provided', hasData: false });
@@ -26,7 +26,7 @@ test('can see POPULATED client diversity data when viewing the client details ta
   await page.goto(populatedClientDiversityDataUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Vinsmoke Sanji", expectedCaseRef: "PC-2211-4466", dateReceived: "8 August 2025", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'Text relay', 'BSL'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Vinsmoke Sanji", expectedCaseRef: "PC-2211-4466", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'Text relay', 'BSL'], dateOfBirth: "12 Nov 1979 (46)" });
   
   // Expect to see populated elements of client diversity data summary card
   await assertSummaryCardState(page, { cardId: 'Diversity data', emptyText: 'Not provided', hasData: true });
@@ -38,7 +38,7 @@ test('can see POPULATED WITH PREFER NOT TO SAY client diversity data when viewin
   await page.goto(populatedWithPreferNotToSayClientDiversityDataUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Alan Turning", expectedCaseRef: "PC-7755-4557", dateReceived: "9 January 2025", badgeTexts: ['At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Alan Turning", expectedCaseRef: "PC-7755-4557", dateReceived: "9 Jan 2025 at", badgeTexts: ['At risk of abuse', 'Third Party'], dateOfBirth: "10 Jun 1977 (49)" });
 
   // Expect to see populated elements of client diversity data summary card
   await assertSummaryCardState(page, { cardId: 'Diversity data', emptyText: 'Not provided', hasData: true });

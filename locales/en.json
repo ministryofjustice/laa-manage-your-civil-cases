@@ -342,6 +342,8 @@
     "caseDetails": {
       "dateReceived": "Date received",
       "laaReference": "LAA reference",
+      "caseReference": "Case reference",
+      "dateOfBirth": "Date of birth",
       "notProvided": "Not provided",
       "status": "Status",
       "urgent": "Urgent",
@@ -383,6 +385,7 @@
       },
       "buttons": {
         "label": "Change status",
+        "labelAction": "Actions",
         "splitThisCase": "Split this case",
         "giveOperatorFeedback": "Give operator feedback",
         "actions": {

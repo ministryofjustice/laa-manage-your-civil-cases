@@ -220,8 +220,10 @@ export function buildPersonalDetailsUpdates(
     vulnerable_user: value => ({ vulnerableUser: value === true || value === 'true' }),
     dob: value => {
       const dob = value as { day: string; month: string; year: string; };
+      const paddedMonth = dob.month.padStart(2, '0');
+      const paddedDay = dob.day.padStart(2, '0');
       return {
-        dateOfBirth: `${dob.day}/${dob.month}/${dob.year}`
+        dateOfBirth: `${dob.year}-${paddedMonth}-${paddedDay}`
       };
     }
   };

@@ -1,9 +1,11 @@
+@use "govuk-frontend/dist/govuk" as govuk;
+
 // Case details header
 .moj-button-menu .moj-button-menu__toggle-button {
   margin-bottom: 0px;
 }
 
-@media only screen and (max-width: 640px) {
+@include govuk.govuk-media-query($until: tablet) {
   .split-case-button {
     margin-top: 20px;
   }
@@ -19,19 +21,99 @@
 }
 
 .negative-margin{
-  margin-top: -10px;
+  margin-top: -20px;
+
+  @include govuk.govuk-media-query($until: tablet) {
+    margin-top: -5px;
+  }
 }
 
 .alert-spacing {
   margin-bottom: 20px;
 }
 
-.case-status-wrapper {
-  align-items: center;
-  margin-bottom: 0;
-}
-
 .tag-padding{
   padding-top: 6px;
   padding-bottom: 8px;
+}
+
+.case-flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.case-status-label-and-button-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
+
+  .case-status-heading {
+    margin-bottom: 0;
+  }
+
+  @include govuk.govuk-media-query($until: tablet) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+}
+
+.mcc-case-details-light-blue-container {
+  background-color: #f4f8fb;
+  border-top-color: #8eb8dc;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-bottom-color: #8eb8dc;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  // re-add the padding for govuk-width-container
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding-left: calc(50vw - 50%);
+  padding-right: calc(50vw - 50%);
+  
+  .govuk-grid-column-full {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.mcc-case-details-dark-blue-container {
+  background-color: #1d70b8;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding-left: calc(50vw - 50%);
+  padding-right: calc(50vw - 50%);
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  @include govuk.govuk-media-query($until: tablet) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  :first-child {
+    flex: 0.8; // gives the name column more room than the rest
+  }
+
+  .govuk-body, 
+  .govuk-heading-s, 
+  .govuk-heading-xl{
+    color: #ffffff;
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
 }

@@ -1,4 +1,4 @@
-import { Self, Answer, Condition, validation, Transformer, Format, Generator } from '@ministryofjustice/hmpps-forge/core/authoring'
+import { Self, Answer, Condition, validation, Transformer, Format, Generator, Conditional, Literal, ConditionRegistry } from '@ministryofjustice/hmpps-forge/core/authoring'
 import type { ResolvableString } from '@ministryofjustice/hmpps-forge/core/components'
 import { GovUKHeading, GovUKTextInput, GovUKSelectInput, GovUKUtilityClasses, GovUKGridRow } from '@ministryofjustice/hmpps-forge/govuk-components'
 
@@ -12,6 +12,13 @@ export const frequencyItems = [
   { value: 'per_month', text: 'Monthly' },
   { value: 'per_year', text: 'Yearly' },
 ]
+
+/**
+ * Error message for two decimal places
+ */
+const TWO_DECIMAL_PLACES_MESSAGE = 'Enter an amount with no more than 2 decimal places';
+
+export const moneyConditions = new ConditionRegistry()
 
 /**
  * Formats a frequency answer for display, matching the frequency dropdown's own label text exactly
@@ -64,6 +71,20 @@ export function lastCalendarMonthDate(): ResolvableString {
 }
 
 /**
+ * Function to check inputted values are validated to 2 decimal places 
+ */
+export const HasMaxTwoDecimalPlaces = moneyConditions.register(
+  'HasMaxTwoDecimalPlaces',
+  () => (value: unknown): boolean => {
+    if (value === null || value === undefined || value === '') {
+      return true
+    }
+
+    return /^\d+(\.\d{1,2})?$/.test(String(value))
+  },
+)
+
+/**
  * Creates the amount input for a money field, shared across the income and expenses pages
  * @param {MoneyFieldConfig} config The field's code, label and validation messages
  * @returns {GovUKTextInput} The configured amount field
@@ -86,6 +107,10 @@ export function createAmountField(config: MoneyFieldConfig) {
       validation({
         condition: Self().match(Condition.Number.GreaterThanOrEqual(0)),
         message: config.invalidMessage,
+      }),
+      validation({
+        condition: Self().match(HasMaxTwoDecimalPlaces()),
+        message: TWO_DECIMAL_PLACES_MESSAGE,
       }),
       validation({
         condition: Self().match(Condition.Number.LessThanOrEqual(MAX_MONEY_VALUE)),

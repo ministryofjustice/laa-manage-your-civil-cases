@@ -19,7 +19,7 @@ test('viewing change phone-number form, to see the expected elements', async ({ 
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
 
   // Expect to see the following elements
   await expect(page.locator('h2.govuk-heading-m')).toContainText(t('forms.clientDetails.phoneNumber.title'));
@@ -40,7 +40,7 @@ test('phoneNumber is blank and correct validation errors display', async ({ page
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
 
   // Submit form with blank phoneNumber
   await page.locator('#phoneNumber').fill('');
@@ -73,7 +73,7 @@ test('phoneNumber is not valid and correct validation errors display', async ({ 
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
 
   // Submit form with invalid phoneNumber
   await page.locator('#phoneNumber').fill('ggg');
@@ -105,7 +105,7 @@ test('when safe to call and annouce are true when phone number is valid this is 
   await page.goto(visitUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
 
   // Fill in valid phone number details
   await phoneInput.fill('07700900123');
@@ -139,7 +139,7 @@ test('when safe to call and annouce are false when phone number is valid this is
   await page.goto('/cases/PC-7445-2319/client-details/change/phone-number');
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Llywelyn AP Parry', expectedCaseRef: 'PC-7445-2319', dateReceived: '9 January 2025', badgeTexts: ['At risk of abuse'], });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Llywelyn AP Parry', expectedCaseRef: 'PC-7445-2319', dateReceived: '9 Jan 2025 at', badgeTexts: ['At risk of abuse'], dateOfBirth: "10 Jun 1977 (49)" });
 
   // Fill in valid phone number details
   await phoneInput.fill('07700900123');
@@ -171,7 +171,7 @@ test('when safe to call is true and annouce is false when phone number is valid 
   await page.goto('/cases/PC-7755-4557/client-details/change/phone-number');
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Alan Turning", expectedCaseRef: "PC-7755-4557", dateReceived: "9 January 2025", badgeTexts: ['At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Alan Turning", expectedCaseRef: "PC-7755-4557", dateReceived: "9 Jan 2025 at", badgeTexts: ['At risk of abuse', 'Third Party'], dateOfBirth: "10 Jun 1977 (49)" });
 
   // Fill in valid phone number details
   await phoneInput.fill('07700900123');
@@ -205,7 +205,7 @@ test('when safe to call is false and annouce is true when phone number is valid 
   await page.goto('/cases/PC-1869-9154/client-details/change/phone-number');
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 August 2025", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'], dateOfBirth: "12 Nov 1979 (46)" });
 
   // Fill in valid phone number details
   await phoneInput.fill('07700900123');
@@ -237,7 +237,7 @@ test('shows warning banner when no changes are made', async ({ page, i18nSetup }
   // Go to edit page
   await page.goto(visitUrl);
 
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
 
   await saveButton.click();
 
