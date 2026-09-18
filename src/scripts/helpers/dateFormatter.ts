@@ -125,3 +125,27 @@ export function dateStringFromThreeFields(day: string, month: string, year: stri
   const paddedDay = day.padStart(DATE_PADDING_WIDTH, DATE_PADDING_CHAR);
   return `${year}-${paddedMonth}-${paddedDay}`;
 }
+
+/**
+ * Calculates the users age based on `dateOfBirth` data point.
+ * @param {string} dateOfBirth - The date of birth as a date-compatible string, such as `1986-01-06`
+ * @param {Date} [asOf=new Date()] - The date on which to calculate the person's age
+ * @returns {number | undefined} The person's age in complete years, or `undefined` when `dateOfBirth` is invalid.
+ */
+export function calculateAge(dateOfBirth: string, asOf = new Date()): number | undefined {
+  const birthDate = new Date(dateOfBirth);
+
+  if (Number.isNaN(birthDate.getTime())) {
+    return undefined;
+  }
+
+  let age = asOf.getUTCFullYear() - birthDate.getUTCFullYear();
+
+  const birthdayHasOccurred = asOf.getUTCMonth() > birthDate.getUTCMonth() || (asOf.getUTCMonth() === birthDate.getUTCMonth() && asOf.getUTCDate() >= birthDate.getUTCDate());
+
+  if (!birthdayHasOccurred) {
+    age -= 1;
+  }
+
+  return age;
+}

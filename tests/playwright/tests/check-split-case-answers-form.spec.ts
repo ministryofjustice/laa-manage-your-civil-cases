@@ -15,14 +15,14 @@ test.afterEach(async ({ page }) => {
   await logout(page);
 })
 
-test('viewing "check split case answers" form should display expected elements', async ({ page }) => {
+test('viewing "check split case answers" form should display expected elements', async ({ page, i18nSetup }) => {
   const checkSplitCaseAnswersPage = CheckSplitCaseAnswersPage.forCase(page, caseReference);
 
   // Navigate directly to the check split case answers form
   await checkSplitCaseAnswersPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(checkSplitCaseAnswersPage.getPage, { withMenuButtons: false, expectedName: 'Jack Youngs', expectedCaseRef: 'PC-1922-1879', dateReceived: '7 July 2025', badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(checkSplitCaseAnswersPage.getPage, { withMenuButtons: false, expectedName: 'Jack Youngs', expectedCaseRef: 'PC-1922-1879', dateReceived: '7 Jul 2025 at', badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
 
   // Assert the page heading is correct
   const heading = checkSplitCaseAnswersPage.getHeadingLocator();
@@ -46,7 +46,7 @@ test('viewing "check split case answers" form should display expected elements',
   await expect(checkSplitCaseAnswersPage.cancelLink).toBeVisible();
 });
 
-test('change link should navigate back to the about new case form', async ({ page }) => {
+test('change link should navigate back to the about new case form', async ({ page, i18nSetup }) => {
   // Navigate
   const checkSplitCaseAnswersPage = CheckSplitCaseAnswersPage.forCase(page, caseReference);
   await checkSplitCaseAnswersPage.navigate();
@@ -59,7 +59,7 @@ test('change link should navigate back to the about new case form', async ({ pag
   await expect(page).toHaveURL(`/cases/${caseReference}/split-this-case`);
 });
 
-test('cancel link should navigate back to client details', async ({ page }) => {
+test('cancel link should navigate back to client details', async ({ page, i18nSetup }) => {
   // Navigate
   const checkSplitCaseAnswersPage = CheckSplitCaseAnswersPage.forCase(page, caseReference);
   await checkSplitCaseAnswersPage.navigate();
@@ -78,7 +78,7 @@ test('cancel link should navigate back to client details', async ({ page }) => {
   await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Sarah Johnson', 'Phone number': 'Warning Not safe to call', 'Email address': 'sarah@johnson.com', 'Address': '45 Main Street, Sheffield S1 2AB', 'Relationship to client': 'Family member or friend', 'Passphrase': 'TestPass123' });
 });
 
-test('cancel link after clicking change link should navigate back to the check your answers form', async ({ page }) => {
+test('cancel link after clicking change link should navigate back to the check your answers form', async ({ page, i18nSetup }) => {
   // Navigate
   const checkSplitCaseAnswersPage = CheckSplitCaseAnswersPage.forCase(page, caseReference);
   await checkSplitCaseAnswersPage.navigate();
@@ -100,7 +100,7 @@ test('cancel link after clicking change link should navigate back to the check y
 
 });
 
-test('cancel link after clicking change link should navigate back to the check your answers form from about new case page', async ({ page }) => {
+test('cancel link after clicking change link should navigate back to the check your answers form from about new case page', async ({ page, i18nSetup }) => {
   // Navigate
   const checkSplitCaseAnswersPage = CheckSplitCaseAnswersPage.forCase(page, caseReference);
   await checkSplitCaseAnswersPage.navigate();
@@ -130,7 +130,7 @@ test('cancel link after clicking change link should navigate back to the check y
 
 });
 
-test('if the same provider radio button is selected the about new case details should have data populated', async ({ page }) => {
+test('if the same provider radio button is selected the about new case details should have data populated', async ({ page, i18nSetup }) => {
   // Set up test so we have completed one pass through the flow. 
   const initialSplitThisCaseFormPage = SplitThisCaseFormPage.forCase(page, caseReference);
   await initialSplitThisCaseFormPage.navigate();
@@ -234,7 +234,7 @@ test('confirm correct `operatorReassignment` text shown when selecting `operator
   await expect(page.getByText('The operator service')).toBeVisible();
 });
 
-test('check split case answers page should display change, confirm and cancel controls', async ({ page }) => {
+test('check split case answers page should display change, confirm and cancel controls', async ({ page, i18nSetup }) => {
   // Navigate
   const checkSplitCaseAnswersPage = CheckSplitCaseAnswersPage.forCase(page, caseReference);
   await checkSplitCaseAnswersPage.navigate();

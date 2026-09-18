@@ -999,7 +999,7 @@
     "dateReceived": "2025-01-14T19:00:00-05:00",
     "lastModified": "2025-01-15T10:30:00-05:00",
     "caseStatus": "Opened",
-    "dateOfBirth": "1991-12-19T00:00:00-05:00",
+    "dateOfBirth": "",
     "vulnerableUser": false,
     "language": "Urdu",
     "phoneNumber": "0784019408",
@@ -2665,6 +2665,331 @@
       },
       "personal_details": {
         "ni_number": ""
+      }
+    }
+  },
+  {
+    "fullName": "David Orange Birth",
+    "providerId": "15",
+    "caseReference": "PC-1922-2066",
+    "refCode": "",
+    "dateReceived": "2025-07-06T19:00:00-05:00",
+    "caseStatus": "New",
+    "category": "Housing, eviction and homelessness",
+    "isUrgent": true,
+    "dateOfBirth": "1981-08-18T00:00:00-05:00",
+    "vulnerableUser": true,
+    "phoneNumber": "07864422613",
+    "safeToCall": false,
+    "announceCall": false,
+    "emailAddress": "david@orange.com",
+    "address": "35 Queen Street, Birmingham",
+    "postcode": "G1 2LQ",
+    "laaReference": "8196672",
+    "thirdParty": {
+      "fullName": "Lowell Tawdry",
+      "emailAddress": "lowell@tawdry.com",
+      "contactNumber": "07787123456",
+      "safeToCall": false,
+      "address": "45 Main Street, Sheffield",
+      "postcode": "S1 2AB",
+      "relationshipToClient": {
+        "selected": [
+          "FAMILY_FRIEND"
+        ]
+      },
+      "passphraseSetUp": {
+        "selected": [
+          "Yes"
+        ],
+        "passphrase": "TestPass123"
+      }
+    },
+    "clientSupportNeeds": {
+      "skype": true,
+      "minicom": false,
+      "bslWebcam": "No",
+      "textRelay": "No",
+      "callbackPreference": "No",
+      "languageSupportNeeds": "",
+      "notes": "",
+      "no_adaptations_required": false
+    },
+    "lastModified": "2025-07-06T19:00:00-05:00",
+    "financialEligibility": {
+      "your_problem_notes": "",
+      "reference": "PC-1922-1879",
+      "state": "yes",
+      "notes": "",
+      "category": "Housing, eviction and homelessness",
+      "property_set": [
+        {
+          "value": 13000000,
+          "mortgage_left": 5000000,
+          "share": 100,
+          "id": 1361,
+          "disputed": false,
+          "main": false
+        },
+        {
+          "value": 12000000,
+          "mortgage_left": 6000000,
+          "share": 100,
+          "id": 1360,
+          "disputed": false,
+          "main": true
+        }
+      ],
+      "you": {
+        "income": {
+          "earnings": {
+            "per_interval_value": 15000,
+            "interval_period": "per_month"
+          },
+          "self_employment_drawings": {
+            "per_interval_value": 10000,
+            "interval_period": "per_week"
+          },
+          "benefits": {
+            "per_interval_value": 5000,
+            "interval_period": "per_year"
+          },
+          "tax_credits": {
+            "per_interval_value": 20000,
+            "interval_period": "per_month"
+          },
+          "child_benefits": {
+            "per_interval_value": 10000,
+            "interval_period": "per_month"
+          },
+          "maintenance_received": {
+            "per_interval_value": 0,
+            "interval_period": "per_month"
+          },
+          "pension": {
+            "per_interval_value": 0,
+            "interval_period": "per_month"
+          },
+          "other_income": {
+            "per_interval_value": 0,
+            "interval_period": "per_month"
+          },
+          "self_employed": false,
+          "total": 88749
+        },
+        "savings": {
+          "bank_balance": 20000,
+          "investment_balance": 10000,
+          "asset_balance": 50000,
+          "credit_balance": 20000,
+          "total": 100000
+        },
+        "deductions": {
+          "income_tax": {
+            "per_interval_value": 10000,
+            "interval_period": "per_4week"
+          },
+          "national_insurance": {
+            "per_interval_value": 20000,
+            "interval_period": "per_2week"
+          },
+          "maintenance": {
+            "per_interval_value": 5000,
+            "interval_period": "per_month"
+          },
+          "childcare": {
+            "per_interval_value": 2000,
+            "interval_period": "per_month"
+          },
+          "mortgage": {
+            "per_interval_value": 20000,
+            "interval_period": "per_month"
+          },
+          "rent": {
+            "per_interval_value": 0,
+            "interval_period": "per_month"
+          },
+          "criminal_legalaid_contributions": 1000,
+          "total": 38000
+        }
+      },
+      "partner": {
+        "income": {},
+        "savings": {},
+        "deductions": {}
+      },
+      "dependants_young": 0,
+      "dependants_old": 0,
+      "is_you_or_your_partner_over_60": false,
+      "has_partner": false,
+      "is_you_under_18": false,
+      "specific_benefits": {
+        "pension_credit": false,
+        "job_seekers_allowance": true,
+        "employment_support": false,
+        "universal_credit": true,
+        "income_support": false
+      },
+      "disregards": {
+        "vaccine_damage": true,
+        "national_emergencies": true,
+        "vcjd_trust": true,
+        "infected_blood": true,
+        "child_maintenance": true,
+        "benefit_payments": true,
+        "child_abuse": true,
+        "grenfell_tower": true,
+        "london_emergencies": true,
+        "justice_compensation": true,
+        "love_manchester": true,
+        "overseas_terrorism": true,
+        "energy_prices": true,
+        "criminal_injuries": true,
+        "modern_slavery": true,
+        "cost_living": true
+      }
+    },
+    "legalHelpFormExtract": {
+      "eligibility_check": {
+        "your_problem_notes": "",
+        "on_nass_benefits": false,
+        "reference": "PC-1922-1879",
+        "state": "yes",
+        "notes": "",
+        "category": "housing",
+        "property_set": [
+          {
+            "value": 13000000,
+            "mortgage_left": 5000000,
+            "share": 100,
+            "id": 1361,
+            "disputed": false,
+            "main": false
+          },
+          {
+            "value": 12000000,
+            "mortgage_left": 6000000,
+            "share": 100,
+            "id": 1360,
+            "disputed": false,
+            "main": true
+          }
+        ],
+        "you": {
+          "income": {
+            "earnings": {
+              "per_interval_value": 15000,
+              "interval_period": "per_month"
+            },
+            "self_employment_drawings": {
+              "per_interval_value": 10000,
+              "interval_period": "per_week"
+            },
+            "benefits": {
+              "per_interval_value": 5000,
+              "interval_period": "per_year"
+            },
+            "tax_credits": {
+              "per_interval_value": 20000,
+              "interval_period": "per_month"
+            },
+            "child_benefits": {
+              "per_interval_value": 10000,
+              "interval_period": "per_month"
+            },
+            "maintenance_received": {
+              "per_interval_value": 0,
+              "interval_period": "per_month"
+            },
+            "pension": {
+              "per_interval_value": 0,
+              "interval_period": "per_month"
+            },
+            "other_income": {
+              "per_interval_value": 0,
+              "interval_period": "per_month"
+            },
+            "self_employed": false,
+            "total": 88749
+          },
+          "savings": {
+            "bank_balance": 20000,
+            "investment_balance": 10000,
+            "asset_balance": 50000,
+            "credit_balance": 20000,
+            "total": 100000
+          },
+          "deductions": {
+            "income_tax": {
+              "per_interval_value": 10000,
+              "interval_period": "per_4week"
+            },
+            "national_insurance": {
+              "per_interval_value": 20000,
+              "interval_period": "per_2week"
+            },
+            "maintenance": {
+              "per_interval_value": 5000,
+              "interval_period": "per_month"
+            },
+            "childcare": {
+              "per_interval_value": 2000,
+              "interval_period": "per_month"
+            },
+            "mortgage": {
+              "per_interval_value": 20000,
+              "interval_period": "per_month"
+            },
+            "rent": {
+              "per_interval_value": 0,
+              "interval_period": "per_month"
+            },
+            "criminal_legalaid_contributions": 1000,
+            "total": 38000
+          }
+        },
+        "partner": {
+          "income": {},
+          "savings": {},
+          "deductions": {}
+        },
+        "dependants_young": 0,
+        "dependants_old": 0,
+        "is_you_or_your_partner_over_60": false,
+        "has_partner": false,
+        "is_you_under_18": false,
+        "specific_benefits": {
+          "pension_credit": false,
+          "job_seekers_allowance": true,
+          "employment_support": false,
+          "universal_credit": true,
+          "income_support": false
+        },
+        "disregards": {
+          "vaccine_damage": true,
+          "national_emergencies": true,
+          "vcjd_trust": true,
+          "infected_blood": true,
+          "child_maintenance": true,
+          "benefit_payments": true,
+          "child_abuse": true,
+          "grenfell_tower": true,
+          "london_emergencies": true,
+          "justice_compensation": true,
+          "love_manchester": true,
+          "overseas_terrorism": true,
+          "energy_prices": true,
+          "criminal_injuries": true,
+          "modern_slavery": true,
+          "cost_living": true
+        },
+        "calculations": {
+          "property_capital": "8000000",
+          "disposable_capital_assets": "100000"
+        }
+      },
+      "personal_details": {
+        "ni_number": "AB123456C"
       }
     }
   }

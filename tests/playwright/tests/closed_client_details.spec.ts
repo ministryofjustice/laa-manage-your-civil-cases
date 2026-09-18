@@ -11,7 +11,7 @@ test('client details selected from closed cases tab has correct page elements', 
   await page.goto(getClientDetailsUrlByStatus('closed'));
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Roronoa Zoro", expectedCaseRef: "PC-6667-9089", dateReceived: "6 January 2025", badgeTexts: ['At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Roronoa Zoro", expectedCaseRef: "PC-6667-9089", dateReceived: "6 Jan 2025 at", badgeTexts: ['At risk of abuse', 'Third Party'], dateOfBirth: "6 Sept 1982 (44)" });
 
   // Assert support needs summary card is visible with no data 
   await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
@@ -39,7 +39,7 @@ test('client support needs card is shown with no support needs on new case when 
   // Navigate to the client details
   await page.goto(getClientDetailsUrlByStatus('closed'));
 
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Roronoa Zoro", expectedCaseRef: "PC-6667-9089", dateReceived: "6 January 2025", badgeTexts: ['At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Roronoa Zoro", expectedCaseRef: "PC-6667-9089", dateReceived: "6 Jan 2025 at", badgeTexts: ['At risk of abuse', 'Third Party'], dateOfBirth: "6 Sept 1982 (44)" });
 
   // Assert support needs summary card is visible with no data 
   await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });

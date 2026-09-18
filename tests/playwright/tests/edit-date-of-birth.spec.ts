@@ -1,8 +1,8 @@
 import { test, expect } from '../fixtures/index.js';
-import { getClientDetailsUrlByStatus, setupAuth, assertCaseDetailsHeaderPresent, assertSummaryCardData, assertSummaryCardState } from '../utils/index.js';
+import { setupAuth, assertCaseDetailsHeaderPresent, assertSummaryCardData, assertSummaryCardState } from '../utils/index.js';
 import { EditDateOfBirthPage } from '../pages/EditDateOfBirthPage.js';
 
-const clientDetailsUrl = getClientDetailsUrlByStatus('default');
+const clientDetailsUrl = `/cases/PC-1922-2066/client-details`;
 
 test.beforeEach(async ({ page }) => {
   await setupAuth(page);
@@ -15,7 +15,7 @@ test('viewing edit date of birth form should display expected elements', async (
   await editDateOfBirthPage.navigate();
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "David Orange Birth", expectedCaseRef: "PC-1922-2066", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
 
 
   // Assert all main elements are visible
@@ -27,7 +27,7 @@ test('cancel link should navigate back to client details', async ({ page, i18nSe
   // Test cancel navigation functionality
   await editDateOfBirthPage.expectCancelNavigatesBack();
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(editDateOfBirthPage.getPage, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(editDateOfBirthPage.getPage, { withMenuButtons: true, expectedName: "David Orange Birth", expectedCaseRef: "PC-1922-2066", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
 });
 
 test('unchanged date of birth triggers no change warning', async ({ pages, i18nSetup }) => {
@@ -54,14 +54,14 @@ test('save button should redirect to client details when no validation errors', 
   await expect(page).toHaveURL(clientDetailsUrl);
 
   // Assert the case details header is present
-  await assertCaseDetailsHeaderPresent(editDateOfBirthPage.getPage, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 July 2025", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'] });
+  await assertCaseDetailsHeaderPresent(editDateOfBirthPage.getPage, { withMenuButtons: true, expectedName: "David Orange Birth", expectedCaseRef: "PC-1922-2066", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "15 May 1990 (36)" });
 
   // Assert support needs summary card is visible with no data 
   await assertSummaryCardState(page, { cardId: 'Client support needs', emptyText: 'No support needs', hasData: false, addHref: '/client-details/add/support-need' });
   // Assert third party details summary card is visible with data
   await assertSummaryCardState(page, { cardId: 'Third party contact', emptyText: 'No third party contact required', hasData: true, changeHref: '/client-details/change/third-party', removeHref: '/confirm/remove-third-party' });
   // Assert the correct data is displayed in the third party data summary card
-  await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Sarah Johnson', 'Phone number': 'Warning Not safe to call', 'Email address': 'sarah@johnson.com', 'Address': '45 Main Street, Sheffield S1 2AB', 'Relationship to client': 'Family member or friend' });
+  await assertSummaryCardData(page, 'Third party contact', { 'Name': 'Lowell Tawdry', 'Phone number': 'Warning Not safe to call', 'Email address': 'lowell@tawdry.com', 'Address': '45 Main Street, Sheffield S1 2AB', 'Relationship to client': 'Family member or friend' });
 });
 
 const invalidDates = [
@@ -83,7 +83,7 @@ for (const invalidDate of invalidDates) {
     await editDateOfBirthPage.clickSave();
 
     // Should remain on edit page
-    await expect(page).toHaveURL('/cases/PC-1922-1879/client-details/change/date-of-birth');
+    await expect(page).toHaveURL('/cases/PC-1922-2066/client-details/change/date-of-birth');
 
     // Error should be visible 
     await expect(page.locator('.govuk-error-summary')).toBeVisible();
@@ -107,7 +107,7 @@ for (const blankDate of blankDates) {
     await editDateOfBirthPage.clickSave();
 
     // Should remain on edit page
-    await expect(page).toHaveURL('/cases/PC-1922-1879/client-details/change/date-of-birth');
+    await expect(page).toHaveURL('/cases/PC-1922-2066/client-details/change/date-of-birth');
 
     // Error should be visible 
     await expect(page.locator('.govuk-error-summary')).toBeVisible();
@@ -127,7 +127,7 @@ for (const invalidDate of invalidDates) {
     await editDateOfBirthPage.clickSave();
 
     // Should remain on edit page
-    await expect(page).toHaveURL('/cases/PC-1922-1879/client-details/change/date-of-birth');
+    await expect(page).toHaveURL('/cases/PC-1922-2066/client-details/change/date-of-birth');
 
     // Error should be visible 
     await expect(page.locator('.govuk-error-summary')).toBeVisible();
@@ -147,7 +147,7 @@ for (const blankDate of blankDates) {
     await editDateOfBirthPage.clickSave();
 
     // Should remain on edit page
-    await expect(page).toHaveURL('/cases/PC-1922-1879/client-details/change/date-of-birth');
+    await expect(page).toHaveURL('/cases/PC-1922-2066/client-details/change/date-of-birth');
 
     // Error should be visible 
     await expect(page.locator('.govuk-error-summary')).toBeVisible();
@@ -167,7 +167,7 @@ for (const invalidDate of invalidDates) {
     await editDateOfBirthPage.clickSave();
 
     // Should remain on edit page
-    await expect(page).toHaveURL('/cases/PC-1922-1879/client-details/change/date-of-birth');
+    await expect(page).toHaveURL('/cases/PC-1922-2066/client-details/change/date-of-birth');
 
     // Error should be visible 
     await expect(page.locator('.govuk-error-summary')).toBeVisible();
@@ -187,7 +187,7 @@ for (const blankDate of blankDates) {
     await editDateOfBirthPage.clickSave();
 
     // Should remain on edit page
-    await expect(page).toHaveURL('/cases/PC-1922-1879/client-details/change/date-of-birth');
+    await expect(page).toHaveURL('/cases/PC-1922-2066/client-details/change/date-of-birth');
 
     // Error should be visible 
     await expect(page.locator('.govuk-error-summary')).toBeVisible();
