@@ -1,3 +1,58 @@
+// Secondary/identifying label:value lines within a stacked cell (for example
+// LAA reference, case ID, date of birth, postcode, phone number), styled to be
+// less prominent than the primary line so cells with many lines read clearly
+.app-table__cell-label--secondary {
+  color: var(--govuk-secondary-text-colour, #484949);
+}
+
+// Small gap below the primary (linked) line and between the stacked label:value
+// lines beneath it, so they don't look crammed together
+.app-table__stacked-primary,
+.app-table__stacked-line.govuk-body-s {
+  margin-bottom: 2px;
+}
+
+// Prevents atomic values (dates, postcodes, reference numbers) from breaking
+// mid-value onto a second line when their column is narrow
+.app-table__stacked-value {
+  white-space: nowrap;
+}
+
+// Gives the merged "Personal details" and "References" columns enough room
+// for their label:value lines to sit on a single line rather than wrapping
+.app-cases-table {
+  table-layout: fixed;
+  min-width: 700px;
+
+  .app-table__col--personal-details {
+    width: 28%;
+  }
+
+  .app-table__col--references {
+    width: 20%;
+  }
+}
+
+// Lets wide fixed-layout tables scroll horizontally instead of squeezing
+// their columns to the point of overlapping on narrow viewports
+.app-table-container {
+  overflow-x: auto;
+
+  // Keeps the scrollbar always visible so cut-off columns read as
+  // scrollable rather than looking broken (default overlay scrollbars
+  // only appear on hover/drag)
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--govuk-secondary-text-colour, #505a5f);
+    border-radius: 4px;
+  }
+}
+
 [aria-sort="ascending"] a,
 [aria-sort="descending"] a {
   align-items: center;

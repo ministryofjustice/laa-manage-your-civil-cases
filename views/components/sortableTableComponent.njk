@@ -59,6 +59,11 @@
     * link: URL pattern with placeholders ({{caseReference}}, {{fullName}}, {{id}})
     * linkClasses: CSS classes for links
     * linkKey: Custom property for {{id}} placeholder (defaults to 'id')
+    * type: "stacked" combines several row properties into one cell, rendered as
+      a primary linked line followed by small "label: value" lines, where the
+      label is grey and the value is black. Use with:
+      - primary: { key, link, linkClasses } for the top line (optional)
+      - fields: [{ key, label }] for the label:value lines underneath
   - sortBy: Current sort column
   - sortOrder: Current sort order ('asc' or 'desc')
   - basePath: Base URL for sort links
@@ -132,7 +137,35 @@
     {% for column in options.columns %}
       {# Format cell content based on column type #}
       {% set cellContent %}
-        {% if column.key == "phoneNumber" %}
+        {% if column.type == "stacked" %}
+          {% if column.primary %}
+            {% set primaryValue = row[column.primary.key] %}
+            {% if column.primary.link %}
+              {% set primaryUrl = column
+                .primary
+                .link
+                .replace('{{caseReference}}', row.caseReference)
+                .replace('{{fullName}}', row.fullName) %}
+              <div class="app-table__stacked-primary"><a href="{{ primaryUrl }}" class="govuk-link{% if column.primary.linkClasses %} {{ column.primary.linkClasses }}{% endif %}">{{ primaryValue }}</a></div>
+            {% else %}
+              <div class="app-table__stacked-primary">{{ primaryValue }}</div>
+            {% endif %}
+          {% endif %}
+          {% set labelClasses = "app-table__cell-label--secondary" %}
+          {% set valueClasses = "app-table__stacked-value" %}
+          {% for field in column.fields %}
+            {% set fieldValueHtml %}
+              {% if field.key == "phoneNumber" and not row.safeToCall %}
+                <span class="{{ valueClasses }}">{{ t('components.table.notSafeToCall') }}</span>
+              {% elif row[field.key] %}
+                <span class="{{ valueClasses }}">{{ row[field.key] }}</span>
+              {% else %}
+                <span class="{{ valueClasses }}">{{ t('components.table.notProvided') }}</span> <span class="govuk-visually-hidden">{{ t('components.table.noData') }}</span>
+              {% endif %}
+            {% endset %}
+            <div class="govuk-body-s app-table__stacked-line"><span class="{{ labelClasses }}">{{ field.label }}:</span> {{ fieldValueHtml | trim | safe }}</div>
+          {% endfor %}
+        {% elif column.key == "phoneNumber" %}
           {% if row.safeToCall %}
             {{ row[column.key] }}
           {% else %}
@@ -162,8 +195,8 @@
         {% endif %}
       {% endset %}
 
-      {# Create cell with or without link #}
-      {% if column.link %}
+      {# Create cell with or without link (stacked columns render their own link inline) #}
+      {% if column.link and column.type != "stacked" %}
         {% set linkUrl = column
           .link
           .replace('{{id}}', row[column.linkKey or 'id'])
@@ -189,13 +222,15 @@
   {% endfor %}
 
   {# Render the GOV.UK table with our data #}
-  {{ govukTable({
-    caption: options.caption,
-    classes: options.classes,
-    attributes: {
-      id: options.id
-    },
-    head: tableHead,
-    rows: tableRows
-  }) }}
+  <div class="app-table-container">
+    {{ govukTable({
+      caption: options.caption,
+      classes: options.classes,
+      attributes: {
+        id: options.id
+      },
+      head: tableHead,
+      rows: tableRows
+    }) }}
+  </div>
 {% endmacro %}

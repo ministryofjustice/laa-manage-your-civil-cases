@@ -40,12 +40,32 @@
   {# Render the sortable table with dynamic configuration #}
   {{ sortableTableComponent({
       id: tableId,
+      classes: "app-cases-table",
       data: data,
       columns: [
-        { key: "fullName", text: t('components.table.columns.name'), link: "/cases/{{caseReference}}/client-details" },
-        { key: "laaReference", text: t('components.table.columns.laaReference') },
-        { key: "dateOfBirth", text: t('components.table.columns.dateOfBirth') },
-        { key: "postcode", text: t('components.table.columns.postcode') },
+        {
+          key: "personalDetails",
+          text: t('components.table.columns.personalDetails'),
+          type: "stacked",
+          classes: "app-table__col--personal-details",
+          cellClasses: "app-table__col--personal-details",
+          primary: { key: "fullName", link: "/cases/{{caseReference}}/client-details" },
+          fields: [
+            { key: "dateOfBirth", label: t('components.table.labels.dateOfBirth') },
+            { key: "postcode", label: t('components.table.labels.postcode') }
+          ]
+        },
+        {
+          key: "references",
+          text: t('components.table.columns.references'),
+          type: "stacked",
+          classes: "app-table__col--references",
+          cellClasses: "app-table__col--references",
+          fields: [
+            { key: "laaReference", label: t('components.table.labels.laaReference') },
+            { key: "caseReference", label: t('components.table.labels.caseId') }
+          ]
+        },
         { key: "category", text: t('components.table.columns.category') },
         dateColumn,
         { key: "case_flags", text: t('components.table.columns.details') }

@@ -22,17 +22,13 @@ test.describe('new cases listing page', () => {
     await expect(caseTable).toBeVisible();
 
     // Check for correct column headers
-    const nameHeader = page.getByRole('columnheader', { name: 'Name' })
-    const laaRefHeader = page.getByRole('columnheader', { name: 'LAA reference' })
-    const dobHeader = page.getByRole('columnheader', { name: 'Date of birth' })
-    const postcodeHeader = page.getByRole('columnheader', { name: 'Postcode' })
+    const personalDetailsHeader = page.getByRole('columnheader', { name: 'Personal details' })
+    const referencesHeader = page.getByRole('columnheader', { name: 'References' })
     const categoryHeader = page.getByRole('columnheader', { name: 'Category of law' })
     const dateHeader = page.getByRole('link', { name: 'Date received▼' })
-    const detailsHeader = page.getByRole('columnheader', { name: 'Details' })
-    await expect(nameHeader).toBeVisible();
-    await expect(laaRefHeader).toBeVisible();
-    await expect(dobHeader).toBeVisible();
-    await expect(postcodeHeader).toBeVisible();
+    const detailsHeader = page.getByRole('columnheader', { name: 'Details', exact: true })
+    await expect(personalDetailsHeader).toBeVisible();
+    await expect(referencesHeader).toBeVisible();
     await expect(categoryHeader).toBeVisible();
     await expect(dateHeader).toBeVisible();
     await expect(detailsHeader).toBeVisible();
@@ -49,10 +45,9 @@ test.describe('new cases listing page', () => {
     await expect(page.locator('h2.govuk-heading-m')).toContainText('New');
 
     // Check case Katie Young with ID: 8196672, where there is no postcode or category
-    const notProvidedPostCode = page.getByRole('cell', { name: 'Not provided  No data' }).first()
-    const notProvidedCategory = page.getByRole('cell', { name: 'Not provided  No data' }).nth(1)
-    await expect(notProvidedPostCode).toBeVisible();
-    await expect(notProvidedCategory).toBeVisible();
+    const katieRow = page.getByRole('row').filter({ hasText: 'Katie Young' });
+    await expect(katieRow.getByText('Postcode: Not provided')).toBeVisible();
+    await expect(katieRow.getByRole('cell', { name: 'Not provided  No data', exact: true })).toBeVisible();
   });
 
   test('should display correct case flags [Urgent, At risk of abuse, Third party] for Jack Youngs', async ({ page }) => {
