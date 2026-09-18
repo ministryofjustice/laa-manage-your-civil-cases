@@ -79,15 +79,13 @@ test.describe('Case details tab', () => {
     await caseDetails.expectStatus('New');
 
     // `Client problem from check if you can get legal aid` title
-    await expect(caseDetails.headingH3ByText(t('pages.caseDetails.caseDetailsSection.clientProblemTitle'))).toBeVisible();
+    await expect(caseDetails.headingH2ByText(t('pages.caseDetails.caseDetailsSection.clientProblemTitle'))).toBeVisible();
 
     // Hint text with date & time
     const hintText = page.getByText('19 August 2025') // Not added time as our CI has different timezone
     await expect(hintText).toBeVisible();
 
-    await expect(
-      page.getByRole('rowheader', { name: 'Category' }).first()
-    ).toBeVisible();
+    await expect(page.locator('dt').filter({ hasText: 'Category' }).first()).toBeVisible();
 
     // Onward question data
     const onwardQuestionBulletsList =
@@ -123,7 +121,7 @@ test.describe('Case details tab', () => {
     await caseDetails.expectStatus('New');
 
     // `Operator scope diagnosis` title
-    await expect(caseDetails.headingH3ByText(t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle'))).toBeVisible();
+    await expect(caseDetails.headingH2ByText(t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle'))).toBeVisible();
 
     // Table data of onward question data
     const diagnosisNodeTableData = [
@@ -145,7 +143,7 @@ test.describe('Case details tab', () => {
     await caseDetails.expectStatus('New');
 
     // `Operator scope diagnosis` title
-    await expect(caseDetails.headingH3ByText(t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle'))).toBeVisible();
+    await expect(caseDetails.headingH2ByText(t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle'))).toBeVisible();
 
     // Notes from operator
     const operatorNotes = page.getByText('Operator notes for Sanji', { exact: true });
@@ -159,7 +157,7 @@ test.describe('Case details tab', () => {
     await caseDetails.expectStatus('New');
 
     // `Operator scope diagnosis` title
-    await expect(caseDetails.headingH3ByText(t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle'))).toBeVisible();
+    await expect(caseDetails.headingH2ByText(t('pages.caseDetails.caseDetailsSection.operatorDiagnosisTitle'))).toBeVisible();
 
     // Notes from operator
     const operatorNotes = page.getByText('These are some test provider notes', { exact: true });
@@ -173,10 +171,10 @@ test.describe('Case details tab', () => {
     await caseDetails.expectStatus('New');
 
     // `Notes from provider` title
-    await expect(page.getByRole('heading', { level: 3, name: t('pages.caseDetails.caseDetailsSection.providerNotesTitle') })).toBeVisible();
+    await expect(caseDetails.headingH2ByText(t('pages.caseDetails.caseDetailsSection.providerNotesTitle'))).toBeVisible();
 
-    // When no `providerNotes`, the `noNotes` text should appear
-    await expect(page.locator('main')).toContainText(t('pages.caseDetails.caseDetailsSection.noNotes'));
+    // When no `providerNotes`, the `noProviderNotes` text should appear
+    await expect(page.locator('main')).toContainText(t('pages.caseDetails.caseDetailsSection.noProviderNotes'));
   });
 
   test('save button should submit note when valid data provided', async ({ page, i18nSetup }) => {
@@ -233,7 +231,7 @@ test.describe('Case details tab', () => {
     await caseDetails.navigate();
 
     // Check provider notes section is visible
-    await expect(caseDetails.headingH3ByText(t('pages.caseDetails.caseDetailsSection.providerNotesTitle'))).toBeVisible();
+    await expect(caseDetails.headingH2ByText(t('pages.caseDetails.caseDetailsSection.providerNotesTitle'))).toBeVisible();
 
     // Add a new note
     const newNote = 'Additional provider note for testing multiple notes display.';
@@ -256,11 +254,16 @@ test.describe('Case details tab', () => {
     await caseDetails.expectSuccessfulSubmission();
 
     // Note content should be visible
-    await expect(page.getByText(testNote)).toBeVisible();
+    const noteTextArea = page.locator('dd').filter({ hasText: testNote });
+    await expect(noteTextArea).toBeVisible();
 
-    // Timestamp hint should be visible (govuk-hint class)
-    const hintText = page.locator('.govuk-hint').filter({ hasText: /on/ }).first();
-    await expect(hintText).toBeVisible();
+    // Timestamp hint should be visible
+    const noteHintData = noteTextArea.locator('xpath=preceding-sibling::dt[1]');
+    const metadataParagraphs = noteHintData.locator('p');
+
+    await expect(metadataParagraphs).toHaveCount(2);
+    await expect(metadataParagraphs.first()).toHaveText('test-user@example.com');
+    await expect(metadataParagraphs.nth(1)).not.toBeEmpty();
   });
 
   test('form should preserve note content when validation fails', async ({ page, i18nSetup }) => {
@@ -290,7 +293,7 @@ test.describe('Case details tab', () => {
     await expect(caseDetailsPage.categoryValue).toContainText('Housing');
 
     // Change link is not shown
-    await expect(caseDetailsPage.changeCategoryCardLink).not.toBeVisible();
+    await expect(caseDetailsPage.changeCategoryCardLink).toHaveCount(0);
   });
 
   test('note form should have correct CSRF protection', async ({ page, i18nSetup }) => {
