@@ -64,7 +64,7 @@ const legalAidContributionsPartnerConfig: MoneyFieldConfig = {
   invalidMessage: 'How much your partner paid towards legal aid for criminal defence in the last calendar month must be a number, like 100 or 240.50',
   frequencyLabel: '',
   frequencyMessage: '',
-  fixedFrequencySuffix: 'per month',
+  fixedFrequencySuffix: 'Monthly',
 }
 export const legalAidContributionsPartnerHeading = GovUKHeading({ text: legalAidContributionsPartnerConfig.label, size: 's', classes: 'govuk-!-margin-bottom-2' })
 export const legalAidContributionsPartnerField = createAmountField(legalAidContributionsPartnerConfig)
