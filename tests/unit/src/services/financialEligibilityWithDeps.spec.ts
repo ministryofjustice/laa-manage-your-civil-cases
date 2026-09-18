@@ -1412,6 +1412,35 @@ describe('FinancialEligibilityEffectsWithDepsImpl', () => {
       expect(context.getAnswer('earnings')).to.equal(null);
       expect(context.getAnswer('earnings-frequency')).to.equal('per_month');
     });
+
+    it('normalises `cla_backend` monetary values before displaying into Forge journey', async () => {
+      const dataWithSavings = {
+        ...financialEligibilityData,
+        clientData: {
+          ...financialEligibilityData.clientData,
+          savings: {
+            bankBalance: 0,
+            investmentBalance: 12.5,
+            assetBalance: 12,
+            creditBalance: 0.00,
+          },
+        },
+      };
+
+      const context = createTestEffectContext({
+        params: { caseReference: 'CASE123' },
+        session: {},
+      });
+
+      getFinancialEligibilityStub.resolves({ data: dataWithSavings });
+
+      await effects.LoadCaseFinancialEligibility(deps, context);
+
+      expect(context.getAnswer('bank-balance')).to.equal('0');
+      expect(context.getAnswer('investment-balance')).to.equal('12.50');
+      expect(context.getAnswer('asset-balance')).to.equal('12');
+      expect(context.getAnswer('credit-balance')).to.equal('0');
+    });
   });
 
   describe('PersistSavedAnswers', () => {
