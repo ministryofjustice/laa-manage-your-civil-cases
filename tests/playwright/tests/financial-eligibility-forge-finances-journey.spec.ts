@@ -1095,10 +1095,17 @@ test.describe('Financial Eligibility Forge Finances Journey',() => {
       await expect(page.getByRole('heading',{name: 'Your partner\'s expenses'})).toBeVisible();
 
       const dependantsCard=page.locator('.govuk-summary-card').filter({has: page.getByRole('heading',{name: 'Dependants',exact: true})});
-
       await expect(dependantsCard).toContainText('Do you and your partner have any dependants aged 16 and over?');
       await expect(dependantsCard).toContainText('Do you and your partner have any dependants aged 15 and under?');
       await expect(dependantsCard).toContainText('0');
+  
+      const undisputedSavingsCard = page.locator('.govuk-summary-card').filter({ has: page.getByRole('heading', { name: "Your undisputed savings", exact: true }) });
+      await expect(undisputedSavingsCard).toContainText('£0');
+      await expect(undisputedSavingsCard).not.toContainText('£0.00');
+
+      const partnerUndisputedSavingsCard = page.locator('.govuk-summary-card').filter({ has: page.getByRole('heading', { name: "Your partner's undisputed savings" }) });
+      await expect(partnerUndisputedSavingsCard).toContainText('£0');
+      await expect(partnerUndisputedSavingsCard).not.toContainText('£0.00');
     });
 
     test('check your answers should display correct information when category is family',async ({page}) => {
