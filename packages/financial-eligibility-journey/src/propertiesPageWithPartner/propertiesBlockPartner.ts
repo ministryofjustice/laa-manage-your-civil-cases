@@ -1,7 +1,7 @@
 import { Self, Answer, Condition, validation, Iterator, Data, Format, Loop, Item, Transformer, or, not } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { GovUKHeading, GovUKTextInput, GovUKBody, GovUKButton, GovUKUtilityClasses, GovUKRadioInput, GovUKSectionBreak, GovUKGridRow } from '@ministryofjustice/hmpps-forge/govuk-components'
 import { CollectionBlock } from '@ministryofjustice/hmpps-forge/core/components'
-import { HasMaxTwoDecimalPlaces } from '../moneyFieldHelpers.js'
+import { HasMaxTwoDecimalPlaces, moneyMaxValueValidation } from '../moneyFieldHelpers.js'
 
 const categoryIsDebtOrFamily = or(
   Answer('category').match(Condition.Equals('debt')),
@@ -61,6 +61,7 @@ export const propertySet = CollectionBlock({
             condition: Self().match(HasMaxTwoDecimalPlaces()),
             message: 'Enter an amount with no more than 2 decimal places',
           }),
+          moneyMaxValueValidation(),
         ],
       }),
       GovUKTextInput({
@@ -84,6 +85,7 @@ export const propertySet = CollectionBlock({
             condition: Self().match(HasMaxTwoDecimalPlaces()),
             message: 'Enter an amount with no more than 2 decimal places',
           }),
+          moneyMaxValueValidation(),
         ],
       }),
       GovUKRadioInput({
