@@ -1,5 +1,6 @@
 import { Self, Condition, validation, Transformer, and } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { GovUKHeading, GovUKTextInput, GovUKUtilityClasses } from '@ministryofjustice/hmpps-forge/govuk-components'
+import { dependantsMaxValidation } from '../dependantsFieldHelpers.js'
 
 export const dependantsHeading = GovUKHeading({
   text: 'Dependants',
@@ -21,6 +22,7 @@ export const dependants16OverField = GovUKTextInput({
       condition: and(Self().match(Condition.Number.IsInteger()), Self().match(Condition.Number.GreaterThanOrEqual(0))),
       message: 'The number of dependants you have aged 16 and over must be a whole positive number, like 1 or 2',
     }),
+    dependantsMaxValidation(),
   ],
 })
 
@@ -39,5 +41,6 @@ export const dependants15UnderField = GovUKTextInput({
       condition: and(Self().match(Condition.Number.IsInteger()), Self().match(Condition.Number.GreaterThanOrEqual(0))),
       message: 'The number of dependants you have aged 15 and under must be a whole positive number, like 1 or 2',
     }),
+    dependantsMaxValidation(),
   ],
 })
