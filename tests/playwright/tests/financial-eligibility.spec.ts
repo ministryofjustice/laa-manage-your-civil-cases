@@ -268,16 +268,16 @@ test.describe('Income tab', () => {
     // Assert the correct data is displayed in the income table.
     await assertSummaryCardData(page, 'Your income', {
       'Are you self employed\\\?': 'No',
-      'What did you earn before tax\\\? \\\(Check your most recent payslips\\\)': '£150 per month',
-      'How much tax do you pay\\\?': '£100 every 4 weeks',
-      'How much National Insurance do you pay\\\?': '£200 every 2 weeks',
-      'Self employed drawings \\\(before tax\\\)': '£100 per week',
-      'Benefits': '£50 per year',
-      'Tax credits': '£200 per month',
-      'Child benefit \\\(for household\\\)': '£100 per month',
-      'Maintenance received': '£0 per month',
-      'Pension income': '£0 per month',
-      'Other income': '£0 per month'
+      'What did you earn before tax\\\? \\\(Check your most recent payslips\\\)': '£150 Monthly',
+      'How much tax do you pay\\\?': '£100 Every 4 weeks',
+      'How much National Insurance do you pay\\\?': '£200 Every 2 weeks',
+      'Self employed drawings \\\(before tax\\\)': '£100 Weekly',
+      'Benefits': '£50 Yearly',
+      'Tax credits': '£200 Monthly',
+      'Child benefit \\\(for household\\\)': '£100 Monthly',
+      'Maintenance received': '£0 Monthly',
+      'Pension income': '£0 Monthly',
+      'Other income': '£0 Monthly'
     });
 
     // Assert the correct data is displayed in the dependants table.
@@ -307,31 +307,31 @@ test.describe('Income tab', () => {
     // Assert the correct data is displayed in the your income table.
     await assertSummaryCardData(page, 'Your income', {
       'Are you self employed\\\?': 'No',
-      // 'What did you earn before tax? (Check your most recent payslips)': '£120 per month',
-      'How much tax do you pay\\\?': '£0 every 4 weeks',
-      'How much National Insurance do you pay\\\?': '£0 every 2 weeks',
-      // 'Self employed drawings (before tax)': '£200 per week',
-      'Benefits': '£500 per year',
-      'Tax credits': '£100 per month',
-      // 'Child benefit (for household)': '£200 per month',
-      'Maintenance received': '£100 per month',
-      'Pension income': '£100 per month',
-      'Other income': '£0 per month'
+      // 'What did you earn before tax? (Check your most recent payslips)': '£120 Monthly',
+      'How much tax do you pay\\\?': '£0 Every 4 weeks',
+      'How much National Insurance do you pay\\\?': '£0 Every 2 weeks',
+      // 'Self employed drawings (before tax)': '£200 Weekly',
+      'Benefits': '£500 Yearly',
+      'Tax credits': '£100 Monthly',
+      // 'Child benefit (for household)': '£200 Monthly',
+      'Maintenance received': '£100 Monthly',
+      'Pension income': '£100 Monthly',
+      'Other income': '£0 Monthly'
     });
 
     // Assert the correct data is displayed in the partner's income table.
     await assertSummaryCardData(page, "Your partner's income", {
       'Is your partner self employed\\\?': 'No',
-      // 'What did your partner earn before tax? (Check your most recent payslips)': '£130 per month',
-      'How much tax does your partner pay\\\?': '£0 every 4 weeks',
-      'How much National Insurance does your partner pay\\\?': '£0 every 2 weeks',
-      // 'Self employed drawings (before tax)': '£100 per week',
-      'Benefits': '£500 per year',
-      'Tax credits': '£200 per month',
-      // 'Child benefit (for household)': '£300 per month',
-      'Maintenance received': '£200 per month',
-      'Pension income': '£200 per month',
-      'Other income': '£0 per month'
+      // 'What did your partner earn before tax? (Check your most recent payslips)': '£130 Monthly',
+      'How much tax does your partner pay\\\?': '£0 Every 4 weeks',
+      'How much National Insurance does your partner pay\\\?': '£0 Every 2 weeks',
+      // 'Self employed drawings (before tax)': '£100 Weekly',
+      'Benefits': '£500 Yearly',
+      'Tax credits': '£200 Monthly',
+      // 'Child benefit (for household)': '£300 Monthly',
+      'Maintenance received': '£200 Monthly',
+      'Pension income': '£200 Monthly',
+      'Other income': '£0 Monthly'
     });
 
     // Assert the correct data is displayed in the dependants table with the correct partner question.
@@ -397,11 +397,11 @@ test.describe('Expenses tab', () => {
 
     // Assert the correct data is displayed in the expenses table.
     await assertSummaryCardData(page, 'Your expenses', {
-      'How much do you pay for your mortgage\\\?': '£200 per month',
-      'How much do you pay for rent\\\? The amount entered should not include any housing benefit or payment for bills': '£0 per month',
-      'How much maintenance have you paid during the last calendar month\\\?': '£50 per month',
-      'Do you have any childcare costs because of work or study\\\? If so, how much\\\?': '£20 per month',
-      'Are you currently paying towards legal aid for criminal defence\\\? If so, how much have you paid in the last calendar month\\\?': '£10 per month'
+      'How much do you pay for your mortgage\\\?': '£200 Monthly',
+      'How much do you pay for rent\\\? The amount entered should not include any housing benefit or payment for bills': '£0 Monthly',
+      'How much maintenance have you paid during the last calendar month\\\?': '£50 Monthly',
+      'Do you have any childcare costs because of work or study\\\? If so, how much\\\?': '£20 Monthly',
+      'Are you currently paying towards legal aid for criminal defence\\\? If so, how much have you paid in the last calendar month\\\?': '£10 Monthly'
     });
   });
 
@@ -423,19 +423,19 @@ test.describe('Expenses tab', () => {
 
     // Assert the correct data is displayed in the expenses table.
     await assertSummaryCardData(page, 'Your expenses', {
-      'How much do you pay for your mortgage\\\?': '£350 per month',
-      'How much do you pay for rent\\\? The amount entered should not include any housing benefit or payment for bills': '£250 per month',
-      'How much maintenance have you paid during the last calendar month\\\?': '£20 per month',
-      'Do you have any childcare costs because of work or study\\\? If so, how much\\\?': '£50 per month',
-      'Are you currently paying towards legal aid for criminal defence\\\? If so, how much have you paid in the last calendar month\\\?': '£20 per month'
+      'How much do you pay for your mortgage\\\?': '£350 Monthly',
+      'How much do you pay for rent\\\? The amount entered should not include any housing benefit or payment for bills': '£250 Monthly',
+      'How much maintenance have you paid during the last calendar month\\\?': '£20 Monthly',
+      'Do you have any childcare costs because of work or study\\\? If so, how much\\\?': '£50 Monthly',
+      'Are you currently paying towards legal aid for criminal defence\\\? If so, how much have you paid in the last calendar month\\\?': '£20 Monthly'
     });
     // Assert the correct data is displayed in the expenses table.
     await assertSummaryCardData(page, "Your partner's expenses", {
-      'How much does your partner pay for their mortgage\\\?': '£300 per month',
-      'How much does your partner pay for their rent\\\? The amount entered should not include any housing benefit or payment for bills': '£200 per month',
-      'How much maintenance has your partner paid during the last calendar month\\\?': '£40 per month',
-      'Does your partner have any childcare costs because of work or study\\\? If so, how much\\\?': '£30 per month',
-      'Is your partner currently paying towards legal aid for criminal defence\\\? If so, how much has your partner paid in the last calendar month\\\?': '£10 per month'
+      'How much does your partner pay for their mortgage\\\?': '£300 Monthly',
+      'How much does your partner pay for their rent\\\? The amount entered should not include any housing benefit or payment for bills': '£200 Monthly',
+      'How much maintenance has your partner paid during the last calendar month\\\?': '£40 Monthly',
+      'Does your partner have any childcare costs because of work or study\\\? If so, how much\\\?': '£30 Monthly',
+      'Is your partner currently paying towards legal aid for criminal defence\\\? If so, how much has your partner paid in the last calendar month\\\?': '£10 Monthly'
     });
   });
 

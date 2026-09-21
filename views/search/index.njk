@@ -110,14 +110,33 @@
 
         {{ sortableTableComponent({
           id: "search-results-table",
+          classes: "sortable-table-layout",
           data: searchResults,
           columns: [
-            { key: "fullName", text: t('components.table.columns.name'), link: "/cases/{{caseReference}}/client-details" },
-            { key: "laaReference", text: t('components.table.columns.laaReference') },
-            { key: "caseReference", text: t('components.table.columns.caseId') },
-            { key: "dateOfBirth", text: t('components.table.columns.dateOfBirth') },
-            { key: "postcode", text: t('components.table.columns.postcode') },
-            { key: "phoneNumber", text: t('components.table.columns.phoneNumber') },
+            {
+              key: "personalDetails",
+              text: t('components.table.columns.personalDetails'),
+              type: "stacked",
+              classes: "sortable-table-layout__col--personal-details",
+              cellClasses: "sortable-table-layout__col--personal-details",
+              primary: { key: "fullName", link: "/cases/{{caseReference}}/client-details" },
+              fields: [
+                { key: "dateOfBirth", label: t('components.table.labels.dateOfBirth') },
+                { key: "postcode", label: t('components.table.labels.postcode') },
+                { key: "phoneNumber", label: t('components.table.labels.phoneNumber') }
+              ]
+            },
+            {
+              key: "references",
+              text: t('components.table.columns.references'),
+              type: "stacked",
+              classes: "sortable-table-layout__col--references",
+              cellClasses: "sortable-table-layout__col--references",
+              fields: [
+                { key: "laaReference", label: t('components.table.labels.laaReference') },
+                { key: "caseReference", label: t('components.table.labels.caseId') }
+              ]
+            },
             { key: "category", text: t('components.table.columns.category') },
             { key: "caseStatus", text: t('components.table.columns.status') },
             { key: "modified", text: t('components.table.columns.lastModified'), sortable: true }

@@ -1,6 +1,6 @@
 import { Self, Condition, validation, Transformer } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { GovUKHeading, GovUKTextInput, GovUKUtilityClasses } from '@ministryofjustice/hmpps-forge/govuk-components'
-
+import { HasMaxTwoDecimalPlaces } from '../moneyFieldHelpers.js'
 
 export const savingsHeading = GovUKHeading({
   text: 'Your undisputed savings',
@@ -23,6 +23,10 @@ export const bankBalanceField = GovUKTextInput({
       condition: Self().match(Condition.Number.GreaterThanOrEqual(0)),
       message: 'How much was in your bank account/building society before your last payment went in must only include positive numbers, with or without a decimal point',
     }),
+    validation({
+      condition: Self().match(HasMaxTwoDecimalPlaces()),
+      message: 'Enter an amount with no more than 2 decimal places',
+    }),
   ],
 })
 
@@ -41,6 +45,10 @@ export const investmentBalanceField = GovUKTextInput({
     validation({
       condition: Self().match(Condition.Number.GreaterThanOrEqual(0)),
       message: 'The value of any investments, shares or ISAs you have must only include positive numbers, with or without a decimal point',
+    }),
+    validation({
+      condition: Self().match(HasMaxTwoDecimalPlaces()),
+      message: 'Enter an amount with no more than 2 decimal places',
     }),
   ],
 })
@@ -61,6 +69,10 @@ export const assetBalanceField = GovUKTextInput({
       condition: Self().match(Condition.Number.GreaterThanOrEqual(0)),
       message: 'The value of valuable items worth over £500 each must only include positive numbers, with or without a decimal point',
     }),
+    validation({
+      condition: Self().match(HasMaxTwoDecimalPlaces()),
+      message: 'Enter an amount with no more than 2 decimal places',
+    }),
   ],
 })
 
@@ -79,6 +91,10 @@ export const creditBalanceField = GovUKTextInput({
     validation({
       condition: Self().match(Condition.Number.GreaterThanOrEqual(0)),
       message: 'The amount of any money owed to you must only include positive numbers, with or without a decimal point',
+    }),
+    validation({
+      condition: Self().match(HasMaxTwoDecimalPlaces()),
+      message: 'Enter an amount with no more than 2 decimal places',
     }),
   ],
 })

@@ -29,6 +29,7 @@ import { type Deps } from '#packages/financial-eligibility-journey/src/api.js';
 import { FinancialEligibilityEffectsWithDepsImpl } from '#src/services/financialEligibilityWithDeps.js';
 import { type TransformerRegistryDeps, transformers } from '#packages/financial-eligibility-journey/src/formatters.js';
 import { formatCurrency } from './scripts/helpers/dataTransformers.js';
+import { moneyConditions } from '#packages/financial-eligibility-journey/src/moneyFieldHelpers.js';
 
 const TRUST_FIRST_PROXY = 1;
 
@@ -82,6 +83,7 @@ const createApp = async (): Promise<express.Application> => {
 		.registerGlobalComponents(mojComponents)
 		.registerGlobalFunctions(nunjucksFunctions)
 		.registerGlobalFunctions<TransformerRegistryDeps>(transformers, {formatCurrency: formatCurrency})
+		.registerGlobalFunctions(moneyConditions)
 		.registerPackage<Deps>(
 			createEligibilityPackage,
 			{

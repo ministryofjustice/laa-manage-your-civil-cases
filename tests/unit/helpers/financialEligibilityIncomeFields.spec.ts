@@ -74,6 +74,7 @@ interface MoneyFieldCase {
   invalidMessage: string;
   maxMessage: string;
   frequencyMessage: string;
+  decimalMessage: string;
 }
 
 const clientMoneyFields: MoneyFieldCase[] = [
@@ -83,6 +84,7 @@ const clientMoneyFields: MoneyFieldCase[] = [
     invalidMessage: 'What you earned before tax must be a positive number, like 1000 or 2400.50',
     maxMessage: 'What you earned before tax must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for what you earned before tax',
+    decimalMessage: 'Enter an amount with no more than 2 decimal places',
   },
   {
     name: 'income tax', code: 'income-tax', amount: incomeTaxField, frequency: incomeTaxFrequencyField,
@@ -90,6 +92,7 @@ const clientMoneyFields: MoneyFieldCase[] = [
     invalidMessage: 'How much tax you pay must be a positive number, like 1000 or 2400.50',
     maxMessage: 'How much tax you pay must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for how much tax you pay',
+    decimalMessage: 'Enter an amount with no more than 2 decimal places',
   },
   {
     name: 'national insurance', code: 'national-insurance', amount: nationalInsuranceField, frequency: nationalInsuranceFrequencyField,
@@ -97,6 +100,7 @@ const clientMoneyFields: MoneyFieldCase[] = [
     invalidMessage: 'How much National Insurance you pay must be a positive number, like 1000 or 2400.50',
     maxMessage: 'How much National Insurance you pay must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for how much National Insurance you pay',
+    decimalMessage: 'Enter an amount with no more than 2 decimal places',
   },
   {
     name: 'self employment drawings', code: 'self-employment-drawings', amount: selfEmploymentDrawingsField, frequency: selfEmploymentDrawingsFrequencyField,
@@ -104,6 +108,7 @@ const clientMoneyFields: MoneyFieldCase[] = [
     invalidMessage: 'Your self employed drawings (before tax) must be a positive number, like 1000 or 2400.50',
     maxMessage: 'Your self employed drawings (before tax) must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for your self employed drawings (before tax)',
+    decimalMessage: 'Enter an amount with no more than 2 decimal places',
   },
   {
     name: 'benefits', code: 'income-benefits', amount: incomeBenefitsField, frequency: incomeBenefitsFrequencyField,
@@ -111,6 +116,7 @@ const clientMoneyFields: MoneyFieldCase[] = [
     invalidMessage: 'The total of any benefits you get must be a positive number, like 1000 or 2400.50',
     maxMessage: 'The total of any benefits you get must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for the total of any benefits you get',
+    decimalMessage: 'Enter an amount with no more than 2 decimal places',
   },
   {
     name: 'tax credits', code: 'tax-credits', amount: taxCreditsField, frequency: taxCreditsFrequencyField,
@@ -118,6 +124,7 @@ const clientMoneyFields: MoneyFieldCase[] = [
     invalidMessage: 'The total of any tax credits you get must be a positive number, like 1000 or 2400.50',
     maxMessage: 'The total of any tax credits you get must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for the total of any tax credits you get',
+    decimalMessage: 'Enter an amount with no more than 2 decimal places',
   },
   {
     name: 'child benefit (for household)', code: 'child-benefit', amount: childBenefitField, frequency: childBenefitFrequencyField,
@@ -125,6 +132,7 @@ const clientMoneyFields: MoneyFieldCase[] = [
     invalidMessage: 'The total of any child benefit you get must be a positive number, like 1000 or 2400.50',
     maxMessage: 'The total of any child benefit you get must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for the total of any child benefit you get',
+    decimalMessage: 'Enter an amount with no more than 2 decimal places',
   },
   {
     name: 'maintenance received', code: 'maintenance-received', amount: maintenanceReceivedField, frequency: maintenanceReceivedFrequencyField,
@@ -132,6 +140,7 @@ const clientMoneyFields: MoneyFieldCase[] = [
     invalidMessage: 'The total of any maintenance you get must be a positive number, like 1000 or 2400.50',
     maxMessage: 'The total of any maintenance you get must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for the total of any maintenance you get',
+    decimalMessage: 'Enter an amount with no more than 2 decimal places',
   },
   {
     name: 'pension income', code: 'pension-income', amount: pensionIncomeField, frequency: pensionIncomeFrequencyField,
@@ -139,6 +148,7 @@ const clientMoneyFields: MoneyFieldCase[] = [
     invalidMessage: 'The total of any pension income you get must be a positive number, like 1000 or 2400.50',
     maxMessage: 'The total of any pension income you get must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for the total of any pension income you get',
+    decimalMessage: 'Enter an amount with no more than 2 decimal places',
   },
   {
     name: 'other income', code: 'other-income', amount: otherIncomeField, frequency: otherIncomeFrequencyField,
@@ -146,6 +156,7 @@ const clientMoneyFields: MoneyFieldCase[] = [
     invalidMessage: 'The total of any other income you get must be a positive number, like 1000 or 2400.50',
     maxMessage: 'The total of any other income you get must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for the total of any other income you get',
+    decimalMessage: 'Enter an amount with no more than 2 decimal places',
   },
 ];
 
@@ -156,6 +167,7 @@ const partnerMoneyFields: MoneyFieldCase[] = [
     invalidMessage: 'What your partner earned before tax must be a positive number, like 1000 or 2400.50',
     maxMessage: 'What your partner earned before tax must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for what your partner earned before tax',
+    decimalMessage: 'Enter an amount with no more than 2 decimal places',
   },
   {
     name: 'income tax', code: 'income-tax-partner', amount: incomeTaxPartnerField, frequency: incomeTaxPartnerFrequencyField,
@@ -163,6 +175,7 @@ const partnerMoneyFields: MoneyFieldCase[] = [
     invalidMessage: 'How much tax your partner pays must be a positive number, like 1000 or 2400.50',
     maxMessage: 'How much tax your partner pays must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for how much tax your partner pays',
+    decimalMessage: 'Enter an amount with no more than 2 decimal places',
   },
   {
     name: 'national insurance', code: 'national-insurance-partner', amount: nationalInsurancePartnerField, frequency: nationalInsurancePartnerFrequencyField,
@@ -170,6 +183,7 @@ const partnerMoneyFields: MoneyFieldCase[] = [
     invalidMessage: 'How much National Insurance your partner pays must be a positive number, like 1000 or 2400.50',
     maxMessage: 'How much National Insurance your partner pays must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for how much National Insurance your partner pays',
+    decimalMessage: 'Enter an amount with no more than 2 decimal places',
   },
   {
     name: 'self employment drawings', code: 'self-employment-drawings-partner', amount: selfEmploymentDrawingsPartnerField, frequency: selfEmploymentDrawingsPartnerFrequencyField,
@@ -177,6 +191,7 @@ const partnerMoneyFields: MoneyFieldCase[] = [
     invalidMessage: 'Your partner\'s self employed drawings (before tax) must be a positive number, like 1000 or 2400.50',
     maxMessage: 'Your partner\'s self employed drawings (before tax) must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for your partner\'s self employed drawings (before tax)',
+    decimalMessage: 'Enter an amount with no more than 2 decimal places',
   },
   {
     name: 'benefits', code: 'income-benefits-partner', amount: incomeBenefitsPartnerField, frequency: incomeBenefitsPartnerFrequencyField,
@@ -184,6 +199,7 @@ const partnerMoneyFields: MoneyFieldCase[] = [
     invalidMessage: 'The total of any benefits your partner gets must be a positive number, like 1000 or 2400.50',
     maxMessage: 'The total of any benefits your partner gets must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for the total of any benefits your partner gets',
+    decimalMessage: 'Enter an amount with no more than 2 decimal places',
   },
   {
     name: 'tax credits', code: 'tax-credits-partner', amount: taxCreditsPartnerField, frequency: taxCreditsPartnerFrequencyField,
@@ -191,6 +207,7 @@ const partnerMoneyFields: MoneyFieldCase[] = [
     invalidMessage: 'The total of any tax credits your partner gets must be a positive number, like 1000 or 2400.50',
     maxMessage: 'The total of any tax credits your partner gets must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for the total of any tax credits your partner gets',
+    decimalMessage: 'Enter an amount with no more than 2 decimal places',
   },
   {
     name: 'maintenance received', code: 'maintenance-received-partner', amount: maintenanceReceivedPartnerField, frequency: maintenanceReceivedPartnerFrequencyField,
@@ -198,6 +215,7 @@ const partnerMoneyFields: MoneyFieldCase[] = [
     invalidMessage: 'The total of any maintenance your partner gets must be a positive number, like 1000 or 2400.50',
     maxMessage: 'The total of any maintenance your partner gets must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for the total of any maintenance your partner gets',
+    decimalMessage: 'Enter an amount with no more than 2 decimal places',
   },
   {
     name: 'pension income', code: 'pension-income-partner', amount: pensionIncomePartnerField, frequency: pensionIncomePartnerFrequencyField,
@@ -205,6 +223,7 @@ const partnerMoneyFields: MoneyFieldCase[] = [
     invalidMessage: 'The total of any pension income your partner gets must be a positive number, like 1000 or 2400.50',
     maxMessage: 'The total of any pension income your partner gets must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for the total of any pension income your partner gets',
+    decimalMessage: 'Enter an amount with no more than 2 decimal places',
   },
   {
     name: 'other income', code: 'other-income-partner', amount: otherIncomePartnerField, frequency: otherIncomePartnerFrequencyField,
@@ -212,6 +231,7 @@ const partnerMoneyFields: MoneyFieldCase[] = [
     invalidMessage: 'The total of any other income your partner gets must be a positive number, like 1000 or 2400.50',
     maxMessage: 'The total of any other income your partner gets must be 99,999,999.99 or less',
     frequencyMessage: 'Select the frequency for the total of any other income your partner gets',
+    decimalMessage: 'Enter an amount with no more than 2 decimal places',
   },
 ];
 
@@ -235,12 +255,16 @@ function testMoneyFieldPair(testCase: MoneyFieldCase): void {
       expect(validationMessages(testCase.amount)[1]).to.equal(testCase.invalidMessage);
     });
 
+    it('rejects amounts with more than 2 decimal places', () => {
+      expect(validationMessages(testCase.amount)[2]).to.equal(testCase.decimalMessage);
+    });
+    
     it('rejects amounts over the maximum allowed value', () => {
-      expect(validationMessages(testCase.amount)[2]).to.equal(testCase.maxMessage);
+      expect(validationMessages(testCase.amount)[3]).to.equal(testCase.maxMessage);
     });
 
     it('has exactly three validation rules on the amount field', () => {
-      expect(validationMessages(testCase.amount)).to.have.length(3);
+      expect(validationMessages(testCase.amount)).to.have.length(4);
     });
 
     it('pairs with a frequency select defaulting to per_month with the standard options', () => {
