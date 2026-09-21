@@ -146,13 +146,13 @@
                 .link
                 .replace('{{caseReference}}', row.caseReference)
                 .replace('{{fullName}}', row.fullName) %}
-              <div class="app-table__stacked-primary"><a href="{{ primaryUrl }}" class="govuk-link{% if column.primary.linkClasses %} {{ column.primary.linkClasses }}{% endif %}">{{ primaryValue }}</a></div>
+              <div class="sortable-table-layout__stacked-primary"><a href="{{ primaryUrl }}" class="govuk-link{% if column.primary.linkClasses %} {{ column.primary.linkClasses }}{% endif %}">{{ primaryValue }}</a></div>
             {% else %}
-              <div class="app-table__stacked-primary">{{ primaryValue }}</div>
+              <div class="sortable-table-layout__stacked-primary">{{ primaryValue }}</div>
             {% endif %}
           {% endif %}
-          {% set labelClasses = "app-table__cell-label--secondary" %}
-          {% set valueClasses = "app-table__stacked-value" %}
+          {% set labelClasses = "sortable-table-layout__cell-label--secondary" %}
+          {% set valueClasses = "sortable-table-layout__stacked-value" %}
           {% for field in column.fields %}
             {% set fieldValueHtml %}
               {% if field.key == "phoneNumber" and not row.safeToCall %}
@@ -163,14 +163,8 @@
                 <span class="{{ valueClasses }}">{{ t('components.table.notProvided') }}</span> <span class="govuk-visually-hidden">{{ t('components.table.noData') }}</span>
               {% endif %}
             {% endset %}
-            <div class="govuk-body-s app-table__stacked-line"><span class="{{ labelClasses }}">{{ field.label }}:</span> {{ fieldValueHtml | trim | safe }}</div>
+            <div class="govuk-body-s sortable-table-layout__stacked-line"><span class="{{ labelClasses }}">{{ field.label }}:</span> {{ fieldValueHtml | trim | safe }}</div>
           {% endfor %}
-        {% elif column.key == "phoneNumber" %}
-          {% if row.safeToCall %}
-            {{ row[column.key] }}
-          {% else %}
-            {{ t('components.table.notSafeToCall') }}
-          {% endif %}
         {% elif column.key == "case_flags" %}
           <div class="stack-case-flags">
             {{ caseFlagComponent(
@@ -222,7 +216,7 @@
   {% endfor %}
 
   {# Render the GOV.UK table with our data #}
-  <div class="app-table-container">
+  <div class="sortable-table-layout__container">
     {{ govukTable({
       caption: options.caption,
       classes: options.classes,
