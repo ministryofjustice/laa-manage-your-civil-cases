@@ -81,12 +81,7 @@ export const aboutYouSummaryList = GovUKSummaryList({
     {
       key: { text: 'Do you have a partner?' },
       value: { text: Answer('has-partner').pipe(Transformer.String.Capitalize()) },
-      visibleWhen: not(
-        and(
-          Answer('under-18-receives-regular-payment').match(Condition.Equals('no')),
-          Answer('under-18-has-valuables').match(Condition.Equals('no'))
-        )
-      ),
+      visibleWhen: not(under18Passported),
     },
     {
       key: { text: 'Are you or your partner aged 60 or over?' },
