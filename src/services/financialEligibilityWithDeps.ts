@@ -100,7 +100,7 @@ function mapAnswerCodeToApiField(answerCode: string): string | null {
  * @param {FinancialEligibilityData} financialEligibilityData - The financial eligibility data from the API
  * @returns {Record<string, unknown>} A record mapping step codes to their corresponding values
  */
-function mapFinancialEligibilityApiDataToAnswerCodes(financialEligibilityData: FinancialEligibilityData): Record<string, unknown> {
+export function mapFinancialEligibilityApiDataToAnswerCodes(financialEligibilityData: FinancialEligibilityData): Record<string, unknown> {
     return {
         category: financialEligibilityData.category,
         [under18Step.code]: financialEligibilityData.isUnder17,

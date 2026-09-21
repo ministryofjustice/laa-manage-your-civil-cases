@@ -14,18 +14,18 @@
  * Dependencies: apiService, validation helpers
  */
 
-import { describe, it, beforeEach, afterEach } from 'mocha';
-import { expect } from 'chai';
+import {describe,it,beforeEach,afterEach} from 'mocha';
+import {expect} from 'chai';
 import * as sinon from 'sinon';
-import type { Request, Response } from 'express';
+import type {Request,Response} from 'express';
 
 import {
   getChangeCategoryOfLaw,
   submitChangeCategoryOfLawForm
 } from '#src/scripts/controllers/editCategoryOfLawController.js';
-import { apiService } from '#src/services/apiService.js';
-import { ValidationChain } from 'express-validator';
-import { validateChangeCategoryOfLaw } from '#src/middlewares/changeCategoryOfLawSchema.js';
+import {apiService} from '#src/services/apiService.js';
+import {ValidationChain} from 'express-validator';
+import {validateChangeCategoryOfLaw} from '#src/middlewares/changeCategoryOfLawSchema.js';
 
 // Import axios middleware types
 import '#utils/server/axiosSetup.js';
@@ -40,7 +40,7 @@ interface RequestWithMiddleware extends Request {
   };
 }
 
-describe('Change Category Of Law Controller', () => {
+describe('Change Category Of Law Controller',() => {
   let req: Partial<RequestWithMiddleware>;
   let res: any;
   let next: sinon.SinonStub;
@@ -50,21 +50,21 @@ describe('Change Category Of Law Controller', () => {
   let apiChangeCategoryStub: sinon.SinonStub;
   let apiProviderChoicesStub: sinon.SinonStub;
 
-  const runSchema = async (
+  const runSchema=async (
     req: any,
-    schema: ValidationChain[] | ValidationChain
+    schema: ValidationChain[]|ValidationChain
   ): Promise<void> => {
-    const chains = Array.isArray(schema) ? schema : [schema];
-    for (const chain of chains) {
+    const chains=Array.isArray(schema)? schema:[schema];
+    for(const chain of chains) {
       await chain.run(req);
     }
   };
 
   beforeEach(() => {
 
-    req = {
-      params: { caseReference: 'TEST123' }, 
-      body: { category: 'DEBT', notes: 'test' },
+    req={
+      params: {caseReference: 'TEST123'},
+      body: {category: 'DEBT',notes: 'test'},
       clientData: {
         providerId: '123',
         category: 'housing',
@@ -74,21 +74,21 @@ describe('Change Category Of Law Controller', () => {
       csrfToken: () => 'token'
     };
 
-    renderStub = sinon.stub();
-    redirectStub = sinon.stub();
-    statusStub = sinon.stub().returns({ render: renderStub });
+    renderStub=sinon.stub();
+    redirectStub=sinon.stub();
+    statusStub=sinon.stub().returns({render: renderStub});
 
-    res = {
+    res={
       render: renderStub,
       redirect: redirectStub,
       status: statusStub
     };
 
-    next = sinon.stub();
+    next=sinon.stub();
 
     // Stub API
-    apiProviderChoicesStub = sinon.stub(apiService, 'getProviderChoices');
-    apiChangeCategoryStub = sinon.stub(apiService, 'changeCaseCategory');
+    apiProviderChoicesStub=sinon.stub(apiService,'getProviderChoices');
+    apiChangeCategoryStub=sinon.stub(apiService,'changeCaseCategory');
   });
 
   afterEach(() => {
@@ -97,9 +97,9 @@ describe('Change Category Of Law Controller', () => {
 
   // GET CONTROLLER TESTS
 
-  describe('getChangeCategoryOfLaw', () => {
+  describe('getChangeCategoryOfLaw',() => {
 
-    it('should render change category page successfully', async () => {
+    it('should render change category page successfully',async () => {
       apiProviderChoicesStub.resolves({
         status: 'success',
         data: {
@@ -116,13 +116,13 @@ describe('Change Category Of Law Controller', () => {
         }
       });
 
-      await getChangeCategoryOfLaw(req as RequestWithMiddleware, res as Response, next);
+      await getChangeCategoryOfLaw(req as RequestWithMiddleware,res as Response,next);
 
       expect(renderStub.calledOnce).to.be.true;
       expect(renderStub.firstCall.args[0]).to.equal('case_details/change-category-of-law.njk');
     });
 
-    it('should filter out current category from options', async () => {
+    it('should filter out current category from options',async () => {
       apiProviderChoicesStub.resolves({
         status: 'success',
         data: {
@@ -139,30 +139,30 @@ describe('Change Category Of Law Controller', () => {
         }
       });
 
-      await getChangeCategoryOfLaw(req as RequestWithMiddleware, res as Response, next);
+      await getChangeCategoryOfLaw(req as RequestWithMiddleware,res as Response,next);
 
-      const renderData = renderStub.firstCall.args[1];
-      const items = renderData.categoryItems;
+      const renderData=renderStub.firstCall.args[1];
+      const items=renderData.categoryItems;
 
-      expect(items.some((i: any) => i.value === 'Housing, eviction and homelessness')).to.be.false;
+      expect(items.some((i: any) => i.value==='Housing, eviction and homelessness')).to.be.false;
     });
 
-    it('should call next on API error', async () => {
+    it('should call next on API error',async () => {
       apiProviderChoicesStub.rejects(new Error('API failure'));
 
-      await getChangeCategoryOfLaw(req as RequestWithMiddleware, res as Response, next);
+      await getChangeCategoryOfLaw(req as RequestWithMiddleware,res as Response,next);
 
       expect(next.calledOnce).to.be.true;
     });
   });
 
   // POST CONTROLLER TESTS
-  
-  describe('submitChangeCategoryOfLawForm', () => {
 
-    it('should redirect on successful category change', async () => {
-      req.body = {
-        category: 'DEBT',
+  describe('submitChangeCategoryOfLawForm',() => {
+
+    it('should redirect on successful category change',async () => {
+      req.body={
+        category: 'Education',
         notes: 'Changing category'
       };
 
@@ -170,15 +170,35 @@ describe('Change Category Of Law Controller', () => {
         status: 'success'
       });
 
-      await runSchema(req, validateChangeCategoryOfLaw());
-      await submitChangeCategoryOfLawForm(req as RequestWithMiddleware, res as Response, next);
+      apiProviderChoicesStub.resolves({
+        status: 'success',
+        data: {
+          id: 123,
+          name: 'Test Provider',
+          law_category: [
+            {
+              code: 'housing',
+              name: 'housing',
+              description: ''
+            },
+            {
+              code: 'debt',
+              name: 'debt',
+              description: ''
+            }
+          ]
+        }
+      });
+
+      await runSchema(req,validateChangeCategoryOfLaw());
+      await submitChangeCategoryOfLawForm(req as RequestWithMiddleware,res as Response,next);
 
       expect(apiChangeCategoryStub.calledOnce).to.be.true;
 
       expect(apiChangeCategoryStub.calledWith(
         req.axiosMiddleware,
         'TEST123',
-        'DEBT',
+        'Education',
         'Changing category'
       )).to.be.true;
 
@@ -186,8 +206,8 @@ describe('Change Category Of Law Controller', () => {
       expect(req.clientData?.outcome_code).to.equal('SPOP');
     });
 
-    it('should render form with errors when validation fails', async () => {
-      req.body = {
+    it('should render form with errors when validation fails',async () => {
+      req.body={
         category: '',
         notes: ''
       };
@@ -208,16 +228,16 @@ describe('Change Category Of Law Controller', () => {
         }
       });
 
-      await runSchema(req, validateChangeCategoryOfLaw());
-      await submitChangeCategoryOfLawForm(req as RequestWithMiddleware, res as Response, next);
+      await runSchema(req,validateChangeCategoryOfLaw());
+      await submitChangeCategoryOfLawForm(req as RequestWithMiddleware,res as Response,next);
 
       expect(statusStub.calledWith(400)).to.be.true;
       expect(renderStub.called).to.be.true;
       expect(redirectStub.called).to.be.false;
     });
 
-    it('should call next when API returns error status', async () => {
-      req.body = {
+    it('should call next when API returns error status',async () => {
+      req.body={
         category: 'DEBT',
         notes: 'test'
       };
@@ -227,21 +247,21 @@ describe('Change Category Of Law Controller', () => {
         message: 'API failed'
       });
 
-      await runSchema(req, validateChangeCategoryOfLaw());
-      await submitChangeCategoryOfLawForm(req as RequestWithMiddleware, res as Response, next);
+      await runSchema(req,validateChangeCategoryOfLaw());
+      await submitChangeCategoryOfLawForm(req as RequestWithMiddleware,res as Response,next);
 
       expect(next.calledOnce).to.be.true;
     });
 
-    it('should call next when API throws error', async () => {
-      req.body = {
+    it('should call next when API throws error',async () => {
+      req.body={
         category: 'DEBT',
         notes: 'test'
       };
 
       apiChangeCategoryStub.rejects(new Error('Network error'));
 
-      await submitChangeCategoryOfLawForm(req as RequestWithMiddleware, res as Response, next);
+      await submitChangeCategoryOfLawForm(req as RequestWithMiddleware,res as Response,next);
 
       expect(next.calledOnce).to.be.true;
     });
