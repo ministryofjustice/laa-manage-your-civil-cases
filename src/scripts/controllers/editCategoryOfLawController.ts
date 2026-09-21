@@ -1,6 +1,6 @@
 import type {Request,Response,NextFunction} from 'express';
 import {apiService} from '#src/services/apiService.js';
-import {devLog,createProcessedError,safeString,validCaseReference,formatValidationError,safeBodyString,t,fetchProviderNameAndDetail} from '#src/scripts/helpers/index.js';
+import {devLog,createProcessedError,safeString,validCaseReference,formatValidationError,safeBodyString,t,fetchProviderNameAndDetail, setSessionValue} from '#src/scripts/helpers/index.js';
 import {validationResult} from 'express-validator';
 import {HTTP} from '#src/services/api/base/constants.js';
 import config from '#config.js';
@@ -19,7 +19,6 @@ const DISPUTED_CATEGORIES=new Set(['debt','family']);
 function isDebtOrFamily(category: string|undefined): boolean {
   return DISPUTED_CATEGORIES.has(category?.trim().toLowerCase()??'');
 }
-
 
 /**
  * Render the "change category of law" form
@@ -159,7 +158,20 @@ export async function submitChangeCategoryOfLawForm(req: Request,res: Response,n
       throw new Error(response.message||'Failed to change category');
     }
 
-    if(shouldResetDisputedFields) { await resetDisputedFieldData(req, caseReference);}
+    if(shouldResetDisputedFields) { await resetDisputedFieldData(req, caseReference); }
+    
+    if (!currentIsDebtOrFamily && newIsDebtOrFamily) {
+      setSessionValue(req, 'disputedFieldsResetCache', {
+        type: 'added'
+      });
+    }
+
+    if (currentIsDebtOrFamily && !newIsDebtOrFamily) {
+      setSessionValue(req, 'disputedFieldsResetCache', {
+        type: 'removed'
+      });
+    }
+
 
     devLog(`Category successfully changed for case ${caseReference}`);
 

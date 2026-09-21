@@ -1,6 +1,6 @@
 import type {Request} from 'express';
 import {apiService} from '#src/services/apiService.js';
-import {devLog} from '#src/scripts/helpers/index.js';
+import {devLog, setSessionValue} from '#src/scripts/helpers/index.js';
 import type {FinancialEligibilityData} from '#types/api-types.js';
 import {mapAnswersToApiPayload,mapFinancialEligibilityApiDataToAnswerCodes} from '#src/services/financialEligibilityWithDeps.js';
 
@@ -53,5 +53,7 @@ export async function resetDisputedFieldData(req: Request, caseReference: string
     throw new Error(updateResponse.message || 'Failed to reset disputed financial eligibility fields' );
   }
 
+  setSessionValue(req, 'disputedFieldsResetCache', { disputedFieldsResetBanner: true });
+ 
   devLog(`Disputed financial eligibility fields reset for case ${caseReference}`);
 }
