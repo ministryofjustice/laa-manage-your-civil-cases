@@ -293,6 +293,11 @@
           classes: eventTagConfig[item.code].classes
         }) }}
       {% endif %}
+
+      {# only show translated outcome code if a closed event tag #}
+      {% if item.type == 'caseLog' and eventTagConfig[item.code].isClosed %}
+        <p class="govuk-body govuk-!-margin-bottom-1 govuk-!-margin-top-1">{{ t('common.outcomeCode.' + item.code) }}</p>
+      {% endif %}
       <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ item.createdBy }}</p> 
       <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ item.created }}</p>  
     {% endset %}
