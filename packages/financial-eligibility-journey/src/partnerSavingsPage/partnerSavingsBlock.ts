@@ -1,6 +1,6 @@
 import { Self, Condition, validation, Transformer } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { GovUKHeading, GovUKTextInput, GovUKUtilityClasses } from '@ministryofjustice/hmpps-forge/govuk-components'
-import { HasMaxTwoDecimalPlaces } from '../moneyFieldHelpers.js'
+import { HasMaxTwoDecimalPlaces, moneyMaxValueValidation } from '../moneyFieldHelpers.js'
 
 
 export const partnerSavingsHeading = GovUKHeading({
@@ -29,6 +29,7 @@ export const bankBalanceField = GovUKTextInput({
       condition: Self().match(HasMaxTwoDecimalPlaces()),
       message: 'Enter an amount with no more than 2 decimal places',
     }),
+    moneyMaxValueValidation(),
   ],
 })
 
@@ -53,6 +54,7 @@ export const investmentBalanceField = GovUKTextInput({
       condition: Self().match(HasMaxTwoDecimalPlaces()),
       message: 'Enter an amount with no more than 2 decimal places',
     }),
+    moneyMaxValueValidation(),
   ],
 })
 
@@ -77,6 +79,7 @@ export const assetBalanceField = GovUKTextInput({
       condition: Self().match(HasMaxTwoDecimalPlaces()),
       message: 'Enter an amount with no more than 2 decimal places',
     }),
+    moneyMaxValueValidation(),
   ],
 })
 
@@ -101,5 +104,6 @@ export const creditBalanceField = GovUKTextInput({
       condition: Self().match(HasMaxTwoDecimalPlaces()),
       message: 'Enter an amount with no more than 2 decimal places',
     }),
+    moneyMaxValueValidation(),
   ],
 })
