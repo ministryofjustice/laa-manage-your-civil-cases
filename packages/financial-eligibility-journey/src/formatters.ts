@@ -1,4 +1,5 @@
 import { TransformerRegistry } from '@ministryofjustice/hmpps-forge/core/authoring'
+import type { Deps } from '#packages/financial-eligibility-journey/src/api.js'
 
 export interface TransformerRegistryDeps {
   formatCurrency: (value: number) => string | unknown
