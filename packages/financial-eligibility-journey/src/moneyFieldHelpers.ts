@@ -42,18 +42,21 @@ export interface MoneyFieldConfig {
   fixedFrequencySuffix?: string;
 }
 
-// Matches cla_backend's MoneyField/MoneyFieldDRF max_value of 9999999999 pence (see apps/legalaid/fields.py)
-export const MAX_MONEY_VALUE = 99999999.99;
-const MAX_MONEY_VALUE_FORMATTED = '99,999,999.99';
+// Just under cla_backend's MoneyField/MoneyFieldDRF max_value of 9999999999 pence (see apps/legalaid/fields.py),
+// which cla_backend itself rejects when submitting financial information
+export const MAX_MONEY_VALUE = 99999999.98;
+export const MAX_MONEY_VALUE_MESSAGE = 'Enter an amount of £99,999,999.98 or less';
 
 /**
- * Builds the max-value validation message from a field's invalidMessage, keeping the same subject
- * (e.g. "How much you pay for your mortgage") but swapping the ending for the max-value wording.
- * @param {string} invalidMessage The field's existing empty/negative-number validation message
- * @returns {string} The equivalent message for the max-value validation
+ * Shared max-value validation for any currency field in the journey (income, expenses, savings,
+ * properties), so amounts cla_backend would reject are caught before submission.
+ * @returns {unknown} The max-value validation rule
  */
-function maxValueMessage(invalidMessage: string): string {
-  return invalidMessage.replace(/ must be a (positive )?number, like .+$/, ` must be ${MAX_MONEY_VALUE_FORMATTED} or less`)
+export function moneyMaxValueValidation() {
+  return validation({
+    condition: Self().match(Condition.Number.LessThanOrEqual(MAX_MONEY_VALUE)),
+    message: MAX_MONEY_VALUE_MESSAGE,
+  });
 }
 
 /**
@@ -112,10 +115,7 @@ export function createAmountField(config: MoneyFieldConfig) {
         condition: Self().match(HasMaxTwoDecimalPlaces()),
         message: TWO_DECIMAL_PLACES_MESSAGE,
       }),
-      validation({
-        condition: Self().match(Condition.Number.LessThanOrEqual(MAX_MONEY_VALUE)),
-        message: maxValueMessage(config.invalidMessage),
-      }),
+      moneyMaxValueValidation(),
     ],
   })
 }
