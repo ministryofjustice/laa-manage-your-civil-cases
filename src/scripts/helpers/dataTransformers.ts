@@ -390,6 +390,19 @@ export const isSafeToCall = (personalDetails: unknown): boolean => {
 };
 
 /**
+ * Format National Insurance number from personal details
+ * Removes punctuation & whitespace, makes it uppercase and adds in spacing
+ * @param {unknown} personalDetails - Object containing safe_to_contact field
+ * @returns {boolean} True if safe to call, false otherwise
+ */
+export function formatNationalInsuranceNumber(value: unknown): string {
+  return safeString(value)
+    .replace(/[^a-z0-9]/gi, '')
+    .toUpperCase()
+    .replace(/^(.{2})(\d{2})(\d{2})(\d{2})([A-Z])$/, '$1 $2 $3 $4 $5');
+}
+
+/**
  * Transform contact details from personal_details
  * @param {unknown} personalDetails - Personal details from API
  * @returns {object} Transformed contact details
@@ -414,7 +427,7 @@ export const transformContactDetails = (personalDetails: unknown): {
   const fullName = safeString(personalDetails.full_name);
   const vulnerableUser = Boolean(personalDetails.vulnerable_user);
   const dateOfBirth = formatDate(safeString(personalDetails.date_of_birth));
-  const nationalInsuranceNumber = safeString(personalDetails.ni_number).toUpperCase();
+  const nationalInsuranceNumber = formatNationalInsuranceNumber(personalDetails.ni_number);
   const age = calculateAge(safeString(personalDetails.date_of_birth))
   const phoneNumber = extractPhoneNumber(personalDetails);
   const safeToCall = isSafeToCall(personalDetails);

@@ -1,4 +1,5 @@
 import { test, expect } from '../fixtures/index.js';
+import { ClientDetailsPage } from '../pages/ClientDetailsPage.js';
 import { getClientDetailsUrlByStatus, setupAuth, assertCaseDetailsHeaderPresent, assertSummaryCardData, assertSummaryCardState } from '../utils/index.js';
 
 // Login before each test since client details pages require authentication
@@ -33,6 +34,19 @@ test('client details selected from closed cases tab has correct page elements', 
   // After opening the menu, the "Advising" option should be visible
   await changeStatusButton.click();
   await expect(advisingMenuItem).toBeVisible();
+});
+
+test('should show "Not provided" when National Insurance is null', async ({ page }) => {
+  // Arrange
+  const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1866');
+
+  // Act
+  await clientDetails.navigate();
+
+  // Assert
+  await assertSummaryCardData(page, 'About the client', {
+    'National Insurance number': 'Not provided',
+  });
 });
 
 test('client support needs card is shown with no support needs on new case when `minicom` is true and `skype` is false', async ({ page, i18nSetup }) => {

@@ -19,6 +19,7 @@ export interface MockCase {
   operatorNotes?: string;
   category: string;
   dateOfBirth: string;
+  nationalInsuranceNumber: string;
   language: string;
   phoneNumber: string;
   safeToCall: boolean;
