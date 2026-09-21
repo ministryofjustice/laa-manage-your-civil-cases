@@ -11,6 +11,11 @@ const {MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH,CHARACTER_THRESHOLD}: {MAX_OPERATOR_
 
 const DISPUTED_CATEGORIES=new Set(['debt','family']);
 
+/**
+ * Method to check if the category is debt or family
+ * @param {string} category category to be check if it's debt or family
+ * @returns {boolean} true if the category is debt or family otherwise false
+ */
 function isDebtOrFamily(category: string|undefined): boolean {
   return DISPUTED_CATEGORIES.has(category?.trim().toLowerCase()??'');
 }

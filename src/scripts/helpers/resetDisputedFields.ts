@@ -4,6 +4,11 @@ import {devLog} from '#src/scripts/helpers/index.js';
 import type {FinancialEligibilityData} from '#types/api-types.js';
 import {mapAnswersToApiPayload,mapFinancialEligibilityApiDataToAnswerCodes} from '#src/services/financialEligibilityWithDeps.js';
 
+/**
+ * Functon to call financial eligibility, reset disputed fields and update in cla_backend
+ * @param {Request} req request
+ * @param {string} caseReference case reference
+ */
 export async function resetDisputedFieldData(req: Request, caseReference: string): Promise<void> {
   const financialEligibilityResponse= await apiService.getFinancialEligibility(
       req.axiosMiddleware,
