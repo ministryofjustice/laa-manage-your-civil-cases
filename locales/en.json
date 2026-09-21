@@ -933,6 +933,18 @@
           "allEmpty": "Enter the client date of birth"
         }
       },
+      "nationalInsuranceNumber": {
+        "label": "National Insurance number",
+        "legend": "Client national insurance number",
+        "pageTitle": "Client national insurance number – {caseReference} – {serviceName} – GOV.UK",
+        "validationError": {
+          "notEmpty": "Enter the client National Insurance number",
+          "validDate": "Enter a date in the correct format",
+          "dateInPast": "The date of birth must be in the past",
+          "mustInclude": "The date of birth must include a {field}",
+          "allEmpty": "Enter the client date of birth"
+        }
+      },
       "email": {
         "label": "Email address",
         "title": "Client email address (optional)",
@@ -1069,6 +1081,7 @@
     "visuallyHiddenText": {
       "changeName": "Change Name",
       "changeDateOfBirth": "Change Date of birth",
+      "changeNationalInsuranceNumber": "Change National Insurance number",
       "changePhoneNumber": "Change Phone number",
       "changeSafeToCall": "Change Is it safe to call this client?",
       "changeEmail": "Change Email",

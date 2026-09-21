@@ -92,6 +92,7 @@
   fullName: data.fullName,
   clientRiskOfAbuse: t('common.yes')if data.vulnerableUser else t('common.no'),
   dateOfBirth: data.dateOfBirth,
+  nationalInsuranceNumber: data.nationalInsuranceNumber,
   email: data.emailAddress,
   phoneNumber: data.phoneNumber,
   address: data.address,
@@ -149,6 +150,19 @@
             href: "/cases/" + data.caseReference + "/client-details/change/date-of-birth",
             text: t('common.change'),
             visuallyHiddenText: t('accessibility.visuallyHiddenText.changeDateOfBirth')
+          }
+        ]
+      }
+    },
+    {
+      label: t('forms.clientDetails.nationalInsuranceNumber.label'),
+      key: "nationalInsuranceNumber",
+      actions: {
+        items: [
+          {
+            href: "/cases/" + data.caseReference + "/client-details/change/national-insurance-number",
+            text: t('common.change'),
+            visuallyHiddenText: t('accessibility.visuallyHiddenText.changeNationalInsuranceNumber')
           }
         ]
       }

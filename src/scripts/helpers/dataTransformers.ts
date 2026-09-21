@@ -398,6 +398,7 @@ export const transformContactDetails = (personalDetails: unknown): {
   fullName: string;
   vulnerableUser: boolean;
   dateOfBirth: string;
+  nationalInsuranceNumber: string;
   age: number | undefined;
   phoneNumber: string;
   safeToCall: boolean;
@@ -413,6 +414,7 @@ export const transformContactDetails = (personalDetails: unknown): {
   const fullName = safeString(personalDetails.full_name);
   const vulnerableUser = Boolean(personalDetails.vulnerable_user);
   const dateOfBirth = formatDate(safeString(personalDetails.date_of_birth));
+  const nationalInsuranceNumber = safeString(personalDetails.ni_number).toUpperCase();
   const age = calculateAge(safeString(personalDetails.date_of_birth))
   const phoneNumber = extractPhoneNumber(personalDetails);
   const safeToCall = isSafeToCall(personalDetails);
@@ -426,6 +428,7 @@ export const transformContactDetails = (personalDetails: unknown): {
     fullName,
     vulnerableUser,
     dateOfBirth,
+    nationalInsuranceNumber,
     age,
     phoneNumber,
     safeToCall,
