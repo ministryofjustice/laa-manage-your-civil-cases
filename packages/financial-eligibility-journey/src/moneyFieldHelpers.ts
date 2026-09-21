@@ -88,6 +88,17 @@ export const HasMaxTwoDecimalPlaces = moneyConditions.register(
 )
 
 /**
+ * Shared 2-decimal-place validation for any currency field in the journey.
+ * @returns {unknown} The decimal-places validation rule
+ */
+export function decimalPlacesValidation() {
+  return validation({
+    condition: Self().match(HasMaxTwoDecimalPlaces()),
+    message: TWO_DECIMAL_PLACES_MESSAGE,
+  })
+}
+
+/**
  * Creates the amount input for a money field, shared across the income and expenses pages
  * @param {MoneyFieldConfig} config The field's code, label and validation messages
  * @returns {GovUKTextInput} The configured amount field
@@ -111,10 +122,7 @@ export function createAmountField(config: MoneyFieldConfig) {
         condition: Self().match(Condition.Number.GreaterThanOrEqual(0)),
         message: config.invalidMessage,
       }),
-      validation({
-        condition: Self().match(HasMaxTwoDecimalPlaces()),
-        message: TWO_DECIMAL_PLACES_MESSAGE,
-      }),
+      decimalPlacesValidation(),
       moneyMaxValueValidation(),
     ],
   })
