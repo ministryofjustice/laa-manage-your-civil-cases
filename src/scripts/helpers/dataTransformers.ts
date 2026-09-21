@@ -392,8 +392,8 @@ export const isSafeToCall = (personalDetails: unknown): boolean => {
 /**
  * Format National Insurance number from personal details
  * Removes punctuation & whitespace, makes it uppercase and adds in spacing
- * @param {unknown} personalDetails - Object containing safe_to_contact field
- * @returns {boolean} True if safe to call, false otherwise
+ * @param {unknown} value - National Insurance number to format.
+ * @returns {string} Formatted National Insurance number.
  */
 export function formatNationalInsuranceNumber(value: unknown): string {
   return safeString(value)
