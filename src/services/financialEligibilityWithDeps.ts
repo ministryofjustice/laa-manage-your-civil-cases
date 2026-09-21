@@ -193,11 +193,12 @@ function normaliseMonetaryFieldValue(value: unknown): string | undefined {
     }
 
     const numberValue = typeof value === 'number' ? value : parseFloat(value as string);
+
     if (isNaN(numberValue)) {
         return undefined;
     }
 
-    return numberValue.toFixed(2);
+    return Number.isInteger(numberValue) ? String(numberValue) : numberValue.toFixed(2);
 }  
 
 
