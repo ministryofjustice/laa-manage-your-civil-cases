@@ -24,8 +24,7 @@ test('category summary card is displayed and change link directs to change categ
   await expect(caseDetailsPage.categoryRow).toBeVisible();
 
   // Current category shown
-  await expect(caseDetailsPage.categoryValue)
-    .toContainText('Discrimination');
+  await expect(caseDetailsPage.categoryValue).toContainText('Discrimination');
 
   // Change link shown
   await expect(caseDetailsPage.changeCategoryCardLink).toBeVisible();

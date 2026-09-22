@@ -3,9 +3,13 @@
 
 <h2 class="govuk-heading-m">{{ t('pages.caseDetails.tabs.history') }}</h2>
 
-{{ mojTimeline({
-  items: timelineItems
-}) }}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {{ mojTimeline({
+        items: timelineItems
+      }) }}
+    </div>
+  </div>
 
 {# Render pagination from pagination meta, if available #}
 {% if pagination and pagination.totalPages > 1 %}

@@ -144,9 +144,9 @@ export class CaseDetailsTabPage {
   /**
    * Gets the operatorDiagnosisHeading, operatorNotesHeading or providerNotesHeading element
    */
-  headingH3ByText(text: string): Locator {
+  headingH2ByText(text: string): Locator {
     return this.page.getByRole('heading', {
-      level: 3,
+      level: 2,
       name: text,
     });
   }
@@ -210,8 +210,8 @@ export class CaseDetailsTabPage {
    */
   get categoryRow(): Locator {
     return this.page
-      .getByRole('row')
-      .filter({ has: this.page.getByRole('rowheader', { name: 'Category' }) })
+      .locator('.govuk-summary-list__row')
+      .filter({ has: this.page.getByText('Category', { exact: true }) })
       .first();
   }
 
@@ -219,19 +219,14 @@ export class CaseDetailsTabPage {
    * Gets the category change link
    */
   get changeCategoryCardLink(): Locator {
-    return this.page
-      .locator('div')
-      .filter({
-        has: this.page.getByRole('heading', { name: 'Category of law' })
-      })
-      .getByRole('link', { name: 'Change' });
+    return this.page.getByRole('link', { name: /change.*category/i });
   }
 
   /**
    * Gets the category value
    */
   get categoryValue(): Locator {
-    return this.categoryRow.locator('td').first();
+    return this.categoryRow.locator('.govuk-summary-list__value').first();
   }
 
   /**
