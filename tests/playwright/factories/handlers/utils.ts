@@ -76,6 +76,7 @@ export function transformToApiFormat(caseItem: MockCase): object {
       full_name: caseItem.fullName,
       vulnerable_user: caseItem.vulnerableUser,
       date_of_birth: caseItem.dateOfBirth,
+      ni_number: caseItem.nationalInsuranceNumber,
       home_phone: caseItem.phoneNumber,
       mobile_phone: caseItem.phoneNumber,
       safe_to_contact: mapSafe(caseItem.safeToCall),
@@ -210,6 +211,7 @@ export function buildPersonalDetailsUpdates(
     (value: unknown) => Partial<MockCase>
   > = {
     full_name: value => ({ fullName: value as string }),
+    ni_number: value => ({ nationalInsuranceNumber: value as string }),
     street: value => ({ address: value as string }),
     postcode: value => ({ postcode: value as string }),
     email: value => ({ emailAddress: value as string }),

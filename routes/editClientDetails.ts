@@ -5,6 +5,8 @@ import {
   postEditClientName,
   getEditClientDateOfBirth,
   postEditClientDateOfBirth,
+  getEditClientNationalInsuranceNumber,
+  postEditClientNationalInsuranceNumber,
   getEditClientPhoneNumber,
   postEditClientPhoneNumber,
   getEditClientEmailAddress,
@@ -26,6 +28,7 @@ import {
 import {
   validateEditClientName,
   validateEditClientDateOfBirth,
+  validateEditClientNationalInsuranceNumber,
   validateEditClientPhoneNumber,
   validateEditClientEmailAddress,
   validateEditClientAddress,
@@ -42,6 +45,9 @@ router.post('/:caseReference/client-details/change/name', validateEditClientName
 
 router.get('/:caseReference/client-details/change/date-of-birth', getEditClientDateOfBirth);
 router.post('/:caseReference/client-details/change/date-of-birth', validateEditClientDateOfBirth(), postEditClientDateOfBirth);
+
+router.get('/:caseReference/client-details/change/national-insurance-number', getEditClientNationalInsuranceNumber);
+router.post('/:caseReference/client-details/change/national-insurance-number', validateEditClientNationalInsuranceNumber(), postEditClientNationalInsuranceNumber);
 
 router.get('/:caseReference/client-details/change/phone-number', getEditClientPhoneNumber);
 router.post('/:caseReference/client-details/change/phone-number', validateEditClientPhoneNumber(), postEditClientPhoneNumber);

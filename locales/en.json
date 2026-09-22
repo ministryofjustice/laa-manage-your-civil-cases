@@ -948,6 +948,15 @@
           "allEmpty": "Enter the client date of birth"
         }
       },
+      "nationalInsuranceNumber": {
+        "label": "National Insurance number",
+        "title": "Client National Insurance number (optional)",
+        "hint": "It's on your National Insurance card, benefit letter, payslip or P60 - for example, 'QQ 12 34 56 C'",
+        "pageTitle": "Client National Insurance number - {caseReference} - {serviceName} - GOV.UK",
+        "validationError": {
+          "invalidFormat": "Enter a National Insurance number in the correct format, for example QQ 12 34 56 C"
+        }
+      },
       "email": {
         "label": "Email address",
         "title": "Client email address (optional)",
@@ -1084,6 +1093,7 @@
     "visuallyHiddenText": {
       "changeName": "Change Name",
       "changeDateOfBirth": "Change Date of birth",
+      "changeNationalInsuranceNumber": "Change National Insurance number",
       "changePhoneNumber": "Change Phone number",
       "changeSafeToCall": "Change Is it safe to call this client?",
       "changeEmail": "Change Email",

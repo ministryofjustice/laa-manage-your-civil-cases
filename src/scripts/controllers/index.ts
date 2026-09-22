@@ -7,6 +7,7 @@
 
 export * from './editClientNameController.js';
 export * from './editClientDateOfBirthController.js';
+export * from './editClientNationalInsuranceNumberController.js';
 export * from './editClientPhoneNumberController.js';
 export * from './editClientEmailAddressController.js';
 export * from './editClientAddressController.js';

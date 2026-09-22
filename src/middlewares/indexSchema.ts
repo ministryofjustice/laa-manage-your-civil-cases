@@ -14,6 +14,10 @@ export {
 } from './clientDateOfBirthSchema.js';
 
 export {
+  validateEditClientNationalInsuranceNumber
+} from './clientNationalInsuranceNumberSchema.js';
+
+export {
   validateEditClientPhoneNumber
 } from './clientPhoneNumberSchema.js';
 
