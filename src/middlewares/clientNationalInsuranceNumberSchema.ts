@@ -1,7 +1,7 @@
 import { checkSchema } from 'express-validator';
 import { TypedValidationError, t } from '#src/scripts/helpers/index.js';
 
-const nationalInsuranceNumberPattern = /^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z]\d{6}[A-DFM]$/i;
+const nationalInsuranceNumberPattern = /^(?!BG)(?!GB)(?!NK)(?!KN)(?!TN)(?!NT)(?!ZZ)[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z]\d{6}[A-D]$/i;
 
 /**
  * Validation middleware when user edits client's national insurance number

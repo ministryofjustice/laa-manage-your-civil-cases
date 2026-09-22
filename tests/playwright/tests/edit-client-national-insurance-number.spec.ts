@@ -23,12 +23,25 @@ test.describe('Edit Client National Insurance number', () => {
     await expect(page.getByRole('button', { name: 'Save' })).toBeVisible();
   });
 
+  test('saving without changing the National Insurance number shows a no-change banner', async ({ page }) => {
+    await page.goto(formUrl);
+
+    await page.getByRole('button', { name: 'Save' }).click();
+
+    await expect(page).toHaveURL(clientDetailsUrl);
+    await assertSummaryCardData(page, 'About the client', {'National Insurance number': 'AB 12 34 56 C'});
+
+    await expect(page.getByRole('region', { name: 'warning: No changes were made' })).toBeVisible();
+  });
+
   // Arrange
   const invalidNationalInsuranceNumbers = [
     'BG123456A', // excluded prefix
     'GB123456A', // excluded prefix
     'QQ123456E', // invalid suffix
     'IQ123456C', // invalid first prefix letter
+    'QQ123456F', // invalid NI number
+    'QQ123456M', // invalid NI number
   ];
 
   for (const nationalInsuranceNumber of invalidNationalInsuranceNumbers) {

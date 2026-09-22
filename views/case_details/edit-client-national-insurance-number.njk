@@ -5,7 +5,7 @@
 {% from "components/errorSummaryComponent.njk" import errorSummary %}
 {% from "components/alertBannerComponent.njk" import alertBannerComponent %}
 
-{% block pageTitle %}{{ t('forms.clientDetails.name.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}{% endblock %}
+{% block pageTitle %}{{ t('forms.clientDetails.nationalInsuranceNumber.pageTitle', { caseReference: caseReference, serviceName: config.SERVICE_NAME }) }}{% endblock %}
 
 {% block errorSummaryOrAlert %}
   {% if error %}
