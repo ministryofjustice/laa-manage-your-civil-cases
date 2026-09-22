@@ -8,7 +8,7 @@
 
 ### Prerequisites
 
-- Node.js 26.8.2
+- Node.js 26.9.0
 - Yarn 4.9.2 (managed via corepack)
 - TypeScript 5.8.3
 
