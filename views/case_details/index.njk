@@ -44,13 +44,13 @@
   <div class="govuk-grid-row negative-margin alert-spacing">
     <div class="govuk-grid-column-two-thirds">
       {{ mojAlert({
-    variant: t('common.disputedFieldsReset.added.variant'),
-    title: t('common.disputedFieldsReset.title'),
-    html: t('common.disputedFieldsReset.added.body', { url: '/cases/' + caseReference + '/financial-eligibility/' } ),
-    showTitleAsHeading: true,
-    dismissible: true,
-    focusOnDismissSelector: '.moj-header'
-  }) }}
+        variant: t('common.disputedFieldsReset.added.variant'),
+        title: t('common.disputedFieldsReset.title'),
+        html: t('common.disputedFieldsReset.added.body', { url: '/cases/' + caseReference + '/financial-eligibility/' } ),
+        showTitleAsHeading: true,
+        dismissible: true,
+        focusOnDismissSelector: '.moj-header'
+      }) }}
     </div>
   </div>
 {% endif %}
@@ -59,13 +59,13 @@
   <div class="govuk-grid-row negative-margin alert-spacing">
     <div class="govuk-grid-column-two-thirds">
       {{ mojAlert({
-    variant: t('common.disputedFieldsReset.removed.variant'),
-    title: t('common.disputedFieldsReset.title'),
-    showTitleAsHeading: true,
-    text: t('common.disputedFieldsReset.removed.body'),
-    dismissible: true,
-    focusOnDismissSelector: '.moj-header'
-  }) }}
+        variant: t('common.disputedFieldsReset.removed.variant'),
+        title: t('common.disputedFieldsReset.title'),
+        showTitleAsHeading: true,
+        text: t('common.disputedFieldsReset.removed.body'),
+        dismissible: true,
+        focusOnDismissSelector: '.moj-header'
+      }) }}
     </div>
   </div>
 {% endif %}

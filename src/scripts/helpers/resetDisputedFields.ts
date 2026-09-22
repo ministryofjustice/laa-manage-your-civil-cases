@@ -52,8 +52,6 @@ export async function resetDisputedFieldData(req: Request, caseReference: string
   if(updateResponse.status==='error') {
     throw new Error(updateResponse.message || 'Failed to reset disputed financial eligibility fields' );
   }
-
-  setSessionValue(req, 'disputedFieldsResetCache', { disputedFieldsResetBanner: true });
  
   devLog(`Disputed financial eligibility fields reset for case ${caseReference}`);
 }
