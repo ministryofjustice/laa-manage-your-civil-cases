@@ -56,6 +56,9 @@ function referencedAnswerPaths(predicate: PredicateExpr): string[] {
   if (predicate.type === 'PredicateType.Not') {
     return referencedAnswerPaths(predicate.operand);
   }
+  if (predicate.type === ExpressionType.ITERATE) {
+    return referencedAnswerPaths(predicate.iterator.predicate);
+  }
   return predicate.operands.flatMap(referencedAnswerPaths);
 }
 
