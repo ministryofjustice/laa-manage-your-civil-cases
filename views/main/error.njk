@@ -19,7 +19,14 @@
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             <h1 class="govuk-heading-xl">{{ h1Key }}</h1>
-            <p class="govuk-body">{{ error | safe }}</p>
+            {% if status == 404 %}
+              <p class="govuk-body">{{ t('pages.error.checkWebAddress') }}</p>
+              <p class="govuk-body">{{ t('pages.error.technicalSupportPrefix') }}
+                <a class="govuk-link" href="/help">{{ t('pages.error.technicalSupportLink') }}</a>.
+              </p>
+          {% else %}
+            <p class="govuk-body">{{ error }}</p>
+          {% endif %}
         </div>
     </div>
 {% endblock %}
