@@ -717,7 +717,12 @@
       }
     },
     "error": {
-      "pageTitle": "Sorry, there is a problem with the service – {serviceName} – GOV.UK"
+      "pageTitle": "Sorry, there is a problem with the service – {serviceName} – GOV.UK",
+      "pageTitle404": "Page not found – {serviceName} – GOV.UK",
+      "pageHeading404": "Page not found",
+      "pageTitle400": "There was a problem loading this page – {serviceName} – GOV.UK",
+      "pageHeading400": "There was a problem loading this page",
+      "generic404message": "<p class='govuk-body'>Check you entered the correct web address.</p><p class='govuk-body'>If the web address is correct or you selected a link or button, <a class='govuk-link' href='/help'>contact us for technical support</a>.</p>" 
     },
     "search": {
       "heading": "Search for a case",

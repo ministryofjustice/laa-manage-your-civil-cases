@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import { devError, extractErrorMessage } from '#src/scripts/helpers/index.js';
+import { devError, extractErrorMessage, t } from '#src/scripts/helpers/index.js';
 import { HTTP } from '#src/services/api/base/constants.js';
 
 /**
@@ -13,7 +13,7 @@ export const errorHandler404 = (req: Request, res: Response): void => {
   devError(`404 - Page not found: ${method} ${originalUrl}`);
 
   // Provide more context-aware error messages
-  let errorMessage = 'Page not found. The requested page does not exist.';
+  let errorMessage = t('pages.error.generic404message');
 
   if (originalUrl.startsWith('/case/') && originalUrl.includes('/')) {
     const pathParts = originalUrl.split('/');
@@ -24,7 +24,7 @@ export const errorHandler404 = (req: Request, res: Response): void => {
       errorMessage = `Page not found. The requested page for case ${caseReference} does not exist.`;
     }
   } else if (originalUrl.startsWith('/cases/')) {
-    errorMessage = 'Page not found. The requested cases page does not exist.';
+    errorMessage = t('pages.error.generic404message');
   }
 
   res.status(HTTP.NOT_FOUND).render('main/error.njk', {

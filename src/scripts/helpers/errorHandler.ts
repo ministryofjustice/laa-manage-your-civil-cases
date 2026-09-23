@@ -8,7 +8,7 @@
  * - Structured logging
  */
 
-import { devError } from './index.js';
+import { devError, t } from './index.js';
 import { HTTP } from '../../services/api/base/constants.js';
 
 /**
@@ -58,7 +58,7 @@ function getHttpErrorMessage(status: number): string {
     case HTTP.FORBIDDEN:
       return 'You do not have permission to access this resource.';
     case HTTP.NOT_FOUND:
-      return 'The requested information could not be found.';
+      return t('pages.error.generic404message');
     case HTTP.REQUEST_TIMEOUT:
       return 'Request timed out. Please try again.';
     case HTTP.TOO_MANY_REQUESTS:

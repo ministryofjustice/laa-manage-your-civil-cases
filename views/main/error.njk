@@ -1,14 +1,25 @@
 {% extends "base.njk" %}
 
-{% block pageTitle %}{{ t('pages.error.pageTitle', { serviceName: config.SERVICE_NAME }) }}{% endblock %}
+{% set pageTitleKey = 'pages.error.pageTitle' %}
+{% set h1Key = status %}
+
+{% if status == 404 %}
+  {% set pageTitleKey = 'pages.error.pageTitle404' %}
+  {% set h1Key = t('pages.error.pageHeading404') %}
+{% elif status == 400 %}
+  {% set pageTitleKey = 'pages.error.pageTitle400' %}
+  {% set h1Key = t('pages.error.pageHeading400') %}
+{% endif %}
+
+{% block pageTitle %}{{ t(pageTitleKey, { serviceName: config.SERVICE_NAME }) }}{% endblock %}
 
 {% set mainClasses = "govuk-main-wrapper--l" %}
 
 {% block content %}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-heading-l">{{ status }}</h1>
-            <p class="govuk-body">{{ error }}</p>
+            <h1 class="govuk-heading-xl">{{ h1Key }}</h1>
+            <p class="govuk-body">{{ error | safe }}</p>
         </div>
     </div>
 {% endblock %}
