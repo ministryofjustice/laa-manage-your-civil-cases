@@ -970,6 +970,7 @@ test.describe('Financial Eligibility Forge Finances Journey',() => {
       await completeExpensesValues(page);
 
       await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/partner-expenses`);
+      await page.getByRole('spinbutton',{name: 'How much does your partner pay for their mortgage?'}).fill('');
       await page.getByRole('button',{name: 'Continue'}).click();
 
       await expect(page.getByRole('link',{name: 'Enter how much your partner pays for their mortgage'})).toBeVisible();

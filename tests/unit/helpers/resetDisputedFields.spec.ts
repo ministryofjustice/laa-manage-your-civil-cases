@@ -1,27 +1,27 @@
-import {expect} from 'chai';
-import type {Request} from 'express';
+import { expect } from 'chai';
+import type { Request } from 'express';
 import * as sinon from 'sinon';
 
-import {apiService} from '#src/services/apiService.js';
-import {resetDisputedFieldData} from '#src/scripts/helpers/resetDisputedFields.js';
+import { apiService } from '#src/services/apiService.js';
+import { resetDisputedFieldData } from '#src/scripts/helpers/resetDisputedFields.js';
 import type {
   FinancialEligibilityData,
   MoneyPerInterval
 } from '#types/api-types.js';
 
-describe('resetDisputedFieldData',() => {
-  const caseReference='AA-1234-5678';
+describe('resetDisputedFieldData', () => {
+  const caseReference = 'AA-1234-5678';
 
-  const mockReq={
+  const mockReq = {
     axiosMiddleware: {}
   } as Request;
 
-  const emptyMoneyPerInterval: MoneyPerInterval={
+  const emptyMoneyPerInterval: MoneyPerInterval = {
     amount: null,
     time: null
   };
 
-  const financialEligibilityData: FinancialEligibilityData={
+  const financialEligibilityData: FinancialEligibilityData = {
     hasPartner: false,
     isUnder17: false,
     isOver60: false,
@@ -131,13 +131,13 @@ describe('resetDisputedFieldData',() => {
     sinon.restore();
   });
 
-  it('should clear disputed savings and property disputes',async () => {
+  it('should clear disputed savings and property disputes', async () => {
     sinon.stub(apiService, 'getFinancialEligibility').resolves({
       status: 'success',
       data: financialEligibilityData
     });
 
-    const updateStub=sinon.stub(apiService, 'updateFinancialEligibility').resolves({
+    const updateStub = sinon.stub(apiService, 'updateFinancialEligibility').resolves({
       status: 'success',
       data: financialEligibilityData
     });
@@ -157,7 +157,7 @@ describe('resetDisputedFieldData',() => {
       )
     ).to.equal(true);
 
-    const payload=updateStub.firstCall.args[2] as unknown as Record<string,unknown>;
+    const payload = updateStub.firstCall.args[2] as unknown as Record<string, unknown>;
 
     expect(payload.disputed_savings).to.deep.equal({
       bank_balance: null,
@@ -184,8 +184,8 @@ describe('resetDisputedFieldData',() => {
     ]);
   });
 
-  it('should handle an empty property set',async () => {
-    const dataWithNoProperties: FinancialEligibilityData={
+  it('should handle an empty property set', async () => {
+    const dataWithNoProperties: FinancialEligibilityData = {
       ...financialEligibilityData,
       propertySet: []
     };
@@ -195,7 +195,7 @@ describe('resetDisputedFieldData',() => {
       data: dataWithNoProperties
     });
 
-    const updateStub=sinon.stub(apiService, 'updateFinancialEligibility').resolves({
+    const updateStub = sinon.stub(apiService, 'updateFinancialEligibility').resolves({
       status: 'success',
       data: dataWithNoProperties
     });
@@ -204,7 +204,7 @@ describe('resetDisputedFieldData',() => {
 
     expect(updateStub.calledOnce).to.equal(true);
 
-    const payload=updateStub.firstCall.args[2] as unknown as Record<string,unknown>;
+    const payload = updateStub.firstCall.args[2] as unknown as Record<string, unknown>;
 
     expect(payload.disputed_savings).to.deep.equal({
       bank_balance: null,
@@ -216,7 +216,7 @@ describe('resetDisputedFieldData',() => {
     expect(payload.property_set).to.deep.equal([]);
   });
 
-  it('should throw the API message when retrieval fails',async () => {
+  it('should throw the API message when retrieval fails', async () => {
     sinon.stub(apiService, 'getFinancialEligibility').resolves({
       status: 'error',
       message: 'Backend unavailable',
@@ -239,7 +239,7 @@ describe('resetDisputedFieldData',() => {
     ).not.to.equal(true);
   });
 
-  it('should throw the fallback error when retrieval returns no data',async () => {
+  it('should throw the fallback error when retrieval returns no data', async () => {
     sinon.stub(apiService, 'getFinancialEligibility').resolves({
       status: 'success',
       data: null
@@ -256,7 +256,7 @@ describe('resetDisputedFieldData',() => {
     }
   });
 
-  it('should throw the API message when the update fails',async () => {
+  it('should throw the API message when the update fails', async () => {
     sinon.stub(apiService, 'getFinancialEligibility').resolves({
       status: 'success',
       data: financialEligibilityData
@@ -279,7 +279,7 @@ describe('resetDisputedFieldData',() => {
     }
   });
 
-  it('should throw the fallback error when the update fails without a message',async () => {
+  it('should throw the fallback error when the update fails without a message', async () => {
     sinon.stub(apiService, 'getFinancialEligibility').resolves({
       status: 'success',
       data: financialEligibilityData
