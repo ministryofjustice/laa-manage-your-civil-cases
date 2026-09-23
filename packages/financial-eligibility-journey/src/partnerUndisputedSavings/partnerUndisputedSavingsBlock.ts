@@ -1,6 +1,6 @@
 import { Self, Condition, validation, Transformer } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { GovUKHeading, GovUKTextInput, GovUKUtilityClasses } from '@ministryofjustice/hmpps-forge/govuk-components'
-import { decimalPlacesValidation, moneyMaxValueValidation } from '../moneyFieldHelpers.js'
+import { decimalPlacesValidation, moneyMaxValueValidation, moneyMinValueValidation } from '../moneyFieldHelpers.js'
 
 export const savingsHeading = GovUKHeading({
   text: "Your partner's undisputed savings",
@@ -51,7 +51,8 @@ export const investmentBalanceField = GovUKTextInput({
 
 export const assetBalanceField = GovUKTextInput({
   code: 'asset-balance-partner',
-  label: "Does your partner have any valuable items worth over £500 each?",
+  label: 'Total value of items worth £500 or more each',
+  hint: 'Include jewellery, antiques and other possessions worth £500 or more each. If there are no items worth £500 or more each, enter 0',
   formatters: [Transformer.String.ToFloat()],
   prefix: { text: '£' },
   inputType: 'number',
@@ -61,10 +62,7 @@ export const assetBalanceField = GovUKTextInput({
       condition: Self().match(Condition.IsRequired()),
       message: "Enter the value of any valuable items your partner has worth over £500 each, or enter '0' if none",
     }),
-    validation({
-      condition: Self().match(Condition.Number.GreaterThanOrEqual(0)),
-      message: "The value of valuable items worth over £500 each must only include positive numbers, with or without a decimal point",
-    }),
+    moneyMinValueValidation(),
     decimalPlacesValidation(),
     moneyMaxValueValidation(),
   ],

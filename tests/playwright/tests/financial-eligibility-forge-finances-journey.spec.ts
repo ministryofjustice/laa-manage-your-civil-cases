@@ -57,7 +57,7 @@ async function completeSavingsValues(page: Page) {
   // Savings: Enter '0' and continue
   await page.getByRole('spinbutton',{name: 'How much was in your bank'}).fill('0');
   await page.getByRole('spinbutton',{name: 'Do you have any investments,'}).fill('0');
-  await page.getByRole('spinbutton',{name: 'Do you have any valuable'}).fill('0');
+  await page.getByRole('spinbutton',{name: 'Total value of items worth £500 or more each'}).fill('0');
   await page.getByRole('spinbutton',{name: 'Do you have any money owed to'}).fill('0');
   await page.getByRole('button',{name: 'Continue'}).click();
 }
@@ -66,7 +66,7 @@ async function completePartnerSavingsValues(page: Page) {
   // Partner savings: Enter '0' and continue
   await page.getByRole('spinbutton',{name: 'How much was in your partner\''}).fill('0');
   await page.getByRole('spinbutton',{name: 'Does your partner have any investments, shares or ISAs?'}).fill('0');
-  await page.getByRole('spinbutton',{name: 'Does your partner have any valuable items worth over £500 each?'}).fill('0');
+  await page.getByRole('spinbutton',{name: 'Total value of items worth £500 or more each'}).fill('0');
   await page.getByRole('spinbutton',{name: 'Does your partner have any money owed to them?'}).fill('0');
   await page.getByRole('button',{name: 'Continue'}).click();
 }
@@ -75,7 +75,7 @@ async function completeDisputedSavingsValues(page: Page) {
   // Disputed savings: Enter '0' and continue
   await page.getByRole('spinbutton',{name: 'How much was in your bank'}).fill('0');
   await page.getByRole('spinbutton',{name: 'Do you have any investments,'}).fill('0');
-  await page.getByRole('spinbutton',{name: 'Do you have any valuable'}).fill('0');
+  await page.getByRole('spinbutton',{name: 'Total value of items worth £500 or more each'}).fill('0');
   await page.getByRole('spinbutton',{name: 'Do you have any money owed to'}).fill('0');
   await page.getByRole('button',{name: 'Continue'}).click();
 }
@@ -349,7 +349,7 @@ test.describe('Financial Eligibility Forge Finances Journey',() => {
 
       await page.getByRole('spinbutton',{name: 'How much was in your bank'}).fill('');
       await page.getByRole('spinbutton',{name: 'Do you have any investments,'}).fill('');
-      await page.getByRole('spinbutton',{name: 'Do you have any valuable'}).fill('');
+      await page.getByRole('spinbutton',{name: 'Total value of items worth £500 or more each'}).fill('');
       await page.getByRole('spinbutton',{name: 'Do you have any money owed to'}).fill('');
       await page.getByRole('button',{name: 'Continue'}).click();
 
@@ -424,7 +424,7 @@ test.describe('Financial Eligibility Forge Finances Journey',() => {
 
       await page.getByRole('spinbutton',{name: 'How much was in your partner\''}).fill('');
       await page.getByRole('spinbutton',{name: 'Does your partner have any investments, shares or ISAs?'}).fill('');
-      await page.getByRole('spinbutton',{name: 'Does your partner have any valuable items worth over £500 each?'}).fill('');
+      await page.getByRole('spinbutton',{name: 'Total value of items worth £500 or more each'}).fill('');
       await page.getByRole('spinbutton',{name: 'Does your partner have any money owed to them?'}).fill('');
       await page.getByRole('button',{name: 'Continue'}).click();
 
@@ -463,7 +463,7 @@ test.describe('Financial Eligibility Forge Finances Journey',() => {
 
       await page.getByRole('spinbutton',{name: 'How much was in your bank'}).fill('');
       await page.getByRole('spinbutton',{name: 'Do you have any investments,'}).fill('');
-      await page.getByRole('spinbutton',{name: 'Do you have any valuable'}).fill('');
+      await page.getByRole('spinbutton',{name: 'Total value of items worth £500 or more each'}).fill('');
       await page.getByRole('spinbutton',{name: 'Do you have any money owed to'}).fill('');
       await page.getByRole('button',{name: 'Continue'}).click();
 
@@ -661,7 +661,7 @@ test.describe('Financial Eligibility Forge Finances Journey',() => {
     const savingsFields=[
       'How much was in your bank account/building society before your last payment went in?',
       'Do you have any investments, shares or ISAs?',
-      'Do you have any valuable items worth over £500 each?',
+      'Total value of items worth £500 or more each',
       'Do you have any money owed to you?',
     ];
 
@@ -678,19 +678,20 @@ test.describe('Financial Eligibility Forge Finances Journey',() => {
 
         await page.getByRole('button',{name: 'Continue'}).click();
 
-        await expect(page.locator(`a[href="#${inputId}"]`)).toContainText('Enter an amount with no more than 2 decimal places');
+        const expectedError = fieldName === 'Total value of items worth £500 or more each' ? 'Enter 0, or enter the total value of items worth £500 or more each' : 'Enter an amount with no more than 2 decimal places';
+        await expect(page.locator(`a[href="#${inputId}"]`)).toContainText(expectedError);
       });
     }
 
     const partnerSavingsFields=[
       'How much was in your partner\'s bank account/building society before their last payment went in?',
       'Does your partner have any investments, shares or ISAs?',
-      'Does your partner have any valuable items worth over £500 each?',
+      'Total value of items worth £500 or more each',
       'Does your partner have any money owed to them?',
     ];
 
     for(const fieldName of partnerSavingsFields) {
-      test(`should reject more than 2 decimal places for "${fieldName}"`,async ({page}) => {
+      test(`should reject more than 2 decimal places for partner savings"${fieldName}"`,async ({page}) => {
         await reachSavingsWithPartner(page);
         await completeSavingsValues(page);
 
@@ -705,14 +706,15 @@ test.describe('Financial Eligibility Forge Finances Journey',() => {
 
         await page.getByRole('button',{name: 'Continue'}).click();
 
-        await expect(page.locator(`a[href="#${inputId}"]`)).toContainText('Enter an amount with no more than 2 decimal places');
+        const expectedError = fieldName === 'Total value of items worth £500 or more each' ? 'Enter 0, or enter the total value of items worth £500 or more each' : 'Enter an amount with no more than 2 decimal places';
+        await expect(page.locator(`a[href="#${inputId}"]`)).toContainText(expectedError);
       });
     }
 
     const undisputedSavingsFields=[
       'How much was in your bank account/building society before your last payment went in?',
       'Do you have any investments, shares or ISAs?',
-      'Do you have any valuable items worth over £500 each?',
+      'Total value of items worth £500 or more each',
       'Do you have any money owed to you?',
     ];
 
@@ -756,19 +758,20 @@ test.describe('Financial Eligibility Forge Finances Journey',() => {
 
         await page.getByRole('button',{name: 'Continue'}).click();
 
-        await expect(page.locator(`a[href="#${inputId}"]`)).toContainText('Enter an amount with no more than 2 decimal places');
+        const expectedError = fieldName === 'Total value of items worth £500 or more each' ? 'Enter 0, or enter the total value of items worth £500 or more each' : 'Enter an amount with no more than 2 decimal places';
+        await expect(page.locator(`a[href="#${inputId}"]`)).toContainText(expectedError);
       });
     }
 
     const partnerUndisputedSavingsFields=[
       'How much was in your partner\'s bank account/building society before their last payment went in?',
       'Does your partner have any investments, shares or ISAs?',
-      'Does your partner have any valuable items worth over £500 each?',
+      'Total value of items worth £500 or more each',
       'Does your partner have any money owed to them?',
     ];
 
     for(const fieldName of partnerUndisputedSavingsFields) {
-      test(`should reject more than 2 decimal places for undisputed savings "${fieldName}"`,async ({page}) => {
+      test(`should reject more than 2 decimal places for partner undisputed savings "${fieldName}"`,async ({page}) => {
 
         await page.goto('/cases/PC-1357-1212/financial-eligibility/change/partner-undisputed-savings');
 
@@ -781,7 +784,8 @@ test.describe('Financial Eligibility Forge Finances Journey',() => {
 
         await page.getByRole('button',{name: 'Continue'}).click();
 
-        await expect(page.locator(`a[href="#${inputId}"]`)).toContainText('Enter an amount with no more than 2 decimal places');
+        const expectedError = fieldName === 'Total value of items worth £500 or more each' ? 'Enter 0, or enter the total value of items worth £500 or more each' : 'Enter an amount with no more than 2 decimal places';
+        await expect(page.locator(`a[href="#${inputId}"]`)).toContainText(expectedError);
       });
     }
 
@@ -799,7 +803,8 @@ test.describe('Financial Eligibility Forge Finances Journey',() => {
 
         await page.getByRole('button',{name: 'Continue'}).click();
 
-        await expect(page.locator(`a[href="#${inputId}"]`)).toContainText('Enter an amount with no more than 2 decimal places');
+        const expectedError = fieldName === 'Total value of items worth £500 or more each' ? 'Enter 0, or enter the total value of items worth £500 or more each' : 'Enter an amount with no more than 2 decimal places';
+        await expect(page.locator(`a[href="#${inputId}"]`)).toContainText(expectedError);
       });
     }
 
