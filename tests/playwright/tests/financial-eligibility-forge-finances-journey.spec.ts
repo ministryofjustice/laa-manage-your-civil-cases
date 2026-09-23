@@ -979,10 +979,55 @@ test.describe('Financial Eligibility Forge Finances Journey',() => {
 
   test.describe('Check answers and submission',() => {
     test('should submit finances answers from check answers and return to financial eligibility tab',async ({page}) => {
-      await reachExpensesNoPartner(page);
+      const baseUrl='/cases/PC-7391-4934/financial-eligibility/change';
+
+      await page.goto(baseUrl);
+
+      // Under 18
+      await page.getByRole('radio',{name: 'No'}).check();
+      await page.getByRole('button',{name: 'Continue'}).click();
+
+      // Partner
+      await expect(page).toHaveURL(`${baseUrl}/has-partner`);
+      await page.getByRole('radio',{name: 'No'}).check();
+      await page.getByRole('button',{name: 'Continue'}).click();
+
+      // Over 60
+      await expect(page).toHaveURL(`${baseUrl}/60-or-over`);
+      await page.getByRole('radio',{name: 'No'}).check();
+      await page.getByRole('button',{name: 'Continue'}).click();
+
+      // Benefits
+      await expect(page).toHaveURL(`${baseUrl}/benefits`);
+      await completeBenefits(page);
+
+      // Properties
+      await expect(page).toHaveURL(`${baseUrl}/properties`);
+      await page.getByRole('button',{name: 'Continue'}).click();
+
+      // Savings
+      await expect(page).toHaveURL(`${baseUrl}/your-savings`);
+      await completeSavingsValues(page);
+
+      // Disregards
+      await expect(page).toHaveURL(`${baseUrl}/disregards`);
+      await completeDisregardsNone(page);
+
+      // Income
+      await expect(page).toHaveURL(`${baseUrl}/your-income`);
+      await completeIncomeValues(page);
+
+      // Dependants
+      await expect(page).toHaveURL(`${baseUrl}/dependants`);
+      await completeDependantsValues(page);
+
+      // Expenses
+      await expect(page).toHaveURL(`${baseUrl}/your-expenses`);
       await completeExpensesValues(page);
 
-      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change/check-answers`);
+      // Check answers
+      await expect(page).toHaveURL(`${baseUrl}/check-answers`);
+      
       await expect(page.getByRole('heading',{name: 'Property 1'})).toBeVisible();
       await expect(page.getByRole('heading',{name: 'Property 2'})).toBeVisible();
       await expect(page.getByRole('heading',{name: 'Your savings'})).toBeVisible();
@@ -1004,8 +1049,8 @@ test.describe('Financial Eligibility Forge Finances Journey',() => {
 
       await page.getByRole('button', { name: 'Submit' }).click();
 
-      await expect(page).toHaveURL(`/cases/PC-1922-1879/financial-eligibility/`);
-      await expect(page).not.toHaveURL(`/cases/PC-1922-1879/financial-eligibility/change`);
+      await expect(page).toHaveURL(`/cases/PC-7391-4934/financial-eligibility/`);
+      await expect(page).not.toHaveURL(`/cases/PC-7391-4934/financial-eligibility/change`);
     });
 
     test('check your answers should display correct information when there is a partner',async ({page}) => {
