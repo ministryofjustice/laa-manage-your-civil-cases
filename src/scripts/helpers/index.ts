@@ -20,6 +20,7 @@ export {
 // Data transformation utilities
 export {
   safeString,
+  safeOptionalCategoryString,
   safeOptionalString,
   booleanToString,
   toBoolean,
