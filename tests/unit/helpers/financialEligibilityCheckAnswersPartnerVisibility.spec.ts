@@ -114,7 +114,7 @@ describe('Check your answers: "Do you have a partner?" row visibility', () => {
       sinon.restore();
     });
 
-    it('shows the partner row for an adult whose under-18 branch was never answered', async () => {
+    it('Boolean values are shown empty when nothing has been selected', async () => {
       // Real case WE-5647-7943: is_you_under_18/under_18_receive_regular_payment/under_18_has_valuables all null
       const context = createTestEffectContext({ params: { caseReference: 'CASE1' }, session: {} });
       getFinancialEligibilityStub.resolves({
@@ -135,9 +135,9 @@ describe('Check your answers: "Do you have a partner?" row visibility', () => {
 
       await effects.LoadCaseFinancialEligibility(deps, context);
 
-      expect(context.getAnswer('under-18')).to.equal('no');
-      expect(context.getAnswer('under-18-receives-regular-payment')).to.equal('no');
-      expect(context.getAnswer('under-18-has-valuables')).to.equal('no');
+      expect(context.getAnswer('under-18')).to.equal(undefined);
+      expect(context.getAnswer('under-18-receives-regular-payment')).to.equal(undefined);
+      expect(context.getAnswer('under-18-has-valuables')).to.equal(undefined);
     });
 
     it('hides the partner row for a client who is genuinely under-18 passported', async () => {

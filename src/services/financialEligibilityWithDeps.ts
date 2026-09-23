@@ -269,17 +269,17 @@ function mapApiValueToForgeValue(apiValue: unknown, stepCode: string): unknown {
 
     return {
         category: String(apiValue ?? '').toLowerCase(),
-        [under18Field.code as string]: apiValue ? 'yes' : 'no',
-        [under18RegularPaymentField.code as string]: apiValue ? 'yes' : 'no',
-        [under18HasValuablesField.code as string]: apiValue ? 'yes' : 'no',
-        [partnerField.code as string]: apiValue ? 'yes' : 'no',
-        [over60Field.code as string]: apiValue ? 'yes' : 'no',
-        [over60WithPartnerField.code as string]: apiValue ? 'yes' : 'no',
-        [universalCreditField.code as string]: apiValue ? 'yes' : 'no',
-        [incomeSupportField.code as string]: apiValue ? 'yes' : 'no',
-        [incomeBasedJSAField.code as string]: apiValue ? 'yes' : 'no',
-        [pensionCreditField.code as string]: apiValue ? 'yes' : 'no',
-        [employmentSupportField.code as string]: apiValue ? 'yes' : 'no',
+        [under18Field.code as string]: mapBooleanToYesNo(apiValue),
+        [under18RegularPaymentField.code as string]: mapBooleanToYesNo(apiValue),
+        [under18HasValuablesField.code as string]: mapBooleanToYesNo(apiValue),
+        [partnerField.code as string]: mapBooleanToYesNo(apiValue),
+        [over60Field.code as string]: mapBooleanToYesNo(apiValue),
+        [over60WithPartnerField.code as string]: mapBooleanToYesNo(apiValue),
+        [universalCreditField.code as string]: mapBooleanToYesNo(apiValue),
+        [incomeSupportField.code as string]: mapBooleanToYesNo(apiValue),
+        [incomeBasedJSAField.code as string]: mapBooleanToYesNo(apiValue),
+        [pensionCreditField.code as string]: mapBooleanToYesNo(apiValue),
+        [employmentSupportField.code as string]: mapBooleanToYesNo(apiValue),
         'propertySet': normalisePropertyCollectionForForge(apiValue),
         [savingsBankBalanceField.code as string]: normaliseMonetaryFieldValue(apiValue),
         [savingsInvestmentBalanceField.code as string]: normaliseMonetaryFieldValue(apiValue),
@@ -295,8 +295,8 @@ function mapApiValueToForgeValue(apiValue: unknown, stepCode: string): unknown {
         [disputedCreditBalanceField.code as string]: normaliseMonetaryFieldValue(apiValue),
         [dependants16OverField.code as string]: apiValue,
         [dependants15UnderField.code as string]: apiValue,
-        [selfEmployedField.code as string]: apiValue ? 'yes' : 'no',
-        [selfEmployedPartnerField.code as string]: apiValue ? 'yes' : 'no',
+        [selfEmployedField.code as string]: mapBooleanToYesNo(apiValue),
+        [selfEmployedPartnerField.code as string]: mapBooleanToYesNo(apiValue),
         ...moneyFieldPassthrough,
         [disregardsField.code as string]: normaliseSelectedKeys(apiValue).length > 0 ? normaliseSelectedKeys(apiValue) : ['none'],
     }[stepCode];
@@ -315,6 +315,21 @@ function mapForgePropertyCollectionToApiPropertySet(collection: Record<string, u
         disputed: toBoolean(item.disputed),
         main: toBoolean(item.main),
     }));
+}
+
+/**
+ * Function to map boolean values during forge journey 
+ * @param {unknown} value value to be formatted
+ * @returns {undefined} returns 
+ */
+function mapBooleanToYesNo(value: unknown): 'yes' | 'no' | undefined {
+    if (value === true) {
+        return 'yes';
+    }
+    if (value === false) {
+        return 'no';
+    }
+  return undefined;
 }
 
 /**

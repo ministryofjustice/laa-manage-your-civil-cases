@@ -2994,5 +2994,90 @@
         "ni_number": "AB123456C"
       }
     }
+  },
+  {
+    "fullName": "Jamie Roberts",
+    "caseReference": "PC-8231-5127",
+    "providerId": "12",
+    "refCode": "",
+    "category": "Housing, eviction and homelessness",
+    "dateReceived": "2025-08-07T19:00:00-05:00",
+    "lastModified": "2025-08-08T17:30:00-05:00",
+    "caseStatus": "Pending",
+    "dateOfBirth": "1979-11-12T00:00:00-05:00",
+    "vulnerableUser": true,
+    "language": "Polish",
+    "phoneNumber": "0777933128",
+    "safeToCall": true,
+    "announceCall": true,
+    "emailAddress": "jamie_roberts@outlook.com",
+    "address": "543 Queen Street, Newcastle",
+    "postcode": "LE7 2UL",
+    "laaReference": "2850581",
+    "client_notes": "Some notes about beer",
+    "thirdParty": {
+      "fullName": "Samira Patel",
+      "emailAddress": "samira@patel.com",
+      "contactNumber": "",
+      "safeToCall": false,
+      "address": "84 Zoo Lane, Birmingham",
+      "postcode": "B88 1RW",
+      "relationshipToClient": {
+        "selected": [
+          "LEGAL_ADVISOR"
+        ]
+      },
+      "passphraseSetUp": {
+        "selected": [
+          "No, client is a child or patient"
+        ]
+      }
+    },
+    "clientSupportNeeds": {
+      "bslWebcam": "Yes",
+      "textRelay": "No",
+      "callbackPreference": "No",
+      "languageSupportNeeds": "English",
+      "notes": "Here are some notes from the operator!"
+    },
+    "financialEligibility": {
+      "your_problem_notes": "",
+      "reference": "PC-8231-5127",
+      "notes": "",
+      "category": "housing",
+      "property_set": [
+        {
+          "value": 15000000,
+          "mortgage_left": 6000000,
+          "share": 100,
+          "id": 1362,
+          "disputed": false,
+          "main": true
+        }
+      ],
+      "you": {
+        "income": {},
+        "savings": {},
+        "deductions": {}
+      },
+      "partner": {
+        "income": {},
+        "savings": {},
+        "deductions": {}
+      },
+      "dependants_young": 0,
+      "dependants_old": 0,
+      "is_you_or_your_partner_over_60": false,
+      "has_partner": false,
+      "is_you_under_18": true,
+      "specific_benefits": {
+        "pension_credit": null,
+        "job_seekers_allowance": null,
+        "employment_support": null,
+        "universal_credit": null,
+        "income_support": null
+      },
+      "disregards": {}
+    }
   }
 ]

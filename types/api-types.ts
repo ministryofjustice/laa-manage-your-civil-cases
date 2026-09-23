@@ -427,16 +427,16 @@ export interface PropertySetData {
  * Interface for financial eligibility data
  */
 export interface FinancialEligibilityData {
-  hasPartner: boolean;
-  isUnder17: boolean;
-  isOver60: boolean;
+  hasPartner: boolean | null;
+  isUnder17: boolean | null;
+  isOver60: boolean | null;
 
   specificBenefits: {
-    pensionCredit: boolean;
-    jobSeekers: boolean;
-    employmentSupport: boolean;
-    universalCredit: boolean;
-    incomeSupport: boolean;
+    pensionCredit: boolean | null;
+    jobSeekers: boolean | null;
+    employmentSupport: boolean | null;
+    universalCredit: boolean | null;
+    incomeSupport: boolean | null;
   }
   propertySet: PropertySetData[]
   clientData: {
@@ -453,14 +453,14 @@ export interface FinancialEligibilityData {
   disregards: string[];
   dependantsYoung: number;
   dependantsOld: number;
-  under18RegularPayment?: boolean;
-  under18HasValuables?: boolean;
+  under18RegularPayment?: boolean | null;
+  under18HasValuables?: boolean | null;
   state: string;
-  hasPassportedProceedingsLetter: boolean;
-  passportedBenefits: boolean;
-  under18passportedBenefits: boolean;
+  hasPassportedProceedingsLetter: boolean | null;
+  passportedBenefits: boolean | null;
+  under18passportedBenefits: boolean | null;
   category: string;
-  asylumSupport?: boolean;
+  asylumSupport?: boolean | null;
   nationalInsurance?: string;
 }
 

@@ -44,7 +44,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('group', { name: 'Income Support' }).getByLabel('Yes').check()
       await page.getByRole('group', { name: 'Income-based Job Seekers' }).getByLabel('Yes').check()
       await page.getByRole('group', { name: 'Guarantee State Pension Credit' }).getByLabel('No').check()
-      await page.getByRole('group', { name: 'Income-related Employment and' }).getByLabel('No').check()    
+      await page.getByRole('group', { name: 'Income-related Employment and' }).getByLabel('No').check()
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Properties: Continue
@@ -72,11 +72,11 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/check-answers');
       await expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
       await expect(page.getByRole('heading', { level: 3, name: 'Details' })).toBeVisible();
-      
+
       // Verify summary displays correct answers
       await expect(page.getByText('Are you aged 17 or under?')).toBeVisible();
       await expect(page.getByText('Yes').first()).toBeVisible();
-      
+
       // Submit the form
       await page.getByRole('button', { name: 'Submit' }).click();
 
@@ -177,7 +177,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('group', { name: 'Income Support' }).getByLabel('Yes').check()
       await page.getByRole('group', { name: 'Income-based Job Seekers' }).getByLabel('Yes').check()
       await page.getByRole('group', { name: 'Guarantee State Pension Credit' }).getByLabel('No').check()
-      await page.getByRole('group', { name: 'Income-related Employment and' }).getByLabel('No').check()      
+      await page.getByRole('group', { name: 'Income-related Employment and' }).getByLabel('No').check()
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Properties: Continue
@@ -224,7 +224,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('group', { name: 'Income Support' }).getByLabel('Yes').check()
       await page.getByRole('group', { name: 'Income-based Job Seekers' }).getByLabel('Yes').check()
       await page.getByRole('group', { name: 'Guarantee State Pension Credit' }).getByLabel('No').check()
-      await page.getByRole('group', { name: 'Income-related Employment and' }).getByLabel('No').check()    
+      await page.getByRole('group', { name: 'Income-related Employment and' }).getByLabel('No').check()
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Properties: Continue
@@ -249,7 +249,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
 
       // Passported via benefits, so income/expenses are skipped straight to check answers
       await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/check-answers');
-      
+
       // Verify summary sections are present
       await expect(page.getByRole('heading', { level: 3, name: 'Details' })).toBeVisible();
       await expect(page.getByRole('heading', { name: 'About you' })).toBeVisible();
@@ -280,7 +280,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('group', { name: 'Income Support' }).getByLabel('Yes').check()
       await page.getByRole('group', { name: 'Income-based Job Seekers' }).getByLabel('Yes').check()
       await page.getByRole('group', { name: 'Guarantee State Pension Credit' }).getByLabel('No').check()
-      await page.getByRole('group', { name: 'Income-related Employment and' }).getByLabel('No').check()    
+      await page.getByRole('group', { name: 'Income-related Employment and' }).getByLabel('No').check()
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Properties: Continue
@@ -310,10 +310,10 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       // Click a change link
       const changeLink = page.getByRole('link', { name: 'Change' }).first();
       await changeLink.click();
-      
+
       // Should navigate back to a previous step
       await expect(page).not.toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/check-answers');
-      
+
       // Make a change and continue
       await page.getByRole('radio').first().check();
       await page.getByRole('button', { name: 'Continue' }).click();
@@ -327,11 +327,11 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Partner: No
-      await page.getByRole('radio', { name: 'No' }).check(); 
+      await page.getByRole('radio', { name: 'No' }).check();
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Over 60: No
-      await page.getByRole('radio', { name: 'No' }).check(); 
+      await page.getByRole('radio', { name: 'No' }).check();
       await page.getByRole('button', { name: 'Continue' }).click();
 
       // Benefits step - select multiple benefits
@@ -353,7 +353,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await page.getByRole('spinbutton', { name: 'Do you have any valuable' }).fill('0');
       await page.getByRole('spinbutton', { name: 'Do you have any money owed to' }).fill('0');
       await page.getByRole('button', { name: 'Continue' }).click();
-      
+
       // Disregards: None & Continue
       await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/disregards');
       await page.getByRole('checkbox', { name: 'None' }).check();
@@ -393,5 +393,40 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
 
       await expect(page.getByText('Do you have any savings, items of value or investments totalling £2500 or more?')).not.toBeVisible();
     });
+  });
+
+  test('When under-18 changes from yes to no benefits are shown in forge without a selection', async ({ page }) => {
+    await page.goto('/cases/PC-8231-5127/financial-eligibility/change');
+
+    // Under 18: Yes
+    await page.getByRole('radio', { name: 'No' }).check();
+    await page.getByRole('button', { name: 'Continue' }).click();
+
+    await page.getByRole('radio', { name: 'No' }).check(); // Partner = No
+    await page.getByRole('button', { name: 'Continue' }).click();
+
+    await page.getByRole('radio', { name: 'No' }).check(); // Over 60 = Yes
+    await page.getByRole('button', { name: 'Continue' }).click();
+
+    const universalCredit = page.getByRole('group', { name: 'Universal Credit' });
+    await expect(universalCredit.getByLabel('Yes')).not.toBeChecked();
+    await expect(universalCredit.getByLabel('No')).not.toBeChecked();
+
+    const incomeSupport = page.getByRole('group', { name: 'Income Support' });
+    await expect(incomeSupport.getByLabel('Yes')).not.toBeChecked();
+    await expect(incomeSupport.getByLabel('No')).not.toBeChecked();
+
+    const incomeBasedJsa = page.getByRole('group', { name: 'Income-based Job Seekers' });
+    await expect(incomeBasedJsa.getByLabel('Yes')).not.toBeChecked();
+    await expect(incomeBasedJsa.getByLabel('No')).not.toBeChecked();
+
+    const pensionCredit = page.getByRole('group', { name: 'Guarantee State Pension Credit'});
+    await expect(pensionCredit.getByLabel('Yes')).not.toBeChecked();
+    await expect(pensionCredit.getByLabel('No')).not.toBeChecked();
+
+    const employmentSupport = page.getByRole('group', { name: 'Income-related Employment and'});
+    await expect(employmentSupport.getByLabel('Yes')).not.toBeChecked();
+    await expect(employmentSupport.getByLabel('No')).not.toBeChecked();
+
   });
 });
