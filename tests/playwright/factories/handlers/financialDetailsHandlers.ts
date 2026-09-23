@@ -39,11 +39,6 @@ export function createFinancialEligibilityHandlers(
 
       const payload=await request.json() as FinancialEligibilityData;
 
-      console.log(
-        '[MSW] FE PATCH PAYLOAD',
-        JSON.stringify(payload, null, 2)
-      );
-
       const updatedFinancialEligibility={
         ...caseItem.financialEligibility,
         ...payload
@@ -51,13 +46,10 @@ export function createFinancialEligibilityHandlers(
 
       updateCaseState(caseReference, {
         financialEligibility:
-          updatedFinancialEligibility as unknown as MockCase['financialEligibility']
+        updatedFinancialEligibility as unknown as MockCase['financialEligibility']
       });
 
-      console.log("updated eligibility", updatedFinancialEligibility);
-      return HttpResponse.json(
-        updatedFinancialEligibility
-      );
+      return HttpResponse.json(updatedFinancialEligibility);
 
     })
   ];

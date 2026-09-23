@@ -385,10 +385,10 @@ test.describe('resetting disputed financial eligibility after category changes',
 
     // Assert the correct data is displayed in the your disputed savings table.
     await assertSummaryCardData(page, 'Your disputed savings', {
-      'How much was in your bank account/building society before your last payment went in\\\?': '£0',
-      'Do you have any investments, shares or ISAs\\\?': '£0',
-      'Do you have any valuable items worth over £500 each\\\?': '£0',
-      'Do you have any money owed to you\\\?': '£0'
+      'How much was in your bank account/building society before your last payment went in\\\?': 'Not provided',
+      'Do you have any investments, shares or ISAs\\\?': 'Not provided',
+      'Do you have any valuable items worth over £500 each\\\?': 'Not provided',
+      'Do you have any money owed to you\\\?': 'Not provided'
     });
 
     // Assert the correct data is displayed in the properties table for one property.

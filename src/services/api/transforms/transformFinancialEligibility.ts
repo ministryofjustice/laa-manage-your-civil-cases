@@ -23,7 +23,7 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
   const partnerIncome = formatIncomeData(partnerData.income);
   const partnerSavings = formatSavingsData(partnerData.savings);
   const partnerDeductions = formatDeductionsData(partnerData.deductions);
-  const disputedSavings = formatSavingsData(item.disputed_savings)
+  const disputedSavings = formatDisputedSavingsData(item.disputed_savings)
   const dependantsYoung = Number(item.dependants_young ?? 0);
   const dependantsOld = Number(item.dependants_old ?? 0);
   const disregards = normaliseSelectedKeys(item.disregards);
@@ -132,6 +132,25 @@ function formatIncomeData(income: unknown): IncomeData {
     selfEmployed: Boolean(income.self_employed),
     total: convertPenceToPounds(Number(income.total ?? 0)),
   };
+}
+
+/**
+ * Function to format disputed savings and allow null values
+ * @param {unknown} savings savings to format
+ * @returns {SavingsData | null} formatted savings or null
+ */
+function formatDisputedSavingsData(savings: unknown): SavingsData | null {
+  if (!isRecord(savings)) {
+    return null;
+  }
+
+  return {
+    bankBalance: savings.bank_balance == null ? null : convertPenceToPounds(Number(savings.bank_balance)),
+    investmentBalance: savings.investment_balance == null ? null : convertPenceToPounds(Number(savings.investment_balance)),
+    assetBalance: savings.asset_balance == null ? null : convertPenceToPounds(Number(savings.asset_balance)),
+    creditBalance: savings.credit_balance == null ? null : convertPenceToPounds(Number(savings.credit_balance)),
+    total: savings.total == null ? null : convertPenceToPounds(Number(savings.total)),
+  } as SavingsData;
 }
 
 /**
