@@ -723,6 +723,7 @@
       "pageTitle400": "There was a problem loading this page – {serviceName} – GOV.UK",
       "pageHeading400": "There was a problem loading this page",
       "generic404message": "<p class='govuk-body'>Check you entered the correct web address.</p><p class='govuk-body'>If the web address is correct or you selected a link or button, <a class='govuk-link' href='/help'>contact us for technical support</a>.</p>",
+      "generic400message": "Refresh the page and try again.",
       "checkWebAddress": "Check you entered the correct web address.",
       "technicalSupportPrefix": "If the web address is correct or you selected a link or button,",
       "technicalSupportLink": "contact us for technical support"

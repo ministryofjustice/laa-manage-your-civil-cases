@@ -52,7 +52,7 @@ function isNetworkError(error: unknown): error is { code: string; message?: stri
 function getHttpErrorMessage(status: number): string {
   switch (status) {
     case HTTP.BAD_REQUEST:
-      return 'Invalid request. Please check your input and try again.';
+      return t('pages.error.generic400message');
     case HTTP.UNAUTHORIZED:
       return 'Authentication failed. Please log in again.';
     case HTTP.FORBIDDEN:
