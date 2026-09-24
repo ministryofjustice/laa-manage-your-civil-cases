@@ -889,6 +889,19 @@ export async function buildCategoryItems({
 }
 
 /**
+ * Function to format boolean values and retain any null values
+ * @param {unknown} value value to formatted to either true, false or null
+ * @returns {boolean | null} returns a boolean or null value
+ */
+export function formatBooleanToRetainNullValue(value: unknown): boolean | null {
+  if (value === null || value === undefined) {
+    return null;
+  }
+
+  return Boolean(value);
+}
+
+/**
  * format financial data to include £ and interval period (Monthly, Weekly etc)
  * @param {unknown} value - value to be formatted
  * @returns { string } returns a string with the formatted value 

@@ -135,9 +135,9 @@ describe('Check your answers: "Do you have a partner?" row visibility', () => {
 
       await effects.LoadCaseFinancialEligibility(deps, context);
 
-      expect(context.getAnswer('under-18')).to.equal(undefined);
-      expect(context.getAnswer('under-18-receives-regular-payment')).to.equal(undefined);
-      expect(context.getAnswer('under-18-has-valuables')).to.equal(undefined);
+      expect(context.getAnswer('under-18')).to.equal('');
+      expect(context.getAnswer('under-18-receives-regular-payment')).to.equal('');
+      expect(context.getAnswer('under-18-has-valuables')).to.equal('');
     });
 
     it('hides the partner row for a client who is genuinely under-18 passported', async () => {

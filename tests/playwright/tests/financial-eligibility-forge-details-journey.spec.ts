@@ -420,13 +420,25 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
     await expect(incomeBasedJsa.getByLabel('Yes')).not.toBeChecked();
     await expect(incomeBasedJsa.getByLabel('No')).not.toBeChecked();
 
-    const pensionCredit = page.getByRole('group', { name: 'Guarantee State Pension Credit'});
+    const pensionCredit = page.getByRole('group', { name: 'Guarantee State Pension Credit' });
     await expect(pensionCredit.getByLabel('Yes')).not.toBeChecked();
     await expect(pensionCredit.getByLabel('No')).not.toBeChecked();
 
-    const employmentSupport = page.getByRole('group', { name: 'Income-related Employment and'});
+    const employmentSupport = page.getByRole('group', { name: 'Income-related Employment and' });
     await expect(employmentSupport.getByLabel('Yes')).not.toBeChecked();
     await expect(employmentSupport.getByLabel('No')).not.toBeChecked();
+
+    // click continue to submit with empty values
+    await page.getByRole('button', { name: 'Continue' }).click();
+
+    // Error summary
+    await expect(page.getByRole('heading', { name: 'There is a problem' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Select yes if they get Universal Credit'})).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Select yes if they get Income Support'})).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Select yes if they get Income-based Job Seekers Allowance' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Select yes if they get Guarantee State Pension Credit' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Select yes if they get Income-related Employment and Support Allowance' })).toBeVisible();
+
 
   });
 });

@@ -1,5 +1,5 @@
 import type { FinancialEligibilityData, PropertySetData, SavingsData, IncomeData, DeductionData, MoneyPerInterval } from '#types/api-types.js';
-import { isRecord, normaliseSelectedKeys } from '#src/scripts/helpers/index.js';
+import { isRecord, normaliseSelectedKeys, formatBooleanToRetainNullValue } from '#src/scripts/helpers/index.js';
 
 /**
  * Transforms raw financial eligibility API data to display format
@@ -11,9 +11,9 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
     throw new Error('Invalid financial eligibility item: expected object');
   }
 
-  const isUnder17 = formatBoolean(item.is_you_under_18);
-  const isOver60 = formatBoolean(item.is_you_or_your_partner_over_60);
-  const hasPartner = formatBoolean(item.has_partner);
+  const isUnder17 = formatBooleanToRetainNullValue(item.is_you_under_18);
+  const isOver60 = formatBooleanToRetainNullValue(item.is_you_or_your_partner_over_60);
+  const hasPartner = formatBooleanToRetainNullValue(item.has_partner);
   const benefitsData = isRecord(item.specific_benefits) ? item.specific_benefits : {};
   const clientData = isRecord(item.you) ? item.you : {};
   const partnerData = isRecord(item.partner) ? item.partner : {};
@@ -28,13 +28,12 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
   const dependantsOld = Number(item.dependants_old ?? 0);
   const disregards = normaliseSelectedKeys(item.disregards);
   const specificBenefits = {
-    pensionCredit: formatBoolean(benefitsData.pension_credit),
-    jobSeekers: formatBoolean(benefitsData.job_seekers_allowance),
-    employmentSupport: formatBoolean(benefitsData.employment_support),
-    universalCredit: formatBoolean(benefitsData.universal_credit),
-    incomeSupport: formatBoolean(benefitsData.income_support),
+    pensionCredit: formatBooleanToRetainNullValue(benefitsData.pension_credit),
+    jobSeekers: formatBooleanToRetainNullValue(benefitsData.job_seekers_allowance),
+    employmentSupport: formatBooleanToRetainNullValue(benefitsData.employment_support),
+    universalCredit: formatBooleanToRetainNullValue(benefitsData.universal_credit),
+    incomeSupport: formatBooleanToRetainNullValue(benefitsData.income_support),
   };
-  console.log('pension credit',specificBenefits.pensionCredit);
   const propertySet: PropertySetData[] = Array.isArray(item.property_set)
     ? item.property_set.map((property) => ({
       value: convertPenceToPounds(Number(property.value)),
@@ -71,19 +70,6 @@ export function transformFinancialEligibilityItem(item: unknown): FinancialEligi
     under18passportedBenefits,
     category
   };
-}
-
-/**
- * Function to format boolean values and retain any null values
- * @param {unknown} value value to formatted to either true, false or null
- * @returns {boolean | null} returns a boolean or null value
- */
-function formatBoolean(value: unknown): boolean | null {
-  if (value === null || value === undefined) {
-    return null;
-  }
-
-  return Boolean(value);
 }
 
 /**
