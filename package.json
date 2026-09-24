@@ -37,7 +37,7 @@
   "dependencies": {
     "@azure/msal-node": "^6.0.0",
     "@ministryofjustice/frontend": "^11.0.1",
-    "@ministryofjustice/hmpps-forge": "0.4.2",
+    "@ministryofjustice/hmpps-forge": "0.4.3",
     "@sentry/node": "^10.74.0",
     "@socket.io/redis-adapter": "^8.3.0",
     "@x-govuk/govuk-prototype-components": "^6.0.0",
