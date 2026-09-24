@@ -1,6 +1,6 @@
 
 import { test, expect } from '../fixtures/index.js';
-import { setupAuth, logout, assertCaseDetailsHeaderPresent, expectPropertyTableRows, expectCaptionTableRows, assertSummaryCardData, assertSummaryCardState } from '../utils/index.js';
+import { setupAuth, assertCaseDetailsHeaderPresent, assertSummaryCardData, assertSummaryCardState } from '../utils/index.js';
 import { ClientDetailsPage } from '../pages/index.js';
 
 test.describe('Details tab', () => {
@@ -132,7 +132,7 @@ test.describe('Finances tab', () => {
     await assertSummaryCardData(page, 'Your savings', {
       'How much was in your bank account/building society before your last payment went in\\\?': '£200',
       'Do you have any investments, shares or ISAs\\\?': '£100',
-      'Do you have any valuable items worth over £500 each\\\?': '£500',
+      'Total value of items worth £500 or more each': '£500',
       'Do you have any money owed to you\\\?': '£200',
     });
 
@@ -189,7 +189,7 @@ test.describe('Finances tab', () => {
     await assertSummaryCardData(page, 'Your savings', {
       'How much was in your bank account/building society before your last payment went in\\\?': '£100',
       'Do you have any investments, shares or ISAs\\\?': '£300',
-      'Do you have any valuable items worth over £500 each\\\?': '£500',
+      'Total value of items worth £500 or more each': '£500',
       'Do you have any money owed to you\\\?': '£100'
     });
 
@@ -197,7 +197,7 @@ test.describe('Finances tab', () => {
     await assertSummaryCardData(page, "Your partner's savings", {
       "How much was in your partner's bank account/building society before their last payment went in\\\?": '£200',
       'Does your partner have any investments, shares or ISAs\\\?': '£100',
-      'Does your partner have any valuable items worth over £500 each\\\?': '£500',
+      'Total value of items worth £500 or more each': '£500',
       'Does your partner have any money owed to them\\\?': '£200'
     });
 
@@ -239,7 +239,7 @@ test.describe('Finances tab', () => {
     await assertSummaryCardData(page, 'Your savings', {
       'How much was in your bank account/building society before your last payment went in\\\?': 'Not provided',
       'Do you have any investments, shares or ISAs\\\?': 'Not provided',
-      'Do you have any valuable items worth over £500 each\\\?': 'Not provided',
+      'Total value of items worth £500 or more each': 'Not provided',
       'Do you have any money owed to you\\\?': 'Not provided'
     });
   });
@@ -757,7 +757,7 @@ test.describe('Conditional logic views', () => {
     await assertSummaryCardData(page, 'Your disputed savings', {
       'How much was in your bank account/building society before your last payment went in\\\?': '£200',
       'Do you have any investments, shares or ISAs\\\?': '£100',
-      'Do you have any valuable items worth over £500 each\\\?': '£500',
+      'Total value of items worth £500 or more each': '£500',
       'Do you have any money owed to you\\\?': '£200'
     });
   });
@@ -779,7 +779,7 @@ test.describe('Conditional logic views', () => {
     await assertSummaryCardData(page, 'Your disputed savings', {
       'How much was in your bank account/building society before your last payment went in\\\?': '£100',
       'Do you have any investments, shares or ISAs\\\?': '£300',
-      'Do you have any valuable items worth over £500 each\\\?': '£500',
+      'Total value of items worth £500 or more each': '£500',
       'Do you have any money owed to you\\\?': '£100'
     });
   });
@@ -865,7 +865,7 @@ test.describe('Conditional logic views', () => {
     await assertSummaryCardData(page, 'Your disputed savings', {
       'How much was in your bank account/building society before your last payment went in\\\?': '£200',
       'Do you have any investments, shares or ISAs\\\?': '£100',
-      'Do you have any valuable items worth over £500 each\\\?': '£500',
+      'Total value of items worth £500 or more each': '£500',
       'Do you have any money owed to you\\\?': '£200'
     });
 
@@ -873,7 +873,7 @@ test.describe('Conditional logic views', () => {
     await assertSummaryCardData(page, 'Your undisputed savings', {
       'How much was in your bank account/building society before your last payment went in\\\?': '£100',
       'Do you have any investments, shares or ISAs\\\?': '£300',
-      'Do you have any valuable items worth over £500 each\\\?': '£500',
+      'Total value of items worth £500 or more each': '£500',
       'Do you have any money owed to you\\\?': '£100',
     });
 
@@ -881,7 +881,7 @@ test.describe('Conditional logic views', () => {
     await assertSummaryCardData(page, "Your partner's undisputed savings", {
       "How much was in your partner's bank account/building society before their last payment went in\\\?": '£200',
       'Does your partner have any investments, shares or ISAs\\\?': '£100',
-      'Does your partner have any valuable items worth over £500 each\\\?': '£500',
+      'Total value of items worth £500 or more each': '£500',
       'Does your partner have any money owed to them\\\?': '£200'
     });
   });
@@ -903,7 +903,7 @@ test.describe('Conditional logic views', () => {
     await assertSummaryCardData(page, 'Your disputed savings', {
       'How much was in your bank account/building society before your last payment went in\\\?': '£200',
       'Do you have any investments, shares or ISAs\\\?': '£100',
-      'Do you have any valuable items worth over £500 each\\\?': '£500',
+      'Total value of items worth £500 or more each': '£500',
       'Do you have any money owed to you\\\?': '£200'
     });
 
@@ -911,7 +911,7 @@ test.describe('Conditional logic views', () => {
     await assertSummaryCardData(page, 'Your undisputed savings', {
       'How much was in your bank account/building society before your last payment went in\\\?': '£100',
       'Do you have any investments, shares or ISAs\\\?': '£300',
-      'Do you have any valuable items worth over £500 each\\\?': '£500',
+      'Total value of items worth £500 or more each': '£500',
       'Do you have any money owed to you\\\?': '£100',
     });
 
@@ -919,7 +919,7 @@ test.describe('Conditional logic views', () => {
     await assertSummaryCardData(page, "Your partner's undisputed savings", {
       "How much was in your partner's bank account/building society before their last payment went in\\\?": '£200',
       'Does your partner have any investments, shares or ISAs\\\?': '£100',
-      'Does your partner have any valuable items worth over £500 each\\\?': '£500',
+      'Total value of items worth £500 or more each': '£500',
       'Does your partner have any money owed to them\\\?': '£200'
     });
   });

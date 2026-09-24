@@ -18,7 +18,7 @@ import {
   bankBalanceField as partnerUndisputedBankBalanceField, investmentBalanceField as partnerUndisputedInvestmentBalanceField,
   assetBalanceField as partnerUndisputedAssetBalanceField, creditBalanceField as partnerUndisputedCreditBalanceField,
 } from '#packages/financial-eligibility-journey/src/partnerUndisputedSavings/partnerUndisputedSavingsBlock.js';
-import { MAX_MONEY_VALUE_MESSAGE } from '#packages/financial-eligibility-journey/src/moneyFieldHelpers.js';
+import { MAX_MONEY_VALUE_MESSAGE, MIN_MONEY_OR_ZERO_VALUE_MESSAGE } from '#packages/financial-eligibility-journey/src/moneyFieldHelpers.js';
 
 interface FieldLike {
   code?: unknown;
@@ -51,10 +51,25 @@ function itHasMaxValueValidation(name: string, field: FieldLike): void {
   });
 }
 
+/**
+ * Asserts a valuables field has the shared zero-or-minimum validation as its 2nd rule.
+ * @param {string} name The field's display name for the test description
+ * @param {FieldLike} field The field to check
+ * @returns {void}
+ */
+function itHasMinimumValueValidation(name: string, field: FieldLike): void {
+  it(`requires 0 or at least £500 for ${name}`, () => {
+    const messages = validationMessages(field);
+    expect(messages).to.have.length(4);
+    expect(messages[1]).to.equal(MIN_MONEY_OR_ZERO_VALUE_MESSAGE);
+  });
+}
+
 describe('Savings fields', () => {
   itHasMaxValueValidation('bank balance', bankBalanceField);
   itHasMaxValueValidation('investment balance', investmentBalanceField);
   itHasMaxValueValidation('asset balance', assetBalanceField);
+  itHasMinimumValueValidation('asset balance', assetBalanceField);
   itHasMaxValueValidation('credit balance', creditBalanceField);
 });
 
@@ -62,6 +77,7 @@ describe('Disputed savings fields', () => {
   itHasMaxValueValidation('bank balance', disputedBankBalanceField);
   itHasMaxValueValidation('investment balance', disputedInvestmentBalanceField);
   itHasMaxValueValidation('asset balance', disputedAssetBalanceField);
+  itHasMinimumValueValidation('asset balance', disputedAssetBalanceField);
   itHasMaxValueValidation('credit balance', disputedCreditBalanceField);
 });
 
@@ -69,6 +85,7 @@ describe('Partner savings fields', () => {
   itHasMaxValueValidation('bank balance', partnerBankBalanceField);
   itHasMaxValueValidation('investment balance', partnerInvestmentBalanceField);
   itHasMaxValueValidation('asset balance', partnerAssetBalanceField);
+  itHasMinimumValueValidation('asset balance', partnerAssetBalanceField);
   itHasMaxValueValidation('credit balance', partnerCreditBalanceField);
 });
 
@@ -76,6 +93,7 @@ describe('Undisputed savings fields', () => {
   itHasMaxValueValidation('bank balance', undisputedBankBalanceField);
   itHasMaxValueValidation('investment balance', undisputedInvestmentBalanceField);
   itHasMaxValueValidation('asset balance', undisputedAssetBalanceField);
+  itHasMinimumValueValidation('asset balance', undisputedAssetBalanceField);
   itHasMaxValueValidation('credit balance', undisputedCreditBalanceField);
 });
 
@@ -83,5 +101,6 @@ describe('Partner undisputed savings fields', () => {
   itHasMaxValueValidation('bank balance', partnerUndisputedBankBalanceField);
   itHasMaxValueValidation('investment balance', partnerUndisputedInvestmentBalanceField);
   itHasMaxValueValidation('asset balance', partnerUndisputedAssetBalanceField);
+  itHasMinimumValueValidation('asset balance', partnerUndisputedAssetBalanceField);
   itHasMaxValueValidation('credit balance', partnerUndisputedCreditBalanceField);
 });

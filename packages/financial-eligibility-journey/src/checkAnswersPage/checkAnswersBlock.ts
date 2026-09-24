@@ -1,5 +1,4 @@
-import { z } from 'zod'
-import { Answer, Condition, Conditional, Data, Format, Item, Iterator, Literal, Loop, Transformer, TransformerRegistry, and, not, or } from '@ministryofjustice/hmpps-forge/core/authoring'
+import { Answer, Condition, Data, Format, Item, Iterator, Literal, Loop, Transformer, and, not, or } from '@ministryofjustice/hmpps-forge/core/authoring'
 import { CollectionBlock } from '@ministryofjustice/hmpps-forge/core/components'
 import { GovUKHeading, GovUKSummaryList, GovUKUtilityClasses } from '@ministryofjustice/hmpps-forge/govuk-components'
 import { disregardsLookupItems } from '../disregardsPage/disregardsBlock.js'
@@ -260,7 +259,7 @@ export const savingsSummaryList = GovUKSummaryList({
       value: { text: Answer('investment-balance').pipe(Transformers.Currency()) },
     },
     {
-      key: { text: 'Do you have any valuable items worth over £500 each?' },
+      key: { text: 'Total value of items worth £500 or more each' },
       value: { text: Answer('asset-balance').pipe(Transformers.Currency()) },
     },
     {
@@ -295,7 +294,7 @@ export const undisputedSavingsSummaryList = GovUKSummaryList({
       value: { text: Answer('investment-balance').pipe(Transformers.Currency()) },
     },
     {
-      key: { text: 'Do you have any valuable items worth over £500 each?' },
+      key: { text: 'Total value of items worth £500 or more each' },
       value: { text: Answer('asset-balance').pipe(Transformers.Currency()) },
     },
     {
@@ -335,7 +334,7 @@ export const partnerSavingsSummaryList = GovUKSummaryList({
       value: { text: Answer('investment-balance-partner').pipe(Transformers.Currency()) },
     },
     {
-      key: { text: 'Does your partner have any valuable items worth over £500 each?' },
+      key: { text: 'Total value of items worth £500 or more each' },
       value: { text: Answer('asset-balance-partner').pipe(Transformers.Currency()) },
     },
     {
@@ -374,7 +373,7 @@ export const partnerUndisputedSavingsSummaryList = GovUKSummaryList({
       value: { text: Answer('investment-balance-partner').pipe(Transformers.Currency()) },
     },
     {
-      key: { text: 'Does your partner have any valuable items worth over £500 each?' },
+      key: { text: 'Total value of items worth £500 or more each' },
       value: { text: Answer('asset-balance-partner').pipe(Transformers.Currency()) },
     },
     {
@@ -413,7 +412,7 @@ export const disputedSavingsSummaryList = GovUKSummaryList({
       value: { text: Answer('investment-balance-disputed').pipe(Transformers.Currency()) },
     },
     {
-      key: { text: 'Do you have any valuable items worth over £500 each?' },
+      key: { text: 'Total value of items worth £500 or more each' },
       value: { text: Answer('asset-balance-disputed').pipe(Transformers.Currency()) },
     },
     {

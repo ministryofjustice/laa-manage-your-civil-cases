@@ -58,7 +58,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
 
       await page.getByRole('spinbutton', { name: 'How much was in your bank' }).fill('0');
       await page.getByRole('spinbutton', { name: 'Do you have any investments,' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Do you have any valuable' }).fill('0');
+      await page.getByRole('spinbutton', { name: 'Total value of items worth £500 or more each' }).fill('0');
       await page.getByRole('spinbutton', { name: 'Do you have any money owed to' }).fill('0');
       await page.getByRole('button', { name: 'Continue' }).click();
 
@@ -191,7 +191,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
 
       await page.getByRole('spinbutton', { name: 'How much was in your bank' }).fill('0');
       await page.getByRole('spinbutton', { name: 'Do you have any investments,' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Do you have any valuable' }).fill('0');
+      await page.getByRole('spinbutton', { name: 'Total value of items worth £500 or more each' }).fill('0');
       await page.getByRole('spinbutton', { name: 'Do you have any money owed to' }).fill('0');
       await page.getByRole('button', { name: 'Continue' }).click();
 
@@ -237,7 +237,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await expect(page.getByRole('heading', { name: 'Your savings' })).toBeVisible();
       await page.getByRole('spinbutton', { name: 'How much was in your bank' }).fill('0');
       await page.getByRole('spinbutton', { name: 'Do you have any investments,' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Do you have any valuable' }).fill('0');
+      await page.getByRole('spinbutton', { name: 'Total value of items worth £500 or more each' }).fill('0');
       await page.getByRole('spinbutton', { name: 'Do you have any money owed to' }).fill('0');
       await page.getByRole('button', { name: 'Continue' }).click();
 
@@ -294,7 +294,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
 
       await page.getByRole('spinbutton', { name: 'How much was in your bank' }).fill('0');
       await page.getByRole('spinbutton', { name: 'Do you have any investments,' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Do you have any valuable' }).fill('0');
+      await page.getByRole('spinbutton', { name: 'Total value of items worth £500 or more each' }).fill('0');
       await page.getByRole('spinbutton', { name: 'Do you have any money owed to' }).fill('0');
       await page.getByRole('button', { name: 'Continue' }).click();
 
@@ -350,7 +350,7 @@ test.describe('Financial Eligibility Forge Details Journey', () => {
       await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/your-savings');
       await page.getByRole('spinbutton', { name: 'How much was in your bank' }).fill('0');
       await page.getByRole('spinbutton', { name: 'Do you have any investments,' }).fill('0');
-      await page.getByRole('spinbutton', { name: 'Do you have any valuable' }).fill('0');
+      await page.getByRole('spinbutton', { name: 'Total value of items worth £500 or more each' }).fill('0');
       await page.getByRole('spinbutton', { name: 'Do you have any money owed to' }).fill('0');
       await page.getByRole('button', { name: 'Continue' }).click();
       

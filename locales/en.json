@@ -219,13 +219,13 @@
         "undisputedSavings": "Your undisputed savings",
         "savingsBalance": "How much was in your bank account/building society before your last payment went in?",
         "investmentBalance": "Do you have any investments, shares or ISAs?",
-        "assetBalance": "Do you have any valuable items worth over £500 each?",
+        "assetBalance": "Total value of items worth £500 or more each",
         "creditBalance": "Do you have any money owed to you?",
         "partnerSavings": "Your partner's savings",
         "undisputedPartnerSavings": "Your partner's undisputed savings",
         "partnerSavingsBalance": "How much was in your partner's bank account/building society before their last payment went in?",
         "partnerInvestmentBalance": "Does your partner have any investments, shares or ISAs?",
-        "partnerAssetBalance": "Does your partner have any valuable items worth over £500 each?",
+        "partnerAssetBalance": "Total value of items worth £500 or more each",
         "partnerCreditBalance":  "Does your partner have any money owed to them?"
       },
       "income": {

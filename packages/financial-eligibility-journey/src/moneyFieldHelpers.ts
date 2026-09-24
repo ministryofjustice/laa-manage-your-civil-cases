@@ -1,4 +1,4 @@
-import { Self, Answer, Condition, validation, Transformer, Format, Generator, Conditional, Literal, ConditionRegistry } from '@ministryofjustice/hmpps-forge/core/authoring'
+import { Self, Answer, Condition, validation, Transformer, Format, Generator, ConditionRegistry, or } from '@ministryofjustice/hmpps-forge/core/authoring'
 import type { ResolvableString } from '@ministryofjustice/hmpps-forge/core/components'
 import { GovUKHeading, GovUKTextInput, GovUKSelectInput, GovUKUtilityClasses, GovUKGridRow } from '@ministryofjustice/hmpps-forge/govuk-components'
 
@@ -47,6 +47,11 @@ export interface MoneyFieldConfig {
 export const MAX_MONEY_VALUE = 99999999.98;
 export const MAX_MONEY_VALUE_MESSAGE = 'Enter an amount of £99,999,999.98 or less';
 
+// For use in valuables validation rules
+export const ZERO = 0;
+export const MIN_MONEY_VALUE = 500;
+export const MIN_MONEY_OR_ZERO_VALUE_MESSAGE = 'Enter 0, or enter the total value of items worth £500 or more each';
+
 /**
  * Shared max-value validation for any currency field in the journey (income, expenses, savings,
  * properties), so amounts cla_backend would reject are caught before submission.
@@ -56,6 +61,17 @@ export function moneyMaxValueValidation() {
   return validation({
     condition: Self().match(Condition.Number.LessThanOrEqual(MAX_MONEY_VALUE)),
     message: MAX_MONEY_VALUE_MESSAGE,
+  });
+}
+
+/**
+ * Shared min-value or `0` validation, for valuables currency fields 
+ * @returns {unknown} The min-value or `0` validation rule
+ */
+export function moneyMinValueValidation() {
+  return validation({
+    condition: or(Self().match(Condition.Number.GreaterThanOrEqual(MIN_MONEY_VALUE)), Self().match(Condition.Equals(ZERO))),
+    message: MIN_MONEY_OR_ZERO_VALUE_MESSAGE,
   });
 }
 
