@@ -47,8 +47,7 @@ export function handleClientDetailsTab(req: Request, res: Response, next: NextFu
     if (diversityDataResponse.status !== 'success') {
       devError(`Diversity data not found for case: ${caseReference}. API response: ${diversityDataResponse.message ?? 'Unknown error'}`);
       res.status(HTTP.NOT_FOUND).render('main/error.njk', {
-        status: HTTP.NOT_FOUND,
-        error: diversityDataResponse.message ?? 'Diversity data not found'
+        status: HTTP.NOT_FOUND
       });
       return;
     }

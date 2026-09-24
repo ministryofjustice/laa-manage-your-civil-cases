@@ -12,24 +12,8 @@ export const errorHandler404 = (req: Request, res: Response): void => {
 
   devError(`404 - Page not found: ${method} ${originalUrl}`);
 
-  // Provide more context-aware error messages
-  let errorMessage = t('pages.error.generic404message');
-
-  if (originalUrl.startsWith('/case/') && originalUrl.includes('/')) {
-    const pathParts = originalUrl.split('/');
-    const minPathPartsForCaseReference = 3;
-
-    if (pathParts.length >= minPathPartsForCaseReference) {
-      const [, , caseReference] = pathParts; // ['', 'case', 'caseReference', ...]
-      errorMessage = `Page not found. The requested page for case ${caseReference} does not exist.`;
-    }
-  } else if (originalUrl.startsWith('/cases/')) {
-    errorMessage = t('pages.error.generic404message');
-  }
-
   res.status(HTTP.NOT_FOUND).render('main/error.njk', {
-    status: HTTP.NOT_FOUND,
-    error: errorMessage
+    status: HTTP.NOT_FOUND
   });
 }
 

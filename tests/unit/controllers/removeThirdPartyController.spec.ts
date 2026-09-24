@@ -98,8 +98,7 @@ describe('Remove Third Party Controller', () => {
       expect(getClientDetailsStub.called).to.be.false; // No API call made
       expect(statusStub.calledWith(404)).to.be.true;
       expect(renderStub.calledWith('main/error.njk', { 
-        status: HTTP.NOT_FOUND, 
-        error: 'No third party contact found for this case' 
+        status: HTTP.NOT_FOUND
       })).to.be.true;
     });
 

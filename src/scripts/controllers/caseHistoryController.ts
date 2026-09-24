@@ -44,8 +44,7 @@ export async function handleCaseHistoryTab(req: Request, res: Response, next: Ne
     } else {
       devError(`History not found for case: ${caseReference}. API response: ${historyResponse.message ?? 'Unknown error'}`);
       res.status(HTTP.NOT_FOUND).render('main/error.njk', {
-        status: HTTP.NOT_FOUND,
-        error: historyResponse.message ?? 'History not found'
+        status: HTTP.NOT_FOUND
       });
     }
   });
