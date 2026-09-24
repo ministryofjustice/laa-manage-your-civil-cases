@@ -318,21 +318,6 @@ function mapForgePropertyCollectionToApiPropertySet(collection: Record<string, u
 }
 
 /**
- * Function to map boolean values during forge journey 
- * @param {unknown} value value to be formatted
- * @returns {undefined} returns 
- */
-function mapBooleanToYesNo(value: unknown): 'yes' | 'no' | undefined {
-    if (value === true) {
-        return 'yes';
-    }
-    if (value === false) {
-        return 'no';
-    }
-  return undefined;
-}
-
-/**
  * Builds an `income` or `deductions` API section from a set of amount + frequency Forge answer pairs.
  * Fields are only included when the amount has been answered.
  * @param {Record<string, unknown>} answers - The user's answers keyed by step code
