@@ -20,6 +20,12 @@ export interface NoChangeWarningCache {
   noChangeWarningBanner: boolean;
 }
 
+// Interface for disputed fields reset warning
+export interface DisputedFieldsResetCache {
+  disputedFieldsResetBanner: boolean;
+  type: 'added' | 'removed';
+}
+
 // Interface for get legal help form answers, captured on the interstitial page for display on the legal help form
 // caseReference is stored alongside the answers so they can be ignored if a different case is viewed
 export interface LegalHelpFormAnswers {

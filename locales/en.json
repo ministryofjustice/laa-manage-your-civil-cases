@@ -162,6 +162,17 @@
       "title": "No changes were made",
       "dismissible": true
     },
+    "disputedFieldsReset": {
+      "title": "Category of law changed",
+      "added": {
+        "variant": "warning",
+        "body": "Disputed asset information may now be relevant. Check <a class='govuk-link' href='{url}'>financial eligibility."
+      },
+      "removed": {
+        "variant": "warning",
+        "body": "Disputed asset information no longer applies and has been removed"
+      }
+    },
     "intervalPeriod": {
       "per_month": "Monthly",
       "per_week": "Weekly",

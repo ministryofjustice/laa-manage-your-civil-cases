@@ -6,10 +6,11 @@ import { devLog, devError } from '../helpers/devLogger.js';
 import { createProcessedError } from '../helpers/errorHandler.js';
 import { validCaseReference } from '../helpers/formControllerHelpers.js';
 import { handleCaseTab } from '../helpers/caseTabHandler.js';
-import { safeBodyString, formatValidationError, hasMoreThanOneCategory } from '../helpers/index.js';
+import { safeBodyString, formatValidationError, hasMoreThanOneCategory, getSessionValue, clearSessionData } from '../helpers/index.js';
 import { apiService } from '#src/services/apiService.js';
 import config from '#config.js';
 import { HTTP } from '#src/services/api/base/constants.js';
+import type { DisputedFieldsResetCache } from '#src/scripts/helpers/sessionHelpers.js';
 
 const { MAX_PROVIDER_NOTE_LENGTH, CHARACTER_THRESHOLD }: { MAX_PROVIDER_NOTE_LENGTH: number; CHARACTER_THRESHOLD: number } = config;
 
@@ -32,6 +33,9 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
 
       const notesFromProvider = clientData && typeof clientData === 'object' && 'notesHistory' in clientData && Array.isArray(clientData.notesHistory) ? clientData.notesHistory : [];
       const caseLogs = caseLogsResponse.data ?? [];
+
+      const disputedFieldsResetBanner = getSessionValue(req, 'disputedFieldsResetCache') as DisputedFieldsResetCache;
+      clearSessionData(req, 'disputedFieldsResetCache');
 
       const combinedHistoryAndCaseLogNotes = [
         ...notesFromProvider.map((note: { providerNotes: string; createdBy: string; created: string; createdIso: string; }) => ({
@@ -65,6 +69,7 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
         maxProviderNoteLength: MAX_PROVIDER_NOTE_LENGTH,
         characterThreshold: CHARACTER_THRESHOLD,
         moreThanOneCategory: moreThanOneCategory,
+        disputedFieldsResetBanner,
         currentProviderNote: '',
         caseReference,
         csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined,

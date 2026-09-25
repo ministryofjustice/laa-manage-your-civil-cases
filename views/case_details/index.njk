@@ -40,6 +40,36 @@
     </div>
   {% endif %}
 
+  {% if disputedFieldsResetBanner and disputedFieldsResetBanner.type === 'added' %}
+    <div class="govuk-grid-row negative-margin alert-spacing">
+      <div class="govuk-grid-column-two-thirds">
+        {{ mojAlert({
+        variant: t('common.disputedFieldsReset.added.variant'),
+        title: t('common.disputedFieldsReset.title'),
+        html: t('common.disputedFieldsReset.added.body', { url: '/cases/' + caseReference + '/financial-eligibility/' } ),
+        showTitleAsHeading: true,
+        dismissible: true,
+        focusOnDismissSelector: '.moj-header'
+      }) }}
+      </div>
+    </div>
+  {% endif %}
+
+  {% if disputedFieldsResetBanner and disputedFieldsResetBanner.type === 'removed' %}
+    <div class="govuk-grid-row negative-margin alert-spacing">
+      <div class="govuk-grid-column-two-thirds">
+        {{ mojAlert({
+        variant: t('common.disputedFieldsReset.removed.variant'),
+        title: t('common.disputedFieldsReset.title'),
+        showTitleAsHeading: true,
+        text: t('common.disputedFieldsReset.removed.body'),
+        dismissible: true,
+        focusOnDismissSelector: '.moj-header'
+      }) }}
+      </div>
+    </div>
+  {% endif %}
+
   {# Container for real-time viewer alert - populated by Socket.IO client #}
   <div class="govuk-grid-row mcc-alert-summary" id="case-viewer-alert-row" hidden>
     <div class="govuk-grid-column-two-thirds mcc-error-banner" id="case-viewer-alert-column" hidden>
@@ -65,7 +95,6 @@
     {{ alertBannerComponent(client) }}
   {% endif %}
 {% endblock %}
-
 
 {% block pageContent %}
   {{ caseDetailsHeaderComponent(client) }}

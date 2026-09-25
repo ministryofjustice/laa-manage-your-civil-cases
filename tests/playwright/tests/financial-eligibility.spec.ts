@@ -25,19 +25,19 @@ test.describe('Details tab', () => {
   });
 
   test('should display assessment details', async ({ page }) => {
-    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1879');
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-7723-5518');
     // Navigate to client details page
     await clientDetails.navigate();
     // Click the financial eligibility tab
-    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    await page.getByRole('link', {name: 'Financial eligibility'}).click();
 
     // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
+    await assertCaseDetailsHeaderPresent(page, {withMenuButtons: true, expectedName: "Catherine Halsey", expectedCaseRef: "PC-7723-5518", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party'], dateOfBirth: "12 Nov 1979 (46)"});
     // Assert the URL has change to financial eligibility tab
     await expect(page).toHaveURL(/financial-eligibility/);
 
     // Assert the 'About you' summary card is visible with data
-    await assertSummaryCardState(page, { cardId: 'About you', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-1922-1879/financial-eligibility/change' });
+    await assertSummaryCardState(page, {cardId: 'About you', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-7723-5518/financial-eligibility/change'});
     // Assert the data in 'About you' summary card is correct
     await assertSummaryCardData(page, 'About you', {
       'Are you aged 17 or under\\\?': 'No',
@@ -46,7 +46,7 @@ test.describe('Details tab', () => {
     });
 
     // Assert the 'Benefits' summary card is visible with data
-    await assertSummaryCardState(page, { cardId: 'Benefits', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-1922-1879/financial-eligibility/change/benefits' });
+    await assertSummaryCardState(page, {cardId: 'Benefits', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-7723-5518/financial-eligibility/change/benefits'});
     // Assert the data in 'Benefits' summary card is correct
     await assertSummaryCardData(page, 'Benefits', {
       'Universal Credit': "Yes",
@@ -57,20 +57,20 @@ test.describe('Details tab', () => {
     });
   });
 
-  test('should display no for About You data when assessment does not exist', async ({ page }) => {
-    const clientDetails = ClientDetailsPage.forCase(page, 'PC-7755-4557');
+  test('should display no for About You data when assessment does not exist', async ({page}) => {
+    const clientDetails=ClientDetailsPage.forCase(page, 'PC-7755-4557');
 
     // Navigate to client details page
     await clientDetails.navigate();
 
     // Open financial eligibility tab
-    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    await page.getByRole('link', {name: 'Financial eligibility'}).click();
 
     // Verify header information
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 Jan 2025 at', badgeTexts: ['At risk of abuse', 'Third Party'], dateOfBirth: "10 Jun 1977 (49)" });
+    await assertCaseDetailsHeaderPresent(page, {withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 Jan 2025 at', badgeTexts: ['At risk of abuse', 'Third Party'], dateOfBirth: "10 Jun 1977 (49)"});
 
     // Assert the 'About you' summary card is visible with data
-    await assertSummaryCardState(page, { cardId: 'About you', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-7755-4557/financial-eligibility/change' });
+    await assertSummaryCardState(page, {cardId: 'About you', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-7755-4557/financial-eligibility/change'});
     // Assert the data in 'About you' summary card is correct
     await assertSummaryCardData(page, 'About you', {
       'Are you aged 17 or under\\\?': 'No',
@@ -79,7 +79,7 @@ test.describe('Details tab', () => {
     });
 
     // Assert the 'Benefits' summary card is visible with data
-    await assertSummaryCardState(page, { cardId: 'Benefits', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-7755-4557/financial-eligibility/change/benefits' });
+    await assertSummaryCardState(page, {cardId: 'Benefits', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-7755-4557/financial-eligibility/change/benefits'});
     // Assert the data in 'Benefits' summary card is correct
     await assertSummaryCardData(page, 'Benefits', {
       'Universal Credit': "No",
@@ -92,27 +92,27 @@ test.describe('Details tab', () => {
 });
 
 test.describe('Finances tab', () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({page}) => {
     await setupAuth(page);
   });
-  test('should display finances tab content with correct data when there is no partner', async ({ page }) => {
-    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1879');
+  test('should display finances tab content with correct data when there is no partner', async ({page}) => {
+    const clientDetails=ClientDetailsPage.forCase(page, 'PC-7723-5518');
     // Navigate to client details page
     await clientDetails.navigate();
     // click to financial eligibility tab
-    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    await page.getByRole('link', {name: 'Financial eligibility'}).click();
     // click the finances section
-    await page.getByRole('tab', { name: 'Finances' }).click();
+    await page.getByRole('tab', {name: 'Finances'}).click();
     // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
+    await assertCaseDetailsHeaderPresent(page, {withMenuButtons: true, expectedName: "Catherine Halsey", expectedCaseRef: "PC-7723-5518", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party'], dateOfBirth: "12 Nov 1979 (46)"});
     // Assert the 1st Property heading is visible.
-    await assertSummaryCardState(page, { cardId: '1st property', emptyText: 'No property data', hasData: true, changeHref: '/cases/PC-1922-1879/financial-eligibility/change/properties' });
+    await assertSummaryCardState(page, {cardId: '1st property', emptyText: 'No property data', hasData: true, changeHref: '/cases/PC-7723-5518/financial-eligibility/change/properties'});
     // Assert the 1st Property heading is visible.
-    await assertSummaryCardState(page, { cardId: '2nd property', emptyText: 'No property data', hasData: true, changeHref: '/cases/PC-1922-1879/financial-eligibility/change/properties' });
+    await assertSummaryCardState(page, {cardId: '2nd property', emptyText: 'No property data', hasData: true, changeHref: '/cases/PC-7723-5518/financial-eligibility/change/properties'});
     // Assert the Your savings heading is visible.
-    await assertSummaryCardState(page, { cardId: 'Your savings', emptyText: 'No savings data', hasData: true, changeHref: '/cases/PC-1922-1879/financial-eligibility/change/your-savings' });
+    await assertSummaryCardState(page, {cardId: 'Your savings', emptyText: 'No savings data', hasData: true, changeHref: '/cases/PC-7723-5518/financial-eligibility/change/your-savings'});
     // Assert the Disregards heading is visible.
-    await assertSummaryCardState(page, { cardId: 'Disregards', emptyText: 'No disregards data', hasData: true, changeHref: '/cases/PC-1922-1879/financial-eligibility/change/disregards' });
+    await assertSummaryCardState(page, {cardId: 'Disregards', emptyText: 'No disregards data', hasData: true, changeHref: '/cases/PC-7723-5518/financial-eligibility/change/disregards'});
 
     // Assert the correct data is displayed in the properties table for the 1st and 2nd properties.
     await assertSummaryCardData(page, '1st property', {
@@ -137,9 +137,9 @@ test.describe('Finances tab', () => {
     });
 
     // Assert the correct data is displayed in the disregards table.
-    await assertSummaryCardState(page, { cardId: 'Disregards', emptyText: 'None', hasData: true, changeHref: '/cases/PC-1922-1879/financial-eligibility/change/disregards' });
-    const disregardsCardAllText = (await page.locator('.govuk-summary-card', {
-      has: page.getByRole('heading', { name: 'Disregards' })
+    await assertSummaryCardState(page, {cardId: 'Disregards', emptyText: 'None', hasData: true, changeHref: '/cases/PC-7723-5518/financial-eligibility/change/disregards'});
+    const disregardsCardAllText=(await page.locator('.govuk-summary-card', {
+      has: page.getByRole('heading', {name: 'Disregards'})
     }).allTextContents()).join('');
 
     // Assert the correct data is displayed in the disregards table.
@@ -161,18 +161,18 @@ test.describe('Finances tab', () => {
     expect(disregardsCardAllText).toContain('Modern Slavery Victim Care Contract or National Referral Mechanism (NRM)');
   });
 
-  test('should display finances tab content with correct data when there is a partner', async ({ page }) => {
-    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1869-9154');
+  test('should display finances tab content with correct data when there is a partner', async ({page}) => {
+    const clientDetails=ClientDetailsPage.forCase(page, 'PC-1869-9154');
     // Navigate to client details page
     await clientDetails.navigate();
     // click to financial eligibility tab
-    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    await page.getByRole('link', {name: 'Financial eligibility'}).click();
     // click the finances section
-    await page.getByRole('tab', { name: 'Finances' }).click();
+    await page.getByRole('tab', {name: 'Finances'}).click();
     // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'], dateOfBirth: "12 Nov 1979 (46)" });
+    await assertCaseDetailsHeaderPresent(page, {withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'], dateOfBirth: "12 Nov 1979 (46)"});
     // Assert the 1st Property heading is visible.
-    await assertSummaryCardState(page, { cardId: '1st property', emptyText: 'No property data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/client-partner-properties' });
+    await assertSummaryCardState(page, {cardId: '1st property', emptyText: 'No property data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/client-partner-properties'});
 
     // Assert the correct data is displayed in the properties table for one property.
     await assertSummaryCardData(page, '1st property', {
@@ -183,7 +183,7 @@ test.describe('Finances tab', () => {
     });
 
     // Assert the Your savings heading is visible.
-    await assertSummaryCardState(page, { cardId: 'Your savings', emptyText: 'No savings data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/your-savings' });
+    await assertSummaryCardState(page, {cardId: 'Your savings', emptyText: 'No savings data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/your-savings'});
 
     // Assert the correct data is displayed in the your savings table.
     await assertSummaryCardData(page, 'Your savings', {
@@ -202,30 +202,30 @@ test.describe('Finances tab', () => {
     });
 
     // Assert the Disregards heading is visible.
-    await assertSummaryCardState(page, { cardId: 'Disregards', emptyText: 'No disregards data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/disregards' });
+    await assertSummaryCardState(page, {cardId: 'Disregards', emptyText: 'No disregards data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/disregards'});
     // Assert the correct data is displayed in the disregards table.
-    const disregardsCardAllText = (await page.locator('.govuk-summary-card', {
-      has: page.getByRole('heading', { name: 'Disregards' })
+    const disregardsCardAllText=(await page.locator('.govuk-summary-card', {
+      has: page.getByRole('heading', {name: 'Disregards'})
     }).allTextContents()).join('');
     expect(disregardsCardAllText).toContain('Cost of living payments');
   });
 
-  test('should display not provided for finances data when assessment does not exist', async ({ page }) => {
-    const clientDetails = ClientDetailsPage.forCase(page, 'PC-7755-4557');
+  test('should display not provided for finances data when assessment does not exist', async ({page}) => {
+    const clientDetails=ClientDetailsPage.forCase(page, 'PC-7755-4557');
 
     // Navigate to client details page
     await clientDetails.navigate();
 
     // Open financial eligibility tab
-    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    await page.getByRole('link', {name: 'Financial eligibility'}).click();
     // click the finances section
-    await page.getByRole('tab', { name: 'Finances' }).click();
+    await page.getByRole('tab', {name: 'Finances'}).click();
 
     // Verify header information
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 Jan 2025 at', badgeTexts: ['At risk of abuse', 'Third Party'], dateOfBirth: "10 Jun 1977 (49)" });
+    await assertCaseDetailsHeaderPresent(page, {withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 Jan 2025 at', badgeTexts: ['At risk of abuse', 'Third Party'], dateOfBirth: "10 Jun 1977 (49)"});
 
     // Assert the Properties summary card is visible
-    await assertSummaryCardState(page, { cardId: 'Properties', emptyText: 'No property data', hasData: true, changeHref: '/cases/PC-7755-4557/financial-eligibility/change/properties' });
+    await assertSummaryCardState(page, {cardId: 'Properties', emptyText: 'No property data', hasData: true, changeHref: '/cases/PC-7755-4557/financial-eligibility/change/properties'});
 
     // Assert the correct data is  displayed in the properties summary card for one property.
     await assertSummaryCardData(page, 'Properties', {
@@ -233,7 +233,7 @@ test.describe('Finances tab', () => {
     });
 
     // Assert the Your savings summary card is visible
-    await assertSummaryCardState(page, { cardId: 'Your savings', emptyText: 'No savings data', hasData: true, changeHref: '/cases/PC-7755-4557/financial-eligibility/change/your-savings' });
+    await assertSummaryCardState(page, {cardId: 'Your savings', emptyText: 'No savings data', hasData: true, changeHref: '/cases/PC-7755-4557/financial-eligibility/change/your-savings'});
 
     // Assert the correct data is  displayed in the your savings summary card.
     await assertSummaryCardData(page, 'Your savings', {
@@ -246,63 +246,62 @@ test.describe('Finances tab', () => {
 });
 
 test.describe('Income tab', () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({page}) => {
     await setupAuth(page);
   });
-  test('should display income tab content with correct data when there is no partner', async ({ page }) => {
-    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1879');
+  test('should display income tab content with correct data when there is no partner', async ({page}) => {
+    const clientDetails=ClientDetailsPage.forCase(page, 'PC-7723-5518');
     // Navigate to client details page
     await clientDetails.navigate();
     // click to financial eligibility tab
-    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    await page.getByRole('link', {name: 'Financial eligibility'}).click();
     // click the income section
-    await page.getByRole('tab', { name: 'Income' }).click();
+    await page.getByRole('tab', {name: 'Income'}).click();
     // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
+    await assertCaseDetailsHeaderPresent(page, {withMenuButtons: true, expectedName: "Catherine Halsey", expectedCaseRef: "PC-7723-5518", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party'], dateOfBirth: "12 Nov 1979 (46)"});
     // Assert the your income heading is visible. 
-    await assertSummaryCardState(page, { cardId: 'Your income', emptyText: 'No income data', hasData: true, changeHref: '/cases/PC-1922-1879/financial-eligibility/change/your-income' });
+    await assertSummaryCardState(page, {cardId: 'Your income', emptyText: 'No income data', hasData: true, changeHref: '/cases/PC-7723-5518/financial-eligibility/change/your-income'});
     // Assert the dependants heading is visible.
-    await assertSummaryCardState(page, { cardId: 'Dependants', emptyText: 'No dependants data', hasData: true, changeHref: '/cases/PC-1922-1879/financial-eligibility/change/dependants' });
-    // await expect(page.locator('caption').filter({ hasText: 'Dependants' })).toBeVisible();
+    await assertSummaryCardState(page, {cardId: 'Dependants', emptyText: 'No dependants data', hasData: true, changeHref: '/cases/PC-7723-5518/financial-eligibility/change/dependants'});
 
     // Assert the correct data is displayed in the income table.
     await assertSummaryCardData(page, 'Your income', {
       'Are you self employed\\\?': 'No',
-      'What did you earn before tax\\\? \\\(Check your most recent payslips\\\)': '£150 Monthly',
+      'What did you earn before tax\\\? \\\(Check your most recent payslips\\\)': '£120 Monthly',
       'How much tax do you pay\\\?': '£100 Every 4 weeks',
       'How much National Insurance do you pay\\\?': '£200 Every 2 weeks',
-      'Self employed drawings \\\(before tax\\\)': '£100 Weekly',
-      'Benefits': '£50 Yearly',
-      'Tax credits': '£200 Monthly',
-      'Child benefit \\\(for household\\\)': '£100 Monthly',
-      'Maintenance received': '£0 Monthly',
-      'Pension income': '£0 Monthly',
+      'Self employed drawings \\\(before tax\\\)': '£200 Weekly',
+      'Benefits': '£500 Yearly',
+      'Tax credits': '£100 Monthly',
+      'Child benefit \\\(for household\\\)': '£200 Monthly',
+      'Maintenance received': '£100 Monthly',
+      'Pension income': '£100 Monthly',
       'Other income': '£0 Monthly'
     });
 
     // Assert the correct data is displayed in the dependants table.
     await assertSummaryCardData(page, 'Dependants', {
-      'Do you have any dependants aged 16 and over\\\?': '0',
-      'Do you have any dependants aged 15 and under\\\?': '0'
+      'Do you have any dependants aged 16 and over\\\?': '2',
+      'Do you have any dependants aged 15 and under\\\?': '1'
     });
   });
 
-  test('should display income tab content with correct data when there is a partner', async ({ page }) => {
-    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1869-9154');
+  test('should display income tab content with correct data when there is a partner', async ({page}) => {
+    const clientDetails=ClientDetailsPage.forCase(page, 'PC-1869-9154');
     // Navigate to client details page
     await clientDetails.navigate();
     // navigated to financial eligibility tab
-    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    await page.getByRole('link', {name: 'Financial eligibility'}).click();
     // click the income section
-    await page.getByRole('tab', { name: 'Income' }).click();
+    await page.getByRole('tab', {name: 'Income'}).click();
     // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'], dateOfBirth: "12 Nov 1979 (46)" });
+    await assertCaseDetailsHeaderPresent(page, {withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'], dateOfBirth: "12 Nov 1979 (46)"});
     // Assert the your income heading is visible. 
-    await assertSummaryCardState(page, { cardId: 'Your income', emptyText: 'No income data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/your-income' });
+    await assertSummaryCardState(page, {cardId: 'Your income', emptyText: 'No income data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/your-income'});
     // Assert the Your partner's income heading is visible. 
-    await assertSummaryCardState(page, { cardId: "Your partner's income", emptyText: 'No income data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/partner-income' });
+    await assertSummaryCardState(page, {cardId: "Your partner's income", emptyText: 'No income data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/partner-income'});
     // Assert the dependants heading is visible.
-    await assertSummaryCardState(page, { cardId: 'Dependants', emptyText: 'No dependants data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/dependants' });
+    await assertSummaryCardState(page, {cardId: 'Dependants', emptyText: 'No dependants data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/dependants'});
 
     // Assert the correct data is displayed in the your income table.
     await assertSummaryCardData(page, 'Your income', {
@@ -341,24 +340,24 @@ test.describe('Income tab', () => {
     });
   });
 
-  test('should display not provided for income data when assessment does not exist', async ({ page }) => {
-    const clientDetails = ClientDetailsPage.forCase(page, 'PC-7755-4557');
+  test('should display not provided for income data when assessment does not exist', async ({page}) => {
+    const clientDetails=ClientDetailsPage.forCase(page, 'PC-7755-4557');
 
     // Navigate to client details page
     await clientDetails.navigate();
 
     // Open financial eligibility tab
-    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    await page.getByRole('link', {name: 'Financial eligibility'}).click();
     // click the income section
-    await page.getByRole('tab', { name: 'Income' }).click();
+    await page.getByRole('tab', {name: 'Income'}).click();
 
     // Verify header information
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 Jan 2025 at', badgeTexts: ['At risk of abuse', 'Third Party'], dateOfBirth: "10 Jun 1977 (49)" });
+    await assertCaseDetailsHeaderPresent(page, {withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 Jan 2025 at', badgeTexts: ['At risk of abuse', 'Third Party'], dateOfBirth: "10 Jun 1977 (49)"});
 
     // Assert the your income heading is visible.
-    await assertSummaryCardState(page, { cardId: 'Your income', emptyText: 'No income data', hasData: true, changeHref: '/cases/PC-7755-4557/financial-eligibility/change/your-income' });
+    await assertSummaryCardState(page, {cardId: 'Your income', emptyText: 'No income data', hasData: true, changeHref: '/cases/PC-7755-4557/financial-eligibility/change/your-income'});
     // Assert the dependants heading is visible.
-    await assertSummaryCardState(page, { cardId: 'Dependants', emptyText: 'No dependants data', hasData: true, changeHref: '/cases/PC-7755-4557/financial-eligibility/change/dependants' });
+    await assertSummaryCardState(page, {cardId: 'Dependants', emptyText: 'No dependants data', hasData: true, changeHref: '/cases/PC-7755-4557/financial-eligibility/change/dependants'});
 
     // Assert the correct data is displayed in the your income table.
     await assertSummaryCardData(page, 'Your income', {
@@ -378,48 +377,48 @@ test.describe('Income tab', () => {
 });
 
 test.describe('Expenses tab', () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({page}) => {
     await setupAuth(page);
   });
 
-  test('should display expenses tab content with correct data when there is no partner', async ({ page }) => {
-    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1879');
+  test('should display expenses tab content with correct data when there is no partner', async ({page}) => {
+    const clientDetails=ClientDetailsPage.forCase(page, 'PC-7723-5518');
     // Navigate to client details page
     await clientDetails.navigate();
     // click to financial eligibility tab
-    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    await page.getByRole('link', {name: 'Financial eligibility'}).click();
     // click the expenses section
-    await page.getByRole('tab', { name: 'Expenses' }).click();
+    await page.getByRole('tab', {name: 'Expenses'}).click();
     // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: true, expectedName: "Jack Youngs", expectedCaseRef: "PC-1922-1879", dateReceived: "7 Jul 2025 at", badgeTexts: ['Urgent', 'At risk of abuse', 'Third Party'], dateOfBirth: "18 Aug 1981 (45)" });
+    await assertCaseDetailsHeaderPresent(page, {withMenuButtons: true, expectedName: "Catherine Halsey", expectedCaseRef: "PC-7723-5518", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party'], dateOfBirth: "12 Nov 1979 (46)"});
     // Assert the your income heading is visible. 
-    await assertSummaryCardState(page, { cardId: 'Your expenses', emptyText: 'No expenses data', hasData: true, changeHref: '/cases/PC-1922-1879/financial-eligibility/change/your-expenses' });
+    await assertSummaryCardState(page, {cardId: 'Your expenses', emptyText: 'No expenses data', hasData: true, changeHref: '/cases/PC-7723-5518/financial-eligibility/change/your-expenses'});
 
     // Assert the correct data is displayed in the expenses table.
     await assertSummaryCardData(page, 'Your expenses', {
-      'How much do you pay for your mortgage\\\?': '£200 Monthly',
-      'How much do you pay for rent\\\? The amount entered should not include any housing benefit or payment for bills': '£0 Monthly',
-      'How much maintenance have you paid during the last calendar month\\\?': '£50 Monthly',
-      'Do you have any childcare costs because of work or study\\\? If so, how much\\\?': '£20 Monthly',
-      'Are you currently paying towards legal aid for criminal defence\\\? If so, how much have you paid in the last calendar month\\\?': '£10 Monthly'
+      'How much do you pay for your mortgage\\\?': '£350 Monthly',
+      'How much do you pay for rent\\\? The amount entered should not include any housing benefit or payment for bills': '£250 Monthly',
+      'How much maintenance have you paid during the last calendar month\\\?': '£20 Monthly',
+      'Do you have any childcare costs because of work or study\\\? If so, how much\\\?': '£50 Monthly',
+      'Are you currently paying towards legal aid for criminal defence\\\? If so, how much have you paid in the last calendar month\\\?': '£20 Monthly'
     });
   });
 
-  test('should display expenses tab content with correct data when there is a partner', async ({ page }) => {
-    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1869-9154');
+  test('should display expenses tab content with correct data when there is a partner', async ({page}) => {
+    const clientDetails=ClientDetailsPage.forCase(page, 'PC-1869-9154');
     // Navigate to client details page
     await clientDetails.navigate();
     // navigated to financial eligibility tab
-    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    await page.getByRole('link', {name: 'Financial eligibility'}).click();
     // click the expenses section
-    await page.getByRole('tab', { name: 'Expenses' }).click();
+    await page.getByRole('tab', {name: 'Expenses'}).click();
     // Assert the case details header is present
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'], dateOfBirth: "12 Nov 1979 (46)" });
+    await assertCaseDetailsHeaderPresent(page, {withMenuButtons: false, expectedName: "Grace Baker", expectedCaseRef: "PC-1869-9154", dateReceived: "8 Aug 2025 at", badgeTexts: ['At risk of abuse', 'Third Party', 'Translation', 'BSL'], dateOfBirth: "12 Nov 1979 (46)"});
 
     // Assert the your expenses heading is visible. 
-    await assertSummaryCardState(page, { cardId: 'Your expenses', emptyText: 'No expenses data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/your-expenses' });
+    await assertSummaryCardState(page, {cardId: 'Your expenses', emptyText: 'No expenses data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/your-expenses'});
     // Assert the your partners expenses heading is visible. 
-    await assertSummaryCardState(page, { cardId: "Your partner's expenses", emptyText: 'No expenses data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/partner-expenses' });
+    await assertSummaryCardState(page, {cardId: "Your partner's expenses", emptyText: 'No expenses data', hasData: true, changeHref: '/cases/PC-1869-9154/financial-eligibility/change/partner-expenses'});
 
     // Assert the correct data is displayed in the expenses table.
     await assertSummaryCardData(page, 'Your expenses', {
@@ -439,21 +438,21 @@ test.describe('Expenses tab', () => {
     });
   });
 
-  test('should display not provided for expenses data when assessment does not exist', async ({ page }) => {
-    const clientDetails = ClientDetailsPage.forCase(page, 'PC-7755-4557');
+  test('should display not provided for expenses data when assessment does not exist', async ({page}) => {
+    const clientDetails=ClientDetailsPage.forCase(page, 'PC-7755-4557');
 
     // Navigate to client details page
     await clientDetails.navigate();
     // Open financial eligibility tab
-    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    await page.getByRole('link', {name: 'Financial eligibility'}).click();
     // click the expenses section
-    await page.getByRole('tab', { name: 'Expenses' }).click();
+    await page.getByRole('tab', {name: 'Expenses'}).click();
 
     // Verify header information
-    await assertCaseDetailsHeaderPresent(page, { withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 Jan 2025 at', badgeTexts: ['At risk of abuse', 'Third Party'], dateOfBirth: "10 Jun 1977 (49)" });
+    await assertCaseDetailsHeaderPresent(page, {withMenuButtons: false, expectedName: 'Alan Turning', expectedCaseRef: 'PC-7755-4557', dateReceived: '9 Jan 2025 at', badgeTexts: ['At risk of abuse', 'Third Party'], dateOfBirth: "10 Jun 1977 (49)"});
 
     // Assert the your expenses heading is visible. 
-    await assertSummaryCardState(page, { cardId: 'Your expenses', emptyText: 'No expenses data', hasData: true, changeHref: '/cases/PC-7755-4557/financial-eligibility/change/your-expenses' });
+    await assertSummaryCardState(page, {cardId: 'Your expenses', emptyText: 'No expenses data', hasData: true, changeHref: '/cases/PC-7755-4557/financial-eligibility/change/your-expenses'});
 
     // Assert the correct data is displayed in the expenses table.
     await assertSummaryCardData(page, 'Your expenses', {
@@ -467,32 +466,32 @@ test.describe('Expenses tab', () => {
 });
 
 test.describe('Financial Eligibility result', () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({page}) => {
     await setupAuth(page);
   });
-  test('should show success banner on every tab of financial eligibility when state is yes', async ({ page }) => {
-    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1879');
+  test('should show success banner on every tab of financial eligibility when state is yes', async ({page}) => {
+    const clientDetails=ClientDetailsPage.forCase(page, 'PC-1922-1879');
     // Navigate to client details page
     await clientDetails.navigate();
-    const alert = page.locator('.moj-alert--success');
+    const alert=page.locator('.moj-alert--success');
 
     // Click the financial eligibility tab
-    await page.getByRole('link', { name: 'Financial eligibility' }).click();
+    await page.getByRole('link', {name: 'Financial eligibility'}).click();
     // Assert the success warning is displayed when state is yes
     await expect(alert).toBeVisible();
     await expect(alert).toContainText('Client qualifies for civil legal aid');
     // click the finances section
-    await page.getByRole('tab', { name: 'Finances' }).click();
+    await page.getByRole('tab', {name: 'Finances'}).click();
     // Assert the success warning is displayed when state is yes
     await expect(alert).toBeVisible();
     await expect(alert).toContainText('Client qualifies for civil legal aid');
     // click the income section
-    await page.getByRole('tab', { name: 'Income' }).click();
+    await page.getByRole('tab', {name: 'Income'}).click();
     // Assert the success warning is displayed when state is yes
     await expect(alert).toBeVisible();
     await expect(alert).toContainText('Client qualifies for civil legal aid');
     // click the expenses section
-    await page.getByRole('tab', { name: 'Expenses' }).click();
+    await page.getByRole('tab', {name: 'Expenses'}).click();
     // Assert the success warning is displayed when state is yes
     await expect(alert).toBeVisible();
     await expect(alert).toContainText('Client qualifies for civil legal aid');
@@ -659,7 +658,7 @@ test.describe('Conditional logic views', () => {
     });
 
     // Assert the 'Benefits' summary card is visible
-    await assertSummaryCardState(page, { cardId: 'Benefits', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-2211-4466/financial-eligibility/change' });
+    await assertSummaryCardState(page, {cardId: 'Benefits', emptyText: 'No information available', hasData: true, changeHref: '/cases/PC-2211-4466/financial-eligibility/change'});
   });
 
   test('when on_passported_benefits = true only details and finances tabs are shown', async ({ page }) => {
@@ -702,7 +701,7 @@ test.describe('Conditional logic views', () => {
   });
 
   test('when hasPartner is false partner savings, income and expenses are not shown', async ({ page }) => {
-    const clientDetails = ClientDetailsPage.forCase(page, 'PC-1922-1879');
+    const clientDetails = ClientDetailsPage.forCase(page, 'PC-7723-5518');
 
     await clientDetails.navigate();
     await page.getByRole('link', { name: 'Financial eligibility' }).click();

@@ -22,22 +22,22 @@ test.describe('Financial Eligibility Forge Journey', () => {
     });
 
     test('should return to previous step, when pressing `Return to means assessment` link', async ({ page }) => {
-      await page.goto('/cases/PC-1922-1879/financial-eligibility/change');
+      await page.goto('/cases/PC-7723-5518/financial-eligibility/change');
 
       // Navigate to partner step
       await page.getByRole('radio', { name: 'No' }).check();
       await page.getByRole('button', { name: 'Continue' }).click();
-      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/has-partner');
+      await expect(page).toHaveURL('/cases/PC-7723-5518/financial-eligibility/change/has-partner');
 
       const discardLink = page.getByRole('link', { name: 'Discard changes' });
-      await expect(discardLink).toHaveAttribute('href', '/cases/PC-1922-1879/financial-eligibility/change/discard');
+      await expect(discardLink).toHaveAttribute('href', '/cases/PC-7723-5518/financial-eligibility/change/discard');
       await discardLink.click();
 
       // On the Interstitial page
       const returnToMeansAssessmentLink = page.getByRole('link', { name: 'Return to means assessment' })
-      await expect(returnToMeansAssessmentLink).toHaveAttribute('href', '/cases/PC-1922-1879/financial-eligibility/change/has-partner');
+      await expect(returnToMeansAssessmentLink).toHaveAttribute('href', '/cases/PC-7723-5518/financial-eligibility/change/has-partner');
       await returnToMeansAssessmentLink.click();
-      await expect(page).toHaveURL('/cases/PC-1922-1879/financial-eligibility/change/has-partner');
+      await expect(page).toHaveURL('/cases/PC-7723-5518/financial-eligibility/change/has-partner');
       await expect(page.getByRole('radio', { name: 'No' })).toBeChecked();
     });
     

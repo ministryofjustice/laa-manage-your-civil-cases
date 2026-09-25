@@ -1,12 +1,24 @@
 import type { Request, Response, NextFunction } from 'express';
 import { apiService } from '#src/services/apiService.js';
-import { devLog, createProcessedError, safeString, validCaseReference, formatValidationError, safeBodyString, t, fetchProviderNameAndDetail, getSessionString } from '#src/scripts/helpers/index.js';
+import { devLog, createProcessedError, safeString, validCaseReference, formatValidationError, safeBodyString, t, fetchProviderNameAndDetail, setSessionValue } from '#src/scripts/helpers/index.js';
 import { validationResult } from 'express-validator';
 import { HTTP } from '#src/services/api/base/constants.js';
 import config from '#config.js';
 import { buildCategoryItems } from '../helpers/dataTransformers.js';
+import { resetDisputedFieldData } from '../helpers/resetDisputedFields.js';
 
 const { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH, CHARACTER_THRESHOLD }: { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH: number; CHARACTER_THRESHOLD: number } = config;
+
+const DISPUTED_CATEGORIES = new Set(['debt', 'family']);
+
+/**
+ * Method to check if the category is debt or family
+ * @param {string} category category to be check if it's debt or family
+ * @returns {boolean} true if the category is debt or family otherwise false
+ */
+function isDebtOrFamily (category: string | undefined): boolean {
+  return DISPUTED_CATEGORIES.has(category?.trim().toLowerCase() ?? '');
+}
 
 /**
  * Render the "change category of law" form
@@ -15,7 +27,7 @@ const { MAX_OPERATOR_FEEDBACK_COMMENT_LENGTH, CHARACTER_THRESHOLD }: { MAX_OPERA
  * @param {NextFunction} next Express next function
  * @returns {void} Rendered form page
  */
-export async function getChangeCategoryOfLaw(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function getChangeCategoryOfLaw (req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
   if (!validCaseReference(caseReference, res)) {
@@ -43,7 +55,7 @@ export async function getChangeCategoryOfLaw(req: Request, res: Response, next: 
       excludeCode: currentCategoryCode
     });
 
-    if (categoryItems.length <= 1) { 
+    if (categoryItems.length <= 1) {
       return res.redirect(`/cases/${caseReference}/client-details`);
     }
 
@@ -72,7 +84,7 @@ export async function getChangeCategoryOfLaw(req: Request, res: Response, next: 
  * @param {NextFunction} next Express next function
  * @returns {Promise<void>} Redirect to client details page
  */
-export async function submitChangeCategoryOfLawForm(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function submitChangeCategoryOfLawForm (req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
   const category = safeBodyString(req.body, 'category') as string;
@@ -132,14 +144,31 @@ export async function submitChangeCategoryOfLawForm(req: Request, res: Response,
   }
 
   try {
+    const provider = await fetchProviderNameAndDetail(req, caseReference);
+    const currentCategory = (req.clientData as { category?: string })?.category;
+    const currentCategoryCode = provider.law_category.find(item => item.name === currentCategory)?.code;
+
+    const wasDisputedCategory = isDebtOrFamily(currentCategoryCode);
+    const isDisputedCategory = isDebtOrFamily(category);
+    const categoryTypeChangedShouldReset = wasDisputedCategory !== isDisputedCategory;
+
     const response = await apiService.changeCaseCategory(req.axiosMiddleware, caseReference, category, notes);
 
     if (response.status === 'error') {
       throw new Error(response.message || 'Failed to change category');
     }
 
-    devLog(`Category successfully changed for case ${caseReference}`);
+    if (categoryTypeChangedShouldReset) {
+      await resetDisputedFieldData(req, caseReference);
+    }
 
+    if (categoryTypeChangedShouldReset) {
+      setSessionValue(req, 'disputedFieldsResetCache', {
+        type: isDisputedCategory ? 'added' : 'removed'
+      });
+    }
+
+    devLog(`Category successfully changed for case ${caseReference}`);
     return res.redirect(`/cases/${caseReference}/case-details`);
 
   } catch (error) {

@@ -55,7 +55,7 @@ describe('Change Category Of Law Controller', () => {
     schema: ValidationChain[] | ValidationChain
   ): Promise<void> => {
     const chains = Array.isArray(schema) ? schema : [schema];
-    for (const chain of chains) {
+    for(const chain of chains) {
       await chain.run(req);
     }
   };
@@ -63,7 +63,7 @@ describe('Change Category Of Law Controller', () => {
   beforeEach(() => {
 
     req = {
-      params: { caseReference: 'TEST123' }, 
+      params: { caseReference: 'TEST123' },
       body: { category: 'DEBT', notes: 'test' },
       clientData: {
         providerId: '123',
@@ -157,17 +157,37 @@ describe('Change Category Of Law Controller', () => {
   });
 
   // POST CONTROLLER TESTS
-  
+
   describe('submitChangeCategoryOfLawForm', () => {
 
     it('should redirect on successful category change', async () => {
       req.body = {
-        category: 'DEBT',
+        category: 'Education',
         notes: 'Changing category'
       };
 
       apiChangeCategoryStub.resolves({
         status: 'success'
+      });
+
+      apiProviderChoicesStub.resolves({
+        status: 'success',
+        data: {
+          id: 123,
+          name: 'Test Provider',
+          law_category: [
+            {
+              code: 'housing',
+              name: 'housing',
+              description: ''
+            },
+            {
+              code: 'debt',
+              name: 'debt',
+              description: ''
+            }
+          ]
+        }
       });
 
       await runSchema(req, validateChangeCategoryOfLaw());
@@ -178,7 +198,7 @@ describe('Change Category Of Law Controller', () => {
       expect(apiChangeCategoryStub.calledWith(
         req.axiosMiddleware,
         'TEST123',
-        'DEBT',
+        'Education',
         'Changing category'
       )).to.be.true;
 

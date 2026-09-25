@@ -4,8 +4,9 @@
 
 import { http, HttpResponse } from 'msw';
 import type { MockCase } from './types.js';
-import { findMockCase } from './utils.js';
+import { findMockCase, updateCaseState } from './utils.js';
 import { HTTP } from '#src/services/api/base/constants.js';
+import type { FinancialEligibilityData } from '#types/api-types.js';
 
 export function createFinancialEligibilityHandlers(
   API_BASE_URL: string,
@@ -13,30 +14,43 @@ export function createFinancialEligibilityHandlers(
   cases: MockCase[]
 ) {
   return [
-    http.get(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/eligibility_check/`, ({ params }) => {
-      const { caseReference } = params;
+    http.get(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/eligibility_check/`, ({params}) => {
+      const {caseReference}=params;
 
-      const caseItem = findMockCase(caseReference as string, cases);
+      const caseItem=findMockCase(caseReference as string, cases);
 
-      if (!caseItem) {
-        return HttpResponse.json({ error: 'Case not found' }, { status: HTTP.NOT_FOUND });
+      if(!caseItem) {
+        return HttpResponse.json({error: 'Case not found'}, {status: HTTP.NOT_FOUND});
       }
 
       return HttpResponse.json(caseItem.financialEligibility);
-  
+
     }),
 
     // PATCH /case/:caseReference/eligibility_check/
-    http.patch(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/eligibility_check/`, ({ params }) => {
-      const { caseReference } = params;
+    http.patch(`${API_BASE_URL}${API_PREFIX}/case/:caseReference/eligibility_check/`, async ({params, request}) => {
+      const caseReference=String(params.caseReference);
 
-      const caseItem = findMockCase(caseReference as string, cases);
+      const caseItem=findMockCase(caseReference as string, cases);
 
-      if (!caseItem) {
-        return HttpResponse.json({ error: 'Case not found' }, { status: HTTP.NOT_FOUND });
+      if(!caseItem) {
+        return HttpResponse.json({error: 'Case not found'}, {status: HTTP.NOT_FOUND});
       }
 
-      return HttpResponse.json(caseItem.financialEligibility);
+      const payload=await request.json() as FinancialEligibilityData;
+
+      const updatedFinancialEligibility={
+        ...caseItem.financialEligibility,
+        ...payload
+      } as FinancialEligibilityData;
+
+      updateCaseState(caseReference, {
+        financialEligibility:
+        updatedFinancialEligibility as unknown as MockCase['financialEligibility']
+      });
+
+      return HttpResponse.json(updatedFinancialEligibility);
+
     })
   ];
 }
