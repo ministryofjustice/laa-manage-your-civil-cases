@@ -50,6 +50,15 @@ jobs:
           # Flag to indicate to use mock API
           API_PREFIX: "/mock-api"
           USE_MOCK_API: "true"
+          ENTRA_TENANT_ID: 'test-tenant-id'
+          ENTRA_CLIENT_ID: 'test-client-id'
+          ENTRA_APP_ID: 'test-app-id'
+          ENTRA_CLIENT_SECRET: 'test-client-secret'
+          ENTRA_REDIRECT_URI: 'http://localhost:3001/auth/callback'
+          ENTRA_POST_LOGOUT_REDIRECT_URI: 'http://localhost:3001/auth/logout'
+          ENTRA_AUTHORITY: 'https://login.microsoftonline.com/test-tenant-id'
+          SILAS_SCOPES: 'openid profile email'
+          SILAS_EXPECTED_AUDIENCE: 'test-client-id'
           POWER_AUTOMATE_URL: 'microsoft-is-okay'
       - name: Upload trace artifacts
         if: always()
@@ -87,7 +96,7 @@ jobs:
           key: ${{ runner.os }}-playwright-chromium-${{ hashFiles('**/yarn.lock') }}
 
       - name: Run Accessibility Tests
-        run: yarn playwright test --config=tests/playwright/playwright.config.ts --grep-invert @accessibility
+        run: yarn playwright test --config=tests/playwright/playwright.config.ts --grep @accessibility
         env:
           CI: true
           SESSION_SECRET: "accessibility-test-secret"
