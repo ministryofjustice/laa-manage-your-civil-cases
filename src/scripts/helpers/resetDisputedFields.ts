@@ -1,11 +1,11 @@
 import type { Request } from 'express';
 import { apiService } from '#src/services/apiService.js';
-import { devLog, setSessionValue } from '#src/scripts/helpers/index.js';
+import { devLog } from '#src/scripts/helpers/index.js';
 import type { FinancialEligibilityData } from '#types/api-types.js';
 import { mapAnswersToApiPayload, mapFinancialEligibilityApiDataToAnswerCodes } from '#src/services/financialEligibilityWithDeps.js';
 
 /**
- * Functon to call financial eligibility, reset disputed fields and update in cla_backend
+ * Function to call financial eligibility, reset disputed fields and update in cla_backend
  * @param {Request} req request
  * @param {string} caseReference case reference
  */
@@ -41,7 +41,7 @@ export async function resetDisputedFieldData(req: Request, caseReference: string
       }));
   }
 
-  devLog(`Reset FE payload for case ${caseReference}: ` + JSON.stringify(updatePayload, null, 2));
+  devLog(`Reset Disputed Fields in FE payload for case ${caseReference}: ` + JSON.stringify(updatePayload, null, 2));
 
   const updateResponse = await apiService.updateFinancialEligibility(
     req.axiosMiddleware,

@@ -61,7 +61,7 @@ const MONETARY_FIELDS_PREFIXES = new Set([
  * @param {string} answerCode - The code of the answer to map
  * @returns {string | null} The corresponding API field name, or null if no mapping exists
  */
-function mapAnswerCodeToApiField(answerCode: string): string | null {
+function mapAnswerCodeToApiField (answerCode: string): string | null {
     const mapping: Record<string, string> = {
         [under18Field.code as string]: 'is_you_under_18',
         [under18RegularPaymentField.code as string]: 'under_18_receive_regular_payment',
@@ -100,7 +100,7 @@ function mapAnswerCodeToApiField(answerCode: string): string | null {
  * @param {FinancialEligibilityData} financialEligibilityData - The financial eligibility data from the API
  * @returns {Record<string, unknown>} A record mapping step codes to their corresponding values
  */
-export function mapFinancialEligibilityApiDataToAnswerCodes(financialEligibilityData: FinancialEligibilityData): Record<string, unknown> {
+export function mapFinancialEligibilityApiDataToAnswerCodes (financialEligibilityData: FinancialEligibilityData): Record<string, unknown> {
     return {
         category: financialEligibilityData.category,
         [under18Step.code]: financialEligibilityData.isUnder17,
@@ -147,10 +147,10 @@ export function mapFinancialEligibilityApiDataToAnswerCodes(financialEligibility
  * @param {string} suffix - Suffix to append to each step code, e.g. '-partner'
  * @returns {Record<string, unknown>} A record mapping step codes (and their `-frequency` counterparts) to their values
  */
-function mapMoneyFieldsToStepCodes(fields: MoneyFieldMapping[], source: IncomeData | DeductionData | undefined, suffix: string): Record<string, unknown> {
+function mapMoneyFieldsToStepCodes (fields: MoneyFieldMapping[], source: IncomeData | DeductionData | undefined, suffix: string): Record<string, unknown> {
     const result: Record<string, unknown> = {};
     const sourceRecord = source as unknown as Record<string, { amount: number | null, time: string | null } | undefined> | undefined;
-    for(const { code, dataField } of fields) {
+    for (const { code, dataField } of fields) {
         const stepCode = `${code}${suffix}`;
         const moneyPerInterval = sourceRecord?.[dataField];
         result[stepCode] = moneyPerInterval?.amount ?? null;
@@ -164,8 +164,8 @@ function mapMoneyFieldsToStepCodes(fields: MoneyFieldMapping[], source: IncomeDa
  * @param {unknown} value - An array of property objects
  * @returns {Record<string, unknown>[]} - An array of property objects with consistent field names
  */
-function normalisePropertyCollectionForForge(value: unknown): Record<string, unknown>[] {
-    if(!Array.isArray(value)) {
+function normalisePropertyCollectionForForge (value: unknown): Record<string, unknown>[] {
+    if (!Array.isArray(value)) {
         return [];
     }
 
@@ -187,8 +187,8 @@ function normalisePropertyCollectionForForge(value: unknown): Record<string, unk
  * @param {unknown} value - The value to normalise
  * @returns {string | undefined} - The normalised monetary value or undefined
  */
-function normaliseMonetaryFieldValue(value: unknown): string | undefined {
-    if(value === undefined || value === null) {
+function normaliseMonetaryFieldValue (value: unknown): string | undefined {
+    if (value === undefined || value === null) {
         return undefined;
     }
 
@@ -199,7 +199,7 @@ function normaliseMonetaryFieldValue(value: unknown): string | undefined {
     }
 
     return Number.isInteger(numberValue) ? String(numberValue) : numberValue.toFixed(2);
-}  
+}
 
 
 /**
@@ -207,32 +207,32 @@ function normaliseMonetaryFieldValue(value: unknown): string | undefined {
  * @param {Record<string, unknown>} answers - The Forge answers object containing property data
  * @returns {Record<string, unknown>[]} - An array of property objects with consistent field names
  */
-function getPropertyCollectionFromAnswers(answers: Record<string, unknown>): Record<string, unknown>[] {
-    if(Array.isArray(answers.propertySet)) {
+function getPropertyCollectionFromAnswers (answers: Record<string, unknown>): Record<string, unknown>[] {
+    if (Array.isArray(answers.propertySet)) {
         return normalisePropertyCollectionForForge(answers.propertySet);
     }
 
     const grouped = new Map<number, Record<string, unknown>>();
     const allowedPropertyFields = new Set(['value', 'mortgage-left', 'share', 'disputed', 'main']);
 
-    for(const [key, value] of Object.entries(answers)) {
+    for (const [key, value] of Object.entries(answers)) {
         // Use `lastIndexOf(_)` to split each key e.g `value_1` becomes `value` and `1`
         const separatorIndex = key.lastIndexOf('_');
 
         // Skip keys that don't have invalid indices or match allowedPropertyFields
-        if(separatorIndex <= 0 || separatorIndex === key.length - 1) {
+        if (separatorIndex <= 0 || separatorIndex === key.length - 1) {
             continue;
         }
 
         const fieldCode = key.slice(0, separatorIndex);
-        if(!allowedPropertyFields.has(fieldCode)) {
+        if (!allowedPropertyFields.has(fieldCode)) {
             continue;
         }
 
         // Parse the index part of the key and make sure it's a valid non-negative integer
         const indexPart = key.slice(separatorIndex + 1);
         const index = Number(indexPart);
-        if(!Number.isInteger(index) || index < 0) {
+        if (!Number.isInteger(index) || index < 0) {
             continue;
         }
 
@@ -260,7 +260,7 @@ function getPropertyCollectionFromAnswers(answers: Record<string, unknown>): Rec
  * @param {string} stepCode - The code of the step to determine the mapping
  * @returns {unknown} The corresponding Forge answer value
  */
-function mapApiValueToForgeValue(apiValue: unknown, stepCode: string): unknown {
+function mapApiValueToForgeValue (apiValue: unknown, stepCode: string): unknown {
     // Amount and frequency fields are simple passthroughs, for both the client and partner variants of each field
     const moneyFieldStepCodes = [...incomeMoneyFields, ...deductionsMoneyFields, legalAidContributionsField].flatMap(({ code }) => [
         code, `${code}-frequency`, `${code}-partner`, `${code}-partner-frequency`,
@@ -307,7 +307,7 @@ function mapApiValueToForgeValue(apiValue: unknown, stepCode: string): unknown {
  * @param {Record<string, unknown>[]} collection - An array of property objects from Forge answers
  * @returns {Record<string, unknown>[]} - An array of property objects formatted for API submission
  */
-function mapForgePropertyCollectionToApiPropertySet(collection: Record<string, unknown>[]): Record<string, unknown>[] {
+function mapForgePropertyCollectionToApiPropertySet (collection: Record<string, unknown>[]): Record<string, unknown>[] {
     return collection.map(item => ({
         value: Math.round(toNumber(item.value) * 100),
         mortgage_left: Math.round(toNumber(item['mortgage-left']) * 100),
@@ -325,12 +325,12 @@ function mapForgePropertyCollectionToApiPropertySet(collection: Record<string, u
  * @param {string} suffix - Suffix to append to each step code, e.g. '-partner'
  * @returns {Record<string, unknown>} The API section, with each field as `{ per_interval_value, interval_period }`
  */
-function mapMoneyFieldsToApiPayload(answers: Record<string, unknown>, fields: MoneyFieldMapping[], suffix: string): Record<string, unknown> {
+function mapMoneyFieldsToApiPayload (answers: Record<string, unknown>, fields: MoneyFieldMapping[], suffix: string): Record<string, unknown> {
     const section: Record<string, unknown> = {};
 
-    for(const { code, apiField } of fields) {
+    for (const { code, apiField } of fields) {
         const stepCode = `${code}${suffix}`;
-        if(!(stepCode in answers)) {
+        if (!(stepCode in answers)) {
             continue;
         }
 
@@ -350,9 +350,9 @@ function mapMoneyFieldsToApiPayload(answers: Record<string, unknown>, fields: Mo
  * @param {string} suffix - Suffix to append to the step code, e.g. '-partner'
  * @returns {Record<string, unknown>} The deduction section entry, or an empty object when unanswered
  */
-function mapLegalAidContributionsToApiPayload(answers: Record<string, unknown>, suffix: string): Record<string, unknown> {
+function mapLegalAidContributionsToApiPayload (answers: Record<string, unknown>, suffix: string): Record<string, unknown> {
     const stepCode = `${legalAidContributionsField.code}${suffix}`;
-    if(!(stepCode in answers)) {
+    if (!(stepCode in answers)) {
         return {};
     }
 
@@ -418,7 +418,7 @@ const dependantsFields = ['dependants_old', 'dependants_young'];
  * @param {MoneyFieldMapping[]} fields - The money fields to zero (incomeMoneyFields or deductionsMoneyFields)
  * @returns {Record<string, unknown>} The zeroed section
  */
-function zeroMoneySection(fields: MoneyFieldMapping[]): Record<string, unknown> {
+function zeroMoneySection (fields: MoneyFieldMapping[]): Record<string, unknown> {
     return Object.fromEntries(fields.map(({ apiField }) => [apiField, { per_interval_value: 0, interval_period: 'per_month' }]));
 }
 
@@ -426,7 +426,7 @@ function zeroMoneySection(fields: MoneyFieldMapping[]): Record<string, unknown> 
  * Builds a fully-zeroed `savings` API section. Unlike income/deductions, savings fields are flat pence integers.
  * @returns {Record<string, unknown>} The zeroed savings section
  */
-function zeroSavingsSection(): Record<string, unknown> {
+function zeroSavingsSection (): Record<string, unknown> {
     return Object.fromEntries(savingsApiFields.map(field => [field, 0]));
 }
 
@@ -437,11 +437,11 @@ function zeroSavingsSection(): Record<string, unknown> {
  * @param {'you' | 'partner'} personKey - Which payload section to zero
  * @param {{ includeSavings: boolean }} options - Whether to also zero the `savings` section
  */
-function zeroPersonMoneySections(payload: Record<string, unknown>, personKey: 'you' | 'partner', { includeSavings }: { includeSavings: boolean }): void {
+function zeroPersonMoneySections (payload: Record<string, unknown>, personKey: 'you' | 'partner', { includeSavings }: { includeSavings: boolean }): void {
     const person = { ...(payload[personKey] as Record<string, unknown> | undefined) };
     person.income = { ...zeroMoneySection(incomeMoneyFields), self_employed: false };
     person.deductions = { ...zeroMoneySection(deductionsMoneyFields), criminal_legalaid_contributions: 0 };
-    if(includeSavings) {
+    if (includeSavings) {
         person.savings = zeroSavingsSection();
     }
     payload[personKey] = person;
@@ -455,10 +455,10 @@ function zeroPersonMoneySections(payload: Record<string, unknown>, personKey: 'y
  * @param {Record<string, unknown>} payload - The API payload built so far by mapAnswersToApiPayload, mutated in place
  * @param {{ under18Passported: unknown, onPassportedBenefits: unknown, hasPartner: unknown }} gates - The already-computed values that decide which sections to zero
  */
-export function applyNonRequiredSectionDefaults(payload: Record<string, unknown>, { under18Passported, onPassportedBenefits, hasPartner }: { under18Passported: unknown, onPassportedBenefits: unknown, hasPartner: unknown }): void {
+export function applyNonRequiredSectionDefaults (payload: Record<string, unknown>, { under18Passported, onPassportedBenefits, hasPartner }: { under18Passported: unknown, onPassportedBenefits: unknown, hasPartner: unknown }): void {
     // AC1: under-18 passported - finances, income, expenses, benefits, disregards and the over-60 question
     // are all hidden from the user, so any remaining fields not otherwise zeroed above are sent as null
-    if(under18Passported === true) {
+    if (under18Passported === true) {
         zeroPersonMoneySections(payload, 'you', { includeSavings: true });
         // partner's finances are hidden on check-answers whenever under18Passported, regardless of has_partner
         zeroPersonMoneySections(payload, 'partner', { includeSavings: true });
@@ -472,13 +472,13 @@ export function applyNonRequiredSectionDefaults(payload: Record<string, unknown>
         payload.is_you_or_your_partner_over_60 = null;
         // the partner question is skipped entirely when under18Passported, so default has_partner to null
         // when it was never answered (a genuine stale yes/no from an earlier path is left untouched)
-        if(hasPartner === undefined) {
+        if (hasPartner === undefined) {
             payload.has_partner = null;
         }
     }
 
     // AC2: on a passported benefit - income and expenses are hidden, and dependants no longer affect eligibility
-    if(onPassportedBenefits === true) {
+    if (onPassportedBenefits === true) {
         zeroPersonMoneySections(payload, 'you', { includeSavings: false });
         // partner's income/expenses are hidden on check-answers whenever on_passported_benefits, regardless of has_partner
         zeroPersonMoneySections(payload, 'partner', { includeSavings: false });
@@ -487,7 +487,7 @@ export function applyNonRequiredSectionDefaults(payload: Record<string, unknown>
     }
 
     // AC3: no partner - the partner's income, deductions and savings are all hidden
-    if(hasPartner === false) {
+    if (hasPartner === false) {
         zeroPersonMoneySections(payload, 'partner', { includeSavings: true });
     }
 }
@@ -497,7 +497,7 @@ export function applyNonRequiredSectionDefaults(payload: Record<string, unknown>
  * @param {Record<string, unknown>} answers - The user's answers keyed by step code
  * @returns {Record<string, unknown>} The API payload with mapped field names and values
  */
-export function mapAnswersToApiPayload(answers: Record<string, unknown>): Record<string, unknown> {
+export function mapAnswersToApiPayload (answers: Record<string, unknown>): Record<string, unknown> {
     const payload: Record<string, unknown> = {};
     const specificBenefits: Record<string, unknown> = {};
     const savings: Record<string, unknown> = {};
@@ -505,30 +505,30 @@ export function mapAnswersToApiPayload(answers: Record<string, unknown>): Record
     const disputedSavings: Record<string, unknown> = {};
     const disregards: Record<string, boolean> = {};
 
-    for(const [answerCode, answer] of Object.entries(answers)) {
+    for (const [answerCode, answer] of Object.entries(answers)) {
         const apiField = mapAnswerCodeToApiField(answerCode);
-        if(apiField) {
+        if (apiField) {
             let value = answer;
 
-            if(typeof answer === 'string') {
-                if(answer.toLowerCase() === 'yes') {
+            if (typeof answer === 'string') {
+                if (answer.toLowerCase() === 'yes') {
                     value = true;
-                } else if(answer.toLowerCase() === 'no') {
+                } else if (answer.toLowerCase() === 'no') {
                     value = false;
                 }
             }
 
-            if(benefitFields.includes(apiField)) {
+            if (benefitFields.includes(apiField)) {
                 specificBenefits[apiField] = value;
-            } else if(partnerSavingsFields.includes(answerCode)) {
+            } else if (partnerSavingsFields.includes(answerCode)) {
                 partnerSavings[apiField] = Math.round(toNumber(value) * 100);
-            } else if(disputedSavingsFields.includes(answerCode)) {
+            } else if (disputedSavingsFields.includes(answerCode)) {
                 disputedSavings[apiField] = Math.round(toNumber(value) * 100);
-            } else if(savingsApiFields.includes(apiField)) {
+            } else if (savingsApiFields.includes(apiField)) {
                 savings[apiField] = Math.round(toNumber(value) * 100);
-            } else if(dependantsFields.includes(apiField)) {
+            } else if (dependantsFields.includes(apiField)) {
                 payload[apiField] = Math.round(toNumber(value));
-            } else if(answerCode === disregardsStep.code) {
+            } else if (answerCode === disregardsStep.code) {
                 // 'none' is a UI-only option meaning no disregards apply; the API doesn't recognise it as a field
                 normaliseSelectedCheckbox(value).filter(disregard => disregard !== 'none').forEach(disregard => {
                     disregards[disregard] = true;
@@ -540,59 +540,59 @@ export function mapAnswersToApiPayload(answers: Record<string, unknown>): Record
         }
     }
 
-    if(Object.keys(specificBenefits).length > 0) {
+    if (Object.keys(specificBenefits).length > 0) {
         payload.specific_benefits = specificBenefits;
         // Default `on_passported_benefits` to false unless conditions met
         payload.on_passported_benefits = benefitFields.some((field) => specificBenefits[field] === true);
     }
 
     const income = mapMoneyFieldsToApiPayload(answers, incomeMoneyFields, '');
-    if('self-employed' in answers) {
+    if ('self-employed' in answers) {
         income.self_employed = toBoolean(answers['self-employed']);
     }
     const deductions = { ...mapMoneyFieldsToApiPayload(answers, deductionsMoneyFields, ''), ...mapLegalAidContributionsToApiPayload(answers, '') };
 
     const youPayload: Record<string, unknown> = {};
-    if(Object.keys(savings).length > 0) {
+    if (Object.keys(savings).length > 0) {
         youPayload.savings = savings;
     }
-    if(Object.keys(income).length > 0) {
+    if (Object.keys(income).length > 0) {
         youPayload.income = income;
     }
-    if(Object.keys(deductions).length > 0) {
+    if (Object.keys(deductions).length > 0) {
         youPayload.deductions = deductions;
     }
-    if(Object.keys(youPayload).length > 0) {
+    if (Object.keys(youPayload).length > 0) {
         payload.you = youPayload;
     }
 
     const partnerIncome = mapMoneyFieldsToApiPayload(answers, incomeMoneyFields, '-partner');
-    if('self-employed-partner' in answers) {
+    if ('self-employed-partner' in answers) {
         partnerIncome.self_employed = toBoolean(answers['self-employed-partner']);
     }
     const partnerDeductions = { ...mapMoneyFieldsToApiPayload(answers, deductionsMoneyFields, '-partner'), ...mapLegalAidContributionsToApiPayload(answers, '-partner') };
 
     const partnerPayload: Record<string, unknown> = {};
-    if(Object.keys(partnerSavings).length > 0) {
+    if (Object.keys(partnerSavings).length > 0) {
         partnerPayload.savings = partnerSavings;
     }
-    if(Object.keys(partnerIncome).length > 0) {
+    if (Object.keys(partnerIncome).length > 0) {
         partnerPayload.income = partnerIncome;
     }
-    if(Object.keys(partnerDeductions).length > 0) {
+    if (Object.keys(partnerDeductions).length > 0) {
         partnerPayload.deductions = partnerDeductions;
     }
-    if(Object.keys(partnerPayload).length > 0) {
+    if (Object.keys(partnerPayload).length > 0) {
         payload.partner = partnerPayload;
     }
 
-    if(Object.keys(disputedSavings).length > 0) {
+    if (Object.keys(disputedSavings).length > 0) {
         payload.disputed_savings = disputedSavings;
     }
 
     const propertyCollection = getPropertyCollectionFromAnswers(answers);
     const hasExplicitPropertySet = Array.isArray(answers.propertySet);
-    if(propertyCollection.length > 0 || hasExplicitPropertySet) {
+    if (propertyCollection.length > 0 || hasExplicitPropertySet) {
         payload.property_set = mapForgePropertyCollectionToApiPropertySet(propertyCollection);
     }
 
@@ -633,7 +633,7 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
     LoadCaseDetails = async (_deps: Deps, context: EffectFunctionContext): Promise<void> => {
         const caseReference = context.getRequestParam('caseReference');
 
-        if(caseReference === undefined) {
+        if (caseReference === undefined) {
             devError('No case reference found in path');
             return;
         }
@@ -642,7 +642,7 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
         // This avoids a duplicate API call since the middleware already fetched it
         const clientData = context.getState('client');
 
-        if(!clientData) {
+        if (!clientData) {
             devError('Client data not found in state; fetchClientDetails middleware may not have run');
             return;
         }
@@ -662,35 +662,35 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
         const PROPERTY_STEP_CODE = 'properties';
         const PROPERTY_COLLECTION_CODE = 'propertySet';
 
-        if(caseReference === undefined) {
+        if (caseReference === undefined) {
             devError('No case reference found in path');
             return;
         }
 
         const axiosMiddleware = context.getState('authenticatedAxios')
-        if(!axiosMiddleware) {
+        if (!axiosMiddleware) {
             devWarn('Authenticated Axios middleware not found in state; API call may fail if it is required by the service implementation.');
         }
         const financialEligibilityResponse = await this.apiService.getFinancialEligibility(axiosMiddleware, caseReference);
 
         const session = context.getSession() as FinancialEligibilitySession | undefined;
-        if(!session) {
+        if (!session) {
             devError('No session found; cannot load financial eligibility data');
             return;
         }
 
-        if(!session.financialEligibilityDrafts) {
+        if (!session.financialEligibilityDrafts) {
             session.financialEligibilityDrafts = {};
         }
 
-        if(!(caseReference in session.financialEligibilityDrafts)) {
+        if (!(caseReference in session.financialEligibilityDrafts)) {
             session.financialEligibilityDrafts[caseReference] = {};
         }
 
         const mappedAnswers = mapFinancialEligibilityApiDataToAnswerCodes(financialEligibilityResponse.data);
-        for(const [answerCode, apiValue] of Object.entries(mappedAnswers)) {
+        for (const [answerCode, apiValue] of Object.entries(mappedAnswers)) {
             const caseFEDraft = session.financialEligibilityDrafts[caseReference];
-            if(answerCode in caseFEDraft) {
+            if (answerCode in caseFEDraft) {
 
                 // If the step code already exists in the session draft, we use that value instead of the API value to ensure that any user-entered data takes precedence over the API data
                 const draftValue = answerCode === disregardsStep.code ? normaliseSelectedCheckbox(caseFEDraft[answerCode]) : caseFEDraft[answerCode];
@@ -703,12 +703,12 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
         }
 
         const casePatternDrafts = getOrMigrateCasePatternDrafts(session, caseReference);
-        if(!casePatternDrafts[PROPERTY_STEP_CODE]) {
+        if (!casePatternDrafts[PROPERTY_STEP_CODE]) {
             casePatternDrafts[PROPERTY_STEP_CODE] = {};
         }
 
         const existingPatternCollection = casePatternDrafts[PROPERTY_STEP_CODE][PROPERTY_COLLECTION_CODE];
-        if(Array.isArray(existingPatternCollection)) {
+        if (Array.isArray(existingPatternCollection)) {
             context.setAnswer(PROPERTY_COLLECTION_CODE, existingPatternCollection);
             return;
         }
@@ -718,7 +718,7 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
         const apiPropertyCollection = normalisePropertyCollectionForForge(mappedAnswers.propertySet);
         const propertyCollectionToStore = propertyDraftCollection.length > 0 ? propertyDraftCollection : apiPropertyCollection;
 
-        if(propertyCollectionToStore.length > 0) {
+        if (propertyCollectionToStore.length > 0) {
             casePatternDrafts[PROPERTY_STEP_CODE][PROPERTY_COLLECTION_CODE] = propertyCollectionToStore;
             context.setAnswer(PROPERTY_COLLECTION_CODE, propertyCollectionToStore);
         }
@@ -736,17 +736,17 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
         const PROPERTY_STEP_CODE = 'properties';
         const PROPERTY_COLLECTION_CODE = 'propertySet';
 
-        if(!session) {
+        if (!session) {
             return;
         }
 
         const caseReference = context.getRequestParam('caseReference')
-        if(caseReference === undefined) {
+        if (caseReference === undefined) {
             devError('No case reference found in path; cannot submit draft answers');
             return;
         }
 
-        if(!session.financialEligibilityDrafts[caseReference]) {
+        if (!session.financialEligibilityDrafts[caseReference]) {
             session.financialEligibilityDrafts[caseReference] = {};
         }
 
@@ -757,7 +757,7 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
 
         const casePatternDrafts = getOrMigrateCasePatternDrafts(session, caseReference);
         const patternPropertyCollection = casePatternDrafts[PROPERTY_STEP_CODE]?.[PROPERTY_COLLECTION_CODE];
-        if(Array.isArray(patternPropertyCollection)) {
+        if (Array.isArray(patternPropertyCollection)) {
             submissionAnswers.propertySet = patternPropertyCollection;
         }
 
@@ -766,7 +766,7 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
 
         // Make API call to CLA backend with the apiService.
         const axiosMiddleware = context.getState('authenticatedAxios')
-        if(!axiosMiddleware) {
+        if (!axiosMiddleware) {
             devWarn("Authenticated Axios middleware not found in state; API call may fail if it is required by the service implementation.");
         }
         const updateResult = await this.apiService.updateFinancialEligibility(
@@ -777,7 +777,7 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
 
         // Surface a failed save instead of silently clearing the draft below, which would otherwise
         // discard the user's edits and leave the case showing stale data from the last successful save
-        if(updateResult.status === 'error') {
+        if (updateResult.status === 'error') {
             throw new Error(`Failed to update financial eligibility for case ${caseReference}: ${updateResult.message ?? 'unknown error'}`);
         }
 
@@ -793,17 +793,17 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
         const session = context.getSession() as FinancialEligibilitySession | undefined;
 
         const caseReference = context.getRequestParam('caseReference')
-        if(caseReference === undefined) {
+        if (caseReference === undefined) {
             devError('No case reference found in path; cannot clear draft answers');
             return;
         }
 
         // Clear the draft answers for the case reference from the session
-        if(session?.financialEligibilityDrafts[caseReference]) {
+        if (session?.financialEligibilityDrafts[caseReference]) {
             delete session.financialEligibilityDrafts[caseReference];
 
             // Also clear any case pattern drafts for the case reference
-            if(session.casePatternDrafts?.[caseReference]) {
+            if (session.casePatternDrafts?.[caseReference]) {
                 delete session.casePatternDrafts[caseReference];
             }
 
@@ -820,30 +820,30 @@ export class FinancialEligibilityEffectsWithDepsImpl implements FinancialEligibi
         const requestPostData = context.getAllPostData<Record<string, unknown>>();
         const answerKeys = Object.keys(requestPostData);
 
-        if(answerKeys.length === 0) {
+        if (answerKeys.length === 0) {
             return;
         }
 
         const caseReference = context.getRequestParam('caseReference')
-        if(caseReference === undefined) {
+        if (caseReference === undefined) {
             devError('No case reference found in path; cannot save new answer');
             return;
         }
         const session = context.getSession() as FinancialEligibilitySession | undefined;
 
-        if(!session) {
+        if (!session) {
             return;
         }
 
-        if(!session.financialEligibilityDrafts[caseReference]) {
+        if (!session.financialEligibilityDrafts[caseReference]) {
             session.financialEligibilityDrafts[caseReference] = {};
         }
 
-        for(const key of answerKeys) {
+        for (const key of answerKeys) {
             const valueIsMonetaryField = MONETARY_FIELDS.has(key) || Array.from(MONETARY_FIELDS_PREFIXES).some(prefix => key.startsWith(prefix));
             const value = valueIsMonetaryField ? parseFloat(requestPostData[key] as string).toFixed(2) : requestPostData[key];
 
-            if(value !== undefined && value !== null && value !== '') {
+            if (value !== undefined && value !== null && value !== '') {
                 // Normalise the value for disregards step, to handle when only one disregard is selected
                 const normalisedValue = key === disregardsStep.code ? normaliseSelectedCheckbox(value) : value;
 

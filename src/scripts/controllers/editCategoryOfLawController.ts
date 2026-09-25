@@ -16,7 +16,7 @@ const DISPUTED_CATEGORIES = new Set(['debt', 'family']);
  * @param {string} category category to be check if it's debt or family
  * @returns {boolean} true if the category is debt or family otherwise false
  */
-function isDebtOrFamily(category: string | undefined): boolean {
+function isDebtOrFamily (category: string | undefined): boolean {
   return DISPUTED_CATEGORIES.has(category?.trim().toLowerCase() ?? '');
 }
 
@@ -27,10 +27,10 @@ function isDebtOrFamily(category: string | undefined): boolean {
  * @param {NextFunction} next Express next function
  * @returns {void} Rendered form page
  */
-export async function getChangeCategoryOfLaw(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function getChangeCategoryOfLaw (req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
-  if(!validCaseReference(caseReference, res)) {
+  if (!validCaseReference(caseReference, res)) {
     return;
   }
 
@@ -55,7 +55,7 @@ export async function getChangeCategoryOfLaw(req: Request, res: Response, next: 
       excludeCode: currentCategoryCode
     });
 
-    if(categoryItems.length <= 1) {
+    if (categoryItems.length <= 1) {
       return res.redirect(`/cases/${caseReference}/client-details`);
     }
 
@@ -71,7 +71,7 @@ export async function getChangeCategoryOfLaw(req: Request, res: Response, next: 
       },
       csrfToken: typeof req.csrfToken === 'function' ? req.csrfToken() : undefined
     });
-  } catch(error) {
+  } catch (error) {
     const processedError = createProcessedError(error, `rendering change category form, for case ${caseReference}`);
     next(processedError);
   }
@@ -84,7 +84,7 @@ export async function getChangeCategoryOfLaw(req: Request, res: Response, next: 
  * @param {NextFunction} next Express next function
  * @returns {Promise<void>} Redirect to client details page
  */
-export async function submitChangeCategoryOfLawForm(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function submitChangeCategoryOfLawForm (req: Request, res: Response, next: NextFunction): Promise<void> {
   const caseReference = safeString(req.params.caseReference);
 
   const category = safeBodyString(req.body, 'category') as string;
@@ -92,7 +92,7 @@ export async function submitChangeCategoryOfLawForm(req: Request, res: Response,
 
   // Check for validation errors
   const errors = validationResult(req);
-  if(!errors.isEmpty()) {
+  if (!errors.isEmpty()) {
     const rawErrors = errors.array({ onlyFirstError: false });
 
     const validationErrors = rawErrors.map((error) => {
@@ -144,40 +144,34 @@ export async function submitChangeCategoryOfLawForm(req: Request, res: Response,
   }
 
   try {
-    const newIsDebtOrFamily = isDebtOrFamily(category);
-    const currentCategoryName = (req.clientData as { category?: string })?.category;
     const provider = await fetchProviderNameAndDetail(req, caseReference);
-    const currentCategoryCode = provider.law_category.find(c => c.name === currentCategoryName)?.code;
-    const currentIsDebtOrFamily = isDebtOrFamily(currentCategoryCode);
+    const currentCategory = (req.clientData as { category?: string })?.category;
+    const currentCategoryCode = provider.law_category.find(item => item.name === currentCategory)?.code;
 
-    const shouldResetDisputedFields = currentIsDebtOrFamily !== newIsDebtOrFamily;
+    const wasDisputedCategory = isDebtOrFamily(currentCategoryCode);
+    const isDisputedCategory = isDebtOrFamily(category);
+    const categoryTypeChangedShouldReset = wasDisputedCategory !== isDisputedCategory;
 
     const response = await apiService.changeCaseCategory(req.axiosMiddleware, caseReference, category, notes);
 
-    if(response.status === 'error') {
+    if (response.status === 'error') {
       throw new Error(response.message || 'Failed to change category');
     }
 
-    if(shouldResetDisputedFields) { await resetDisputedFieldData(req, caseReference); }
-
-    if(!currentIsDebtOrFamily && newIsDebtOrFamily) {
-      setSessionValue(req, 'disputedFieldsResetCache', {
-        type: 'added'
-      });
+    if (categoryTypeChangedShouldReset) {
+      await resetDisputedFieldData(req, caseReference);
     }
 
-    if(currentIsDebtOrFamily && !newIsDebtOrFamily) {
+    if (categoryTypeChangedShouldReset) {
       setSessionValue(req, 'disputedFieldsResetCache', {
-        type: 'removed'
+        type: isDisputedCategory ? 'added' : 'removed'
       });
     }
-
 
     devLog(`Category successfully changed for case ${caseReference}`);
-
     return res.redirect(`/cases/${caseReference}/case-details`);
 
-  } catch(error) {
+  } catch (error) {
     const processedError = createProcessedError(error, `changing category for case ${caseReference}`);
 
     return next(processedError);
