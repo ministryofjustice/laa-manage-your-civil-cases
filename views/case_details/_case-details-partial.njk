@@ -234,7 +234,8 @@
   {% if data.diagnosis.diagnosisNode and data.diagnosis.diagnosisNode.length > 0 %}
     {% set diagnosisNodesHtml %}
       {% for node in data.diagnosis.diagnosisNode %}
-        <p class="govuk-body govuk-!-margin-bottom-5">{{ node.node }}</p>
+        {% set marginClass = "govuk-!-margin-bottom-5" if not loop.last else "" %}
+        <p class="govuk-body {{ marginClass }}">{{ node.node }}</p>
       {% endfor %}
     {% endset %}
 
@@ -337,7 +338,7 @@
 
 {# Add a note #}
 {% block formContent %}
-  <div class="govuk-grid-row">
+  <div class="govuk-grid-row negative-margin">
     <div class="govuk-grid-column-two-thirds">
       <form method="post" action="">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}">
