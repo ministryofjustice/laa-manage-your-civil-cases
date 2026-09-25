@@ -385,28 +385,28 @@ test.describe('resetting disputed financial eligibility after category changes',
 
     // Assert the correct data is displayed in the your disputed savings table.
     await assertSummaryCardData(page, 'Your disputed savings', {
-      'How much was in your bank account/building society before your last payment went in\\\?': 'Not provided',
-      'Do you have any investments, shares or ISAs\\\?': 'Not provided',
-      'Do you have any valuable items worth over £500 each\\\?': 'Not provided',
-      'Do you have any money owed to you\\\?': 'Not provided'
+      'How much was in your bank account/building society before your last payment went in?': 'Not provided',
+      'Do you have any investments, shares or ISAs?': 'Not provided',
+      'Total value of items worth £500 or more each?': 'Not provided',
+      'Do you have any money owed to you?': 'Not provided'
     });
 
     // Assert the correct data is displayed in the properties table for one property.
     await assertSummaryCardData(page, '1st property', {
-      'What is the current market value of the property\\\?': '£150,000',
-      'How much is left to pay on the mortgage\\\?': '£60,000',
-      'Is the property disputed\\\?': 'No',
-      'Is this your main property\\\?': 'Yes',
-      'What percentage of the property do you and/or your partner own\\\?': '100%'
+      'What is the current market value of the property?': '£150,000',
+      'How much is left to pay on the mortgage?': '£60,000',
+      'Is the property disputed?': 'No',
+      'Is this your main property?': 'Yes',
+      'What percentage of the property do you and/or your partner own?': '100%'
     });
 
     // Assert the correct data is displayed in the properties table for one property.
     await assertSummaryCardData(page, '2nd property', {
-      'What is the current market value of the property\\\?': '£130,000',
-      'How much is left to pay on the mortgage\\\?': '£20,000',
-      'Is the property disputed\\\?': 'No',
-      'Is this your main property\\\?': 'No',
-      'What percentage of the property do you and/or your partner own\\\?': '100%'
+      'What is the current market value of the property?': '£130,000',
+      'How much is left to pay on the mortgage?': '£20,000',
+      'Is the property disputed?': 'No',
+      'Is this your main property?': 'No',
+      'What percentage of the property do you and/or your partner own?': '100%'
     });
   });
 });
