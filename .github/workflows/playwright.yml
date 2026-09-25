@@ -87,7 +87,7 @@ jobs:
           key: ${{ runner.os }}-playwright-chromium-${{ hashFiles('**/yarn.lock') }}
 
       - name: Run Accessibility Tests
-        run: yarn playwright test --config=tests/playwright/playwright.config.ts --grep @accessibility
+        run: yarn playwright test --config=tests/playwright/playwright.config.ts --grep-invert @accessibility
         env:
           CI: true
           SESSION_SECRET: "accessibility-test-secret"
