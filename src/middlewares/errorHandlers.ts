@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import { devError, extractErrorMessage, t } from '#src/scripts/helpers/index.js';
+import { devError, extractErrorMessage } from '#src/scripts/helpers/index.js';
 import { HTTP } from '#src/services/api/base/constants.js';
 
 /**
