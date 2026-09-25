@@ -91,7 +91,7 @@ describe('Login Controller', () => {
 			expect((res.status as sinon.SinonStub).calledOnceWithExactly(HTTP.BAD_REQUEST)).to.be.true;
 			expect((res.render as sinon.SinonStub).calledOnceWithExactly('main/error.njk', {
 				status: HTTP.BAD_REQUEST,
-				error: 'Invalid authentication callback.',
+				error: 'bespoke400AuthenticationErrorMessage',
 			})).to.be.true;
 			expect(acquireTokenByCodeStub.called).to.be.false;
 		});
@@ -138,7 +138,7 @@ describe('Login Controller', () => {
 			expect(res.status.calledOnceWithExactly(HTTP.BAD_REQUEST)).to.be.true;
 			expect(res.render.calledOnceWithExactly('main/error.njk', {
 				status: HTTP.BAD_REQUEST,
-				error: 'Your account is authenticated but not linked to a provider profile in MCC yet. Please contact the MCC support team.',
+				error: 'bespoke400AuthenticationErrorMessage',
 			})).to.be.true;
 		});
 
@@ -151,7 +151,7 @@ describe('Login Controller', () => {
 			expect(res.status.calledOnceWithExactly(HTTP.BAD_REQUEST)).to.be.true;
 			expect(res.render.calledOnceWithExactly('main/error.njk', {
 				status: HTTP.BAD_REQUEST,
-				error: 'Unable to complete sign-in. Please try again.',
+				error: 'bespoke400AuthenticationErrorMessage',
 			})).to.be.true;
 		});
 

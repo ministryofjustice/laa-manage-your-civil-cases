@@ -24,8 +24,7 @@ function handleCachedThirdPartyCheck(
   if (hasSoftDeletedThirdParty) {
     devError(`No active third party to remove for case: ${caseReference} (soft-deleted found in cache)`);
     res.status(HTTP.NOT_FOUND).render('main/error.njk', {
-      status: HTTP.NOT_FOUND,
-      error: 'No third party contact found for this case'
+      status: HTTP.NOT_FOUND
     });
     return;
   }

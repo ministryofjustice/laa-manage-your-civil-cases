@@ -8,7 +8,7 @@
  * - Structured logging
  */
 
-import { devError } from './index.js';
+import { devError, t } from './index.js';
 import { HTTP } from '../../services/api/base/constants.js';
 
 /**
@@ -52,13 +52,13 @@ function isNetworkError(error: unknown): error is { code: string; message?: stri
 function getHttpErrorMessage(status: number): string {
   switch (status) {
     case HTTP.BAD_REQUEST:
-      return 'Invalid request. Please check your input and try again.';
+      return t('pages.error.generic400message');
     case HTTP.UNAUTHORIZED:
       return 'Authentication failed. Please log in again.';
     case HTTP.FORBIDDEN:
       return 'You do not have permission to access this resource.';
     case HTTP.NOT_FOUND:
-      return 'The requested information could not be found.';
+      return t('pages.error.generic404message');
     case HTTP.REQUEST_TIMEOUT:
       return 'Request timed out. Please try again.';
     case HTTP.TOO_MANY_REQUESTS:

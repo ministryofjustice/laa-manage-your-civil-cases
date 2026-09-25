@@ -1,14 +1,45 @@
 {% extends "base.njk" %}
 
-{% block pageTitle %}{{ t('pages.error.pageTitle', { serviceName: config.SERVICE_NAME }) }}{% endblock %}
-
 {% set mainClasses = "govuk-main-wrapper--l" %}
+{% set pageTitleKey = 'pages.error.pageTitle' %}
+{% set h1Key = status %}
+{% set errorContent %}
+  <p class="govuk-body">{{ error }}</p>
+{% endset %}
+
+{% if status == 404 %}
+  {% set pageTitleKey = 'pages.error.pageTitle404' %}
+  {% set h1Key = t('pages.error.pageHeading404') %}
+  {% set errorContent %}
+    <p class="govuk-body">{{ t('pages.error.checkWebAddress404') }}</p>
+    <p class="govuk-body">{{ t('pages.error.technicalSupportPrefix404') }}
+      <a class="govuk-link" href="/help">{{ t('pages.error.technicalSupportLink404') }}</a>.
+    </p>
+  {% endset %}
+{% elif status == 400 %}
+  {% if error == 'bespoke400AuthenticationErrorMessage' %}
+    {% set pageTitleKey = 'pages.error.pageTitle' %}
+    {% set h1Key = t('pages.error.pageHeading400Authentication') %}
+    {% set errorContent %}
+      <p class="govuk-body"><a class="govuk-link" href="/help">{{ t('pages.error.bespoke400SignoutMessageLink') }}</a> {{ t('pages.error.bespoke400SignoutMessageParagraph1') }}</p>
+      <p class="govuk-body">{{ t('pages.error.bespoke400SignoutMessageParagraph2') }}</p>
+    {% endset %}
+  {% else %}
+    {% set pageTitleKey = 'pages.error.pageTitle400' %}
+    {% set h1Key = t('pages.error.pageHeading400') %}
+    {% set errorContent %}
+      <p class="govuk-body">{{ t('pages.error.generic400message') }}</p>
+    {% endset %}
+  {% endif %}
+{% endif %}
+
+{% block pageTitle %}{{ t(pageTitleKey, { serviceName: config.SERVICE_NAME }) }}{% endblock %}
 
 {% block content %}
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-heading-l">{{ status }}</h1>
-            <p class="govuk-body">{{ error }}</p>
-        </div>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">{{ h1Key }}</h1>
+      {{ errorContent | safe }}
     </div>
+  </div>
 {% endblock %}

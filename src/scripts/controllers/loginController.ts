@@ -76,7 +76,7 @@ export async function handleSilasCallback(req: Request, res: Response): Promise<
   }
 
   if (!code || !state || state !== req.session.silasLoginState) {
-    renderLoginError(res, 'Invalid authentication callback.', HTTP.BAD_REQUEST);
+    renderLoginError(res, 'bespoke400AuthenticationErrorMessage', HTTP.BAD_REQUEST);
     return;
   }
 
@@ -86,7 +86,7 @@ export async function handleSilasCallback(req: Request, res: Response): Promise<
     req.session.regenerate((regenErr) => {
       if (regenErr !== null && regenErr !== undefined) {
         devError(`Session regenerate failed: ${regenErr instanceof Error ? regenErr.message : String(regenErr)}`);
-        renderLoginError(res, 'An error occurred during sign-in. Please try again.', HTTP.BAD_REQUEST);
+        renderLoginError(res, 'bespoke400AuthenticationErrorMessage', HTTP.BAD_REQUEST);
         return;
       }
 
@@ -116,10 +116,10 @@ export async function handleSilasCallback(req: Request, res: Response): Promise<
     devError(`SILAS callback error: ${error instanceof Error ? error.message : String(error)}`);
 
     if (error instanceof SilasIdentityMappingError) {
-      renderLoginError(res, 'Your account is authenticated but not linked to a provider profile in MCC yet. Please contact the MCC support team.', HTTP.BAD_REQUEST);
+      renderLoginError(res, 'bespoke400AuthenticationErrorMessage', HTTP.BAD_REQUEST);
       return;
     }
-    renderLoginError(res, 'Unable to complete sign-in. Please try again.', HTTP.BAD_REQUEST);
+    renderLoginError(res, 'bespoke400AuthenticationErrorMessage', HTTP.BAD_REQUEST);
   }
 };
 

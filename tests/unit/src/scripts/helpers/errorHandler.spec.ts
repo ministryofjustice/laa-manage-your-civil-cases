@@ -31,7 +31,7 @@ describe('errorHandler', () => {
         response: { status: HTTP.NOT_FOUND, data: {}, statusText: 'Not Found' }
       };
       const result = extractErrorMessage(axiosError);
-      assert.strictEqual(result, 'The requested information could not be found.');
+      assert.strictEqual(result, "<p class='govuk-body'>Check you entered the correct web address.</p><p class='govuk-body'>If the web address is correct or you selected a link or button, <a class='govuk-link' href='/help'>contact us for technical support</a>.</p>");
     });
 
     it('extracts message from response.data.message if available', () => {

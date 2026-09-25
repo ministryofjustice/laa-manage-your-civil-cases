@@ -218,8 +218,7 @@ export async function closeCase(req: Request, res: Response, next: NextFunction)
       });
     } else {
       res.status(HTTP.NOT_FOUND).render('main/error.njk', {
-        status: HTTP.NOT_FOUND,
-        error: response.message ?? 'Case not found'
+        status: HTTP.NOT_FOUND
       });
     }
     return;
@@ -298,8 +297,7 @@ export async function pendingCase(req: Request, res: Response, next: NextFunctio
       });
     } else {
       res.status(HTTP.NOT_FOUND).render('main/error.njk', {
-        status: HTTP.NOT_FOUND,
-        error: response.message ?? 'Case not found'
+        status: HTTP.NOT_FOUND
       });
     }
     return;
@@ -429,8 +427,7 @@ export async function reopenCompletedCase(req: Request, res: Response, next: Nex
       });
     } else {
       res.status(HTTP.NOT_FOUND).render('main/error.njk', {
-        status: HTTP.NOT_FOUND,
-        error: response.message ?? 'Case not found'
+        status: HTTP.NOT_FOUND
       });
     }
     return;
@@ -504,8 +501,7 @@ export async function reopenClosedCase(req: Request, res: Response, next: NextFu
       });
     } else {
       res.status(HTTP.NOT_FOUND).render('main/error.njk', {
-        status: HTTP.NOT_FOUND,
-        error: response.message ?? 'Case not found'
+        status: HTTP.NOT_FOUND
       });
     }
     return;

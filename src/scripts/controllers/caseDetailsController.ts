@@ -73,8 +73,7 @@ export async function handleCaseDetailsTab(req: Request, res: Response, next: Ne
     } else {
       devError(`Case logs not found for case: ${caseReference}. API response: ${caseLogsResponse.message ?? 'Unknown error'}`);
       res.status(HTTP.NOT_FOUND).render('main/error.njk', {
-        status: HTTP.NOT_FOUND,
-        error: caseLogsResponse.message ?? 'Case logs not found'
+        status: HTTP.NOT_FOUND
       });
     }
   });

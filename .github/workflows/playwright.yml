@@ -50,6 +50,15 @@ jobs:
           # Flag to indicate to use mock API
           API_PREFIX: "/mock-api"
           USE_MOCK_API: "true"
+          ENTRA_TENANT_ID: 'test-tenant-id'
+          ENTRA_CLIENT_ID: 'test-client-id'
+          ENTRA_APP_ID: 'test-app-id'
+          ENTRA_CLIENT_SECRET: 'test-client-secret'
+          ENTRA_REDIRECT_URI: 'http://localhost:3001/auth/callback'
+          ENTRA_POST_LOGOUT_REDIRECT_URI: 'http://localhost:3001/auth/logout'
+          ENTRA_AUTHORITY: 'https://login.microsoftonline.com/test-tenant-id'
+          SILAS_SCOPES: 'openid profile email'
+          SILAS_EXPECTED_AUDIENCE: 'test-client-id'
           POWER_AUTOMATE_URL: 'microsoft-is-okay'
       - name: Upload trace artifacts
         if: always()
@@ -162,5 +171,14 @@ jobs:
             API_URL: "http://localhost:3001"
             API_PREFIX: "/mock-api"
             USE_MOCK_API: "true"
+            ENTRA_TENANT_ID: 'test-tenant-id'
+            ENTRA_CLIENT_ID: 'test-client-id'
+            ENTRA_APP_ID: 'test-app-id'
+            ENTRA_CLIENT_SECRET: 'test-client-secret'
+            ENTRA_REDIRECT_URI: 'http://localhost:3001/auth/callback'
+            ENTRA_POST_LOGOUT_REDIRECT_URI: 'http://localhost:3001/auth/logout'
+            ENTRA_AUTHORITY: 'https://login.microsoftonline.com/test-tenant-id'
+            SILAS_SCOPES: 'openid profile email'
+            SILAS_EXPECTED_AUDIENCE: 'test-client-id'
             ROUTE_COVERAGE_THRESHOLD: "100" # The percentage value you want the route coverage to be
             POWER_AUTOMATE_URL: 'microsoft-is-okay'

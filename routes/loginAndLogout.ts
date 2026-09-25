@@ -13,8 +13,7 @@ router.get('/', (req: Request, res: Response) => {
 /* POST login page submission */
 router.post('/', (_req: Request, res: Response) => {
 	res.status(HTTP.NOT_FOUND).render('main/error.njk', {
-    status: HTTP.NOT_FOUND,
-    error: 'Page not found. User tried to Login via SiLAS.'
+    status: HTTP.NOT_FOUND
 	});
 });
 
