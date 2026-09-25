@@ -106,13 +106,13 @@
       "none": "I don't know"
     },
     "categoryCode": {
-      "housing": "Housing, eviction and homelessness",
-      "debt": "Debt, money problems and bankruptcy",
+      "housing": "Housing",
+      "debt": "Debt",
       "family": "Family, marriage, separation and children",
       "immigration": "Applying for asylum or permission to stay in the UK",
       "benefits": "Welfare benefits appeals",
       "education": "Education",
-      "discrimination": "Discrimination, disability and other issues",
+      "discrimination": "Discrimination",
       "consumer": "Consumer Issues",
       "pi": "Personal Injury",
       "publiclaw": "Public Law",

@@ -6,6 +6,7 @@
 import type { CaseData } from '#types/case-types.js';
 import {
   safeString,
+  safeOptionalCategoryString,
   safeOptionalString,
   isRecord,
   formatDate,
@@ -42,7 +43,7 @@ export function transformCaseItem(item: unknown): CaseData {
     safeToCall: Boolean(item.safe_to_contact),
     announceCall: Boolean(item.announce_call),
     postcode: safeOptionalString(item.postcode),
-    category: safeOptionalString(item.category),
+    category: safeOptionalCategoryString(item.category),
     isUrgent: Boolean(item.is_urgent),
     textRelay: Boolean(mcc_case_flags.text_relay),
     bslWebcam: Boolean(mcc_case_flags.bsl_webcam),
@@ -70,7 +71,7 @@ export function transformCaseItemForSearch(item: unknown): CaseData {
     refCode: safeString(item.reference),
     postcode: safeOptionalString(item.postcode),
     phoneNumber: safeOptionalString(item.phone_number),
-    category: safeOptionalString(item.category),
+    category: safeOptionalCategoryString(item.category),
     caseStatus: determineCaseStatus(item),
     provider_assigned_at: formatLongFormDateWithShortMonth(safeString(item.provider_assigned_at)),
     modified: formatLongFormDateWithShortMonth(safeOptionalString(item.modified) ?? ''),

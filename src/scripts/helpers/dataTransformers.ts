@@ -6,6 +6,7 @@
 
 import type { FieldConfig, BuildCategoryItemsOptions } from '#types/form-controller-types.js';
 import type { PaginationResult } from '#types/pagination-types.js';
+import strict from 'assert/strict';
 import { calculateAge, formatDate, formatLongFormDate } from './dateFormatter.js';
 import { t } from './index.js';
 /**
@@ -47,6 +48,47 @@ export function safeString(value: unknown): string {
 }
 
 /**
+ * Safely get optional category string value from unknown data
+ * @param {unknown} value Value to convert
+ * @returns {string | undefined} String value or undefined
+ */
+export function safeOptionalCategoryString(value: unknown): string | undefined {
+  const categoryDisplayName: Record<string, string> = {
+    'Debt, money problems and bankruptcy': t('categoryCode.debt'),
+    'Discrimination, disability and other issues': t('categoryCode.discrimination'),
+    'Housing, eviction and homelessness': t('categoryCode.housing')
+  };
+  
+  if (value === null || value === undefined) {
+    return undefined;
+  }
+  if (typeof value === 'string') {
+    
+return categoryDisplayName[value] ?? value;
+    // switch (value) {
+    //   case 'Debt, money problems and bankruptcy':
+    //     return 'Debt';
+
+    //   case 'Discrimination, disability and other issues':
+    //     return 'Discrimination';
+
+    //   case 'Housing, eviction and homelessness':
+    //     return 'Housing';
+
+    //   default:
+    //     return value;
+    // }
+  }
+  if (typeof value === 'number' || typeof value === 'boolean') {
+    return String(value);
+  }
+
+
+  return undefined;
+}
+
+
+/**
  * Safely get optional string value from unknown data
  * @param {unknown} value Value to convert
  * @returns {string | undefined} String value or undefined
@@ -61,9 +103,13 @@ export function safeOptionalString(value: unknown): string | undefined {
   if (typeof value === 'number' || typeof value === 'boolean') {
     return String(value);
   }
+
+  if (typeof value === 'number' || typeof value === 'boolean') {
+    return String(value);
+  }
+
   return undefined;
 }
-
 /**
  * Helper function to convert boolean to string for radio buttons
  * @param {unknown} value - Boolean value from API
@@ -866,6 +912,12 @@ export async function buildCategoryItems({
   placeholderText,
   excludeCode
 }: BuildCategoryItemsOptions) {
+  const categoryDisplayName: Record<string, string> = {
+      'Debt, money problems and bankruptcy': t('categoryCode.debt'),
+      'Discrimination, disability and other issues': t('categoryCode.discrimination'),
+      'Housing, eviction and homelessness': t('categoryCode.housing')
+  };
+
   const filteredChoices = excludeCode
     ? choices.filter(choice => choice.code !== excludeCode)
     : choices;
@@ -881,7 +933,7 @@ export async function buildCategoryItems({
       text: capitaliseFirstLetter(
         choice.code === 'none'
           ? t('allCategoriesAdditions.none')
-          : choice.name
+          : categoryDisplayName[choice.name] ?? choice.name
       ),
       selected: selectedCategory === choice.code
     }))
