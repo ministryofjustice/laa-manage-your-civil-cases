@@ -499,8 +499,7 @@ export async function handleEditClientSupportNeedsErrors(
 export function validCaseReference(caseReference: unknown, res: Response): boolean {
   if (typeof caseReference !== 'string' || caseReference.trim() === '') {
     res.status(HTTP.BAD_REQUEST).render('main/error.njk', {
-      status: HTTP.BAD_REQUEST,
-      error: 'Invalid case reference'
+      status: HTTP.BAD_REQUEST
     });
     return false;
   }

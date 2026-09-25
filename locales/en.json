@@ -720,13 +720,17 @@
       "pageTitle": "Sorry, there is a problem with the service – {serviceName} – GOV.UK",
       "pageTitle404": "Page not found – {serviceName} – GOV.UK",
       "pageHeading404": "Page not found",
+      "checkWebAddress404": "Check you entered the correct web address.",
+      "technicalSupportPrefix404": "If the web address is correct or you selected a link or button,",
+      "technicalSupportLink404": "contact us for technical support",
+      "generic404message": "<p class='govuk-body'>Check you entered the correct web address.</p><p class='govuk-body'>If the web address is correct or you selected a link or button, <a class='govuk-link' href='/help'>contact us for technical support</a>.</p>",
       "pageTitle400": "There was a problem loading this page – {serviceName} – GOV.UK",
       "pageHeading400": "There was a problem loading this page",
-      "generic404message": "<p class='govuk-body'>Check you entered the correct web address.</p><p class='govuk-body'>If the web address is correct or you selected a link or button, <a class='govuk-link' href='/help'>contact us for technical support</a>.</p>",
+      "pageHeading400Authentication": "Sorry, there is a problem with the service",
       "generic400message": "Refresh the page and try again.",
-      "checkWebAddress": "Check you entered the correct web address.",
-      "technicalSupportPrefix": "If the web address is correct or you selected a link or button,",
-      "technicalSupportLink": "contact us for technical support"
+      "bespoke400SignoutMessageLink" : "Contact us using our help page",
+      "bespoke400SignoutMessageParagraph1" : "and tell us there was a problem signing you in.",
+      "bespoke400SignoutMessageParagraph2" : "You may not be able to access the service until this problem has been fixed."
     },
     "search": {
       "heading": "Search for a case",

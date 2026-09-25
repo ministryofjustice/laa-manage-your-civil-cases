@@ -149,7 +149,7 @@ describe('Remove Third Party Controller', () => {
 
       // Assert
       expect(statusStub.calledWith(400)).to.be.true;
-      expect(renderStub.calledWith('main/error.njk', { status: HTTP.BAD_REQUEST, error: 'Invalid case reference' })).to.be.true;
+      expect(renderStub.calledWith('main/error.njk', { status: HTTP.BAD_REQUEST })).to.be.true;
     });
 
     it('should delegate exceptions to error middleware', () => {
@@ -189,7 +189,7 @@ describe('Remove Third Party Controller', () => {
 
       // Assert
       expect(statusStub.calledWith(400)).to.be.true;
-      expect(renderStub.calledWith('main/error.njk', { status: HTTP.BAD_REQUEST, error: 'Invalid case reference' })).to.be.true;
+      expect(renderStub.calledWith('main/error.njk', { status: HTTP.BAD_REQUEST })).to.be.true;
     });
 
     const deleteErrorScenarios = [
