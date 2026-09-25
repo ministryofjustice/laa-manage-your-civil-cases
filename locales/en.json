@@ -717,7 +717,7 @@
       }
     },
     "error": {
-      "pageTitle": "Sorry, there is a problem with the service – {serviceName} – GOV.UK",
+      "pageTitle": "Sorry there is a problem with the service – {serviceName} – GOV.UK",
       "pageTitle404": "Page not found – {serviceName} – GOV.UK",
       "pageHeading404": "Page not found",
       "checkWebAddress404": "Check you entered the correct web address.",
