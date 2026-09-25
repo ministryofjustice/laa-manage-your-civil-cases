@@ -46,6 +46,7 @@ export {
   transformThirdParty,
   transformScopeTraversal,
   transformDiagnosis,
+  formatBooleanToRetainNullValue,
   transformNotesHistory,
   buildOrderingParamFields,
   isSoftDeletedThirdParty,
